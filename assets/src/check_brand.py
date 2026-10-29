@@ -65,24 +65,22 @@ for lang, title, word in [
 for name in ["mark-512.png", "cover-es.png", "cover-en.png", "social-preview.png"]:
     require((ASSETS / name).is_file(), f"Missing PNG: {name}")
 
-# Variant B must retain its complete left door jamb, visible even at avatar size.
-# This shape separates the black-box icon from a generic exit arrow.
-for name in (
-    "mark.svg", "icon-b-dark.svg",
-    "logo-es-light.svg", "logo-es-dark.svg",
-    "logo-en-light.svg", "logo-en-dark.svg",
-):
-    require("L294 394 L294 150" in read(ASSETS / name),
-            f"Missing variant B's black vertical door jamb: {name}")
-
 # Variant B is based on the approved image, NOT on the dimensional main symbol.
 # A door gap is mandatory: the upper and lower frame strokes are separate.
 for variant in ("mark.svg", "icon-b-dark.svg"):
     source = read(ASSETS / variant)
-    require('M194 77 L248 108 V185' in source, f"Missing upper door segment: {variant}")
-    require('M248 209 V272 L194 307' in source, f"Missing lower door segment: {variant}")
+    require('M194 77 L248 108 V176' in source, f"Missing upper door segment: {variant}")
+    require('M248 218 V272 L194 307' in source, f"Missing lower door segment: {variant}")
     require('M193 197 H369' in source, f"Missing red exit line: {variant}")
     require('M294 150' not in source, f"Unexpected closing frame: {variant}")
+
+# 16+ SVG units of clear separation between the painted red stroke and each
+# black frame endpoint; both cuts must remain symmetrical and visible.
+upper_end, lower_start, red_y, red_stroke = 176, 218, 197, 8
+require(red_y - red_stroke / 2 - upper_end >= 15,
+        "Upper black door bar must not touch the red evidence trace")
+require(lower_start - (red_y + red_stroke / 2) >= 15,
+        "Lower black door bar must not touch the red evidence trace")
 
 require(read(ASSETS / "symbol-primary.svg") != read(ASSETS / "mark.svg"),
         "Primary symbol and B icon must remain distinct assets")

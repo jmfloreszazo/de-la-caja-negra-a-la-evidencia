@@ -29,12 +29,12 @@ function primary(){
 function iconB(dark=false){
  // Precisely traced from the user-approved Variant B reference:
  // one solid black-box silhouette; TWO SEPARATE frame strokes and a red exit.
- // The frame gap (y=185..209) must remain open: never close the two strokes.
+ // The frame gap (y=176..218) must remain open: never close the two strokes.
  const ink=dark?"#F3F3F1":"#181A1C";
  return `<g transform="translate(6 28) scale(1.13)" stroke-linejoin="miter">
  <path d="M56 128 L183 72 L183 314 L56 260 Z" fill="${ink}"/>
- <path d="M194 77 L248 108 V185" fill="none" stroke="${ink}" stroke-width="10" stroke-linecap="butt"/>
- <path d="M248 209 V272 L194 307" fill="none" stroke="${ink}" stroke-width="10" stroke-linecap="butt"/>
+ <path d="M194 77 L248 108 V176" fill="none" stroke="${ink}" stroke-width="10" stroke-linecap="butt"/>
+ <path d="M248 218 V272 L194 307" fill="none" stroke="${ink}" stroke-width="10" stroke-linecap="butt"/>
  <path d="M193 197 H369" fill="none" stroke="${COLORS.red}" stroke-width="8" stroke-linecap="butt"/>
  <circle cx="348" cy="197" r="18" fill="${COLORS.red}"/>
  <path d="M384 165 L422 197 L384 230 Z" fill="${COLORS.red}"/></g>`;
