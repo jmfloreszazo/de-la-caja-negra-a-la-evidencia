@@ -46,7 +46,7 @@ def transfer(
         raise ValueError("Unsupported injected fault")
     if lock_order not in ("canonical", "source-first"):
         raise ValueError("Unsupported lock order")
-    retries, last_error = 0, None
+    retries, last_error, retried_states = 0, None, []
     start = time.perf_counter()
     for attempt in range(max_attempts):
         try:
@@ -105,17 +105,18 @@ def transfer(
                 # COMMIT is complete before simulating lost acknowledgment.
                 if fault == "lost-response" and verdict == "COMMITTED":
                     os._exit(92)
-                return {"status": verdict, "retries": retries,
+                return {"status": verdict, "retries": retries, "retry_sqlstates": retried_states,
                         "elapsedMs": round((time.perf_counter()-start)*1000, 3)}
         except psycopg.Error as exc:
             last_error = exc.sqlstate
             if exc.sqlstate not in RETRYABLE:
                 raise
             retries += 1
+            retried_states.append(exc.sqlstate)
             if attempt + 1 < max_attempts:
                 time.sleep(.025 * (attempt+1))
     return {"status": "RETRY_EXHAUSTED", "retries": retries,
-            "last_sqlstate": last_error,
+            "last_sqlstate": last_error, "retry_sqlstates": retried_states,
             "elapsedMs": round((time.perf_counter()-start)*1000, 3)}
 
 
