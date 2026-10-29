@@ -1,0 +1,144 @@
+{
+  "schema_version": 1,
+  "edition": "v2026.10.29",
+  "as_of": "2026-10-29",
+  "repository": "jmfloreszazo/de-la-caja-negra-a-la-evidencia",
+  "principle": "A designed protocol is not execution evidence; CI does not establish production capacity.",
+  "claims": [
+    {
+      "id": "BOOK-CI",
+      "status": "ci_verified",
+      "es": "Sincronía ES/EN, enlaces, Markdown y diagramas",
+      "en": "ES/EN sync, links, Markdown and diagrams",
+      "scope_es": "Validación estructural, no certificación de calidad idiomática",
+      "scope_en": "Structural validation, not a certification of translation quality",
+      "evidence": {
+        "kind": "github_actions",
+        "run_id": 40901043531,
+        "head_sha": "ab5a417f8ce89b999aeeb65ef790b9a0741fe516"
+      },
+      "protocol": null
+    },
+    {
+      "id": "ORACLE-LAB",
+      "status": "ci_verified",
+      "es": "Laboratorio de contrato COBOL/.NET y Oracle Gate",
+      "en": "COBOL/.NET contract lab and Oracle Gate",
+      "scope_es": "Controles sintéticos con 58 casos; no equivalencia de un sistema bancario real",
+      "scope_en": "58 synthetic cases; not equivalence for a real banking system",
+      "evidence": {
+        "kind": "github_actions",
+        "run_id": 40901043412,
+        "head_sha": "ab5a417f8ce89b999aeeb65ef790b9a0741fe516"
+      },
+      "protocol": null
+    },
+    {
+      "id": "SQLITE-LAB",
+      "status": "ci_verified",
+      "es": "Invariantes contables y concurrencia en SQLite",
+      "en": "Accounting invariants and concurrency on SQLite",
+      "scope_es": "No demuestra bloqueo por fila en PostgreSQL/SQL Server ni escala mainframe",
+      "scope_en": "Does not demonstrate PostgreSQL/SQL Server row locks or mainframe-scale throughput",
+      "evidence": {
+        "kind": "github_actions",
+        "run_id": 40901043412,
+        "head_sha": "ab5a417f8ce89b999aeeb65ef790b9a0741fe516"
+      },
+      "protocol": null
+    },
+    {
+      "id": "PODMAN-CI",
+      "status": "ci_verified",
+      "es": "Contenedor y laboratorio ejecutados con Podman en Linux CI",
+      "en": "Container and lab executed with Podman in Linux CI",
+      "scope_es": "La CI de Ubuntu no acredita portabilidad universal",
+      "scope_en": "Ubuntu CI does not establish universal portability",
+      "evidence": {
+        "kind": "github_actions",
+        "run_id": 40901043412,
+        "head_sha": "ab5a417f8ce89b999aeeb65ef790b9a0741fe516"
+      },
+      "protocol": null
+    },
+    {
+      "id": "RELEASE-BOOK",
+      "status": "published",
+      "es": "Ediciones ES/EN en PDF y Markdown publicadas",
+      "en": "ES/EN PDF and Markdown editions published",
+      "scope_es": "Un artefacto publicado no acredita todas las afirmaciones que contiene",
+      "scope_en": "A published artifact does not verify every claim it contains",
+      "evidence": {
+        "kind": "github_release",
+        "tag": "v2026.10.29",
+        "assets": [
+          "de-la-caja-negra-a-la-evidencia-es.pdf",
+          "from-black-box-to-evidence-en.pdf",
+          "es.md",
+          "en.md"
+        ]
+      },
+      "protocol": null
+    },
+    {
+      "id": "E1",
+      "status": "designed_not_executed",
+      "es": "Bloqueo por fila, deadlocks y write skew en SQL",
+      "en": "SQL row locks, deadlocks and write skew",
+      "scope_es": "PostgreSQL/SQL Server sin ejecución E1 validada",
+      "scope_en": "PostgreSQL/SQL Server E1 has no validated execution",
+      "evidence": null,
+      "protocol": "lab/docs/EXPERIMENT_PROTOCOL.md"
+    },
+    {
+      "id": "E2",
+      "status": "designed_not_executed",
+      "es": "Orleans y ledger frente a distintas distribuciones de carga",
+      "en": "Orleans and ledger under different load distributions",
+      "scope_es": "Sin benchmark E2 ejecutado contra E1",
+      "scope_en": "No executed E2 benchmark against E1",
+      "evidence": null,
+      "protocol": "lab/docs/EXPERIMENT_PROTOCOL.md"
+    },
+    {
+      "id": "E3",
+      "status": "designed_not_executed",
+      "es": "Benchmark Azure frente a local e híbrido",
+      "en": "Azure vs on-premises and hybrid benchmark",
+      "scope_es": "Sin ensayo de capacidad, coste y fallo con contrato real",
+      "scope_en": "No capacity, cost or failure experiment using a real contract",
+      "evidence": null,
+      "protocol": "lab/docs/EXPERIMENT_PROTOCOL.md"
+    },
+    {
+      "id": "E4",
+      "status": "designed_not_executed",
+      "es": "Comparativa de agentes bajo oráculo independiente",
+      "en": "Comparison of agents behind an independent oracle",
+      "scope_es": "Sin evaluación E4 ejecutada de defectos y coste",
+      "scope_en": "No executed E4 evaluation of defects and cost",
+      "evidence": null,
+      "protocol": "lab/docs/EXPERIMENT_PROTOCOL.md"
+    },
+    {
+      "id": "CROSS-PLATFORM",
+      "status": "pending_reproduction",
+      "es": "Reproducción independiente en macOS/Windows",
+      "en": "Independent reproduction on macOS/Windows",
+      "scope_es": "Solo se ha verificado ejecución CI Linux",
+      "scope_en": "Only Linux CI execution has been verified",
+      "evidence": null,
+      "protocol": "ROADMAP.md"
+    },
+    {
+      "id": "ILLUSTRATIVE",
+      "status": "pending_reproduction",
+      "es": "Compilación de todos los ejemplos Ilustrativos",
+      "en": "Compilation of all Illustrative examples",
+      "scope_es": "No existe una verificación exhaustiva de esos listados",
+      "scope_en": "No exhaustive verification of these listings exists",
+      "evidence": null,
+      "protocol": "ROADMAP.md"
+    }
+  ]
+}

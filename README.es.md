@@ -31,6 +31,8 @@ Un libro abierto y un laboratorio ejecutable sobre cómo modernizar sistemas COB
 
 ## Ruta rápida y evidencia
 
+[**Matriz de evidencia verificable**](docs/EVIDENCE.es.md): CI real frente a experimentos E1–E4 no ejecutados.
+
 ¿Quieres recorrer el argumento sin leer los 37 capítulos de forma lineal? Sigue la [ruta de siete capítulos](docs/READING_PATH.es.md). El [registro editorial y de evidencias](docs/EDITORIAL_REVIEW.es.md) distingue lo comprobado de lo todavía hipotético.
 
 La [CI del laboratorio](https://github.com/jmfloreszazo/de-la-caja-negra-a-la-evidencia/actions/runs/40900252152) ya ha ejecutado las pruebas offline, nativas y Podman en runners Linux. Esto no acredita todas las plataformas ni los experimentos E1–E4.
