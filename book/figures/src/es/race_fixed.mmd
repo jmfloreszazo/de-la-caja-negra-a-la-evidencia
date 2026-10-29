@@ -1,0 +1,10 @@
+sequenceDiagram
+  autonumber
+  participant A as Instancia A
+  participant DB as Motor transaccional
+  participant B as Instancia B
+  A->>DB: UPDATE saldo - 700 WHERE saldo >= 700
+  B->>DB: UPDATE saldo - 600 WHERE saldo >= 600
+  Note over DB: escrituras serializadas sobre la misma fila
+  DB-->>A: 1 fila afectada, aprobado (saldo 300)
+  DB-->>B: 0 filas afectadas, fondos insuficientes

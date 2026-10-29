@@ -1,0 +1,10 @@
+sequenceDiagram
+  participant TA as Transfer A to B
+  participant GA as Account A grain
+  participant GB as Account B grain
+  participant TB as Transfer B to A
+  TA->>GA: Debit
+  TB->>GB: Debit
+  GA->>GB: Credit, waits for its turn
+  GB->>GA: Credit, waits for its turn
+  Note over GA,GB: neither finishes its turn<br/>and both calls end in a timeout

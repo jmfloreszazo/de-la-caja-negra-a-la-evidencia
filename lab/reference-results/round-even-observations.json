@@ -1,0 +1,292 @@
+[
+  {
+    "id": "C001",
+    "legacy": "APPROVE|00000000",
+    "candidate": "APPROVE|00000000"
+  },
+  {
+    "id": "C002",
+    "legacy": "APPROVE|00000000",
+    "candidate": "APPROVE|00000000"
+  },
+  {
+    "id": "C003",
+    "legacy": "APPROVE|00000001",
+    "candidate": "APPROVE|00000000"
+  },
+  {
+    "id": "C004",
+    "legacy": "APPROVE|00000002",
+    "candidate": "APPROVE|00000002"
+  },
+  {
+    "id": "C005",
+    "legacy": "APPROVE|00000000",
+    "candidate": "APPROVE|00000000"
+  },
+  {
+    "id": "C006",
+    "legacy": "APPROVE|00000001",
+    "candidate": "APPROVE|00000001"
+  },
+  {
+    "id": "C007",
+    "legacy": "APPROVE|00001500",
+    "candidate": "APPROVE|00001500"
+  },
+  {
+    "id": "C008",
+    "legacy": "APPROVE|00001500",
+    "candidate": "APPROVE|00001500"
+  },
+  {
+    "id": "C009",
+    "legacy": "REVIEW|00001500",
+    "candidate": "REVIEW|00001500"
+  },
+  {
+    "id": "C010",
+    "legacy": "REVIEW|00001650",
+    "candidate": "REVIEW|00001650"
+  },
+  {
+    "id": "C011",
+    "legacy": "REVIEW|99999999",
+    "candidate": "REVIEW|99999999"
+  },
+  {
+    "id": "C012",
+    "legacy": "REJECT|00000000",
+    "candidate": "REJECT|00000000"
+  },
+  {
+    "id": "C013",
+    "legacy": "REJECT|00000000",
+    "candidate": "REJECT|00000000"
+  },
+  {
+    "id": "C014",
+    "legacy": "APPROVE|00000000",
+    "candidate": "APPROVE|00000000"
+  },
+  {
+    "id": "C015",
+    "legacy": "REVIEW|12040230",
+    "candidate": "REVIEW|12040230"
+  },
+  {
+    "id": "C016",
+    "legacy": "REJECT|00000000",
+    "candidate": "REJECT|00000000"
+  },
+  {
+    "id": "C017",
+    "legacy": "REVIEW|19417221",
+    "candidate": "REVIEW|19417221"
+  },
+  {
+    "id": "C018",
+    "legacy": "REVIEW|55958082",
+    "candidate": "REVIEW|55958082"
+  },
+  {
+    "id": "C019",
+    "legacy": "REVIEW|16233947",
+    "candidate": "REVIEW|16233947"
+  },
+  {
+    "id": "C020",
+    "legacy": "REVIEW|60108649",
+    "candidate": "REVIEW|60108649"
+  },
+  {
+    "id": "C021",
+    "legacy": "REVIEW|00751999",
+    "candidate": "REVIEW|00751999"
+  },
+  {
+    "id": "C022",
+    "legacy": "REVIEW|13321491",
+    "candidate": "REVIEW|13321491"
+  },
+  {
+    "id": "C023",
+    "legacy": "REVIEW|08960258",
+    "candidate": "REVIEW|08960258"
+  },
+  {
+    "id": "C024",
+    "legacy": "REJECT|00000000",
+    "candidate": "REJECT|00000000"
+  },
+  {
+    "id": "C025",
+    "legacy": "REJECT|00000000",
+    "candidate": "REJECT|00000000"
+  },
+  {
+    "id": "C026",
+    "legacy": "REJECT|00000000",
+    "candidate": "REJECT|00000000"
+  },
+  {
+    "id": "C027",
+    "legacy": "REJECT|00000000",
+    "candidate": "REJECT|00000000"
+  },
+  {
+    "id": "C028",
+    "legacy": "REJECT|00000000",
+    "candidate": "REJECT|00000000"
+  },
+  {
+    "id": "C029",
+    "legacy": "REJECT|00000000",
+    "candidate": "REJECT|00000000"
+  },
+  {
+    "id": "C030",
+    "legacy": "REVIEW|25962849",
+    "candidate": "REVIEW|25962849"
+  },
+  {
+    "id": "C031",
+    "legacy": "REJECT|00000000",
+    "candidate": "REJECT|00000000"
+  },
+  {
+    "id": "C032",
+    "legacy": "REJECT|00000000",
+    "candidate": "REJECT|00000000"
+  },
+  {
+    "id": "C033",
+    "legacy": "REVIEW|29347121",
+    "candidate": "REVIEW|29347121"
+  },
+  {
+    "id": "C034",
+    "legacy": "REJECT|00000000",
+    "candidate": "REJECT|00000000"
+  },
+  {
+    "id": "C035",
+    "legacy": "REJECT|00000000",
+    "candidate": "REJECT|00000000"
+  },
+  {
+    "id": "C036",
+    "legacy": "REVIEW|24879839",
+    "candidate": "REVIEW|24879839"
+  },
+  {
+    "id": "C037",
+    "legacy": "REJECT|00000000",
+    "candidate": "REJECT|00000000"
+  },
+  {
+    "id": "C038",
+    "legacy": "REVIEW|50377387",
+    "candidate": "REVIEW|50377387"
+  },
+  {
+    "id": "C039",
+    "legacy": "REVIEW|19915274",
+    "candidate": "REVIEW|19915274"
+  },
+  {
+    "id": "C040",
+    "legacy": "REVIEW|44495767",
+    "candidate": "REVIEW|44495767"
+  },
+  {
+    "id": "C041",
+    "legacy": "REVIEW|04113420",
+    "candidate": "REVIEW|04113420"
+  },
+  {
+    "id": "C042",
+    "legacy": "REVIEW|09432529",
+    "candidate": "REVIEW|09432529"
+  },
+  {
+    "id": "C043",
+    "legacy": "REJECT|00000000",
+    "candidate": "REJECT|00000000"
+  },
+  {
+    "id": "C044",
+    "legacy": "REVIEW|75792155",
+    "candidate": "REVIEW|75792155"
+  },
+  {
+    "id": "C045",
+    "legacy": "REJECT|00000000",
+    "candidate": "REJECT|00000000"
+  },
+  {
+    "id": "C046",
+    "legacy": "REJECT|00000000",
+    "candidate": "REJECT|00000000"
+  },
+  {
+    "id": "C047",
+    "legacy": "REJECT|00000000",
+    "candidate": "REJECT|00000000"
+  },
+  {
+    "id": "C048",
+    "legacy": "REJECT|00000000",
+    "candidate": "REJECT|00000000"
+  },
+  {
+    "id": "C049",
+    "legacy": "REJECT|00000000",
+    "candidate": "REJECT|00000000"
+  },
+  {
+    "id": "C050",
+    "legacy": "REJECT|00000000",
+    "candidate": "REJECT|00000000"
+  },
+  {
+    "id": "C051",
+    "legacy": "REVIEW|24395103",
+    "candidate": "REVIEW|24395103"
+  },
+  {
+    "id": "C052",
+    "legacy": "REVIEW|63929228",
+    "candidate": "REVIEW|63929228"
+  },
+  {
+    "id": "C053",
+    "legacy": "REVIEW|00137587",
+    "candidate": "REVIEW|00137587"
+  },
+  {
+    "id": "C054",
+    "legacy": "REJECT|00000000",
+    "candidate": "REJECT|00000000"
+  },
+  {
+    "id": "C055",
+    "legacy": "INVALID|00000000",
+    "candidate": "INVALID|00000000"
+  },
+  {
+    "id": "C056",
+    "legacy": "INVALID|00000000",
+    "candidate": "INVALID|00000000"
+  },
+  {
+    "id": "C057",
+    "legacy": "INVALID|00000000",
+    "candidate": "INVALID|00000000"
+  },
+  {
+    "id": "C058",
+    "legacy": "INVALID|00000000",
+    "candidate": "INVALID|00000000"
+  }
+]

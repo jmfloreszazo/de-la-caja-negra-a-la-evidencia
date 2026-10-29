@@ -1,0 +1,14 @@
+sequenceDiagram
+  participant Cli as Cliente
+  participant Fa as Fachada
+  participant Leg as COBOL (referencia)
+  participant Sh as Comparador en sombra
+  participant New as .NET 10 (candidato)
+  Cli->>Fa: calcular comisión
+  Fa->>Leg: petición
+  Leg-->>Fa: resultado autoritativo
+  Fa-->>Cli: responde la referencia
+  Fa-)Sh: encola petición y resultado
+  Sh->>New: misma petición
+  New-->>Sh: resultado candidato
+  Sh->>Sh: compara y registra la discrepancia

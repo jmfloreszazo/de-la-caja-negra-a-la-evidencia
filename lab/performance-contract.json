@@ -1,0 +1,18 @@
+{
+  "status": "UNCONFIGURED",
+  "mainframeBaseline": null,
+  "targetEnvironment": null,
+  "offeredRequestsPerSecond": null,
+  "requiredCommittedTransfersPerSecond": null,
+  "p99EndToEndMilliseconds": null,
+  "maxInfrastructureErrorRate": null,
+  "allowedBusinessRejectionMix": null,
+  "batchDeadlineSeconds": null,
+  "measurementDurationSeconds": null,
+  "durabilityAndReplicationPolicy": null,
+  "requiredRpoSeconds": null,
+  "requiredRtoSeconds": null,
+  "requiredLoadWithOneNodeLost": null,
+  "requiredDatasetAndHotKeyDistribution": null,
+  "note": "Complete and approve before a capacity trial. Null values cannot produce PASS. The local SQLite measurements do not satisfy this contract."
+}

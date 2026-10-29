@@ -1,0 +1,10 @@
+sequenceDiagram
+  participant TA as Transferencia A a B
+  participant GA as Grain cuenta A
+  participant GB as Grain cuenta B
+  participant TB as Transferencia B a A
+  TA->>GA: Debit
+  TB->>GB: Debit
+  GA->>GB: Credit, espera turno
+  GB->>GA: Credit, espera turno
+  Note over GA,GB: ninguno termina su turno<br/>y ambas llamadas acaban en timeout

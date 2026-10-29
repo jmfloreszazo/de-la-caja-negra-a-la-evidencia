@@ -1,0 +1,14 @@
+{
+  // Reglas pensadas para prosa larga en español y navegación entre capítulos.
+  "config": {
+    "default": true,
+    "MD013": false,            // líneas largas: la prosa no se parte
+    "MD024": { "siblings_only": true },
+    "MD028": false,            // alertas de GitHub contiguas
+    "MD033": false,
+    "MD036": false,            // pies de figura en cursiva
+    "MD041": false,            // cada capítulo empieza con la navegación
+    "MD060": false
+  },
+  "ignores": ["lab/**", "node_modules/**"]
+}

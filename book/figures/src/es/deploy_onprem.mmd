@@ -1,0 +1,17 @@
+C4Deployment
+  title Candidato C: plataforma local con capacidad de reserva
+  Deployment_Node(dc1, "CPD principal", "Cliente") {
+    Deployment_Node(srv1, "Servidor grande", "Muchos núcleos, NVMe, red redundante") {
+      Container(api1, "Servicio de transferencias", ".NET 10")
+      ContainerDb(db1, "Ledger primario", "SQL")
+    }
+  }
+  Deployment_Node(dc2, "CPD secundario", "Cliente") {
+    Deployment_Node(srv2, "Segunda unidad", "Capacidad para sostener el servicio sola") {
+      Container(api2, "Servicio en espera", ".NET 10")
+      ContainerDb(db2, "Réplica del ledger", "SQL", "Síncrona o asíncrona según el RPO")
+    }
+  }
+  Rel(api1, db1, "Transacción local")
+  Rel(db1, db2, "Replicación")
+  Rel(api2, db2, "Toma el servicio en un fallo ensayado")

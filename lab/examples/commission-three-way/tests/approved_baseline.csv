@@ -1,0 +1,9 @@
+case,amount,rate,expected
+zero,0.00,1.25,0.00
+normal,100.00,1.25,1.25
+rounding_midpoint,25.00,2.50,0.63
+one_cent_midpoint,1.00,0.50,0.01
+large_amount,9999.99,0.01,1.00
+small_value,0.01,50.00,0.01
+no_rate,100.00,0.00,0.00
+small_midpoint,0.10,5.00,0.01

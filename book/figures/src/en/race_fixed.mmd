@@ -1,0 +1,10 @@
+sequenceDiagram
+  autonumber
+  participant A as Instance A
+  participant DB as Transactional engine
+  participant B as Instance B
+  A->>DB: UPDATE balance - 700 WHERE balance >= 700
+  B->>DB: UPDATE balance - 600 WHERE balance >= 600
+  Note over DB: writes on the same row are serialized
+  DB-->>A: 1 row affected, approved (balance 300)
+  DB-->>B: 0 rows affected, insufficient funds

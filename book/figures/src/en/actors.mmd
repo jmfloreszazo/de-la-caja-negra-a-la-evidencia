@@ -1,0 +1,8 @@
+flowchart TB
+  req["Concurrent requests<br/>withdrawals, deposits, queries"] --> A["Account A actor<br/>one turn at a time"]
+  req --> B["Account B actor<br/>one turn at a time"]
+  req --> C["Account C actor<br/>one turn at a time"]
+  A --> L[("Ledger<br/>local ACID transaction<br/>idempotency, postings, outbox")]
+  B --> L
+  C --> L
+  A -. "transfer A to B:<br/>does not call actor B" .-x B

@@ -1,0 +1,15 @@
+sequenceDiagram
+  participant S as Servicio
+  participant DB as Ledger + outbox
+  participant P as Publicador
+  participant Br as Broker
+  participant Co as Consumidor con inbox
+  S->>DB: cambio de negocio y fila outbox en una transacción
+  P->>DB: lee pendientes
+  P->>Br: publica TransferCommitted
+  P--xDB: cae antes de marcarlo como enviado
+  P->>Br: republica el mismo evento
+  Br->>Co: entrega 1
+  Co->>Co: aplica el efecto y registra opId en la inbox
+  Br->>Co: entrega 2
+  Co->>Co: opId ya visto, descarta

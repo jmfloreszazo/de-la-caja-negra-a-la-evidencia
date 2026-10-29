@@ -1,0 +1,25 @@
+C4Deployment
+  title Candidato A: aplicación modular y frontera SQL en Azure
+  Deployment_Node(region, "Azure, región principal", "Zonas de disponibilidad") {
+    Deployment_Node(compute, "Cómputo", "AKS, App Service o VMs") {
+      Container(api, "Servicio de transferencias", ".NET 10", "Admisión acotada e idempotencia")
+      Container(workers, "Workers de lote", ".NET 10", "Particiones con checkpoint")
+      Container(pub, "Publicador outbox", ".NET 10", "Entrega al menos una vez")
+    }
+    Deployment_Node(sql, "Azure SQL", "Réplica síncrona si el contrato la exige") {
+      ContainerDb(ledger, "Ledger", "SQL", "Operaciones, asientos y outbox")
+    }
+    Deployment_Node(bus, "Service Bus", "Mensajería gestionada") {
+      ContainerQueue(topic, "Eventos de negocio", "Topic", "Consumidores idempotentes")
+    }
+  }
+  Deployment_Node(dc, "Centro de datos del cliente", "Coexistencia") {
+    Deployment_Node(mf, "Mainframe", "z/OS") {
+      Container(cobol, "Capacidades COBOL conservadas", "CICS, Db2")
+    }
+  }
+  Rel(api, ledger, "Transacción local")
+  Rel(workers, ledger, "Commit por partición")
+  Rel(pub, ledger, "Lee pendientes")
+  Rel(pub, topic, "Publica")
+  Rel(api, cobol, "Fachada de convivencia", "ACL")

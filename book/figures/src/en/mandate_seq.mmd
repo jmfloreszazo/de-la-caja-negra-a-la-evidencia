@@ -1,0 +1,12 @@
+sequenceDiagram
+  participant Ag as Builder agent
+  participant PEP as Enforcement point
+  participant IdP as Identity provider
+  participant Repo as Repository
+  Ag->>PEP: write Candidate/Program.cs
+  PEP->>IdP: current mandate and scope?
+  IdP-->>PEP: MND-2026-114 valid, write Candidate/**
+  PEP->>Repo: write allowed
+  Ag->>PEP: write contracts/cases.json
+  PEP-->>Ag: denied, outside the mandate
+  Note over PEP: the rule is enforced where the action happens

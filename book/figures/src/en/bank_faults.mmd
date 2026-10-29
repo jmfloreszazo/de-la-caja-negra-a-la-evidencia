@@ -1,0 +1,14 @@
+sequenceDiagram
+  participant T as bank_test.py
+  participant P as Bank process
+  participant DB as SQLite
+  T->>P: transfer crash, fault crash-after-debit
+  P->>DB: BEGIN IMMEDIATE and debit
+  P--xP: Environment.Exit(91)
+  Note over DB: the transaction was never committed
+  T->>DB: checks balance intact and no operation
+  T->>P: transfer lost, fault lost-response
+  P->>DB: debit, credit, postings, outbox and COMMIT
+  P--xT: Environment.Exit(92) without answering
+  T->>P: resend with the same identity
+  P-->>T: DUPLICATE_COMMITTED, no second charge

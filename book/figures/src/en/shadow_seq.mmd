@@ -1,0 +1,14 @@
+sequenceDiagram
+  participant Cli as Client
+  participant Fa as Facade
+  participant Leg as COBOL (reference)
+  participant Sh as Shadow comparer
+  participant New as .NET 10 (candidate)
+  Cli->>Fa: calculate fee
+  Fa->>Leg: request
+  Leg-->>Fa: authoritative result
+  Fa-->>Cli: the reference answers
+  Fa-)Sh: enqueues request and result
+  Sh->>New: same request
+  New-->>Sh: candidate result
+  Sh->>Sh: compares and records the discrepancy

@@ -1,0 +1,89 @@
+{
+  "status": "PASS",
+  "scope": "Synthetic fixed-record fee service; not an industrial equivalence proof",
+  "cases": 58,
+  "gateControls": 10,
+  "sdk": "10.0.403",
+  "compiler": "cobc (GnuCOBOL) 3.1.2.0",
+  "platform": "Linux-6.18.55-x86_64-with-glibc2.39",
+  "elapsedSeconds": 3.59,
+  "baselineSha256": "976d7127d30206e77bbef03fd84bb41d719311be9ea8b63eafd6f83e9c0449a1",
+  "sourceSha256": {
+    "bank_test.py": "4e633c890889bf7a6db48f0dfc9b1f6d1cb16c75a5795c6d497eb1c7545f6ca5",
+    "run.py": "f3fb0fa51262fc56dcb13a76a507fec0ec9c3e47b4bf5c9f40b3f02cf39602ce",
+    "performance-contract.json": "225202209515dba7408d5515148b5c2578478a60604899338e87cfce7d5e3496",
+    "cobol_local.py": "ae9de478b126ae4938d92d6f59572759fd3f54e9dba10b3b10d7f81e903bb5f6",
+    "walkthrough.py": "585c45423adcdbbf5239fdae212d70d2c94f2b7ea4390cb4a359be0bc43d3493",
+    "Candidate/Program.cs": "078d2d498397afa89e13c42ade72df90f4409717c2797eff3656722271cf3e4b",
+    "Candidate/Candidate.csproj": "38e201f047792df530db8c7d157c2b6b19d1ed2e4134dba5da5c59e97d3b0da2",
+    "Bank/Program.cs": "72e6ff2bf59fd8889158b2488e3b8a5eb6f67b8e05cab27dc2336b74b6ad8253",
+    "Bank/Bank.csproj": "38e201f047792df530db8c7d157c2b6b19d1ed2e4134dba5da5c59e97d3b0da2",
+    "legacy/fee.cob": "136cc8c21ae514634f93b7139fb9e185b115e6b817c20890ad0e1f9265971cbf",
+    "Gate/Program.cs": "0f9fb37c8a7ae181fd93de1ca0f07a709009c15d43354858e8d073d9b9688093",
+    "Gate/Gate.csproj": "38e201f047792df530db8c7d157c2b6b19d1ed2e4134dba5da5c59e97d3b0da2",
+    "contracts/cases.sha256": "53fed8d38ef15bb4b2b7977cca8a4573608b347cb063999de0768cf75239826d",
+    "contracts/cases.json": "976d7127d30206e77bbef03fd84bb41d719311be9ea8b63eafd6f83e9c0449a1"
+  },
+  "reports": {
+    "none": {
+      "verdict": "PASS",
+      "release": "SIMULATED_ALLOW",
+      "exitCode": 0,
+      "findingCount": 0
+    },
+    "round-even": {
+      "verdict": "FAIL",
+      "release": "BLOCK",
+      "exitCode": 2,
+      "findingCount": 1
+    },
+    "wrong-threshold": {
+      "verdict": "FAIL",
+      "release": "BLOCK",
+      "exitCode": 2,
+      "findingCount": 2
+    },
+    "approve-inactive": {
+      "verdict": "FAIL",
+      "release": "BLOCK",
+      "exitCode": 2,
+      "findingCount": 22
+    },
+    "missing-evidence": {
+      "verdict": "INCONCLUSIVE",
+      "release": "BLOCK",
+      "exitCode": 3,
+      "findingCount": 1
+    },
+    "missing-case": {
+      "verdict": "INCONCLUSIVE",
+      "release": "BLOCK",
+      "exitCode": 3,
+      "findingCount": 1
+    },
+    "duplicate-case": {
+      "verdict": "INCONCLUSIVE",
+      "release": "BLOCK",
+      "exitCode": 3,
+      "findingCount": 1
+    },
+    "invalid-anchor": {
+      "verdict": "INCONCLUSIVE",
+      "release": "BLOCK",
+      "exitCode": 3,
+      "findingCount": 1
+    },
+    "no-mandate": {
+      "verdict": "PASS",
+      "release": "BLOCK",
+      "exitCode": 4,
+      "findingCount": 0
+    },
+    "equal-but-wrong": {
+      "verdict": "FAIL",
+      "release": "BLOCK",
+      "exitCode": 2,
+      "findingCount": 2
+    }
+  }
+}

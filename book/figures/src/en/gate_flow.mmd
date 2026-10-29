@@ -1,0 +1,16 @@
+flowchart TD
+  start(["Baseline, anchor, observations and mandate"]) --> dig{"Does the baseline<br/>digest match?"}
+  dig -- no --> inc["INCONCLUSIVE"]
+  dig -- yes --> ids{"Unique cases and<br/>known observations?"}
+  ids -- no --> inc
+  ids -- yes --> cmp["Compare legacy and candidate<br/>with each case's expectation"]
+  cmp --> f{"Any contradiction?"}
+  f -- yes --> fail["FAIL"]
+  f -- no --> m{"Any missing case<br/>or observation?"}
+  m -- yes --> inc
+  m -- no --> pass["PASS"]
+  pass --> man{"Mandate?"}
+  man -- yes --> allow["SIMULATED_ALLOW, exit 0"]
+  man -- no --> b4["BLOCK, exit 4"]
+  fail --> b2["BLOCK, exit 2"]
+  inc --> b3["BLOCK, exit 3"]

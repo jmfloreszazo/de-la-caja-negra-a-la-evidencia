@@ -1,0 +1,7 @@
+{
+  "verdict": "PASS",
+  "authority": "DENY",
+  "release": "BLOCK",
+  "findings": [],
+  "exitCode": 4
+}

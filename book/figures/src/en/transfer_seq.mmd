@@ -1,0 +1,24 @@
+sequenceDiagram
+  autonumber
+  participant C as Client
+  participant S as Transfer service
+  participant DB as Transactional engine
+  C->>S: transfer(opId, A, B, 700)
+  S->>DB: BEGIN
+  S->>DB: look up opId
+  alt opId exists with the same content
+    DB-->>S: previous decision
+    S-->>C: DUPLICATE, no second effect
+  else new opId
+    S->>DB: UPDATE A, debit WHERE balance >= 700
+    alt 0 rows
+      S->>DB: INSERT REJECTED operation and COMMIT
+      S-->>C: REJECTED
+    else 1 row
+      S->>DB: UPDATE B, credit
+      S->>DB: INSERT operation, two postings and outbox
+      S->>DB: COMMIT
+      S-->>C: COMMITTED
+    end
+  end
+  Note over S,DB: crash before COMMIT: nothing committed<br/>response lost after COMMIT: the resend returns the decision

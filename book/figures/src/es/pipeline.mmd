@@ -1,0 +1,10 @@
+flowchart TB
+  pr["Pull request<br/>con ficha de evidencia"] --> off["verify_offline<br/>ancla y política"]
+  off --> eq["Equivalencia y controles<br/>G3 y G5"]
+  eq --> bank["Concurrencia y recuperación"]
+  bank --> perf{"¿Cambia la<br/>ruta crítica?"}
+  perf -- sí --> cap["Ensayo de capacidad<br/>en infraestructura controlada"]
+  perf -- no --> art["Artefacto inmutable<br/>digest registrado"]
+  cap --> art
+  art --> g6{"G6: autorización"}
+  g6 --> dep["Despliegue gradual"]

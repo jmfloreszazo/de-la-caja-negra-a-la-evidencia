@@ -1,0 +1,8 @@
+flowchart TB
+  plan["Plan del lote<br/>RunId, RulesVersion, BusinessDate"] --> p1["Partición 1"] & p2["Partición 2"] & pn["Partición N"]
+  p1 --> ck[("Resultados + checkpoint<br/>misma transacción")]
+  p2 --> ck
+  pn --> ck
+  ck --> rec{"Reconciliación<br/>contra totales de entrada"}
+  rec -- cuadra --> ok["Cierre confirmado"]
+  rec -- no cuadra --> stop["Bloqueo y diagnóstico"]

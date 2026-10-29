@@ -1,0 +1,11 @@
+stateDiagram-v2
+  [*] --> Evaluando
+  Evaluando --> PASS : comprobaciones satisfechas con evidencia
+  Evaluando --> FAIL : contradicción observada
+  Evaluando --> INCONCLUSIVE : falta evidencia o falla una condición
+  PASS --> Autorizado : mandato vigente para este artefacto
+  PASS --> Bloqueado : sin mandato (salida 4)
+  FAIL --> Bloqueado : salida 2
+  INCONCLUSIVE --> Bloqueado : salida 3
+  Autorizado --> [*] : salida 0
+  Bloqueado --> [*]

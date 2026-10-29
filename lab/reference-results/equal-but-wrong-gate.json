@@ -1,0 +1,10 @@
+{
+  "verdict": "FAIL",
+  "authority": "DEMO_ONLY",
+  "release": "BLOCK",
+  "findings": [
+    "C003: legacy violates contract",
+    "C003: candidate violates contract"
+  ],
+  "exitCode": 2
+}

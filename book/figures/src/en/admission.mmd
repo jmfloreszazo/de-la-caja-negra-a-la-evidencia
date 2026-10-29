@@ -1,0 +1,6 @@
+flowchart TB
+  cli["Clients"] --> edge{"Does it fit in the bounded queue?"}
+  edge -- yes --> q[["Bounded Channel<br/>capacity 2,000"]]
+  q --> w["Consumers<br/>as many as the ledger can commit"]
+  w --> led[("Ledger")]
+  edge -- no --> r429["429 now, not a timeout later"]

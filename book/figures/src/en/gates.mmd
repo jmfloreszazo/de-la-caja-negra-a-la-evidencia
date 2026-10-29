@@ -1,0 +1,11 @@
+flowchart TB
+  L["Legacy<br/>sources, copybooks, JCL, data"] --> G0["G0 Scope<br/>authorized mandate"]
+  G0 --> G1["G1 Archaeology<br/>classified evidence"]
+  G1 --> G2["G2 Baseline<br/>human approval"]
+  G2 --> G3["G3 Oracle<br/>mutations and negative controls"]
+  G3 --> G4["G4 Construction<br/>candidate with provenance"]
+  G4 --> G5{"G5 Verification"}
+  G5 -- PASS --> G6["G6 Delivery<br/>separate authorization"]
+  G5 -- "FAIL or INCONCLUSIVE" --> G4
+  G6 --> G7["G7 Drift<br/>validity review"]
+  G7 -. "the rule changes" .-> G2

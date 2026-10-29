@@ -1,0 +1,7 @@
+stateDiagram-v2
+  [*] --> Pending
+  Pending --> Running : a worker takes the partition
+  Running --> Committed : results and checkpoint in one transaction
+  Running --> Pending : failure before commit
+  Committed --> [*]
+  note right of Committed : a restart skips committed partitions

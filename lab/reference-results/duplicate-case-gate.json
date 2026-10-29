@@ -1,0 +1,9 @@
+{
+  "verdict": "INCONCLUSIVE",
+  "authority": "DEMO_ONLY",
+  "release": "BLOCK",
+  "findings": [
+    "Duplicate or unknown observation identity"
+  ],
+  "exitCode": 3
+}

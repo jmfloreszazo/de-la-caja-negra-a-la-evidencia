@@ -1,0 +1,12 @@
+stateDiagram-v2
+  direction TB
+  state "Legado escribe, nuevo en sombra" as F1
+  state "Legado escribe, nuevo lee réplica" as F2
+  state "Nuevo escribe, legado lee por CDC" as F3
+  state "Nuevo escribe, legado retirado" as F4
+  [*] --> F1
+  F1 --> F2 : discrepancias explicadas
+  F2 --> F3 : corte con reconciliación
+  F3 --> F2 : retorno ensayado con transformación de datos
+  F3 --> F4 : sin consumidores residuales
+  F4 --> [*]

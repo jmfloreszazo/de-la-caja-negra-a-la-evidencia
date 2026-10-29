@@ -1,0 +1,4 @@
+flowchart LR
+  raw["raw-input PIC X(14)<br/>0000002500200Y"] --> a["amount-cents PIC 9(8)<br/>00000025 = 25 céntimos"]
+  raw --> r["rate-bps PIC 9(5)<br/>00200 = 200 puntos básicos"]
+  raw --> s["customer-active PIC X<br/>Y = cliente activo"]

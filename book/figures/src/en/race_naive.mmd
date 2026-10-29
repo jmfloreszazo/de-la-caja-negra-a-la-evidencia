@@ -1,0 +1,14 @@
+sequenceDiagram
+  autonumber
+  participant A as Instance A
+  participant DB as Database
+  participant B as Instance B
+  Note over DB: balance = 1,000
+  A->>DB: SELECT balance
+  DB-->>A: 1,000
+  B->>DB: SELECT balance
+  DB-->>B: 1,000
+  Note over A,B: both decide on the same snapshot
+  A->>DB: UPDATE balance = 300 (withdraws 700)
+  B->>DB: UPDATE balance = 400 (withdraws 600)
+  Note over DB: final balance 400 and 1,300 paid out

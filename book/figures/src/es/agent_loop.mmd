@@ -1,0 +1,16 @@
+sequenceDiagram
+  participant H as Harness gobernado
+  participant Ag as Agente constructor
+  participant C as Candidate
+  participant V as Verificador externo
+  participant G as Contratos y Gate protegidos
+  H->>Ag: tarea, contrato público, mandato y presupuesto
+  loop hasta PASS o presupuesto agotado
+    Ag->>C: modifica el candidato
+    Ag->>Ag: ejecuta sus propias pruebas
+    H->>V: ejecuta el candidato fijado
+    V->>G: lee baseline y ancla
+    V-->>H: PASS, FAIL o INCONCLUSIVE
+    H-->>Ag: feedback permitido por el protocolo
+  end
+  H->>H: registra modelo, prompt, herramientas y coste

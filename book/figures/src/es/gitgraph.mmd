@@ -1,0 +1,14 @@
+gitGraph
+  commit id: "baseline v1 aprobada"
+  branch candidato-fee
+  checkout candidato-fee
+  commit id: "agente: candidato"
+  commit id: "fix: redondeo"
+  checkout main
+  merge candidato-fee id: "G5 PASS y G6"
+  branch baseline-v2
+  checkout baseline-v2
+  commit id: "G7: tasa con 4 decimales"
+  commit id: "baseline v2 aprobada"
+  checkout main
+  merge baseline-v2 id: "nueva cualificación G3"

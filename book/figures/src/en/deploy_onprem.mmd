@@ -1,0 +1,17 @@
+C4Deployment
+  title Candidate C: on-premises platform with reserve capacity
+  Deployment_Node(dc1, "Primary data centre", "Customer") {
+    Deployment_Node(srv1, "Large server", "Many cores, NVMe, redundant network") {
+      Container(api1, "Transfer service", ".NET 10")
+      ContainerDb(db1, "Primary ledger", "SQL")
+    }
+  }
+  Deployment_Node(dc2, "Secondary data centre", "Customer") {
+    Deployment_Node(srv2, "Second unit", "Capacity to run the service alone") {
+      Container(api2, "Standby service", ".NET 10")
+      ContainerDb(db2, "Ledger replica", "SQL", "Synchronous or asynchronous depending on RPO")
+    }
+  }
+  Rel(api1, db1, "Local transaction")
+  Rel(db1, db2, "Replication")
+  Rel(api2, db2, "Takes over in a rehearsed failure")

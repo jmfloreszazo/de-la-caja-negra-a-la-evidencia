@@ -1,0 +1,11 @@
+stateDiagram-v2
+  [*] --> Evaluating
+  Evaluating --> PASS : checks satisfied with evidence
+  Evaluating --> FAIL : observed contradiction
+  Evaluating --> INCONCLUSIVE : missing evidence or failed condition
+  PASS --> Authorized : current mandate for this artifact
+  PASS --> Blocked : no mandate (exit 4)
+  FAIL --> Blocked : exit 2
+  INCONCLUSIVE --> Blocked : exit 3
+  Authorized --> [*] : exit 0
+  Blocked --> [*]

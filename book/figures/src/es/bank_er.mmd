@@ -1,0 +1,24 @@
+erDiagram
+  ACCOUNTS ||--o{ POSTINGS : "recibe"
+  OPERATIONS ||--o{ POSTINGS : "genera dos si COMMITTED"
+  OPERATIONS ||--o| OUTBOX : "una fila si COMMITTED"
+  ACCOUNTS {
+    INTEGER id PK
+    INTEGER balance "CHECK balance >= 0"
+  }
+  OPERATIONS {
+    TEXT id PK "identidad de la operación"
+    INTEGER src
+    INTEGER dst
+    INTEGER amount "CHECK amount > 0"
+    TEXT status "COMMITTED o REJECTED"
+  }
+  POSTINGS {
+    TEXT op PK, FK
+    INTEGER account PK, FK
+    INTEGER delta "distinto de cero"
+  }
+  OUTBOX {
+    TEXT op PK, FK
+    TEXT event
+  }

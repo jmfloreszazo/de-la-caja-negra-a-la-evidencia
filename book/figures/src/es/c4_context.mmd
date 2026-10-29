@@ -1,0 +1,18 @@
+C4Context
+  title Contexto: plataforma de modernización verificable
+  Person(owner, "Dueño de dominio", "Aprueba reglas, excepciones y entregas")
+  Person(team, "Equipo de modernización", "Arquitectura, desarrollo y operación")
+  Person(expert, "Especialista COBOL", "Conoce excepciones y operación")
+  System(platform, "Plataforma de modernización verificable", "Arqueología, oráculos, construcción con agentes y autorización de entrega")
+  System_Ext(legacy, "Mainframe legado", "COBOL, CICS, Db2, VSAM, JCL")
+  System_Ext(target, "Sistema destino", ".NET 10 en Azure o en infraestructura propia")
+  System_Ext(models, "Proveedor de modelos", "Agentes de IA bajo mandato")
+  System_Ext(git, "Repositorio y CI", "Fuentes, baselines y evidencia versionadas")
+  Rel(expert, platform, "Aporta conocimiento y revisa hipótesis")
+  Rel(owner, platform, "Aprueba baseline y autoriza entregas")
+  Rel(team, platform, "Opera la cadena de evidencia")
+  Rel(platform, legacy, "Inventaria y observa", "lectura autorizada")
+  Rel(platform, models, "Delega tareas acotadas")
+  Rel(platform, git, "Versiona el expediente")
+  Rel(platform, target, "Entrega artefactos verificados")
+  UpdateLayoutConfig($c4ShapeInRow="3", $c4BoundaryInRow="1")

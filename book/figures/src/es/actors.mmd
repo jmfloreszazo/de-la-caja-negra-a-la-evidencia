@@ -1,0 +1,8 @@
+flowchart TB
+  req["Peticiones concurrentes<br/>retiradas, ingresos, consultas"] --> A["Actor cuenta A<br/>un turno cada vez"]
+  req --> B["Actor cuenta B<br/>un turno cada vez"]
+  req --> C["Actor cuenta C<br/>un turno cada vez"]
+  A --> L[("Ledger<br/>transacción local ACID<br/>idempotencia, asientos, outbox")]
+  B --> L
+  C --> L
+  A -. "transferencia A a B:<br/>no llama al actor B" .-x B

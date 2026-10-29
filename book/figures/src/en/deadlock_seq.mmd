@@ -1,0 +1,13 @@
+sequenceDiagram
+  participant T1 as Transfer A to B
+  participant DB as Engine
+  participant T2 as Transfer B to A
+  T1->>DB: locks A
+  T2->>DB: locks B
+  T1->>DB: asks for B and waits
+  T2->>DB: asks for A and waits
+  Note over DB: cycle detected
+  DB-->>T2: chosen as victim, transaction aborted
+  DB-->>T1: gets B and commits
+  T2->>DB: full retry with the same opId
+  Note over T1,T2: with a global order (lower key first)<br/>both ask for A before B and the cycle never forms

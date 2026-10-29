@@ -1,0 +1,25 @@
+name: Translation
+description: The Spanish and English versions of a page say different things
+title: "[i18n] "
+labels: ["i18n"]
+body:
+  - type: input
+    id: es
+    attributes:
+      label: Spanish page
+      placeholder: "book/es/parte-4-patrones/19-..."
+    validations:
+      required: true
+  - type: input
+    id: en
+    attributes:
+      label: English page
+      placeholder: "book/en/part-4-patterns/19-..."
+    validations:
+      required: true
+  - type: textarea
+    id: difference
+    attributes:
+      label: What differs
+    validations:
+      required: true

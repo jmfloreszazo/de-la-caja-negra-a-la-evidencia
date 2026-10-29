@@ -1,0 +1,12 @@
+flowchart TB
+  d["Discovery"] --> q1{"Is it worth it?"}
+  q1 -- no --> stay["Keep and improve the mainframe"]
+  q1 -- yes --> p["Pilot"]
+  p --> q2{"Accepted with evidence?"}
+  q2 -- no --> redo["Revisit data model or seam"]
+  redo --> p
+  q2 -- yes --> par["Parallel run"]
+  par --> q3{"Capacity on<br/>the worst day?"}
+  q3 -- no --> plat["Change platform or architecture"]
+  plat --> par
+  q3 -- yes --> roll["Gradual rollout and retirement"]

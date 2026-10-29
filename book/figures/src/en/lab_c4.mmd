@@ -1,0 +1,24 @@
+C4Container
+  title Lab: who runs and who decides
+  Person(dev, "Reader or contributor")
+  ContainerDb(contracts, "contracts/", "JSON + SHA-256", "58 approved cases and their anchor")
+  Container_Boundary(pod, "Podman container, no network") {
+    Container(run, "run.py", "Python", "Orchestrates processes and keeps observations")
+    Container(cob, "fee", "GnuCOBOL", "Compiled legacy program")
+    Container(cand, "Candidate", ".NET 10", "Implementation with mutations")
+    Container(gate, "Gate", ".NET 10", "Verdict and delivery")
+    Container(bank, "Bank", ".NET 10, N processes", "Transfers")
+    ContainerDb(sqlite, "SQLite", "WAL, synchronous FULL", "Lab ledger")
+    Container(verifier, "bank_test.py", "Python", "Accounting oracle over persisted state")
+  }
+  ContainerDb(results, "results/", "Host volume", "Evidence of the run")
+  Rel(dev, run, "Launches")
+  Rel(run, cob, "Inputs")
+  Rel(run, cand, "Inputs")
+  Rel(run, gate, "Observations")
+  Rel(contracts, gate, "Baseline and anchor")
+  Rel(bank, sqlite, "BEGIN IMMEDIATE")
+  Rel(verifier, sqlite, "Reads state")
+  Rel(gate, results, "Report")
+  Rel(verifier, results, "Summary")
+  UpdateLayoutConfig($c4ShapeInRow="4", $c4BoundaryInRow="1")

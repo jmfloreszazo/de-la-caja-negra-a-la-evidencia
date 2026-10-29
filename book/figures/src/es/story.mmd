@@ -1,0 +1,5 @@
+flowchart TB
+  demo["Demo: ACCTUPD compila en .NET 10"] --> t1 & t2 & t3
+  t1["Prueba 1: dos retiradas simultáneas"] --> r1["Aceptación online<br/>transacción, versión o bloqueo, idempotencia"]
+  t2["Prueba 2: transferencia con fallo intermedio"] --> r2["Integridad contable<br/>ledger atómico"]
+  t3["Prueba 3: cierre nocturno de un millón de cuentas"] --> r3["Procesamiento por lotes<br/>particiones y checkpoint"]

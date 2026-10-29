@@ -1,0 +1,67 @@
+[
+  {
+    "name": "errata",
+    "color": "d73a4a",
+    "description": "Erratum in the book"
+  },
+  {
+    "name": "i18n",
+    "color": "1d76db",
+    "description": "Spanish/English sync or translation quality"
+  },
+  {
+    "name": "reproduction",
+    "color": "0e8a16",
+    "description": "Lab run report"
+  },
+  {
+    "name": "risk",
+    "color": "fbca04",
+    "description": "Risk catalog"
+  },
+  {
+    "name": "proposal",
+    "color": "c5def5",
+    "description": "Content proposal"
+  },
+  {
+    "name": "diagram",
+    "color": "5319e7",
+    "description": "Mermaid diagrams"
+  },
+  {
+    "name": "lab",
+    "color": "0052cc",
+    "description": "Lab code"
+  },
+  {
+    "name": "experiment",
+    "color": "b60205",
+    "description": "Experiments E1\u2013E4"
+  },
+  {
+    "name": "oracle",
+    "color": "24292f",
+    "description": "Touches lab/contracts, lab/Gate or lab/reference-results"
+  },
+  {
+    "name": "needs-evidence",
+    "color": "e99695",
+    "description": "Missing source or experiment"
+  },
+  {
+    "name": "governance",
+    "color": "bfd4f2",
+    "description": "Governance and community"
+  },
+  {
+    "name": "good first issue",
+    "color": "7057ff",
+    "description": "Good first contribution"
+  },
+  {
+    "name": "help wanted",
+    "color": "008672",
+    "description": "Help wanted"
+  }
+]

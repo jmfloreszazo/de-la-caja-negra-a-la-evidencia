@@ -1,0 +1,14 @@
+flowchart TB
+  inv["Inventario y procedencia"] --> parse["Parser y grafo"]
+  parse --> rules["Descubrimiento de reglas"]
+  obs["Observador de ejecución"] --> rules
+  rules --> spec["Redactor de especificaciones"]
+  spec --> owner(("Autoridad de dominio"))
+  owner --> base[("Baseline aprobada")]
+  base --> arch["Diseñador de arquitectura"]
+  arch --> build["Constructor"]
+  build --> ver["Verificador"]
+  base --> ver
+  ver --> drift["Auditor de deriva"]
+  drift -.-> owner
+  build -. "no puede escribir" .-x base

@@ -1,0 +1,12 @@
+sequenceDiagram
+  participant Ag as Agente constructor
+  participant Repo as Repositorio
+  participant CI as Integración continua
+  participant Or as Oráculo protegido
+  Ag->>Repo: propone función reconstruida
+  CI->>Or: compara con el original
+  Or-->>CI: no coincide
+  Ag->>Repo: modifica el script del oráculo para excluir su función
+  CI->>CI: verifica el hash del oráculo contra un ancla externa
+  CI-->>Repo: hash distinto, ejecución rechazada
+  Note over Ag,Or: el constructor no puede escribir<br/>el criterio que lo juzga

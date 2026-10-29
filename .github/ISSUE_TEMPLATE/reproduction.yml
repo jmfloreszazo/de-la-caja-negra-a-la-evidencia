@@ -1,0 +1,49 @@
+name: Reproduction report
+description: I ran the lab and report what happened, including failures
+title: "[Reproduction] "
+labels: ["reproduction"]
+body:
+  - type: dropdown
+    id: route
+    attributes:
+      label: Route
+      options:
+        - Podman (Linux)
+        - Podman (macOS)
+        - Podman (Windows)
+        - Native (Ubuntu / WSL2)
+        - Only verify_offline.py
+    validations:
+      required: true
+  - type: input
+    id: versions
+    attributes:
+      label: Versions
+      placeholder: "podman 5.x · dotnet 10.0.x · cobc 3.x · python 3.12"
+    validations:
+      required: true
+  - type: input
+    id: command
+    attributes:
+      label: Command
+      placeholder: "bash scripts/run-podman.sh --auto"
+    validations:
+      required: true
+  - type: dropdown
+    id: outcome
+    attributes:
+      label: Outcome
+      options:
+        - Expected verdicts
+        - Some verdict differs
+        - Did not run
+    validations:
+      required: true
+  - type: textarea
+    id: output
+    attributes:
+      label: Output
+      description: results/summary.json, results/bank/summary.json or the full error
+      render: text
+    validations:
+      required: true

@@ -1,0 +1,129 @@
+{
+  "status": "PASS",
+  "controls": {
+    "overdraftRace": "PASS",
+    "duplicateAndConflict": "PASS",
+    "exceptionRollback": "PASS",
+    "processCrashRecovery": "PASS",
+    "commitWithoutResponse": "PASS",
+    "lockWaitAndRetry": "PASS",
+    "boundedRetries": "PASS",
+    "accountingInvariants": {
+      "nonnegative": true,
+      "conserved": true,
+      "balancedPostings": true,
+      "twoPostingsPerCommit": true,
+      "outboxAtomic": true,
+      "projectionAgrees": true
+    },
+    "oracleRejectsCorruptLedger": "PASS"
+  },
+  "measurements": [
+    {
+      "pattern": "uniform",
+      "workers": 1,
+      "operations": 32,
+      "committed": 32,
+      "elapsedSeconds": 0.1442,
+      "attemptsPerSecondIncludingProcessLaunch": 221.87,
+      "operationP50Ms": 1.521,
+      "operationP95Ms": 1.988,
+      "operationP99Ms": 2.031,
+      "busyRetries": 0
+    },
+    {
+      "pattern": "uniform",
+      "workers": 2,
+      "operations": 64,
+      "committed": 64,
+      "elapsedSeconds": 0.1837,
+      "attemptsPerSecondIncludingProcessLaunch": 348.39,
+      "operationP50Ms": 1.271,
+      "operationP95Ms": 1.817,
+      "operationP99Ms": 10.511,
+      "busyRetries": 0
+    },
+    {
+      "pattern": "uniform",
+      "workers": 4,
+      "operations": 128,
+      "committed": 128,
+      "elapsedSeconds": 0.2513,
+      "attemptsPerSecondIncludingProcessLaunch": 509.38,
+      "operationP50Ms": 0.931,
+      "operationP95Ms": 1.895,
+      "operationP99Ms": 41.704,
+      "busyRetries": 1
+    },
+    {
+      "pattern": "uniform",
+      "workers": 8,
+      "operations": 256,
+      "committed": 256,
+      "elapsedSeconds": 0.3693,
+      "attemptsPerSecondIncludingProcessLaunch": 693.25,
+      "operationP50Ms": 0.773,
+      "operationP95Ms": 27.224,
+      "operationP99Ms": 124.899,
+      "busyRetries": 4
+    },
+    {
+      "pattern": "hot",
+      "workers": 1,
+      "operations": 32,
+      "committed": 32,
+      "elapsedSeconds": 0.1231,
+      "attemptsPerSecondIncludingProcessLaunch": 259.89,
+      "operationP50Ms": 1.173,
+      "operationP95Ms": 1.605,
+      "operationP99Ms": 1.792,
+      "busyRetries": 0
+    },
+    {
+      "pattern": "hot",
+      "workers": 2,
+      "operations": 64,
+      "committed": 64,
+      "elapsedSeconds": 0.1822,
+      "attemptsPerSecondIncludingProcessLaunch": 351.3,
+      "operationP50Ms": 1.129,
+      "operationP95Ms": 3.822,
+      "operationP99Ms": 11.773,
+      "busyRetries": 0
+    },
+    {
+      "pattern": "hot",
+      "workers": 4,
+      "operations": 128,
+      "committed": 128,
+      "elapsedSeconds": 0.2583,
+      "attemptsPerSecondIncludingProcessLaunch": 495.6,
+      "operationP50Ms": 0.81,
+      "operationP95Ms": 2.042,
+      "operationP99Ms": 42.084,
+      "busyRetries": 0
+    },
+    {
+      "pattern": "hot",
+      "workers": 8,
+      "operations": 256,
+      "committed": 256,
+      "elapsedSeconds": 0.41,
+      "attemptsPerSecondIncludingProcessLaunch": 624.4,
+      "operationP50Ms": 0.852,
+      "operationP95Ms": 28.398,
+      "operationP99Ms": 109.778,
+      "busyRetries": 5
+    }
+  ],
+  "environment": "Linux-6.18.55-x86_64-with-glibc2.39",
+  "dotnet": "10.0.403",
+  "sqlitePythonVerifier": "3.53.1",
+  "sqliteNativeDotnet": "3.45.1",
+  "sourceSha256": {
+    "Bank/Program.cs": "72e6ff2bf59fd8889158b2488e3b8a5eb6f67b8e05cab27dc2336b74b6ad8253",
+    "Bank/Bank.csproj": "38e201f047792df530db8c7d157c2b6b19d1ed2e4134dba5da5c59e97d3b0da2",
+    "bank_test.py": "4e633c890889bf7a6db48f0dfc9b1f6d1cb16c75a5795c6d497eb1c7545f6ca5"
+  },
+  "limits": "Synthetic SQLite single-writer Linux lab. Closed-loop local measurements; no mainframe baseline, no Azure measurement, no DB row deadlock/failover/2PC test, no power-loss durability test, no external message delivery."
+}

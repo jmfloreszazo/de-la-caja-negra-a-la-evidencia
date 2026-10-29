@@ -1,0 +1,35 @@
+name: Modernization risk
+description: Propose a new risk for the catalog or add evidence to an existing one
+title: "[Risk] "
+labels: ["risk"]
+body:
+  - type: input
+    id: id
+    attributes:
+      label: Identifier
+      description: R001–R100, or "new"
+    validations:
+      required: true
+  - type: textarea
+    id: risk
+    attributes:
+      label: Risk
+    validations:
+      required: true
+  - type: textarea
+    id: options
+    attributes:
+      label: Application and infrastructure option
+    validations:
+      required: true
+  - type: textarea
+    id: oracle
+    attributes:
+      label: Evidence that could refute it
+    validations:
+      required: true
+  - type: textarea
+    id: context
+    attributes:
+      label: Context
+      description: No identifiable customer data

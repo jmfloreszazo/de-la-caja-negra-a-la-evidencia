@@ -1,0 +1,10 @@
+sequenceDiagram
+  participant W1 as Old worker (epoch 7)
+  participant St as Store
+  participant W2 as New worker
+  W1->>W1: long pause, the lease expires
+  W2->>St: takes the partition, epoch 8
+  W1->>St: writes results with epoch 7
+  St-->>W1: 0 rows, stale epoch
+  W2->>St: writes results with epoch 8
+  St-->>W2: committed

@@ -1,0 +1,6 @@
+flowchart TB
+  cli["Clientes"] --> edge{"¿Cabe en la cola acotada?"}
+  edge -- sí --> q[["Channel acotado<br/>capacidad 2.000"]]
+  q --> w["Consumidores<br/>tantos como commits soporta el ledger"]
+  w --> led[("Ledger")]
+  edge -- no --> r429["429 ahora, no timeout después"]

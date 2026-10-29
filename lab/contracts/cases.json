@@ -1,0 +1,292 @@
+[
+  {
+    "id": "C001",
+    "input": "0000000000000Y",
+    "expected": "APPROVE|00000000"
+  },
+  {
+    "id": "C002",
+    "input": "0000000010000Y",
+    "expected": "APPROVE|00000000"
+  },
+  {
+    "id": "C003",
+    "input": "0000002500200Y",
+    "expected": "APPROVE|00000001"
+  },
+  {
+    "id": "C004",
+    "input": "0000007500200Y",
+    "expected": "APPROVE|00000002"
+  },
+  {
+    "id": "C005",
+    "input": "0000002400200Y",
+    "expected": "APPROVE|00000000"
+  },
+  {
+    "id": "C006",
+    "input": "0000002600200Y",
+    "expected": "APPROVE|00000001"
+  },
+  {
+    "id": "C007",
+    "input": "0099999900015Y",
+    "expected": "APPROVE|00001500"
+  },
+  {
+    "id": "C008",
+    "input": "0100000000015Y",
+    "expected": "APPROVE|00001500"
+  },
+  {
+    "id": "C009",
+    "input": "0100000100015Y",
+    "expected": "REVIEW|00001500"
+  },
+  {
+    "id": "C010",
+    "input": "0110000000015Y",
+    "expected": "REVIEW|00001650"
+  },
+  {
+    "id": "C011",
+    "input": "9999999910000Y",
+    "expected": "REVIEW|99999999"
+  },
+  {
+    "id": "C012",
+    "input": "0000010010000N",
+    "expected": "REJECT|00000000"
+  },
+  {
+    "id": "C013",
+    "input": "9999999910000N",
+    "expected": "REJECT|00000000"
+  },
+  {
+    "id": "C014",
+    "input": "0000000100001Y",
+    "expected": "APPROVE|00000000"
+  },
+  {
+    "id": "C015",
+    "input": "5579346702158Y",
+    "expected": "REVIEW|12040230"
+  },
+  {
+    "id": "C016",
+    "input": "8275673806394N",
+    "expected": "REJECT|00000000"
+  },
+  {
+    "id": "C017",
+    "input": "4308236404507Y",
+    "expected": "REVIEW|19417221"
+  },
+  {
+    "id": "C018",
+    "input": "6919510608087Y",
+    "expected": "REVIEW|55958082"
+  },
+  {
+    "id": "C019",
+    "input": "6297109002578Y",
+    "expected": "REVIEW|16233947"
+  },
+  {
+    "id": "C020",
+    "input": "7701300307805Y",
+    "expected": "REVIEW|60108649"
+  },
+  {
+    "id": "C021",
+    "input": "0362060402077Y",
+    "expected": "REVIEW|00751999"
+  },
+  {
+    "id": "C022",
+    "input": "2413750905519Y",
+    "expected": "REVIEW|13321491"
+  },
+  {
+    "id": "C023",
+    "input": "2301042203894Y",
+    "expected": "REVIEW|08960258"
+  },
+  {
+    "id": "C024",
+    "input": "5980329401000N",
+    "expected": "REJECT|00000000"
+  },
+  {
+    "id": "C025",
+    "input": "4515871500066N",
+    "expected": "REJECT|00000000"
+  },
+  {
+    "id": "C026",
+    "input": "2257972608466N",
+    "expected": "REJECT|00000000"
+  },
+  {
+    "id": "C027",
+    "input": "9020664605825N",
+    "expected": "REJECT|00000000"
+  },
+  {
+    "id": "C028",
+    "input": "5417447405256N",
+    "expected": "REJECT|00000000"
+  },
+  {
+    "id": "C029",
+    "input": "2251571305642N",
+    "expected": "REJECT|00000000"
+  },
+  {
+    "id": "C030",
+    "input": "3596460607219Y",
+    "expected": "REVIEW|25962849"
+  },
+  {
+    "id": "C031",
+    "input": "9711540307835N",
+    "expected": "REJECT|00000000"
+  },
+  {
+    "id": "C032",
+    "input": "2242056602720N",
+    "expected": "REJECT|00000000"
+  },
+  {
+    "id": "C033",
+    "input": "6449916804550Y",
+    "expected": "REVIEW|29347121"
+  },
+  {
+    "id": "C034",
+    "input": "1362350506191N",
+    "expected": "REJECT|00000000"
+  },
+  {
+    "id": "C035",
+    "input": "8937771107641N",
+    "expected": "REJECT|00000000"
+  },
+  {
+    "id": "C036",
+    "input": "3071205908101Y",
+    "expected": "REVIEW|24879839"
+  },
+  {
+    "id": "C037",
+    "input": "1404176807321N",
+    "expected": "REJECT|00000000"
+  },
+  {
+    "id": "C038",
+    "input": "7301070606900Y",
+    "expected": "REVIEW|50377387"
+  },
+  {
+    "id": "C039",
+    "input": "3330870305979Y",
+    "expected": "REVIEW|19915274"
+  },
+  {
+    "id": "C040",
+    "input": "7096613506270Y",
+    "expected": "REVIEW|44495767"
+  },
+  {
+    "id": "C041",
+    "input": "4154969900990Y",
+    "expected": "REVIEW|04113420"
+  },
+  {
+    "id": "C042",
+    "input": "1359545806938Y",
+    "expected": "REVIEW|09432529"
+  },
+  {
+    "id": "C043",
+    "input": "9984074600384N",
+    "expected": "REJECT|00000000"
+  },
+  {
+    "id": "C044",
+    "input": "8012702709459Y",
+    "expected": "REVIEW|75792155"
+  },
+  {
+    "id": "C045",
+    "input": "3388873907012N",
+    "expected": "REJECT|00000000"
+  },
+  {
+    "id": "C046",
+    "input": "2915728206925N",
+    "expected": "REJECT|00000000"
+  },
+  {
+    "id": "C047",
+    "input": "3278574502660N",
+    "expected": "REJECT|00000000"
+  },
+  {
+    "id": "C048",
+    "input": "6719672400123N",
+    "expected": "REJECT|00000000"
+  },
+  {
+    "id": "C049",
+    "input": "8558181901824N",
+    "expected": "REJECT|00000000"
+  },
+  {
+    "id": "C050",
+    "input": "8215859003647N",
+    "expected": "REJECT|00000000"
+  },
+  {
+    "id": "C051",
+    "input": "5019568604860Y",
+    "expected": "REVIEW|24395103"
+  },
+  {
+    "id": "C052",
+    "input": "7142132508951Y",
+    "expected": "REVIEW|63929228"
+  },
+  {
+    "id": "C053",
+    "input": "0330737100416Y",
+    "expected": "REVIEW|00137587"
+  },
+  {
+    "id": "C054",
+    "input": "0664885908447N",
+    "expected": "REJECT|00000000"
+  },
+  {
+    "id": "C055",
+    "input": "0000010010001Y",
+    "expected": "INVALID|00000000"
+  },
+  {
+    "id": "C056",
+    "input": "0000010000010X",
+    "expected": "INVALID|00000000"
+  },
+  {
+    "id": "C057",
+    "input": "0000010A00010Y",
+    "expected": "INVALID|00000000"
+  },
+  {
+    "id": "C058",
+    "input": "00000100000A0Y",
+    "expected": "INVALID|00000000"
+  }
+]

@@ -1,0 +1,10 @@
+flowchart TB
+  subgraph Owner["Owning capability: Accounts"]
+    cmd["Commands"] --> agg["Account aggregate"]
+    agg --> tx[("Ledger + outbox<br/>same transaction")]
+  end
+  tx --> pub["Publisher"] --> bus{{"Broker"}}
+  bus --> inbox["Consumer with<br/>idempotent inbox"]
+  bus --> proj[("Read projection")]
+  legacy[("Legacy database")] -. "CDC during coexistence" .-> proj
+  other["Another capability"] -. "query or event,<br/>never a direct write" .-> agg

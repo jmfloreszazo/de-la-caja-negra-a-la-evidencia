@@ -1,0 +1,9 @@
+stateDiagram-v2
+  direction TB
+  [*] --> Legacy
+  Legacy --> Shadow : candidate PASS in G5
+  Shadow --> Canary : discrepancies explained and approved
+  Canary --> Modern : SLOs and reconciliation green
+  Canary --> Legacy : rehearsed rollback
+  Modern --> Retired : no residual calls
+  Retired --> [*]

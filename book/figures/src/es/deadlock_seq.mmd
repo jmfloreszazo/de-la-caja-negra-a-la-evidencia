@@ -1,0 +1,13 @@
+sequenceDiagram
+  participant T1 as Transferencia A a B
+  participant DB as Motor
+  participant T2 as Transferencia B a A
+  T1->>DB: bloquea A
+  T2->>DB: bloquea B
+  T1->>DB: pide B y espera
+  T2->>DB: pide A y espera
+  Note over DB: ciclo detectado
+  DB-->>T2: elegida víctima, transacción abortada
+  DB-->>T1: obtiene B y confirma
+  T2->>DB: reintento completo con la misma opId
+  Note over T1,T2: con orden global (clave menor primero)<br/>ambas piden A antes que B y el ciclo no se forma

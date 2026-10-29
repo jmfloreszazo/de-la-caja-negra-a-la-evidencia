@@ -1,0 +1,6 @@
+flowchart TB
+  cmd["Command: withdraw"] --> write["Write core<br/>authoritative ledger"]
+  write --> ev["Events via outbox"]
+  ev --> proj[("Read projection<br/>may lag")]
+  q["Movements query"] --> proj
+  proj -. "never to approve withdrawals" .-x cmd

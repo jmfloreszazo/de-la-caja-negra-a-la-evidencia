@@ -1,0 +1,48 @@
+name: Lab
+on:
+  push:
+    branches: [main]
+    paths: ['lab/**', '.github/workflows/lab.yml']
+  pull_request:
+    paths: ['lab/**', '.github/workflows/lab.yml']
+  workflow_dispatch:
+permissions:
+  contents: read
+defaults:
+  run:
+    working-directory: lab
+jobs:
+  offline:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: python3 tools/verify_offline.py
+  native:
+    needs: offline
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '10.0.x'
+      - run: sudo apt-get update && sudo apt-get install -y gnucobol3 libsqlite3-0
+      - run: python3 walkthrough.py --auto --bank
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: evidence-native
+          path: lab/results/
+  podman:
+    needs: offline
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - run: podman --version
+      - run: bash scripts/run-podman.sh --auto
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: evidence-podman
+          path: lab/results/

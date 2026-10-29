@@ -1,0 +1,18 @@
+C4Context
+  title Context: verifiable modernization platform
+  Person(owner, "Domain owner", "Approves rules, exceptions and deliveries")
+  Person(team, "Modernization team", "Architecture, development and operations")
+  Person(expert, "COBOL specialist", "Knows exceptions and operations")
+  System(platform, "Verifiable modernization platform", "Archaeology, oracles, agent-based construction and delivery authorization")
+  System_Ext(legacy, "Legacy mainframe", "COBOL, CICS, Db2, VSAM, JCL")
+  System_Ext(target, "Target system", ".NET 10 on Azure or own infrastructure")
+  System_Ext(models, "Model provider", "AI agents under mandate")
+  System_Ext(git, "Repository and CI", "Versioned sources, baselines and evidence")
+  Rel(expert, platform, "Contributes knowledge and reviews hypotheses")
+  Rel(owner, platform, "Approves baseline and authorizes deliveries")
+  Rel(team, platform, "Operates the evidence chain")
+  Rel(platform, legacy, "Inventories and observes", "authorized read")
+  Rel(platform, models, "Delegates bounded tasks")
+  Rel(platform, git, "Versions the record")
+  Rel(platform, target, "Delivers verified artifacts")
+  UpdateLayoutConfig($c4ShapeInRow="3", $c4BoundaryInRow="1")

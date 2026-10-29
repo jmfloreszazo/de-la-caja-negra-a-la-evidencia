@@ -1,0 +1,25 @@
+C4Deployment
+  title Candidate A: modular application and SQL boundary in Azure
+  Deployment_Node(region, "Azure, primary region", "Availability zones") {
+    Deployment_Node(compute, "Compute", "AKS, App Service or VMs") {
+      Container(api, "Transfer service", ".NET 10", "Bounded admission and idempotency")
+      Container(workers, "Batch workers", ".NET 10", "Partitions with checkpoints")
+      Container(pub, "Outbox publisher", ".NET 10", "At-least-once delivery")
+    }
+    Deployment_Node(sql, "Azure SQL", "Synchronous replica if the contract requires it") {
+      ContainerDb(ledger, "Ledger", "SQL", "Operations, postings and outbox")
+    }
+    Deployment_Node(bus, "Service Bus", "Managed messaging") {
+      ContainerQueue(topic, "Business events", "Topic", "Idempotent consumers")
+    }
+  }
+  Deployment_Node(dc, "Customer data centre", "Coexistence") {
+    Deployment_Node(mf, "Mainframe", "z/OS") {
+      Container(cobol, "Preserved COBOL capabilities", "CICS, Db2")
+    }
+  }
+  Rel(api, ledger, "Local transaction")
+  Rel(workers, ledger, "Commit per partition")
+  Rel(pub, ledger, "Reads pending rows")
+  Rel(pub, topic, "Publishes")
+  Rel(api, cobol, "Coexistence facade", "ACL")

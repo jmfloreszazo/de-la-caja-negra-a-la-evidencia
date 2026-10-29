@@ -1,0 +1,26 @@
+# Podman recipe for the COBOL -> .NET 10 evidence lab.
+# Build:  podman build -t cobol-modernization-lab -f Containerfile .
+# Run:    podman run --rm -it --network=none -v "$PWD/results:/work/results:Z" cobol-modernization-lab
+# The tag below is mutable: pin a digest (image@sha256:...) before measuring anything you want to reproduce.
+FROM mcr.microsoft.com/dotnet/sdk:10.0-noble
+
+ENV DOTNET_CLI_TELEMETRY_OPTOUT=1 \
+    DOTNET_NOLOGO=1 \
+    DOTNET_SKIP_FIRST_TIME_EXPERIENCE=1 \
+    PYTHONDONTWRITEBYTECODE=1
+
+# GnuCOBOL 3.x (compiler + runtime), Python for orchestration, native SQLite for the bank module.
+RUN apt-get update \
+ && apt-get install -y --no-install-recommends gnucobol3 python3 libsqlite3-0 gcc \
+ && rm -rf /var/lib/apt/lists/*
+
+WORKDIR /work
+COPY . .
+
+# Restore while the network is available so the lab itself can run with --network=none.
+RUN dotnet restore Candidate \
+ && dotnet restore Gate \
+ && dotnet restore Bank \
+ && dotnet restore examples/commission-three-way/dotnet/Commission.csproj
+
+CMD ["python3", "walkthrough.py"]

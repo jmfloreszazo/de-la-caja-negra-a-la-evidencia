@@ -1,0 +1,19 @@
+{
+  "_what": "Nodes that carry the red accent. Red marks what no agent can change on its own (authority, approved baseline, gate, delivery authorization, authoritative ledger) and the evidence that decides. Same node ids in both languages.",
+  "actors": ["L"],
+  "admission": ["edge"],
+  "agent_chain": ["owner", "base"],
+  "batch_flow": ["rec"],
+  "capacity_flow": ["ensayo"],
+  "cqrs": ["write"],
+  "gate_flow": ["dig", "man"],
+  "gates": ["G2", "G6"],
+  "layers": ["F2", "D2", "O2", "C2"],
+  "ownership": ["tx"],
+  "pipeline": ["g6"],
+  "plan": ["q2"],
+  "c4_containers": ["gov", "release"],
+  "lab_c4": ["contracts", "gate"],
+  "deploy_azure": ["ledger"],
+  "deploy_onprem": ["db1"]
+}

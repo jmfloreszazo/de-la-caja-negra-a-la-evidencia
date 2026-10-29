@@ -1,0 +1,7 @@
+stateDiagram-v2
+  [*] --> Pendiente
+  Pendiente --> EnCurso : un worker toma la partición
+  EnCurso --> Confirmada : resultados y checkpoint en una transacción
+  EnCurso --> Pendiente : fallo antes del commit
+  Confirmada --> [*]
+  note right of Confirmada : un reinicio salta las particiones confirmadas

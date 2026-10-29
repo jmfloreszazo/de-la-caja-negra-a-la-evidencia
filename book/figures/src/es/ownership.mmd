@@ -1,0 +1,10 @@
+flowchart TB
+  subgraph Dueña["Capacidad dueña: Cuentas"]
+    cmd["Comandos"] --> agg["Agregado cuenta"]
+    agg --> tx[("Ledger + outbox<br/>misma transacción")]
+  end
+  tx --> pub["Publicador"] --> bus{{"Broker"}}
+  bus --> inbox["Consumidor con inbox<br/>idempotente"]
+  bus --> proj[("Proyección de lectura")]
+  legacy[("Base legada")] -. "CDC durante la convivencia" .-> proj
+  other["Otra capacidad"] -. "consulta o evento,<br/>nunca escritura directa" .-> agg

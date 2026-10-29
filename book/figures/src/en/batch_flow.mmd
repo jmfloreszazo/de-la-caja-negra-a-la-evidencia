@@ -1,0 +1,8 @@
+flowchart TB
+  plan["Batch plan<br/>RunId, RulesVersion, BusinessDate"] --> p1["Partition 1"] & p2["Partition 2"] & pn["Partition N"]
+  p1 --> ck[("Results + checkpoint<br/>same transaction")]
+  p2 --> ck
+  pn --> ck
+  ck --> rec{"Reconciliation<br/>against input totals"}
+  rec -- balances --> ok["Close confirmed"]
+  rec -- does not balance --> stop["Block and diagnose"]

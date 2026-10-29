@@ -1,0 +1,8 @@
+blank_issues_enabled: false
+contact_links:
+  - name: Questions (Spanish or English)
+    url: https://github.com/jmfloreszazo/de-la-caja-negra-a-la-evidencia/discussions
+    about: Ask in Discussions before opening an issue
+  - name: Author's blog
+    url: https://jmfloreszazo.com
+    about: Related articles and contact

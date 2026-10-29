@@ -1,0 +1,24 @@
+C4Container
+  title Laboratorio: quién ejecuta y quién decide
+  Person(dev, "Lector o colaborador")
+  ContainerDb(contracts, "contracts/", "JSON + SHA-256", "58 casos aprobados y su ancla")
+  Container_Boundary(pod, "Contenedor Podman sin red") {
+    Container(run, "run.py", "Python", "Orquesta procesos y guarda observaciones")
+    Container(cob, "fee", "GnuCOBOL", "Programa legado compilado")
+    Container(cand, "Candidate", ".NET 10", "Implementación con mutaciones")
+    Container(gate, "Gate", ".NET 10", "Veredicto y entrega")
+    Container(bank, "Bank", ".NET 10, N procesos", "Transferencias")
+    ContainerDb(sqlite, "SQLite", "WAL, synchronous FULL", "Ledger del laboratorio")
+    Container(verifier, "bank_test.py", "Python", "Oráculo contable sobre el estado persistido")
+  }
+  ContainerDb(results, "results/", "Volumen del host", "Evidencia de la ejecución")
+  Rel(dev, run, "Lanza")
+  Rel(run, cob, "Entradas")
+  Rel(run, cand, "Entradas")
+  Rel(run, gate, "Observaciones")
+  Rel(contracts, gate, "Baseline y ancla")
+  Rel(bank, sqlite, "BEGIN IMMEDIATE")
+  Rel(verifier, sqlite, "Lee el estado")
+  Rel(gate, results, "Informe")
+  Rel(verifier, results, "Resumen")
+  UpdateLayoutConfig($c4ShapeInRow="4", $c4BoundaryInRow="1")

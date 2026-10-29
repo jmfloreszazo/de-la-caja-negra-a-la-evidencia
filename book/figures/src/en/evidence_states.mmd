@@ -1,0 +1,9 @@
+stateDiagram-v2
+  [*] --> inferred : agent hypothesis
+  inferred --> observed : execution with a fixed input
+  inferred --> unknown : cannot be observed
+  unknown --> inferred : new evidence appears
+  observed --> approved : decision of the domain authority
+  approved --> verified : a candidate reproduces it in G5
+  approved --> inferred : G7 changes the rule
+  verified --> [*]

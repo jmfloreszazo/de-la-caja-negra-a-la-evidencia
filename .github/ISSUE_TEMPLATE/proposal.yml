@@ -1,0 +1,26 @@
+name: Content proposal
+description: A new section, pattern, example or diagram
+title: "[Proposal] "
+labels: ["proposal"]
+body:
+  - type: textarea
+    id: what
+    attributes:
+      label: What you propose
+    validations:
+      required: true
+  - type: input
+    id: where
+    attributes:
+      label: Where it would fit
+      placeholder: "Part IV, after chapter 19"
+  - type: textarea
+    id: why
+    attributes:
+      label: Which question it answers that the book does not answer today
+    validations:
+      required: true
+  - type: textarea
+    id: sources
+    attributes:
+      label: Sources or experiment

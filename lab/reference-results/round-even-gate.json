@@ -1,0 +1,9 @@
+{
+  "verdict": "FAIL",
+  "authority": "DEMO_ONLY",
+  "release": "BLOCK",
+  "findings": [
+    "C003: candidate violates contract"
+  ],
+  "exitCode": 2
+}

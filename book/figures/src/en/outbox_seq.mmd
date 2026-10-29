@@ -1,0 +1,15 @@
+sequenceDiagram
+  participant S as Service
+  participant DB as Ledger + outbox
+  participant P as Publisher
+  participant Br as Broker
+  participant Co as Consumer with inbox
+  S->>DB: business change and outbox row in one transaction
+  P->>DB: reads pending rows
+  P->>Br: publishes TransferCommitted
+  P--xDB: crashes before marking it as sent
+  P->>Br: republishes the same event
+  Br->>Co: delivery 1
+  Co->>Co: applies the effect and records opId in the inbox
+  Br->>Co: delivery 2
+  Co->>Co: opId already seen, discards

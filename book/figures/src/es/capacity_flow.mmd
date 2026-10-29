@@ -1,0 +1,9 @@
+flowchart TB
+  smf["RMF, SMF y monitorización CICS"] --> hue["Huella de carga<br/>por clase de operación"]
+  batch["Ventanas y dependencias batch"] --> hue
+  datos["Volumen activo y claves calientes"] --> hue
+  hue --> dem["Modelo de demanda<br/>CPU, espera, I/O, commits"]
+  dem --> cand["Configuraciones candidatas<br/>Azure, local, híbrida"]
+  cand --> ensayo{"Ensayo a tasa controlada<br/>con fallos y durabilidad equivalente"}
+  ensayo -- "cumple el contrato" --> ok["Candidata aceptable"]
+  ensayo -- "no cumple" --> dem

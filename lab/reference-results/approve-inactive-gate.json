@@ -1,0 +1,30 @@
+{
+  "verdict": "FAIL",
+  "authority": "DEMO_ONLY",
+  "release": "BLOCK",
+  "findings": [
+    "C012: candidate violates contract",
+    "C013: candidate violates contract",
+    "C016: candidate violates contract",
+    "C024: candidate violates contract",
+    "C025: candidate violates contract",
+    "C026: candidate violates contract",
+    "C027: candidate violates contract",
+    "C028: candidate violates contract",
+    "C029: candidate violates contract",
+    "C031: candidate violates contract",
+    "C032: candidate violates contract",
+    "C034: candidate violates contract",
+    "C035: candidate violates contract",
+    "C037: candidate violates contract",
+    "C043: candidate violates contract",
+    "C045: candidate violates contract",
+    "C046: candidate violates contract",
+    "C047: candidate violates contract",
+    "C048: candidate violates contract",
+    "C049: candidate violates contract",
+    "C050: candidate violates contract",
+    "C054: candidate violates contract"
+  ],
+  "exitCode": 2
+}

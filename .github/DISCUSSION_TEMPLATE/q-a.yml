@@ -1,0 +1,13 @@
+title: "[Question] "
+body:
+  - type: input
+    id: where
+    attributes:
+      label: Chapter or part of the lab
+  - type: textarea
+    id: question
+    attributes:
+      label: Question (Spanish or English)
+      description: No customer data or confidential details
+    validations:
+      required: true

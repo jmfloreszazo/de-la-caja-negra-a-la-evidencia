@@ -1,0 +1,9 @@
+{
+  "verdict": "INCONCLUSIVE",
+  "authority": "DEMO_ONLY",
+  "release": "BLOCK",
+  "findings": [
+    "Baseline digest mismatch"
+  ],
+  "exitCode": 3
+}

@@ -1,0 +1,21 @@
+C4Container
+  title Containers: who proposes, who approves and who verifies
+  Person(owner, "Domain owner")
+  System_Ext(legacy, "Legacy mainframe", "COBOL, CICS, Db2")
+  System_Boundary(b, "Verifiable modernization platform") {
+    Container(disc, "Discovery", "REA, COBOL parser, observer", "Hypotheses and observations with provenance")
+    ContainerDb(exp, "Evidence record", "git + JSON", "EvidenceItems, ADRs and hashes")
+    Container(gov, "Governed baseline", "Approved cases, DMN", "Versioned rules with an anchor")
+    Container(build, "Construction", "Agent under mandate", "Candidate and its own tests")
+    Container(verify, "Verification", "Oracle Gate", "PASS, FAIL or INCONCLUSIVE")
+    Container(release, "Delivery authorization", "Policy and mandate", "Delivers the exact verified artifact")
+  }
+  Rel(disc, legacy, "Reads and observes")
+  Rel(disc, exp, "Records findings")
+  Rel(exp, gov, "Feeds proposals")
+  Rel(owner, gov, "Approves")
+  Rel(build, exp, "Reads the public contract")
+  Rel(build, verify, "Hands over the pinned candidate")
+  Rel(gov, verify, "Baseline and anchor")
+  Rel(verify, release, "Report bound to the digest")
+  UpdateLayoutConfig($c4ShapeInRow="3", $c4BoundaryInRow="1")

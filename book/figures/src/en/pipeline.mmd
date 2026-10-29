@@ -1,0 +1,10 @@
+flowchart TB
+  pr["Pull request<br/>with evidence sheet"] --> off["verify_offline<br/>anchor and policy"]
+  off --> eq["Equivalence and controls<br/>G3 and G5"]
+  eq --> bank["Concurrency and recovery"]
+  bank --> perf{"Does the critical<br/>path change?"}
+  perf -- yes --> cap["Capacity trial<br/>on controlled infrastructure"]
+  perf -- no --> art["Immutable artifact<br/>digest recorded"]
+  cap --> art
+  art --> g6{"G6: authorization"}
+  g6 --> dep["Gradual rollout"]

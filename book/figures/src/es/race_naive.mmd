@@ -1,0 +1,14 @@
+sequenceDiagram
+  autonumber
+  participant A as Instancia A
+  participant DB as Base de datos
+  participant B as Instancia B
+  Note over DB: saldo = 1.000
+  A->>DB: SELECT saldo
+  DB-->>A: 1.000
+  B->>DB: SELECT saldo
+  DB-->>B: 1.000
+  Note over A,B: ambas deciden sobre la misma foto
+  A->>DB: UPDATE saldo = 300 (retira 700)
+  B->>DB: UPDATE saldo = 400 (retira 600)
+  Note over DB: saldo final 400 y 1.300 entregados

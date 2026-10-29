@@ -1,0 +1,14 @@
+gitGraph
+  commit id: "baseline v1 approved"
+  branch candidate-fee
+  checkout candidate-fee
+  commit id: "agent: candidate"
+  commit id: "fix: rounding"
+  checkout main
+  merge candidate-fee id: "G5 PASS and G6"
+  branch baseline-v2
+  checkout baseline-v2
+  commit id: "G7: rate with 4 decimals"
+  commit id: "baseline v2 approved"
+  checkout main
+  merge baseline-v2 id: "new G3 qualification"

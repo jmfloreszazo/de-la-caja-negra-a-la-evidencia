@@ -1,0 +1,17 @@
+flowchart LR
+  subgraph F["Equivalencia funcional"]
+    direction TB
+    F1["Misma decisión y resultado<br/>bajo las mismas reglas"] --> F2(["Evidencia: casos aprobados"])
+  end
+  subgraph D["Equivalencia de datos"]
+    direction TB
+    D1["Mismos significados, importes,<br/>codificaciones y efectos"] --> D2(["Evidencia: codecs y reconciliación"])
+  end
+  subgraph O["Equivalencia operacional"]
+    direction TB
+    O1["Recuperación, seguridad, ventanas,<br/>observabilidad y fallos"] --> O2(["Evidencia: fallos inyectados, RTO y RPO"])
+  end
+  subgraph C["Adecuación de capacidad"]
+    direction TB
+    C1["Latencia, throughput,<br/>coste y resiliencia"] --> C2(["Evidencia: ensayo a tasa controlada"])
+  end

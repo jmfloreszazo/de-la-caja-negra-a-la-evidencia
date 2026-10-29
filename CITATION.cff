@@ -1,0 +1,24 @@
+cff-version: 1.2.0
+message: "Si utilizas este libro o su laboratorio, cítalo con estos metadatos. If you use this book or its lab, please cite it with these metadata."
+title: "De la caja negra a la evidencia / From Black Box to Evidence: modernizar COBOL más allá de la traducción / modernizing COBOL beyond translation"
+abstract: "Open bilingual book (Spanish original, English translation) and runnable lab on modernizing COBOL systems with AI agents, architecture patterns, transactions and verifiable oracles (TODM)."
+authors:
+  - family-names: "Flores Zazo"
+    given-names: "José María"
+    website: "https://jmfloreszazo.com"
+version: "2026.10.29"
+date-released: "2026-10-29"
+license:
+  - CC-BY-SA-4.0
+  - MIT
+repository-code: "https://github.com/jmfloreszazo/de-la-caja-negra-a-la-evidencia"
+url: "https://jmfloreszazo.com"
+keywords:
+  - COBOL
+  - mainframe
+  - modernization
+  - agentic AI
+  - test oracles
+  - TODM
+  - .NET 10
+  - software architecture

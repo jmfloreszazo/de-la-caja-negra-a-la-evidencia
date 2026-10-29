@@ -1,0 +1,33 @@
+classDiagram
+  direction LR
+  class LegacyRecord {
+    +byte[] Raw
+    +string CopybookVersion
+  }
+  class AccountRecordAdapter {
+    +Decode(LegacyRecord record) Result~Posting~
+  }
+  class PackedDecimalCodec {
+    +DecodePacked(ReadOnlySpan~byte~ field, int scale) decimal
+  }
+  class EbcdicTextCodec {
+    +Decode(ReadOnlySpan~byte~ field, int ccsid) string
+  }
+  class Quarantine {
+    +Reject(LegacyRecord record, string reason)
+  }
+  class Posting {
+    +AccountId Account
+    +Money Amount
+    +DateOnly EffectiveDate
+  }
+  class Money {
+    +decimal Amount
+    +string Currency
+  }
+  LegacyRecord <.. AccountRecordAdapter : lee
+  AccountRecordAdapter ..> PackedDecimalCodec
+  AccountRecordAdapter ..> EbcdicTextCodec
+  AccountRecordAdapter ..> Quarantine : datos inválidos
+  AccountRecordAdapter --> Posting : modelo de dominio
+  Posting *-- Money

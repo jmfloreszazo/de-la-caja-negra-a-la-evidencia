@@ -1,0 +1,9 @@
+stateDiagram-v2
+  direction TB
+  [*] --> Legado
+  Legado --> Sombra : candidato PASS en G5
+  Sombra --> Canario : discrepancias explicadas y aprobadas
+  Canario --> Moderno : SLO y reconciliación en verde
+  Canario --> Legado : retorno ensayado
+  Moderno --> Retirado : sin llamadas residuales
+  Retirado --> [*]

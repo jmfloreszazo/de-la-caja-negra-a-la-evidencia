@@ -1,0 +1,15 @@
+title: "[Idea] "
+body:
+  - type: markdown
+    attributes:
+      value: Ideas are discussed before they are written. If one matures, it becomes a "Content proposal" issue. Spanish or English are both welcome.
+  - type: textarea
+    id: idea
+    attributes:
+      label: The idea
+    validations:
+      required: true
+  - type: textarea
+    id: evidence
+    attributes:
+      label: What evidence would support it

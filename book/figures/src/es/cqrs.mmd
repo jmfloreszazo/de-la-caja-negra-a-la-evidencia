@@ -1,0 +1,6 @@
+flowchart TB
+  cmd["Comando: retirar"] --> write["Núcleo de escritura<br/>ledger autoritativo"]
+  write --> ev["Eventos vía outbox"]
+  ev --> proj[("Proyección de lectura<br/>puede ir retrasada")]
+  q["Consulta de movimientos"] --> proj
+  proj -. "nunca para aprobar retiradas" .-x cmd

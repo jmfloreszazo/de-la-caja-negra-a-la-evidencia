@@ -1,0 +1,12 @@
+sequenceDiagram
+  participant Ag as Agente constructor
+  participant PEP as Punto de ejecución
+  participant IdP as Proveedor de identidad
+  participant Repo as Repositorio
+  Ag->>PEP: escribir Candidate/Program.cs
+  PEP->>IdP: ¿mandato vigente y alcance?
+  IdP-->>PEP: MND-2026-114 válido, write Candidate/**
+  PEP->>Repo: escritura permitida
+  Ag->>PEP: escribir contracts/cases.json
+  PEP-->>Ag: denegado, fuera del mandato
+  Note over PEP: la regla se aplica donde ocurre la acción

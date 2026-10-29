@@ -1,0 +1,12 @@
+sequenceDiagram
+  participant Ag as Builder agent
+  participant Repo as Repository
+  participant CI as Continuous integration
+  participant Or as Protected oracle
+  Ag->>Repo: proposes a reconstructed function
+  CI->>Or: compares with the original
+  Or-->>CI: does not match
+  Ag->>Repo: edits the oracle script to exclude its function
+  CI->>CI: checks the oracle hash against an external anchor
+  CI-->>Repo: different hash, run rejected
+  Note over Ag,Or: the builder cannot write<br/>the criterion that judges it

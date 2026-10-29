@@ -1,0 +1,161 @@
+{
+  "milestone": {
+    "title": "v2026.11 \u00b7 Community review",
+    "description": "First open review round"
+  },
+  "issues": [
+    {
+      "title": "[Reproduction] Build and run the Podman image on Linux",
+      "labels": [
+        "reproduction",
+        "good first issue"
+      ],
+      "body": "CI validates the `lab/Containerfile` recipe; reports from real machines are what counts. Run `cd lab && bash scripts/run-podman.sh --auto` on Linux and open a reproduction report with versions and full output, also if it fails.",
+      "milestone": "v2026.11 \u00b7 Community review"
+    },
+    {
+      "title": "[Reproduction] Build and run the Podman image on macOS",
+      "labels": [
+        "reproduction",
+        "good first issue"
+      ],
+      "body": "CI validates the `lab/Containerfile` recipe; reports from real machines are what counts. Run `cd lab && bash scripts/run-podman.sh --auto` on macOS and open a reproduction report with versions and full output, also if it fails.",
+      "milestone": "v2026.11 \u00b7 Community review"
+    },
+    {
+      "title": "[Reproduction] Build and run the Podman image on Windows",
+      "labels": [
+        "reproduction",
+        "good first issue"
+      ],
+      "body": "CI validates the `lab/Containerfile` recipe; reports from real machines are what counts. Run `cd lab && pwsh scripts/run-podman.ps1 -Auto` on Windows and open a reproduction report with versions and full output, also if it fails.",
+      "milestone": "v2026.11 \u00b7 Community review"
+    },
+    {
+      "title": "[i18n] Review the English translation of Part I \u00b7 Before translating",
+      "labels": [
+        "i18n",
+        "good first issue"
+      ],
+      "body": "Compare `book/es/parte-1-antes-de-traducir/` (original) with `book/en/part-1-before-translating/`. Look for technical fidelity, terminology consistent with the glossary (Annex F) and the author's voice: first person, short sentences, bold maxims. One PR per chapter is perfect; `python3 scripts/check.py` must stay green.",
+      "milestone": "v2026.11 \u00b7 Community review"
+    },
+    {
+      "title": "[i18n] Review the English translation of Part II \u00b7 Archaeology, knowledge and authority",
+      "labels": [
+        "i18n",
+        "good first issue"
+      ],
+      "body": "Compare `book/es/parte-2-arqueologia-y-autoridad/` (original) with `book/en/part-2-archaeology-and-authority/`. Look for technical fidelity, terminology consistent with the glossary (Annex F) and the author's voice: first person, short sentences, bold maxims. One PR per chapter is perfect; `python3 scripts/check.py` must stay green.",
+      "milestone": "v2026.11 \u00b7 Community review"
+    },
+    {
+      "title": "[i18n] Review the English translation of Part III \u00b7 Oracles",
+      "labels": [
+        "i18n",
+        "good first issue"
+      ],
+      "body": "Compare `book/es/parte-3-oraculos/` (original) with `book/en/part-3-oracles/`. Look for technical fidelity, terminology consistent with the glossary (Annex F) and the author's voice: first person, short sentences, bold maxims. One PR per chapter is perfect; `python3 scripts/check.py` must stay green.",
+      "milestone": "v2026.11 \u00b7 Community review"
+    },
+    {
+      "title": "[i18n] Review the English translation of Part IV \u00b7 Patterns",
+      "labels": [
+        "i18n",
+        "good first issue"
+      ],
+      "body": "Compare `book/es/parte-4-patrones/` (original) with `book/en/part-4-patterns/`. Look for technical fidelity, terminology consistent with the glossary (Annex F) and the author's voice: first person, short sentences, bold maxims. One PR per chapter is perfect; `python3 scripts/check.py` must stay green.",
+      "milestone": "v2026.11 \u00b7 Community review"
+    },
+    {
+      "title": "[i18n] Review the English translation of Part V \u00b7 Capacity",
+      "labels": [
+        "i18n",
+        "good first issue"
+      ],
+      "body": "Compare `book/es/parte-5-capacidad/` (original) with `book/en/part-5-capacity/`. Look for technical fidelity, terminology consistent with the glossary (Annex F) and the author's voice: first person, short sentences, bold maxims. One PR per chapter is perfect; `python3 scripts/check.py` must stay green.",
+      "milestone": "v2026.11 \u00b7 Community review"
+    },
+    {
+      "title": "[i18n] Review the English translation of Part VI \u00b7 The lab",
+      "labels": [
+        "i18n",
+        "good first issue"
+      ],
+      "body": "Compare `book/es/parte-6-laboratorio/` (original) with `book/en/part-6-lab/`. Look for technical fidelity, terminology consistent with the glossary (Annex F) and the author's voice: first person, short sentences, bold maxims. One PR per chapter is perfect; `python3 scripts/check.py` must stay green.",
+      "milestone": "v2026.11 \u00b7 Community review"
+    },
+    {
+      "title": "[i18n] Review the English translation of Part VII \u00b7 From evidence to the organization",
+      "labels": [
+        "i18n",
+        "good first issue"
+      ],
+      "body": "Compare `book/es/parte-7-organizacion/` (original) with `book/en/part-7-organization/`. Look for technical fidelity, terminology consistent with the glossary (Annex F) and the author's voice: first person, short sentences, bold maxims. One PR per chapter is perfect; `python3 scripts/check.py` must stay green.",
+      "milestone": "v2026.11 \u00b7 Community review"
+    },
+    {
+      "title": "[Lab] Compile the COMP-3 codec of chapter 15 and promote it to Verified",
+      "labels": [
+        "lab",
+        "good first issue"
+      ],
+      "body": "Turn the COMP-3 codec listing into a small .NET 10 project inside `lab/` with tests for the seven vectors in the table of chapter 15, including the two that must fail. If it passes, change the listing label to *Verified* in both languages.",
+      "milestone": "v2026.11 \u00b7 Community review"
+    },
+    {
+      "title": "[Lab] Compile the Strangler facade (ch. 14) and the Orleans grain (ch. 19)",
+      "labels": [
+        "lab",
+        "help wanted"
+      ],
+      "body": "Both listings are *Illustrative*. A minimal project that compiles and a test that demonstrates the described behaviour would promote them to *Verified* in both languages.",
+      "milestone": "v2026.11 \u00b7 Community review"
+    },
+    {
+      "title": "[Experiment] E1 \u00b7 SQL engine with row locking",
+      "labels": [
+        "experiment",
+        "help wanted"
+      ],
+      "body": "Protocol in `lab/docs/EXPERIMENT_PROTOCOL.md`, section E1. Before writing code, comment your plan here: environment, negative controls and which result would contradict the hypothesis.",
+      "milestone": "v2026.11 \u00b7 Community review"
+    },
+    {
+      "title": "[Experiment] E2 \u00b7 Actors that coordinate, a ledger that commits",
+      "labels": [
+        "experiment",
+        "help wanted"
+      ],
+      "body": "Protocol in `lab/docs/EXPERIMENT_PROTOCOL.md`, section E2. Before writing code, comment your plan here: environment, negative controls and which result would contradict the hypothesis.",
+      "milestone": "v2026.11 \u00b7 Community review"
+    },
+    {
+      "title": "[Experiment] E3 \u00b7 Azure, on-premises and hybrid with the same contract",
+      "labels": [
+        "experiment",
+        "help wanted"
+      ],
+      "body": "Protocol in `lab/docs/EXPERIMENT_PROTOCOL.md`, section E3. Before writing code, comment your plan here: environment, negative controls and which result would contradict the hypothesis.",
+      "milestone": "v2026.11 \u00b7 Community review"
+    },
+    {
+      "title": "[Experiment] E4 \u00b7 Agents under the gate",
+      "labels": [
+        "experiment",
+        "help wanted"
+      ],
+      "body": "Protocol in `lab/docs/EXPERIMENT_PROTOCOL.md`, section E4. Before writing code, comment your plan here: environment, negative controls and which result would contradict the hypothesis.",
+      "milestone": "v2026.11 \u00b7 Community review"
+    },
+    {
+      "title": "[Risk] R101 onwards: real risks that are missing",
+      "labels": [
+        "risk",
+        "help wanted"
+      ],
+      "body": "If you have seen a risk in a real modernization that is not among the hundred, propose it with the risk template: application option, infrastructure capability and the test that could refute them. No customer data.",
+      "milestone": "v2026.11 \u00b7 Community review"
+    }
+  ]
+}

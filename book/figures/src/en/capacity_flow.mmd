@@ -1,0 +1,9 @@
+flowchart TB
+  smf["RMF, SMF and CICS monitoring"] --> hue["Workload footprint<br/>per operation class"]
+  batch["Batch windows and dependencies"] --> hue
+  datos["Active volume and hot keys"] --> hue
+  hue --> dem["Demand model<br/>CPU, waits, I/O, commits"]
+  dem --> cand["Candidate configurations<br/>Azure, local, hybrid"]
+  cand --> ensayo{"Trial at a controlled rate<br/>with failures and equivalent durability"}
+  ensayo -- "meets the contract" --> ok["Acceptable candidate"]
+  ensayo -- "does not" --> dem

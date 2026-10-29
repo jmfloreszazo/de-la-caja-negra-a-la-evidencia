@@ -1,0 +1,21 @@
+C4Container
+  title Contenedores: quién propone, quién aprueba y quién verifica
+  Person(owner, "Dueño de dominio")
+  System_Ext(legacy, "Mainframe legado", "COBOL, CICS, Db2")
+  System_Boundary(b, "Plataforma de modernización verificable") {
+    Container(disc, "Descubrimiento", "REA, parser COBOL, observador", "Hipótesis y observaciones con procedencia")
+    ContainerDb(exp, "Expediente de evidencia", "git + JSON", "EvidenceItems, ADR y hashes")
+    Container(gov, "Baseline gobernada", "Casos aprobados, DMN", "Reglas versionadas con ancla")
+    Container(build, "Construcción", "Agente bajo mandato", "Candidato y pruebas propias")
+    Container(verify, "Verificación", "Oracle Gate", "PASS, FAIL o INCONCLUSIVE")
+    Container(release, "Autorización de entrega", "Política y mandato", "Entrega del artefacto exacto verificado")
+  }
+  Rel(disc, legacy, "Lee y observa")
+  Rel(disc, exp, "Registra hallazgos")
+  Rel(exp, gov, "Alimenta propuestas")
+  Rel(owner, gov, "Aprueba")
+  Rel(build, exp, "Lee el contrato público")
+  Rel(build, verify, "Entrega candidato fijado")
+  Rel(gov, verify, "Baseline y ancla")
+  Rel(verify, release, "Informe vinculado al digest")
+  UpdateLayoutConfig($c4ShapeInRow="3", $c4BoundaryInRow="1")

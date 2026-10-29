@@ -1,0 +1,39 @@
+name: Erratum
+description: Something in the book is wrong, unclear or has a broken link
+title: "[Erratum] "
+labels: ["errata"]
+body:
+  - type: dropdown
+    id: language
+    attributes:
+      label: Language where you found it
+      options:
+        - Spanish
+        - English
+        - Both
+    validations:
+      required: true
+  - type: input
+    id: location
+    attributes:
+      label: Where
+      placeholder: "Chapter 17 · A lock is not a deadlock"
+    validations:
+      required: true
+  - type: textarea
+    id: current
+    attributes:
+      label: Current text
+    validations:
+      required: true
+  - type: textarea
+    id: proposed
+    attributes:
+      label: Proposal
+    validations:
+      required: true
+  - type: textarea
+    id: evidence
+    attributes:
+      label: Evidence
+      description: Source with consultation date, command output or reasoning

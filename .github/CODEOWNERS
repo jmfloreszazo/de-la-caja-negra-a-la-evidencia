@@ -1,0 +1,10 @@
+# Por defecto revisa el autor.
+*                       @jmfloreszazo
+
+# El oráculo del laboratorio: nadie aprueba su propio oráculo.
+/lab/contracts/         @jmfloreszazo
+/lab/Gate/              @jmfloreszazo
+/lab/reference-results/ @jmfloreszazo
+
+# La CI que decide si algo entra.
+/.github/workflows/     @jmfloreszazo

@@ -1,0 +1,24 @@
+sequenceDiagram
+  autonumber
+  participant C as Cliente
+  participant S as Servicio de transferencias
+  participant DB as Motor transaccional
+  C->>S: transferir(opId, A, B, 700)
+  S->>DB: BEGIN
+  S->>DB: buscar opId
+  alt opId existe con el mismo contenido
+    DB-->>S: decisión anterior
+    S-->>C: DUPLICATE, sin segundo efecto
+  else opId nuevo
+    S->>DB: UPDATE A, débito WHERE saldo >= 700
+    alt 0 filas
+      S->>DB: INSERT operación REJECTED y COMMIT
+      S-->>C: REJECTED
+    else 1 fila
+      S->>DB: UPDATE B, crédito
+      S->>DB: INSERT operación, dos asientos y outbox
+      S->>DB: COMMIT
+      S-->>C: COMMITTED
+    end
+  end
+  Note over S,DB: caída antes del COMMIT: nada confirmado<br/>respuesta perdida tras el COMMIT: el reenvío devuelve la decisión

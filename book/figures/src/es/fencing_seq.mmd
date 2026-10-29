@@ -1,0 +1,10 @@
+sequenceDiagram
+  participant W1 as Worker antiguo (época 7)
+  participant St as Almacén
+  participant W2 as Worker nuevo
+  W1->>W1: pausa larga, el lease caduca
+  W2->>St: toma la partición, época 8
+  W1->>St: escribe resultados con época 7
+  St-->>W1: 0 filas, época obsoleta
+  W2->>St: escribe resultados con época 8
+  St-->>W2: confirmado
