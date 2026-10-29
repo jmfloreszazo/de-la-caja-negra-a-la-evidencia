@@ -26,8 +26,10 @@ jobs:
           dotnet build lab/transport/TransportLab/TransportLab.csproj -c Release --no-restore
       - name: Exercise REST/JSON and gRPC/Protobuf over localhost HTTP/2
         run: |
-          dotnet lab/transport/TransportLab/bin/Release/net10.0/TransportLab.dll benchmark 5088 400 8 lab/results/transport/report.json
-          python3 lab/transport/check_report.py lab/results/transport/report.json
+          dotnet lab/transport/TransportLab/bin/Release/net10.0/TransportLab.dll benchmark 5088 2500 8 lab/results/transport/report-c8.json
+          python3 lab/transport/check_report.py lab/results/transport/report-c8.json
+          dotnet lab/transport/TransportLab/bin/Release/net10.0/TransportLab.dll benchmark 5089 2500 32 lab/results/transport/report-c32.json
+          python3 lab/transport/check_report.py lab/results/transport/report-c32.json
       - name: Publish raw observations, even on a failing test
         if: always()
         uses: actions/upload-artifact@v6
