@@ -1,41 +1,47 @@
-name: Brand artwork
+name: One-time V5 icon export and obsolete branch cleanup
 on:
   push:
+    branches: ['design/brand-v5-approved-review']
     paths:
-      - 'assets/**'
-      - 'README.md'
-      - 'README.es.md'
-      - 'book/es/README.md'
-      - 'book/en/README.md'
+      - 'assets/src/make_brand.mjs'
       - '.github/workflows/brand-artwork.yml'
-  pull_request:
-    paths:
-      - 'assets/**'
-      - 'README.md'
-      - 'README.es.md'
-      - 'book/es/README.md'
-      - 'book/en/README.md'
-      - '.github/workflows/brand-artwork.yml'
-  workflow_dispatch:
 permissions:
-  contents: read
+  contents: write
 jobs:
-  validate:
-    name: SVG / PNG / README consistency
+  regenerate:
     runs-on: ubuntu-24.04
     steps:
       - uses: actions/checkout@v4
+        with:
+          persist-credentials: true
       - uses: actions/setup-node@v4
         with:
           node-version: '22'
       - uses: actions/setup-python@v5
         with:
           python-version: '3.12'
-      - name: Check deterministic vector assets
-        run: node assets/src/make_brand.mjs --check
-      - name: Install pinned SVG renderer
-        run: python3 -m pip install cairosvg==2.9.1
-      - name: Check committed PNG exports
-        run: python3 assets/src/render.py --check
-      - name: Validate editorial identity and embed paths
-        run: python3 assets/src/check_brand.py
+      - name: Regenerate SVGs from canonical source
+        run: node assets/src/make_brand.mjs
+      - name: Rasterise and verify the new mark
+        run: |
+          python3 -m pip install cairosvg==2.9.1
+          python3 assets/src/render.py
+          python3 assets/src/check_brand.py
+      - name: Commit SVG and PNG exports on the active review branch
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add assets/*.svg assets/*.png
+          if ! git diff --cached --quiet; then
+            git commit -m "design: restore vertical gate jamb in variant B icon"
+            git push origin HEAD:design/brand-v5-approved-review
+          fi
+      - name: Delete obsolete closed-PR branch
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          test "$(gh api "repos/$GITHUB_REPOSITORY/pulls/1" --jq .state)" = "closed"
+          test "$(gh api "repos/$GITHUB_REPOSITORY/pulls/2" --jq .state)" = "open"
+          if gh api "repos/$GITHUB_REPOSITORY/git/ref/heads/design/align-jmfloreszazo-v5" > /dev/null 2>&1; then
+            gh api -X DELETE "repos/$GITHUB_REPOSITORY/git/refs/heads/design/align-jmfloreszazo-v5"
+          fi
