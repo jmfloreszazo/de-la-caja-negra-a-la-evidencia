@@ -1,0 +1,24 @@
+name: Update consolidated book previews for chapter 25 bis
+on:
+  push:
+    branches: [experiment/e1-postgres-row-locking]
+    paths:
+      - '.github/workflows/sync-book-previews.yml'
+permissions:
+  contents: write
+jobs:
+  sync:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v5
+      - name: Regenerate ES/EN consolidated Markdown
+        run: python3 scripts/build.py
+      - name: Commit only generated manuscript previews to draft PR branch
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add book/es.md book/en.md
+          if ! git diff --cached --quiet; then
+            git commit -m "docs(book): include horizontal-first economics and gRPC in bilingual previews"
+            git push origin HEAD:experiment/e1-postgres-row-locking
+          fi
