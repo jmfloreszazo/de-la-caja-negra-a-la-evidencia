@@ -1723,6 +1723,10 @@ gRPC suele usar **HTTP/2 con TLS**, por lo que no es correcto oponer «gRPC» a 
 
 En [Azure Container Apps](https://learn.microsoft.com/en-us/azure/container-apps/connect-apps), gRPC requiere configurar transporte **HTTP/2 extremo a extremo**, y el tráfico interno puede circular a través de Envoy. En AKS debe verificarse la ruta de ingreso/service mesh, TLS y el comportamiento real de balanceo; un `Service` no garantiza por sí solo distribución por RPC en canales gRPC persistentes. Comparar **carga ofrecida**, commits/s, p50/p95/p99, CPU/MB por solicitud, bytes de payload, número de saltos, conexiones activas, errores, retries, memoria y coste de infraestructura, con el mismo contrato funcional y oráculo.
 
+##### Primera evidencia M1: el transporte no es el ledger
+
+El [ensayo ejecutado M1](../evidence/runs/M1.es.md) comparó gRPC/Protobuf y REST/JSON con **HTTP/2 sobre localhost, sin TLS ni base de datos**, en .NET 10. GitHub registró 2.500 solicitudes por ronda y concurrencia 8 y 32. Ambas rutas devolvieron resultados correctos, pero **no hubo superioridad sistemática de gRPC en el p99**. Es una advertencia importante: ni el protocolo ni el payload más pequeño prueban una mejora del commit bancario; la siguiente prueba debe incluir persistencia, canales TLS y distribución entre réplicas.
+
 #### Precios fechados y TCO: que no nos engañe el precio por vCPU
 
 La consulta oficial realizada **el 29-10-2026 a las 18:26 UTC**, en West Europe (Linux, consumo, EUR orientativo), devolvió **D4as_v5 0,1830 €/h**, **D4s_v5 0,2024 €/h** y **D8as_v5 0,3661 €/h**. Esto implica **400,77 €/mes** de cómputo para tres D4as_v5 durante 730 horas, frente a **801,54 €/mes** para seis, siempre sin BD, discos, redes o alta disponibilidad. Los medidores, `effectiveStartDate` y fuente CI están en el registro enlazado.
