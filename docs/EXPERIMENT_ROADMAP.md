@@ -12,6 +12,10 @@ This is an **engineering execution plan**, not a new book edition. Every experim
 | E4 | Agent candidate limited to write scope; independent gate and mutation-qualified comparisons | Proven source isolation, false accept/reject rates and human review cost; negative cases | Not implemented | [#10](https://github.com/jmfloreszazo/de-la-caja-negra-a-la-evidencia/issues/10) |
 | Reproduction | Linux/Windows/macOS, listings marked Illustrative, COMP-3/EBCDIC examples | Versioned repeatable commands and independent artifacts | Not implemented | [#11](https://github.com/jmfloreszazo/de-la-caja-negra-a-la-evidencia/issues/11) |
 
+## M1: reproducible gRPC / REST transport study
+
+A [first executable .NET 10 microbenchmark](../lab/transport/README.md) compares **HTTP/2 REST/JSON versus HTTP/2 gRPC/Protobuf** against an identical stateless business decision, using an independent response oracle and CI artifacts. This only isolates protocol/serialization overhead: no SQL commit, real WAN, TLS or replica scaling is measured. **It is not an E3 result.** Follow up under [issue #12](https://github.com/jmfloreszazo/de-la-caja-negra-a-la-evidencia/issues/12) with TLS equivalence, PostgreSQL durability, 1/2/4/8/16 replicas, hot-key loads and cost per correct committed transfer.
+
 ## Horizontal-first architecture and dated economics (new mandatory gates)
 
 **Do not replace the mainframe with a single enormous VM by default.** The workload must first be partitioned by business invariants and tested with horizontal replica counts 1/2/4/8/16 under fixed offered load. Candidate deployments: VM Scale Sets, AKS, Azure Container Apps and App Service, plus a viable on-premises baseline. Measure bottlenecks at the authoritative ledger, hot-key contention, CPU, memory, logging, quotas and WAN p99. Vertical scale remains a measured option for intrinsically serialized components, not the default answer.

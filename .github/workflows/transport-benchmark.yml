@@ -1,0 +1,37 @@
+name: M1 gRPC versus REST transport microbenchmark
+on:
+  pull_request:
+    paths:
+      - 'lab/transport/**'
+      - '.github/workflows/transport-benchmark.yml'
+      - 'docs/EXPERIMENT_ROADMAP.md'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  transport:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-dotnet@v5
+        with:
+          dotnet-version: '10.0.x'
+      - uses: actions/setup-python@v6
+        with:
+          python-version: '3.12'
+      - name: Restore and build exact .NET 10 transport candidates
+        run: |
+          dotnet restore lab/transport/TransportLab/TransportLab.csproj
+          dotnet build lab/transport/TransportLab/TransportLab.csproj -c Release --no-restore
+      - name: Exercise REST/JSON and gRPC/Protobuf over localhost HTTP/2
+        run: |
+          dotnet lab/transport/TransportLab/bin/Release/net10.0/TransportLab.dll benchmark 5088 400 8 lab/results/transport/report.json
+          python3 lab/transport/check_report.py lab/results/transport/report.json
+      - name: Publish raw observations, even on a failing test
+        if: always()
+        uses: actions/upload-artifact@v6
+        with:
+          name: m1-transport-experiment-not-ledger-benchmark
+          path: lab/results/transport/
+          if-no-files-found: warn

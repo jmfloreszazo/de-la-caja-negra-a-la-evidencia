@@ -1,0 +1,20 @@
+syntax = "proto3";
+option csharp_namespace = "BankTransport";
+package banktransport;
+
+service TransferApi {
+  rpc Submit (TransferRequest) returns (TransferReply);
+}
+
+message TransferRequest {
+  string operation_id = 1;
+  int32 source = 2;
+  int32 destination = 3;
+  int64 amount_cents = 4;
+}
+
+message TransferReply {
+  string operation_id = 1;
+  string status = 2;
+  int64 accepted_cents = 3;
+}
