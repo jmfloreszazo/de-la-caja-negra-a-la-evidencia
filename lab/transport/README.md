@@ -13,11 +13,11 @@ Both calls run on the same loopback Kestrel process without TLS (h2c), **deliber
 ```bash
 dotnet restore lab/transport/TransportLab/TransportLab.csproj
 dotnet build lab/transport/TransportLab/TransportLab.csproj -c Release --no-restore
-dotnet lab/transport/TransportLab/bin/Release/net10.0/TransportLab.dll benchmark 5088 400 8 lab/results/transport/report.json
-python3 lab/transport/check_report.py lab/results/transport/report.json
+dotnet lab/transport/TransportLab/bin/Release/net10.0/TransportLab.dll benchmark 5088 2500 8 lab/results/transport/report-c8.json
+python3 lab/transport/check_report.py lab/results/transport/report-c8.json
 ```
 
-A single invocation starts the same loopback service and measures warmups then two recorded rounds per protocol, alternating the order. The benchmark logs p50/p95/p99, successful replies/s, concurrency, environment and a unique source commit. These are **closed-loop** rates, not open-loop offered load or real user/branch WAN latency. No throughput winner is asserted in advance: the implementation and measurement decide.
+CI runs separate 2,500-request-per-round profiles at concurrency 8 and 32; each produces its own report. A single invocation starts the same loopback service and measures warmups then two recorded rounds per protocol, alternating the order. The benchmark logs p50/p95/p99, successful replies/s, concurrency, environment and a unique source commit. These are **closed-loop** rates, not open-loop offered load or real user/branch WAN latency. No throughput winner is asserted in advance: the implementation and measurement decide.
 
 ## Further evidence needed before applying the result to a banking migration
 
