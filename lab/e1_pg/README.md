@@ -39,6 +39,6 @@ This is a **synthetic PostgreSQL/Python experimental candidate**. Its results ar
 
 [Verified E1a job](https://github.com/jmfloreszazo/de-la-caja-negra-a-la-evidencia/actions/runs/40919268337) and [verified E1b job](https://github.com/jmfloreszazo/de-la-caja-negra-a-la-evidencia/actions/runs/40919773614) produce downloadable CI evidence. Both are branch test results, not part of the earlier v2026.10.29 release.
 
-See [E1 acceptance gates](../../docs/EXPERIMENT_ROADMAP.md). `evidence/claims.json` must continue to classify E1 as **designed, not fully executed** until those gates pass and a reviewer approves the promotion.
+See [E1 acceptance gates](../../docs/EXPERIMENT_ROADMAP.md). `evidence/claims.json` classifies E1 as **partially verified**, with independent CI-verified E1A and E1B subclaims. E1 is **not fully accepted** until the remaining gates pass and a reviewer approves final promotion.
 
 PostgreSQL describes `40001` as a serialization failure and `40P01` as a deadlock; both require careful whole-transaction retry, not replaying a failed statement. The authoritative documentation is [PostgreSQL 16: serialization failure handling](https://www.postgresql.org/docs/16/mvcc-serialization-failure-handling.html).
