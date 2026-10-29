@@ -42,6 +42,6 @@ jobs:
         run: |
           test "$(gh api "repos/$GITHUB_REPOSITORY/pulls/1" --jq .state)" = "closed"
           test "$(gh api "repos/$GITHUB_REPOSITORY/pulls/2" --jq .state)" = "open"
-          if gh api "repos/$GITHUB_REPOSITORY/git/ref/heads/design/align-jmfloreszazo-v5" > /dev/null 2>&1; then
-            gh api -X DELETE "repos/$GITHUB_REPOSITORY/git/refs/heads/design/align-jmfloreszazo-v5"
+          if git ls-remote --exit-code --heads origin refs/heads/design/align-jmfloreszazo-v5 > /dev/null 2>&1; then
+            git push origin --delete design/align-jmfloreszazo-v5
           fi
