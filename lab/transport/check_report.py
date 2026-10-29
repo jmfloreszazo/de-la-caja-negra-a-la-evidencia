@@ -13,9 +13,9 @@ assert d["workload"]["closedLoop"] is True
 assert "No durable ledger" in d["workload"]["claims"]
 ts=d["trials"]
 assert len(ts)==4
-assert [t["protocol"] for t in ts]==["grpc","rest","rest","grpc"]
-assert all(t["errors"]==0 for t in ts)
-assert all(t["requests"]==d["workload"]["requestsPerRound"] for t in ts)
-assert all(t["repliesPerSecond"]>0 and 0<=t["p50Ms"]<=t["p95Ms"]<=t["p99Ms"] for t in ts)
+assert [t["Protocol"] for t in ts]==["grpc","rest","rest","grpc"]
+assert all(t["Errors"]==0 for t in ts)
+assert all(t["Requests"]==d["workload"]["requestsPerRound"] for t in ts)
+assert all(t["RepliesPerSecond"]>0 and 0<=t["P50Ms"]<=t["P95Ms"]<=t["P99Ms"] for t in ts)
 assert d["environment"]["tlsAndNetwork"].startswith("NOT TESTED")
 print("TRANSPORT EXPERIMENT: PASS (loopback only; no database or WAN)")
