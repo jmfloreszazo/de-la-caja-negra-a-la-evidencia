@@ -36,4 +36,10 @@ Comprobar el contrato local:
 python3 scripts/check_evidence.py
 ```
 
+La comprobación **en línea** verifica también los commits, los jobs satisfactorios y los assets publicados mediante la API de GitHub:
+
+```bash
+GITHUB_TOKEN=... python3 scripts/check_evidence.py --online
+```
+
 El [protocolo E1–E4](../lab/docs/EXPERIMENT_PROTOCOL.md) define las próximas pruebas; no es evidencia de que hayan ocurrido.

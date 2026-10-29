@@ -36,4 +36,10 @@ Check the local contract:
 python3 scripts/check_evidence.py
 ```
 
+The **live** CI check also verifies the source commit, successful jobs and release assets against the GitHub API:
+
+```bash
+GITHUB_TOKEN=... python3 scripts/check_evidence.py --online
+```
+
 The [E1–E4 experiment protocol](../lab/docs/EXPERIMENT_PROTOCOL.md) defines future tests; it is not evidence that they took place.

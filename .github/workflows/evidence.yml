@@ -15,9 +15,18 @@ on:
   workflow_dispatch:
 permissions:
   contents: read
+  actions: read
 jobs:
   registry:
     runs-on: ubuntu-24.04
     steps:
       - uses: actions/checkout@v5
       - run: python3 scripts/check_evidence.py
+  provenance:
+    name: Live run and release provenance
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v5
+      - env:
+          GITHUB_TOKEN: ${{ github.token }}
+        run: python3 scripts/check_evidence.py --online
