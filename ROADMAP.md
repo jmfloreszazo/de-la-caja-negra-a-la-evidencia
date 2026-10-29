@@ -9,7 +9,7 @@ Work the book leaves open and the community can move forward. Each line shows it
 | Task | Why it matters | Label |
 |---|---|---|
 | Build the Podman image on Linux, macOS and Windows and share the report | CI validates the recipe; real machines are what counts | `reproduction`, `good first issue` |
-| Run the full lab in CI and compare it with the reference run | Replaces a local run with public, repeatable evidence | `lab` |
+| Reproduce the full lab beyond hosted Linux CI and publish conditions/report | [Offline/native/Podman CI](https://github.com/jmfloreszazo/de-la-caja-negra-a-la-evidencia/actions/runs/40900252152) already passed; independent cross-platform reproductions remain | `reproduction` |
 | Compile the *Illustrative* listings in a sample project and promote those that pass to *Verified* | Today they are reasoning fragments; some deserve to be code | `lab`, `good first issue` |
 
 ## Experiments designed and not executed

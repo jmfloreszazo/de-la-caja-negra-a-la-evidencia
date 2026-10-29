@@ -9,7 +9,7 @@ Trabajo que el libro deja planteado y que la comunidad puede hacer avanzar. Cada
 | Tarea | Por qué importa | Etiqueta |
 |---|---|---|
 | Construir la imagen Podman en Linux, macOS y Windows y compartir el informe | La CI valida la receta; lo que cuenta son las máquinas reales | `reproduction`, `good first issue` |
-| Ejecutar el laboratorio completo en CI y comparar con la ejecución de referencia | Sustituye una ejecución local por una evidencia pública y repetible | `lab` |
+| Repetir el laboratorio fuera de los runners Linux de CI y publicar condiciones/reporte | La [CI offline/nativa/Podman](https://github.com/jmfloreszazo/de-la-caja-negra-a-la-evidencia/actions/runs/40900252152) ya pasó; faltan reproducciones independientes y entre plataformas | `reproduction` |
 | Compilar los listados *Ilustrativo* en un proyecto de ejemplo y marcar los que pasen a *Verificado* | Hoy son fragmentos de razonamiento; algunos merecen ser código | `lab`, `good first issue` |
 
 ## Experimentos diseñados y no ejecutados
