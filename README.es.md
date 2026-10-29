@@ -20,7 +20,7 @@ Un libro abierto y un laboratorio ejecutable sobre cómo modernizar sistemas COB
 
 ## Leer
 
-[Ediciones PDF y proceso de publicación](docs/PDF.md) — los PDF de prueba están disponibles en los artefactos de la PR; la descarga oficial llegará con las releases etiquetadas tras el merge.
+[Descargar PDF en español e inglés](https://github.com/jmfloreszazo/de-la-caja-negra-a-la-evidencia/releases/tag/v2026.10.29) · [Ruta rápida: siete capítulos](docs/READING_PATH.es.md) · [Ediciones PDF y proceso de publicación](docs/PDF.md).
 
 | | Capítulo a capítulo | El libro entero en una página |
 |---|---|---|
@@ -28,6 +28,12 @@ Un libro abierto y un laboratorio ejecutable sobre cómo modernizar sistemas COB
 | English | [book/en](book/en/README.md) | [book/en.md](book/en.md) |
 
 37 capítulos en siete partes, epílogo, siete anexos y 41 diagramas por idioma (C4, UML de secuencia, estados y clases, ER, gitGraph), escritos en Mermaid y publicados como imágenes con el estilo visual del libro. Las dos ediciones tienen exactamente la misma estructura y la CI falla si se separan.
+
+## Ruta rápida y evidencia
+
+¿Quieres recorrer el argumento sin leer los 37 capítulos de forma lineal? Sigue la [ruta de siete capítulos](docs/READING_PATH.es.md). El [registro editorial y de evidencias](docs/EDITORIAL_REVIEW.es.md) distingue lo comprobado de lo todavía hipotético.
+
+La [CI del laboratorio](https://github.com/jmfloreszazo/de-la-caja-negra-a-la-evidencia/actions/runs/40900252152) ya ha ejecutado las pruebas offline, nativas y Podman en runners Linux. Esto no acredita todas las plataformas ni los experimentos E1–E4.
 
 ## Ejecutar el laboratorio
 

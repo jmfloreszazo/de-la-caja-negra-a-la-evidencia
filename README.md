@@ -20,7 +20,7 @@ An open book and a runnable lab on how to modernize COBOL systems without bettin
 
 ## Read
 
-[PDF editions and release process](docs/PDF.md) — PDF previews are available as PR workflow artifacts; official downloads appear on tagged releases after merge.
+[Download Spanish and English PDFs](https://github.com/jmfloreszazo/de-la-caja-negra-a-la-evidencia/releases/tag/v2026.10.29) · [Fast reading path: seven chapters](docs/READING_PATH.md) · [PDF editions and release process](docs/PDF.md).
 
 | | Chapter by chapter | Whole book on one page |
 |---|---|---|
@@ -78,13 +78,11 @@ Start with [CONTRIBUTING.md](CONTRIBUTING.md): paths by profile, a first contrib
 3. **Small, reversible steps.** One idea per pull request, in both languages.
 4. **Nobody approves their own oracle.** The lab's contracts and gate have mandatory reviewers.
 
-## Status
+## Evidence status
 
-| Checked | Still to check |
-|---|---|
-| All diagrams render; Markdown lint, links and es/en sync are clean | The Podman image build, run by the `podman` CI job on the first push |
-| An independent implementation reproduces the 58 cases of the contract | Compiling the listings marked *Illustrative* |
-| The accounting oracle accepts valid databases and rejects the negative control | Reproduction reports from Linux, macOS and Windows machines |
+**Verified in GitHub Actions:** [Book](https://github.com/jmfloreszazo/de-la-caja-negra-a-la-evidencia/actions/runs/40900252122), [Lab (offline, native, Podman)](https://github.com/jmfloreszazo/de-la-caja-negra-a-la-evidencia/actions/runs/40900252152), and [bilingual PDFs](https://github.com/jmfloreszazo/de-la-caja-negra-a-la-evidencia/actions/runs/40900252098).
+
+**Not yet established:** E1–E4 experimental outcomes, compilation of all *Illustrative* listings, a native-level English editorial review, or cross-platform reproductions beyond hosted Linux runners. See [editorial and evidence register](docs/EDITORIAL_REVIEW.md).
 
 ## Related work by the author
 
