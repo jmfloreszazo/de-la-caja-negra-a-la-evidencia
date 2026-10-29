@@ -13,7 +13,7 @@
 | `RELEASE-BOOK` | Ediciones ES/EN en PDF y Markdown publicadas | **Publicado** | Un artefacto publicado no acredita todas las afirmaciones que contiene | [v2026.10.29](https://github.com/jmfloreszazo/de-la-caja-negra-a-la-evidencia/releases/tag/v2026.10.29) |
 | `E1A` | PostgreSQL real: locks, deadlock 40P01, write skew 40001 y oráculo | **Ejecutado en CI** | Prueba sintética en Linux/Podman, no benchmark ni implementación bancaria productiva. El conjunto E1 aún no está completo. | [Ejecución #40919268337](https://github.com/jmfloreszazo/de-la-caja-negra-a-la-evidencia/actions/runs/40919268337) |
 | `E1B` | Candidato .NET 10/Npgsql: paridad de estados y fallos PostgreSQL | **Ejecutado en CI** | Paridad diferencial del subconjunto probado frente al candidato Python; no acredita todo el laboratorio SQLite ni SQL Server. | [Ejecución #40919773614](https://github.com/jmfloreszazo/de-la-caja-negra-a-la-evidencia/actions/runs/40919773614) |
-| `E1` | Bloqueo por fila, deadlocks y write skew en SQL | **Diseñado, NO ejecutado** | E1a/E1b probados; E1 global aún no completado | [Protocolo, no resultado](../lab/docs/EXPERIMENT_PROTOCOL.md) |
+| `E1` | Bloqueo por fila, deadlocks y write skew en SQL | **Parcialmente verificado (E1a + E1b)** | E1a/E1b comprobados; falta paridad total y SQL Server | [Protocolo, no resultado](../lab/docs/EXPERIMENT_PROTOCOL.md) |
 | `E2` | Orleans y ledger frente a distintas distribuciones de carga | **Diseñado, NO ejecutado** | Sin benchmark E2 ejecutado contra E1 | [Protocolo, no resultado](../lab/docs/EXPERIMENT_PROTOCOL.md) |
 | `E3` | Benchmark Azure frente a local e híbrido | **Diseñado, NO ejecutado** | Sin ensayo de capacidad, coste y fallo con contrato real | [Protocolo, no resultado](../lab/docs/EXPERIMENT_PROTOCOL.md) |
 | `E4` | Comparativa de agentes bajo oráculo independiente | **Diseñado, NO ejecutado** | Sin evaluación E4 ejecutada de defectos y coste | [Protocolo, no resultado](../lab/docs/EXPERIMENT_PROTOCOL.md) |
@@ -25,6 +25,8 @@
 **Ejecutado en CI** significa que la ejecución enlazada terminó satisfactoriamente en un runner GitHub Linux. No implica garantía operativa en producción.
 
 **Diseñado, NO ejecutado** significa que hay protocolo y criterios de aceptación, pero no hay resultados experimentales. Esto incluye explícitamente E1–E4.
+
+**Parcialmente verificado** indica que algunas subpruebas cuentan con CI propia y el experimento global aún no satisface todos sus criterios; E1a/E1b no acreditan E1c ni capacidad mainframe.
 
 **Publicado** acredita que los ficheros existen en una release; no convierte sus afirmaciones técnicas en hechos demostrados.
 

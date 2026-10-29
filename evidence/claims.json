@@ -110,11 +110,11 @@
     },
     {
       "id": "E1",
-      "status": "designed_not_executed",
+      "status": "partially_verified",
       "es": "Bloqueo por fila, deadlocks y write skew en SQL",
       "en": "SQL row locks, deadlocks and write skew",
-      "scope_es": "E1a (PostgreSQL/Python) y E1b (.NET 10/Npgsql) están validados; E1 completa sigue pendiente de equivalencia total y segundo motor SQL.",
-      "scope_en": "E1a (PostgreSQL/Python) and E1b (.NET 10/Npgsql) passed; complete E1 still needs full parity and a second SQL engine.",
+      "scope_es": "E1a y E1b ejecutados y verificados en CI; faltan el contrato completo de referencia y SQL Server. No hay PASS global.",
+      "scope_en": "E1a and E1b executed and verified in CI; full reference parity and SQL Server remain open. No overall PASS.",
       "evidence": null,
       "protocol": "lab/docs/EXPERIMENT_PROTOCOL.md"
     },
