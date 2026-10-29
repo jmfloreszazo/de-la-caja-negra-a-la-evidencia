@@ -1,0 +1,24 @@
+name: Temporarily refresh bilingual chapter 25 bis manuscripts
+on:
+  push:
+    branches: [experiment/e1-postgres-row-locking]
+    paths:
+      - '.github/workflows/sync-book-previews.yml'
+permissions:
+  contents: write
+jobs:
+  build:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v5
+      - name: Rebuild generated ES/EN Markdown books
+        run: python3 scripts/build.py
+      - name: Update generated book files only
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add book/es.md book/en.md
+          if ! git diff --cached --quiet; then
+            git commit -m "docs(book): include observed M1 evidence in bilingual consolidated editions"
+            git push origin HEAD:experiment/e1-postgres-row-locking
+          fi
