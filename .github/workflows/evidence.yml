@@ -23,6 +23,7 @@ jobs:
       - uses: actions/checkout@v5
       - run: python3 scripts/check_evidence.py
       - run: python3 scripts/check_e1_observations.py
+      - run: python3 scripts/check_m1_observations.py
   provenance:
     name: Live run and release provenance
     runs-on: ubuntu-24.04

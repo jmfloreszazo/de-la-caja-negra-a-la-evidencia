@@ -1,0 +1,82 @@
+{
+  "schemaVersion": 1,
+  "experiment": "M1",
+  "provenance": {
+    "runId": 40943584513,
+    "jobId": 123692987479,
+    "workflowHeadSha": "efeaeee925f039c1944f3cf4a0ccfc6ee088f6a8",
+    "checkoutSha": "6147d002230fdde36ca498099d01a1589ecfb778",
+    "source": "https://github.com/jmfloreszazo/de-la-caja-negra-a-la-evidencia/actions/runs/40943584513",
+    "retrievedFrom": "GitHub Actions stdout: raw JSON emitted by TransportLab; PR checkout can be a synthetic merge SHA"
+  },
+  "observation": {
+    "schemaVersion": 1,
+    "classification": "EXECUTED_LOCALHOST_TRANSPORT_ONLY_NOT_LEDGER_OR_MAINFRAME",
+    "createdAtUtc": "2026-10-29T19:50:21.3701743+00:00",
+    "sourceCommit": "6147d002230fdde36ca498099d01a1589ecfb778",
+    "environment": {
+      "dotnet": "10.0.14",
+      "os": "Unix 7.0.0.1017",
+      "processorCount": 2,
+      "httpTransport": "HTTP/2 plaintext (h2c), loopback only, both protocols",
+      "grpcLibrary": "Grpc.AspNetCore 2.84.0; Grpc.Net.Client 2.84.0",
+      "tlsAndNetwork": "NOT TESTED, next experiment must use equivalent TLS and network path"
+    },
+    "protocol": "same Kestrel process, same business function, typed payload vs JSON, independent result oracle",
+    "workload": {
+      "requestsPerRound": 2500,
+      "concurrency": 32,
+      "warmup": true,
+      "order": "gRPC, REST, REST, gRPC",
+      "closedLoop": true,
+      "claims": "No durable ledger, WAN, Kubernetes, autoscale or mainframe throughput was measured"
+    },
+    "negativeOracleControl": "PASS",
+    "trials": [
+      {
+        "Protocol": "grpc",
+        "Requests": 2500,
+        "Concurrency": 32,
+        "Errors": 0,
+        "ElapsedSeconds": 0.216,
+        "RepliesPerSecond": 11575.6,
+        "P50Ms": 2.647,
+        "P95Ms": 4.585,
+        "P99Ms": 5.973
+      },
+      {
+        "Protocol": "rest",
+        "Requests": 2500,
+        "Concurrency": 32,
+        "Errors": 0,
+        "ElapsedSeconds": 0.2832,
+        "RepliesPerSecond": 8826.66,
+        "P50Ms": 3.419,
+        "P95Ms": 6.071,
+        "P99Ms": 9.483
+      },
+      {
+        "Protocol": "rest",
+        "Requests": 2500,
+        "Concurrency": 32,
+        "Errors": 0,
+        "ElapsedSeconds": 0.2508,
+        "RepliesPerSecond": 9967.68,
+        "P50Ms": 3.101,
+        "P95Ms": 5.169,
+        "P99Ms": 6.469
+      },
+      {
+        "Protocol": "grpc",
+        "Requests": 2500,
+        "Concurrency": 32,
+        "Errors": 0,
+        "ElapsedSeconds": 0.2688,
+        "RepliesPerSecond": 9299.15,
+        "P50Ms": 3.162,
+        "P95Ms": 5.989,
+        "P99Ms": 8.508
+      }
+    ]
+  }
+}

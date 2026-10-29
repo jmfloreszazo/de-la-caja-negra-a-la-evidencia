@@ -94,6 +94,10 @@ gRPC normally operates on **HTTP/2 and TLS**. It is inaccurate to frame gRPC and
 
 Compare offered load, committed TPS, p50/p95/p99, CPU and allocated MB per request, bytes transferred, network hops, live connections, errors/retries, memory and total infrastructure cost under the **same business contract and independent oracle**. Do not assume a faster serializer implies a faster durable transaction.
 
+### First M1 evidence: transport is not the ledger
+
+The [executed M1 study](../../../evidence/runs/M1.md) compared gRPC/Protobuf with REST/JSON using **HTTP/2 on loopback without TLS or a database**, under .NET 10. GitHub recorded 2,500 requests per trial at concurrency 8 and 32. Both paths returned oracle-correct results, but **gRPC did not show consistent p99 superiority**. A smaller transport payload does not prove a faster banking commit; the next experiment must include durable persistence, equivalent TLS and per-replica distribution.
+
 ## Dated prices, not a deceptive vCPU-to-mainframe TCO
 
 The official Azure API retrieval on **29 October 2026 at 18:26 UTC** (West Europe, Linux, pay-as-you-go, indicative EUR) returned **D4as_v5 €0.1830/h**, **D4s_v5 €0.2024/h** and **D8as_v5 €0.3661/h**. Three always-on D4as_v5 workers for 730 hours represent **€400.77/month of compute alone**; six represent **€801.54/month**, excluding database, disks, networking and redundancy. Exact meters, `effectiveStartDate` and CI source are in the linked registry.
