@@ -1,0 +1,59 @@
+name: E1 PostgreSQL experiment
+on:
+  pull_request:
+    paths:
+      - 'lab/e1_pg/**'
+      - 'docs/EXPERIMENT_ROADMAP.md'
+      - '.github/workflows/e1-postgres.yml'
+  push:
+    branches: [main]
+    paths:
+      - 'lab/e1_pg/**'
+      - '.github/workflows/e1-postgres.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  postgres-evidence:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-python@v6
+        with:
+          python-version: '3.12'
+      - name: Install pinned PostgreSQL client
+        run: python3 -m pip install -r lab/e1_pg/requirements.txt
+      - name: Start disposable PostgreSQL 16 in Podman
+        run: |
+          podman run -d --name e1-postgres \
+            -e POSTGRES_PASSWORD=e1local -e POSTGRES_DB=e1lab \
+            -p 127.0.0.1:55432:5432 docker.io/library/postgres:16.13
+          ready=0
+          for i in $(seq 1 60); do
+            if podman exec e1-postgres pg_isready -U postgres -d e1lab >/dev/null 2>&1; then
+              ready=1
+              break
+            fi
+            sleep 2
+          done
+          test "$ready" -eq 1
+          podman image inspect docker.io/library/postgres:16.13 --format '{{.Id}}' > lab/e1_pg/image-id.txt
+      - name: Execute E1 slice and independent oracle
+        env:
+          E1_PG_DSN: "host=127.0.0.1 port=55432 dbname=e1lab user=postgres password=e1local"
+        run: python3 lab/e1_pg/test_e1.py
+      - name: Upload reproducible test evidence
+        uses: actions/upload-artifact@v6
+        if: always()
+        with:
+          name: e1-postgres-observations
+          path: |
+            lab/results/e1/
+            lab/e1_pg/image-id.txt
+          if-no-files-found: warn
+      - name: Stop experiment database
+        if: always()
+        run: |
+          podman logs e1-postgres --tail 80 || true
+          podman rm -f e1-postgres || true
