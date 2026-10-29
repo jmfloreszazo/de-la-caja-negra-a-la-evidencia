@@ -1727,6 +1727,8 @@ Compare offered load, committed TPS, p50/p95/p99, CPU and allocated MB per reque
 
 #### Dated prices, not a deceptive vCPU-to-mainframe TCO
 
+The official Azure API retrieval on **29 October 2026 at 18:26 UTC** (West Europe, Linux, pay-as-you-go, indicative EUR) returned **D4as_v5 €0.1830/h**, **D4s_v5 €0.2024/h** and **D8as_v5 €0.3661/h**. Three always-on D4as_v5 workers for 730 hours represent **€400.77/month of compute alone**; six represent **€801.54/month**, excluding database, disks, networking and redundancy. Exact meters, `effectiveStartDate` and CI source are in the linked registry.
+
 The [dated pricing comparison, 29 Oct 2026](../docs/PRICING.md) and [structured catalog](../lab/cost/dated_prices.json) contain source-linked prices, a reproducible 3–6-worker comparison and public AMD EPYC CPU references. IBM/Unisys require contractual **RFQs** and are left unpriced, never set to zero.
 
 Comparing a single giant Azure VM with a whole mainframe—or pricing three AKS nodes and calling the result complete TCO—is invalid. Real costs have at least three layers: **scalable computation**, **durable authoritative data**, and **branch network plus operations/continuity**. Compare cost per million **durably committed, oracle-correct transfers**, not headline VM-hour cost. Every recorded monetary value has its source, observation date, currency and exclusions.
