@@ -32,21 +32,22 @@ def fetch(sku):
         if not url.startswith("https://prices.azure.com/"):
             raise ValueError("Unexpected API pagination host")
     filtered=[x for x in items if x.get("armSkuName")==sku and x.get("armRegionName")==REGION
-              and x.get("priceType")=="Consumption" and x.get("currencyCode")==CURRENCY
+              and x.get("type")=="Consumption" and x.get("currencyCode")==CURRENCY
+              and x.get("productName","").startswith("Virtual Machines")
               and x.get("unitOfMeasure")=="1 Hour"
               and not any(v in (x.get("meterName","")+" "+x.get("skuName","")+" "+x.get("productName","")).lower()
                           for v in ("windows","spot","low priority"))]
     # Multiple primary meters may exist; record all candidates rather than picking a cheap
     # rate that might not be the intended Linux price or a different product.
     if not filtered:
-        diagnostic=[{k:v.get(k) for k in ("armSkuName","armRegionName","currencyCode","priceType","unitOfMeasure","meterName","productName")} for v in items[:6]]
+        diagnostic=[{k:v.get(k) for k in ("armSkuName","armRegionName","currencyCode","type","unitOfMeasure","meterName","productName")} for v in items[:6]]
         raise ValueError("No candidate Linux/Consumption hourly meter for "+sku+"; total="+str(len(items))+"; candidates="+json.dumps(diagnostic))
     return sorted([{
       "armSkuName":x["armSkuName"],"meterId":x["meterId"],"meterName":x["meterName"],
       "productName":x["productName"],"skuName":x["skuName"],
       "retailPrice":x["retailPrice"],"unitPrice":x["unitPrice"],
       "unitOfMeasure":x["unitOfMeasure"],"effectiveStartDate":x["effectiveStartDate"],
-      "priceType":x["priceType"],"isPrimaryMeterRegion":x.get("isPrimaryMeterRegion")
+      "priceType":x["type"],"isPrimaryMeterRegion":x.get("isPrimaryMeterRegion")
     } for x in filtered],key=lambda v:(str(v["productName"]),str(v["skuName"])))
 
 def main():
