@@ -1696,6 +1696,41 @@ Measure WAN RTT, session/TLS setup, authentication, queue time, application serv
 
 **Crucially:** a branch edge may cache authorised reads, submit a command and show its state; it **must not confirm a debit/credit as final without an authoritative ledger commit**. A lost connection means PENDING/INCONCLUSIVE, later reconciliation and one idempotent effect—not an invented balance.
 
+#### Azure: scale out first, not up to a single enormous VM
+
+The specifications above are **physical reference points**, not a strategy of choosing the biggest Azure VM as a mainframe replacement. The primary hypothesis is to **decompose at transactional boundaries and scale independently parallelisable work**, with an explicit authoritative ledger.
+
+| Candidate | Horizontal scaling that is genuinely available | What does NOT magically scale |
+|---|---|---|
+| VM Scale Sets | Multiple homogeneous VMs, health probes and instance autoscaling without Kubernetes | Stateful monoliths, distributed commits, hot-key contention |
+| AKS Standard / Automatic | Service replicas; HPA, KEDA for queues, Cluster Autoscaler/NAP for nodes; deployment isolation | Database, synchronous log, IOPS and contention on a single account; more pods can worsen lock pressure |
+| Azure Container Apps Consumption / Dedicated | HTTP-concurrency replicas, event-driven KEDA jobs without cluster operations | Minimum replicas, cold starts, long sessions and stateful actors; **Dapr Actors cannot scale to zero** |
+| App Service Premium v3 | Managed plan-instance scale-out and autoscale | Multiple apps sharing the same plan, sessions and common state |
+| Orleans | Partitioning by grain identity within a horizontally scaled runtime | A hot grain remains serial; cross-account atomicity does not arise from grains automatically |
+
+Microsoft distinguishes [HPA, VPA, Cluster Autoscaler, NAP and KEDA](https://learn.microsoft.com/en-us/azure/aks/concepts-scale). Horizontal compute scaling needs a **ledger saturation experiment**: 1, 2, 4, 8 and 16 replicas under open-loop offered load, fixed hot-key distribution, committed transactions/s and end-to-end p99. If doubling pods does not increase confirmed commits, the actual bottleneck is downstream. [Container Apps scaling](https://learn.microsoft.com/en-us/azure/container-apps/scale-app) also has its own trigger and stateful-app constraints.
+
+**Candidate flow**: branch → authenticated business API (WAF, idempotency key) → stateless co-located gRPC commands → ledger-owner service and its transactional database; use Service Bus/outbox and KEDA workers for deferrable work. CQRS reads require explicit consistency semantics. A business confirmation follows a durable commit; a lost response is **INCONCLUSIVE** until looked up using its operation identity.
+
+##### Internal gRPC: underused, but not mandatory
+
+gRPC normally operates on **HTTP/2 and TLS**. It is inaccurate to frame gRPC and HTTPS as exclusive alternatives. The relevant test is **gRPC/Protobuf versus REST/JSON with equivalent transport, topology and security**.
+
+- **Good candidates:** typed, versioned binary contracts, frequent co-located synchronous calls, meaningful streaming and C#-to-C# service integration.
+- **Poor candidates:** browser-native external APIs without a deliberate gateway, long-running operations best modelled by durable messaging, and operations that must remain one database transaction.
+- **Required controls:** protobuf compatibility, propagated deadlines, cancellation, mTLS/workload identity, OpenTelemetry, size limits, safe retries/idempotency, circuit breakers and overload admission.
+- **Pitfalls:** long-lived HTTP/2 channels can skew pod distribution; unbounded streams, protocol downgrade at gateways and retry storms can degrade p99.
+
+[Container Apps internal networking](https://learn.microsoft.com/en-us/azure/container-apps/connect-apps) requires **end-to-end HTTP/2** for gRPC and may involve Envoy. In AKS, measure the actual ingress/service-mesh TLS path and RPC load balancing: a Kubernetes `Service` alone does not guarantee per-RPC balancing across long-lived gRPC channels.
+
+Compare offered load, committed TPS, p50/p95/p99, CPU and allocated MB per request, bytes transferred, network hops, live connections, errors/retries, memory and total infrastructure cost under the **same business contract and independent oracle**. Do not assume a faster serializer implies a faster durable transaction.
+
+#### Dated prices, not a deceptive vCPU-to-mainframe TCO
+
+The [dated pricing comparison, 29 Oct 2026](../docs/PRICING.md) and [structured catalog](../lab/cost/dated_prices.json) contain source-linked prices, a reproducible 3–6-worker comparison and public AMD EPYC CPU references. IBM/Unisys require contractual **RFQs** and are left unpriced, never set to zero.
+
+Comparing a single giant Azure VM with a whole mainframe—or pricing three AKS nodes and calling the result complete TCO—is invalid. Real costs have at least three layers: **scalable computation**, **durable authoritative data**, and **branch network plus operations/continuity**. Compare cost per million **durably committed, oracle-correct transfers**, not headline VM-hour cost. Every recorded monetary value has its source, observation date, currency and exclusions.
+
 #### Three candidate infrastructure blueprints
 
 | Architecture | Candidate topology (NOT approved sizing) | Likely bottleneck |

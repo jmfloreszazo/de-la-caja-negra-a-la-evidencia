@@ -1696,6 +1696,39 @@ Separaría los tiempos: `L_WAN-RTT`, handshake/sesión, autenticación, colas, a
 
 **Muy importante:** un edge de sucursal puede almacenar lectura autorizada, iniciar solicitudes y presentar estado; **no debe confirmar débitos o créditos como definitivos si el ledger autoritativo no ha confirmado el commit**. Pérdida de conectividad significa PENDING/INCONCLUSIVE, reconciliación posterior y una sola aplicación idempotente, no saldo inventado.
 
+#### Azure: diseñar horizontalmente antes de comprar una VM más grande
+
+Lo anterior no se debería leer como «para igualar un z17, busquemos la VM Azure más grande». Esa es una **referencia física para acotar el problema**, no una estrategia de modernización. La hipótesis inicial es **descomponer por límites transaccionales y escalar las partes paralelizables**, con un ledger claramente autoritativo.
+
+| Candidato | Escalado horizontal que sí proporciona | Lo que NO escala mágicamente |
+|---|---|---|
+| VM Scale Sets | Varias VMs homogéneas, health probes y autoscale de instancias; alta densidad sin Kubernetes | Un proceso legado con estado compartido, commits distribuidos y bloqueos de claves calientes |
+| AKS Standard / Automatic | Réplicas de servicios, HPA/RPS/CPU, KEDA para colas, Cluster Autoscaler/NAP para nodos; aislamiento y despliegues | La BD, log síncrono, IOPS y la cola de una sola clave; subir pods puede agravar contención |
+| Azure Container Apps Consumption / dedicado | Réplicas por concurrencia HTTP y KEDA; trabajos/eventos sin operar clústeres | La instancia mínima, cold start, conexiones largas y actores con estado: **Dapr Actors no admite scale-to-zero** |
+| App Service Premium v3 | Escalado horizontal por instancias de plan, autoescala y menos operación de infraestructura | Co-residencia de apps en el mismo plan, sesiones y almacenamiento compartido |
+| Orleans | Particionar por identidades/grains y coordinar operaciones por clave dentro de un clúster escalable | Un actor caliente sigue siendo cuello de botella; un grain no reemplaza una transacción ACID entre cuentas |
+
+Microsoft diferencia [HPA, VPA, Cluster Autoscaler, NAP y KEDA](https://learn.microsoft.com/en-us/azure/aks/concepts-scale). El escalado horizontal del *compute* debe validarse con un **experimento de saturación de ledger**: 1, 2, 4, 8 y 16 réplicas con carga abierta, ratio de hot keys controlado, transacciones confirmadas/s y p99 extremo a extremo; un sistema que duplicara pods sin aumentar commits habría encontrado su límite real. El [autoscalado de Container Apps](https://learn.microsoft.com/en-us/azure/container-apps/scale-app) tiene límites y semánticas propias.
+
+**Patrón candidato**: sucursal → API de negocio (OAuth, WAF, idempotency key) → comandos gRPC sin estado entre procesos co-localizados → servicio dueño del ledger y su base transaccional; para operaciones diferibles, cola/Service Bus, outbox y workers con KEDA. Mantener lectura CQRS solo donde consistencia y SLA lo permitan. El resultado confirmado debe depender del commit; un timeout posterior da **INCONCLUSIVE** hasta consultar por identificador de operación.
+
+##### gRPC interno: una herramienta infrautilizada, no un dogma
+
+gRPC suele usar **HTTP/2 con TLS**, por lo que no es correcto oponer «gRPC» a «HTTPS» como tecnologías excluyentes. La comparación relevante es **gRPC/Protobuf frente a REST/JSON sobre un transporte, despliegue y seguridad equivalentes**. Evaluaría:
+
+- **Dónde sí**: contratos binarios versionados, llamadas síncronas frecuentes y co-localizadas, streaming cuando realmente se usa y generación tipada C# entre equipos.
+- **Dónde no forzarlo**: APIs públicas de terceros, exploración desde navegador sin un gateway apropiado, procesos largos que deben desacoplarse mediante mensajería y operaciones que requieren transacción única sobre un ledger.
+- **Guardrails**: proto compatible, deadlines propagados, cancelación, mTLS/workload identity, trazas OTel, límites de mensaje, idempotencia, retries solo donde sean seguros, circuit breaking y protección de sobrecarga.
+- **Riesgos**: conexiones HTTP/2 muy persistentes pueden sesgar balanceo entre pods; flujos sin límites, proxy que degrada HTTP/2, colas en un solo channel y cascadas de retries pueden empeorar p99.
+
+En [Azure Container Apps](https://learn.microsoft.com/en-us/azure/container-apps/connect-apps), gRPC requiere configurar transporte **HTTP/2 extremo a extremo**, y el tráfico interno puede circular a través de Envoy. En AKS debe verificarse la ruta de ingreso/service mesh, TLS y el comportamiento real de balanceo; un `Service` no garantiza por sí solo distribución por RPC en canales gRPC persistentes. Comparar **carga ofrecida**, commits/s, p50/p95/p99, CPU/MB por solicitud, bytes de payload, número de saltos, conexiones activas, errores, retries, memoria y coste de infraestructura, con el mismo contrato funcional y oráculo.
+
+#### Precios fechados y TCO: que no nos engañe el precio por vCPU
+
+La tabla económica auditable está en [Comparativa de costes, 29-10-2026](../docs/PRICING.es.md) y el [registro estructurado](../lab/cost/dated_prices.json). Incluye precios públicos **fechados y con origen**, un modelo reproducible de escala de 3–6 nodos, y comparación con referencias de CPU EPYC y equipos IBM/Unisys **pendientes de RFQ**.
+
+No es correcto comparar una única VM enorme de Azure contra todo un mainframe, ni sumar 3 VMs en AKS y llamarlo TCO. El coste real tiene tres capas: **procesamiento replicable**, **datos autoritativos y su durabilidad**, **red de sucursales + continuidad/operación**. La medición económica deberá incorporar coste por millón de **transferencias confirmadas y contablemente correctas**, no solo VM/hora. Los importes capturados llevan fecha, moneda y exclusiones; las cotizaciones contractuales no públicas permanecen **sin precio**, nunca «0».
+
 #### Tres blueprints dimensionables
 
 | Diseño | Topología candidata (NO sizing aprobado) | Dónde suele estar el límite |
