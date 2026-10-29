@@ -30,6 +30,8 @@ def scenarios(data):
       vm_case("VM Scale Sets, 3-to-6 Linux workers","Standard_D4as_v5",3,6,"VMSS"),
       vm_case("AKS, 3-to-6 equivalent Linux nodes","Standard_D4as_v5",3,6,"AKS"),
       vm_case("Alternative Intel VMSS, 3-to-6 Linux workers","Standard_D4s_v5",3,6,"VMSS"),
+      vm_case("Two distributed D4as_v5 instances, eight aggregate vCPU","Standard_D4as_v5",2,2,"horizontal_2vm"),
+      vm_case("One D8as_v5 instance, eight vCPU","Standard_D8as_v5",1,1,"vertical_1vm"),
       {"scenario":"Azure Container Apps Consumption","platform":"ACA","currency":"EUR",
        "estimated_tco":None,"minimum_compute_eur_per_730h":None,
        "quote_status":"NEEDS_ACTIVE_IDLE_CPU_MEMORY_SECONDS_AND_REQUESTS",

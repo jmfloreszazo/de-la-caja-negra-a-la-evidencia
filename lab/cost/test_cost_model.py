@@ -19,11 +19,13 @@ for item in d["cloud"]["items"]:
     assert item["retail_eur_per_hour"]==published["retail_eur_per_hour"]
     assert item["meter_id"]==published["meter_id"]
 assert all(x["estimated_tco"] is None for x in s["cases"])
-vmss,aks,intel,aca,app,onprem=s["cases"]
+vmss,aks,intel,small_pair,large_single,aca,app,onprem=s["cases"]
 assert vmss["minimum_compute_eur_per_730h"]=="400.77"
 assert vmss["peak_full_month_compute_eur_if_all_max_replicas"]=="801.54"
 assert aks["minimum_compute_eur_per_730h"]=="400.77"
 assert intel["minimum_compute_eur_per_730h"]=="443.26"
+assert small_pair["minimum_compute_eur_per_730h"]=="267.18"
+assert large_single["minimum_compute_eur_per_730h"]=="267.25"
 assert aca["minimum_compute_eur_per_730h"] is None
 assert app["estimated_tco"] is None
 assert onprem["cpu_only_1ku_usd"]=="47952"
