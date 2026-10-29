@@ -75,6 +75,15 @@ for name in (
     require("L294 394 L294 150" in read(ASSETS / name),
             f"Missing variant B's black vertical door jamb: {name}")
 
+# Variant B is based on the approved image, NOT on the dimensional main symbol.
+# A door gap is mandatory: the upper and lower frame strokes are separate.
+for variant in ("mark.svg", "icon-b-dark.svg"):
+    source = read(ASSETS / variant)
+    require('M194 77 L248 108 V185' in source, f"Missing upper door segment: {variant}")
+    require('M248 209 V272 L194 307' in source, f"Missing lower door segment: {variant}")
+    require('M193 197 H369' in source, f"Missing red exit line: {variant}")
+    require('M294 150' not in source, f"Unexpected closing frame: {variant}")
+
 require(read(ASSETS / "symbol-primary.svg") != read(ASSETS / "mark.svg"),
         "Primary symbol and B icon must remain distinct assets")
 

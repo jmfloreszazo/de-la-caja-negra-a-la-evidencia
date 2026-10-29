@@ -26,14 +26,18 @@ function primary(){
 }
 
 // Complete the left door jamb; the red evidence line still passes through the open gate.
-function iconB(dark=false){let shell=dark?"#F3F3F1":"#181A1C",face=dark?"#C6C9CB":"#25282B",gate=dark?"#F3F3F1":"#181A1C";
- return `<g stroke-linejoin="round"><path d="M53 156 L206 85 L270 117 L117 188 Z" fill="${face}"/>
- <path d="M53 156 L117 188 L117 392 L53 355 Z" fill="${shell}"/>
- <path d="M117 188 L270 117 L270 320 L117 392 Z" fill="${shell}"/>
- <path d="M53 156 L206 85 L270 117 L270 320 L117 392 L53 355 Z" fill="none" stroke="${gate}" stroke-width="3"/>
- <path d="M294 150 L338 130 L338 236 M338 303 L338 371 L294 394 L294 150" fill="none" stroke="${gate}" stroke-width="13" stroke-linecap="square"/>
- <path d="M265 270 H430" stroke="${COLORS.red}" stroke-width="14" stroke-linecap="round"/>
- <circle cx="411" cy="270" r="18" fill="${COLORS.red}"/><path d="M445 245 L485 270 L445 295 Z" fill="${COLORS.red}"/></g>`;
+function iconB(dark=false){
+ // Precisely traced from the user-approved Variant B reference:
+ // one solid black-box silhouette; TWO SEPARATE frame strokes and a red exit.
+ // The frame gap (y=185..209) must remain open: never close the two strokes.
+ const ink=dark?"#F3F3F1":"#181A1C";
+ return `<g transform="translate(6 28) scale(1.13)" stroke-linejoin="miter">
+ <path d="M56 128 L183 72 L183 314 L56 260 Z" fill="${ink}"/>
+ <path d="M194 77 L248 108 V185" fill="none" stroke="${ink}" stroke-width="10" stroke-linecap="butt"/>
+ <path d="M248 209 V272 L194 307" fill="none" stroke="${ink}" stroke-width="10" stroke-linecap="butt"/>
+ <path d="M193 197 H369" fill="none" stroke="${COLORS.red}" stroke-width="8" stroke-linecap="butt"/>
+ <circle cx="348" cy="197" r="18" fill="${COLORS.red}"/>
+ <path d="M384 165 L422 197 L384 230 Z" fill="${COLORS.red}"/></g>`;
 }
 
 function lockup(lang,dark){
