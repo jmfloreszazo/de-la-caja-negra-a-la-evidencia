@@ -80,6 +80,8 @@ Start with [CONTRIBUTING.md](CONTRIBUTING.md): paths by profile, a first contrib
 
 ## Evidence status
 
+[**Verifiable evidence matrix**](docs/EVIDENCE.md): real CI versus E1–E4 experiments not yet executed.
+
 **Verified in GitHub Actions:** [Book](https://github.com/jmfloreszazo/de-la-caja-negra-a-la-evidencia/actions/runs/40900252122), [Lab (offline, native, Podman)](https://github.com/jmfloreszazo/de-la-caja-negra-a-la-evidencia/actions/runs/40900252152), and [bilingual PDFs](https://github.com/jmfloreszazo/de-la-caja-negra-a-la-evidencia/actions/runs/40900252098).
 
 **Not yet established:** E1–E4 experimental outcomes, compilation of all *Illustrative* listings, a native-level English editorial review, or cross-platform reproductions beyond hosted Linux runners. See [editorial and evidence register](docs/EDITORIAL_REVIEW.md).
