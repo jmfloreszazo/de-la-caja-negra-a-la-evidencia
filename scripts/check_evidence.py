@@ -66,6 +66,8 @@ def validate_live_provenance():
             expected={
                 40901043531:{'markdown','diagrams','links, es/en sync, generated files'},
                 40901043412:{'offline','native','podman'},
+                40919268337:{'postgres-evidence'},
+                40919773614:{'postgres-evidence'},
             }.get(run_id,set())
             if not expected.issubset({j['name'] for j in jobs if j['conclusion']=='success'}):
                 errors.append('CI run '+str(run_id)+' is missing a required successful job')

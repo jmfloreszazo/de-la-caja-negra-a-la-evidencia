@@ -37,6 +37,8 @@ The password and port are **local development-only**. Never use these credential
 
 This is a **synthetic PostgreSQL/Python experimental candidate**. Its results are not a statement that a mainframe's MIPS, CICS/Db2 transactions, durability under power loss or cloud failover have been matched. Nor is this cross-engine equality proof: the .NET 10 PostgreSQL candidate, equivalence to the SQLite baseline and full fault matrix remain open.
 
+[Verified E1a job](https://github.com/jmfloreszazo/de-la-caja-negra-a-la-evidencia/actions/runs/40919268337) and [verified E1b job](https://github.com/jmfloreszazo/de-la-caja-negra-a-la-evidencia/actions/runs/40919773614) produce downloadable CI evidence. Both are branch test results, not part of the earlier v2026.10.29 release.
+
 See [E1 acceptance gates](../../docs/EXPERIMENT_ROADMAP.md). `evidence/claims.json` must continue to classify E1 as **designed, not fully executed** until those gates pass and a reviewer approves the promotion.
 
 PostgreSQL describes `40001` as a serialization failure and `40P01` as a deadlock; both require careful whole-transaction retry, not replaying a failed statement. The authoritative documentation is [PostgreSQL 16: serialization failure handling](https://www.postgresql.org/docs/16/mvcc-serialization-failure-handling.html).

@@ -81,12 +81,40 @@
       "protocol": null
     },
     {
+      "id": "E1A",
+      "status": "ci_verified",
+      "es": "PostgreSQL real: locks, deadlock 40P01, write skew 40001 y oráculo",
+      "en": "Real PostgreSQL: row locks, 40P01 deadlock, 40001 write skew and independent oracle",
+      "scope_es": "Prueba sintética en Linux/Podman, no benchmark ni implementación bancaria productiva. El conjunto E1 aún no está completo.",
+      "scope_en": "Synthetic Linux/Podman test, not a performance benchmark or production banking system. E1 remains incomplete.",
+      "evidence": {
+        "kind": "github_actions",
+        "run_id": 40919268337,
+        "head_sha": "29e0c010372b72e773b94151be99877debc56f2b"
+      },
+      "protocol": null
+    },
+    {
+      "id": "E1B",
+      "status": "ci_verified",
+      "es": "Candidato .NET 10/Npgsql: paridad de estados y fallos PostgreSQL",
+      "en": ".NET 10/Npgsql candidate: PostgreSQL state and failure parity",
+      "scope_es": "Paridad diferencial del subconjunto probado frente al candidato Python; no acredita todo el laboratorio SQLite ni SQL Server.",
+      "scope_en": "Differential parity for the tested subset versus the Python candidate; does not cover the entire SQLite lab or SQL Server.",
+      "evidence": {
+        "kind": "github_actions",
+        "run_id": 40919773614,
+        "head_sha": "937f0f87ddbd630def1fd1c3d4e410520b93f9d9"
+      },
+      "protocol": null
+    },
+    {
       "id": "E1",
       "status": "designed_not_executed",
       "es": "Bloqueo por fila, deadlocks y write skew en SQL",
       "en": "SQL row locks, deadlocks and write skew",
-      "scope_es": "PostgreSQL/SQL Server sin ejecución E1 validada",
-      "scope_en": "PostgreSQL/SQL Server E1 has no validated execution",
+      "scope_es": "E1a (PostgreSQL/Python) y E1b (.NET 10/Npgsql) están validados; E1 completa sigue pendiente de equivalencia total y segundo motor SQL.",
+      "scope_en": "E1a (PostgreSQL/Python) and E1b (.NET 10/Npgsql) passed; complete E1 still needs full parity and a second SQL engine.",
       "evidence": null,
       "protocol": "lab/docs/EXPERIMENT_PROTOCOL.md"
     },

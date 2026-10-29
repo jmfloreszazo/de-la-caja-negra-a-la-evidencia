@@ -4,8 +4,8 @@ This is an **engineering execution plan**, not a new book edition. Every experim
 
 | Phase | Work | Exit gate | State |
 | --- | --- | --- | --- |
-| E1a | PostgreSQL 16 using Podman: row locks, real deadlock, serialization anomaly, pool exhaustion, persisted oracle | Real CI execution; negative controls must fail when corrupted | Implemented in PR, CI pending |
-| E1b | Port the transactional candidate to .NET 10 (Npgsql); compare original synthetic workload | Differential persisted-state, failure and concurrency tests under real PostgreSQL | Implemented in PR, CI pending; original SQLite test-suite parity remains to review |
+| E1a | PostgreSQL 16 using Podman: row locks, real deadlock, serialization anomaly, pool exhaustion, persisted oracle | Real CI execution; negative controls must fail when corrupted | [PASS](https://github.com/jmfloreszazo/de-la-caja-negra-a-la-evidencia/actions/runs/40919268337) on PostgreSQL 16.13 |
+| E1b | Port the transactional candidate to .NET 10 (Npgsql); compare original synthetic workload | Differential persisted-state, failure and concurrency tests under real PostgreSQL | [PASS](https://github.com/jmfloreszazo/de-la-caja-negra-a-la-evidencia/actions/runs/40919773614) for tested subset; full SQLite parity remains |
 | E1c | Repeat with SQL Server, isolating vendor-specific semantics | Deadlock/timeout/unique-key retry protocol and isolation documented | Not implemented |
 | E2 | Orleans grains keyed by account coordinating the same durable ledger | Same E1 functional verdicts; hot-key distributions with quantified saturation | Not implemented |
 | E3 | Azure vs on-prem/hybrid on a **filled and approved** capacity contract | Open-loop offered load, committed TPS, p99, fail-one-node, durability and cost; never MIPS-to-vCPU extrapolation | Not implemented |
@@ -19,6 +19,6 @@ This is an **engineering execution plan**, not a new book edition. Every experim
 3. Use an independent read-only oracle that does not share the candidate's decision function.
 4. Preserve existing benchmark constraints: `lab/performance-contract.json` is `UNCONFIGURED`; it must not be converted to PASS based on synthetic local runs.
 5. No status promotion for E1–E4 and no release without a complete acceptance record and editorial approval.
-6. E1a validates PostgreSQL behavior using Python harnesses; it does not yet prove a .NET 10 port or SQL Server parity.
+6. E1a validates PostgreSQL behavior using a Python harness; E1b validates an independent .NET 10/Npgsql candidate on a controlled subset. Neither proves SQL Server parity or production/mainframe capacity.
 
 See [E1 protocol](../lab/docs/EXPERIMENT_PROTOCOL.md) and [ES/EN evidence matrices](EVIDENCE.md).
