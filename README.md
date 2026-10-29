@@ -20,6 +20,8 @@ An open book and a runnable lab on how to modernize COBOL systems without bettin
 
 ## Read
 
+[PDF editions and release process](docs/PDF.md) — PDF previews are available as PR workflow artifacts; official downloads appear on tagged releases after merge.
+
 | | Chapter by chapter | Whole book on one page |
 |---|---|---|
 | English | [book/en](book/en/README.md) | [book/en.md](book/en.md) |

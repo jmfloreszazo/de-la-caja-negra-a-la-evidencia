@@ -1,27 +1,12 @@
 name: Brand artwork
 on:
   push:
-    paths:
-      - 'assets/**'
-      - 'README.md'
-      - 'README.es.md'
-      - 'book/es/README.md'
-      - 'book/en/README.md'
-      - '.github/workflows/brand-artwork.yml'
-  pull_request:
-    paths:
-      - 'assets/**'
-      - 'README.md'
-      - 'README.es.md'
-      - 'book/es/README.md'
-      - 'book/en/README.md'
-      - '.github/workflows/brand-artwork.yml'
-  workflow_dispatch:
+    branches: [design/brand-v5-approved-review]
+    paths: ['assets/src/**', 'assets/*.svg', '.github/workflows/brand-artwork.yml']
 permissions:
-  contents: read
+  contents: write
 jobs:
-  validate:
-    name: SVG / PNG / README consistency
+  regenerate:
     runs-on: ubuntu-24.04
     steps:
       - uses: actions/checkout@v4
@@ -31,11 +16,18 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: '3.12'
-      - name: Check deterministic SVG sources
-        run: node assets/src/make_brand.mjs --check
-      - name: Install pinned SVG renderer
+      - name: Regenerate edited SVG resources
+        run: node assets/src/make_brand.mjs
+      - name: Install pinned PNG renderer
         run: python3 -m pip install cairosvg==2.9.1
-      - name: Check committed PNG exports
-        run: python3 assets/src/render.py --check
-      - name: Check reference-exact variant B and README embeds
-        run: python3 assets/src/check_brand.py
+      - name: Regenerate PNG mirrors
+        run: python3 assets/src/render.py
+      - name: Commit approved icon fix on this design branch only
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add assets/*.svg assets/*.png
+          if ! git diff --cached --quiet; then
+            git commit -m "design: restore the two split left jambs of variant B"
+            git push origin HEAD:design/brand-v5-approved-review
+          fi

@@ -6,10 +6,37 @@ permissions:
   contents: write
 jobs:
   edition:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
     steps:
       - uses: actions/checkout@v4
-      - run: python3 scripts/check.py
-      - env:
+        with:
+          fetch-depth: 0
+      - name: Restrict releases to commits already merged into main
+        run: |
+          git fetch origin main
+          git merge-base --is-ancestor "$GITHUB_SHA" "origin/main" || {
+            echo "::error::Only tagged commits already in main may publish a release"
+            exit 1
+          }
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Check content before publishing
+        run: python3 scripts/check.py
+      - name: Install PDF runtime and fonts
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y pandoc fonts-dejavu-core libpango-1.0-0 libpangocairo-1.0-0
+          python3 -m pip install weasyprint==68.0 pypdf==5.9.0
+      - name: Generate both complete illustrated PDFs
+        run: python3 scripts/build_pdf.py --lang all
+      - name: Publish ES/EN Markdown and PDF as downloadable release assets
+        env:
           GH_TOKEN: ${{ github.token }}
-        run: gh release create "$GITHUB_REF_NAME" book/es.md book/en.md --title "$GITHUB_REF_NAME" --notes-file CHANGELOG.md
+        run: |
+          gh release create "$GITHUB_REF_NAME" \
+            book/es.md book/en.md \
+            dist/de-la-caja-negra-a-la-evidencia-es.pdf \
+            dist/from-black-box-to-evidence-en.pdf \
+            --title "$GITHUB_REF_NAME" --notes-file CHANGELOG.md

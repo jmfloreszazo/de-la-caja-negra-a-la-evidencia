@@ -66,12 +66,14 @@ for name in ["mark-512.png", "cover-es.png", "cover-en.png", "social-preview.png
     require((ASSETS / name).is_file(), f"Missing PNG: {name}")
 
 # Variant B is based on the approved image, NOT on the dimensional main symbol.
-# A door gap is mandatory: the upper and lower frame strokes are separate.
+# A door gap is mandatory: both left and right jambs must stop above and below the red line.
 for variant in ("mark.svg", "icon-b-dark.svg"):
     source = read(ASSETS / variant)
-    require('M194 77 L248 108 V176' in source, f"Missing upper door segment: {variant}")
-    require('M248 218 V272 L194 307' in source, f"Missing lower door segment: {variant}")
+    require('M194 176 V77 L248 108 V176' in source, f"Missing upper door segment: {variant}")
+    require('M194 218 V307 L248 272 V218' in source, f"Missing lower door segment: {variant}")
     require('M193 197 H369' in source, f"Missing red exit line: {variant}")
+    require('M194 176 V77' in source and 'M194 218 V307' in source,
+            f"Missing the two separate LEFT door jambs: {variant}")
     require('M294 150' not in source, f"Unexpected closing frame: {variant}")
 
 # 16+ SVG units of clear separation between the painted red stroke and each

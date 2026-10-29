@@ -20,6 +20,8 @@ Un libro abierto y un laboratorio ejecutable sobre cómo modernizar sistemas COB
 
 ## Leer
 
+[Ediciones PDF y proceso de publicación](docs/PDF.md) — los PDF de prueba están disponibles en los artefactos de la PR; la descarga oficial llegará con las releases etiquetadas tras el merge.
+
 | | Capítulo a capítulo | El libro entero en una página |
 |---|---|---|
 | Español (original) | [book/es](book/es/README.md) | [book/es.md](book/es.md) |

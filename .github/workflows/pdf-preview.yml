@@ -1,0 +1,39 @@
+name: Book PDF preview
+on:
+  pull_request:
+    paths:
+      - 'book/**'
+      - 'assets/cover-*.png'
+      - 'scripts/build.py'
+      - 'scripts/build_pdf.py'
+      - '.github/workflows/pdf-preview.yml'
+      - '.github/workflows/release.yml'
+      - 'docs/PDF.md'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  build-pdfs:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Check generated Markdown and bilingual consistency
+        run: python3 scripts/check.py
+      - name: Install PDF runtime and fonts
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y pandoc fonts-dejavu-core libpango-1.0-0 libpangocairo-1.0-0
+          python3 -m pip install weasyprint==68.0 pypdf==5.9.0
+      - name: Compile full illustrated ES and EN editions
+        run: python3 scripts/build_pdf.py --lang all
+      - name: Upload both PDF previews (NOT a release)
+        uses: actions/upload-artifact@v4
+        with:
+          name: book-pdf-preview-es-en
+          path: dist/*.pdf
+          if-no-files-found: error
+          retention-days: 14
