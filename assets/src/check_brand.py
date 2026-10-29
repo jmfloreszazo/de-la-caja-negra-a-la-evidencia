@@ -65,6 +65,16 @@ for lang, title, word in [
 for name in ["mark-512.png", "cover-es.png", "cover-en.png", "social-preview.png"]:
     require((ASSETS / name).is_file(), f"Missing PNG: {name}")
 
+# Variant B must retain its complete left door jamb, visible even at avatar size.
+# This shape separates the black-box icon from a generic exit arrow.
+for name in (
+    "mark.svg", "icon-b-dark.svg",
+    "logo-es-light.svg", "logo-es-dark.svg",
+    "logo-en-light.svg", "logo-en-dark.svg",
+):
+    require("L294 394 L294 150" in read(ASSETS / name),
+            f"Missing variant B's black vertical door jamb: {name}")
+
 require(read(ASSETS / "symbol-primary.svg") != read(ASSETS / "mark.svg"),
         "Primary symbol and B icon must remain distinct assets")
 
