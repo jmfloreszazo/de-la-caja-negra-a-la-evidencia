@@ -2,6 +2,6 @@
  <path d="M53 156 L117 188 L117 392 L53 355 Z" fill="#F3F3F1"/>
  <path d="M117 188 L270 117 L270 320 L117 392 Z" fill="#F3F3F1"/>
  <path d="M53 156 L206 85 L270 117 L270 320 L117 392 L53 355 Z" fill="none" stroke="#F3F3F1" stroke-width="3"/>
- <path d="M294 150 L338 130 L338 236 M338 303 L338 371 L294 394 L294 303" fill="none" stroke="#F3F3F1" stroke-width="13" stroke-linecap="square"/>
+ <path d="M294 150 L338 130 L338 236 M338 303 L338 371 L294 394 L294 150" fill="none" stroke="#F3F3F1" stroke-width="13" stroke-linecap="square"/>
  <path d="M265 270 H430" stroke="#D9232E" stroke-width="14" stroke-linecap="round"/>
  <circle cx="411" cy="270" r="18" fill="#D9232E"/><path d="M445 245 L485 270 L445 295 Z" fill="#D9232E"/></g></svg>
