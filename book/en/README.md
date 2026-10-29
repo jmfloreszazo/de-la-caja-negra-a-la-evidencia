@@ -2,7 +2,7 @@
 
 [Español](../es/README.md) · **English**
 
-<p align="center"><img src="../../assets/cover-en.png" alt="Cover: From Black Box to Evidence" width="360"></p>
+<p align="center"><img src="../../assets/cover-en.svg" alt="Cover: From Black Box to Evidence" width="360"></p>
 
 **Modernizing COBOL beyond translation: AI agents, architecture patterns, transactions and verifiable oracles.**
 

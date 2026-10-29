@@ -1,11 +1,11 @@
+# From Black Box to Evidence
+
 <p align="center">
   <picture>
-    <source media="(prefers-color-scheme: dark)" srcset="assets/logo-en-dark.svg">
-    <img src="assets/logo-en-light.svg" alt="From Black Box to Evidence" width="560">
+    <source media="(prefers-color-scheme: dark)" srcset="assets/icon-b-dark.svg">
+    <img src="assets/mark.svg" alt="Variant B · black box, verification gate and red evidence trail" width="150">
   </picture>
 </p>
-
-# From Black Box to Evidence
 
 **English** · [Español](README.es.md)
 
@@ -19,6 +19,8 @@ José María Flores Zazo · [jmfloreszazo.com](https://jmfloreszazo.com) · Edit
 An open book and a runnable lab on how to modernize COBOL systems without betting the business on an equivalence we cannot demonstrate: what to preserve, which pattern replaces each mainframe guarantee, how to use AI agents without handing them authority and how to approach mainframe capacity on Azure or on your own infrastructure. It is open because a book that argues for evidence cannot ask to be believed on faith.
 
 ## Read
+
+[PDF editions and release process](docs/PDF.md) — PDF previews are available as PR workflow artifacts; official downloads appear on tagged releases after merge.
 
 | | Chapter by chapter | Whole book on one page |
 |---|---|---|

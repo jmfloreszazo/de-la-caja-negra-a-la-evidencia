@@ -1,11 +1,11 @@
+# De la caja negra a la evidencia
+
 <p align="center">
   <picture>
-    <source media="(prefers-color-scheme: dark)" srcset="assets/logo-es-dark.svg">
-    <img src="assets/logo-es-light.svg" alt="De la caja negra a la evidencia" width="560">
+    <source media="(prefers-color-scheme: dark)" srcset="assets/icon-b-dark.svg">
+    <img src="assets/mark.svg" alt="Icono variante B: caja negra, puerta de verificación y rastro rojo de evidencia" width="150">
   </picture>
 </p>
-
-# De la caja negra a la evidencia
 
 [English](README.md) · **Español**
 
@@ -19,6 +19,8 @@ José María Flores Zazo · [jmfloreszazo.com](https://jmfloreszazo.com) · Edic
 Un libro abierto y un laboratorio ejecutable sobre cómo modernizar sistemas COBOL sin apostar el negocio a una equivalencia que no sabemos demostrar: qué conservar, qué patrón sustituye cada garantía del mainframe, cómo usar agentes de IA sin regalarles autoridad y cómo acercarse a la capacidad de un mainframe en Azure o en infraestructura propia. Está en abierto porque un libro que defiende la evidencia no puede pedir que se le crea por fe.
 
 ## Leer
+
+[Ediciones PDF y proceso de publicación](docs/PDF.md) — los PDF de prueba están disponibles en los artefactos de la PR; la descarga oficial llegará con las releases etiquetadas tras el merge.
 
 | | Capítulo a capítulo | El libro entero en una página |
 |---|---|---|

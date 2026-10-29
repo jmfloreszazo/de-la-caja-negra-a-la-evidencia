@@ -1,0 +1,42 @@
+name: Brand artwork
+on:
+  push:
+    paths:
+      - 'assets/**'
+      - 'README.md'
+      - 'README.es.md'
+      - 'book/es/README.md'
+      - 'book/en/README.md'
+      - '.github/workflows/brand-artwork.yml'
+  pull_request:
+    paths:
+      - 'assets/**'
+      - 'README.md'
+      - 'README.es.md'
+      - 'book/es/README.md'
+      - 'book/en/README.md'
+      - '.github/workflows/brand-artwork.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  validate:
+    name: SVG / PNG / README consistency
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v5
+        with:
+          node-version: '22'
+          package-manager-cache: false
+      - uses: actions/setup-python@v6
+        with:
+          python-version: '3.12'
+      - name: Check deterministic SVG sources
+        run: node assets/src/make_brand.mjs --check
+      - name: Install pinned SVG renderer
+        run: python3 -m pip install cairosvg==2.9.1
+      - name: Check committed PNG exports
+        run: python3 assets/src/render.py --check
+      - name: Check version 5 brand references and gate geometry
+        run: python3 assets/src/check_brand.py

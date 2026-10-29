@@ -2,7 +2,7 @@
 
 **Español** · [English](../en/README.md)
 
-<p align="center"><img src="../../assets/cover-es.png" alt="Portada: De la caja negra a la evidencia" width="360"></p>
+<p align="center"><img src="../../assets/cover-es.svg" alt="Portada: De la caja negra a la evidencia" width="360"></p>
 
 **Modernizar COBOL más allá de la traducción: agentes de IA, patrones de arquitectura, transacciones y oráculos verificables.**
 
