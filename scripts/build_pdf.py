@@ -97,6 +97,7 @@ def build(lang):
             +html.escape(title)+"</title><style>"+CSS+"</style></head><body>"
             +"<section class='cover'><img src='../assets/cover-"+lang+".png' alt='"
             +html.escape(title)+"'></section>"+body.group(1)+"</body></html>")
+    markup=markup.replace('content:"CONTENTS / ÍNDICE"','content:"'+toc.upper()+'"')
     OUT.mkdir(parents=True,exist_ok=True)
     target=OUT/filename
     HTML(string=markup,base_url=str(BOOK),url_fetcher=offline_fetcher).write_pdf(str(target))
