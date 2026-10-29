@@ -20,7 +20,9 @@ for name,controls in EXPECTED.items():
     assert record["classification"]=="EXECUTED_SNAPSHOT_NOT_MAINFRAME_BENCHMARK"
     assert data["status"]=="PASS"
     assert len(data["controls"])==controls
-    assert all(x["status"]=="PASS" for x in data["controls"].values())
+    # E1a emits structured records; E1b emits concise PASS strings.
+    assert all((v=="PASS" if isinstance(v,str) else v.get("status")=="PASS")
+               for v in data["controls"].values())
     for relative,expected in data["sourceSha256"].items():
         original=ROOT/"lab"/"e1_pg"/relative
         assert original.is_file(), original
@@ -32,6 +34,6 @@ for name,controls in EXPECTED.items():
         assert data["controls"]["oracleRejectsCorruptLedger"]["detected"]
     else:
         assert data["parity"]["persistedStateEqual"] is True
-        assert data["controls"]["candidateParity"]["status"]=="PASS"
+        assert data["controls"]["candidateParity"]=="PASS"
     print(name,": verified snapshot from run",record["runId"],"with",controls,"controls")
 print("E1 OBSERVATION SNAPSHOTS: PASS")
