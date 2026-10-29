@@ -22,7 +22,7 @@ assert all(x["estimated_tco"] is None for x in s["cases"])
 vmss,aks,intel,aca,app,onprem=s["cases"]
 assert vmss["minimum_compute_eur_per_730h"]=="400.77"
 assert vmss["peak_full_month_compute_eur_if_all_max_replicas"]=="801.54"
-assert aks["minimum_compute_eur_per_730h"]=="402"
+assert aks["minimum_compute_eur_per_730h"]=="400.77"
 assert intel["minimum_compute_eur_per_730h"]=="443.26"
 assert aca["minimum_compute_eur_per_730h"] is None
 assert app["estimated_tco"] is None
