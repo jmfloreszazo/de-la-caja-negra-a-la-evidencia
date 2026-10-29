@@ -1,33 +1,27 @@
-# Brand assets
+# Visual identity · JMFLORESZAZO v5
 
-The visual identity of *From Black Box to Evidence* (*De la caja negra a la evidencia*), in the visual language of [jmfloreszazo.com](https://jmfloreszazo.com): networks of nodes and relations, and one single red accent that carries the meaning.
+This project uses the approved **dimensional black box → evidence trace → verification gate** as its primary artwork. Its **variant B** is the compact icon used immediately below the heading in both root READMEs, in avatars and in small spaces. The project's icon must never be mistaken for the author's personal trademark.
 
-**Concept.** A black box made of a mesh of nodes is the legacy system. One red trace runs through it, leaves the box through its border and ends in a red seal with a check mark: the Oracle Gate. A rule extracted from the black box and verified with evidence.
+The editorial palette follows the [Version 5.0 design principles](https://jmfloreszazo.com/version-5-0-architecting-whats-next/): paper white (`#F7F7F5`), charcoal (`#121315`), neutral grey and a single red accent (`#D9232E`).
 
-| File | Use |
-|---|---|
-| `mark.svg` · `mark-512.png` | Symbol: avatar, favicon, small spaces |
-| `logo-en-light.svg` · `logo-es-light.svg` | Logo on light backgrounds |
-| `logo-en-dark.svg` · `logo-es-dark.svg` | Logo on dark backgrounds |
-| `cover-en.png` · `cover-es.png` (and `.svg`) | Book cover, 1600 × 2400 |
-| `social-preview.png` (and `.svg`) | GitHub social preview, 1280 × 640, bilingual |
+| Asset | Usage |
+| --- | --- |
+| `symbol-primary.svg` | Approved dimensional primary symbol (cube, network, red evidence trace, gate) |
+| `mark.svg` / `icon-b-dark.svg` | Compact variant B icon in light / dark README themes |
+| `mark-512.png` | Variant B avatar export |
+| `cover-es.svg`, `cover-en.svg` and matching PNG | Spanish and English 1600 × 2400 book covers |
+| `logo-{es,en}-{light,dark}.svg` and matching PNG | Horizontal book lockups |
+| `social-preview.svg` and PNG | 1280 × 640 social media artwork |
 
-| Colour | Hex | Role |
-|---|---|---|
-| Ink | `#0B0D10` | Background, the black box |
-| Paper | `#F4F2EE` | Text on dark |
-| Red | `#E0262B` | The only accent: the trace and the gate |
-| Grey | `#9AA0A6` | Secondary text |
-| Node / edge | `#59606B` · `#2B3038` | The mesh |
-
-Typography: Noto Sans (Black, Bold, Regular, Light). All text in the SVG files is converted to paths, so they render the same everywhere without fonts.
-
-## Regenerate
+## Regenerate without absolute font or browser paths
 
 ```bash
-pip install fonttools playwright && playwright install chromium
-python3 assets/src/make_brand.py   # writes the SVG files (needs the Noto Sans CJK fonts)
-python3 assets/src/render.py       # exports the PNG files with Chromium
+node assets/src/make_brand.mjs
+python3 -m pip install cairosvg
+python3 assets/src/render.py
+node assets/src/make_brand.mjs --check
 ```
 
-`render.py` uses a local Chromium path; change `executable_path` or remove it to use the one installed by Playwright.
+The SVG artwork is generated from a single deterministic file, `assets/src/make_brand.mjs`. PNG exports are derived and should never be edited separately. A browser is not necessary. Use SVG for GitHub previews so dark/light rendering remains crisp and a PNG export cannot inadvertently show an older design.
+
+Typography uses the browser's Arial/Helvetica fallback, rather than a machine-specific font path. The source contains no proprietary font files.

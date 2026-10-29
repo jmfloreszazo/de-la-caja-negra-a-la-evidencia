@@ -1,11 +1,11 @@
+# From Black Box to Evidence
+
 <p align="center">
   <picture>
-    <source media="(prefers-color-scheme: dark)" srcset="assets/logo-en-dark.svg">
-    <img src="assets/logo-en-light.svg" alt="From Black Box to Evidence" width="560">
+    <source media="(prefers-color-scheme: dark)" srcset="assets/icon-b-dark.svg">
+    <img src="assets/mark.svg" alt="Variant B · black box, verification gate and red evidence trail" width="150">
   </picture>
 </p>
-
-# From Black Box to Evidence
 
 **English** · [Español](README.es.md)
 

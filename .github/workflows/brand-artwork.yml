@@ -1,0 +1,36 @@
+name: Brand artwork
+on:
+  push:
+    branches:
+      - design/align-jmfloreszazo-v5
+    paths:
+      - 'assets/src/**'
+      - 'assets/*.svg'
+      - '.github/workflows/brand-artwork.yml'
+permissions:
+  contents: write
+jobs:
+  regenerate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: true
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Verify committed vector sources
+        run: node assets/src/make_brand.mjs --check
+      - name: Install SVG rasteriser
+        run: python3 -m pip install cairosvg
+      - name: Update PNG exports in design branch only
+        run: python3 assets/src/render.py
+      - name: Commit raster exports
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add assets/*.png
+          if ! git diff --cached --quiet; then
+            git commit -m "design: regenerate PNG exports for approved v5 art [skip ci]"
+            git push origin HEAD:design/align-jmfloreszazo-v5
+          fi

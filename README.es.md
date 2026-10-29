@@ -1,11 +1,11 @@
+# De la caja negra a la evidencia
+
 <p align="center">
   <picture>
-    <source media="(prefers-color-scheme: dark)" srcset="assets/logo-es-dark.svg">
-    <img src="assets/logo-es-light.svg" alt="De la caja negra a la evidencia" width="560">
+    <source media="(prefers-color-scheme: dark)" srcset="assets/icon-b-dark.svg">
+    <img src="assets/mark.svg" alt="Variant B · black box, verification gate and red evidence trail" width="150">
   </picture>
 </p>
-
-# De la caja negra a la evidencia
 
 [English](README.md) · **Español**
 
