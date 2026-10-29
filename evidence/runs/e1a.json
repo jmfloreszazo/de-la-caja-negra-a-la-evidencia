@@ -1,0 +1,142 @@
+{
+  "schemaVersion": 1,
+  "experiment": "E1a",
+  "runId": 40921291469,
+  "sourceCommit": "9118cb077137649e79b675a14255ffa3145ec509",
+  "jobId": 123614889992,
+  "source": "GitHub Actions job log, parsed JSON emitted by lab/e1_pg test harness",
+  "url": "https://github.com/jmfloreszazo/de-la-caja-negra-a-la-evidencia/actions/runs/40921291469",
+  "classification": "EXECUTED_SNAPSHOT_NOT_MAINFRAME_BENCHMARK",
+  "observation": {
+    "controls": {
+      "boundedLockTimeout": {
+        "observation": {
+          "elapsedMs": 277.666,
+          "last_sqlstate": "55P03",
+          "retries": 2,
+          "retry_sqlstates": [
+            "55P03",
+            "55P03"
+          ],
+          "status": "RETRY_EXHAUSTED"
+        },
+        "status": "PASS"
+      },
+      "commitWithoutResponse": {
+        "status": "PASS"
+      },
+      "deadlockVictimRetried": {
+        "observations": [
+          {
+            "elapsedMs": 1014.81,
+            "retries": 0,
+            "retry_sqlstates": [],
+            "status": "COMMITTED"
+          },
+          {
+            "elapsedMs": 1043.642,
+            "retries": 1,
+            "retry_sqlstates": [
+              "40P01"
+            ],
+            "status": "COMMITTED"
+          }
+        ],
+        "status": "PASS"
+      },
+      "exceptionRollback": {
+        "status": "PASS"
+      },
+      "idempotencyAndConflict": {
+        "replies": [
+          "COMMITTED",
+          "DUPLICATE_COMMITTED",
+          "DUPLICATE_COMMITTED",
+          "DUPLICATE_COMMITTED",
+          "DUPLICATE_COMMITTED",
+          "DUPLICATE_COMMITTED",
+          "DUPLICATE_COMMITTED",
+          "DUPLICATE_COMMITTED"
+        ],
+        "status": "PASS"
+      },
+      "independentOracle": {
+        "invariants": {
+          "balancedPostings": true,
+          "conserved": true,
+          "noPostingsForRejection": true,
+          "nonnegative": true,
+          "outboxAtomic": true,
+          "projectionAgrees": true,
+          "twoPostingsPerCommit": true
+        },
+        "status": "PASS"
+      },
+      "oracleRejectsCorruptLedger": {
+        "detected": [
+          "balancedPostings",
+          "projectionAgrees",
+          "twoPostingsPerCommit"
+        ],
+        "status": "PASS"
+      },
+      "poolExhaustionBounded": {
+        "maxConnections": 2,
+        "status": "PASS"
+      },
+      "processCrashRollback": {
+        "status": "PASS"
+      },
+      "rowLockOverdraft": {
+        "observations": [
+          {
+            "elapsedMs": 25.221,
+            "retries": 0,
+            "retry_sqlstates": [],
+            "status": "REJECTED"
+          },
+          {
+            "elapsedMs": 15.805,
+            "retries": 0,
+            "retry_sqlstates": [],
+            "status": "COMMITTED"
+          }
+        ],
+        "status": "PASS"
+      },
+      "writeSkewPrevented": {
+        "readCommittedNegative": {
+          "decisions": [
+            "DISABLED",
+            "DISABLED"
+          ],
+          "remainingActive": 0,
+          "retries": []
+        },
+        "serializable": {
+          "decisions": [
+            "SKIPPED",
+            "DISABLED"
+          ],
+          "remainingActive": 1,
+          "retries": [
+            "40001"
+          ]
+        },
+        "status": "PASS"
+      }
+    },
+    "elapsedSeconds": 2.38,
+    "environment": "Linux-7.0.0-1017-azure-x86_64-with-glibc2.39",
+    "experiment": "E1a synthetic PostgreSQL concurrency and independent-oracle slice",
+    "limitations": "Not E1 complete; not .NET 10 port; no mainframe SLA or capacity claim.",
+    "postgresVersion": "16.13 (Debian 16.13-1.pgdg13+1)",
+    "sourceSha256": {
+      "ledger.py": "0a037b32a84d5dc0b202aee25aa1e46346ee1dba321a0b988d7efda774ab68da",
+      "oracle.py": "3f2874842e9febcc84584bf4a266920028840ccac9d404f75cb9f4363fb4fc09",
+      "schema.sql": "76715aabaacc5d5486dc1ac186adc10c5143d8e0d5c73a4db71ed262ff66c3b9",
+      "test_e1.py": "62cfb772dd53a549ddeca990be42f5455eb98c3b7e497bdfea47effe76181eb5"
+    },
+    "status": "PASS"
+  }
+}
