@@ -1,6 +1,6 @@
 **English** · [Español](../../es/parte-6-laboratorio/README.md)
 
-[← Chapter 25 · Azure or a huge machine at the customer's site](../part-5-capacity/25-azure-or-a-huge-machine-at-the-customer-s-site.md) · [Contents](../README.md) · [Chapter 26 · A local lab you can understand →](26-a-local-lab-you-can-understand.md)
+[← Chapter 25 bis · On-prem, Azure and WAN](../part-5-capacity/25a-mainframe-on-prem-azure-and-banking-network-infrastructure.md) · [Contents](../README.md) · [Chapter 26 · A local lab you can understand →](26-a-local-lab-you-can-understand.md)
 
 # Part VI · The lab: from demo to evidence
 
@@ -15,4 +15,4 @@ Everything above, in code you can run, read in an afternoon and break on purpose
 
 ---
 
-[← Chapter 25 · Azure or a huge machine at the customer's site](../part-5-capacity/25-azure-or-a-huge-machine-at-the-customer-s-site.md) · [Contents](../README.md) · [Chapter 26 · A local lab you can understand →](26-a-local-lab-you-can-understand.md)
+[← Chapter 25 bis · On-prem, Azure and WAN](../part-5-capacity/25a-mainframe-on-prem-azure-and-banking-network-infrastructure.md) · [Contents](../README.md) · [Chapter 26 · A local lab you can understand →](26-a-local-lab-you-can-understand.md)

@@ -1,6 +1,6 @@
 **Español** · [English](../../en/part-6-lab/README.md)
 
-[← Capítulo 25 · Azure o una máquina enorme en el cliente](../parte-5-capacidad/25-azure-o-una-maquina-enorme-en-el-cliente.md) · [Índice](../README.md) · [Capítulo 26 · Un laboratorio local que se puede entender →](26-un-laboratorio-local-que-se-puede-entender.md)
+[← Capítulo 25 bis · Infraestructura local, Azure y WAN](../parte-5-capacidad/25a-infraestructura-mainframe-local-azure-y-redes-bancarias.md) · [Índice](../README.md) · [Capítulo 26 · Un laboratorio local que se puede entender →](26-un-laboratorio-local-que-se-puede-entender.md)
 
 # Parte VI · El laboratorio: de la demo a la evidencia
 
@@ -15,4 +15,4 @@ Todo lo anterior, en código que puedes ejecutar, leer en una tarde y romper a p
 
 ---
 
-[← Capítulo 25 · Azure o una máquina enorme en el cliente](../parte-5-capacidad/25-azure-o-una-maquina-enorme-en-el-cliente.md) · [Índice](../README.md) · [Capítulo 26 · Un laboratorio local que se puede entender →](26-un-laboratorio-local-que-se-puede-entender.md)
+[← Capítulo 25 bis · Infraestructura local, Azure y WAN](../parte-5-capacidad/25a-infraestructura-mainframe-local-azure-y-redes-bancarias.md) · [Índice](../README.md) · [Capítulo 26 · Un laboratorio local que se puede entender →](26-un-laboratorio-local-que-se-puede-entender.md)

@@ -1,6 +1,6 @@
 **English** · [Español](../../es/parte-5-capacidad/25-azure-o-una-maquina-enorme-en-el-cliente.md)
 
-[← Chapter 24 · The benchmark that counts: load, contention, failure and cost](24-the-benchmark-that-counts-load-contention-failure-and-cost.md) · [Contents](../README.md) · [Part VI · The lab: from demo to evidence →](../part-6-lab/README.md)
+[← Chapter 24 · The benchmark that counts: load, contention, failure and cost](24-the-benchmark-that-counts-load-contention-failure-and-cost.md) · [Contents](../README.md) · [Chapter 25 bis · On-prem, Azure and WAN →](25a-mainframe-on-prem-azure-and-banking-network-infrastructure.md)
 
 # Chapter 25 · Azure or a huge machine at the customer's site
 
@@ -69,4 +69,4 @@ The selection criterion is not which one wins an isolated test. It is which one 
 
 ---
 
-[← Chapter 24 · The benchmark that counts: load, contention, failure and cost](24-the-benchmark-that-counts-load-contention-failure-and-cost.md) · [Contents](../README.md) · [Part VI · The lab: from demo to evidence →](../part-6-lab/README.md)
+[← Chapter 24 · The benchmark that counts: load, contention, failure and cost](24-the-benchmark-that-counts-load-contention-failure-and-cost.md) · [Contents](../README.md) · [Chapter 25 bis · On-prem, Azure and WAN →](25a-mainframe-on-prem-azure-and-banking-network-infrastructure.md)

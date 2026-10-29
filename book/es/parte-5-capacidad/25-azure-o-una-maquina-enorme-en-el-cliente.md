@@ -1,6 +1,6 @@
 **Español** · [English](../../en/part-5-capacity/25-azure-or-a-huge-machine-at-the-customer-s-site.md)
 
-[← Capítulo 24 · El benchmark que vale: carga, contención, fallo y coste](24-el-benchmark-que-vale-carga-contencion-fallo-y-coste.md) · [Índice](../README.md) · [Parte VI · El laboratorio: de la demo a la evidencia →](../parte-6-laboratorio/README.md)
+[← Capítulo 24 · El benchmark que vale: carga, contención, fallo y coste](24-el-benchmark-que-vale-carga-contencion-fallo-y-coste.md) · [Índice](../README.md) · [Capítulo 25 bis · Infraestructura local, Azure y WAN →](25a-infraestructura-mainframe-local-azure-y-redes-bancarias.md)
 
 # Capítulo 25 · Azure o una máquina enorme en el cliente
 
@@ -69,4 +69,4 @@ El criterio de elección no es cuál gana una prueba aislada. Es cuál satisface
 
 ---
 
-[← Capítulo 24 · El benchmark que vale: carga, contención, fallo y coste](24-el-benchmark-que-vale-carga-contencion-fallo-y-coste.md) · [Índice](../README.md) · [Parte VI · El laboratorio: de la demo a la evidencia →](../parte-6-laboratorio/README.md)
+[← Capítulo 24 · El benchmark que vale: carga, contención, fallo y coste](24-el-benchmark-que-vale-carga-contencion-fallo-y-coste.md) · [Índice](../README.md) · [Capítulo 25 bis · Infraestructura local, Azure y WAN →](25a-infraestructura-mainframe-local-azure-y-redes-bancarias.md)

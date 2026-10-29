@@ -67,8 +67,8 @@ def build(lang):
     title,filename,toc,final_chapter=EDITIONS[lang]
     original=(BOOK/f"{lang}.md").read_text(encoding="utf-8")
     headings=re.findall(r"^### (?:Capítulo|Chapter) \d+",original,re.M)
-    if len(headings)!=37:
-        raise ValueError(f"{lang}: expected 37 chapters; found {len(headings)}")
+    if len(headings)!=38:
+        raise ValueError(f"{lang}: expected 38 numbered/special chapters; found {len(headings)}")
     images=re.findall(rf"!\[[^]]*\]\((figures/{lang}/[^)]+\.png)\)",original)
     if len(images)!=41:
         raise ValueError(f"{lang}: expected 41 diagrams; found {len(images)}")

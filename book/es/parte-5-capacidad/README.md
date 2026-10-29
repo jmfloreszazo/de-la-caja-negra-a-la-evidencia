@@ -12,6 +12,7 @@ La pregunta que más preocupa al sacar una carga de un mainframe no es si el pro
 - [Capítulo 23 · Concurrencia que aprovecha la máquina](23-concurrencia-que-aprovecha-la-maquina.md)
 - [Capítulo 24 · El benchmark que vale: carga, contención, fallo y coste](24-el-benchmark-que-vale-carga-contencion-fallo-y-coste.md)
 - [Capítulo 25 · Azure o una máquina enorme en el cliente](25-azure-o-una-maquina-enorme-en-el-cliente.md)
+- [Capítulo 25 bis · Infraestructura frente a un mainframe actual: local, Azure y la red de oficinas](25a-infraestructura-mainframe-local-azure-y-redes-bancarias.md)
 
 ---
 
