@@ -36,12 +36,9 @@ jobs:
             git commit -m "design: restore vertical gate jamb in variant B icon"
             git push origin HEAD:design/brand-v5-approved-review
           fi
-      - name: Delete obsolete closed-PR branch
-        env:
-          GH_TOKEN: ${{ github.token }}
+      - name: Delete verified obsolete design branch
         run: |
-          test "$(gh api "repos/$GITHUB_REPOSITORY/pulls/1" --jq .state)" = "closed"
-          test "$(gh api "repos/$GITHUB_REPOSITORY/pulls/2" --jq .state)" = "open"
+          test "$GITHUB_REF_NAME" = "design/brand-v5-approved-review"
           if git ls-remote --exit-code --heads origin refs/heads/design/align-jmfloreszazo-v5 > /dev/null 2>&1; then
             git push origin --delete design/align-jmfloreszazo-v5
           fi
