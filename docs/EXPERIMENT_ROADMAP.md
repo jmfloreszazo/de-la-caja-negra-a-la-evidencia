@@ -12,6 +12,10 @@ This is an **engineering execution plan**, not a new book edition. Every experim
 | E4 | Agent candidate limited to write scope; independent gate and mutation-qualified comparisons | Proven source isolation, false accept/reject rates and human review cost; negative cases | Not implemented | [#10](https://github.com/jmfloreszazo/de-la-caja-negra-a-la-evidencia/issues/10) |
 | Reproduction | Linux/Windows/macOS, listings marked Illustrative, COMP-3/EBCDIC examples | Versioned repeatable commands and independent artifacts | Not implemented | [#11](https://github.com/jmfloreszazo/de-la-caja-negra-a-la-evidencia/issues/11) |
 
+## WAN and infrastructure evidence gate (E3)
+
+The [bilingual WAN field-measurement protocol](NETWORK_PROTOCOL.md) is a required part of issue [#9](https://github.com/jmfloreszazo/de-la-caja-negra-a-la-evidencia/issues/9). Its [deterministic network model](../lab/network/wan_model.py) is explicitly hypothetical and must not be used to promote E3. Compare branch-to-screen p50/p95/p99, TN3270 or HTTP paths, WAN loss, gateway hops and failover alongside ledger durability and accounting invariants.
+
 ## Decision log
 
 - **E1a:** PostgreSQL 16.13, real deadlock / write-skew / pool and independent-oracle tests — [CI PASS](https://github.com/jmfloreszazo/de-la-caja-negra-a-la-evidencia/actions/runs/40919268337).

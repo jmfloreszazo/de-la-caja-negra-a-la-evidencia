@@ -27,7 +27,7 @@ An open book and a runnable lab on how to modernize COBOL systems without bettin
 | English | [book/en](book/en/README.md) | [book/en.md](book/en.md) |
 | Español (original) | [book/es](book/es/README.md) | [book/es.md](book/es.md) |
 
-37 chapters in seven parts, an epilogue, seven annexes and 41 diagrams per language (C4, UML sequence, state and class, ER, gitGraph), drawn in Mermaid and published as images in the book's visual style. Both editions have exactly the same structure, and CI fails if they drift apart.
+38 chapters (including chapter 25 bis) in seven parts, an epilogue, seven annexes and 41 diagrams per language (C4, UML sequence, state and class, ER, gitGraph), drawn in Mermaid and published as images in the book's visual style. Both editions have exactly the same structure, and CI fails if they drift apart.
 
 ## Run the lab
 
@@ -80,7 +80,9 @@ Start with [CONTRIBUTING.md](CONTRIBUTING.md): paths by profile, a first contrib
 
 ## Evidence status
 
-[**Verifiable evidence matrix**](docs/EVIDENCE.md): real CI versus E1–E4 experiments not yet executed.
+[**Chapter 25 bis: on-premises, Azure and banking-branch WAN latency**](book/en/part-5-capacity/25a-mainframe-on-prem-azure-and-banking-network-infrastructure.md) · [E1a/E1b CI evidence JSON](evidence/runs/README.md) · [E3 WAN protocol](docs/NETWORK_PROTOCOL.md).
+
+[**Verifiable evidence matrix**](docs/EVIDENCE.md): real CI, verified E1a/E1b and partially verified overall E1 versus E2–E4 remaining open.
 
 **Verified in GitHub Actions:** [Book](https://github.com/jmfloreszazo/de-la-caja-negra-a-la-evidencia/actions/runs/40900252122), [Lab (offline, native, Podman)](https://github.com/jmfloreszazo/de-la-caja-negra-a-la-evidencia/actions/runs/40900252152), and [bilingual PDFs](https://github.com/jmfloreszazo/de-la-caja-negra-a-la-evidencia/actions/runs/40900252098).
 

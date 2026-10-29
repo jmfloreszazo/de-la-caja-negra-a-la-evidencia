@@ -27,13 +27,15 @@ Un libro abierto y un laboratorio ejecutable sobre cómo modernizar sistemas COB
 | Español (original) | [book/es](book/es/README.md) | [book/es.md](book/es.md) |
 | English | [book/en](book/en/README.md) | [book/en.md](book/en.md) |
 
-37 capítulos en siete partes, epílogo, siete anexos y 41 diagramas por idioma (C4, UML de secuencia, estados y clases, ER, gitGraph), escritos en Mermaid y publicados como imágenes con el estilo visual del libro. Las dos ediciones tienen exactamente la misma estructura y la CI falla si se separan.
+38 capítulos (incluido el capítulo 25 bis) en siete partes, epílogo, siete anexos y 41 diagramas por idioma (C4, UML de secuencia, estados y clases, ER, gitGraph), escritos en Mermaid y publicados como imágenes con el estilo visual del libro. Las dos ediciones tienen exactamente la misma estructura y la CI falla si se separan.
 
 ## Ruta rápida y evidencia
 
-[**Matriz de evidencia verificable**](docs/EVIDENCE.es.md): CI real frente a experimentos E1–E4 no ejecutados.
+[**Capítulo 25 bis: infraestructura local, Azure y latencia de oficinas bancarias**](book/es/parte-5-capacidad/25a-infraestructura-mainframe-local-azure-y-redes-bancarias.md) · [Evidencia E1a/E1b con JSON de CI](evidence/runs/README.es.md) · [Protocolo WAN E3](docs/NETWORK_PROTOCOL.es.md).
 
-¿Quieres recorrer el argumento sin leer los 37 capítulos de forma lineal? Sigue la [ruta de siete capítulos](docs/READING_PATH.es.md). El [registro editorial y de evidencias](docs/EDITORIAL_REVIEW.es.md) distingue lo comprobado de lo todavía hipotético.
+[**Matriz de evidencia verificable**](docs/EVIDENCE.es.md): CI real, E1a/E1b ejecutados y E1 global parcialmente verificado frente a E2–E4 pendientes.
+
+¿Quieres recorrer el argumento sin leer los 38 capítulos de forma lineal? Sigue la [ruta de siete capítulos](docs/READING_PATH.es.md). El [registro editorial y de evidencias](docs/EDITORIAL_REVIEW.es.md) distingue lo comprobado de lo todavía hipotético.
 
 La [CI del laboratorio](https://github.com/jmfloreszazo/de-la-caja-negra-a-la-evidencia/actions/runs/40900252152) ya ha ejecutado las pruebas offline, nativas y Podman en runners Linux. Esto no acredita todas las plataformas ni los experimentos E1–E4.
 
