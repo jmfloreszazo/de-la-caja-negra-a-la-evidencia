@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 620" width="1000" height="620" role="img"><g stroke-linejoin="round">
+ <path d="M126 172 L366 64 L594 150 L351 262 Z" fill="#222427"/>
+ <path d="M126 172 L351 262 L351 548 L126 455 Z" fill="#111214"/>
+ <path d="M351 262 L594 150 L594 432 L351 548 Z" fill="#1A1C1F"/>
+ <path d="M126 172 L366 64 L594 150 L594 432 L351 548 L126 455 Z" fill="none" stroke="#878B8E" stroke-width="2"/>
+ <path d="M126 172 L351 262 L594 150 M351 262 V548" fill="none" stroke="#C0C3C4" stroke-width="2"/>
+ <g stroke="#60666B" stroke-width="2" fill="none" opacity=".96"><line x1="368" y1="302" x2="417" y2="278"/><line x1="417" y1="278" x2="474" y2="324"/><line x1="474" y1="324" x2="533" y2="272"/><line x1="368" y1="302" x2="351" y2="365"/><line x1="351" y1="365" x2="415" y2="393"/><line x1="415" y1="393" x2="474" y2="324"/><line x1="415" y1="393" x2="474" y2="445"/><line x1="474" y1="445" x2="537" y2="392"/><line x1="537" y1="392" x2="533" y2="272"/><line x1="351" y1="365" x2="376" y2="448"/><line x1="376" y1="448" x2="474" y2="445"/><line x1="417" y1="278" x2="461" y2="232"/><line x1="461" y1="232" x2="533" y2="272"/><line x1="415" y1="393" x2="537" y2="392"/><line x1="474" y1="324" x2="537" y2="392"/></g>
+ <g fill="#888E92"><circle cx="368" cy="302" r="7.5"/><circle cx="417" cy="278" r="7.5"/><circle cx="474" cy="324" r="7.5"/><circle cx="533" cy="272" r="7.5"/><circle cx="351" cy="365" r="7.5"/><circle cx="415" cy="393" r="7.5"/><circle cx="474" cy="445" r="7.5"/><circle cx="537" cy="392" r="7.5"/><circle cx="376" cy="448" r="7.5"/><circle cx="461" cy="232" r="7.5"/></g>
+ <path d="M409 351 L481 414 L568 413 L693 351 L832 351" fill="none" stroke="#D9232E" stroke-width="11" stroke-linecap="round" stroke-linejoin="round"/>
+ <g fill="#D9232E"><circle cx="409" cy="351" r="13"/><circle cx="481" cy="414" r="13"/><circle cx="693" cy="351" r="14"/></g>
+ <path d="M661 199 L759 151 L759 301 M759 402 V485 L661 535 L661 401" fill="none" stroke="#151719" stroke-width="12" stroke-linecap="square"/>
+ <path d="M832 327 L867 351 L832 375 Z" fill="#D9232E"/></g></svg>
