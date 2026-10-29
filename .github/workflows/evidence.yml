@@ -5,6 +5,7 @@ on:
       - 'evidence/**'
       - 'docs/EVIDENCE*.md'
       - 'scripts/check_evidence.py'
+      - 'scripts/check_m1_observations.py'
       - '.github/workflows/evidence.yml'
   pull_request:
     paths:
@@ -32,3 +33,6 @@ jobs:
       - env:
           GITHUB_TOKEN: ${{ github.token }}
         run: python3 scripts/check_evidence.py --online
+      - env:
+          GITHUB_TOKEN: ${{ github.token }}
+        run: python3 scripts/check_m1_observations.py --online
