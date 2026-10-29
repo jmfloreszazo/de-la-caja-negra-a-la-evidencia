@@ -1,0 +1,44 @@
+name: Dated infrastructure pricing
+on:
+  pull_request:
+    paths:
+      - 'lab/cost/**'
+      - 'docs/PRICING*.md'
+      - 'docs/EXPERIMENT_ROADMAP.md'
+      - '.github/workflows/infrastructure-pricing.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  assumptions:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-python@v6
+        with:
+          python-version: '3.12'
+      - name: Reject fabricated TCO and missing observation dates
+        run: python3 lab/cost/test_cost_model.py
+      - name: Export comparable compute-only scenarios
+        run: |
+          mkdir -p lab/results/pricing
+          python3 lab/cost/cost_model.py > lab/results/pricing/component-costs.json
+      - uses: actions/upload-artifact@v6
+        with:
+          name: illustrative-dated-cost-comparison-not-tco
+          path: lab/results/pricing/component-costs.json
+          if-no-files-found: error
+  official-retail-reference:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-python@v6
+        with:
+          python-version: '3.12'
+      - name: Query dated Azure Retail API observation without changing authored prices
+        run: python3 lab/cost/fetch_azure_prices.py
+      - uses: actions/upload-artifact@v6
+        with:
+          name: azure-retail-api-timestamped-observation
+          path: lab/results/pricing/azure-retail-api-observation.json
+          if-no-files-found: error

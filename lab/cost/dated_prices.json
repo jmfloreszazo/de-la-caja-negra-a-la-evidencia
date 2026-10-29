@@ -1,0 +1,112 @@
+{
+  "schema_version": 1,
+  "captured_on": "2026-10-29",
+  "monetary_policy": "Never combine different currencies; never treat compute-only as TCO; no inferred cloud-mainframe parity.",
+  "cloud": {
+    "provider": "Microsoft Azure",
+    "region": "westeurope",
+    "os": "Linux",
+    "price_type": "pay_as_you_go",
+    "currency": "EUR",
+    "source_published": "2026-10-06",
+    "source_checked_on": "2026-10-29",
+    "source_type": "third_party_reproduction_of_retail_prices__not_direct_api_observation",
+    "source_url": "https://www.azurescan.eu/en/insights/older-vm-generations/",
+    "assumed_hours_per_month": 730,
+    "items": [
+      {
+        "sku": "Standard_D4as_v5",
+        "vcpu": 4,
+        "ram_gib": 16,
+        "reported_monthly_eur": 134,
+        "precision": "rounded_article_reference",
+        "exclusions": [
+          "managed disks",
+          "egress",
+          "zone redundancy",
+          "load balancing",
+          "AKS management",
+          "database",
+          "support",
+          "tax",
+          "commitment discounts"
+        ]
+      },
+      {
+        "sku": "Standard_D4s_v5",
+        "vcpu": 4,
+        "ram_gib": 16,
+        "reported_monthly_eur": 148,
+        "precision": "rounded_article_reference",
+        "exclusions": [
+          "managed disks",
+          "egress",
+          "zone redundancy",
+          "load balancing",
+          "AKS management",
+          "database",
+          "support",
+          "tax",
+          "commitment discounts"
+        ]
+      }
+    ]
+  },
+  "onprem": {
+    "provider": "AMD",
+    "product": "EPYC 9965",
+    "source_checked_on": "2026-10-29",
+    "source_url": "https://www.amd.com/en/products/processors/server/epyc/9005-series/amd-epyc-9965.html",
+    "currency": "USD",
+    "price_basis": "manufacturer_1ku_cpu_only_not_a_server_quote",
+    "unit_cpu_usd": 11988,
+    "cores_per_socket": 192,
+    "not_included": [
+      "chassis",
+      "motherboard",
+      "memory",
+      "NVMe",
+      "networking",
+      "rack",
+      "support",
+      "power",
+      "cooling",
+      "secondary data center",
+      "OS/database licensing",
+      "disaster recovery"
+    ],
+    "pricing_not_comparable_to_cloud_monthly": true
+  },
+  "private_mainframes": [
+    {
+      "provider": "IBM",
+      "model": "z17",
+      "price_status": "RFQ_required_no_public_comparable_quote"
+    },
+    {
+      "provider": "IBM",
+      "model": "LinuxONE Emperor 5",
+      "price_status": "RFQ_required_no_public_comparable_quote"
+    },
+    {
+      "provider": "Unisys",
+      "model": "ClearPath Forward Dorado 8590",
+      "price_status": "RFQ_required_no_public_comparable_quote"
+    }
+  ],
+  "upcoming_cost_components": [
+    "AKS Standard control plane",
+    "VMSS node pool",
+    "Container Apps consumption/idle",
+    "App Service Premium plan instances",
+    "PostgreSQL/SQL Server licensing and backups",
+    "Managed disks and IOPS",
+    "ExpressRoute circuit/provider/gateway/outbound transfer",
+    "Application Gateway/WAF",
+    "regional and zone redundancy",
+    "logs and tracing",
+    "operator time",
+    "support",
+    "data migration"
+  ]
+}
