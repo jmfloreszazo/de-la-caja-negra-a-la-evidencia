@@ -19,7 +19,8 @@ CURRENCY="EUR"
 def fetch(sku):
     expression=("armRegionName eq '"+REGION+"' and armSkuName eq '"+sku+
                 "' and priceType eq 'Consumption'")
-    query=urlencode({"currencyCode":CURRENCY,"$filter":expression})
+    # Microsoft documents currencyCode as a quoted OData-style string.
+    query=urlencode({"currencyCode":"'"+CURRENCY+"'","$filter":expression})
     url=API+"?"+query
     items=[]
     for i in range(8):
@@ -37,7 +38,9 @@ def fetch(sku):
                           for v in ("windows","spot","low priority"))]
     # Multiple primary meters may exist; record all candidates rather than picking a cheap
     # rate that might not be the intended Linux price or a different product.
-    if not filtered:raise ValueError("No candidate Linux/Consumption hourly meter for "+sku)
+    if not filtered:
+        diagnostic=[{k:v.get(k) for k in ("armSkuName","armRegionName","currencyCode","priceType","unitOfMeasure","meterName","productName")} for v in items[:6]]
+        raise ValueError("No candidate Linux/Consumption hourly meter for "+sku+"; total="+str(len(items))+"; candidates="+json.dumps(diagnostic))
     return sorted([{
       "armSkuName":x["armSkuName"],"meterId":x["meterId"],"meterName":x["meterName"],
       "productName":x["productName"],"skuName":x["skuName"],
