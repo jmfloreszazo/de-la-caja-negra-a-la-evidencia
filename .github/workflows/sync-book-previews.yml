@@ -3,6 +3,8 @@ on:
   push:
     branches: [experiment/e1-postgres-row-locking]
     paths:
+      - 'book/es/parte-5-capacidad/25a-infraestructura-mainframe-local-azure-y-redes-bancarias.md'
+      - 'book/en/part-5-capacity/25a-mainframe-on-prem-azure-and-banking-network-infrastructure.md'
       - '.github/workflows/sync-book-previews.yml'
 permissions:
   contents: write

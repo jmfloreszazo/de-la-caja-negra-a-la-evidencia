@@ -3,7 +3,7 @@
 from __future__ import annotations
 import argparse
 import json
-from decimal import Decimal
+from decimal import Decimal, ROUND_HALF_UP
 from pathlib import Path
 
 HERE=Path(__file__).resolve().parent
@@ -12,16 +12,17 @@ CATALOG=HERE/"dated_prices.json"
 def scenarios(data):
     vm={v["sku"]:v for v in data["cloud"]["items"]}
     def vm_case(name,sku,min_nodes,max_nodes,platform):
-        monthly=Decimal(str(vm[sku]["reported_monthly_eur"]))
+        monthly=Decimal(str(vm[sku]["retail_eur_per_hour"]))*Decimal(str(data["cloud"]["assumed_hours_per_month"]))
+        def money(v):return str(v.quantize(Decimal("0.01"),rounding=ROUND_HALF_UP))
         return {
             "scenario":name,"platform":platform,
             "currency":"EUR","region":data["cloud"]["region"],
             "baseline_replicas":min_nodes,"maximum_replicas":max_nodes,
-            "minimum_compute_eur_per_730h":str(monthly*min_nodes),
-            "peak_full_month_compute_eur_if_all_max_replicas":str(monthly*max_nodes),
+            "minimum_compute_eur_per_730h":money(monthly*min_nodes),
+            "peak_full_month_compute_eur_if_all_max_replicas":money(monthly*max_nodes),
             "variable_scaling_cost":"NOT COMPUTABLE without observed time per replica",
             "other_costs":"NOT PRICED: database, storage, egress, networking, HA, monitoring, operations and platform charges",
-            "estimated_tco":None,"price_source_date":data["cloud"]["source_published"],
+            "estimated_tco":None,"price_source_date":data["cloud"]["retrieved_at_utc"],
             "price_checked_on":data["cloud"]["source_checked_on"],
             "quote_status":"ILLUSTRATIVE_COMPUTE_SUBTOTAL_ONLY",
         }
@@ -48,7 +49,7 @@ def scenarios(data):
       "classification":"PRICING_REFERENCE_NO_TCO_OR_BENCHMARK",
       "checked_on":data["captured_on"],
       "cloud_date":data["cloud"]["source_published"],
-      "units":"730h reference month; rounded published EUR amounts",
+      "units":"730h arithmetic month; Azure Retail API EUR per-hour reference values (not customer quotes)",
       "cases":cases,
     }
 

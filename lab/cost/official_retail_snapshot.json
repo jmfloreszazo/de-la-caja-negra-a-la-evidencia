@@ -1,0 +1,49 @@
+{
+  "schema_version": 1,
+  "classification": "DIRECT_AZURE_PUBLIC_RETAIL_API_SNAPSHOT_NOT_CONTRACT_QUOTE",
+  "region": "westeurope",
+  "currency": "EUR",
+  "retrieved_at_utc": "2026-10-29T18:26:03.196878+00:00",
+  "run_id": 40930736857,
+  "url": "https://github.com/jmfloreszazo/de-la-caja-negra-a-la-evidencia/actions/runs/40930736857",
+  "api_endpoint": "https://prices.azure.com/api/retail/prices",
+  "currency_warning": "Microsoft primarily prices services in USD; API EUR values are indicative.",
+  "meters": [
+    {
+      "sku": "Standard_D4as_v5",
+      "vcpu": 4,
+      "ram_gib": 16,
+      "retail_eur_per_hour": "0.183",
+      "meter_id": "b69c5dbc-6df2-5b78-8822-fb32b72f3d64",
+      "effectiveStartDate": "2021-11-01T00:00:00Z",
+      "productName": "Virtual Machines Dasv5 Series",
+      "skuName": "Standard_D4as_v5",
+      "meterName": "D4as v5",
+      "priceType": "Consumption"
+    },
+    {
+      "sku": "Standard_D4s_v5",
+      "vcpu": 4,
+      "ram_gib": 16,
+      "retail_eur_per_hour": "0.2024",
+      "meter_id": "1ab41620-5ffa-51b3-ac16-6416f9f747a9",
+      "effectiveStartDate": "2021-11-01T00:00:00Z",
+      "productName": "Virtual Machines Dsv5 Series",
+      "skuName": "Standard_D4s_v5",
+      "meterName": "D4s v5",
+      "priceType": "Consumption"
+    },
+    {
+      "sku": "Standard_D8as_v5",
+      "vcpu": 8,
+      "ram_gib": 32,
+      "retail_eur_per_hour": "0.3661",
+      "meter_id": "caee42fb-5e41-5ffa-8aa6-65e1d871b269",
+      "effectiveStartDate": "2021-11-01T00:00:00Z",
+      "productName": "Virtual Machines Dasv5 Series",
+      "skuName": "Standard_D8as_v5",
+      "meterName": "D8as v5",
+      "priceType": "Consumption"
+    }
+  ]
+}

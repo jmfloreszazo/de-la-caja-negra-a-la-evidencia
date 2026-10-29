@@ -94,6 +94,8 @@ En [Azure Container Apps](https://learn.microsoft.com/en-us/azure/container-apps
 
 ## Precios fechados y TCO: que no nos engañe el precio por vCPU
 
+La consulta oficial realizada **el 29-10-2026 a las 18:26 UTC**, en West Europe (Linux, consumo, EUR orientativo), devolvió **D4as_v5 0,1830 €/h**, **D4s_v5 0,2024 €/h** y **D8as_v5 0,3661 €/h**. Esto implica **400,77 €/mes** de cómputo para tres D4as_v5 durante 730 horas, frente a **801,54 €/mes** para seis, siempre sin BD, discos, redes o alta disponibilidad. Los medidores, `effectiveStartDate` y fuente CI están en el registro enlazado.
+
 La tabla económica auditable está en [Comparativa de costes, 29-10-2026](../../../docs/PRICING.es.md) y el [registro estructurado](../../../lab/cost/dated_prices.json). Incluye precios públicos **fechados y con origen**, un modelo reproducible de escala de 3–6 nodos, y comparación con referencias de CPU EPYC y equipos IBM/Unisys **pendientes de RFQ**.
 
 No es correcto comparar una única VM enorme de Azure contra todo un mainframe, ni sumar 3 VMs en AKS y llamarlo TCO. El coste real tiene tres capas: **procesamiento replicable**, **datos autoritativos y su durabilidad**, **red de sucursales + continuidad/operación**. La medición económica deberá incorporar coste por millón de **transferencias confirmadas y contablemente correctas**, no solo VM/hora. Los importes capturados llevan fecha, moneda y exclusiones; las cotizaciones contractuales no públicas permanecen **sin precio**, nunca «0».
