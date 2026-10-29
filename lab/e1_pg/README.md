@@ -1,6 +1,8 @@
 # E1 · PostgreSQL row-locking evidence lab
 
-This is the **first executable slice** of [E1](../docs/EXPERIMENT_PROTOCOL.md). It runs against a real PostgreSQL 16 instance, using Podman for the database. It is **not yet the completed E1** and is not a .NET 10 port of `Bank/`.
+This is the **first executable slice** of [E1](../docs/EXPERIMENT_PROTOCOL.md). It runs against a real PostgreSQL 16 instance, using Podman for the database. It is **not yet the completed E1**. An independent .NET 10/Npgsql candidate is in `PgBank/`, but the original SQLite test-suite and SQL Server remain further gates.
+
+The [Npgsql 10.0.3](https://www.nuget.org/packages/Npgsql/10.0.3) candidate is validated by running `python3 lab/e1_pg/test_dotnet.py` after installing .NET 10 SDK. The test resets the disposable database between Python and C# runs and compares persisted account, operation, posting and outbox state. It also runs concurrent and injected-failure cases.
 
 The protected reference ledger under `lab/Bank/`, `lab/bank_test.py` and `lab/reference-results/` remains untouched.
 

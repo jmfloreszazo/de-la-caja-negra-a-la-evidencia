@@ -24,6 +24,9 @@ jobs:
           python-version: '3.12'
       - name: Install pinned PostgreSQL client
         run: python3 -m pip install -r lab/e1_pg/requirements.txt
+      - uses: actions/setup-dotnet@v5
+        with:
+          dotnet-version: '10.0.x'
       - name: Start disposable PostgreSQL 16 in Podman
         run: |
           podman run -d --name e1-postgres \
@@ -43,6 +46,11 @@ jobs:
         env:
           E1_PG_DSN: "host=127.0.0.1 port=55432 dbname=e1lab user=postgres password=e1local"
         run: python3 lab/e1_pg/test_e1.py
+      - name: Differential validation of .NET 10 / Npgsql against PostgreSQL E1a
+        env:
+          E1_PG_DSN: "host=127.0.0.1 port=55432 dbname=e1lab user=postgres password=e1local"
+          E1_PG_NPGSQL: "Host=127.0.0.1;Port=55432;Database=e1lab;Username=postgres;Password=e1local;Pooling=false"
+        run: python3 lab/e1_pg/test_dotnet.py
       - name: Upload reproducible test evidence
         uses: actions/upload-artifact@v6
         if: always()
@@ -55,5 +63,5 @@ jobs:
       - name: Stop experiment database
         if: always()
         run: |
-          podman logs e1-postgres --tail 80 || true
+          podman logs --tail 80 e1-postgres || true
           podman rm -f e1-postgres || true

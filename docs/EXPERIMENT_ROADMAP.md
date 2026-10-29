@@ -5,7 +5,7 @@ This is an **engineering execution plan**, not a new book edition. Every experim
 | Phase | Work | Exit gate | State |
 | --- | --- | --- | --- |
 | E1a | PostgreSQL 16 using Podman: row locks, real deadlock, serialization anomaly, pool exhaustion, persisted oracle | Real CI execution; negative controls must fail when corrupted | Implemented in PR, CI pending |
-| E1b | Port the transactional candidate to .NET 10 (Npgsql); compare all SQLite bank controls | Functional/ledger and fault parity for original synthetic workload | Not implemented |
+| E1b | Port the transactional candidate to .NET 10 (Npgsql); compare original synthetic workload | Differential persisted-state, failure and concurrency tests under real PostgreSQL | Implemented in PR, CI pending; original SQLite test-suite parity remains to review |
 | E1c | Repeat with SQL Server, isolating vendor-specific semantics | Deadlock/timeout/unique-key retry protocol and isolation documented | Not implemented |
 | E2 | Orleans grains keyed by account coordinating the same durable ledger | Same E1 functional verdicts; hot-key distributions with quantified saturation | Not implemented |
 | E3 | Azure vs on-prem/hybrid on a **filled and approved** capacity contract | Open-loop offered load, committed TPS, p99, fail-one-node, durability and cost; never MIPS-to-vCPU extrapolation | Not implemented |
