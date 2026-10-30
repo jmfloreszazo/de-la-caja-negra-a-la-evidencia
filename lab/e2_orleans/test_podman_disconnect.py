@@ -28,7 +28,8 @@ SQL_IPS = {
 }
 SQL_DSN = (
     "Host=10.78.31.10;Port=5432;Database=e2lab;"
-    "Username=postgres;Password=e2local;Pooling=true;Maximum Pool Size=32"
+    "Username=postgres;Password=e2local;Pooling=true;Maximum Pool Size=32;"
+    "GSS Encryption Mode=Disable"
 )
 P = fx.podman
 OUT = fx.LAB / "results" / "e2f10" / "c02"
@@ -295,6 +296,47 @@ def main():
             "oracles": final_accounting["oracle"],
             "unverifiedApplicationRecovery": True
         }, indent=2))
+    except Exception as exc:
+        # MUST preserve raw failure-state evidence BEFORE finally deletes
+        # containers and the network. A failed reconnection is not a pass.
+        diagnostic = {
+            "experiment": "E2-F10-C02-failed-probe",
+            "status": "FAIL",
+            "timestamp": stamp(),
+            "error": repr(exc),
+            "injection": injection,
+            "containers": {},
+            "membership": None,
+            "businessEffects": None,
+            "oracle": None,
+            "notes": (
+                "Live containers are inspected before teardown. This is a "
+                "failure artifact, not successful partition-recovery proof."
+            )
+        }
+        for node in containers:
+            try:
+                diagnostic["containers"][node] = {
+                    "inspection": inspect(node),
+                    "lastLogs": P("logs", node, check=False)[-8000:]
+                }
+            except Exception as inspect_exc:
+                diagnostic["containers"][node] = {
+                    "inspectionError": repr(inspect_exc)
+                }
+        try:
+            diagnostic["membership"] = membership()
+        except Exception as sql_exc:
+            diagnostic["membershipError"] = repr(sql_exc)
+        try:
+            diagnostic["businessEffects"] = fx.business_counts()
+            diagnostic["oracle"] = verify()
+        except Exception as oracle_exc:
+            diagnostic["oracleError"] = repr(oracle_exc)
+        (OUT / "e2-f10-c02-failure-diagnostic.json").write_text(
+            json.dumps(diagnostic, indent=2) + "\n", encoding="utf-8"
+        )
+        raise
     finally:
         for name in reversed(containers):
             P("rm", "-f", name, timeout=45, check=False)
