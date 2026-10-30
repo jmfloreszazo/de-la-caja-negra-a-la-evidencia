@@ -170,4 +170,45 @@ for name, expected in oracle_data["sourceSha256"].items():
 print("E1b-oracle-vectors: seven independent invariants, negative "
       "mutation and restoration verified; original run", oracle_record["runId"])
 
+# Preserve the exact observed execution environment, separating the
+# temporary pull-request merge checkout from the PR's source HEAD.
+runtime_record = json.loads((BASE / "e1b-runtime-manifest.json").read_text(encoding="utf-8"))
+runtime = runtime_record["observation"]
+assert runtime_record["schemaVersion"] == runtime["schemaVersion"] == 1
+assert runtime_record["experiment"] == runtime["experiment"] == "E1b-runtime-provenance"
+assert runtime_record["runId"] == 41033595770
+assert runtime_record["jobId"] == 123988931673
+assert runtime_record["artifactId"] == 12967485208
+assert runtime_record["sourceCommit"] == "338ef0292c67812cadfb3e9ab7436dad590dbcf8"
+assert runtime_record["url"].endswith("/" + str(runtime_record["runId"]))
+assert runtime_record["classification"] == "EXECUTED_RUNTIME_PROVENANCE_NOT_CAPACITY"
+assert runtime["status"] == "PASS" and runtime["classification"] == (
+    "REPRODUCIBILITY_MANIFEST_NOT_PERFORMANCE_PROOF"
+)
+assert runtime["github"]["runId"] == runtime_record["runId"]
+assert runtime["github"]["sourceHead"] == runtime_record["sourceCommit"]
+assert runtime["github"]["checkoutCommit"] == runtime_record["checkoutCommit"]
+assert runtime["github"]["event"] == "pull_request"
+assert runtime["github"]["checkoutCommit"] != runtime["github"]["sourceHead"]
+assert re.fullmatch(r"[0-9a-f]{40}", runtime_record["checkoutCommit"])
+assert runtime["host"]["python"].startswith("3.")
+assert runtime["host"]["dotnetSdk"].startswith("10.")
+assert runtime["host"]["podman"].startswith("podman version ")
+assert runtime["database"]["postgres"].startswith("16.")
+assert runtime["database"]["sqliteNativeDotnet"]
+assert runtime["database"]["sqlitePython"]
+assert runtime["database"]["npgsqlPackage"] == "10.0.3"
+assert re.fullmatch(r"[0-9a-f]{64}", runtime["container"]["imageId"])
+assert runtime["container"]["imageReference"] == "docker.io/library/postgres:16.13"
+assert len(runtime["container"]["repoDigests"]) >= 1
+assert all(re.fullmatch(r"[^\\s]+@sha256:[0-9a-f]{64}", digest)
+           for digest in runtime["container"]["repoDigests"])
+assert len(runtime["sourceSha256"]) == 6
+for name, digest in runtime["sourceSha256"].items():
+    source = ROOT / "lab" / name
+    assert source.is_file(), source
+    assert hashlib.sha256(source.read_bytes()).hexdigest() == digest, name
+print("E1b-runtime-manifest: source HEAD and checkout distinct; "
+      "tool versions, image digest, six source hashes checked")
+
 print("E1 OBSERVATION SNAPSHOTS: PASS")
