@@ -60,6 +60,11 @@ jobs:
         env:
           E1_PG_DSN: "host=127.0.0.1 port=55432 dbname=e1lab user=postgres password=e1local"
         run: python3 lab/e1_pg/test_oracle_vectors.py
+      - name: Compare full SQLite uniform/hot worker matrix with PostgreSQL .NET
+        env:
+          E1_PG_DSN: "host=127.0.0.1 port=55432 dbname=e1lab user=postgres password=e1local"
+          E1_PG_NPGSQL: "Host=127.0.0.1;Port=55432;Database=e1lab;Username=postgres;Password=e1local;Pooling=false"
+        run: python3 lab/e1_pg/test_multiprocess_parity.py
       - name: Capture exact tool and Podman image provenance
         env:
           E1_PG_DSN: "host=127.0.0.1 port=55432 dbname=e1lab user=postgres password=e1local"
