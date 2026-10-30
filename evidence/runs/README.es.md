@@ -14,6 +14,14 @@
 | Alcance real | Motor PostgreSQL 16.13 en runner Linux/Podman | .NET 10, Npgsql 10.0.3 y PostgreSQL |
 | No demostrado | Carga de producción, MIPS, CICS, recuperación distribuida | Paridad de todos los casos SQLite y SQL Server |
 
+## Observación E1b ampliada · 30 de octubre de 2026
+
+El [registro original E1b de 7 controles](e1b.json) permanece intacto. Una **ejecución adicional real de GitHub Actions** incorporó tres controles al candidato .NET 10/Npgsql: agotamiento de seis intentos de bloqueo `55P03` sin efectos contables, recuperación e idempotencia al liberar el bloqueo y rechazo por el oráculo SQL independiente de un asiento .NET alterado deliberadamente, que después se restauró.
+
+[Registro ampliado inmutable](e1b-extended.json) · [Ejecución CI #41024101879](https://github.com/jmfloreszazo/de-la-caja-negra-a-la-evidencia/actions/runs/41024101879) · [job y artefacto originales](https://github.com/jmfloreszazo/de-la-caja-negra-a-la-evidencia/actions/runs/41024101879).
+
+**Resultado observado: PASS en los 10 controles.** La primera ejecución de 7 controles conserva su hash de código histórico asociado al commit de 29-10-2026; los hashes del registro ampliado se cotejan con el código actual de la rama. El validador offline **no** confunde el script antiguo con el nuevo. Ninguno de los dos resultados completa todo el contrato SQLite, E1c ni E1 global.
+
 ## Tres hallazgos que se pueden comprobar
 
 1. **Deadlock recuperado:** PostgreSQL emitió `40P01`, se reintentó la transacción completa y terminaron dos transferencias confirmadas, sin duplicar asientos.
@@ -26,6 +34,6 @@
 python3 scripts/check_e1_observations.py
 ```
 
-El script vuelve a calcular el SHA-256 de los ficheros fuente y comprueba los controles citados. El JSON guarda `runId`, `jobId`, commit, límites y resultados. La prueba *no* aporta métricas de capacidad mainframe; el tiempo transcurrido es el de **este ensayo sintético**, no una latencia comercial.
+El script comprueba los controles, recalcula los SHA-256 de las observaciones del código vigente y valida el manifiesto histórico fijado de E1b sin confundirlo con el código posterior. El JSON guarda `runId`, `jobId`, commit, límites y resultados. La prueba *no* aporta métricas de capacidad mainframe; el tiempo transcurrido es el de **este ensayo sintético**, no una latencia comercial.
 
 La clasificación global del experimento sigue siendo **E1 parcialmente verificado**: E1c y la paridad completa de contratos permanecen pendientes.
