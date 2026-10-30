@@ -1,0 +1,123 @@
+{
+  "schemaVersion": 1,
+  "experiment": "E2-Orleans-Synthetic-Load-1000",
+  "runId": 41055928136,
+  "jobId": 124063312118,
+  "artifactId": 12977285976,
+  "sourceCommit": "4bd9e4da6ac1d8f6609813dfbd81da96c23946e0",
+  "checkoutCommit": "0481c700d7cabd359a37288734209b6469e89d79",
+  "source": "Original JSON summary printed by GitHub Actions; the COMPLETE unabridged e2-workloads.json is preserved in the original run's artifact e2-orleans-smoke (12977285976). Do not interpret this summary as the full raw sample file.",
+  "url": "https://github.com/jmfloreszazo/de-la-caja-negra-a-la-evidencia/actions/runs/41055928136",
+  "artifactUrl": "https://github.com/jmfloreszazo/de-la-caja-negra-a-la-evidencia/actions/runs/41055928136/artifacts/12977285976",
+  "classification": "EXECUTED_SYNTHETIC_SINGLE_SILO_FIXED_WORKLOAD_NOT_CAPACITY",
+  "observation": {
+    "status": "PASS",
+    "experiment": "E2-Orleans-Synthetic-Load-1000",
+    "controls": {
+      "deterministicIdenticalOfferedCommands": "PASS",
+      "sixMatchedRouteAndProfileRuns": "PASS",
+      "sixHundredDurableCommittedTransfers": "PASS",
+      "sevenIndependentLedgerInvariantsPerRun": "PASS",
+      "identicalPersistedStateByRoutePerProfile": "PASS"
+    },
+    "workloadRuns": [
+      {
+        "profile": "uniform",
+        "route": "direct",
+        "offeredRequests": 100,
+        "committed": 100,
+        "retries": 0,
+        "committedPerProcessWallSecond": 116.2,
+        "clientObservedRequestLatencyMs": {
+          "p50": 40.055,
+          "p95": 146.424,
+          "p99": 165.682,
+          "max": 171.954
+        },
+        "stateSha256": "2c4632152cde7938b9169f504e43df127046967ad7444b7a029ef4c6d34b0589"
+      },
+      {
+        "profile": "uniform",
+        "route": "orleans",
+        "offeredRequests": 100,
+        "committed": 100,
+        "retries": 0,
+        "committedPerProcessWallSecond": 112.855,
+        "clientObservedRequestLatencyMs": {
+          "p50": 113.749,
+          "p95": 185.346,
+          "p99": 241.739,
+          "max": 244.12
+        },
+        "stateSha256": "2c4632152cde7938b9169f504e43df127046967ad7444b7a029ef4c6d34b0589"
+      },
+      {
+        "profile": "five_percent_hot",
+        "route": "direct",
+        "offeredRequests": 100,
+        "committed": 100,
+        "retries": 0,
+        "committedPerProcessWallSecond": 110.787,
+        "clientObservedRequestLatencyMs": {
+          "p50": 26.523,
+          "p95": 137.889,
+          "p99": 152.007,
+          "max": 158.644
+        },
+        "stateSha256": "6c027f3c59c64a24aec1a175a2bfefc32dac3dad1aaf5f9fe6869c37301fe877"
+      },
+      {
+        "profile": "five_percent_hot",
+        "route": "orleans",
+        "offeredRequests": 100,
+        "committed": 100,
+        "retries": 0,
+        "committedPerProcessWallSecond": 112.429,
+        "clientObservedRequestLatencyMs": {
+          "p50": 101.586,
+          "p95": 175.783,
+          "p99": 221.172,
+          "max": 239.868
+        },
+        "stateSha256": "6c027f3c59c64a24aec1a175a2bfefc32dac3dad1aaf5f9fe6869c37301fe877"
+      },
+      {
+        "profile": "one_account_half_intents",
+        "route": "direct",
+        "offeredRequests": 100,
+        "committed": 100,
+        "retries": 0,
+        "committedPerProcessWallSecond": 114.831,
+        "clientObservedRequestLatencyMs": {
+          "p50": 41.309,
+          "p95": 158.072,
+          "p99": 171.06,
+          "max": 171.513
+        },
+        "stateSha256": "f37187367f74d010ac902728c5e867194f814b8994f6f201426a0f65072030d7"
+      },
+      {
+        "profile": "one_account_half_intents",
+        "route": "orleans",
+        "offeredRequests": 100,
+        "committed": 100,
+        "retries": 0,
+        "committedPerProcessWallSecond": 104.504,
+        "clientObservedRequestLatencyMs": {
+          "p50": 120.495,
+          "p95": 223.27,
+          "p99": 236.946,
+          "max": 254.394
+        },
+        "stateSha256": "f37187367f74d010ac902728c5e867194f814b8994f6f201426a0f65072030d7"
+      }
+    ],
+    "sourceSha256": {
+      "e2_orleans/test_workloads.py": "745061b5cb7b4c3596d3123708eb362734a5b1c22de67ccf5a75c4c433d41959",
+      "e2_orleans/oracle_workload.py": "1c5caa71e955674b31f4853b61fc1f84f747602b50528bc9478601fe630c3038",
+      "e2_orleans/OrleansLab/Program.cs": "f3ceda87c3ee0bf7cb3d31e6d5c0c0054a25d4f7321524a691ea3986350a87c1",
+      "e2_orleans/OrleansLab/Contracts.cs": "9e455c56e007f485a2ae6f71b9c56bf0c39753527a09be409045ade68bad28e1",
+      "e2_orleans/OrleansLab/PgDurableLedger.cs": "f6c8f6cbfd26c56b300a0249ca7d2da80984ccb41506779ba08ea0f703e5c884"
+    }
+  }
+}

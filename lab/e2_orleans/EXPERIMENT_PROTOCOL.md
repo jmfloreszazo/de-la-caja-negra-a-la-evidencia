@@ -1,6 +1,6 @@
 # E2 · Orleans coordination over an authoritative durable ledger
 
-**Status: DESIGNED, NOT EXECUTED.** This is an English-only engineering
+**Status: partially verified on an unmerged branch, NOT an accepted E2 experiment.** The original single-silo functional, fixed-seed 1,000-account workload and genuine local-cohost SIGKILL slices passed CI independently. Multi-silo failover, cross-grain circular-call negative controls, sustained capacity characterization and real mainframe equivalence remain untested. This is an English-only engineering
 protocol for [issue #8](https://github.com/jmfloreszazo/de-la-caja-negra-a-la-evidencia/issues/8).
 It must not be promoted to executed evidence merely because the
 architecture, examples or build manifests exist.
@@ -90,11 +90,11 @@ in a performance comparison.
 | E2-F01 | Protected 16-account E1 sequential reference suite | Same statuses and all four persisted tables; 7/7 independent oracle verdicts |
 | E2-F02 | Parallel duplicate IDs and two-source overdraft race | One durable effect per operation ID, no negative balances |
 | E2-F03 | Lost response after commit; replay and competing retries | Exactly once **durable business effect** via operation-ID idempotency (not exactly-once message delivery) |
-| E2-F04 | Opposite-account transfers and database deadlock | Whole SQL transaction retried; no partial postings/outbox |
+| E2-F04 | Opposite-account transfers and database deadlock | Crossed transfer parity **CI-verified**; a separate opt-in PostgreSQL 40P01 deadlock + full-transaction retry test is **CI-verified in run #41072089559**. Safe ordered locks remain the default |
 | E2-F05 | Crash a grain/silo before SQL commit; restart | No partial SQL state; retry succeeds or remains a recorded failure |
 | E2-F06 | Crash a grain/silo after SQL commit, before response | Recovered persisted COMMITTED outcome; no duplicate debit/posting/outbox |
 | E2-N01 | Unsafe two-grain independent debit/credit, isolated disposable fixture | Independent oracle **rejects** non-atomic split; candidate must never use this design |
-| E2-N02 | Deliberately reentrant state change or circular grain call in isolated negative control | Detect stale actor-local assumption / potential deadlock; accepted baseline remains non-reentrant |
+| E2-N02 | Deliberately reentrant state change or circular grain call in isolated negative control | Deliberate reentrant actor-local lost-update fixture **CI-verified in run #41060526872** (16 calls, 15 lost updates, no ledger writes). Cross-grain circular calls/deadlock remain untested; accepted AccountGrain stays non-reentrant |
 | E2-B01 | Uniform workload on 16 E1 accounts | Same commands, arrival pattern, TLS/security, database, Npgsql pool and offered load across baseline and Orleans |
 | E2-B02 | 5% hot accounts | Seed 1,000 distinct **synthetic** accounts and select exactly 50 hot accounts; report the precise skew and seed |
 | E2-B03 | One account receives 50% of request intents | Prespecified seed and distribution; report hot-key queueing, rejection and correctly committed work |
@@ -133,6 +133,29 @@ from durable committed transfers.
   each case and a negative corrupted-ledger fixture independent of the
   candidate grain code.
 
+## Real PostgreSQL deadlock and whole-transaction retry fixture
+
+A deliberately unsafe **test-only** first attempt acquires the source
+account's PostgreSQL row lock, synchronizes two opposing transactions
+and then requests the other account's row. A real PostgreSQL deadlock
+detector must abort one transaction with `40P01`. The failed operation
+must retry its **entire** SQL transaction using the normal ordered
+locking path, preserving the authoritative ledger.
+
+Only `E2_ENABLE_DEADLOCK_FIXTURE=1`, two exact synthetic IDs,
+account pairs 1→2 / 2→1 and amount 41 cents can activate the
+unsafe path; the fixture rejects commands otherwise.
+
+```bash
+python3 lab/e2_orleans/test_deadlock.py
+```
+
+The gate requires one real `40P01` victim per route, both transfers
+committed, exactly two operations/four postings/two outbox events,
+idempotent stable-ID replay, payload-conflict rejection, matching
+four-table SHA across routes and seven independent SQL invariants.
+**The fixture passed [original CI #41072089559](https://github.com/jmfloreszazo/de-la-caja-negra-a-la-evidencia/actions/runs/41072089559)** with the [archived observation](../../evidence/runs/e2-orleans-deadlock.json) and [raw original artifact](https://github.com/jmfloreszazo/de-la-caja-negra-a-la-evidencia/actions/runs/41072089559/artifacts/12985901039). It is not evidence of a natural deadlock rate, multi-silo failover or mainframe capacity.
+
 ## Failure and cancellation semantics
 
 Do not promise exactly-once delivery. Treat a client timeout or silo loss
@@ -151,10 +174,7 @@ Never mutate the protected E1/COBOL/SQLite reference or overwrite prior
 E1a/E1b/E1c evidence. A failure in this experiment must stay red and its
 cause must be recorded rather than changing test expectations silently.
 
-**E2 remains `designed_not_executed` in `evidence/claims.json`.** No
-E2 result is verified until functional controls, independent negative
-oracles, hot-key workloads, failure injection and original CI artifacts
-have all executed successfully and been independently reviewed.
+**The umbrella E2 claim is `partially_verified` in `evidence/claims.json`; it is NOT an overall PASS.** Individually archived E2-SMOKE, E2-LOAD and E2-PROCESS-KILL records point to original CI runs, and the original artifacts must remain reviewable. The 32-command crossed-transfer regression for both routes passed [CI #41059475191](https://github.com/jmfloreszazo/de-la-caja-negra-a-la-evidencia/actions/runs/41059475191) with independent SQL oracles and matching snapshots; this does NOT demonstrate a deliberately induced deadlock, actor reentrancy or real distributed Orleans failover. The outstanding capacity, reentrancy and multi-node gates need separate original CI evidence and independent review.
 
 ### References
 

@@ -1,0 +1,69 @@
+{
+  "schemaVersion": 1,
+  "experiment": "E2-Orleans-Crossed-Account-Regression",
+  "status": "PASS",
+  "classification": "EXECUTED_SYNTHETIC_SINGLE_SILO_CROSSED_TRANSFERS_NOT_FORCED_DEADLOCK",
+  "originalRun": {
+    "runId": 41059475191,
+    "jobId": 124075294201,
+    "artifactId": 12977474457,
+    "sourceCommit": "dda63fc6b81bf7768ec334ea07499cf92103b571",
+    "checkoutCommit": "d3c1487ede84e34400e4a154d3afa7ef994670a1",
+    "runUrl": "https://github.com/jmfloreszazo/de-la-caja-negra-a-la-evidencia/actions/runs/41059475191",
+    "artifactUrl": "https://github.com/jmfloreszazo/de-la-caja-negra-a-la-evidencia/actions/runs/41059475191/artifacts/12977474457",
+    "source": "CrossedTransfers subset extracted from the original CI job log; unabridged e2-smoke.json is retained in the original uploaded artifact"
+  },
+  "testSpec": {
+    "commandsPerRoute": 32,
+    "routeCount": 2,
+    "sourceAccounts": [
+      1,
+      2
+    ],
+    "amountCentsPerCommand": 123,
+    "alternatingDirections": true,
+    "concurrentDispatch": true
+  },
+  "observations": [
+    {
+      "route": "direct",
+      "crossedOperations": 32,
+      "committed": 32,
+      "postings": 64,
+      "outbox": 32,
+      "retrySqlStates": [],
+      "persistedStateSha256": "a27436d0dae6405041d8ceeb6d765b0ef2e1e0199b5e64afd70d1cc26b94974d",
+      "sevenIndependentOracleInvariants": {
+        "nonnegative": true,
+        "conserved": true,
+        "balancedPostings": true,
+        "twoPostingsPerCommit": true,
+        "noPostingsForRejection": true,
+        "outboxAtomic": true,
+        "projectionAgrees": true
+      }
+    },
+    {
+      "route": "orleans",
+      "crossedOperations": 32,
+      "committed": 32,
+      "postings": 64,
+      "outbox": 32,
+      "retrySqlStates": [],
+      "persistedStateSha256": "a27436d0dae6405041d8ceeb6d765b0ef2e1e0199b5e64afd70d1cc26b94974d",
+      "sevenIndependentOracleInvariants": {
+        "nonnegative": true,
+        "conserved": true,
+        "balancedPostings": true,
+        "twoPostingsPerCommit": true,
+        "noPostingsForRejection": true,
+        "outboxAtomic": true,
+        "projectionAgrees": true
+      }
+    }
+  ],
+  "sourceSha256": {
+    "e2_orleans/test_e2.py": "04113e7ee98feaca36b5bf9a3e35fda43cd77464b97c62a46862a7f22e2f4ac7"
+  },
+  "scopeLimitations": "Same-machine, single-local-silo functional parity only. No forced PostgreSQL deadlock 40P01, multi-silo failover, actor reentrancy, open-loop sustained capacity or mainframe throughput evidence."
+}

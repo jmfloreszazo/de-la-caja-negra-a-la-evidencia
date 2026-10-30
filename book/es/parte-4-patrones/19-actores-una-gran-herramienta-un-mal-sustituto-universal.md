@@ -49,11 +49,11 @@ public interface IAccountGrain : IGrainWithStringKey
     Task<DebitDecision> DebitAsync(DebitCommand command);
 }
 
-// Sin [Reentrant]: cada petición termina antes de que empiece la siguiente.
+// No [Reentrant]: each request completes before the next starts.
 public sealed class AccountGrain(ILedger ledger) : Grain, IAccountGrain
 {
     public Task<DebitDecision> DebitAsync(DebitCommand command) =>
-        // El orden lo da el actor; decisión y durabilidad, el ledger.
+        // The actor orders requests; the ledger decides and commits.
         ledger.DebitAsync(this.GetPrimaryKeyString(),
                           command.OperationId, command.Amount);
 }
@@ -98,7 +98,15 @@ Compararía una solución sencilla con base de datos, una solución con actores 
 
 Añadiría fallos de activación, mensajes duplicados, respuesta perdida y pérdida de un nodo. También probaría que una llamada externa que vuelve tarde no aplica un cambio obsoleto. La prueba debe observar el estado persistido y la historia, además de la respuesta del actor.
 
-El laboratorio bancario ejecuta transacciones SQL locales. No incluye un cluster Orleans ni Dapr. El capítulo propone una opción de arquitectura respaldada por sus contratos documentados; no atribuye al laboratorio una comparativa de esos runtimes.
+El laboratorio bancario ejecuta transacciones SQL locales y ahora dispone de un silo Orleans real, alojado en un único proceso .NET 10. Sigue sin existir un clúster Orleans multinodo ni una prueba Dapr; la comparación solo cubre un contrato contable sintético en un runner local.
+
+### E2: de la coordinación teórica a la evidencia
+
+El [laboratorio E2](../../../lab/e2_orleans/README.md) mantiene la misma transacción PostgreSQL para las rutas directa y con grain. La [prueba funcional original](https://github.com/jmfloreszazo/de-la-caja-negra-a-la-evidencia/actions/runs/41053628769) superó 15 casos por ruta, con idempotencia, sobregiro concurrente y un oráculo contable independiente de siete invariantes. La [prueba de cargas sintéticas](https://github.com/jmfloreszazo/de-la-caja-negra-a-la-evidencia/actions/runs/41055928136) confirmó 600 transferencias entre seis escenarios con 1.000 cuentas: tráfico uniforme, 50 cuentas calientes de 1.000 (5 %) y una cuenta con el 50 % de las solicitudes. Los estados contables coincidieron entre rutas.
+
+La prueba de [terminación abrupta del proceso](https://github.com/jmfloreszazo/de-la-caja-negra-a-la-evidencia/actions/runs/41056976342) terminó el host con `SIGKILL` antes y después del commit, tanto por la ruta directa como por Orleans. Sin commit no quedó operación; después del commit persistieron exactamente una operación, dos asientos y un evento outbox, y el reintento fue idempotente. El oráculo también rechazó una escritura SQL parcial deliberada. No se probó reasignación entre silos ni pérdida física de infraestructura.
+
+La comparación no demuestra que Orleans aumente el rendimiento. De hecho, en la ejecución de 100 operaciones por perfil, Orleans tuvo un p95 mayor que el acceso directo en los tres perfiles. Son muestras pequeñas y locales, sin evidencia suficiente para inferir capacidad sostenida, p99 productivo o equivalencia MIPS de un mainframe. El valor de los actores deberá justificarse por cargas reales, fallos y costes, no por asumir que serializar por cuenta equivale a escalar.
 
 > **No fragmentaría un invariante financiero solo para subir el benchmark.**
 

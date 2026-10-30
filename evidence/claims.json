@@ -1,7 +1,7 @@
 {
   "schema_version": 1,
   "edition": "v2026.10.29",
-  "as_of": "2026-10-29",
+  "as_of": "2026-10-30",
   "repository": "jmfloreszazo/de-la-caja-negra-a-la-evidencia",
   "principle": "A designed protocol is not execution evidence; CI does not establish production capacity.",
   "claims": [
@@ -245,14 +245,98 @@
       "protocol": "lab/docs/EXPERIMENT_PROTOCOL.md"
     },
     {
+      "id": "E2-SMOKE",
+      "status": "ci_verified",
+      "es": "Orleans 10.4.0 y .NET 10: coordinación por grain con PostgreSQL como ledger autoritativo",
+      "en": "Orleans 10.4.0 and .NET 10: account-grain coordination with authoritative PostgreSQL ledger",
+      "scope_es": "Cinco controles sintéticos en CI: 15 casos por ruta directa/Orleans, carrera de sobregiro, idempotencia, fallos simulados y oráculo negativo independiente. Un único silo local; sin fallo real de silo, benchmark, escalado multinodo ni E2 global.",
+      "scope_en": "Five CI-tested synthetic controls: 15 cases per direct/Orleans route, overdraft race, idempotency, simulated faults and independent negative oracle. One local silo; no real silo crash, throughput benchmark, multinode scaling or overall E2 acceptance.",
+      "evidence": {
+        "kind": "github_actions",
+        "run_id": 41053628769,
+        "head_sha": "8eac88f835451e42e9adeb997c933aa4ac41427c"
+      },
+      "protocol": null
+    },
+    {
+      "id": "E2-LOAD",
+      "status": "ci_verified",
+      "es": "Orleans y ledger directo: tres perfiles deterministas sobre 1.000 cuentas sintéticas, 600 transferencias confirmadas y oráculo independiente",
+      "en": "Orleans and direct ledger: three deterministic profiles on 1,000 synthetic accounts, 600 committed transfers and independent oracle",
+      "scope_es": "Seis ejecuciones en un solo silo local, 100 operaciones por ruta y perfil, 50 de 1.000 cuentas calientes o una cuenta con el 50 % de las solicitudes. Igualdad de ledger, latencias observadas sin significación estadística ni prueba de escalado multinodo. El JSON completo está en el artefacto original de CI.",
+      "scope_en": "Six executions on a single local silo, 100 operations per route/profile, exactly 50/1000 hot accounts or one account receiving 50% of intent. Matching ledger, observed latencies without statistical or multi-node scaling claim. Full JSON retained in original CI artifact.",
+      "evidence": {
+        "kind": "github_actions",
+        "run_id": 41055928136,
+        "head_sha": "4bd9e4da6ac1d8f6609813dfbd81da96c23946e0"
+      },
+      "protocol": null
+    },
+    {
+      "id": "E2-PROCESS-KILL",
+      "status": "ci_verified",
+      "es": "Orleans y ledger: cuatro terminaciones SIGKILL reales del proceso local antes y después del commit, con recuperación idempotente",
+      "en": "Orleans and ledger: four actual local-process SIGKILL tests before/after commit with idempotent recovery",
+      "scope_es": "Dos rutas (directa y Orleans), sin persistencia parcial antes del commit y una única contabilización después; control negativo de escritura SQL dividida detectado por oráculo. No es failover entre silos.",
+      "scope_en": "Two routes (direct and Orleans), no partial persistence before commit and one durable business effect afterward; split SQL write negative control rejected by oracle. Not a multi-silo failover test.",
+      "evidence": {
+        "kind": "github_actions",
+        "run_id": 41056976342,
+        "head_sha": "63b062f18b5eb8dc427d807c49019a4657215f07"
+      },
+      "protocol": null
+    },
+    {
+      "id": "E2-CROSSED",
+      "status": "ci_verified",
+      "es": "Transferencias cruzadas A→B/B→A sobre PostgreSQL mediante ledger directo y Orleans",
+      "en": "Crossed A→B/B→A transfers over PostgreSQL via direct ledger and Orleans",
+      "scope_es": "32 operaciones por ruta concurrente (64 en total), con 32 commits, 64 asientos, 32 eventos outbox por ruta, los siete invariantes SQL y estados idénticos. Un solo silo; no se inyectó deadlock 40P01 ni se probó failover entre silos.",
+      "scope_en": "32 concurrent operations per route (64 total), with 32 commits, 64 postings, 32 outbox events per route, seven passing SQL invariants and identical persisted states. Single silo; no injected 40P01 deadlock or multi-silo failover.",
+      "evidence": {
+        "kind": "github_actions",
+        "run_id": 41059475191,
+        "head_sha": "dda63fc6b81bf7768ec334ea07499cf92103b571"
+      },
+      "protocol": null
+    },
+    {
+      "id": "E2-REENTRANCY",
+      "status": "ci_verified",
+      "es": "Control negativo Orleans reentrante: 16 solicitudes y 15 actualizaciones perdidas deliberadamente",
+      "en": "Unsafe reentrant Orleans negative control: 16 requests and 15 deliberately lost updates",
+      "scope_es": "Grain descartable y aislado con estado en memoria: las 16 llamadas devolvieron el mismo estado obsoleto (valor final 1, no 16); SQL no se modifica y el oráculo mantiene 7/7 invariantes. No prueba fallos de saga, transacción entre grains ni failover.",
+      "scope_en": "Disposable isolated in-memory grain: all 16 calls observed stale state (final value 1, not 16); no SQL writes and the independent oracle passes 7/7 invariants. Not a saga, cross-grain transaction or failover test.",
+      "evidence": {
+        "kind": "github_actions",
+        "run_id": 41060526872,
+        "head_sha": "3bfe52452cae316daa30731e627133ed05ce8305"
+      },
+      "protocol": null
+    },
+    {
+      "id": "E2-DEADLOCK",
+      "status": "ci_verified",
+      "es": "PostgreSQL 40P01 real inducido en dos transacciones; recuperación contable con ledger directo y Orleans",
+      "en": "Genuine PostgreSQL 40P01 induced across two SQL transactions; atomic ledger recovery with direct and Orleans routes",
+      "scope_es": "En cada ruta, un deadlock PostgreSQL 40P01 real y un reintento íntegro: dos commits, cuatro asientos, dos outbox, 7/7 invariantes, idempotencia y estado coincidente. Solo un proceso/silo y un fixture sintético con bloqueo desordenado, sin prueba de tasa de deadlocks natural ni failover.",
+      "scope_en": "Each route observed one genuine PostgreSQL 40P01 and full-transaction replay: two commits, four postings, two outbox events, 7/7 independent invariants, idempotency and identical state. Synthetic intentionally unordered locking on one local silo, not natural deadlock rates or multi-silo failover.",
+      "evidence": {
+        "kind": "github_actions",
+        "run_id": 41072089559,
+        "head_sha": "d96ad692dfabad0dd482b37b719630db2df7511f"
+      },
+      "protocol": null
+    },
+    {
       "id": "E2",
-      "status": "designed_not_executed",
+      "status": "partially_verified",
       "es": "Orleans y ledger frente a distintas distribuciones de carga",
       "en": "Orleans and ledger under different load distributions",
-      "scope_es": "Sin benchmark E2 ejecutado contra E1",
-      "scope_en": "No executed E2 benchmark against E1",
+      "scope_es": "E2-SMOKE, E2-LOAD y E2-PROCESS-KILL ejecutados en CI como controles sintéticos independientes; sin aceptación E2 global, failover entre silos, saturación sostenida, reentrancia negativa ni equivalencia mainframe.",
+      "scope_en": "E2-SMOKE, E2-LOAD and E2-PROCESS-KILL individually executed in CI as synthetic controls; no overall E2 acceptance, multi-silo failover, sustained saturation, reentrancy negative control or mainframe equivalence.",
       "evidence": null,
-      "protocol": "lab/docs/EXPERIMENT_PROTOCOL.md"
+      "protocol": "lab/e2_orleans/EXPERIMENT_PROTOCOL.md"
     },
     {
       "id": "E3",

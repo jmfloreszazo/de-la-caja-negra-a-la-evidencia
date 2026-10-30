@@ -1,0 +1,149 @@
+{
+  "schemaVersion": 1,
+  "experiment": "E2-Orleans-Actual-Cohost-Process-Kill",
+  "runId": 41056976342,
+  "jobId": 124066860297,
+  "artifactId": 12976807635,
+  "sourceCommit": "63b062f18b5eb8dc427d807c49019a4657215f07",
+  "checkoutCommit": "3c977fde07deff122ac3b0a4db5f042a790ec0e0",
+  "url": "https://github.com/jmfloreszazo/de-la-caja-negra-a-la-evidencia/actions/runs/41056976342",
+  "artifactUrl": "https://github.com/jmfloreszazo/de-la-caja-negra-a-la-evidencia/actions/runs/41056976342/artifacts/12976807635",
+  "classification": "EXECUTED_SINGLE_COHOST_PROCESS_KILL_NOT_MULTISILO",
+  "source": "Unmodified complete JSON emitted by actual GitHub Actions E2 process-kill tests, with original downloadable artifact preserved",
+  "observation": {
+    "schemaVersion": 1,
+    "experiment": "E2-Orleans-Actual-Cohost-Process-Kill",
+    "status": "PASS",
+    "classification": "SYNTHETIC_SINGLE_COHOST_SIGKILL_NOT_MULTISILO_FAILOVER",
+    "controls": {
+      "actualProcessSIGKILLBeforeAndAfterCommit": "PASS",
+      "rollbackOnDatabaseSessionDeath": "PASS",
+      "postCommitAmbiguityResolvesByOperationId": "PASS",
+      "exactlyOneDurablePostingAndOutbox": "PASS",
+      "isolatedNonAtomicSplitRejectedByIndependentOracle": "PASS"
+    },
+    "killedRuns": [
+      {
+        "route": "direct",
+        "fault": "kill-before-commit",
+        "exitCode": -9,
+        "afterKill": {
+          "operations": 0,
+          "postings": 0,
+          "outbox": 0
+        },
+        "recoveryStatus": "COMMITTED",
+        "finalExactlyOneDurableEffect": true,
+        "independentOracle": {
+          "nonnegative": true,
+          "conserved": true,
+          "balancedPostings": true,
+          "twoPostingsPerCommit": true,
+          "noPostingsForRejection": true,
+          "outboxAtomic": true,
+          "projectionAgrees": true
+        }
+      },
+      {
+        "route": "direct",
+        "fault": "kill-after-commit",
+        "exitCode": -9,
+        "afterKill": {
+          "operations": 1,
+          "postings": 2,
+          "outbox": 1
+        },
+        "recoveryStatus": "DUPLICATE_COMMITTED",
+        "finalExactlyOneDurableEffect": true,
+        "independentOracle": {
+          "nonnegative": true,
+          "conserved": true,
+          "balancedPostings": true,
+          "twoPostingsPerCommit": true,
+          "noPostingsForRejection": true,
+          "outboxAtomic": true,
+          "projectionAgrees": true
+        }
+      },
+      {
+        "route": "orleans",
+        "fault": "kill-before-commit",
+        "exitCode": -9,
+        "afterKill": {
+          "operations": 0,
+          "postings": 0,
+          "outbox": 0
+        },
+        "recoveryStatus": "COMMITTED",
+        "finalExactlyOneDurableEffect": true,
+        "independentOracle": {
+          "nonnegative": true,
+          "conserved": true,
+          "balancedPostings": true,
+          "twoPostingsPerCommit": true,
+          "noPostingsForRejection": true,
+          "outboxAtomic": true,
+          "projectionAgrees": true
+        }
+      },
+      {
+        "route": "orleans",
+        "fault": "kill-after-commit",
+        "exitCode": -9,
+        "afterKill": {
+          "operations": 1,
+          "postings": 2,
+          "outbox": 1
+        },
+        "recoveryStatus": "DUPLICATE_COMMITTED",
+        "finalExactlyOneDurableEffect": true,
+        "independentOracle": {
+          "nonnegative": true,
+          "conserved": true,
+          "balancedPostings": true,
+          "twoPostingsPerCommit": true,
+          "noPostingsForRejection": true,
+          "outboxAtomic": true,
+          "projectionAgrees": true
+        }
+      }
+    ],
+    "negativeSplit": {
+      "before": {
+        "nonnegative": true,
+        "conserved": true,
+        "balancedPostings": true,
+        "twoPostingsPerCommit": true,
+        "noPostingsForRejection": true,
+        "outboxAtomic": true,
+        "projectionAgrees": true
+      },
+      "unsafeSplit": {
+        "nonnegative": true,
+        "conserved": false,
+        "balancedPostings": true,
+        "twoPostingsPerCommit": true,
+        "noPostingsForRejection": true,
+        "outboxAtomic": true,
+        "projectionAgrees": false
+      },
+      "restored": {
+        "nonnegative": true,
+        "conserved": true,
+        "balancedPostings": true,
+        "twoPostingsPerCommit": true,
+        "noPostingsForRejection": true,
+        "outboxAtomic": true,
+        "projectionAgrees": true
+      }
+    },
+    "sourceSha256": {
+      "e2_orleans/test_process_crash.py": "69703e3f053e875f9502b65edab5d8afa889c852d2c12e41ec2a14349f187b73",
+      "e2_orleans/OrleansLab/PgDurableLedger.cs": "ac6f779113c5c6efd48c28461fc4c8696218fa63da1409f5de69cb99d7b17f72",
+      "e2_orleans/OrleansLab/Program.cs": "f3ceda87c3ee0bf7cb3d31e6d5c0c0054a25d4f7321524a691ea3986350a87c1",
+      "e2_orleans/OrleansLab/Contracts.cs": "9e455c56e007f485a2ae6f71b9c56bf0c39753527a09be409045ade68bad28e1",
+      "e1_pg/oracle.py": "3f2874842e9febcc84584bf4a266920028840ccac9d404f75cb9f4363fb4fc09"
+    },
+    "limitations": "Actual hard termination of the same local process hosting a single Orleans silo and .NET client. No real multi-silo reassignment, leader election, network partition, storage power loss, or banking mainframe equivalence. The deliberately unsafe split writes are a separate SQL fixture, not actor code."
+  }
+}
