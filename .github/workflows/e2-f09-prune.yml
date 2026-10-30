@@ -1,0 +1,67 @@
+name: One-time safe pruning of merged E2-F09 and evidence-fix branches
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/e2-f09-prune.yml'
+
+permissions:
+  contents: write
+
+concurrency:
+  group: once-e2-f09-merge-pruning
+  cancel-in-progress: false
+
+jobs:
+  prune-verified-merged-branches:
+    name: Verify merged SHAs and delete only obsolete PR 23 and 26 branches
+    if: >-
+      ${{ github.ref == 'refs/heads/main' && startsWith(github.event.head_commit.message, 'merge: E2 F09') }}
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          fetch-depth: 0
+      - name: Confirm merge and exact ancestry before each deletion
+        env:
+          GH_TOKEN: ${{ github.token }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          test "$GITHUB_REF" = "refs/heads/main"
+          test "$GITHUB_REPOSITORY" = "jmfloreszazo/de-la-caja-negra-a-la-evidencia"
+          git fetch --no-tags origin main
+          test "$(git rev-parse HEAD)" = "$(git rev-parse origin/main)"
+
+          for number in 23 26; do
+            test "$(gh api "repos/$GITHUB_REPOSITORY/pulls/$number" --jq '.merged')" = "true"
+          done
+
+          for item in '23:experiment/e2-f09-inflight-commit-failure' '26:fix/evidence-api-transient-retries'; do
+            number="${item%%:*}"
+            branch="${item#*:}"
+            expected="$(gh api "repos/$GITHUB_REPOSITORY/pulls/$number" --jq '.head.sha')"
+            test -n "$expected"
+            if test "$number" = "26"; then
+              test "$expected" = "c39e6155cea145b4654f6c2f374ecf5df3d2602e"
+            fi
+            current="$(gh api "repos/$GITHUB_REPOSITORY/git/ref/heads/$branch" --jq '.object.sha')"
+            test "$current" = "$expected" || {
+              echo "::error::Branch ref changed: $branch; refuse deletion"
+              exit 1
+            }
+            git fetch --no-tags origin "refs/heads/$branch:refs/remotes/origin/$branch"
+            git merge-base --is-ancestor "$expected" HEAD || {
+              echo "::error::Unmerged changes in $branch; refuse deletion"
+              exit 1
+            }
+            current="$(gh api "repos/$GITHUB_REPOSITORY/git/ref/heads/$branch" --jq '.object.sha')"
+            test "$current" = "$expected" || {
+              echo "::error::Concurrent branch update: $branch; refuse deletion"
+              exit 1
+            }
+            gh api --method DELETE "repos/$GITHUB_REPOSITORY/git/refs/heads/$branch"
+            echo "Removed exactly merged branch: $branch @ $expected"
+          done

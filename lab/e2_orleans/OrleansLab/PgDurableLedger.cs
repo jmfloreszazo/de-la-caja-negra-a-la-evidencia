@@ -10,6 +10,16 @@ public sealed class PgDurableLedger(NpgsqlDataSource source) : IDurableLedger
         Environment.GetEnvironmentVariable("E2_MAX_ACCOUNT_ID") == "1000" ? 1000 : 16;
 
     // Only two fixed synthetic commands may bypass the safe lock order.
+    // Deliberately fixed fixture; the external test process holds this
+    // PostgreSQL advisory lock until it proves the executing silo is killed.
+    // No fixture path is enabled without explicit opt-in and exact identity.
+    internal const long InFlightGateLock = 720260301;
+    private static bool InFlightFixture(TransferCommand c) =>
+        Environment.GetEnvironmentVariable("E2_INFLIGHT_TEST") == "1" &&
+        c.Fault == "gate-after-debit" &&
+        c.OperationId == "e2-inflight-pre" &&
+        c.AmountCents == 47;
+
     private static bool DeadlockFixture(TransferCommand c) =>
         Environment.GetEnvironmentVariable("E2_ENABLE_DEADLOCK_FIXTURE") == "1" &&
         c.Fault == "deadlock-once" && c.AmountCents == 41 &&
@@ -40,7 +50,8 @@ public sealed class PgDurableLedger(NpgsqlDataSource source) : IDurableLedger
         command.SourceAccountId != command.TargetAccountId &&
         command.AmountCents is > 0 and <= 1_000_000_000_000 &&
         (command.Fault is "none" or "throw-after-debit" or "lost-response" or
-        "kill-before-commit" or "kill-after-commit" || DeadlockFixture(command));
+        "kill-before-commit" or "kill-after-commit" ||
+        DeadlockFixture(command) || InFlightFixture(command));
 
     public async Task<TransferResult> Transfer(TransferCommand command)
     {
@@ -55,9 +66,12 @@ public sealed class PgDurableLedger(NpgsqlDataSource source) : IDurableLedger
                 await using var db = await source.OpenConnectionAsync();
                 await using var tx = await db.BeginTransactionAsync();
                 var inject = attempt == 0 && DeadlockFixture(command);
+                var inflightGate = InFlightFixture(command);
                 await Execute(tx, inject
                     ? "SET LOCAL lock_timeout = '5s'"
-                    : "SET LOCAL lock_timeout = '750ms'");
+                    : inflightGate
+                        ? "SET LOCAL lock_timeout = '15s'"
+                        : "SET LOCAL lock_timeout = '750ms'");
                 await Execute(tx, "SELECT pg_advisory_xact_lock(hashtextextended($1,0))",
                     command.OperationId);
 
@@ -110,6 +124,16 @@ public sealed class PgDurableLedger(NpgsqlDataSource source) : IDurableLedger
                     {
                         if (command.Fault == "throw-after-debit")
                             throw new InjectedRollbackException();
+                        if (InFlightFixture(command))
+                        {
+                            // The debit has occurred inside this still-open
+                            // transaction. An independent SQL session owns the
+                            // advisory lock, so the test can observe an actual
+                            // server-side Lock wait BEFORE sending SIGKILL.
+                            // A database session lost here must roll back.
+                            await Scalar(tx,
+                                "SELECT pg_advisory_xact_lock(720260301)");
+                        }
                         if (command.Fault == "kill-before-commit")
                         {
                             // Only run inside disposable E2 CI. Abrupt process
