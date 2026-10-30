@@ -221,6 +221,20 @@
       "protocol": null
     },
     {
+      "id": "E1C-MP-PERSISTENT",
+      "status": "ci_verified",
+      "es": "SQL Server 2022 y SQLite: matriz de 960 transferencias con trabajadores .NET persistentes, 1/2/4/8 y tráfico uniforme/caliente",
+      "en": "SQL Server 2022 vs SQLite: 960-transfer 1/2/4/8 uniform/hot worker matrix with persistent .NET worker processes",
+      "scope_es": "Ocho casos sintéticos con idéntico estado persistido y siete invariantes contables verdaderos; sin comparación de rendimiento, latencia, durabilidad productiva ni capacidad mainframe.",
+      "scope_en": "Eight synthetic cases with equal persisted state and seven passing independent accounting invariants; no throughput, latency, production durability or mainframe-capacity equivalence.",
+      "evidence": {
+        "kind": "github_actions",
+        "run_id": 41043087791,
+        "head_sha": "7694e5c306d6c40dc76955b0a25b55382a023ae5"
+      },
+      "protocol": null
+    },
+    {
       "id": "E1",
       "status": "partially_verified",
       "es": "Bloqueo por fila, deadlocks y write skew en SQL",
