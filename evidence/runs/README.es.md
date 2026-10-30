@@ -40,6 +40,12 @@ Es un **control negativo sintético en una sola base de datos**, no una simulaci
 
 [Manifiesto versionado](e1b-runtime-manifest.json) · [ejecución CI #41033595770](https://github.com/jmfloreszazo/de-la-caja-negra-a-la-evidencia/actions/runs/41033595770). La evidencia conserva las versiones de Python, .NET SDK, Npgsql, psycopg, SQLite nativo, PostgreSQL y Podman; el identificador y digests SHA-256 de la imagen PostgreSQL; seis hashes de código; y por separado el **HEAD original de la PR** y el **checkout temporal de merge** de GitHub. La CI verifica el job de procedencia. Estos datos permiten reproducir mejor el ensayo, pero no prueban portabilidad multiplataforma ni equivalencia operativa.
 
+## Paridad de la matriz multiproceso · 30 de octubre de 2026
+
+[Ejecución original de 960 transferencias](https://github.com/jmfloreszazo/de-la-caja-negra-a-la-evidencia/actions/runs/41034420329) · [resultado legible por máquina](e1b-multiprocess-parity.json). Pasaron los **ocho** casos sintéticos: distribución uniforme y cuenta caliente, con 1, 2, 4 y 8 trabajadores de referencia SQLite y **32 operaciones por trabajador**. El candidato PostgreSQL/.NET 10 reprodujo concurrentemente los mismos identificadores, cuentas e importes. En cada escenario coincidieron saldos, operaciones, asientos y outbox; además, pasaron los siete invariantes contables independientes. Ambos candidatos confirmaron las **960 transferencias lógicas**.
+
+La referencia SQLite utilizó sus **procesos trabajadores persistentes**, mientras que PostgreSQL inició un proceso .NET por transferencia. Por tanto, tiempos, sobrecarga de lanzamiento, reintentos y tasas de operaciones **no son comparaciones de rendimiento válidas**. Queda contrastado el contrato contable sintético de la matriz uniforme/caliente; SQL Server y la capacidad operativa mainframe continúan fuera de E1b.
+
 ## Tres hallazgos que se pueden comprobar
 
 1. **Deadlock recuperado:** PostgreSQL emitió `40P01`, se reintentó la transacción completa y terminaron dos transferencias confirmadas, sin duplicar asientos.
