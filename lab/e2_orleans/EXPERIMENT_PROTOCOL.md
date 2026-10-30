@@ -110,6 +110,53 @@ separate. Use fixed operation lists so both paths see the same attempted
 operations; count rejected transfers and idempotent replays separately
 from durable committed transfers.
 
+## E2-F10-C02 · Actual Orleans transport bridge disconnection, SQL still available
+
+**Status: not verified until original GitHub-hosted CI passes.**
+
+This is a new experiment distinct from C01's SIGKILL. Four disposable
+Podman containers, on **one physical Linux runner**, use two separate private
+networks. The `e2f10-net` bridge carries Orleans gateway/silo traffic on
+`10.78.30.0/24`. The independently attached `e2f10-sql` bridge carries
+ADO.NET membership and durable ledger traffic to PostgreSQL at
+`10.78.31.10`. Both silos advertise only their fixed private Orleans IPs.
+No production network, external host or real payment system is involved.
+
+After a healthy baseline and one committed synthetic transfer, the test
+executes `podman network disconnect e2f10-net e2f10-secondary` **while the
+secondary silo stays running with the same host PID and container ID**.
+An independent TCP probe from the client must demonstrate that the primary
+gateway remains reachable but secondary becomes unreachable; another
+probe running **inside the living isolated secondary** must show both
+Orleans gateways unreachable while `SELECT 1` on the separate SQL network
+still succeeds. The test saves the persisted ADO.NET membership *as
+observed*, rather than inventing a change from Active to Dead.
+
+The test then reconnects the **same living container** to the original
+network and verifies restored TCP access from the client and victim silo,
+preserved SQL reachability, and unchanged durable ledger effects with
+7/7 independent PostgreSQL Oracle Gates. The original raw artifact records
+actual container IDs, same host PID before/during/after, private network
+addresses, four namespaces, SQL membership snapshots, timestamps, oracle
+verdict and source SHA hashes.
+
+```bash
+# Dedicated Actions workflow builds the .NET app and installs Python deps.
+E2_NETWORK_TEST=1 \
+  E1_PG_DSN='host=127.0.0.1 port=55435 dbname=e2lab user=postgres password=e2local' \
+  python3 lab/e2_orleans/test_podman_disconnect.py
+```
+
+**Nonclaims:** endpoint/TCP reconnection is NOT proof that Orleans has
+converged, rebalanced its grains, reaccepted writes, or resolved a
+split-brain condition. This C02 transport-level experiment deliberately
+does not submit financial commands *during* the partition: that is a
+separate negative/positive-control application recovery experiment.
+An isolated transport bridge with a shared live SQL bridge is not a full
+machine failure, a production network partition simulation across real
+fault domains, a PostgreSQL HA validation, a measured RTO, or mainframe
+capacity parity. Overall E2 remains partially verified. See issue #24.
+
 ## E2-F10-C01 · Routable Orleans cluster across Podman network namespaces
 
 **Original CI [#41126502385](https://github.com/jmfloreszazo/de-la-caja-negra-a-la-evidencia/actions/runs/41126502385) passed** on source `0aff6e22eecece2157cf867eddece5d9b7964ccc`, uploading [the unmodified original raw observation](https://github.com/jmfloreszazo/de-la-caja-negra-a-la-evidencia/actions/runs/41126502385/artifacts/13010797803) (artifact ZIP SHA-256 `840842e3549ed3bf23b0fbeff3e4b0133dae0f5c086bcade7fb168f413e8c6be`). The [archived evidence summary](../../evidence/runs/e2-orleans-podman-network.json) and an independent validator pin precisely this **single physical CI runner** result; overall E2 remains `partially_verified`.
