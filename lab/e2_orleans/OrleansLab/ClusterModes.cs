@@ -39,7 +39,7 @@ public static class ClusterModes
 
     private static bool DisposableHost(string? host) =>
         host is "127.0.0.1" or "localhost" ||
-        (ContainerFixture && (host is "e2f10-pg" or "10.78.31.10"));
+        (ContainerFixture && (host is "e2f10-pg" or "10.78.30.10" or "10.78.31.10"));
 
     // Switching providers is a test-fixture choice, not a change in
     // account authority or a different durable transfer implementation.
@@ -76,7 +76,9 @@ public static class ClusterModes
                 "The cluster fixture requires disposable loopback e2lab or opted-in e2f10-pg");
 
         if (args.Length == 1 && args[0] == "network-check" && ContainerFixture)
-            return await RunNetworkCheck(conn);
+            return await RunNetworkCheck(conn, observeDatabaseFailure: false);
+        if (args.Length == 1 && args[0] == "network-check-sql" && ContainerFixture)
+            return await RunNetworkCheck(conn, observeDatabaseFailure: true);
 
         if (args.Length == 2 && args[0] == "silo" && (args[1] is "primary" or "secondary"))
             return await RunSilo(conn, args[1]);
@@ -103,15 +105,47 @@ public static class ClusterModes
         return IPAddress.Parse(expected);
     }
 
-    // C02 checks a live silo's separate SQL network and exact private
+    // F10 checks a live silo's separate SQL network and exact private
     // Orleans transport bridge. TCP reachability is NOT grain rebalancing.
-    private static async Task<int> RunNetworkCheck(string conn)
+    private static async Task<int> RunNetworkCheck(
+        string conn, bool observeDatabaseFailure)
     {
-        using var dataSource = NpgsqlDataSource.Create(conn);
-        await using var command = dataSource.CreateCommand("SELECT 1");
-        var value = await command.ExecuteScalarAsync();
-        if (Convert.ToInt32(value) != 1)
-            throw new InvalidOperationException("Disposable SQL health probe failed");
+        // Preserve the strict original C01/C02 network-check contract.
+        // C03 explicitly opts into a bounded fresh connection because the
+        // SQL outage itself is its measured fault.
+        var databaseHealthy = false;
+        if (!observeDatabaseFailure)
+        {
+            using var dataSource = NpgsqlDataSource.Create(conn);
+            await using var command = dataSource.CreateCommand("SELECT 1");
+            var value = await command.ExecuteScalarAsync();
+            if (Convert.ToInt32(value) != 1)
+                throw new InvalidOperationException("Disposable SQL health probe failed");
+            databaseHealthy = true;
+        }
+        else
+        {
+            try
+            {
+                var configured = new NpgsqlConnectionStringBuilder(conn)
+                {
+                    Pooling = false,
+                    Timeout = 8,
+                    CommandTimeout = 8
+                };
+                await using var connection = new NpgsqlConnection(configured.ConnectionString);
+                using var deadline = new CancellationTokenSource(TimeSpan.FromSeconds(16));
+                await connection.OpenAsync(deadline.Token);
+                await using var command = new NpgsqlCommand("SELECT 1", connection);
+                databaseHealthy =
+                    Convert.ToInt32(await command.ExecuteScalarAsync(deadline.Token)) == 1;
+            }
+            catch (Exception ex) when (
+                ex is NpgsqlException or TimeoutException or OperationCanceledException)
+            {
+                // Probe health is false; independent SQL state remains authoritative.
+            }
+        }
 
         static async Task<bool> CanConnect(IPAddress address, int port)
         {
@@ -134,7 +168,7 @@ public static class ClusterModes
             experiment = "E2-F10-C02-Transport-Partition-Probe",
             status = "PROBED",
             hostIdentity = Environment.MachineName,
-            databaseHealthy = true,
+            databaseHealthy,
             primaryGatewayReachable = primaryReachable,
             secondaryGatewayReachable = secondaryReachable
         }, JsonOptions));

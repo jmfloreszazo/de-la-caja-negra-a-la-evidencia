@@ -1,0 +1,72 @@
+{
+  "schemaVersion": 1,
+  "experiment": "E2-F10-C03-Live-Secondary-SQL-Partition",
+  "status": "PASS",
+  "classification": "SQL_ONLY_TC_NETEM_CUT_ONE_HOST_NOT_DISTRIBUTED_HA",
+  "provenance": {
+    "sourceRunId": 41136779085,
+    "jobId": 124341069078,
+    "headSha": "c91959521e7b10934f10f47e30f09496f555056a",
+    "artifactId": 13017097945,
+    "artifactName": "e2-f10-c03-original-sql-partition",
+    "rawFile": "e2-f10-c03-sql-partition.json",
+    "originalArtifactUrl": "https://github.com/jmfloreszazo/de-la-caja-negra-a-la-evidencia/actions/runs/41136779085/artifacts/13017097945",
+    "runUrl": "https://github.com/jmfloreszazo/de-la-caja-negra-a-la-evidencia/actions/runs/41136779085",
+    "artifactZipSha256": "9d66d1168d311e4363ef333a2707a29310845a60527c9deb2b053355628b28fe",
+    "auditNote": "Downloaded the unmodified original artifact and independently computed its ZIP SHA-256. Exact original container IDs, qdisc, activation diagnostics, SQL rows, timestamps, source-file hashes and complete JSON remain in the artifact."
+  },
+  "observations": {
+    "networkNamespaces": 4,
+    "physicalHosts": 1,
+    "privateBridges": 2,
+    "injectedMethod": "tc qdisc replace dev eth1 root netem loss 100%",
+    "sqlEgressLossPercent": 100,
+    "victimHostPidBeforeDuringAfter": [
+      4090,
+      4090,
+      4090
+    ],
+    "victimStatusBeforeDuringAfter": [
+      "running",
+      "running",
+      "running"
+    ],
+    "sameVictimContainerAndNetworks": true,
+    "secondarySqlReachableBeforeDuringAfter": [
+      true,
+      false,
+      true
+    ],
+    "primarySqlReachableDuring": true,
+    "clientSqlReachableDuring": true,
+    "appGatewaysReachableBeforeDuringAfter": true,
+    "sourceGrainOriginallyOnSecondary": true,
+    "actualOrleansRunningActivationDuringFault": true,
+    "clientAckedCommitDuringFault": false,
+    "clientTimeoutSemantics": "AMBIGUOUS_NOT_ROLLBACK_PROOF",
+    "initialAndDuringFaultEffects": {
+      "committedOperations": 1,
+      "postings": 2,
+      "outboxEvents": 1
+    },
+    "isolatedOperationRowsDuringFault": 0,
+    "restoredEffects": {
+      "committedOperations": 2,
+      "postings": 4,
+      "outboxEvents": 2
+    },
+    "isolatedOperationRowsAfterRestoration": 1,
+    "stableIdReplay": "COMMITTED",
+    "sqlMembershipBeforeDuringAfter": "BOTH_ACTIVE_VERSION_4",
+    "independentSqlOraclesBeforeDuringAfter": {
+      "nonnegative": true,
+      "conserved": true,
+      "balancedPostings": true,
+      "twoPostingsPerCommit": true,
+      "noPostingsForRejection": true,
+      "outboxAtomic": true,
+      "projectionAgrees": true
+    }
+  },
+  "limitations": "ONE physical Linux runner, four Podman namespaces, two private bridges, one NON-HA PostgreSQL. SQL-only 100% egress loss on the LIVE secondary, Orleans request executing with an unacknowledged 30-second timeout, zero durable changes during loss, replay committed exactly once after restoration, 7/7 SQL oracles. No symmetric/asymmetric split-brain fencing, separate-node HA, PostgreSQL HA, production recovery SLA, sustained throughput or mainframe MIPS equivalence."
+}

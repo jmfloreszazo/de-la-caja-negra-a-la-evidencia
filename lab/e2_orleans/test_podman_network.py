@@ -34,7 +34,7 @@ NODES = {
     "e2f10-secondary": "10.78.30.12",
     "e2f10-client": "10.78.30.13",
 }
-CONN = ("Host=e2f10-pg;Port=5432;Database=e2lab;"
+CONN = ("Host=10.78.30.10;Port=5432;Database=e2lab;"
         "Username=postgres;Password=e2local;Pooling=true;Maximum Pool Size=32;"
         "GSS Encryption Mode=Disable")
 
