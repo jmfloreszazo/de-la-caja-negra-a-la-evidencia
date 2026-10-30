@@ -51,6 +51,11 @@ jobs:
           E1_PG_DSN: "host=127.0.0.1 port=55432 dbname=e1lab user=postgres password=e1local"
           E1_PG_NPGSQL: "Host=127.0.0.1;Port=55432;Database=e1lab;Username=postgres;Password=e1local;Pooling=false"
         run: python3 lab/e1_pg/test_dotnet.py
+      - name: Compare unchanged SQLite and PostgreSQL .NET contracts
+        env:
+          E1_PG_DSN: "host=127.0.0.1 port=55432 dbname=e1lab user=postgres password=e1local"
+          E1_PG_NPGSQL: "Host=127.0.0.1;Port=55432;Database=e1lab;Username=postgres;Password=e1local;Pooling=false"
+        run: python3 lab/e1_pg/test_reference_parity.py
       - name: Upload reproducible test evidence
         uses: actions/upload-artifact@v6
         if: always()
