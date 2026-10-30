@@ -7,6 +7,48 @@ using Microsoft.Extensions.Logging;
 using Npgsql;
 using Orleans;
 
+// Isolated deliberately unsafe actor-state negative control. No SQL ledger
+// command is executed in this mode; never use this route for business transfers.
+if (args is ["negative-reentrancy"])
+{
+    const int expectedCalls = 16;
+    var negativeBuilder = Host.CreateApplicationBuilder(args);
+    negativeBuilder.Logging.ClearProviders();
+    negativeBuilder.UseOrleans(silo => silo.UseLocalhostClustering());
+    using var negativeHost = negativeBuilder.Build();
+    await negativeHost.StartAsync();
+    try
+    {
+        var client = negativeHost.Services.GetRequiredService<IClusterClient>();
+        var grain = client.GetGrain<IUnsafeReentrantCounterGrain>(12345);
+        var observedResponses = await Task.WhenAll(
+            Enumerable.Range(0, expectedCalls).Select(
+                _ => grain.UnsafeIncrementWithStaleRead(expectedCalls)));
+        var persistedOnlyInMemory = await grain.GetUnsafeValue();
+        if (observedResponses.Length != expectedCalls ||
+            observedResponses.Any(value => value != 1) ||
+            persistedOnlyInMemory != 1)
+            throw new InvalidOperationException(
+                "The isolated reentrant negative control did not demonstrate lost updates");
+        Console.WriteLine(JsonSerializer.Serialize(new
+        {
+            experiment = "E2-Orleans-Reentrant-Unsafe-Actor-State",
+            status = "NEGATIVE_CONTROL_DETECTED",
+            concurrentCalls = expectedCalls,
+            expectedIfAtomic = expectedCalls,
+            observedActorLocalValue = persistedOnlyInMemory,
+            lostUpdates = expectedCalls - persistedOnlyInMemory,
+            durableSqlTransfers = 0,
+            limitation = "Deliberately unsafe in-memory demonstration only; not a cross-grain SQL transaction, deadlock, or multi-silo failover"
+        }, new JsonSerializerOptions { PropertyNamingPolicy = JsonNamingPolicy.CamelCase }));
+    }
+    finally
+    {
+        await negativeHost.StopAsync();
+    }
+    return 0;
+}
+
 if (args.Length != 2 || args[0] != "run" || !File.Exists(args[1]))
 {
     Console.Error.WriteLine("Usage: OrleansLab run <scenario.json>");

@@ -44,6 +44,19 @@ conditional debit or operation-ID uniqueness.
 
 `test_e2.py` additionally exercises 32 concurrent, evenly balanced A→B and B→A transfers through each of the direct and Orleans routes. The required checks are all 32 durable commits, exactly 64 postings and 32 outbox events, unchanged opening balances for both accounts, equal persisted snapshots and seven independent SQL invariants. This exercises competing source-account requests, **not** an artificially induced PostgreSQL 40P01 deadlock, Orleans reentrancy or multi-silo failover. [CI #41059475191](https://github.com/jmfloreszazo/de-la-caja-negra-a-la-evidencia/actions/runs/41059475191) passed this gate, with [the archived summary](../../evidence/runs/e2-orleans-crossed.json) and the [unaltered original raw artifact](https://github.com/jmfloreszazo/de-la-caja-negra-a-la-evidencia/actions/runs/41059475191/artifacts/12977474457).
 
+## Unsafe Orleans reentrancy negative control
+
+The isolated `UnsafeReentrantCounterGrain` deliberately uses Orleans
+`[Reentrant]`, reads a stale in-memory value, waits for 16 overlapping
+requests, and writes that stale value back. It is invoked only through
+the separate `negative-reentrancy` test mode. The expected unsafe result
+is **16 accepted method calls but actor-local value 1**, with no ledger
+changes and all seven independent PostgreSQL invariants still valid.
+This test is **not** evidence of a cross-grain transaction, a real
+deadlock or persistence failure. The accepted `AccountGrain` is never
+marked reentrant. Do not cite this new negative control as verified
+until its current-head CI run succeeds.
+
 ## Reproduce the verified 1,000-account synthetic slice
 
 Run from the repository root, with PostgreSQL 16.13 in a disposable Podman

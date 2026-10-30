@@ -255,6 +255,27 @@ def crossed_transfer_controls():
     return reports
 
 
+def unsafe_reentrancy_negative():
+    """E2-N02: prove a reentrant actor-local read/modify/write loses updates.
+
+    The negative fixture deliberately uses a separate grain and no SQL
+    writes. The accepted AccountGrain is non-reentrant and unchanged.
+    """
+    reset()
+    original = postgres_snapshot()
+    result = invoke(APP, "negative-reentrancy", timeout=45)
+    assert result["experiment"] == "E2-Orleans-Reentrant-Unsafe-Actor-State"
+    assert result["status"] == "NEGATIVE_CONTROL_DETECTED"
+    assert result["concurrentCalls"] == 16
+    assert result["expectedIfAtomic"] == 16
+    assert result["observedActorLocalValue"] == 1
+    assert result["lostUpdates"] == 15
+    assert result["durableSqlTransfers"] == 0
+    assert postgres_snapshot() == original, "Unsafe negative control touched SQL"
+    result["independentSqlOracle"] = oracle()
+    return result
+
+
 def negative_oracle():
     reset()
     results = scenario("orleans", [command("neg-case", 3, 4, 42)])
@@ -295,12 +316,14 @@ def main():
             "directAndGrainShareDurableLedger": "PASS",
             "concurrentOverdraftAndOperationId": "PASS",
             "crossedSourceAccountTransfers": "PASS",
+            "unsafeReentrantActorStateRejected": "PASS",
             "simulatedRollbackAndLostResponseReplay": "PASS",
             "independentSqlOracleNegativeMutation": "PASS"
         },
         "functional": baseline_sequences(),
         "concurrent": concurrent_controls(),
         "crossedTransfers": crossed_transfer_controls(),
+        "unsafeReentrancyNegative": unsafe_reentrancy_negative(),
         "oracleNegative": negative_oracle(),
         "sourceSha256": {
             str(x.relative_to(LAB)): hashlib.sha256(x.read_bytes()).hexdigest()
@@ -310,6 +333,7 @@ def main():
                 HERE / "OrleansLab/OrleansLab.csproj",
                 HERE / "OrleansLab/Program.cs",
                 HERE / "OrleansLab/Contracts.cs",
+                HERE / "OrleansLab/UnsafeReentrancyNegative.cs",
                 HERE / "OrleansLab/PgDurableLedger.cs",
                 HERE / "test_e2.py",
             ]

@@ -94,7 +94,7 @@ in a performance comparison.
 | E2-F05 | Crash a grain/silo before SQL commit; restart | No partial SQL state; retry succeeds or remains a recorded failure |
 | E2-F06 | Crash a grain/silo after SQL commit, before response | Recovered persisted COMMITTED outcome; no duplicate debit/posting/outbox |
 | E2-N01 | Unsafe two-grain independent debit/credit, isolated disposable fixture | Independent oracle **rejects** non-atomic split; candidate must never use this design |
-| E2-N02 | Deliberately reentrant state change or circular grain call in isolated negative control | Detect stale actor-local assumption / potential deadlock; accepted baseline remains non-reentrant |
+| E2-N02 | Deliberately reentrant state change or circular grain call in isolated negative control | Deliberate reentrant actor-local lost-update fixture **proposed; CI pending**. Cross-grain circular calls/deadlock remain untested; accepted AccountGrain stays non-reentrant |
 | E2-B01 | Uniform workload on 16 E1 accounts | Same commands, arrival pattern, TLS/security, database, Npgsql pool and offered load across baseline and Orleans |
 | E2-B02 | 5% hot accounts | Seed 1,000 distinct **synthetic** accounts and select exactly 50 hot accounts; report the precise skew and seed |
 | E2-B03 | One account receives 50% of request intents | Prespecified seed and distribution; report hot-key queueing, rejection and correctly committed work |
