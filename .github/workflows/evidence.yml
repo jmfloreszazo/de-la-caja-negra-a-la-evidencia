@@ -5,6 +5,7 @@ on:
       - 'evidence/**'
       - 'docs/EVIDENCE*.md'
       - 'scripts/check_evidence.py'
+      - 'scripts/test_evidence_api_retry.py'
       - 'scripts/check_e1_observations.py'
       - 'scripts/check_e1c_observations.py'
       - 'scripts/check_e1c_worker_observations.py'
@@ -37,6 +38,7 @@ jobs:
     runs-on: ubuntu-24.04
     steps:
       - uses: actions/checkout@v5
+      - run: python3 scripts/test_evidence_api_retry.py
       - run: python3 scripts/check_evidence.py
       - run: python3 scripts/check_e1_observations.py
       - run: python3 scripts/check_e1c_observations.py
@@ -51,6 +53,7 @@ jobs:
     runs-on: ubuntu-24.04
     steps:
       - uses: actions/checkout@v5
+      - run: python3 scripts/test_evidence_api_retry.py
       - env:
           GITHUB_TOKEN: ${{ github.token }}
         run: python3 scripts/check_evidence.py --online
