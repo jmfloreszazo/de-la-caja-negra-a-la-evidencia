@@ -114,6 +114,18 @@ from this synthetic experiment.**
 
 For SQL Server-specific locks, error numbers and isolation outcomes versus PostgreSQL and the protected SQLite baseline, see [engine semantics](SQL_ENGINE_SEMANTICS.md). **The 16-case core contract and the additional full 960-transfer uniform/hot worker matrix have both been executed on SQL Server.** [Original full-matrix CI #41042317263](https://github.com/jmfloreszazo/de-la-caja-negra-a-la-evidencia/actions/runs/41042317263) and [versioned raw evidence](../../evidence/runs/e1c-sqlserver-worker-parity.json) show matching persisted accounting outcomes in all eight cases, with seven independent invariants passing. SQLite uses long-lived worker processes while SQL Server starts a .NET process for each transfer; cross-engine latency and throughput are **not comparable**.
 
+## Verified uniform/hot persistent-worker matrix
+
+The [successful CI run #41043087791](https://github.com/jmfloreszazo/de-la-caja-negra-a-la-evidencia/actions/runs/41043087791) executed the full *synthetic* SQLite and SQL Server matrix with **persistent .NET workers in both implementations**: uniform and hot-account traffic, with 1/2/4/8 workers and 32 transfers per worker (960 logical transfers in total). Both engines committed every transfer. All four persisted tables agreed per case, and all seven independent accounting invariants passed. The [immutable run JSON](../../evidence/runs/e1c-sqlserver-worker-parity-persistent.json) includes the original CI job, artifact, tested source hash and eight per-case records. The [earlier worker run #41042317263](../../evidence/runs/e1c-sqlserver-worker-parity.json) is kept separately because its SQL Server candidate launched one process per transfer.
+
+This verifies only the *tested accounting contract*. Even with comparable worker lifetimes, storage engines and connection policies differ; it **does not** validate throughput, p99, failover, mainframe equivalence or a production-grade SLA. Reproduction in the disposable lab, after building all four projects and confirming SQL Server readiness:
+
+```bash
+python3 lab/e1_sqlserver/test_e1c.py
+python3 lab/e1_sqlserver/test_worker_parity.py
+python3 scripts/check_e1c_observations.py
+```
+
 Source references: [Microsoft SQL Server Linux containers](https://learn.microsoft.com/en-us/sql/linux/install-upgrade/quickstart-install-docker?view=sql-server-linux-ver16),
 [SqlClient package](https://www.nuget.org/packages/Microsoft.Data.SqlClient/7.1.1),
 [PostgreSQL/SQLite evidence](../e1_pg/README.md), and
