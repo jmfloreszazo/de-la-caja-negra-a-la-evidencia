@@ -14,6 +14,14 @@
 | Alcance real | Motor PostgreSQL 16.13 en runner Linux/Podman | .NET 10, Npgsql 10.0.3 y PostgreSQL |
 | No demostrado | Carga de producción, MIPS, CICS, recuperación distribuida | Paridad de todos los casos SQLite y SQL Server |
 
+## SQL Server E1c: resultado completo de la matriz sintética · 30 de octubre de 2026
+
+[Ejecución CI original #41042317263](https://github.com/jmfloreszazo/de-la-caja-negra-a-la-evidencia/actions/runs/41042317263) · [registro original legible por máquina](e1c-sqlserver-worker-parity.json). La referencia intacta .NET 10/SQLite y el candidato independiente .NET 10/SQL Server 2022 Developer ejecutaron ocho escenarios sintéticos uniformes y de cuenta caliente con **1, 2, 4 y 8 trabajadores, 32 comandos por trabajador**. En los ocho escenarios, **cada candidato confirmó 960 transferencias**, coincidieron las cuatro tablas persistidas y pasaron los siete invariantes contables independientes. Se conservan identificadores de ejecución, job y artefacto, commits de origen y checkout temporal, hashes y veredictos individuales.
+
+Las evidencias anteriores [E1c de ocho controles](e1c-sqlserver-initial.json) y [E1c ampliada a diez](e1c-sqlserver-extended.json) demuestran de forma independiente reintentos tras deadlock real `1205`, seis bloqueos `1222` acotados, control negativo de *write skew* con `SNAPSHOT`, protección con `SERIALIZABLE`, rechazo de corrupción contable, clave única y timeout separado del cliente `-2`. Las filas E1a/E1b de la tabla inicial representan exclusivamente **sus primeras ejecuciones históricas**.
+
+**Límite:** los trabajadores SQLite permanecen vivos, mientras SQL Server inicia un proceso .NET por transferencia. Se acredita paridad funcional y contable en esa matriz concreta, **no** throughput, latencia, durabilidad ante corte eléctrico, HA de SQL Server, producción bancaria ni equivalencia MIPS. E1 global continúa parcialmente verificado y la PR no está fusionada.
+
 ## Observación E1b ampliada · 30 de octubre de 2026
 
 El [registro original E1b de 7 controles](e1b.json) permanece intacto. Una **ejecución adicional real de GitHub Actions** incorporó tres controles al candidato .NET 10/Npgsql: agotamiento de seis intentos de bloqueo `55P03` sin efectos contables, recuperación e idempotencia al liberar el bloqueo y rechazo por el oráculo SQL independiente de un asiento .NET alterado deliberadamente, que después se restauró.
