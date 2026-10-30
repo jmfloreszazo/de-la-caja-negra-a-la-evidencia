@@ -1,6 +1,6 @@
 # E2 · Orleans coordination over an authoritative durable ledger
 
-**Status: DESIGNED, NOT EXECUTED.** This is an English-only engineering
+**Status: initial functional implementation on an unmerged branch; validation pending. Remaining E2 workloads and failure experiments not executed.** This is an English-only engineering
 protocol for [issue #8](https://github.com/jmfloreszazo/de-la-caja-negra-a-la-evidencia/issues/8).
 It must not be promoted to executed evidence merely because the
 architecture, examples or build manifests exist.
