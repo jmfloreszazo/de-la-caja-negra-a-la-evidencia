@@ -62,6 +62,10 @@ is trusted only by an explicit, non-production testing exception.
 The fixture tool accepts mutation commands only with
 `E1_SQL_TEST_ADMIN=YES_DISPOSABLE`.
 
+## Completed synthetic worker parity
+
+[CI #41043087791](https://github.com/jmfloreszazo/de-la-caja-negra-a-la-evidencia/actions/runs/41043087791) verified the full **960-transfer uniform/hot, 1/2/4/8-worker** SQLite/SQL Server logical workload using **persistent .NET worker processes on both sides**. Eight scenarios matched all four persisted tables, and the independent seven-invariant SQL oracle returned PASS after every case. The [original machine-readable evidence](../../evidence/runs/e1c-sqlserver-worker-parity-persistent.json) records the exact source and job. The [earlier per-transfer-process run](../../evidence/runs/e1c-sqlserver-worker-parity.json) is retained but must not be conflated with the persistent worker result. This remains **functional evidence, not a throughput or resilience benchmark**.
+
 ## Known exclusions and outstanding gates
 
 - SQL Server E1c is tested for these defined synthetic functional
