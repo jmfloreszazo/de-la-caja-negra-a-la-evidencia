@@ -19,10 +19,12 @@ The repository contains **one bilingual book** and **English-only software proje
 4. Treat filenames, paths, test names, issue titles, commit messages, protocols, status enums, infrastructure labels, warnings and error messages as engineering interfaces: **English by default**. Proper nouns, quoted third-party material and intentional locale-test data are exceptions; they must be explicitly justified.
 5. Maintain authorship: José María Flores Zazo retains final editorial authority. Translating or reviewing a chapter does not transfer authorship or authorization to an agent.
 6. Before review, run:
+
    ```bash
    python3 scripts/check_language_policy.py
    python3 scripts/check.py
    ```
+
    The first check enforces project structure and catches common accidental Spanish engineering prose; the second checks book synchronization, relative links, figures and generated editions. **Automated checks do not replace a human language and code review.**
 
 ## Boundary examples
