@@ -22,6 +22,14 @@ El [registro original E1b de 7 controles](e1b.json) permanece intacto. Una **eje
 
 **Resultado observado: PASS en los 10 controles.** La primera ejecución de 7 controles conserva su hash de código histórico asociado al commit de 29-10-2026; los hashes del registro ampliado se cotejan con el código actual de la rama. El validador offline **no** confunde el script antiguo con el nuevo. Ninguno de los dos resultados completa todo el contrato SQLite, E1c ni E1 global.
 
+## Paridad directa SQLite ↔ PostgreSQL · 30 de octubre de 2026
+
+El nuevo [JSON inmutable de paridad E1b](e1b-reference-parity.json) conserva la [ejecución CI #41031578923](https://github.com/jmfloreszazo/de-la-caja-negra-a-la-evidencia/actions/runs/41031578923), sus identificadores de job y artefacto, commit, checkout original, hashes, 16 casos individuales y versiones de herramientas. El **ejecutable .NET 10/SQLite de referencia, sin modificar**, y el ejecutable **.NET 10/Npgsql con PostgreSQL** recibieron las mismas operaciones sintéticas. Después de **cada** caso coincidieron saldos, operaciones, asientos y outbox, con un oráculo contable PostgreSQL independiente que pasó los controles.
+
+Se probaron confirmación y rechazo, duplicados y conflictos de identidad, entradas inválidas, excepción y muerte de proceso antes del commit, pérdida de respuesta tras el commit y reintento idempotente. Se liberó un bloqueo real SQLite y otro PostgreSQL mientras los respectivos clientes reintentaban; PostgreSQL registró `55P03` y después confirmó una sola vez. Pasaron los seis grupos de controles y los 16 casos secuenciales.
+
+**No demostrado:** toda la matriz multiproceso SQLite, equivalencia de mecanismos o tiempos de bloqueo, SQL Server, durabilidad ante corte eléctrico, WAN ni capacidad mainframe. Se mantienen intactos los registros E1b anteriores y E1 global sigue parcialmente verificado.
+
 ## Tres hallazgos que se pueden comprobar
 
 1. **Deadlock recuperado:** PostgreSQL emitió `40P01`, se reintentó la transacción completa y terminaron dos transferencias confirmadas, sin duplicar asientos.
