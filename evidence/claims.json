@@ -399,6 +399,20 @@
       "protocol": null
     },
     {
+      "id": "E2-SQL-PARTITION",
+      "status": "ci_verified",
+      "es": "Aislamiento real de la red SQL de un silo Orleans vivo con una transferencia en ejecución y reconciliación contable",
+      "en": "Live Orleans silo SQL-only partition with an executing transfer and independently reconciled ledger",
+      "scope_es": "Un solo runner Linux: tc/netem 100 % en la interfaz SQL secundaria, red Orleans accesible, petición en ejecución y timeout ambiguo, cero efectos nuevos durante el corte, una única transferencia tras restaurar, 7/7 oráculos. No acredita HA física, fencing, escala ni MIPS.",
+      "scope_en": "One Linux runner: 100% tc/netem on secondary SQL egress, Orleans transport reachable, executing request with ambiguous timeout, zero new effects during fault, one transfer after restoration, 7/7 oracles. No physical HA, fencing, scale or MIPS proof.",
+      "evidence": {
+        "kind": "github_actions",
+        "run_id": 41136779085,
+        "head_sha": "c91959521e7b10934f10f47e30f09496f555056a"
+      },
+      "protocol": null
+    },
+    {
       "id": "E2",
       "status": "partially_verified",
       "es": "Orleans y ledger frente a distintas distribuciones de carga",
