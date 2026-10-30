@@ -22,7 +22,14 @@ public static class ClusterModes
     private const int SecondarySiloPort = 11151;
     private const int SecondaryGatewayPort = 30051;
     private const string Service = "e2-multiprocess-lab";
-    private const string Cluster = "e2-local-recovery";
+    // Only the isolated E2-F09 fixture may choose a different deployment
+    // identity; this avoids stale membership records between failure cases.
+    private static string Cluster =>
+        Environment.GetEnvironmentVariable("E2_INFLIGHT_TEST") == "1" &&
+        Environment.GetEnvironmentVariable("E2_CLUSTER_INSTANCE") is
+            ("e2-inflight-pre" or "e2-inflight-post")
+        ? Environment.GetEnvironmentVariable("E2_CLUSTER_INSTANCE")!
+        : "e2-local-recovery";
     // Switching providers is a test-fixture choice, not a change in
     // account authority or a different durable transfer implementation.
     private static bool AdoNet =>

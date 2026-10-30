@@ -69,6 +69,10 @@ jobs:
         env:
           E2_CLUSTER_PROVIDER: adonet
         run: python3 lab/e2_orleans/test_multiprocess.py
+      - name: Prove actual in-flight PostgreSQL rollback and post-COMMIT response loss across Orleans silos
+        env:
+          E2_CLUSTER_PROVIDER: adonet
+        run: python3 lab/e2_orleans/test_inflight.py
       - name: Upload original, non-promoted E2 smoke evidence
         if: always()
         uses: actions/upload-artifact@v6

@@ -79,6 +79,58 @@ This test is **not** evidence of a cross-grain transaction, a real
 deadlock or persistence failure. The accepted `AccountGrain` is never
 marked reentrant. [CI #41060526872](https://github.com/jmfloreszazo/de-la-caja-negra-a-la-evidencia/actions/runs/41060526872) verified this negative result. The [archived observation](../../evidence/runs/e2-orleans-reentrancy.json) links to its [original, unmodified CI artifact](https://github.com/jmfloreszazo/de-la-caja-negra-a-la-evidencia/actions/runs/41060526872/artifacts/12978961633).
 
+## E2-F09 · Deterministic in-flight SQL transaction failure (pending original CI)
+
+**Goal:** distinguish a real database transaction aborted by the death of
+the *executing Orleans silo* from an already durably committed transaction
+whose server dies before acknowledging the caller. These are different
+failure boundaries and must be reported separately.
+
+The test runs two independent Orleans 10.4.0 silo **OS processes**,
+an external client, and the version-matched PostgreSQL ADO.NET membership
+provider. Both scenarios use a disposable PostgreSQL 16.13 database:
+
+1. **Before COMMIT:** an opt-in, exact-command test fixture
+   (`E2_INFLIGHT_TEST=1`, operation `e2-inflight-pre`, 47 cents) first
+   updates the source balance inside one uncommitted SQL transaction,
+   then waits on a fixed PostgreSQL transaction advisory lock. The
+   independent Python process holds that lock, checks that
+   `pg_stat_activity.wait_event_type='Lock'` identifies the actual
+   backend waiting on `pg_advisory_xact_lock(720260301)`, and verifies
+   zero *visible* operation/posting/outbox records. It sends **SIGKILL
+   to the executing secondary silo**, verifies that SQL rolled back,
+   kills the ambiguous original external client, then releases the
+   barrier. An automatic Orleans retry after node loss may legitimately
+   execute on the survivor; the invariant is **at most one durable
+   effect**, not a promise that the client will see a specific error.
+2. **After COMMIT/before original server reply:** the executing secondary
+   silo self-terminates with actual SIGKILL immediately *after* a
+   complete database COMMIT for operation `e2-inflight-post`.
+   A read-only SQL check must find exactly one operation, two postings
+   and one outbox event, irrespective of what the ambiguous caller saw.
+
+In each case, require SQL membership to transition from
+`primary=3/secondary=3` to `primary=3/secondary=6` with increased
+version, the former secondary grain on the surviving primary, stable
+operation-ID replay, a new committed operation, exactly two final
+business operations/four postings/two outbox records and **7/7**
+independent accounting Oracle Gates. The two cases use separate
+cluster IDs to avoid stale deployment membership.
+
+```bash
+# Run after the existing E2 disposable Podman PostgreSQL bootstrap
+# and official Orleans v10.4.0 ADO.NET membership-schema installation.
+E2_CLUSTER_PROVIDER=adonet python3 lab/e2_orleans/test_inflight.py
+```
+
+**Status: unverified until original current-head GitHub Actions CI passes.**
+The raw `lab/results/e2/e2-inflight-sql-commit.json` must be uploaded
+as an original artifact before recording a `ci_verified` claim.
+The artificial advisory gate proves a *particular* in-flight SQL
+failure boundary; it is not a naturally occurring banking workload,
+a cross-physical-node fault, persistent client retries across process
+crashes, PostgreSQL HA, a production RTO, or mainframe capacity.
+
 ## E2-F08 · Pinned PostgreSQL ADO.NET membership (CI-verified local-process slice)
 
 This separate functional trial keeps **the same authoritative SQL ledger**,
