@@ -23,6 +23,7 @@ To re-run the complete synthetic worker matrix on the same disposable database a
 ```bash
 python3 lab/e1_pg/test_oracle_vectors.py
 python3 lab/e1_pg/test_multiprocess_parity.py
+podman image inspect docker.io/library/postgres:16.13 --format '{{.Id}}' > lab/e1_pg/image-id.txt
 python3 lab/e1_pg/capture_runtime.py
 ```
 
