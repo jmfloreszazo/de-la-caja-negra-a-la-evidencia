@@ -36,6 +36,10 @@ Coverage includes committed/rejected and duplicate operations, conflicting IDs, 
 
 This is a **single-database negative control**, not a simulation of production failures or a proof of mainframe capacity. The E1b reference and candidate code hashes are checked without rewriting earlier observations. E1 remains partially verified.
 
+## Reproducibility manifest · 30 October 2026
+
+[Versioned runtime manifest](e1b-runtime-manifest.json) · [successful CI run #41033595770](https://github.com/jmfloreszazo/de-la-caja-negra-a-la-evidencia/actions/runs/41033595770). The evidence includes Python, .NET SDK, Npgsql, psycopg, native SQLite, PostgreSQL and Podman versions; the PostgreSQL image ID and registry SHA-256 digests; six source hashes; and separate **PR source HEAD** and temporary **GitHub merge checkout** identifiers. An online CI check validates the originating job. These details enable narrower reproduction but do not establish cross-platform portability or operational equivalence.
+
 ## Three inspectable findings
 
 1. **Recovered deadlock:** PostgreSQL returned `40P01`; the whole transaction was retried and both transfers ultimately committed without duplicate postings.
