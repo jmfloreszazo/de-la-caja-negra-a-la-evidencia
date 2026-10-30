@@ -79,6 +79,48 @@ This test is **not** evidence of a cross-grain transaction, a real
 deadlock or persistence failure. The accepted `AccountGrain` is never
 marked reentrant. [CI #41060526872](https://github.com/jmfloreszazo/de-la-caja-negra-a-la-evidencia/actions/runs/41060526872) verified this negative result. The [archived observation](../../evidence/runs/e2-orleans-reentrancy.json) links to its [original, unmodified CI artifact](https://github.com/jmfloreszazo/de-la-caja-negra-a-la-evidencia/actions/runs/41060526872/artifacts/12978961633).
 
+## Two independent Orleans silo processes — E2-F07 (pending CI)
+
+This next, **deliberately limited** experiment extends the previously
+co-hosted Orleans smoke test. A Python orchestrator starts:
+
+1. A primary .NET Orleans silo process on silo port `11150`, gateway
+   `30050`.
+2. A distinct secondary .NET Orleans silo process on silo port
+   `11151`, gateway `30051`.
+3. One or more **separate external Orleans client processes**, configured
+   with both static gateways.
+
+The silos use Orleans **development** membership on loopback, and both
+share the same disposable authoritative PostgreSQL `e2lab` ledger.
+The test probes the **actual OS PID** hosting each account grain and
+requires that grains reside on **both** silos. It performs real
+transfers through both remote grain activations, then sends a genuine
+`SIGKILL` to the secondary silo **after** those transactions finish.
+The next external client must see the original secondary-owned grain
+reactivate on the surviving primary. Stable-ID replay must yield
+`DUPLICATE_COMMITTED`; a new transfer must commit exactly once.
+The seven independent SQL invariants and the operation/posting/outbox
+cardinality must all pass.
+
+```bash
+python3 lab/e2_orleans/test_multiprocess.py
+```
+
+The `E2_CLUSTER_TEST=1` switch is supplied only to spawned test
+processes, not ordinary clients or accepted one-silo workloads.
+The experiment is **not yet CI-verified**. A green result is meaningful
+proof of **separate local processes** and a bounded post-response
+reactivation, **not** proof of separate physical nodes, production
+ADO.NET cluster membership, in-flight grain failover, lost-response
+resolution at the exact SQL commit boundary, capacity scaling or
+a valid mainframe comparison. Those remain separate E2 acceptance gates.
+
+Official implementation references:
+- [Orleans: run an application](https://learn.microsoft.com/dotnet/orleans/deployment/)
+- [Orleans: typical development clustering configurations](https://learn.microsoft.com/dotnet/orleans/host/configuration-guide/typical-configurations)
+- [Orleans: reliable ADO.NET clustering](https://learn.microsoft.com/dotnet/orleans/host/configuration-guide/configuring-ado-dot-net-providers)
+
 ## Reproduce the verified 1,000-account synthetic slice
 
 Run from the repository root, with PostgreSQL 16.13 in a disposable Podman
