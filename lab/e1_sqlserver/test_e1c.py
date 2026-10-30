@@ -151,6 +151,21 @@ def concurrency_and_faults():
     oracle()
     CONTROLS["overdraftAndIdempotencyUnderConcurrency"] = "PASS"
 
+    # A deliberate duplicate INSERT must be rejected by SQL Server itself,
+    # independently of the request-ID application lock.
+    unique = fixture("unique-key")
+    assert unique["status"] == "UNIQUE_KEY_REJECTED"
+    assert unique["sqlServerError"] in (2601, 2627)
+    oracle()
+    CONTROLS["databaseUniqueKeyConstraint"] = "PASS"
+
+    # SqlClient command cancellation (-2) is distinct from SET LOCK_TIMEOUT
+    # (SQL Server error 1222)..
+    command_timeout = fixture("command-timeout")
+    assert command_timeout == {"status": "COMMAND_TIMEOUT", "sqlClientError": -2}
+    oracle()
+    CONTROLS["boundedSqlClientCommandTimeout"] = "PASS"
+
     # The fixture holds a real SQL Server UPDLOCK. Observe the lock acquired
     # before issuing the transfer; do not infer contention from elapsed time.
     def hold(account, milliseconds):
