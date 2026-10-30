@@ -1,4 +1,4 @@
-# E2 · Orleans-led account coordination (planned experiment)
+# E2 · Orleans-led account coordination (partially verified experiment)
 
 **SINGLE-SILO FUNCTIONAL AND FIXED-WORKLOAD SLICES VERIFIED IN CI; OVERALL E2 NOT ACCEPTED.** The .NET 10/Orleans 10.4.0 co-hosted silo shares one authoritative PostgreSQL ledger across the direct and grain-routed paths. [Functional smoke #41053628769](https://github.com/jmfloreszazo/de-la-caja-negra-a-la-evidencia/actions/runs/41053628769) passed five controls. [Seeded workload #41055928136](https://github.com/jmfloreszazo/de-la-caja-negra-a-la-evidencia/actions/runs/41055928136) passed six route/profile runs with 600 committed transfers. No sustained capacity ceiling, multiple-silo or production proof exists. Its detailed executable acceptance
 contract is in [EXPERIMENT_PROTOCOL.md](EXPERIMENT_PROTOCOL.md). This
@@ -18,7 +18,7 @@ The account grain does **not** own an ACID transaction spanning multiple
 grains. It must never be used as a substitute for PostgreSQL locking,
 conditional debit or operation-ID uniqueness.
 
-## Planned implementation order
+## Engineering roadmap and remaining acceptance work
 
 1. Pin `Microsoft.Orleans.Server` **10.4.0** and compatible Orleans
    packages for .NET 10, preserve dependency-lock fingerprints.
@@ -39,6 +39,10 @@ conditional debit or operation-ID uniqueness.
    committed transfers per second.
 8. Run silo-failure and lost-response recovery, then independent
    oracle and mutation detection before any evidence promotion.
+
+## Crossed-transfer regression gate
+
+`test_e2.py` additionally exercises 32 concurrent, evenly balanced A→B and B→A transfers through each of the direct and Orleans routes. The required checks are all 32 durable commits, exactly 64 postings and 32 outbox events, unchanged opening balances for both accounts, equal persisted snapshots and seven independent SQL invariants. This exercises competing source-account requests, **not** an artificially induced PostgreSQL 40P01 deadlock, Orleans reentrancy or multi-silo failover. Results belong to the current CI artifact; do not cite the gate as independently verified until that run passes.
 
 ## Reproduce the verified 1,000-account synthetic slice
 

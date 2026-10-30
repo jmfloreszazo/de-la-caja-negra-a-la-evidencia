@@ -1,6 +1,6 @@
 # E2 · Orleans coordination over an authoritative durable ledger
 
-**Status: initial functional implementation on an unmerged branch; validation pending. Remaining E2 workloads and failure experiments not executed.** This is an English-only engineering
+**Status: partially verified on an unmerged branch, NOT an accepted E2 experiment.** The original single-silo functional, fixed-seed 1,000-account workload and genuine local-cohost SIGKILL slices passed CI independently. Multi-silo failover, deliberately reentrant actor negative controls, sustained capacity characterization and real mainframe equivalence remain untested. This is an English-only engineering
 protocol for [issue #8](https://github.com/jmfloreszazo/de-la-caja-negra-a-la-evidencia/issues/8).
 It must not be promoted to executed evidence merely because the
 architecture, examples or build manifests exist.
@@ -151,10 +151,7 @@ Never mutate the protected E1/COBOL/SQLite reference or overwrite prior
 E1a/E1b/E1c evidence. A failure in this experiment must stay red and its
 cause must be recorded rather than changing test expectations silently.
 
-**E2 remains `designed_not_executed` in `evidence/claims.json`.** No
-E2 result is verified until functional controls, independent negative
-oracles, hot-key workloads, failure injection and original CI artifacts
-have all executed successfully and been independently reviewed.
+**The umbrella E2 claim is `partially_verified` in `evidence/claims.json`; it is NOT an overall PASS.** Individually archived E2-SMOKE, E2-LOAD and E2-PROCESS-KILL records point to original CI runs, and the original artifacts must remain reviewable. A future crossed-transfer test is an additional functional gate, not evidence of an induced deadlock or real distributed Orleans failover. The outstanding capacity, reentrancy and multi-node gates need separate original CI evidence and independent review.
 
 ### References
 

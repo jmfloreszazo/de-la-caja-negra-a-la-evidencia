@@ -1,7 +1,7 @@
 {
   "schema_version": 1,
   "edition": "v2026.10.29",
-  "as_of": "2026-10-29",
+  "as_of": "2026-10-30",
   "repository": "jmfloreszazo/de-la-caja-negra-a-la-evidencia",
   "principle": "A designed protocol is not execution evidence; CI does not establish production capacity.",
   "claims": [
@@ -288,13 +288,13 @@
     },
     {
       "id": "E2",
-      "status": "designed_not_executed",
+      "status": "partially_verified",
       "es": "Orleans y ledger frente a distintas distribuciones de carga",
       "en": "Orleans and ledger under different load distributions",
-      "scope_es": "Sin benchmark E2 ejecutado contra E1",
-      "scope_en": "No executed E2 benchmark against E1",
+      "scope_es": "E2-SMOKE, E2-LOAD y E2-PROCESS-KILL ejecutados en CI como controles sintéticos independientes; sin aceptación E2 global, failover entre silos, saturación sostenida, reentrancia negativa ni equivalencia mainframe.",
+      "scope_en": "E2-SMOKE, E2-LOAD and E2-PROCESS-KILL individually executed in CI as synthetic controls; no overall E2 acceptance, multi-silo failover, sustained saturation, reentrancy negative control or mainframe equivalence.",
       "evidence": null,
-      "protocol": "lab/docs/EXPERIMENT_PROTOCOL.md"
+      "protocol": "lab/e2_orleans/EXPERIMENT_PROTOCOL.md"
     },
     {
       "id": "E3",

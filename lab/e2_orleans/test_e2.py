@@ -195,6 +195,66 @@ def concurrent_controls():
     return tests
 
 
+def crossed_transfer_controls():
+    """E2-F04: concurrent A->B/B->A commands, with independent SQL snapshots.
+
+    This checks competing source-grain activations against the SAME atomic
+    PostgreSQL ledger; it is not an injected 40P01 deadlock or multi-silo test.
+    """
+    commands = [
+        command(f"cross-{index:03d}", 1 if index % 2 == 0 else 2,
+                2 if index % 2 == 0 else 1, 123)
+        for index in range(32)
+    ]
+    reports = []
+    reference_state = None
+    for route in ("direct", "orleans"):
+        reset()
+        results = scenario(route, commands, concurrent=True)
+        assert len(results) == len(commands)
+        assert all(row["status"] == "COMMITTED" for row in results), (route, results)
+        checks = oracle()
+        state = postgres_snapshot()
+        with connect() as db:
+            counts = {
+                "operations": db.execute(
+                    "SELECT COUNT(*) FROM operations WHERE status='COMMITTED'"
+                ).fetchone()[0],
+                "postings": db.execute(
+                    "SELECT COUNT(*) FROM postings"
+                ).fetchone()[0],
+                "outbox": db.execute(
+                    "SELECT COUNT(*) FROM outbox"
+                ).fetchone()[0]
+            }
+            balances = db.execute(
+                "SELECT id,balance FROM accounts WHERE id IN (1,2) ORDER BY id"
+            ).fetchall()
+        assert counts == {"operations": 32, "postings": 64, "outbox": 32}, counts
+        assert balances == [(1, 100000), (2, 100000)], balances
+        if reference_state is None:
+            reference_state = state
+        else:
+            assert state == reference_state, "Crossed-transfer route ledger divergence"
+        reports.append({
+            "route": route, "crossedOperations": len(commands),
+            "sourceAccounts": [1, 2],
+            "committed": counts["operations"],
+            "postings": counts["postings"],
+            "outbox": counts["outbox"],
+            "retrySqlStates": [
+                sqlstate for row in results for sqlstate in row["retrySqlStates"]
+            ],
+            "persistedStateSha256": hashlib.sha256(json.dumps(
+                state, separators=(",", ":"), ensure_ascii=True
+            ).encode("utf-8")).hexdigest(),
+            "sevenIndependentOracleInvariants": checks,
+            "limitations": "Crossed requests, but no forced deadlock or multi-silo failover"
+        })
+    assert reports[0]["persistedStateSha256"] == reports[1]["persistedStateSha256"]
+    return reports
+
+
 def negative_oracle():
     reset()
     results = scenario("orleans", [command("neg-case", 3, 4, 42)])
@@ -234,11 +294,13 @@ def main():
             "sequentialProtectedSQLiteAndE1bParity": "PASS",
             "directAndGrainShareDurableLedger": "PASS",
             "concurrentOverdraftAndOperationId": "PASS",
+            "crossedSourceAccountTransfers": "PASS",
             "simulatedRollbackAndLostResponseReplay": "PASS",
             "independentSqlOracleNegativeMutation": "PASS"
         },
         "functional": baseline_sequences(),
         "concurrent": concurrent_controls(),
+        "crossedTransfers": crossed_transfer_controls(),
         "oracleNegative": negative_oracle(),
         "sourceSha256": {
             str(x.relative_to(LAB)): hashlib.sha256(x.read_bytes()).hexdigest()
@@ -254,7 +316,7 @@ def main():
         },
         "limitations": (
             "Real single-host co-located Orleans grain with PostgreSQL durability. "
-            "Exception and lost-response controls are simulated, NOT actual silo "
+             "Exception and lost-response controls are simulated, NOT actual silo "
             "process crash. No distributed Orleans silos, open-loop workload, "
             "5-percent-hot/50-percent-intent benchmarks, p99 or production/MIPS."
         )
