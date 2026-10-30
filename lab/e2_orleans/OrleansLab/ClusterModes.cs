@@ -103,15 +103,35 @@ public static class ClusterModes
         return IPAddress.Parse(expected);
     }
 
-    // C02 checks a live silo's separate SQL network and exact private
+    // F10 checks a live silo's separate SQL network and exact private
     // Orleans transport bridge. TCP reachability is NOT grain rebalancing.
     private static async Task<int> RunNetworkCheck(string conn)
     {
-        using var dataSource = NpgsqlDataSource.Create(conn);
-        await using var command = dataSource.CreateCommand("SELECT 1");
-        var value = await command.ExecuteScalarAsync();
-        if (Convert.ToInt32(value) != 1)
-            throw new InvalidOperationException("Disposable SQL health probe failed");
+        // A SQL partition must be OBSERVABLE without disabling the independent
+        // application-gateway probes. Use an unpooled bounded connection so
+        // an old pooled socket cannot mask the fault or hang the test.
+        var databaseHealthy = false;
+        try
+        {
+            var configured = new NpgsqlConnectionStringBuilder(conn)
+            {
+                Pooling = false,
+                Timeout = 3,
+                CommandTimeout = 3
+            };
+            await using var connection = new NpgsqlConnection(configured.ConnectionString);
+            using var deadline = new CancellationTokenSource(TimeSpan.FromSeconds(7));
+            await connection.OpenAsync(deadline.Token);
+            await using var command = new NpgsqlCommand("SELECT 1", connection);
+            databaseHealthy =
+                Convert.ToInt32(await command.ExecuteScalarAsync(deadline.Token)) == 1;
+        }
+        catch (Exception ex) when (
+            ex is NpgsqlException or TimeoutException or OperationCanceledException)
+        {
+            // A connectivity failure is evidence about this probe only, not
+            // evidence about durable business state or a completed transfer.
+        }
 
         static async Task<bool> CanConnect(IPAddress address, int port)
         {
@@ -134,7 +154,7 @@ public static class ClusterModes
             experiment = "E2-F10-C02-Transport-Partition-Probe",
             status = "PROBED",
             hostIdentity = Environment.MachineName,
-            databaseHealthy = true,
+            databaseHealthy,
             primaryGatewayReachable = primaryReachable,
             secondaryGatewayReachable = secondaryReachable
         }, JsonOptions));
