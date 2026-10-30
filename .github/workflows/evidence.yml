@@ -6,6 +6,7 @@ on:
       - 'docs/EVIDENCE*.md'
       - 'scripts/check_evidence.py'
       - 'scripts/check_e1c_observations.py'
+      - 'scripts/check_e1c_worker_observations.py'
       - 'scripts/check_m1_observations.py'
       - 'scripts/check_m2_observations.py'
       - '.github/workflows/evidence.yml'
@@ -15,6 +16,7 @@ on:
       - 'docs/EVIDENCE*.md'
       - 'scripts/check_evidence.py'
       - 'scripts/check_e1c_observations.py'
+      - 'scripts/check_e1c_worker_observations.py'
       - '.github/workflows/evidence.yml'
   workflow_dispatch:
 permissions:
@@ -28,6 +30,7 @@ jobs:
       - run: python3 scripts/check_evidence.py
       - run: python3 scripts/check_e1_observations.py
       - run: python3 scripts/check_e1c_observations.py
+      - run: python3 scripts/check_e1c_worker_observations.py
       - run: python3 scripts/check_m1_observations.py
       - run: python3 scripts/check_m2_observations.py
   provenance:
