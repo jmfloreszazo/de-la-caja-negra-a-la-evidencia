@@ -42,7 +42,7 @@ conditional debit or operation-ID uniqueness.
 
 ## Crossed-transfer regression gate
 
-`test_e2.py` additionally exercises 32 concurrent, evenly balanced A→B and B→A transfers through each of the direct and Orleans routes. The required checks are all 32 durable commits, exactly 64 postings and 32 outbox events, unchanged opening balances for both accounts, equal persisted snapshots and seven independent SQL invariants. This exercises competing source-account requests, **not** an artificially induced PostgreSQL 40P01 deadlock, Orleans reentrancy or multi-silo failover. Results belong to the current CI artifact; do not cite the gate as independently verified until that run passes.
+`test_e2.py` additionally exercises 32 concurrent, evenly balanced A→B and B→A transfers through each of the direct and Orleans routes. The required checks are all 32 durable commits, exactly 64 postings and 32 outbox events, unchanged opening balances for both accounts, equal persisted snapshots and seven independent SQL invariants. This exercises competing source-account requests, **not** an artificially induced PostgreSQL 40P01 deadlock, Orleans reentrancy or multi-silo failover. [CI #41059475191](https://github.com/jmfloreszazo/de-la-caja-negra-a-la-evidencia/actions/runs/41059475191) passed this gate, with [the archived summary](../../evidence/runs/e2-orleans-crossed.json) and the [unaltered original raw artifact](https://github.com/jmfloreszazo/de-la-caja-negra-a-la-evidencia/actions/runs/41059475191/artifacts/12977474457).
 
 ## Reproduce the verified 1,000-account synthetic slice
 

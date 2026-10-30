@@ -90,7 +90,7 @@ in a performance comparison.
 | E2-F01 | Protected 16-account E1 sequential reference suite | Same statuses and all four persisted tables; 7/7 independent oracle verdicts |
 | E2-F02 | Parallel duplicate IDs and two-source overdraft race | One durable effect per operation ID, no negative balances |
 | E2-F03 | Lost response after commit; replay and competing retries | Exactly once **durable business effect** via operation-ID idempotency (not exactly-once message delivery) |
-| E2-F04 | Opposite-account transfers and database deadlock | Whole SQL transaction retried; no partial postings/outbox |
+| E2-F04 | Opposite-account transfers and database deadlock | Crossed A→B/B→A concurrent transfer parity **CI-verified**; a deterministic 40P01 deadlock and full-transaction retry are **not yet verified**. No partial postings/outbox |
 | E2-F05 | Crash a grain/silo before SQL commit; restart | No partial SQL state; retry succeeds or remains a recorded failure |
 | E2-F06 | Crash a grain/silo after SQL commit, before response | Recovered persisted COMMITTED outcome; no duplicate debit/posting/outbox |
 | E2-N01 | Unsafe two-grain independent debit/credit, isolated disposable fixture | Independent oracle **rejects** non-atomic split; candidate must never use this design |
@@ -151,7 +151,7 @@ Never mutate the protected E1/COBOL/SQLite reference or overwrite prior
 E1a/E1b/E1c evidence. A failure in this experiment must stay red and its
 cause must be recorded rather than changing test expectations silently.
 
-**The umbrella E2 claim is `partially_verified` in `evidence/claims.json`; it is NOT an overall PASS.** Individually archived E2-SMOKE, E2-LOAD and E2-PROCESS-KILL records point to original CI runs, and the original artifacts must remain reviewable. A future crossed-transfer test is an additional functional gate, not evidence of an induced deadlock or real distributed Orleans failover. The outstanding capacity, reentrancy and multi-node gates need separate original CI evidence and independent review.
+**The umbrella E2 claim is `partially_verified` in `evidence/claims.json`; it is NOT an overall PASS.** Individually archived E2-SMOKE, E2-LOAD and E2-PROCESS-KILL records point to original CI runs, and the original artifacts must remain reviewable. The 32-command crossed-transfer regression for both routes passed [CI #41059475191](https://github.com/jmfloreszazo/de-la-caja-negra-a-la-evidencia/actions/runs/41059475191) with independent SQL oracles and matching snapshots; this does NOT demonstrate a deliberately induced deadlock, actor reentrancy or real distributed Orleans failover. The outstanding capacity, reentrancy and multi-node gates need separate original CI evidence and independent review.
 
 ### References
 

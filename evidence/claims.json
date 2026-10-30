@@ -287,6 +287,20 @@
       "protocol": null
     },
     {
+      "id": "E2-CROSSED",
+      "status": "ci_verified",
+      "es": "Transferencias cruzadas A→B/B→A sobre PostgreSQL mediante ledger directo y Orleans",
+      "en": "Crossed A→B/B→A transfers over PostgreSQL via direct ledger and Orleans",
+      "scope_es": "32 operaciones por ruta concurrente (64 en total), con 32 commits, 64 asientos, 32 eventos outbox por ruta, los siete invariantes SQL y estados idénticos. Un solo silo; no se inyectó deadlock 40P01 ni se probó failover entre silos.",
+      "scope_en": "32 concurrent operations per route (64 total), with 32 commits, 64 postings, 32 outbox events per route, seven passing SQL invariants and identical persisted states. Single silo; no injected 40P01 deadlock or multi-silo failover.",
+      "evidence": {
+        "kind": "github_actions",
+        "run_id": 41059475191,
+        "head_sha": "dda63fc6b81bf7768ec334ea07499cf92103b571"
+      },
+      "protocol": null
+    },
+    {
       "id": "E2",
       "status": "partially_verified",
       "es": "Orleans y ledger frente a distintas distribuciones de carga",
