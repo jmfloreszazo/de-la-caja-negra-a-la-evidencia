@@ -130,6 +130,47 @@ try
         }
         throw new InvalidOperationException("Duty retry limit reached");
     }
+    if (args[0] == "command-timeout")
+    {
+        // SQL client cancellation is error -2, distinct from database lock
+        // timeout 1222. This statement does not mutate persisted state.
+        using var cmd = new SqlCommand("WAITFOR DELAY '00:00:03'", db)
+        {
+            CommandTimeout = 1
+        };
+        try
+        {
+            cmd.ExecuteNonQuery();
+            throw new InvalidOperationException("Command timeout was not triggered");
+        }
+        catch (SqlException ex) when (ex.Number == -2)
+        {
+            Console.WriteLine("{\"status\":\"COMMAND_TIMEOUT\",\"sqlClientError\":-2}");
+            return 0;
+        }
+    }
+    if (args[0] == "unique-key")
+    {
+        // Prove SQL Server primary-key enforcement independently of the
+        // candidate's normal sp_getapplock idempotency lock.
+        using var tx = db.BeginTransaction();
+        using var cmd = new SqlCommand(
+            "INSERT dbo.operations(id,src,dst,amount,status) " +
+            "VALUES(N'same-id',2,1,101,N'COMMITTED')", db, tx);
+        try
+        {
+            cmd.ExecuteNonQuery();
+            throw new InvalidOperationException("Duplicate operation ID was accepted");
+        }
+        catch (SqlException ex) when (ex.Number is 2627 or 2601)
+        {
+            tx.Rollback();
+            Console.WriteLine(JsonSerializer.Serialize(new {
+                status = "UNIQUE_KEY_REJECTED", sqlServerError = ex.Number
+            }));
+            return 0;
+        }
+    }
     if (args[0] == "pool")
     {
         // Deliberately constrain a real client connection pool to 2 leases;
