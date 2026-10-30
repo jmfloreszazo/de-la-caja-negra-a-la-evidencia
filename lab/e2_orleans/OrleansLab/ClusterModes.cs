@@ -23,6 +23,23 @@ public static class ClusterModes
     private const int SecondaryGatewayPort = 30051;
     private const string Service = "e2-multiprocess-lab";
     private const string Cluster = "e2-local-recovery";
+    // Switching providers is a test-fixture choice, not a change in
+    // account authority or a different durable transfer implementation.
+    private static bool AdoNet =>
+        Environment.GetEnvironmentVariable("E2_CLUSTER_PROVIDER") == "adonet";
+
+    private static string MembershipConnection()
+    {
+        var connection = Environment.GetEnvironmentVariable("E2_MEMBERSHIP_NPGSQL")
+            ?? throw new InvalidOperationException(
+                "An explicitly configured E2_MEMBERSHIP_NPGSQL is required for ADO.NET membership");
+        var info = new NpgsqlConnectionStringBuilder(connection);
+        if (info.Database != "e2lab" ||
+            info.Host is not ("127.0.0.1" or "localhost"))
+            throw new InvalidOperationException(
+                "The disposable membership database must be e2lab over loopback");
+        return connection;
+    }
     private static readonly JsonSerializerOptions JsonOptions =
         new() { PropertyNamingPolicy = JsonNamingPolicy.CamelCase,
                  PropertyNameCaseInsensitive = true };
@@ -68,9 +85,29 @@ public static class ClusterModes
         IPEndPoint? primary = role == "primary"
             ? null
             : new IPEndPoint(IPAddress.Loopback, PrimarySiloPort);
-        builder.UseOrleans(silo => silo.UseLocalhostClustering(
-            siloPort: port, gatewayPort: gateway,
-            primarySiloEndpoint: primary, serviceId: Service, clusterId: Cluster));
+        if (AdoNet)
+        {
+            var membershipConnection = MembershipConnection();
+            builder.UseOrleans(silo => silo
+                .UseAdoNetClustering(options =>
+                {
+                    options.Invariant = "Npgsql";
+                    options.ConnectionString = membershipConnection;
+                })
+                .Configure<ClusterOptions>(options =>
+                {
+                    options.ServiceId = Service;
+                    options.ClusterId = Cluster;
+                })
+                .ConfigureEndpoints(siloPort: port, gatewayPort: gateway,
+                    advertisedIP: IPAddress.Loopback));
+        }
+        else
+        {
+            builder.UseOrleans(silo => silo.UseLocalhostClustering(
+                siloPort: port, gatewayPort: gateway,
+                primarySiloEndpoint: primary, serviceId: Service, clusterId: Cluster));
+        }
         using var host = builder.Build();
         await host.StartAsync();
         Console.WriteLine("E2_SILO_READY:" + role + ":" + Environment.ProcessId);
@@ -83,15 +120,33 @@ public static class ClusterModes
     {
         var builder = Host.CreateApplicationBuilder();
         builder.Logging.ClearProviders();
-        builder.UseOrleansClient(client => client
-            .UseStaticClustering(
-                new IPEndPoint(IPAddress.Loopback, PrimaryGatewayPort),
-                new IPEndPoint(IPAddress.Loopback, SecondaryGatewayPort))
-            .Configure<ClusterOptions>(options =>
-            {
-                options.ServiceId = Service;
-                options.ClusterId = Cluster;
-            }));
+        if (AdoNet)
+        {
+            var membershipConnection = MembershipConnection();
+            builder.UseOrleansClient(client => client
+                .UseAdoNetClustering(options =>
+                {
+                    options.Invariant = "Npgsql";
+                    options.ConnectionString = membershipConnection;
+                })
+                .Configure<ClusterOptions>(options =>
+                {
+                    options.ServiceId = Service;
+                    options.ClusterId = Cluster;
+                }));
+        }
+        else
+        {
+            builder.UseOrleansClient(client => client
+                .UseStaticClustering(
+                    new IPEndPoint(IPAddress.Loopback, PrimaryGatewayPort),
+                    new IPEndPoint(IPAddress.Loopback, SecondaryGatewayPort))
+                .Configure<ClusterOptions>(options =>
+                {
+                    options.ServiceId = Service;
+                    options.ClusterId = Cluster;
+                }));
+        }
         using var host = builder.Build();
         await host.StartAsync();
         try

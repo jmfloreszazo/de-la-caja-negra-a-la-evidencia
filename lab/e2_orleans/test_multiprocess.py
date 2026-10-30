@@ -17,10 +17,13 @@ import time
 from test_e2 import APP, HERE, LAB, OUT, command, oracle, postgres_snapshot, reset
 from ledger import connect
 
+PROVIDER = os.environ.get("E2_CLUSTER_PROVIDER", "development")
+assert PROVIDER in ("development", "adonet"), "Unknown cluster provider"
 MAX_JOIN_SECONDS = 100
 MAX_RECOVERY_SECONDS = 150
 SOURCE_FILES = [
     HERE / "test_multiprocess.py",
+    HERE / "setup_adonet_membership.py",
     HERE / "OrleansLab/ClusterModes.cs",
     HERE / "OrleansLab/Contracts.cs",
     HERE / "OrleansLab/PgDurableLedger.cs",
@@ -79,6 +82,30 @@ def inspect_db():
         }
 
 
+def read_membership():
+    """Verify the official Orleans ADO.NET membership rows, not the ledger."""
+    if PROVIDER != "adonet":
+        return None
+    with connect() as db:
+        keys = db.execute(
+            "SELECT COUNT(*) FROM OrleansQuery "
+            "WHERE QueryKey ILIKE '%Membership%' OR QueryKey ILIKE '%Gateway%'"
+        ).fetchone()[0]
+        rows = db.execute(
+            "SELECT DeploymentId,Address,Port,Generation,Status,ProxyPort "
+            "FROM OrleansMembershipTable ORDER BY Port,Generation"
+        ).fetchall()
+        versions = db.execute(
+            "SELECT DeploymentId,Version "
+            "FROM OrleansMembershipVersionTable ORDER BY DeploymentId"
+        ).fetchall()
+    return {
+        "providerQueryCount": keys,
+        "membershipRows": [list(x) for x in rows],
+        "versions": [list(x) for x in versions]
+    }
+
+
 def stop(process):
     if process.poll() is None:
         process.terminate()
@@ -96,9 +123,18 @@ def main():
     )
     reset()
     initial = postgres_snapshot()
-    fixture_env = {**os.environ, "E2_CLUSTER_TEST": "1"}
+    if PROVIDER == "adonet":
+        installed = read_membership()
+        assert installed["providerQueryCount"] >= 3, installed
+        assert not installed["membershipRows"], (
+            "ADO.NET membership must start from a fresh disposable catalog",
+            installed
+        )
     original_env = os.environ.copy()
     os.environ["E2_CLUSTER_TEST"] = "1"
+    if PROVIDER == "adonet":
+        os.environ["E2_MEMBERSHIP_NPGSQL"] = os.environ["E2_PG_NPGSQL"]
+    fixture_env = os.environ.copy()
     primary = secondary = None
     try:
         with tempfile.TemporaryDirectory(prefix="e2-two-silos-") as td:
@@ -141,6 +177,19 @@ def main():
                         second_log.read_text(encoding="utf-8")[-1500:]
                     )
                 probe, ids = observed
+                sql_membership_before = read_membership()
+                if PROVIDER == "adonet":
+                    members = sql_membership_before["membershipRows"]
+                    # An independently read, persistent SQL membership table
+                    # must register both silo endpoints and their gateway ports.
+                    assert {11150, 11151}.issubset(
+                        {int(row[2]) for row in members}
+                    ), sql_membership_before
+                    assert {30050, 30051}.issubset(
+                        {int(row[5]) for row in members if row[5] is not None}
+                    ), sql_membership_before
+                    assert all(row[0] == "e2-local-recovery" for row in members)
+                    assert sql_membership_before["versions"], sql_membership_before
                 assert probe["clientPid"] not in (primary.pid, secondary.pid)
                 source_secondary = next(k for k, v in ids.items() if v == secondary.pid)
                 source_primary = next(k for k, v in ids.items() if v == primary.pid)
@@ -204,12 +253,48 @@ def main():
                 assert all(oracle().values())
                 after = postgres_snapshot()
                 assert after != initial
+                sql_membership_after = read_membership()
+                if PROVIDER == "adonet":
+                    # Verify the actual persisted membership transition.
+                    # Orleans 10.4.0 defines Active=3 and Dead=6.
+                    before_ports = {
+                        int(row[2]): int(row[4])
+                        for row in sql_membership_before["membershipRows"]
+                    }
+                    after_ports = {
+                        int(row[2]): int(row[4])
+                        for row in sql_membership_after["membershipRows"]
+                    }
+                    assert before_ports == {11150: 3, 11151: 3}, (
+                        "Both silos must start active", before_ports
+                    )
+                    assert after_ports == {11150: 3, 11151: 6}, (
+                        "Persistent SQL must mark killed secondary dead",
+                        after_ports
+                    )
+                    before_version = int(sql_membership_before["versions"][0][1])
+                    after_version = int(sql_membership_after["versions"][0][1])
+                    assert after_version > before_version, (
+                        "Membership ETag/version must advance", before_version,
+                        after_version
+                    )
 
                 outcome = {
                     "schemaVersion": 1,
-                    "experiment": "E2-Independent-Process-Orleans-Secondary-SIGKILL",
+                    "experiment": (
+                        "E2-ADO-NET-Persistent-SQL-Membership-SIGKILL"
+                        if PROVIDER == "adonet" else
+                        "E2-Independent-Process-Orleans-Secondary-SIGKILL"
+                    ),
+                    "membershipProvider": PROVIDER,
+                    "sqlMembershipBeforeKill": sql_membership_before,
+                    "sqlMembershipAfterRecovery": sql_membership_after,
                     "status": "PASS",
-                    "classification": "SYNTHETIC_TWO_SILOS_ONE_HOST_DEVELOPMENT_CLUSTER_NOT_PHYSICAL",
+                    "classification": (
+                        "SYNTHETIC_PERSISTENT_ADONET_MEMBERSHIP_ONE_HOST_NOT_PHYSICAL"
+                        if PROVIDER == "adonet" else
+                        "SYNTHETIC_TWO_SILOS_ONE_HOST_DEVELOPMENT_CLUSTER_NOT_PHYSICAL"
+                    ),
                     "primarySiloPid": primary.pid,
                     "secondarySiloPid": secondary.pid,
                     "initialExternalClientPid": probe["clientPid"],
@@ -235,14 +320,18 @@ def main():
                     },
                     "limitations": (
                         "Two different Orleans silo OS processes and an external "
-                        "client on ONE Linux runner. Development clustering, "
-                        "loopback transport, killed secondary AFTER the first "
+                        "client on ONE Linux runner. Provider=" + PROVIDER +
+                        "; loopback transport, killed secondary AFTER the first "
                         "client response, not during COMMIT. Not independently "
                         "provisioned nodes, production membership provider, "
                         "in-flight failover SLA, stress benchmark or mainframe equivalence."
                     )
                 }
-                (OUT / "e2-multiprocess.json").write_text(
+                output_name = (
+                    "e2-adonet-recovery.json" if PROVIDER == "adonet"
+                    else "e2-multiprocess.json"
+                )
+                (OUT / output_name).write_text(
                     json.dumps(outcome, indent=2) + "\n", encoding="utf-8")
                 print(json.dumps(outcome, indent=2))
     finally:

@@ -343,6 +343,20 @@
       "protocol": null
     },
     {
+      "id": "E2-ADONET",
+      "status": "ci_verified",
+      "es": "Membresía Orleans 10.4.0 ADO.NET PostgreSQL persistente; recuperación del grain tras SIGKILL de un silo",
+      "en": "Orleans 10.4.0 persistent ADO.NET PostgreSQL membership; grain recovery after a silo SIGKILL",
+      "scope_es": "Scripts oficiales con hashes de Git verificados, dos silos y cliente externo, dos filas de membresía activas en PostgreSQL y cambio a estado muerto del secundario (3→6; versión 4→5). Reasignación, operación idempotente, ledger 3/6/3 y Oracle Gate 7/7. Una sola máquina y una base de datos, sin particiones de red ni failover físico.",
+      "scope_en": "Verified immutable vendor SQL scripts; two silos plus independent client and actual PostgreSQL membership rows transitioning secondary 3→6 with version 4→5. Grain reassignment, durable idempotent replay, ledger counts 3/6/3 and independent 7/7 oracle. One physical host and one DB, no network partitions or cross-node failover.",
+      "evidence": {
+        "kind": "github_actions",
+        "run_id": 41098437285,
+        "head_sha": "107de8637fd1447fa08e026582c60619186bbdc5"
+      },
+      "protocol": null
+    },
+    {
       "id": "E2",
       "status": "partially_verified",
       "es": "Orleans y ledger frente a distintas distribuciones de carga",

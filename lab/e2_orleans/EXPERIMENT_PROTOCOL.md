@@ -110,6 +110,56 @@ separate. Use fixed operation lists so both paths see the same attempted
 operations; count rejected transfers and idempotent replays separately
 from durable committed transfers.
 
+## E2-F08 · Pinned PostgreSQL ADO.NET membership (CI-verified local-process slice)
+
+This separate functional trial keeps **the same authoritative SQL ledger**,
+nonreentrant account grain and two external silo OS processes used in E2-F07,
+but changes only the **Orleans membership and client gateway discovery**
+mechanism from development/static clustering to
+`Microsoft.Orleans.Clustering.AdoNet 10.4.0` using the `Npgsql`
+provider invariant.
+
+Run `setup_adonet_membership.py` against an **explicitly disposable**
+PostgreSQL 16.13 Podman database (`e2lab`). It downloads the **two official
+Orleans v10.4.0 vendor scripts** from the immutable upstream commit
+`d114d7522a53b8cce4c6b97d44293e5c7273d766`, verifies both raw
+Git blob SHAs before executing them with `psql ON_ERROR_STOP=1`, and writes
+the original provenance including SHA-256 to
+`lab/results/e2/e2-adonet-official-scripts.json`.
+
+- `src/AdoNet/Shared/PostgreSQL-Main.sql` —
+  Git blob `e4f78c86342297b7c7ffeb271b7be066e08f3508`
+- `src/AdoNet/Orleans.Clustering.AdoNet/PostgreSQL-Clustering.sql` —
+  Git blob `e90af40c886a47ea9ea4e84f640c48b572cee494`
+
+The provider must register two silo endpoints in the **actual SQL
+OrleansMembershipTable** with distinct gateway ports. An independent
+client must find grains on **both** hosts through ADO.NET discovery.
+After a real `SIGKILL` of the secondary (deliberately **after** its
+first durable transfer replied), the surviving primary must host the
+reactivated grain, stable-ID replay must be `DUPLICATE_COMMITTED`,
+the next transfer must `COMMITTED`, and the independent seven-invariant
+SQL ledger oracle must remain green with exactly 3 committed operations,
+6 postings and 3 outbox events. Both pre-failure and post-recovery
+membership rows and versions must be archived as raw JSON.
+
+```bash
+python3 lab/e2_orleans/setup_adonet_membership.py
+E2_CLUSTER_PROVIDER=adonet python3 lab/e2_orleans/test_multiprocess.py
+```
+
+**Original CI [#41098437285](https://github.com/jmfloreszazo/de-la-caja-negra-a-la-evidencia/actions/runs/41098437285) passed** with the [raw, unmodified artifact](https://github.com/jmfloreszazo/de-la-caja-negra-a-la-evidencia/actions/runs/41098437285/artifacts/12996714385) and [archived observation](../../evidence/runs/e2-orleans-adonet-membership.json). The membership table actually changed from active (3) to dead (6) for the secondary, while its version advanced from 4 to 5. This remains a one-physical-runner local-process test, NOT full E2 acceptance.
+The PostgreSQL membership catalog is **not** grain/account persistence.
+Both processes still share **one GitHub-hosted physical runner** and a
+single PostgreSQL instance. This is a persistent membership backend, not
+evidence of a cluster across failure domains, network partition recovery,
+in-flight SQL COMMIT death, sustained TPS or mainframe equivalence.
+
+Primary documentation:
+- [Orleans ADO.NET database configuration](https://learn.microsoft.com/dotnet/orleans/host/configuration-guide/adonet-configuration)
+- [Orleans ADO.NET clustering 10.4.0 package](https://www.nuget.org/packages/Microsoft.Orleans.Clustering.AdoNet/10.4.0)
+- [Upstream Orleans v10.4.0 SQL source](https://github.com/dotnet/orleans/tree/v10.4.0/src/AdoNet)
+
 ## Two independent Orleans silo processes — E2-F07 (verified local-process slice)
 
 This next, **deliberately limited** experiment extends the previously

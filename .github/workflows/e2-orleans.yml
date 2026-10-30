@@ -63,6 +63,12 @@ jobs:
         run: python3 lab/e2_orleans/test_process_crash.py
       - name: Prove two Orleans silo OS processes, external client and actual secondary SIGKILL
         run: python3 lab/e2_orleans/test_multiprocess.py
+      - name: Install SHA-verified vendor Orleans 10.4.0 ADO.NET PostgreSQL membership catalog
+        run: python3 lab/e2_orleans/setup_adonet_membership.py
+      - name: Require persistent SQL membership, independent client and actual secondary SIGKILL
+        env:
+          E2_CLUSTER_PROVIDER: adonet
+        run: python3 lab/e2_orleans/test_multiprocess.py
       - name: Upload original, non-promoted E2 smoke evidence
         if: always()
         uses: actions/upload-artifact@v6
