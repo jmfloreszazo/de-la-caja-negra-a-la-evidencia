@@ -52,7 +52,7 @@ def errors(root: pathlib.Path) -> list[str]:
         m = SPANISH_PROSE.search(text)
         if m:
             problems.append(f"{rel}: unexpected Spanish engineering prose: {m.group(0)!r}")
-        if re.search(r"\\]\(README\\.es\\.md\\)", text, re.IGNORECASE):
+        if re.search(r"\]\(README\.es\.md\)", text, re.IGNORECASE):
             problems.append(f"{rel}: link to a translated lab README")
 
     # The M1 and M2 projects are the current policy canaries. New labs must
