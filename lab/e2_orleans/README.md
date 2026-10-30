@@ -1,6 +1,6 @@
 # E2 · Orleans-led account coordination (planned experiment)
 
-**FIRST FUNCTIONAL SLICE IMPLEMENTED, NOT YET VERIFIED.** The E2 branch contains a .NET 10 Orleans 10.4.0 co-hosted silo and a shared PostgreSQL ledger for direct and grain-routed transfers. The newly added CI must PASS before any execution claim can be recorded. No throughput, multiple-silo or production proof exists. Its detailed executable acceptance
+**SINGLE-SILO FUNCTIONAL AND FIXED-WORKLOAD SLICES VERIFIED IN CI; OVERALL E2 NOT ACCEPTED.** The .NET 10/Orleans 10.4.0 co-hosted silo shares one authoritative PostgreSQL ledger across the direct and grain-routed paths. [Functional smoke #41053628769](https://github.com/jmfloreszazo/de-la-caja-negra-a-la-evidencia/actions/runs/41053628769) passed five controls. [Seeded workload #41055928136](https://github.com/jmfloreszazo/de-la-caja-negra-a-la-evidencia/actions/runs/41055928136) passed six route/profile runs with 600 committed transfers. No sustained capacity ceiling, multiple-silo or production proof exists. Its detailed executable acceptance
 contract is in [EXPERIMENT_PROTOCOL.md](EXPERIMENT_PROTOCOL.md). This
 engineering laboratory and all future source, fixtures and READMEs are
 **English only**.
@@ -40,12 +40,43 @@ conditional debit or operation-ID uniqueness.
 8. Run silo-failure and lost-response recovery, then independent
    oracle and mutation detection before any evidence promotion.
 
+## Reproduce the verified 1,000-account synthetic slice
+
+Run from the repository root, with PostgreSQL 16.13 in a disposable Podman
+container, the .NET 10 SDK, the E1 PostgreSQL oracle requirements installed
+and both `E1_PG_DSN` and `E2_PG_NPGSQL` pointing to the **same** `e2lab`
+database on loopback (see [E2 workflow](../../.github/workflows/e2-orleans.yml)).
+
+```bash
+dotnet build lab/Bank/Bank.csproj -c Release
+dotnet build lab/e1_pg/PgBank/PgBank.csproj -c Release
+dotnet build lab/e2_orleans/OrleansLab/OrleansLab.csproj -c Release
+python3 lab/e2_orleans/test_e2.py
+python3 lab/e2_orleans/test_workloads.py
+python3 scripts/check_e2_observations.py
+python3 scripts/check_e2_workload_observations.py
+```
+
+The workload creates **1,000 synthetic accounts**, selects exactly **50**
+as a 5%-of-accounts hot set (80% of intents target that set), and tests a
+separate profile with one account receiving exactly **50%** of the requests.
+Each profile runs 100 requests through both direct ledger and Orleans on
+the **same** local PostgreSQL; each candidate's four persisted tables and
+seven read-only oracle invariants must agree. A fixed seed `20261030`
+generates the requests, with synthetic 3 ms intent spacing.
+
+The [machine-readable observation summary](../../evidence/runs/e2-orleans-workload-summary.json)
+records exact run, job, artifact, source commits, latency percentiles and
+matching state checksums. The [unaltered original full JSON artifact](https://github.com/jmfloreszazo/de-la-caja-negra-a-la-evidencia/actions/runs/41055928136/artifacts/12977285976)
+retains the raw six-run metrics and environment fingerprints. **The
+measured p95/p99 are from one co-located local runner and must not be
+presented as an Orleans scaling advantage or production SLA.**
+
 ## Evidence and release policy
 
 No E2 claims may enter the verified evidence registry until actual
 GitHub Actions and a controlled Podman runtime execute the contract.
-The current GitHub Actions issue (jobs terminating before runner
-assignment) is an external CI gate and is **not** a passed E2 test.
+GitHub-hosted runners are now executing E2 on the public repository. Historical smoke and workload runs were archived separately and can be reviewed under `evidence/runs/`. Subsequent E2 fault-injection and capacity claims must each be independently validated, not inferred from the initial green runs.
 
 Do not modify the protected original E1 tests or publish, tag, merge,
 or open the repository without the maintainer's authorization.
