@@ -1,0 +1,53 @@
+name: E2 F10 container namespace and ADO.NET membership baseline
+
+on:
+  pull_request:
+    paths:
+      - 'lab/e2_orleans/**'
+      - '.github/workflows/e2-f10-podman.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  podman-network-namespaces:
+    name: E2-F10 four Podman netns and SQL-grain recovery oracle
+    runs-on: ubuntu-24.04
+    timeout-minutes: 35
+    env:
+      E2_NETWORK_TEST: '1'
+      E1_PG_DSN: 'host=127.0.0.1 port=55435 dbname=e2lab user=postgres password=e2local'
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-python@v6
+        with:
+          python-version: '3.12'
+      - uses: actions/setup-dotnet@v5
+        with:
+          dotnet-version: '10.0.x'
+      - name: Install exact PostgreSQL oracle requirements
+        run: python3 -m pip install -r lab/e1_pg/requirements.txt
+      - name: Publish Orleans 10.4.0 .NET 10 app for Podman ASP.NET runtime containers
+        run: |
+          mkdir -p lab/results/e2f10
+          dotnet publish lab/e2_orleans/OrleansLab/OrleansLab.csproj \
+            -c Release -m:1 --disable-build-servers -o lab/results/e2f10/app
+          dotnet --version > lab/results/e2f10/dotnet-sdk.txt
+          podman --version > lab/results/e2f10/podman-version.txt
+      - name: Require distinct network namespaces, routable advertised endpoints and SQL recovery
+        run: python3 lab/e2_orleans/test_podman_network.py
+      - name: Upload original raw topology, membership, oracle and schema provenance
+        if: always()
+        uses: actions/upload-artifact@v6
+        with:
+          name: e2-f10-podman-network-original
+          path: lab/results/e2f10/*.json
+          if-no-files-found: warn
+      - name: Remove disposable containers and network after test failure
+        if: always()
+        run: |
+          for name in e2f10-client e2f10-secondary e2f10-primary e2f10-pg; do
+            podman rm -f "$name" 2>/dev/null || true
+          done
+          podman network rm e2f10-net 2>/dev/null || true

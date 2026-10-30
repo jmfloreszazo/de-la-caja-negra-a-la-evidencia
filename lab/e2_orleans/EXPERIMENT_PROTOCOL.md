@@ -110,6 +110,52 @@ separate. Use fixed operation lists so both paths see the same attempted
 operations; count rejected transfers and idempotent replays separately
 from durable committed transfers.
 
+## E2-F10-C01 · Routable Orleans cluster across Podman network namespaces
+
+**Experimental baseline, NOT accepted until the original CI job succeeds.**
+A single GitHub Actions runner starts four **independently network-namespaced**
+Podman containers: PostgreSQL 16.13, a primary Orleans 10.4.0 silo, a
+secondary silo, and an independent client. All use a private bridge
+`e2f10-net` (test-only `10.78.30.0/24`); no Orleans silo/gateway endpoint
+is published on a public host interface.
+
+The silos use `Microsoft.Orleans.Clustering.AdoNet` 10.4.0 with a
+**shared durable PostgreSQL SQL membership catalog**, installed from the
+two exact upstream SQL blobs with SHA verification. Each silo advertises
+its actual Podman bridge address (`10.78.30.11` and `10.78.30.12`)
+and binds to all container-local listening addresses; the external client
+uses ADO.NET gateway discovery, not a hardcoded gateway list. We inspect
+each container ID, address and `/proc/self/ns/net` identity, and require
+**four different network namespace identities**.
+
+The initial probe must observe account grains on **both** silo hostnames;
+each issues a distinct committed transfer via the external client. After
+actual secondary-container `SIGKILL` (exit 137), a formerly
+secondary-hosted grain must reactivate on primary, and the PostgreSQL
+membership catalog must persist its `Active (3)` → `Dead (6)`
+transition with an increasing version. Stable-operation-ID replay must
+be `DUPLICATE_COMMITTED`, and a new transfer must `COMMITTED`. The
+original raw CI artifact includes the topology, container/network
+namespace IDs, advertised addresses, SQL membership before/after,
+source hashes and 7/7 independent accounting-oracle outcomes.
+
+```bash
+# The dedicated CI workflow installs dependencies and builds the app.
+# Safe local reproduction requires disposable Podman and free 55435.
+E2_NETWORK_TEST=1 \
+  E1_PG_DSN='host=127.0.0.1 port=55435 dbname=e2lab user=postgres password=e2local' \
+  python3 lab/e2_orleans/test_podman_network.py
+```
+
+**Strict nonclaims:** four network namespaces on **ONE physical Linux
+runner** do not prove independently provisioned servers or failure
+domains. This C01 baseline tests genuine addressable container
+endpoints and real container death **after** a response, **NOT** injected
+silo-to-silo partitions, network blackholes, split-brain/fencing,
+multi-host failover or any performance/mainframe equivalence.
+Follow-on F10-C02/03 will introduce controlled network-specific faults,
+preserving independent original evidence per slice. See issue #24.
+
 ## E2-F09 · Deterministic in-flight SQL transaction failure (CI-verified single-host scope)
 
 **Goal:** distinguish a real database transaction aborted by the death of

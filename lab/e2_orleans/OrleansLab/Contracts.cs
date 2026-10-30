@@ -24,6 +24,7 @@ public interface IAccountGrain : IGrainWithIntegerKey
 {
     Task<TransferResult> Transfer(TransferCommand command);
     Task<int> HostProcessId();
+    Task<string> HostNodeIdentity();
 }
 
 public interface IDurableLedger
@@ -36,6 +37,8 @@ public sealed class AccountGrain(IDurableLedger ledger) : Grain, IAccountGrain
     // No [Reentrant] attribute. This activation queues its requests.
     // Cross-account atomicity is entirely the responsibility of PostgreSQL.
     public Task<int> HostProcessId() => Task.FromResult(Environment.ProcessId);
+    public Task<string> HostNodeIdentity() =>
+        Task.FromResult(Environment.MachineName + ":" + Environment.ProcessId);
 
     public async Task<TransferResult> Transfer(TransferCommand command)
     {
