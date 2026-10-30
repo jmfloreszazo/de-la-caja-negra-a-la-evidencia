@@ -30,6 +30,12 @@ Coverage includes committed/rejected and duplicate operations, conflicting IDs, 
 
 **Not demonstrated:** the entire SQLite multiprocess workload matrix, identical lock implementations or timings, SQL Server equivalence, durability after power loss, WAN, or mainframe throughput. The earlier E1b records remain intact. E1 remains partially verified.
 
+## Full independent oracle verdict vectors · 30 October 2026
+
+[Recorded run #41032714628](https://github.com/jmfloreszazo/de-la-caja-negra-a-la-evidencia/actions/runs/41032714628) · [Original before/corrupted/restored vectors](e1b-oracle-vectors.json). The separate read-only PostgreSQL oracle checks seven invariants after the direct cross-engine test. All seven passed initially. Removing one actual committed posting triggered exactly **three failures**: `balancedPostings`, `twoPostingsPerCommit` and `projectionAgrees`. Restoring that same row returned all seven to PASS. The unchanged original run, manifest and CI artifact are preserved.
+
+This is a **single-database negative control**, not a simulation of production failures or a proof of mainframe capacity. The E1b reference and candidate code hashes are checked without rewriting earlier observations. E1 remains partially verified.
+
 ## Three inspectable findings
 
 1. **Recovered deadlock:** PostgreSQL returned `40P01`; the whole transaction was retried and both transfers ultimately committed without duplicate postings.
