@@ -315,6 +315,20 @@
       "protocol": null
     },
     {
+      "id": "E2-DEADLOCK",
+      "status": "ci_verified",
+      "es": "PostgreSQL 40P01 real inducido en dos transacciones; recuperación contable con ledger directo y Orleans",
+      "en": "Genuine PostgreSQL 40P01 induced across two SQL transactions; atomic ledger recovery with direct and Orleans routes",
+      "scope_es": "En cada ruta, un deadlock PostgreSQL 40P01 real y un reintento íntegro: dos commits, cuatro asientos, dos outbox, 7/7 invariantes, idempotencia y estado coincidente. Solo un proceso/silo y un fixture sintético con bloqueo desordenado, sin prueba de tasa de deadlocks natural ni failover.",
+      "scope_en": "Each route observed one genuine PostgreSQL 40P01 and full-transaction replay: two commits, four postings, two outbox events, 7/7 independent invariants, idempotency and identical state. Synthetic intentionally unordered locking on one local silo, not natural deadlock rates or multi-silo failover.",
+      "evidence": {
+        "kind": "github_actions",
+        "run_id": 41072089559,
+        "head_sha": "d96ad692dfabad0dd482b37b719630db2df7511f"
+      },
+      "protocol": null
+    },
+    {
       "id": "E2",
       "status": "partially_verified",
       "es": "Orleans y ledger frente a distintas distribuciones de carga",

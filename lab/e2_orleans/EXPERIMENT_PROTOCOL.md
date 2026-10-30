@@ -90,7 +90,7 @@ in a performance comparison.
 | E2-F01 | Protected 16-account E1 sequential reference suite | Same statuses and all four persisted tables; 7/7 independent oracle verdicts |
 | E2-F02 | Parallel duplicate IDs and two-source overdraft race | One durable effect per operation ID, no negative balances |
 | E2-F03 | Lost response after commit; replay and competing retries | Exactly once **durable business effect** via operation-ID idempotency (not exactly-once message delivery) |
-| E2-F04 | Opposite-account transfers and database deadlock | Crossed transfer parity **CI-verified**; a separate opt-in PostgreSQL 40P01 deadlock + full-transaction retry test is **implemented, CI pending**. Safe ordered locks remain the default |
+| E2-F04 | Opposite-account transfers and database deadlock | Crossed transfer parity **CI-verified**; a separate opt-in PostgreSQL 40P01 deadlock + full-transaction retry test is **CI-verified in run #41072089559**. Safe ordered locks remain the default |
 | E2-F05 | Crash a grain/silo before SQL commit; restart | No partial SQL state; retry succeeds or remains a recorded failure |
 | E2-F06 | Crash a grain/silo after SQL commit, before response | Recovered persisted COMMITTED outcome; no duplicate debit/posting/outbox |
 | E2-N01 | Unsafe two-grain independent debit/credit, isolated disposable fixture | Independent oracle **rejects** non-atomic split; candidate must never use this design |
@@ -154,9 +154,7 @@ The gate requires one real `40P01` victim per route, both transfers
 committed, exactly two operations/four postings/two outbox events,
 idempotent stable-ID replay, payload-conflict rejection, matching
 four-table SHA across routes and seven independent SQL invariants.
-**This fixture is pending an original successful CI execution** and
-is not evidence of a natural deadlock rate, multi-silo failover or
-mainframe capacity.
+**The fixture passed [original CI #41072089559](https://github.com/jmfloreszazo/de-la-caja-negra-a-la-evidencia/actions/runs/41072089559)** with the [archived observation](../../evidence/runs/e2-orleans-deadlock.json) and [raw original artifact](https://github.com/jmfloreszazo/de-la-caja-negra-a-la-evidencia/actions/runs/41072089559/artifacts/12985901039). It is not evidence of a natural deadlock rate, multi-silo failover or mainframe capacity.
 
 ## Failure and cancellation semantics
 

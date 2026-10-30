@@ -65,9 +65,7 @@ The gate requires one real `40P01` victim per route, both transfers
 committed, exactly two operations/four postings/two outbox events,
 idempotent stable-ID replay, payload-conflict rejection, matching
 four-table SHA across routes and seven independent SQL invariants.
-**This fixture is pending an original successful CI execution** and
-is not evidence of a natural deadlock rate, multi-silo failover or
-mainframe capacity.
+**The fixture passed [original CI #41072089559](https://github.com/jmfloreszazo/de-la-caja-negra-a-la-evidencia/actions/runs/41072089559)** with the [archived observation](../../evidence/runs/e2-orleans-deadlock.json) and [raw original artifact](https://github.com/jmfloreszazo/de-la-caja-negra-a-la-evidencia/actions/runs/41072089559/artifacts/12985901039). It is not evidence of a natural deadlock rate, multi-silo failover or mainframe capacity.
 
 ## Unsafe Orleans reentrancy negative control
 

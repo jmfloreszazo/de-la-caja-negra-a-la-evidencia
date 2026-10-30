@@ -1,0 +1,137 @@
+{
+  "schemaVersion": 1,
+  "experiment": "E2-PostgreSQL-Real-40P01-Atomic-Retry",
+  "status": "PASS",
+  "classification": "EXECUTED_SYNTHETIC_OPT_IN_REAL_POSTGRESQL_DEADLOCK_NOT_CAPACITY",
+  "provenance": {
+    "runId": 41072089559,
+    "jobId": 124118548656,
+    "artifactId": 12985901039,
+    "sourceCommit": "d96ad692dfabad0dd482b37b719630db2df7511f",
+    "checkoutCommit": "a047397606345a9878c76228d0deb62070ad94a3",
+    "runUrl": "https://github.com/jmfloreszazo/de-la-caja-negra-a-la-evidencia/actions/runs/41072089559",
+    "originalArtifactUrl": "https://github.com/jmfloreszazo/de-la-caja-negra-a-la-evidencia/actions/runs/41072089559/artifacts/12985901039",
+    "origin": "Extracted exact deadlock observation fields from the original CI job output; full unabridged e2-deadlock.json is stored in the original artifact"
+  },
+  "fixture": {
+    "flag": "E2_ENABLE_DEADLOCK_FIXTURE=1",
+    "operationIds": [
+      "e2-deadlock-a",
+      "e2-deadlock-b"
+    ],
+    "sourceTargetPairs": [
+      [
+        1,
+        2
+      ],
+      [
+        2,
+        1
+      ]
+    ],
+    "amountCents": 41,
+    "firstAttemptUnorderedOnly": true,
+    "orderedOnRetry": true
+  },
+  "results": [
+    {
+      "route": "direct",
+      "optInRequired": true,
+      "statuses": [
+        "COMMITTED",
+        "COMMITTED"
+      ],
+      "retrySqlStates": [
+        [],
+        [
+          "40P01"
+        ]
+      ],
+      "observed40P01Victims": 1,
+      "fullTransactionRetryRecovered": true,
+      "persisted": {
+        "committed": 2,
+        "postings": 4,
+        "outbox": 2,
+        "balances": [
+          [
+            1,
+            100000
+          ],
+          [
+            2,
+            100000
+          ]
+        ]
+      },
+      "replayStatuses": [
+        "DUPLICATE_COMMITTED",
+        "DUPLICATE_COMMITTED"
+      ],
+      "conflictingIdStatus": "ID_CONFLICT",
+      "stateSha256": "064279bc9fb11cae5e29a7d7c0d2907c3bd5458083ff000885bf79fa541aba14",
+      "independentOracle": {
+        "nonnegative": true,
+        "conserved": true,
+        "balancedPostings": true,
+        "twoPostingsPerCommit": true,
+        "noPostingsForRejection": true,
+        "outboxAtomic": true,
+        "projectionAgrees": true
+      }
+    },
+    {
+      "route": "orleans",
+      "optInRequired": true,
+      "statuses": [
+        "COMMITTED",
+        "COMMITTED"
+      ],
+      "retrySqlStates": [
+        [],
+        [
+          "40P01"
+        ]
+      ],
+      "observed40P01Victims": 1,
+      "fullTransactionRetryRecovered": true,
+      "persisted": {
+        "committed": 2,
+        "postings": 4,
+        "outbox": 2,
+        "balances": [
+          [
+            1,
+            100000
+          ],
+          [
+            2,
+            100000
+          ]
+        ]
+      },
+      "replayStatuses": [
+        "DUPLICATE_COMMITTED",
+        "DUPLICATE_COMMITTED"
+      ],
+      "conflictingIdStatus": "ID_CONFLICT",
+      "stateSha256": "064279bc9fb11cae5e29a7d7c0d2907c3bd5458083ff000885bf79fa541aba14",
+      "independentOracle": {
+        "nonnegative": true,
+        "conserved": true,
+        "balancedPostings": true,
+        "twoPostingsPerCommit": true,
+        "noPostingsForRejection": true,
+        "outboxAtomic": true,
+        "projectionAgrees": true
+      }
+    }
+  ],
+  "sourceSha256": {
+    "e2_orleans/test_deadlock.py": "9e6b8c92c4943778c656554b07502a7898b9bf8f1abbda114197900f6763d5a4",
+    "e2_orleans/OrleansLab/PgDurableLedger.cs": "0dc223f52491757af143aa3b520b24fd5c95a9ff5047b5370902637c6bb6550b",
+    "e2_orleans/OrleansLab/Program.cs": "63db287e960d10e5db9e80edc9a7012299bfb31e9d96f9a19dfdea4496937ed4",
+    "e1_pg/oracle.py": "3f2874842e9febcc84584bf4a266920028840ccac9d404f75cb9f4363fb4fc09"
+  },
+  "limitations": "One local cohosted silo, intentionally unordered locks on the first attempt. Genuine PostgreSQL 40P01, not evidence of natural fault frequency, multi-silo failover or mainframe capacity."
+}
