@@ -84,4 +84,47 @@ for name, filename, count, source_mode in SNAPSHOTS:
         "with", count, "controls;", source_mode, "source policy"
     )
 
+# New standalone reference comparison: unlike the historical E1b record,
+# this observed execution directly compares the unchanged SQLite/.NET baseline
+# against the PostgreSQL/.NET candidate after every synthetic command.
+record = json.loads((BASE / "e1b-reference-parity.json").read_text(encoding="utf-8"))
+data = record["observation"]
+assert record["schemaVersion"] == 1 and data["schemaVersion"] == 1
+assert record["experiment"] == data["experiment"] == "E1b-reference-parity"
+assert record["runId"] == 41031578923 and record["jobId"] == 123982315732
+assert record["artifactId"] == 12965693127
+assert record["sourceCommit"] == "222b10f4ff986c80edc0424e7bf107cd2e4f45b4"
+assert re.fullmatch(r"[0-9a-f]{40}", record["checkoutCommit"])
+assert record["url"].endswith("/" + str(record["runId"]))
+assert record["classification"] == "EXECUTED_SYNTHETIC_FUNCTIONAL_PARITY_NOT_CAPACITY"
+assert data["classification"] == "SYNTHETIC_FUNCTIONAL_PARITY_NOT_CAPACITY"
+assert data["status"] == "PASS" and len(data["controls"]) == 6
+assert all(value == "PASS" for value in data["controls"].values())
+expected_cases = (
+    "accepted", "duplicate-commit", "id-conflict", "rejected",
+    "duplicate-rejection", "rejection-conflict", "invalid-operation-id",
+    "invalid-zero", "invalid-self-transfer", "invalid-account",
+    "exception-rollback", "process-crash-rollback", "lost-acknowledgment",
+    "idempotent-replay", "retry-exception-operation",
+    "retry-crashed-operation"
+)
+assert [case["case"] for case in data["cases"]] == list(expected_cases)
+assert all(case["persistedParity"] is True and case["oracle"] == "PASS"
+           for case in data["cases"])
+assert all(case["accounts"] == 16 for case in data["cases"])
+assert data["lockRelease"]["referenceRetriesObserved"] is True
+assert data["lockRelease"]["postgresRetrySqlstate"] == "55P03"
+assert data["lockRelease"]["candidateRetryCount"] >= 1
+assert data["lockRelease"]["persistedParity"] is True
+assert data["lockRelease"]["oracle"] == "PASS"
+assert len(data["sourceSha256"]) == 5
+for relative, expected in data["sourceSha256"].items():
+    source = ROOT / "lab" / relative
+    assert source.is_file(), source
+    assert hashlib.sha256(source.read_bytes()).hexdigest() == expected, relative
+assert data["environment"]["postgresVersion"].startswith("16.")
+assert data["environment"]["dotnetVersion"].startswith("10.")
+print("E1b-reference-parity: verified 16 cases + lock-release, original run",
+      record["runId"], "and source manifest")
+
 print("E1 OBSERVATION SNAPSHOTS: PASS")
