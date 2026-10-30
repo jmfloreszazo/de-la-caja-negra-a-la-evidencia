@@ -16,7 +16,8 @@ concurrency:
 jobs:
   prune-verified-branches:
     name: Delete exact E1/E2 heads only after ancestry and lease checks
-    if: ${{ github.ref == 'refs/heads/main' && startsWith(github.event.head_commit.message, 'merge: prune verified merged E1 E2 branches') }}
+    if: >-
+      ${{ github.ref == 'refs/heads/main' && startsWith(github.event.head_commit.message, 'merge: prune verified merged E1 E2 branches') }}
     runs-on: ubuntu-24.04
     timeout-minutes: 10
     steps:
