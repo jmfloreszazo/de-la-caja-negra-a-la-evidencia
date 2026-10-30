@@ -1,0 +1,68 @@
+name: E2 F10 C03 live-silo SQL-only partition and ledger oracle
+
+on:
+  pull_request:
+    paths:
+      - 'lab/e2_orleans/**'
+      - '.github/workflows/e2-f10-sql-partition.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  sql-partition:
+    name: E2-F10 C03 live SQL loss, real grain failure and 7/7 independent oracle
+    runs-on: ubuntu-24.04
+    timeout-minutes: 35
+    env:
+      E2_NETWORK_TEST: '1'
+      E1_PG_DSN: 'host=127.0.0.1 port=55435 dbname=e2lab user=postgres password=e2local'
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-python@v6
+        with:
+          python-version: '3.12'
+      - uses: actions/setup-dotnet@v5
+        with:
+          dotnet-version: '10.0.x'
+      - name: Install PostgreSQL independent SQL Oracle Gate
+        run: python3 -m pip install -r lab/e1_pg/requirements.txt
+      - name: Validate Python sources before starting disposable infrastructure
+        run: |
+          python3 -m py_compile \
+            lab/e2_orleans/test_podman_sql_partition.py \
+            lab/e2_orleans/test_podman_disconnect.py \
+            lab/e2_orleans/test_podman_network.py
+      - name: Build Orleans 10.4.0 and capture environment provenance
+        run: |
+          mkdir -p lab/results/e2f10/c03
+          dotnet publish lab/e2_orleans/OrleansLab/OrleansLab.csproj \
+            -c Release -m:1 --disable-build-servers \
+            -o lab/results/e2f10/app
+          dotnet --version > lab/results/e2f10/c03/dotnet-sdk.txt
+          podman --version > lab/results/e2f10/c03/podman-version.txt
+          podman info --format '{{.Host.NetworkBackend}}' \
+            > lab/results/e2f10/c03/network-backend.txt
+          podman pull docker.io/nicolaka/netshoot:v0.13
+      - name: Cut only secondary SQL egress, observe remote grain failure, verify durable SQL
+        run: python3 lab/e2_orleans/test_podman_sql_partition.py
+      - name: Upload original PASS or FAIL observations unmodified
+        if: always()
+        uses: actions/upload-artifact@v6
+        with:
+          name: e2-f10-c03-original-sql-partition
+          path: |
+            lab/results/e2f10/c03/*.json
+            lab/results/e2f10/c03/*.txt
+          if-no-files-found: warn
+      - name: Clean disposable containers and private networks
+        if: always()
+        shell: bash
+        run: |
+          for name in e2f10-client e2f10-secondary e2f10-primary e2f10-pg; do
+            podman rm -f "$name" 2>/dev/null || true
+          done
+          for name in e2f10-sql e2f10-net; do
+            podman network rm "$name" 2>/dev/null || true
+          done
