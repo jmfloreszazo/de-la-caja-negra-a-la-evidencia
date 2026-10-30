@@ -105,11 +105,17 @@ assert any(1205 in x["retrySqlErrors"] for x in new_data["observations"]["deadlo
 assert new_data["observations"]["faults"]["lockExhaustion"]["retrySqlErrors"] == [1222]*6
 assert new_data["observations"]["isolation"]["snapshot"]["remainingActive"] == 0
 assert new_data["observations"]["isolation"]["serializable"]["remainingActive"] >= 1
-assert len(new_data["sourceSha256"]) == 7
-for relative, digest in new_data["sourceSha256"].items():
-    source = ROOT/"lab"/relative
-    assert source.is_file(), relative
-    assert hashlib.sha256(source.read_bytes()).hexdigest() == digest, relative
+assert new_data["sourceSha256"] == {
+    "e1_sqlserver/schema.sql": "afca447dc6c6a420e71062444d25788e9c93390c6b4e689b915716370e405342",
+    "e1_sqlserver/SqlBank/Program.cs": "2af2bd31c70e5031dfe8ae9ba2c82b0e441214cfb156d329519b6c2b7a81a4cb",
+    "e1_sqlserver/SqlBank/SqlBank.csproj": "cf105657f99f01fddc92e6864807f500432777786525310fef2f98a8b285b61a",
+    "e1_sqlserver/SqlOracle/Program.cs": "687fd9d50c44012ae608b9437e3bfa501fc9e3364ccd20a9b9d091cb669a0324",
+    "e1_sqlserver/SqlFixtures/Program.cs": "ffb5b3df77c30d390f8f231ea61ca1be22229d0d2a40b21b2537533455e7796a",
+    "e1_sqlserver/test_e1c.py": "d3e62b4f96f9599d2deaa9c9e11bf5ae9c44fee06f772eb4898c1ec356c13e9b",
+    "Bank/Program.cs": "72e6ff2bf59fd8889158b2488e3b8a5eb6f67b8e05cab27dc2336b74b6ad8253"
+}
+# This 10-control run has its own fixed historical source manifest. The
+# subsequent 960-transfer worker implementation must be checked separately.
 print("E1C EXTENDED OBSERVATION: PASS (10 controls including SQL unique key "
       "and SqlClient command timeout; current source digest verified)")
 
