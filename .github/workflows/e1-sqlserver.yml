@@ -53,6 +53,8 @@ jobs:
           exit 1
       - name: Execute E1c SQL Server contract and independent oracle
         run: python3 lab/e1_sqlserver/test_e1c.py
+      - name: Verify complete SQLite and SQL Server uniform/hot worker matrix
+        run: python3 lab/e1_sqlserver/test_worker_parity.py
       - name: Capture container image and build provenance
         if: always()
         run: |
