@@ -79,6 +79,33 @@ This test is **not** evidence of a cross-grain transaction, a real
 deadlock or persistence failure. The accepted `AccountGrain` is never
 marked reentrant. [CI #41060526872](https://github.com/jmfloreszazo/de-la-caja-negra-a-la-evidencia/actions/runs/41060526872) verified this negative result. The [archived observation](../../evidence/runs/e2-orleans-reentrancy.json) links to its [original, unmodified CI artifact](https://github.com/jmfloreszazo/de-la-caja-negra-a-la-evidencia/actions/runs/41060526872/artifacts/12978961633).
 
+## E2-F10-C03 · Actual SQL-only packet loss on a live Orleans silo
+
+**Original CI [#41136779085](https://github.com/jmfloreszazo/de-la-caja-negra-a-la-evidencia/actions/runs/41136779085) passed** on source `c91959521e7b10934f10f47e30f09496f555056a`. Its [complete unmodified original artifact](https://github.com/jmfloreszazo/de-la-caja-negra-a-la-evidencia/actions/runs/41136779085/artifacts/13017097945) was independently downloaded and SHA-256 verified (`9d66d1168d311e4363ef333a2707a29310845a60527c9deb2b053355628b28fe`). See the [archived summary](../../evidence/runs/e2-orleans-sql-partition.json), the [offline evidence validator](../../scripts/check_e2_sql_partition_observations.py) and the [experiment protocol](F10_C03_PROTOCOL.md).
+
+This distinct C03 test drops 100% of packets on the secondary silo's
+**SQL-only** interface while keeping the original secondary process alive
+(PID 4090) and both Orleans gateways reachable. An independent client
+targets a grain actually executing on the SQL-isolated silo: its 30-second
+timeout reports an **ambiguous, unacknowledged request**, not a proven
+rollback. The separate SQL observer confirms **zero new committed operations,
+postings or outbox events while isolated**. Following SQL-network repair,
+repeating the same operation ID commits exactly once; the final ledger has
+2 operations, 4 postings and 2 outbox events, with 7/7 independent
+accounting invariants. All four containers still share **one physical Linux
+runner and one non-HA PostgreSQL instance**.
+
+```bash
+E2_NETWORK_TEST=1 \
+  E1_PG_DSN='host=127.0.0.1 port=55435 dbname=e2lab user=postgres password=e2local' \
+  python3 lab/e2_orleans/test_podman_sql_partition.py
+```
+
+**Scope limit:** C03 proves this narrow application-vs-SQL network failure
+and durable ledger observation. It does not prove asymmetric network
+partitions, fencing/split-brain safety, multi-node HA, availability SLO,
+sustained capacity or mainframe MIPS parity. E2 remains `partially_verified`.
+
 ## E2-F10-C02 · Actual packet-loss partition with the same live silo
 
 **Original Linux tc/netem experiment CI [#41132190043](https://github.com/jmfloreszazo/de-la-caja-negra-a-la-evidencia/actions/runs/41132190043) passed** at source commit `10c5e0cc6d300af0cc23cff448f0214100e1036c` and uploaded the [immutable complete original artifact](https://github.com/jmfloreszazo/de-la-caja-negra-a-la-evidencia/actions/runs/41132190043/artifacts/13013089253) (ZIP SHA-256 `fc58f27ca4f4b0a695c5a21e54553d6292ac6f4d388d867ad3e446045f8c6583`). Its [archived result](../../evidence/runs/e2-orleans-live-network-loss.json) is narrowly `ci_verified`; E2 overall remains `partially_verified` because in-fault business commands, convergence, fencing, sustained capacity and physical HA are not established. A prior
@@ -126,9 +153,8 @@ E2_NETWORK_TEST=1 \
 impairment but NOT a physical-host network cut, verified Orleans
 application recovery, split-brain fencing, in-flight transactional
 resilience or a measured production RTO. SQL remains reachable by a
-second intentionally configured bridge. Separate C03 tests must send
-real commands under partition and verify the post-heal grain/ledger
-semantics. E2 remains `partially_verified`.
+second intentionally configured bridge. The independent C03 test above covers a different SQL-only failure
+with an actual in-flight Orleans client command. E2 remains `partially_verified`.
 
 ## E2-F10-C01 · Routable Orleans cluster across Podman network namespaces
 
@@ -173,8 +199,9 @@ domains. This C01 baseline tests genuine addressable container
 endpoints and real container death **after** a response, **NOT** injected
 silo-to-silo partitions, network blackholes, split-brain/fencing,
 multi-host failover or any performance/mainframe equivalence.
-Follow-on F10-C02/03 will introduce controlled network-specific faults,
-preserving independent original evidence per slice. See issue #24.
+Separate F10-C02 and F10-C03 network fault slices now have original
+CI evidence, but asymmetric cuts and distributed HA remain pending.
+See issue #24.
 
 ## E2-F09 · Deterministic in-flight SQL transaction failure (CI-verified single-host scope)
 
