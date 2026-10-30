@@ -6,12 +6,14 @@ namespace E2.OrleansLab;
 public sealed class PgDurableLedger(NpgsqlDataSource source) : IDurableLedger
 {
     private static readonly HashSet<string> Retryable = ["40P01", "40001", "55P03", "23505"];
+    private static readonly int MaxSyntheticAccount =
+        Environment.GetEnvironmentVariable("E2_MAX_ACCOUNT_ID") == "1000" ? 1000 : 16;
 
     public static bool Valid(TransferCommand command) =>
         command.OperationId is not null &&
         Regex.IsMatch(command.OperationId, @"\A[A-Za-z0-9-]{1,80}\z") &&
-        command.SourceAccountId is >= 1 and <= 16 &&
-        command.TargetAccountId is >= 1 and <= 16 &&
+        command.SourceAccountId >= 1 && command.SourceAccountId <= MaxSyntheticAccount &&
+        command.TargetAccountId >= 1 && command.TargetAccountId <= MaxSyntheticAccount &&
         command.SourceAccountId != command.TargetAccountId &&
         command.AmountCents is > 0 and <= 1_000_000_000_000 &&
         command.Fault is "none" or "throw-after-debit" or "lost-response";
