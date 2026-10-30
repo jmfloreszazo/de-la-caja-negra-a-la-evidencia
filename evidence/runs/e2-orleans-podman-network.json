@@ -1,0 +1,53 @@
+{
+  "schemaVersion": 1,
+  "experiment": "E2-F10-C01-Podman-Routable-Bridge-Network-Namespaces",
+  "status": "PASS",
+  "classification": "FOUR_INDEPENDENT_NETWORK_NAMESPACES_SINGLE_PHYSICAL_CI_HOST",
+  "provenance": {
+    "sourceRunId": 41126502385,
+    "jobId": 124306290392,
+    "artifactId": 13010797803,
+    "headSha": "0aff6e22eecece2157cf867eddece5d9b7964ccc",
+    "runUrl": "https://github.com/jmfloreszazo/de-la-caja-negra-a-la-evidencia/actions/runs/41126502385",
+    "originalArtifactUrl": "https://github.com/jmfloreszazo/de-la-caja-negra-a-la-evidencia/actions/runs/41126502385/artifacts/13010797803",
+    "artifactZipSha256FromActionsLog": "840842e3549ed3bf23b0fbeff3e4b0133dae0f5c086bcade7fb168f413e8c6be",
+    "rawFile": "e2-f10-podman-routable-bridge.json",
+    "note": "The complete unmodified original JSON containing actual Podman network namespace IDs, container IDs, membership versions, and source hashes is the GitHub Actions artifact. This repository record separately transcribes the observed stdout of that original successful job."
+  },
+  "observations": {
+    "independentNetworkNamespaceCount": 4,
+    "privateContainerAddresses": {
+      "e2f10-pg": "10.78.30.10",
+      "e2f10-primary": "10.78.30.11",
+      "e2f10-secondary": "10.78.30.12",
+      "e2f10-client": "10.78.30.13"
+    },
+    "membershipAfter": {
+      "primaryPort11150": 3,
+      "secondaryPort11151": 6,
+      "versionAdvanced": true
+    },
+    "secondaryDeath": {
+      "signal": "SIGKILL",
+      "exitCode": 137
+    },
+    "grainReactivatedOnPrimary": true,
+    "stableOperationReplay": "DUPLICATE_COMMITTED",
+    "newTransfer": "COMMITTED",
+    "businessEffects": {
+      "committedOperations": 3,
+      "postings": 6,
+      "outboxEvents": 3
+    },
+    "independentSqlOracle": {
+      "nonnegative": true,
+      "conserved": true,
+      "balancedPostings": true,
+      "twoPostingsPerCommit": true,
+      "noPostingsForRejection": true,
+      "outboxAtomic": true,
+      "projectionAgrees": true
+    }
+  },
+  "limitations": "Four separate Podman network namespaces and routable advertised endpoints on ONE physical Linux CI runner; one PostgreSQL container, no database HA. Secondary container killed AFTER initial client response. Not an injected network partition, separate physical fault domains, production RTO, sustained throughput, or mainframe/MIPS equivalence."
+}

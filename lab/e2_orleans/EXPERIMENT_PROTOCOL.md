@@ -112,7 +112,7 @@ from durable committed transfers.
 
 ## E2-F10-C01 · Routable Orleans cluster across Podman network namespaces
 
-**Experimental baseline, NOT accepted until the original CI job succeeds.**
+**Original CI [#41126502385](https://github.com/jmfloreszazo/de-la-caja-negra-a-la-evidencia/actions/runs/41126502385) passed** on source `0aff6e22eecece2157cf867eddece5d9b7964ccc`, uploading [the unmodified original raw observation](https://github.com/jmfloreszazo/de-la-caja-negra-a-la-evidencia/actions/runs/41126502385/artifacts/13010797803) (artifact ZIP SHA-256 `840842e3549ed3bf23b0fbeff3e4b0133dae0f5c086bcade7fb168f413e8c6be`). The [archived evidence summary](../../evidence/runs/e2-orleans-podman-network.json) and an independent validator pin precisely this **single physical CI runner** result; overall E2 remains `partially_verified`.
 A single GitHub Actions runner starts four **independently network-namespaced**
 Podman containers: PostgreSQL 16.13, a primary Orleans 10.4.0 silo, a
 secondary silo, and an independent client. All use a private bridge
