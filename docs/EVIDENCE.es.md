@@ -20,11 +20,18 @@
 | `CROSS-PLATFORM` | Reproducción independiente en macOS/Windows | **Pendiente de reproducción** | Solo se ha verificado ejecución CI Linux | [Protocolo, no resultado](../ROADMAP.md) |
 | `ILLUSTRATIVE` | Compilación de todos los ejemplos Ilustrativos | **Pendiente de reproducción** | No existe una verificación exhaustiva de esos listados | [Protocolo, no resultado](../ROADMAP.md) |
 
+## Observaciones experimentales complementarias en la PR #5
+
+- **M1 (29 de octubre de 2026):** [datos originales y resultados de transporte](../evidence/runs/M1.es.md) sobre HTTP/2 local en .NET 10, sin durabilidad SQL, TLS ni WAN. **No** acredita TPS bancarias confirmadas.
+- **M2 (30 de octubre de 2026):** [20 casos durables PostgreSQL con oráculo independiente](../evidence/runs/M2.es.md), ejecutados sobre **un único runner y una base de datos compartida**, mediante REST/JSON y gRPC/Protobuf. La contención local observada no acredita escalabilidad horizontal distribuida ni E3.
+
+Estas observaciones pertenecen a la [PR #5 en borrador](https://github.com/jmfloreszazo/de-la-caja-negra-a-la-evidencia/pull/5), no a la release `v2026.10.29`. No promueven ningún estado global de E1–E4.
+
 ## Cómo interpretar la matriz
 
 **Ejecutado en CI** significa que la ejecución enlazada terminó satisfactoriamente en un runner GitHub Linux. No implica garantía operativa en producción.
 
-**Diseñado, NO ejecutado** significa que hay protocolo y criterios de aceptación, pero no hay resultados experimentales. Esto incluye explícitamente E1–E4.
+**Diseñado, NO ejecutado** significa que hay protocolo y criterios de aceptación, pero no hay resultados experimentales aceptados. Se aplica a E2, E3 y E4; E1 está **parcialmente verificado** mediante E1a/E1b, pero no está completo.
 
 **Parcialmente verificado** indica que algunas subpruebas cuentan con CI propia y el experimento global aún no satisface todos sus criterios; E1a/E1b no acreditan E1c ni capacidad mainframe.
 
@@ -46,4 +53,4 @@ La comprobación **en línea** verifica también los commits, los jobs satisfact
 GITHUB_TOKEN=... python3 scripts/check_evidence.py --online
 ```
 
-El [protocolo E1–E4](../lab/docs/EXPERIMENT_PROTOCOL.md) define las próximas pruebas; no es evidencia de que hayan ocurrido.
+El [protocolo E1–E4](../lab/docs/EXPERIMENT_PROTOCOL.md) define criterios de aceptación, no evidencia de ejecución. Los resultados E1a/E1b y M1/M2 citados se han registrado por separado, con su alcance experimental limitado.
