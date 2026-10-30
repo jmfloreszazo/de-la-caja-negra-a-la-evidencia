@@ -234,6 +234,7 @@ def main():
             client_observation = {
                 "kind": "client_exception_or_timeout",
                 "exceptionType": type(ex).__name__,
+                "transportCause": repr(ex.__cause__)[-6000:],
                 "acknowledgedCommitted": False,
                 "outcomeSemantics": "UNKNOWN_UNTIL_INDEPENDENT_SQL_RECONCILIATION"
             }
