@@ -193,6 +193,20 @@
       "protocol": null
     },
     {
+      "id": "E1C-EXT",
+      "status": "ci_verified",
+      "es": "Extensión SQL Server E1c: constraint de operación única y timeout real del comando SqlClient",
+      "en": "SQL Server E1c extension: database operation uniqueness and genuine SqlClient command timeout",
+      "scope_es": "Diez controles sintéticos ejecutados; se verificaron explícitamente el rechazo de una clave duplicada (2601/2627) y el timeout de comando (-2), distinto del bloqueo SQL Server 1222.",
+      "scope_en": "Ten synthetic controls executed; SQL Server rejected a duplicate unique key (2601/2627) and SqlClient raised a command timeout (-2), distinct from SQL Server lock timeout 1222.",
+      "evidence": {
+        "kind": "github_actions",
+        "run_id": 41041573996,
+        "head_sha": "8c3024349dd5c63c9b50fd0b9d41876f3bcddf2e"
+      },
+      "protocol": null
+    },
+    {
       "id": "E1",
       "status": "partially_verified",
       "es": "Bloqueo por fila, deadlocks y write skew en SQL",
