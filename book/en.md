@@ -1299,7 +1299,7 @@ I would add activation failures, duplicate messages, lost responses and the loss
 
 The banking lab uses local SQL transactions and now includes a real Orleans silo co-hosted in a single .NET 10 process. It does not yet include a multi-node Orleans cluster or a Dapr comparison; the measured boundary is a synthetic accounting contract on one hosted runner.
 
-### E2: from architectural reasoning to evidence
+##### E2: from architectural reasoning to evidence
 
 The [E2 laboratory](../lab/e2_orleans/README.md) uses the exact same authoritative PostgreSQL transaction for the direct and grain-routed paths. The [original functional run](https://github.com/jmfloreszazo/de-la-caja-negra-a-la-evidencia/actions/runs/41053628769) passed 15 cases per path, including idempotency, concurrent overdraft and seven independent accounting invariants. A separate [synthetic workload run](https://github.com/jmfloreszazo/de-la-caja-negra-a-la-evidencia/actions/runs/41055928136) committed 600 transfers over six cases involving 1,000 accounts: uniform traffic, exactly 50 hot accounts out of 1,000 (5%), and one account receiving 50% of intent. The persisted account, operation, posting and outbox states matched between both paths.
 
