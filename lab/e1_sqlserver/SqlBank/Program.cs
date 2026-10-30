@@ -78,6 +78,25 @@ try
         tx.Commit();
         return 0;
     }
+    if (command == "worker" && args.Length == 5)
+    {
+        int worker = int.Parse(args[1]), count = int.Parse(args[2]);
+        string pattern = args[3], prefix = args[4];
+        if (worker is < 0 or > 16 || count is < 1 or > 1000 ||
+            pattern is not ("uniform" or "hot") ||
+            !Regex.IsMatch(prefix, @"\A[A-Za-z0-9-]{1,32}\z"))
+            throw new ArgumentException("Invalid synthetic worker configuration");
+        var results = new List<Outcome>();
+        for (int i = 0; i < count; i++)
+        {
+            int src = pattern == "hot" ? 1 : 1 + (worker * count + i) % 16;
+            int dst = pattern == "hot" ? 2 : 1 + src % 16;
+            results.Add(Transfer($"{prefix}-{worker}-{i}", src, dst, 1,
+                "none", "canonical", 0));
+        }
+        Console.WriteLine(JsonSerializer.Serialize(results));
+        return results.Any(result => result.status == "RETRY_EXHAUSTED") ? 7 : 0;
+    }
     if (command == "transfer" && args.Length >= 5)
     {
         var options = new Dictionary<string, string>();
