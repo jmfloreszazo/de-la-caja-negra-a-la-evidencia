@@ -77,6 +77,42 @@ assert data["sourceSha256"] == {
 # The original run is an immutable historical execution, not the current
 # source tree after subsequent E1c test extensions. Compare current file
 # hashes in a separate extended snapshot, never rewrite the old run.
+# E1c extended run is a distinct execution, never a rewrite of the
+# earlier eight-control source snapshot.
+extended = json.loads((ROOT/"evidence/runs/e1c-sqlserver-extended.json")
+                      .read_text(encoding="utf-8"))
+new_data = extended["observation"]
+assert extended["schemaVersion"] == new_data["schemaVersion"] == 1
+assert extended["experiment"] == new_data["experiment"] == "E1c-SQL-Server-2022"
+assert extended["runId"] == 41041573996
+assert extended["jobId"] == 124015395657
+assert extended["artifactId"] == 12970641379
+assert extended["sourceCommit"] == "8c3024349dd5c63c9b50fd0b9d41876f3bcddf2e"
+assert re.fullmatch(r"[0-9a-f]{40}", extended["checkoutCommit"])
+assert extended["url"].endswith("/"+str(extended["runId"]))
+assert extended["classification"] == new_data["classification"] == (
+    "EXECUTED_SYNTHETIC_SQLSERVER_NOT_MAINFRAME"
+)
+assert new_data["status"] == "PASS"
+assert set(new_data["controls"]) == expected_controls | {
+    "databaseUniqueKeyConstraint", "boundedSqlClientCommandTimeout"
+}
+assert all(v == "PASS" for v in new_data["controls"].values())
+assert len(new_data["sequentialCases"]) == 16
+assert all(c["persistedParity"] and len(c["oracle"]) == 7 and
+           all(c["oracle"].values()) for c in new_data["sequentialCases"])
+assert any(1205 in x["retrySqlErrors"] for x in new_data["observations"]["deadlock"])
+assert new_data["observations"]["faults"]["lockExhaustion"]["retrySqlErrors"] == [1222]*6
+assert new_data["observations"]["isolation"]["snapshot"]["remainingActive"] == 0
+assert new_data["observations"]["isolation"]["serializable"]["remainingActive"] >= 1
+assert len(new_data["sourceSha256"]) == 7
+for relative, digest in new_data["sourceSha256"].items():
+    source = ROOT/"lab"/relative
+    assert source.is_file(), relative
+    assert hashlib.sha256(source.read_bytes()).hexdigest() == digest, relative
+print("E1C EXTENDED OBSERVATION: PASS (10 controls including SQL unique key "
+      "and SqlClient command timeout; current source digest verified)")
+
 print("E1C OBSERVATION: PASS (16 parity cases, 8 controls, "
       "1205 deadlock, 1222 bounded retries, SNAPSHOT negative, "
       "SERIALIZABLE defense, independent seven-invariant oracle)")
