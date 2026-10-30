@@ -141,5 +141,5 @@ public sealed class PgDurableLedger(NpgsqlDataSource source) : IDurableLedger
         return result;
     }
 
-    private sealed class InjectedRollbackException : Exception;
+    private sealed class InjectedRollbackException : Exception { }
 }
