@@ -110,7 +110,7 @@ separate. Use fixed operation lists so both paths see the same attempted
 operations; count rejected transfers and idempotent replays separately
 from durable committed transfers.
 
-## E2-F09 · Deterministic in-flight SQL transaction failure (pending original CI)
+## E2-F09 · Deterministic in-flight SQL transaction failure (CI-verified single-host scope)
 
 **Goal:** distinguish a real database transaction aborted by the death of
 the *executing Orleans silo* from an already durably committed transaction
@@ -154,9 +154,7 @@ cluster IDs to avoid stale deployment membership.
 E2_CLUSTER_PROVIDER=adonet python3 lab/e2_orleans/test_inflight.py
 ```
 
-**Status: unverified until original current-head GitHub Actions CI passes.**
-The raw `lab/results/e2/e2-inflight-sql-commit.json` must be uploaded
-as an original artifact before recording a `ci_verified` claim.
+**Original CI [#41102529778](https://github.com/jmfloreszazo/de-la-caja-negra-a-la-evidencia/actions/runs/41102529778) succeeded** at source commit `e52d3a1abcdbeb39e4c6c6e7de4ce5b85ab1008b`, uploading [the complete original raw file](https://github.com/jmfloreszazo/de-la-caja-negra-a-la-evidencia/actions/runs/41102529778/artifacts/12999297273) (artifact ZIP SHA-256 `be96c779d1aba7383b9710d8800bea1621ddc9bdf288c07fc5430e5b43e67cf9`). [Archived repo observation](../../evidence/runs/e2-orleans-inflight-sql-commit.json) records the two outcomes and strict one-physical-host limitation. This narrowly verified slice does **not** change the overall E2 `partially_verified` status.
 The artificial advisory gate proves a *particular* in-flight SQL
 failure boundary; it is not a naturally occurring banking workload,
 a cross-physical-node fault, persistent client retries across process

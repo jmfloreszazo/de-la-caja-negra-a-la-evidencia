@@ -357,6 +357,20 @@
       "protocol": null
     },
     {
+      "id": "E2-INFLIGHT",
+      "status": "ci_verified",
+      "es": "Orleans 10.4.0: SIGKILL real del silo durante una transacción PostgreSQL no confirmada y tras el COMMIT",
+      "en": "Orleans 10.4.0: actual silo SIGKILL with an uncommitted PostgreSQL transaction and after COMMIT",
+      "scope_es": "En un único runner Linux, el caso anterior al COMMIT observa en pg_stat_activity una espera de bloqueo SQL dentro de la transacción antes del SIGKILL; el caso posterior demuestra el COMMIT persistido y replay idempotente. Ambos reactivan el grain, cambian membresía ADO.NET de activo 3 a muerto 6 y finalizan con 2 operaciones/4 asientos/2 outbox y oráculo independiente 7/7. No acredita nodos físicos, particiones de red, HA de PostgreSQL ni rendimiento mainframe.",
+      "scope_en": "On a single Linux runner, the pre-COMMIT case independently observes an in-transaction PostgreSQL advisory lock wait before SIGKILL; the post-COMMIT case demonstrates persisted effects and idempotent replay. Both restore the grain, transition ADO.NET membership Active 3 to Dead 6, end at 2 operations/4 postings/2 outbox and satisfy the independent 7/7 oracle. No physically isolated nodes, network partitions, PostgreSQL HA or mainframe capacity.",
+      "evidence": {
+        "kind": "github_actions",
+        "run_id": 41102529778,
+        "head_sha": "e52d3a1abcdbeb39e4c6c6e7de4ce5b85ab1008b"
+      },
+      "protocol": null
+    },
+    {
       "id": "E2",
       "status": "partially_verified",
       "es": "Orleans y ledger frente a distintas distribuciones de carga",

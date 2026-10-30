@@ -1,0 +1,68 @@
+{
+  "schemaVersion": 1,
+  "experiment": "E2-F09-SQL-InFlight-Silo-SIGKILL",
+  "status": "PASS",
+  "classification": "SYNTHETIC_ADONET_TWO_SILOS_ONE_PHYSICAL_CI_RUNNER_NOT_DISTRIBUTED_HA",
+  "provenance": {
+    "sourceRunId": 41102529778,
+    "jobId": 124222508322,
+    "headSha": "e52d3a1abcdbeb39e4c6c6e7de4ce5b85ab1008b",
+    "artifactId": 12999297273,
+    "artifactName": "e2-orleans-smoke",
+    "rawFile": "e2-inflight-sql-commit.json",
+    "runUrl": "https://github.com/jmfloreszazo/de-la-caja-negra-a-la-evidencia/actions/runs/41102529778",
+    "originalArtifactUrl": "https://github.com/jmfloreszazo/de-la-caja-negra-a-la-evidencia/actions/runs/41102529778/artifacts/12999297273",
+    "artifactZipSha256FromActionsLog": "be96c779d1aba7383b9710d8800bea1621ddc9bdf288c07fc5430e5b43e67cf9",
+    "attribution": "The original CI job stdout independently reports these result values; full per-case raw JSON and sourceSha256 are in its unchanged uploaded artifact. This repository summary is a transcription, not a substitute for the raw artifact."
+  },
+  "cases": [
+    {
+      "case": "pre",
+      "uncommittedPostgreSQLAdvisoryWaitObserved": true,
+      "observedBeforeKillVia": "pg_stat_activity.wait_event_type=Lock, actual blocked pg_advisory_xact_lock(720260301)",
+      "actualSecondaryExitSignal": "SIGKILL",
+      "sqlTransactionRollbackAfterServerDeath": true,
+      "explicitRecoveryStatus": "COMMITTED",
+      "membershipAfterKill": {
+        "primary": "Active 3",
+        "secondary": "Dead 6"
+      },
+      "committedOperations": 2,
+      "postings": 4,
+      "outboxEvents": 2,
+      "independentSqlOracle": {
+        "nonnegative": true,
+        "conserved": true,
+        "balancedPostings": true,
+        "twoPostingsPerCommit": true,
+        "noPostingsForRejection": true,
+        "outboxAtomic": true,
+        "projectionAgrees": true
+      }
+    },
+    {
+      "case": "post",
+      "uncommittedPostgreSQLAdvisoryWaitObserved": false,
+      "actualSecondaryExitSignal": "SIGKILL",
+      "sqlCommitCompletedBeforeKill": true,
+      "explicitRecoveryStatus": "DUPLICATE_COMMITTED",
+      "membershipAfterKill": {
+        "primary": "Active 3",
+        "secondary": "Dead 6"
+      },
+      "committedOperations": 2,
+      "postings": 4,
+      "outboxEvents": 2,
+      "independentSqlOracle": {
+        "nonnegative": true,
+        "conserved": true,
+        "balancedPostings": true,
+        "twoPostingsPerCommit": true,
+        "noPostingsForRejection": true,
+        "outboxAtomic": true,
+        "projectionAgrees": true
+      }
+    }
+  ],
+  "limitations": "Two Orleans silo OS processes, independent client and one PostgreSQL backend on a single Linux runner. The observed pre-commit waiting condition uses a synthetic test-only advisory-lock gate. Not physical node/failure-zone isolation, network partition, PostgreSQL high availability, production capacity or IBM Z/MIPS performance equivalence."
+}
