@@ -69,9 +69,7 @@ The fixture tool accepts mutation commands only with
   escalation, failover mode, edition, database compatibility level,
   transaction-log durability or SQL Agent/batch workload.
 - The SQLite reference's separate uniform/hot **960-transfer** matrix
-  is evidenced for PostgreSQL E1b, not automatically for SQL Server
-  E1c. E1c would need an additional matching SQL Server load run to
-  claim that matrix.
+  has now also been executed against SQL Server E1c: [full CI #41042317263](https://github.com/jmfloreszazo/de-la-caja-negra-a-la-evidencia/actions/runs/41042317263), [eight-case original record](../../evidence/runs/e1c-sqlserver-worker-parity.json). Matching accounts, operations, postings and outbox, with all seven independent accounting invariants passing, prove the tested functional contract only. Because SQLite uses persistent workers and SQL Server uses one .NET process per transfer, performance is **not** comparable.
 - No test equates CICS/Db2 transaction semantics, mainframe MIPS,
   Azure SQL or SQL Managed Instance availability, branch/WAN latency,
   or production RPO/RTO to this local SQL Server container.
