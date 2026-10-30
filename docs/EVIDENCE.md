@@ -20,11 +20,18 @@
 | `CROSS-PLATFORM` | Independent reproduction on macOS/Windows | **Reproduction pending** | Only Linux CI execution has been verified | [Protocol, not a result](../ROADMAP.md) |
 | `ILLUSTRATIVE` | Compilation of all Illustrative examples | **Reproduction pending** | No exhaustive verification of these listings exists | [Protocol, not a result](../ROADMAP.md) |
 
+## Supplemental experiment observations in draft PR #5
+
+- **M1 (29 October 2026):** [raw transport-only evidence and measured results](../evidence/runs/M1.md), .NET 10 HTTP/2 loopback, without SQL durability, TLS or WAN. This is **not** evidence of committed banking TPS.
+- **M2 (30 October 2026):** [20 durable PostgreSQL test cases and independent oracle results](../evidence/runs/M2.md) on a **single hosted runner and shared database**, with REST/JSON and gRPC/Protobuf. Observed local contention does not establish distributed horizontal scalability or E3.
+
+These observations belong to [draft PR #5](https://github.com/jmfloreszazo/de-la-caja-negra-a-la-evidencia/pull/5), not to published release `v2026.10.29`. They do not promote any E1–E4 overall claim.
+
 ## How to interpret the matrix
 
 **Executed in CI** means the linked workflow succeeded on a GitHub-hosted Linux runner. It is not a production operating guarantee.
 
-**Designed, NOT executed** means there is an experiment protocol and acceptance criteria, but no experimental result. This explicitly includes E1–E4.
+**Designed, NOT executed** means there is an experiment protocol and acceptance criteria, but no accepted experimental result. This applies to E2, E3 and E4; E1 is **partially verified** through E1a/E1b, not complete.
 
 **Partially verified** means some subtests have their own passing CI but the overall experiment has not met all acceptance criteria; E1a/E1b do not establish E1c or mainframe capacity.
 
@@ -46,4 +53,4 @@ The **live** CI check also verifies the source commit, successful jobs and relea
 GITHUB_TOKEN=... python3 scripts/check_evidence.py --online
 ```
 
-The [E1–E4 experiment protocol](../lab/docs/EXPERIMENT_PROTOCOL.md) defines future tests; it is not evidence that they took place.
+The [E1–E4 experiment protocol](../lab/docs/EXPERIMENT_PROTOCOL.md) defines acceptance criteria, not execution evidence. The E1a/E1b and M1/M2 results above are separately recorded and retain their narrow test scope.
