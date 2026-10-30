@@ -117,7 +117,82 @@ assert new_data["sourceSha256"] == {
 # This 10-control run has its own fixed historical source manifest. The
 # subsequent 960-transfer worker implementation must be checked separately.
 print("E1C EXTENDED OBSERVATION: PASS (10 controls including SQL unique key "
-      "and SqlClient command timeout; current source digest verified)")
+      "and SqlClient command timeout; historical manifest pinned)")
+
+
+# Independently preserve both real 960-transfer runs. The earlier run
+# launched per-transfer CLI processes; the newer run used persistent
+# .NET worker processes on both the SQLite and SQL Server sides.
+WORKER_RUNS = (
+    ("e1c-sqlserver-worker-parity.json", 41042317263, 124017850214,
+     12970982648, "9e9f5787aa99302acb86b1251d7657cb82f9513b",
+     "EXECUTED_SYNTHETIC_ACCOUNTING_WORKLOAD_NOT_CAPACITY",
+     {
+    "Bank/Program.cs": "72e6ff2bf59fd8889158b2488e3b8a5eb6f67b8e05cab27dc2336b74b6ad8253",
+    "bank_test.py": "4e633c890889bf7a6db48f0dfc9b1f6d1cb16c75a5795c6d497eb1c7545f6ca5",
+    "e1_sqlserver/SqlBank/Program.cs": "2af2bd31c70e5031dfe8ae9ba2c82b0e441214cfb156d329519b6c2b7a81a4cb",
+    "e1_sqlserver/SqlOracle/Program.cs": "687fd9d50c44012ae608b9437e3bfa501fc9e3364ccd20a9b9d091cb669a0324",
+    "e1_sqlserver/test_e1c.py": "d3e62b4f96f9599d2deaa9c9e11bf5ae9c44fee06f772eb4898c1ec356c13e9b",
+    "e1_sqlserver/test_worker_parity.py": "f12230bb8680c56ce925344eea2cf1eac015f2847c255bfad8519ab145ca7f44"
+}),
+    ("e1c-sqlserver-worker-parity-persistent.json", 41043087791,
+     124020405785, 12971391392, "7694e5c306d6c40dc76955b0a25b55382a023ae5",
+     "EXECUTED_SYNTHETIC_SQLSERVER_ACCOUNTING_WORKLOAD_NOT_CAPACITY",
+     {
+    "Bank/Program.cs": "72e6ff2bf59fd8889158b2488e3b8a5eb6f67b8e05cab27dc2336b74b6ad8253",
+    "bank_test.py": "4e633c890889bf7a6db48f0dfc9b1f6d1cb16c75a5795c6d497eb1c7545f6ca5",
+    "e1_sqlserver/SqlBank/Program.cs": "2324fcf3bb7745804585fe690c1d7fcd4e30e7f3e545c3c118c60205d4f97188",
+    "e1_sqlserver/SqlOracle/Program.cs": "687fd9d50c44012ae608b9437e3bfa501fc9e3364ccd20a9b9d091cb669a0324",
+    "e1_sqlserver/test_e1c.py": "29c2d956a63d24e39c73171d4ac097f5e622262b0482e70cf841b5c4bd26b082",
+    "e1_sqlserver/test_worker_parity.py": "ac78922d4786150731e72640594a4be4ddff6806b9741ba6f4370e29ffc0a059"
+}),
+)
+for filename, run_id, job_id, artifact_id, source_sha, kind, hashes in WORKER_RUNS:
+    snapshot = json.loads((ROOT/"evidence/runs"/filename).read_text(encoding="utf-8"))
+    observed = snapshot["observation"]
+    assert snapshot["schemaVersion"] == observed["schemaVersion"] == 1
+    assert snapshot["experiment"] == observed["experiment"] == (
+        "E1c-SQLServer-Worker-Parity"
+    )
+    assert snapshot["runId"] == run_id and snapshot["jobId"] == job_id
+    assert snapshot["artifactId"] == artifact_id
+    assert snapshot["sourceCommit"] == source_sha
+    assert re.fullmatch(r"[0-9a-f]{40}", snapshot["checkoutCommit"])
+    assert snapshot["url"].endswith("/" + str(run_id))
+    assert snapshot["classification"] == kind
+    assert observed["classification"] == "SYNTHETIC_ACCOUNTING_WORKLOAD_NOT_CAPACITY"
+    assert observed["status"] == "PASS"
+    assert observed["controls"] == {
+        "eightUniformHotWorkerCases": "PASS",
+        "bothCandidatesCommitAll960": "PASS",
+        "completeFourTableParity": "PASS",
+        "sevenIndependentOracleInvariants": "PASS",
+    }
+    assert observed["workerCounts"] == [1,2,4,8]
+    assert observed["patterns"] == ["uniform", "hot"]
+    assert observed["totalLogicalOperations"] == 960
+    assert observed["operationsPerWorker"] == 32
+    assert len(observed["cases"]) == 8
+    for idx, case in enumerate(observed["cases"]):
+        workers = (1,2,4,8)[idx % 4]
+        pattern = ("uniform","hot")[idx // 4]
+        count = 32 * workers
+        assert (case["pattern"], case["workers"]) == (pattern,workers)
+        assert case["operations"] == count
+        assert case["referenceCommitted"] == case["sqlServerCommitted"] == count
+        assert case["persistedParity"] is True
+        assert case["accounts"] == 16
+        assert case["operationsPersisted"] == case["outbox"] == count
+        assert case["postings"] == 2 * count
+        assert len(case["oracle"]) == 7 and all(case["oracle"].values())
+    assert observed["sourceSha256"] == hashes, filename
+    if filename.endswith("persistent.json"):
+        # This is the current worker-mode source for the ongoing draft PR.
+        for relative, digest in hashes.items():
+            source = ROOT/"lab"/relative
+            assert source.is_file(), relative
+            assert hashlib.sha256(source.read_bytes()).hexdigest() == digest, relative
+    print(filename, ": PASS; source run", run_id, "; 960 committed transfers")
 
 print("E1C OBSERVATION: PASS (16 parity cases, 8 controls, "
       "1205 deadlock, 1222 bounded retries, SNAPSHOT negative, "
