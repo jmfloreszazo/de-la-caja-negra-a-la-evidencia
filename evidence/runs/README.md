@@ -40,6 +40,12 @@ This is a **single-database negative control**, not a simulation of production f
 
 [Versioned runtime manifest](e1b-runtime-manifest.json) · [successful CI run #41033595770](https://github.com/jmfloreszazo/de-la-caja-negra-a-la-evidencia/actions/runs/41033595770). The evidence includes Python, .NET SDK, Npgsql, psycopg, native SQLite, PostgreSQL and Podman versions; the PostgreSQL image ID and registry SHA-256 digests; six source hashes; and separate **PR source HEAD** and temporary **GitHub merge checkout** identifiers. An online CI check validates the originating job. These details enable narrower reproduction but do not establish cross-platform portability or operational equivalence.
 
+## Complete reference worker-matrix parity · 30 October 2026
+
+[Original 960-transfer execution](https://github.com/jmfloreszazo/de-la-caja-negra-a-la-evidencia/actions/runs/41034420329) · [machine-readable result](e1b-multiprocess-parity.json). All **eight** synthetic workload cases passed: uniform and hot-account traffic, each with 1, 2, 4 and 8 SQLite reference workers and **32 operations per worker**. The .NET 10 PostgreSQL candidate replayed the same operation IDs, source/destination accounts and amounts concurrently. For every case, operations, balances, postings and outbox matched, and all seven independent PostgreSQL accounting invariants passed. Both candidates committed all **960 logical transfers**.
+
+The SQLite reference used its original **long-lived worker processes**; the PostgreSQL test used separate .NET CLI processes per transfer. Consequently, the harness time, launch costs, retries and any latency/throughput values are **not** comparable performance measurements. The synthetic accounting contract is now covered for the reference's uniform/hot worker matrix; SQL Server and mainframe operational capacity remain outside E1b.
+
 ## Three inspectable findings
 
 1. **Recovered deadlock:** PostgreSQL returned `40P01`; the whole transaction was retried and both transfers ultimately committed without duplicate postings.
