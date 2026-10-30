@@ -14,9 +14,19 @@ python3 lab/e1_pg/test_reference_parity.py
 python3 scripts/check_e1_observations.py
 ```
 
-Both test harnesses **reset/destroy the disposable test database**. Neither reproduces the full SQLite multiprocess workload, a SQL Server implementation, power-loss behavior, production load or mainframe capacity; [issue #6](https://github.com/jmfloreszazo/de-la-caja-negra-a-la-evidencia/issues/6) stays open.
+The test harnesses **reset/destroy the disposable database**. The [full synthetic 1/2/4/8-worker uniform/hot logical workload](../../evidence/runs/e1b-multiprocess-parity.json) was also executed and verified in [CI #41034420329](https://github.com/jmfloreszazo/de-la-caja-negra-a-la-evidencia/actions/runs/41034420329): 960 committed logical transfers, identical persisted business state in every case and seven independent accounting invariants passing. Different process-launch models make throughput and latency comparisons invalid. SQL Server, power-loss behavior, production load and mainframe capacity remain outside E1b.
 
 For a side-by-side explanation of the fundamentally different lock scopes, isolation assumptions, retry policies and database operational limits, read [SQLite vs PostgreSQL engine semantics](SQL_ENGINE_SEMANTICS.md). Comparable results in the synthetic contract are **not** equivalent concurrency or durability guarantees.
+
+To re-run the complete synthetic worker matrix on the same disposable database after the 16-case reference test, use:
+
+```bash
+python3 lab/e1_pg/test_oracle_vectors.py
+python3 lab/e1_pg/test_multiprocess_parity.py
+python3 lab/e1_pg/capture_runtime.py
+```
+
+The [raw 960-transfer evidence](../../evidence/runs/e1b-multiprocess-parity.json), [full oracle vectors](../../evidence/runs/e1b-oracle-vectors.json) and [runtime manifest](../../evidence/runs/e1b-runtime-manifest.json) are independently archived, versioned and validated by CI.
 
 The protected reference ledger under `lab/Bank/`, `lab/bank_test.py` and `lab/reference-results/` remains untouched.
 
@@ -49,7 +59,7 @@ The password and port are **local development-only**. Never use these credential
 
 ## Evidence boundary
 
-This is a **synthetic PostgreSQL/Python experimental candidate**. Its results are not a statement that a mainframe's MIPS, CICS/Db2 transactions, durability under power loss or cloud failover have been matched. Nor is this cross-engine equality proof: the .NET 10 PostgreSQL candidate, equivalence to the SQLite baseline and full fault matrix remain open.
+This is a **synthetic PostgreSQL/Python experimental candidate**. Its results are not a statement that a mainframe's MIPS, CICS/Db2 transactions, durability under power loss or cloud failover have been matched. Nor is this universal cross-engine equivalence: the tested synthetic functional matrix has reproducible results, but arbitrary schedules, SQL Server and production fault/durability semantics remain open.
 
 [Verified E1a job](https://github.com/jmfloreszazo/de-la-caja-negra-a-la-evidencia/actions/runs/40919268337) and [verified E1b job](https://github.com/jmfloreszazo/de-la-caja-negra-a-la-evidencia/actions/runs/40919773614) produce downloadable CI evidence. Both are branch test results, not part of the earlier v2026.10.29 release.
 
