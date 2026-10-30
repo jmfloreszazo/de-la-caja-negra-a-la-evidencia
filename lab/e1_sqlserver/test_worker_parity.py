@@ -139,9 +139,9 @@ def main():
         "elapsedHarnessSeconds": round(time.perf_counter()-started, 3),
         "limitations": (
             "Only business outcomes and persisted account/operation/posting/outbox "
-            "state are compared. SQLite uses long-lived worker processes and "
-            "SQL Server launches a new .NET CLI for each transfer. No throughput "
-            "or tail latency comparison, power loss, SQL Server HA, Azure SQL "
+            "state are compared. Both candidates use long-lived .NET worker "
+            "processes, but use different storage engines and connection "
+            "policies. No validated throughput or tail-latency comparison, "
             "or mainframe capacity equivalence."
         )
     }
