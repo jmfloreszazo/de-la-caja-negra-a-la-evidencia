@@ -30,7 +30,7 @@ OPERATION = "e2-f10-c03-sql-unavailable"
 def network_check(name):
     report = json.loads(P(
         "exec", name, "dotnet", "/app/OrleansLab.dll",
-        "cluster", "network-check", timeout=28
+        "cluster", "network-check-sql", timeout=30
     ))
     assert report["status"] == "PROBED", report
     return report
