@@ -16,6 +16,8 @@ python3 scripts/check_e1_observations.py
 
 Both test harnesses **reset/destroy the disposable test database**. Neither reproduces the full SQLite multiprocess workload, a SQL Server implementation, power-loss behavior, production load or mainframe capacity; [issue #6](https://github.com/jmfloreszazo/de-la-caja-negra-a-la-evidencia/issues/6) stays open.
 
+For a side-by-side explanation of the fundamentally different lock scopes, isolation assumptions, retry policies and database operational limits, read [SQLite vs PostgreSQL engine semantics](SQL_ENGINE_SEMANTICS.md). Comparable results in the synthetic contract are **not** equivalent concurrency or durability guarantees.
+
 The protected reference ledger under `lab/Bank/`, `lab/bank_test.py` and `lab/reference-results/` remains untouched.
 
 ## Run
