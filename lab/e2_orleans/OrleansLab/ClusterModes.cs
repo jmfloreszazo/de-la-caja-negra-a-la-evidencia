@@ -76,7 +76,9 @@ public static class ClusterModes
                 "The cluster fixture requires disposable loopback e2lab or opted-in e2f10-pg");
 
         if (args.Length == 1 && args[0] == "network-check" && ContainerFixture)
-            return await RunNetworkCheck(conn);
+            return await RunNetworkCheck(conn, observeDatabaseFailure: false);
+        if (args.Length == 1 && args[0] == "network-check-sql" && ContainerFixture)
+            return await RunNetworkCheck(conn, observeDatabaseFailure: true);
 
         if (args.Length == 2 && args[0] == "silo" && (args[1] is "primary" or "secondary"))
             return await RunSilo(conn, args[1]);
@@ -105,32 +107,44 @@ public static class ClusterModes
 
     // F10 checks a live silo's separate SQL network and exact private
     // Orleans transport bridge. TCP reachability is NOT grain rebalancing.
-    private static async Task<int> RunNetworkCheck(string conn)
+    private static async Task<int> RunNetworkCheck(
+        string conn, bool observeDatabaseFailure)
     {
-        // A SQL partition must be OBSERVABLE without disabling the independent
-        // application-gateway probes. Use an unpooled bounded connection so
-        // an old pooled socket cannot mask the fault or hang the test.
+        // Preserve the strict original C01/C02 network-check contract.
+        // C03 explicitly opts into a bounded fresh connection because the
+        // SQL outage itself is its measured fault.
         var databaseHealthy = false;
-        try
+        if (!observeDatabaseFailure)
         {
-            var configured = new NpgsqlConnectionStringBuilder(conn)
-            {
-                Pooling = false,
-                Timeout = 3,
-                CommandTimeout = 3
-            };
-            await using var connection = new NpgsqlConnection(configured.ConnectionString);
-            using var deadline = new CancellationTokenSource(TimeSpan.FromSeconds(7));
-            await connection.OpenAsync(deadline.Token);
-            await using var command = new NpgsqlCommand("SELECT 1", connection);
-            databaseHealthy =
-                Convert.ToInt32(await command.ExecuteScalarAsync(deadline.Token)) == 1;
+            using var dataSource = NpgsqlDataSource.Create(conn);
+            await using var command = dataSource.CreateCommand("SELECT 1");
+            var value = await command.ExecuteScalarAsync();
+            if (Convert.ToInt32(value) != 1)
+                throw new InvalidOperationException("Disposable SQL health probe failed");
+            databaseHealthy = true;
         }
-        catch (Exception ex) when (
-            ex is NpgsqlException or TimeoutException or OperationCanceledException)
+        else
         {
-            // A connectivity failure is evidence about this probe only, not
-            // evidence about durable business state or a completed transfer.
+            try
+            {
+                var configured = new NpgsqlConnectionStringBuilder(conn)
+                {
+                    Pooling = false,
+                    Timeout = 8,
+                    CommandTimeout = 8
+                };
+                await using var connection = new NpgsqlConnection(configured.ConnectionString);
+                using var deadline = new CancellationTokenSource(TimeSpan.FromSeconds(16));
+                await connection.OpenAsync(deadline.Token);
+                await using var command = new NpgsqlCommand("SELECT 1", connection);
+                databaseHealthy =
+                    Convert.ToInt32(await command.ExecuteScalarAsync(deadline.Token)) == 1;
+            }
+            catch (Exception ex) when (
+                ex is NpgsqlException or TimeoutException or OperationCanceledException)
+            {
+                // Probe health is false; independent SQL state remains authoritative.
+            }
         }
 
         static async Task<bool> CanConnect(IPAddress address, int port)
