@@ -79,7 +79,7 @@ This test is **not** evidence of a cross-grain transaction, a real
 deadlock or persistence failure. The accepted `AccountGrain` is never
 marked reentrant. [CI #41060526872](https://github.com/jmfloreszazo/de-la-caja-negra-a-la-evidencia/actions/runs/41060526872) verified this negative result. The [archived observation](../../evidence/runs/e2-orleans-reentrancy.json) links to its [original, unmodified CI artifact](https://github.com/jmfloreszazo/de-la-caja-negra-a-la-evidencia/actions/runs/41060526872/artifacts/12978961633).
 
-## Two independent Orleans silo processes — E2-F07 (pending CI)
+## Two independent Orleans silo processes — E2-F07 (verified local-process slice)
 
 This next, **deliberately limited** experiment extends the previously
 co-hosted Orleans smoke test. A Python orchestrator starts:
@@ -109,12 +109,7 @@ python3 lab/e2_orleans/test_multiprocess.py
 
 The `E2_CLUSTER_TEST=1` switch is supplied only to spawned test
 processes, not ordinary clients or accepted one-silo workloads.
-The experiment is **not yet CI-verified**. A green result is meaningful
-proof of **separate local processes** and a bounded post-response
-reactivation, **not** proof of separate physical nodes, production
-ADO.NET cluster membership, in-flight grain failover, lost-response
-resolution at the exact SQL commit boundary, capacity scaling or
-a valid mainframe comparison. Those remain separate E2 acceptance gates.
+[Original CI #41084584229](https://github.com/jmfloreszazo/de-la-caja-negra-a-la-evidencia/actions/runs/41084584229) verified this slice. The [archived observation](../../evidence/runs/e2-orleans-multiprocess.json) references the [unaltered complete raw artifact](https://github.com/jmfloreszazo/de-la-caja-negra-a-la-evidencia/actions/runs/41084584229/artifacts/12991930047). The results prove **two independent local silo OS processes**, one external client, genuine secondary SIGKILL and bounded post-response grain reactivation. They do **not** prove separate physical nodes, production ADO.NET cluster membership, in-flight grain failover at SQL commit, capacity scaling, an RTO SLA or mainframe equivalence. Those remain separate E2 acceptance gates.
 
 Official implementation references:
 - [Orleans: run an application](https://learn.microsoft.com/dotnet/orleans/deployment/)

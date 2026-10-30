@@ -329,6 +329,20 @@
       "protocol": null
     },
     {
+      "id": "E2-MULTIPROCESS",
+      "status": "ci_verified",
+      "es": "Dos silos Orleans en procesos independientes y cliente externo: reactivación tras SIGKILL del secundario",
+      "en": "Two independently hosted Orleans silo processes plus external client: recovery after secondary SIGKILL",
+      "scope_es": "Un runner Linux con dos procesos silo y un cliente independiente, membresía de desarrollo por loopback. Tras SIGKILL del secundario y después de responder una transferencia, un grain reaparece en el primario. Replay idempotente, tercera transferencia y oráculo SQL 7/7. Sin nodos físicos separados, membresía productiva, caída durante COMMIT ni garantía RTO.",
+      "scope_en": "One Linux runner hosting two separate silo processes and an external client with development loopback membership. A grain reactivates on the surviving primary after secondary SIGKILL following an already completed transfer; idempotent replay, third transfer and 7/7 independent SQL oracle. No separate physical nodes, production membership, in-flight COMMIT failure or RTO claim.",
+      "evidence": {
+        "kind": "github_actions",
+        "run_id": 41084584229,
+        "head_sha": "521e37485df6a16fcb6c05a9d1f7189b9aba39d5"
+      },
+      "protocol": null
+    },
+    {
       "id": "E2",
       "status": "partially_verified",
       "es": "Orleans y ledger frente a distintas distribuciones de carga",

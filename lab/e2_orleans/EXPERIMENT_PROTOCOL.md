@@ -1,6 +1,6 @@
 # E2 · Orleans coordination over an authoritative durable ledger
 
-**Status: partially verified on an unmerged branch, NOT an accepted E2 experiment.** The original single-silo functional, fixed-seed 1,000-account workload and genuine local-cohost SIGKILL slices passed CI independently. Multi-silo failover, cross-grain circular-call negative controls, sustained capacity characterization and real mainframe equivalence remain untested. This is an English-only engineering
+**Status: partially verified synthetic E2 slices, NOT an accepted overall E2 experiment.** The original single-silo functional, fixed-seed 1,000-account workload and genuine local-cohost SIGKILL slices passed CI independently. Multi-silo failover, cross-grain circular-call negative controls, sustained capacity characterization and real mainframe equivalence remain untested. This is an English-only engineering
 protocol for [issue #8](https://github.com/jmfloreszazo/de-la-caja-negra-a-la-evidencia/issues/8).
 It must not be promoted to executed evidence merely because the
 architecture, examples or build manifests exist.
@@ -110,7 +110,7 @@ separate. Use fixed operation lists so both paths see the same attempted
 operations; count rejected transfers and idempotent replays separately
 from durable committed transfers.
 
-## Two independent Orleans silo processes — E2-F07 (pending CI)
+## Two independent Orleans silo processes — E2-F07 (verified local-process slice)
 
 This next, **deliberately limited** experiment extends the previously
 co-hosted Orleans smoke test. A Python orchestrator starts:
@@ -140,12 +140,7 @@ python3 lab/e2_orleans/test_multiprocess.py
 
 The `E2_CLUSTER_TEST=1` switch is supplied only to spawned test
 processes, not ordinary clients or accepted one-silo workloads.
-The experiment is **not yet CI-verified**. A green result is meaningful
-proof of **separate local processes** and a bounded post-response
-reactivation, **not** proof of separate physical nodes, production
-ADO.NET cluster membership, in-flight grain failover, lost-response
-resolution at the exact SQL commit boundary, capacity scaling or
-a valid mainframe comparison. Those remain separate E2 acceptance gates.
+[Original CI #41084584229](https://github.com/jmfloreszazo/de-la-caja-negra-a-la-evidencia/actions/runs/41084584229) verified this slice. The [archived observation](../../evidence/runs/e2-orleans-multiprocess.json) references the [unaltered complete raw artifact](https://github.com/jmfloreszazo/de-la-caja-negra-a-la-evidencia/actions/runs/41084584229/artifacts/12991930047). The results prove **two independent local silo OS processes**, one external client, genuine secondary SIGKILL and bounded post-response grain reactivation. They do **not** prove separate physical nodes, production ADO.NET cluster membership, in-flight grain failover at SQL commit, capacity scaling, an RTO SLA or mainframe equivalence. Those remain separate E2 acceptance gates.
 
 Official implementation references:
 - [Orleans: run an application](https://learn.microsoft.com/dotnet/orleans/deployment/)

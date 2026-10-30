@@ -1,0 +1,68 @@
+{
+  "schemaVersion": 1,
+  "experiment": "E2-Independent-Process-Orleans-Secondary-SIGKILL",
+  "status": "PASS",
+  "classification": "EXECUTED_SYNTHETIC_TWO_SILOS_ONE_HOST_DEVELOPMENT_CLUSTER_NOT_PHYSICAL",
+  "originalRun": {
+    "runId": 41084584229,
+    "jobId": 124162264867,
+    "artifactId": 12991930047,
+    "sourceCommit": "521e37485df6a16fcb6c05a9d1f7189b9aba39d5",
+    "mergeCheckoutCommit": "98f1006b2f3a6ef5845a33e226aa8caa88b3e385",
+    "runUrl": "https://github.com/jmfloreszazo/de-la-caja-negra-a-la-evidencia/actions/runs/41084584229",
+    "rawArtifactUrl": "https://github.com/jmfloreszazo/de-la-caja-negra-a-la-evidencia/actions/runs/41084584229/artifacts/12991930047",
+    "originalRawFile": "e2-multiprocess.json",
+    "origin": "Extracted from the actual GitHub Actions job output. Complete raw file and environment manifest remain in the original uploaded artifact."
+  },
+  "observations": {
+    "primarySiloPid": 4495,
+    "secondarySiloPid": 4516,
+    "initialExternalClientPid": 4537,
+    "initialPlacement": {
+      "1": 4495,
+      "2": 4495,
+      "3": 4495,
+      "4": 4516,
+      "5": 4495,
+      "6": 4516,
+      "7": 4495,
+      "8": 4495,
+      "9": 4495,
+      "10": 4495,
+      "11": 4516,
+      "12": 4495,
+      "13": 4495,
+      "14": 4495,
+      "15": 4495,
+      "16": 4516
+    },
+    "sourceAccountPreviouslyOnSecondary": 4,
+    "sourceAccountOnPrimary": 1,
+    "actualSecondaryExitSignal": "SIGKILL",
+    "grainReactivatedOnPrimary": true,
+    "idempotentRecoveredReplay": "DUPLICATE_COMMITTED",
+    "newOperationAfterSiloDeath": "COMMITTED",
+    "businessEffects": {
+      "committedOperations": 3,
+      "postings": 6,
+      "outboxEvents": 3
+    },
+    "independentSqlOracle": {
+      "nonnegative": true,
+      "conserved": true,
+      "balancedPostings": true,
+      "twoPostingsPerCommit": true,
+      "noPostingsForRejection": true,
+      "outboxAtomic": true,
+      "projectionAgrees": true
+    },
+    "stateSha256": "efafc8286c22a2ac0716e33072da8dcfb241c28507698340c9a29fa649aa30e8"
+  },
+  "sourceSha256": {
+    "e2_orleans/test_multiprocess.py": "b602f9e350c6b777509374e43e7c984805676c959b829170c7f3cae781cb64ce",
+    "e2_orleans/OrleansLab/ClusterModes.cs": "a473399d3a403351bf2aea0c5381dd26babd073fd815650cc6fcf8d33caff15e",
+    "e2_orleans/OrleansLab/Contracts.cs": "92d94f344fbe56cb0aa859655c29e688461c2933d98c174ad4bc00ed4c3ba027",
+    "e2_orleans/OrleansLab/PgDurableLedger.cs": "0dc223f52491757af143aa3b520b24fd5c95a9ff5047b5370902637c6bb6550b"
+  },
+  "limitations": "Two real silo OS processes and external client on ONE Linux runner, Orleans development clustering on loopback. SIGKILL occurred AFTER successful response, not during COMMIT. No production membership, separate physical nodes, RTO guarantee or mainframe equivalence."
+}
