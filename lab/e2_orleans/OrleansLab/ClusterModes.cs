@@ -62,14 +62,15 @@ public static class ClusterModes
         builder.Services.AddSingleton<NpgsqlDataSource>(
             _ => new NpgsqlDataSourceBuilder(conn).Build());
         builder.Services.AddSingleton<IDurableLedger, PgDurableLedger>();
-        builder.UseOrleans(silo => silo
-            .UseDevelopmentClustering(new IPEndPoint(IPAddress.Loopback, PrimarySiloPort))
-            .Configure<ClusterOptions>(options =>
-            {
-                options.ServiceId = Service;
-                options.ClusterId = Cluster;
-            })
-            .ConfigureEndpoints(siloPort: port, gatewayPort: gateway));
+        // A primary development silo must use null, not its own endpoint.
+        // The secondary joins the explicitly designated primary endpoint.
+        // UseLocalhostClustering binds/advertises loopback consistently.
+        IPEndPoint? primary = role == "primary"
+            ? null
+            : new IPEndPoint(IPAddress.Loopback, PrimarySiloPort);
+        builder.UseOrleans(silo => silo.UseLocalhostClustering(
+            siloPort: port, gatewayPort: gateway,
+            primarySiloEndpoint: primary, serviceId: Service, clusterId: Cluster));
         using var host = builder.Build();
         await host.StartAsync();
         Console.WriteLine("E2_SILO_READY:" + role + ":" + Environment.ProcessId);
