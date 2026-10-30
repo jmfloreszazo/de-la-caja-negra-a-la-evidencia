@@ -1,0 +1,68 @@
+{
+  "schemaVersion": 1,
+  "experiment": "E1b",
+  "runId": 41024101879,
+  "sourceCommit": "b84559ce06281eb79909640d69c298ba2f521367",
+  "checkoutCommit": "aff08cd314f86533bb0976dea5991db613c50130",
+  "jobId": 123958002435,
+  "artifactId": 12963205523,
+  "source": "GitHub Actions job log: exact structured summary emitted by lab/e1_pg/test_dotnet.py; original job artifact retained",
+  "url": "https://github.com/jmfloreszazo/de-la-caja-negra-a-la-evidencia/actions/runs/41024101879",
+  "classification": "EXECUTED_SNAPSHOT_NOT_MAINFRAME_BENCHMARK",
+  "observation": {
+    "status": "PASS",
+    "module": "E1b PostgreSQL Npgsql 10.0.3 / .NET 10 differential slice",
+    "sourceSha256": {
+      "PgBank/Program.cs": "eb61acea9673cf14e999adf2c01a03df418c385dee0e3e1f6d777bbca53f5f32",
+      "PgBank/PgBank.csproj": "2ba00aa88740c8903fad8d3cddc3f72f06709b5a7c4ab5abed71b5c40a60f43e",
+      "test_dotnet.py": "e4ca7f59aada2ed734f61c7d6f3f29eb176ec2481e910ae89865d5ab9d0b3817"
+    },
+    "parity": {
+      "python": [
+        "COMMITTED",
+        "REJECTED",
+        "DUPLICATE_COMMITTED",
+        "ID_CONFLICT",
+        "COMMITTED",
+        "COMMITTED"
+      ],
+      "dotnet": [
+        "COMMITTED",
+        "REJECTED",
+        "DUPLICATE_COMMITTED",
+        "ID_CONFLICT",
+        "COMMITTED",
+        "COMMITTED"
+      ],
+      "persistedStateEqual": true
+    },
+    "concurrency": [
+      {
+        "status": "REJECTED",
+        "retries": 0,
+        "elapsedMs": 358.438,
+        "retry_sqlstates": []
+      },
+      {
+        "status": "COMMITTED",
+        "retries": 0,
+        "elapsedMs": 337.556,
+        "retry_sqlstates": []
+      }
+    ],
+    "controls": {
+      "candidateParity": "PASS",
+      "rowLockOverdraft": "PASS",
+      "idempotencyAndConflict": "PASS",
+      "exceptionRollback": "PASS",
+      "processCrashRollback": "PASS",
+      "commitWithoutResponse": "PASS",
+      "independentOracle": "PASS",
+      "boundedNpgsqlLockRetry": "PASS",
+      "postTimeoutRecoveryAndIdempotency": "PASS",
+      "dotnetPostingCorruptionRejected": "PASS"
+    },
+    "elapsedSeconds": 16.706,
+    "limits": "Synthetic controlled PostgreSQL; no real CICS/Db2 or mainframe performance equivalence."
+  }
+}

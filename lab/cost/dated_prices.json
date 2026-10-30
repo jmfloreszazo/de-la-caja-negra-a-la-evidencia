@@ -1,0 +1,147 @@
+{
+  "schema_version": 1,
+  "captured_on": "2026-10-29",
+  "monetary_policy": "Never combine different currencies; never treat compute-only as TCO; no inferred cloud-mainframe parity.",
+  "cloud": {
+    "provider": "Microsoft Azure",
+    "region": "westeurope",
+    "os": "Linux",
+    "price_type": "pay_as_you_go",
+    "currency": "EUR",
+    "source_published": "2026-10-29",
+    "source_checked_on": "2026-10-29",
+    "source_type": "DIRECT_AZURE_PUBLIC_RETAIL_API_SNAPSHOT_NOT_CONTRACT_QUOTE",
+    "source_url": "https://prices.azure.com/api/retail/prices",
+    "assumed_hours_per_month": 730,
+    "items": [
+      {
+        "sku": "Standard_D4as_v5",
+        "vcpu": 4,
+        "ram_gib": 16,
+        "retail_eur_per_hour": "0.183",
+        "meter_id": "b69c5dbc-6df2-5b78-8822-fb32b72f3d64",
+        "price_effective_since": "2021-11-01T00:00:00Z",
+        "precision": "DIRECT_MICROSOFT_API_METER",
+        "exclusions": [
+          "managed disks",
+          "egress",
+          "zone redundancy",
+          "load balancing",
+          "AKS management",
+          "database",
+          "support",
+          "tax",
+          "contractual discounts"
+        ]
+      },
+      {
+        "sku": "Standard_D4s_v5",
+        "vcpu": 4,
+        "ram_gib": 16,
+        "retail_eur_per_hour": "0.2024",
+        "meter_id": "1ab41620-5ffa-51b3-ac16-6416f9f747a9",
+        "price_effective_since": "2021-11-01T00:00:00Z",
+        "precision": "DIRECT_MICROSOFT_API_METER",
+        "exclusions": [
+          "managed disks",
+          "egress",
+          "zone redundancy",
+          "load balancing",
+          "AKS management",
+          "database",
+          "support",
+          "tax",
+          "contractual discounts"
+        ]
+      },
+      {
+        "sku": "Standard_D8as_v5",
+        "vcpu": 8,
+        "ram_gib": 32,
+        "retail_eur_per_hour": "0.3661",
+        "meter_id": "caee42fb-5e41-5ffa-8aa6-65e1d871b269",
+        "price_effective_since": "2021-11-01T00:00:00Z",
+        "precision": "DIRECT_MICROSOFT_API_METER",
+        "exclusions": [
+          "managed disks",
+          "egress",
+          "zone redundancy",
+          "load balancing",
+          "AKS management",
+          "database",
+          "support",
+          "tax",
+          "contractual discounts"
+        ]
+      }
+    ],
+    "retrieved_at_utc": "2026-10-29T18:26:03.196878+00:00",
+    "source_run_id": 40930736857,
+    "historical_secondary_reference": {
+      "source": "https://www.azurescan.eu/en/insights/older-vm-generations/",
+      "article_published_on": "2026-10-06",
+      "reported_rounded_eur_month": {
+        "Standard_D4as_v5": 134,
+        "Standard_D4s_v5": 148
+      },
+      "classification": "CROSS_CHECK_ONLY_NOT_CURRENT_RETAIL_SOURCE"
+    }
+  },
+  "onprem": {
+    "provider": "AMD",
+    "product": "EPYC 9965",
+    "source_checked_on": "2026-10-29",
+    "source_url": "https://www.amd.com/en/products/processors/server/epyc/9005-series/amd-epyc-9965.html",
+    "currency": "USD",
+    "price_basis": "manufacturer_1ku_cpu_only_not_a_server_quote",
+    "unit_cpu_usd": 11988,
+    "cores_per_socket": 192,
+    "not_included": [
+      "chassis",
+      "motherboard",
+      "memory",
+      "NVMe",
+      "networking",
+      "rack",
+      "support",
+      "power",
+      "cooling",
+      "secondary data center",
+      "OS/database licensing",
+      "disaster recovery"
+    ],
+    "pricing_not_comparable_to_cloud_monthly": true
+  },
+  "private_mainframes": [
+    {
+      "provider": "IBM",
+      "model": "z17",
+      "price_status": "RFQ_required_no_public_comparable_quote"
+    },
+    {
+      "provider": "IBM",
+      "model": "LinuxONE Emperor 5",
+      "price_status": "RFQ_required_no_public_comparable_quote"
+    },
+    {
+      "provider": "Unisys",
+      "model": "ClearPath Forward Dorado 8590",
+      "price_status": "RFQ_required_no_public_comparable_quote"
+    }
+  ],
+  "upcoming_cost_components": [
+    "AKS Standard control plane",
+    "VMSS node pool",
+    "Container Apps consumption/idle",
+    "App Service Premium plan instances",
+    "PostgreSQL/SQL Server licensing and backups",
+    "Managed disks and IOPS",
+    "ExpressRoute circuit/provider/gateway/outbound transfer",
+    "Application Gateway/WAF",
+    "regional and zone redundancy",
+    "logs and tracing",
+    "operator time",
+    "support",
+    "data migration"
+  ]
+}

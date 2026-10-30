@@ -1,0 +1,56 @@
+name: M2 durable REST gRPC local scale
+on:
+  pull_request:
+    paths:
+      - 'lab/durable_rpc/**'
+      - '.github/workflows/m2-durable-scale.yml'
+      - 'docs/EXPERIMENT_ROADMAP.md'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  durable-evidence:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-dotnet@v5
+        with:
+          dotnet-version: '10.0.x'
+      - uses: actions/setup-python@v6
+        with:
+          python-version: '3.12'
+      - name: Install independent read-only SQL oracle
+        run: python3 -m pip install -r lab/e1_pg/requirements.txt
+      - name: Start isolated PostgreSQL using Podman
+        run: |
+          podman run -d --name m2-pg \
+            -e POSTGRES_PASSWORD=m2local -e POSTGRES_DB=m2lab \
+            -p 127.0.0.1:55433:5432 docker.io/library/postgres:16.13
+          for i in $(seq 1 60); do
+            if podman exec m2-pg pg_isready -U postgres -d m2lab >/dev/null 2>&1; then
+              podman image inspect docker.io/library/postgres:16.13 --format '{{.Id}}' > lab/durable_rpc/postgres-image-id.txt
+              exit 0
+            fi
+            sleep 2
+          done
+          exit 1
+      - name: Run 20 durable protocol and local replica experiments
+        env:
+          E1_PG_DSN: "host=127.0.0.1 port=55433 dbname=m2lab user=postgres password=m2local"
+          E1_PG_NPGSQL: "Host=127.0.0.1;Port=55433;Database=m2lab;Username=postgres;Password=m2local;Pooling=true;Maximum Pool Size=32"
+        run: python3 lab/durable_rpc/test_m2.py
+      - name: Preserve machine-generated evidence, even on failure
+        if: always()
+        uses: actions/upload-artifact@v6
+        with:
+          name: m2-durable-sql-local-replica-smoke-not-azure
+          path: |
+            lab/results/m2/
+            lab/durable_rpc/postgres-image-id.txt
+          if-no-files-found: warn
+      - name: Shutdown disposable database
+        if: always()
+        run: |
+          podman logs --tail 50 m2-pg || true
+          podman rm -f m2-pg || true

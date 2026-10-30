@@ -1,0 +1,1002 @@
+{
+  "schemaVersion": 1,
+  "classification": "M2_LOCAL_SINGLE_HOST_POSTGRES_DURABLE_SMOKE_NOT_CLOUD_OR_MAINFRAME",
+  "utc": "2026-10-30T06:48:37.617076+00:00",
+  "sourceCommit": "32a34723e0463d6809c22ed67684b7e7a72f214b",
+  "postgresVersion": "16.13 (Debian 16.13-1.pgdg13+1)",
+  "limitations": "One hosted runner, HTTP/2 h2c, closed loop, 256 requests each; no TLS/WAN/Azure/HA or mainframe parity.",
+  "cases": [
+    {
+      "label": "uniform-1-rest",
+      "protocol": "rest",
+      "distribution": "uniform",
+      "replicas": 1,
+      "elapsedWallSeconds": 1.84,
+      "verifiedBy": "independent read-only PostgreSQL ledger oracle",
+      "oracle": {
+        "nonnegative": true,
+        "conserved": true,
+        "balancedPostings": true,
+        "twoPostingsPerCommit": true,
+        "noPostingsForRejection": true,
+        "outboxAtomic": true,
+        "projectionAgrees": true
+      },
+      "ledger": {
+        "commits": 256,
+        "postings": 512,
+        "outbox": 256,
+        "uniqueOperations": 256
+      },
+      "client": {
+        "protocol": "rest",
+        "distribution": "uniform",
+        "replicas": 1,
+        "requests": 256,
+        "concurrency": 16,
+        "committed": 256,
+        "failures": 0,
+        "errorExamples": [],
+        "perReplicaCommits": [
+          256
+        ],
+        "durableCommittedPerSecond": 327.59,
+        "elapsedSeconds": 0.7815,
+        "p50Ms": 16.46,
+        "p95Ms": 297.021,
+        "p99Ms": 358.058,
+        "closedLoop": true,
+        "noTls": true,
+        "onlyOneGitHubRunner": true
+      }
+    },
+    {
+      "label": "uniform-1-grpc",
+      "protocol": "grpc",
+      "distribution": "uniform",
+      "replicas": 1,
+      "elapsedWallSeconds": 1.07,
+      "verifiedBy": "independent read-only PostgreSQL ledger oracle",
+      "oracle": {
+        "nonnegative": true,
+        "conserved": true,
+        "balancedPostings": true,
+        "twoPostingsPerCommit": true,
+        "noPostingsForRejection": true,
+        "outboxAtomic": true,
+        "projectionAgrees": true
+      },
+      "ledger": {
+        "commits": 256,
+        "postings": 512,
+        "outbox": 256,
+        "uniqueOperations": 256
+      },
+      "client": {
+        "protocol": "grpc",
+        "distribution": "uniform",
+        "replicas": 1,
+        "requests": 256,
+        "concurrency": 16,
+        "committed": 256,
+        "failures": 0,
+        "errorExamples": [],
+        "perReplicaCommits": [
+          256
+        ],
+        "durableCommittedPerSecond": 393.55,
+        "elapsedSeconds": 0.6505,
+        "p50Ms": 18.1,
+        "p95Ms": 245.364,
+        "p99Ms": 246.554,
+        "closedLoop": true,
+        "noTls": true,
+        "onlyOneGitHubRunner": true
+      }
+    },
+    {
+      "label": "uniform-2-rest",
+      "protocol": "rest",
+      "distribution": "uniform",
+      "replicas": 2,
+      "elapsedWallSeconds": 1.56,
+      "verifiedBy": "independent read-only PostgreSQL ledger oracle",
+      "oracle": {
+        "nonnegative": true,
+        "conserved": true,
+        "balancedPostings": true,
+        "twoPostingsPerCommit": true,
+        "noPostingsForRejection": true,
+        "outboxAtomic": true,
+        "projectionAgrees": true
+      },
+      "ledger": {
+        "commits": 256,
+        "postings": 512,
+        "outbox": 256,
+        "uniqueOperations": 256
+      },
+      "client": {
+        "protocol": "rest",
+        "distribution": "uniform",
+        "replicas": 2,
+        "requests": 256,
+        "concurrency": 16,
+        "committed": 256,
+        "failures": 0,
+        "errorExamples": [],
+        "perReplicaCommits": [
+          128,
+          128
+        ],
+        "durableCommittedPerSecond": 254.24,
+        "elapsedSeconds": 1.0069,
+        "p50Ms": 24.116,
+        "p95Ms": 291.686,
+        "p99Ms": 352.036,
+        "closedLoop": true,
+        "noTls": true,
+        "onlyOneGitHubRunner": true
+      }
+    },
+    {
+      "label": "uniform-2-grpc",
+      "protocol": "grpc",
+      "distribution": "uniform",
+      "replicas": 2,
+      "elapsedWallSeconds": 1.29,
+      "verifiedBy": "independent read-only PostgreSQL ledger oracle",
+      "oracle": {
+        "nonnegative": true,
+        "conserved": true,
+        "balancedPostings": true,
+        "twoPostingsPerCommit": true,
+        "noPostingsForRejection": true,
+        "outboxAtomic": true,
+        "projectionAgrees": true
+      },
+      "ledger": {
+        "commits": 256,
+        "postings": 512,
+        "outbox": 256,
+        "uniqueOperations": 256
+      },
+      "client": {
+        "protocol": "grpc",
+        "distribution": "uniform",
+        "replicas": 2,
+        "requests": 256,
+        "concurrency": 16,
+        "committed": 256,
+        "failures": 0,
+        "errorExamples": [],
+        "perReplicaCommits": [
+          128,
+          128
+        ],
+        "durableCommittedPerSecond": 332.82,
+        "elapsedSeconds": 0.7692,
+        "p50Ms": 24.192,
+        "p95Ms": 295.855,
+        "p99Ms": 310.186,
+        "closedLoop": true,
+        "noTls": true,
+        "onlyOneGitHubRunner": true
+      }
+    },
+    {
+      "label": "uniform-4-rest",
+      "protocol": "rest",
+      "distribution": "uniform",
+      "replicas": 4,
+      "elapsedWallSeconds": 1.98,
+      "verifiedBy": "independent read-only PostgreSQL ledger oracle",
+      "oracle": {
+        "nonnegative": true,
+        "conserved": true,
+        "balancedPostings": true,
+        "twoPostingsPerCommit": true,
+        "noPostingsForRejection": true,
+        "outboxAtomic": true,
+        "projectionAgrees": true
+      },
+      "ledger": {
+        "commits": 256,
+        "postings": 512,
+        "outbox": 256,
+        "uniqueOperations": 256
+      },
+      "client": {
+        "protocol": "rest",
+        "distribution": "uniform",
+        "replicas": 4,
+        "requests": 256,
+        "concurrency": 16,
+        "committed": 256,
+        "failures": 0,
+        "errorExamples": [],
+        "perReplicaCommits": [
+          64,
+          64,
+          64,
+          64
+        ],
+        "durableCommittedPerSecond": 226.77,
+        "elapsedSeconds": 1.1289,
+        "p50Ms": 28.794,
+        "p95Ms": 343.384,
+        "p99Ms": 573.697,
+        "closedLoop": true,
+        "noTls": true,
+        "onlyOneGitHubRunner": true
+      }
+    },
+    {
+      "label": "uniform-4-grpc",
+      "protocol": "grpc",
+      "distribution": "uniform",
+      "replicas": 4,
+      "elapsedWallSeconds": 2.57,
+      "verifiedBy": "independent read-only PostgreSQL ledger oracle",
+      "oracle": {
+        "nonnegative": true,
+        "conserved": true,
+        "balancedPostings": true,
+        "twoPostingsPerCommit": true,
+        "noPostingsForRejection": true,
+        "outboxAtomic": true,
+        "projectionAgrees": true
+      },
+      "ledger": {
+        "commits": 256,
+        "postings": 512,
+        "outbox": 256,
+        "uniqueOperations": 256
+      },
+      "client": {
+        "protocol": "grpc",
+        "distribution": "uniform",
+        "replicas": 4,
+        "requests": 256,
+        "concurrency": 16,
+        "committed": 256,
+        "failures": 0,
+        "errorExamples": [],
+        "perReplicaCommits": [
+          64,
+          64,
+          64,
+          64
+        ],
+        "durableCommittedPerSecond": 154.45,
+        "elapsedSeconds": 1.6575,
+        "p50Ms": 24.612,
+        "p95Ms": 569.537,
+        "p99Ms": 1010.5,
+        "closedLoop": true,
+        "noTls": true,
+        "onlyOneGitHubRunner": true
+      }
+    },
+    {
+      "label": "uniform-8-rest",
+      "protocol": "rest",
+      "distribution": "uniform",
+      "replicas": 8,
+      "elapsedWallSeconds": 4.73,
+      "verifiedBy": "independent read-only PostgreSQL ledger oracle",
+      "oracle": {
+        "nonnegative": true,
+        "conserved": true,
+        "balancedPostings": true,
+        "twoPostingsPerCommit": true,
+        "noPostingsForRejection": true,
+        "outboxAtomic": true,
+        "projectionAgrees": true
+      },
+      "ledger": {
+        "commits": 256,
+        "postings": 512,
+        "outbox": 256,
+        "uniqueOperations": 256
+      },
+      "client": {
+        "protocol": "rest",
+        "distribution": "uniform",
+        "replicas": 8,
+        "requests": 256,
+        "concurrency": 16,
+        "committed": 256,
+        "failures": 0,
+        "errorExamples": [],
+        "perReplicaCommits": [
+          32,
+          32,
+          32,
+          32,
+          32,
+          32,
+          32,
+          32
+        ],
+        "durableCommittedPerSecond": 95.11,
+        "elapsedSeconds": 2.6916,
+        "p50Ms": 48.311,
+        "p95Ms": 926.347,
+        "p99Ms": 1152.908,
+        "closedLoop": true,
+        "noTls": true,
+        "onlyOneGitHubRunner": true
+      }
+    },
+    {
+      "label": "uniform-8-grpc",
+      "protocol": "grpc",
+      "distribution": "uniform",
+      "replicas": 8,
+      "elapsedWallSeconds": 4.18,
+      "verifiedBy": "independent read-only PostgreSQL ledger oracle",
+      "oracle": {
+        "nonnegative": true,
+        "conserved": true,
+        "balancedPostings": true,
+        "twoPostingsPerCommit": true,
+        "noPostingsForRejection": true,
+        "outboxAtomic": true,
+        "projectionAgrees": true
+      },
+      "ledger": {
+        "commits": 256,
+        "postings": 512,
+        "outbox": 256,
+        "uniqueOperations": 256
+      },
+      "client": {
+        "protocol": "grpc",
+        "distribution": "uniform",
+        "replicas": 8,
+        "requests": 256,
+        "concurrency": 16,
+        "committed": 256,
+        "failures": 0,
+        "errorExamples": [],
+        "perReplicaCommits": [
+          32,
+          32,
+          32,
+          32,
+          32,
+          32,
+          32,
+          32
+        ],
+        "durableCommittedPerSecond": 125.86,
+        "elapsedSeconds": 2.034,
+        "p50Ms": 35.537,
+        "p95Ms": 992.523,
+        "p99Ms": 1158.944,
+        "closedLoop": true,
+        "noTls": true,
+        "onlyOneGitHubRunner": true
+      }
+    },
+    {
+      "label": "uniform-16-rest",
+      "protocol": "rest",
+      "distribution": "uniform",
+      "replicas": 16,
+      "elapsedWallSeconds": 8.99,
+      "verifiedBy": "independent read-only PostgreSQL ledger oracle",
+      "oracle": {
+        "nonnegative": true,
+        "conserved": true,
+        "balancedPostings": true,
+        "twoPostingsPerCommit": true,
+        "noPostingsForRejection": true,
+        "outboxAtomic": true,
+        "projectionAgrees": true
+      },
+      "ledger": {
+        "commits": 256,
+        "postings": 512,
+        "outbox": 256,
+        "uniqueOperations": 256
+      },
+      "client": {
+        "protocol": "rest",
+        "distribution": "uniform",
+        "replicas": 16,
+        "requests": 256,
+        "concurrency": 16,
+        "committed": 256,
+        "failures": 0,
+        "errorExamples": [],
+        "perReplicaCommits": [
+          16,
+          16,
+          16,
+          16,
+          16,
+          16,
+          16,
+          16,
+          16,
+          16,
+          16,
+          16,
+          16,
+          16,
+          16,
+          16
+        ],
+        "durableCommittedPerSecond": 74.62,
+        "elapsedSeconds": 3.4307,
+        "p50Ms": 81.821,
+        "p95Ms": 1713.348,
+        "p99Ms": 1940.251,
+        "closedLoop": true,
+        "noTls": true,
+        "onlyOneGitHubRunner": true
+      }
+    },
+    {
+      "label": "uniform-16-grpc",
+      "protocol": "grpc",
+      "distribution": "uniform",
+      "replicas": 16,
+      "elapsedWallSeconds": 9.18,
+      "verifiedBy": "independent read-only PostgreSQL ledger oracle",
+      "oracle": {
+        "nonnegative": true,
+        "conserved": true,
+        "balancedPostings": true,
+        "twoPostingsPerCommit": true,
+        "noPostingsForRejection": true,
+        "outboxAtomic": true,
+        "projectionAgrees": true
+      },
+      "ledger": {
+        "commits": 256,
+        "postings": 512,
+        "outbox": 256,
+        "uniqueOperations": 256
+      },
+      "client": {
+        "protocol": "grpc",
+        "distribution": "uniform",
+        "replicas": 16,
+        "requests": 256,
+        "concurrency": 16,
+        "committed": 256,
+        "failures": 0,
+        "errorExamples": [],
+        "perReplicaCommits": [
+          16,
+          16,
+          16,
+          16,
+          16,
+          16,
+          16,
+          16,
+          16,
+          16,
+          16,
+          16,
+          16,
+          16,
+          16,
+          16
+        ],
+        "durableCommittedPerSecond": 70.73,
+        "elapsedSeconds": 3.6194,
+        "p50Ms": 68.796,
+        "p95Ms": 1880.416,
+        "p99Ms": 2025.398,
+        "closedLoop": true,
+        "noTls": true,
+        "onlyOneGitHubRunner": true
+      }
+    },
+    {
+      "label": "hot-1-rest",
+      "protocol": "rest",
+      "distribution": "hot",
+      "replicas": 1,
+      "elapsedWallSeconds": 1.08,
+      "verifiedBy": "independent read-only PostgreSQL ledger oracle",
+      "oracle": {
+        "nonnegative": true,
+        "conserved": true,
+        "balancedPostings": true,
+        "twoPostingsPerCommit": true,
+        "noPostingsForRejection": true,
+        "outboxAtomic": true,
+        "projectionAgrees": true
+      },
+      "ledger": {
+        "commits": 256,
+        "postings": 512,
+        "outbox": 256,
+        "uniqueOperations": 256
+      },
+      "client": {
+        "protocol": "rest",
+        "distribution": "hot",
+        "replicas": 1,
+        "requests": 256,
+        "concurrency": 16,
+        "committed": 256,
+        "failures": 0,
+        "errorExamples": [],
+        "perReplicaCommits": [
+          256
+        ],
+        "durableCommittedPerSecond": 364.49,
+        "elapsedSeconds": 0.7024,
+        "p50Ms": 11.301,
+        "p95Ms": 228.023,
+        "p99Ms": 244.529,
+        "closedLoop": true,
+        "noTls": true,
+        "onlyOneGitHubRunner": true
+      }
+    },
+    {
+      "label": "hot-1-grpc",
+      "protocol": "grpc",
+      "distribution": "hot",
+      "replicas": 1,
+      "elapsedWallSeconds": 1.05,
+      "verifiedBy": "independent read-only PostgreSQL ledger oracle",
+      "oracle": {
+        "nonnegative": true,
+        "conserved": true,
+        "balancedPostings": true,
+        "twoPostingsPerCommit": true,
+        "noPostingsForRejection": true,
+        "outboxAtomic": true,
+        "projectionAgrees": true
+      },
+      "ledger": {
+        "commits": 256,
+        "postings": 512,
+        "outbox": 256,
+        "uniqueOperations": 256
+      },
+      "client": {
+        "protocol": "grpc",
+        "distribution": "hot",
+        "replicas": 1,
+        "requests": 256,
+        "concurrency": 16,
+        "committed": 256,
+        "failures": 0,
+        "errorExamples": [],
+        "perReplicaCommits": [
+          256
+        ],
+        "durableCommittedPerSecond": 377.49,
+        "elapsedSeconds": 0.6782,
+        "p50Ms": 11.077,
+        "p95Ms": 222.655,
+        "p99Ms": 248.724,
+        "closedLoop": true,
+        "noTls": true,
+        "onlyOneGitHubRunner": true
+      }
+    },
+    {
+      "label": "hot-2-rest",
+      "protocol": "rest",
+      "distribution": "hot",
+      "replicas": 2,
+      "elapsedWallSeconds": 1.43,
+      "verifiedBy": "independent read-only PostgreSQL ledger oracle",
+      "oracle": {
+        "nonnegative": true,
+        "conserved": true,
+        "balancedPostings": true,
+        "twoPostingsPerCommit": true,
+        "noPostingsForRejection": true,
+        "outboxAtomic": true,
+        "projectionAgrees": true
+      },
+      "ledger": {
+        "commits": 256,
+        "postings": 512,
+        "outbox": 256,
+        "uniqueOperations": 256
+      },
+      "client": {
+        "protocol": "rest",
+        "distribution": "hot",
+        "replicas": 2,
+        "requests": 256,
+        "concurrency": 16,
+        "committed": 256,
+        "failures": 0,
+        "errorExamples": [],
+        "perReplicaCommits": [
+          128,
+          128
+        ],
+        "durableCommittedPerSecond": 287.2,
+        "elapsedSeconds": 0.8914,
+        "p50Ms": 19.697,
+        "p95Ms": 294.008,
+        "p99Ms": 364.508,
+        "closedLoop": true,
+        "noTls": true,
+        "onlyOneGitHubRunner": true
+      }
+    },
+    {
+      "label": "hot-2-grpc",
+      "protocol": "grpc",
+      "distribution": "hot",
+      "replicas": 2,
+      "elapsedWallSeconds": 1.39,
+      "verifiedBy": "independent read-only PostgreSQL ledger oracle",
+      "oracle": {
+        "nonnegative": true,
+        "conserved": true,
+        "balancedPostings": true,
+        "twoPostingsPerCommit": true,
+        "noPostingsForRejection": true,
+        "outboxAtomic": true,
+        "projectionAgrees": true
+      },
+      "ledger": {
+        "commits": 256,
+        "postings": 512,
+        "outbox": 256,
+        "uniqueOperations": 256
+      },
+      "client": {
+        "protocol": "grpc",
+        "distribution": "hot",
+        "replicas": 2,
+        "requests": 256,
+        "concurrency": 16,
+        "committed": 256,
+        "failures": 0,
+        "errorExamples": [],
+        "perReplicaCommits": [
+          128,
+          128
+        ],
+        "durableCommittedPerSecond": 289.68,
+        "elapsedSeconds": 0.8837,
+        "p50Ms": 15.335,
+        "p95Ms": 311.003,
+        "p99Ms": 331.248,
+        "closedLoop": true,
+        "noTls": true,
+        "onlyOneGitHubRunner": true
+      }
+    },
+    {
+      "label": "hot-4-rest",
+      "protocol": "rest",
+      "distribution": "hot",
+      "replicas": 4,
+      "elapsedWallSeconds": 2.33,
+      "verifiedBy": "independent read-only PostgreSQL ledger oracle",
+      "oracle": {
+        "nonnegative": true,
+        "conserved": true,
+        "balancedPostings": true,
+        "twoPostingsPerCommit": true,
+        "noPostingsForRejection": true,
+        "outboxAtomic": true,
+        "projectionAgrees": true
+      },
+      "ledger": {
+        "commits": 256,
+        "postings": 512,
+        "outbox": 256,
+        "uniqueOperations": 256
+      },
+      "client": {
+        "protocol": "rest",
+        "distribution": "hot",
+        "replicas": 4,
+        "requests": 256,
+        "concurrency": 16,
+        "committed": 256,
+        "failures": 0,
+        "errorExamples": [],
+        "perReplicaCommits": [
+          64,
+          64,
+          64,
+          64
+        ],
+        "durableCommittedPerSecond": 184.06,
+        "elapsedSeconds": 1.3908,
+        "p50Ms": 21.3,
+        "p95Ms": 535.61,
+        "p99Ms": 612.033,
+        "closedLoop": true,
+        "noTls": true,
+        "onlyOneGitHubRunner": true
+      }
+    },
+    {
+      "label": "hot-4-grpc",
+      "protocol": "grpc",
+      "distribution": "hot",
+      "replicas": 4,
+      "elapsedWallSeconds": 2.41,
+      "verifiedBy": "independent read-only PostgreSQL ledger oracle",
+      "oracle": {
+        "nonnegative": true,
+        "conserved": true,
+        "balancedPostings": true,
+        "twoPostingsPerCommit": true,
+        "noPostingsForRejection": true,
+        "outboxAtomic": true,
+        "projectionAgrees": true
+      },
+      "ledger": {
+        "commits": 256,
+        "postings": 512,
+        "outbox": 256,
+        "uniqueOperations": 256
+      },
+      "client": {
+        "protocol": "grpc",
+        "distribution": "hot",
+        "replicas": 4,
+        "requests": 256,
+        "concurrency": 16,
+        "committed": 256,
+        "failures": 0,
+        "errorExamples": [],
+        "perReplicaCommits": [
+          64,
+          64,
+          64,
+          64
+        ],
+        "durableCommittedPerSecond": 171.88,
+        "elapsedSeconds": 1.4894,
+        "p50Ms": 23.786,
+        "p95Ms": 552.4,
+        "p99Ms": 690.342,
+        "closedLoop": true,
+        "noTls": true,
+        "onlyOneGitHubRunner": true
+      }
+    },
+    {
+      "label": "hot-8-rest",
+      "protocol": "rest",
+      "distribution": "hot",
+      "replicas": 8,
+      "elapsedWallSeconds": 4.66,
+      "verifiedBy": "independent read-only PostgreSQL ledger oracle",
+      "oracle": {
+        "nonnegative": true,
+        "conserved": true,
+        "balancedPostings": true,
+        "twoPostingsPerCommit": true,
+        "noPostingsForRejection": true,
+        "outboxAtomic": true,
+        "projectionAgrees": true
+      },
+      "ledger": {
+        "commits": 256,
+        "postings": 512,
+        "outbox": 256,
+        "uniqueOperations": 256
+      },
+      "client": {
+        "protocol": "rest",
+        "distribution": "hot",
+        "replicas": 8,
+        "requests": 256,
+        "concurrency": 16,
+        "committed": 256,
+        "failures": 0,
+        "errorExamples": [],
+        "perReplicaCommits": [
+          32,
+          32,
+          32,
+          32,
+          32,
+          32,
+          32,
+          32
+        ],
+        "durableCommittedPerSecond": 93.92,
+        "elapsedSeconds": 2.7256,
+        "p50Ms": 43.185,
+        "p95Ms": 922.904,
+        "p99Ms": 1065.188,
+        "closedLoop": true,
+        "noTls": true,
+        "onlyOneGitHubRunner": true
+      }
+    },
+    {
+      "label": "hot-8-grpc",
+      "protocol": "grpc",
+      "distribution": "hot",
+      "replicas": 8,
+      "elapsedWallSeconds": 5.09,
+      "verifiedBy": "independent read-only PostgreSQL ledger oracle",
+      "oracle": {
+        "nonnegative": true,
+        "conserved": true,
+        "balancedPostings": true,
+        "twoPostingsPerCommit": true,
+        "noPostingsForRejection": true,
+        "outboxAtomic": true,
+        "projectionAgrees": true
+      },
+      "ledger": {
+        "commits": 256,
+        "postings": 512,
+        "outbox": 256,
+        "uniqueOperations": 256
+      },
+      "client": {
+        "protocol": "grpc",
+        "distribution": "hot",
+        "replicas": 8,
+        "requests": 256,
+        "concurrency": 16,
+        "committed": 256,
+        "failures": 0,
+        "errorExamples": [],
+        "perReplicaCommits": [
+          32,
+          32,
+          32,
+          32,
+          32,
+          32,
+          32,
+          32
+        ],
+        "durableCommittedPerSecond": 90.14,
+        "elapsedSeconds": 2.8399,
+        "p50Ms": 46.595,
+        "p95Ms": 1001.987,
+        "p99Ms": 1121.307,
+        "closedLoop": true,
+        "noTls": true,
+        "onlyOneGitHubRunner": true
+      }
+    },
+    {
+      "label": "hot-16-rest",
+      "protocol": "rest",
+      "distribution": "hot",
+      "replicas": 16,
+      "elapsedWallSeconds": 9.23,
+      "verifiedBy": "independent read-only PostgreSQL ledger oracle",
+      "oracle": {
+        "nonnegative": true,
+        "conserved": true,
+        "balancedPostings": true,
+        "twoPostingsPerCommit": true,
+        "noPostingsForRejection": true,
+        "outboxAtomic": true,
+        "projectionAgrees": true
+      },
+      "ledger": {
+        "commits": 256,
+        "postings": 512,
+        "outbox": 256,
+        "uniqueOperations": 256
+      },
+      "client": {
+        "protocol": "rest",
+        "distribution": "hot",
+        "replicas": 16,
+        "requests": 256,
+        "concurrency": 16,
+        "committed": 256,
+        "failures": 0,
+        "errorExamples": [],
+        "perReplicaCommits": [
+          16,
+          16,
+          16,
+          16,
+          16,
+          16,
+          16,
+          16,
+          16,
+          16,
+          16,
+          16,
+          16,
+          16,
+          16,
+          16
+        ],
+        "durableCommittedPerSecond": 68.7,
+        "elapsedSeconds": 3.7265,
+        "p50Ms": 62.945,
+        "p95Ms": 1554.96,
+        "p99Ms": 1912.24,
+        "closedLoop": true,
+        "noTls": true,
+        "onlyOneGitHubRunner": true
+      }
+    },
+    {
+      "label": "hot-16-grpc",
+      "protocol": "grpc",
+      "distribution": "hot",
+      "replicas": 16,
+      "elapsedWallSeconds": 10.36,
+      "verifiedBy": "independent read-only PostgreSQL ledger oracle",
+      "oracle": {
+        "nonnegative": true,
+        "conserved": true,
+        "balancedPostings": true,
+        "twoPostingsPerCommit": true,
+        "noPostingsForRejection": true,
+        "outboxAtomic": true,
+        "projectionAgrees": true
+      },
+      "ledger": {
+        "commits": 256,
+        "postings": 512,
+        "outbox": 256,
+        "uniqueOperations": 256
+      },
+      "client": {
+        "protocol": "grpc",
+        "distribution": "hot",
+        "replicas": 16,
+        "requests": 256,
+        "concurrency": 16,
+        "committed": 256,
+        "failures": 0,
+        "errorExamples": [],
+        "perReplicaCommits": [
+          16,
+          16,
+          16,
+          16,
+          16,
+          16,
+          16,
+          16,
+          16,
+          16,
+          16,
+          16,
+          16,
+          16,
+          16,
+          16
+        ],
+        "durableCommittedPerSecond": 50.76,
+        "elapsedSeconds": 5.0431,
+        "p50Ms": 75.972,
+        "p95Ms": 1931.431,
+        "p99Ms": 2106.017,
+        "closedLoop": true,
+        "noTls": true,
+        "onlyOneGitHubRunner": true
+      }
+    }
+  ],
+  "oracleNegativeControl": {
+    "detected": [
+      "balancedPostings",
+      "projectionAgrees",
+      "twoPostingsPerCommit"
+    ],
+    "restored": true
+  }
+}

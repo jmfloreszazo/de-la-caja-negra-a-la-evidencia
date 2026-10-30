@@ -1,0 +1,63 @@
+{
+  "schemaVersion": 1,
+  "experiment": "E1b",
+  "runId": 40919773614,
+  "sourceCommit": "937f0f87ddbd630def1fd1c3d4e410520b93f9d9",
+  "jobId": 123609523741,
+  "source": "GitHub Actions job log, parsed JSON emitted by lab/e1_pg test harness",
+  "url": "https://github.com/jmfloreszazo/de-la-caja-negra-a-la-evidencia/actions/runs/40919773614",
+  "classification": "EXECUTED_SNAPSHOT_NOT_MAINFRAME_BENCHMARK",
+  "observation": {
+    "status": "PASS",
+    "module": "E1b PostgreSQL Npgsql 10.0.3 / .NET 10 differential slice",
+    "sourceSha256": {
+      "PgBank/Program.cs": "eb61acea9673cf14e999adf2c01a03df418c385dee0e3e1f6d777bbca53f5f32",
+      "PgBank/PgBank.csproj": "2ba00aa88740c8903fad8d3cddc3f72f06709b5a7c4ab5abed71b5c40a60f43e",
+      "test_dotnet.py": "400b3166e65249d5c8f16b9a4161c18afcd3661a4e48b0d2a99b94ab34dc251e"
+    },
+    "parity": {
+      "python": [
+        "COMMITTED",
+        "REJECTED",
+        "DUPLICATE_COMMITTED",
+        "ID_CONFLICT",
+        "COMMITTED",
+        "COMMITTED"
+      ],
+      "dotnet": [
+        "COMMITTED",
+        "REJECTED",
+        "DUPLICATE_COMMITTED",
+        "ID_CONFLICT",
+        "COMMITTED",
+        "COMMITTED"
+      ],
+      "persistedStateEqual": true
+    },
+    "concurrency": [
+      {
+        "status": "COMMITTED",
+        "retries": 0,
+        "elapsedMs": 251.2,
+        "retry_sqlstates": []
+      },
+      {
+        "status": "REJECTED",
+        "retries": 0,
+        "elapsedMs": 264.47,
+        "retry_sqlstates": []
+      }
+    ],
+    "controls": {
+      "candidateParity": "PASS",
+      "rowLockOverdraft": "PASS",
+      "idempotencyAndConflict": "PASS",
+      "exceptionRollback": "PASS",
+      "processCrashRollback": "PASS",
+      "commitWithoutResponse": "PASS",
+      "independentOracle": "PASS"
+    },
+    "elapsedSeconds": 8.456,
+    "limits": "Synthetic controlled PostgreSQL; no real CICS/Db2 or mainframe performance equivalence."
+  }
+}

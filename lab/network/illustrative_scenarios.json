@@ -1,0 +1,27 @@
+{
+  "classification": "ILLUSTRATIVE_ASSUMPTIONS",
+  "note": "None of these RTT values are measurements from a real bank; only deterministic modelling inputs.",
+  "cases": [
+    {
+      "name": "nearby-office",
+      "assumed_wan_rtt_ms": 8,
+      "extra_serial_roundtrips": 5,
+      "optimized_roundtrips": 1,
+      "assumed_local_work_ms": 18
+    },
+    {
+      "name": "remote-national-office",
+      "assumed_wan_rtt_ms": 35,
+      "extra_serial_roundtrips": 5,
+      "optimized_roundtrips": 1,
+      "assumed_local_work_ms": 18
+    },
+    {
+      "name": "international-office",
+      "assumed_wan_rtt_ms": 95,
+      "extra_serial_roundtrips": 5,
+      "optimized_roundtrips": 1,
+      "assumed_local_work_ms": 18
+    }
+  ]
+}

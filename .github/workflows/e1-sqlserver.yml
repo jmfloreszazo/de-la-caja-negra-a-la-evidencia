@@ -1,0 +1,79 @@
+name: E1 SQL Server transactional experiment
+on:
+  pull_request:
+    paths:
+      - 'lab/e1_sqlserver/**'
+      - 'docs/EXPERIMENT_ROADMAP.md'
+      - '.github/workflows/e1-sqlserver.yml'
+  push:
+    branches: [main]
+    paths:
+      - 'lab/e1_sqlserver/**'
+      - '.github/workflows/e1-sqlserver.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  sqlserver-evidence:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 35
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-python@v6
+        with:
+          python-version: '3.12'
+      - uses: actions/setup-dotnet@v5
+        with:
+          dotnet-version: '10.0.x'
+      - name: Build isolated .NET 10 reference, candidate, oracle and fixtures
+        run: |
+          dotnet build lab/Bank/Bank.csproj -c Release -m:1 --disable-build-servers
+          dotnet build lab/e1_sqlserver/SqlBank/SqlBank.csproj -c Release -m:1 --disable-build-servers
+          dotnet build lab/e1_sqlserver/SqlOracle/SqlOracle.csproj -c Release -m:1 --disable-build-servers
+          dotnet build lab/e1_sqlserver/SqlFixtures/SqlFixtures.csproj -c Release -m:1 --disable-build-servers
+      - name: Start disposable SQL Server Developer edition under Podman
+        run: |
+          pass="$(openssl rand -hex 18)Aa!1"
+          echo "::add-mask::$pass"
+          echo "E1_SQL_PASSWORD=$pass" >> "$GITHUB_ENV"
+          podman run --detach --name e1-sqlserver --memory=4g \
+            -e ACCEPT_EULA=Y -e MSSQL_PID=Developer -e MSSQL_SA_PASSWORD="$pass" \
+            -p 127.0.0.1:14333:1433 \
+            mcr.microsoft.com/mssql/server:2022-latest
+          for attempt in $(seq 1 90); do
+            if E1_SQL_PASSWORD="$pass" \
+               dotnet lab/e1_sqlserver/SqlBank/bin/Release/net10.0/SqlBank.dll version \
+               >/dev/null 2>&1; then
+              echo "SQL Server ready"
+              exit 0
+            fi
+            sleep 3
+          done
+          podman logs --tail 100 e1-sqlserver
+          exit 1
+      - name: Execute E1c SQL Server contract and independent oracle
+        run: python3 lab/e1_sqlserver/test_e1c.py
+      - name: Verify complete SQLite and SQL Server uniform/hot worker matrix
+        run: python3 lab/e1_sqlserver/test_worker_parity.py
+      - name: Capture container image and build provenance
+        if: always()
+        run: |
+          mkdir -p lab/results/e1c
+          podman image inspect mcr.microsoft.com/mssql/server:2022-latest \
+            --format '{{json .RepoDigests}}' > lab/results/e1c/sqlserver-image-digests.json || true
+          podman image inspect mcr.microsoft.com/mssql/server:2022-latest \
+            --format '{{.Id}}' > lab/results/e1c/sqlserver-image-id.txt || true
+          dotnet --version > lab/results/e1c/dotnet-sdk.txt
+          podman --version > lab/results/e1c/podman-version.txt
+      - name: Upload E1c original CI outputs
+        uses: actions/upload-artifact@v6
+        if: always()
+        with:
+          name: e1-sqlserver-observations
+          path: lab/results/e1c/
+          if-no-files-found: warn
+      - name: Stop disposable SQL Server
+        if: always()
+        run: |
+          podman logs --tail 100 e1-sqlserver || true
+          podman rm -f e1-sqlserver || true

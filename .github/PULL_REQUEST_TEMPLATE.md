@@ -17,6 +17,14 @@
 
 <!-- Source with consultation date, command output, rendered diagram... -->
 
+**Language policy**
+
+- [ ] All source code, comments, tests, project READMEs, CLI help and engineering artifacts are in English
+- [ ] Any new/changed chapter is maintained in **both Spanish and English** (`book/es/` and `book/en/`)
+- [ ] All code listings embedded in both book editions remain **in English**, including code comments and examples
+- [ ] No localized README or duplicated project documentation has been added under `lab/`
+- [ ] `python3 scripts/check_language_policy.py` passed; [policy](../docs/LANGUAGE_POLICY.md) reviewed
+
 **Checks**
 
 - [ ] The change is in both `book/es/` and `book/en/` (or it does not touch the book)

@@ -1,0 +1,472 @@
+{
+  "schemaVersion": 1,
+  "experiment": "E1c-SQL-Server-2022",
+  "runId": 41041573996,
+  "jobId": 124015395657,
+  "artifactId": 12970641379,
+  "sourceCommit": "8c3024349dd5c63c9b50fd0b9d41876f3bcddf2e",
+  "checkoutCommit": "cfbf2e9cc821c21bd39d241901e85ab1888dbce2",
+  "source": "Exact structured 10-control SQL Server 2022 job output and original downloadable GitHub Actions artifact",
+  "url": "https://github.com/jmfloreszazo/de-la-caja-negra-a-la-evidencia/actions/runs/41041573996",
+  "classification": "EXECUTED_SYNTHETIC_SQLSERVER_NOT_MAINFRAME",
+  "observation": {
+    "schemaVersion": 1,
+    "experiment": "E1c-SQL-Server-2022",
+    "classification": "EXECUTED_SYNTHETIC_SQLSERVER_NOT_MAINFRAME",
+    "status": "PASS",
+    "controls": {
+      "sequentialCrossEngineParity": "PASS",
+      "overdraftAndIdempotencyUnderConcurrency": "PASS",
+      "databaseUniqueKeyConstraint": "PASS",
+      "boundedSqlClientCommandTimeout": "PASS",
+      "lockReleasedDuringRetry": "PASS",
+      "boundedLockTimeoutAndRecovery": "PASS",
+      "independentOracleRejectsCorruption": "PASS",
+      "deadlock1205WholeTransactionRetry": "PASS",
+      "snapshotWriteSkewAndSerializableDefense": "PASS",
+      "boundedSqlClientPool": "PASS"
+    },
+    "sequentialCases": [
+      {
+        "name": "commit",
+        "persistedParity": true,
+        "counts": {
+          "accounts": 16,
+          "operations": 1,
+          "postings": 2,
+          "outbox": 1
+        },
+        "oracle": {
+          "nonnegative": true,
+          "conserved": true,
+          "balancedPostings": true,
+          "twoPostingsPerCommit": true,
+          "noPostingsForRejection": true,
+          "outboxAtomic": true,
+          "projectionAgrees": true
+        }
+      },
+      {
+        "name": "duplicate-commit",
+        "persistedParity": true,
+        "counts": {
+          "accounts": 16,
+          "operations": 1,
+          "postings": 2,
+          "outbox": 1
+        },
+        "oracle": {
+          "nonnegative": true,
+          "conserved": true,
+          "balancedPostings": true,
+          "twoPostingsPerCommit": true,
+          "noPostingsForRejection": true,
+          "outboxAtomic": true,
+          "projectionAgrees": true
+        }
+      },
+      {
+        "name": "id-conflict",
+        "persistedParity": true,
+        "counts": {
+          "accounts": 16,
+          "operations": 1,
+          "postings": 2,
+          "outbox": 1
+        },
+        "oracle": {
+          "nonnegative": true,
+          "conserved": true,
+          "balancedPostings": true,
+          "twoPostingsPerCommit": true,
+          "noPostingsForRejection": true,
+          "outboxAtomic": true,
+          "projectionAgrees": true
+        }
+      },
+      {
+        "name": "overdraft",
+        "persistedParity": true,
+        "counts": {
+          "accounts": 16,
+          "operations": 2,
+          "postings": 2,
+          "outbox": 1
+        },
+        "oracle": {
+          "nonnegative": true,
+          "conserved": true,
+          "balancedPostings": true,
+          "twoPostingsPerCommit": true,
+          "noPostingsForRejection": true,
+          "outboxAtomic": true,
+          "projectionAgrees": true
+        }
+      },
+      {
+        "name": "duplicate-rejected",
+        "persistedParity": true,
+        "counts": {
+          "accounts": 16,
+          "operations": 2,
+          "postings": 2,
+          "outbox": 1
+        },
+        "oracle": {
+          "nonnegative": true,
+          "conserved": true,
+          "balancedPostings": true,
+          "twoPostingsPerCommit": true,
+          "noPostingsForRejection": true,
+          "outboxAtomic": true,
+          "projectionAgrees": true
+        }
+      },
+      {
+        "name": "conflict-rejected",
+        "persistedParity": true,
+        "counts": {
+          "accounts": 16,
+          "operations": 2,
+          "postings": 2,
+          "outbox": 1
+        },
+        "oracle": {
+          "nonnegative": true,
+          "conserved": true,
+          "balancedPostings": true,
+          "twoPostingsPerCommit": true,
+          "noPostingsForRejection": true,
+          "outboxAtomic": true,
+          "projectionAgrees": true
+        }
+      },
+      {
+        "name": "invalid-id",
+        "persistedParity": true,
+        "counts": {
+          "accounts": 16,
+          "operations": 2,
+          "postings": 2,
+          "outbox": 1
+        },
+        "oracle": {
+          "nonnegative": true,
+          "conserved": true,
+          "balancedPostings": true,
+          "twoPostingsPerCommit": true,
+          "noPostingsForRejection": true,
+          "outboxAtomic": true,
+          "projectionAgrees": true
+        }
+      },
+      {
+        "name": "invalid-amount",
+        "persistedParity": true,
+        "counts": {
+          "accounts": 16,
+          "operations": 2,
+          "postings": 2,
+          "outbox": 1
+        },
+        "oracle": {
+          "nonnegative": true,
+          "conserved": true,
+          "balancedPostings": true,
+          "twoPostingsPerCommit": true,
+          "noPostingsForRejection": true,
+          "outboxAtomic": true,
+          "projectionAgrees": true
+        }
+      },
+      {
+        "name": "invalid-self",
+        "persistedParity": true,
+        "counts": {
+          "accounts": 16,
+          "operations": 2,
+          "postings": 2,
+          "outbox": 1
+        },
+        "oracle": {
+          "nonnegative": true,
+          "conserved": true,
+          "balancedPostings": true,
+          "twoPostingsPerCommit": true,
+          "noPostingsForRejection": true,
+          "outboxAtomic": true,
+          "projectionAgrees": true
+        }
+      },
+      {
+        "name": "invalid-account",
+        "persistedParity": true,
+        "counts": {
+          "accounts": 16,
+          "operations": 2,
+          "postings": 2,
+          "outbox": 1
+        },
+        "oracle": {
+          "nonnegative": true,
+          "conserved": true,
+          "balancedPostings": true,
+          "twoPostingsPerCommit": true,
+          "noPostingsForRejection": true,
+          "outboxAtomic": true,
+          "projectionAgrees": true
+        }
+      },
+      {
+        "name": "exception-rollback",
+        "persistedParity": true,
+        "counts": {
+          "accounts": 16,
+          "operations": 2,
+          "postings": 2,
+          "outbox": 1
+        },
+        "oracle": {
+          "nonnegative": true,
+          "conserved": true,
+          "balancedPostings": true,
+          "twoPostingsPerCommit": true,
+          "noPostingsForRejection": true,
+          "outboxAtomic": true,
+          "projectionAgrees": true
+        }
+      },
+      {
+        "name": "process-crash",
+        "persistedParity": true,
+        "counts": {
+          "accounts": 16,
+          "operations": 2,
+          "postings": 2,
+          "outbox": 1
+        },
+        "oracle": {
+          "nonnegative": true,
+          "conserved": true,
+          "balancedPostings": true,
+          "twoPostingsPerCommit": true,
+          "noPostingsForRejection": true,
+          "outboxAtomic": true,
+          "projectionAgrees": true
+        }
+      },
+      {
+        "name": "lost-response",
+        "persistedParity": true,
+        "counts": {
+          "accounts": 16,
+          "operations": 3,
+          "postings": 4,
+          "outbox": 2
+        },
+        "oracle": {
+          "nonnegative": true,
+          "conserved": true,
+          "balancedPostings": true,
+          "twoPostingsPerCommit": true,
+          "noPostingsForRejection": true,
+          "outboxAtomic": true,
+          "projectionAgrees": true
+        }
+      },
+      {
+        "name": "lost-response-replay",
+        "persistedParity": true,
+        "counts": {
+          "accounts": 16,
+          "operations": 3,
+          "postings": 4,
+          "outbox": 2
+        },
+        "oracle": {
+          "nonnegative": true,
+          "conserved": true,
+          "balancedPostings": true,
+          "twoPostingsPerCommit": true,
+          "noPostingsForRejection": true,
+          "outboxAtomic": true,
+          "projectionAgrees": true
+        }
+      },
+      {
+        "name": "exception-retry",
+        "persistedParity": true,
+        "counts": {
+          "accounts": 16,
+          "operations": 4,
+          "postings": 6,
+          "outbox": 3
+        },
+        "oracle": {
+          "nonnegative": true,
+          "conserved": true,
+          "balancedPostings": true,
+          "twoPostingsPerCommit": true,
+          "noPostingsForRejection": true,
+          "outboxAtomic": true,
+          "projectionAgrees": true
+        }
+      },
+      {
+        "name": "crash-retry",
+        "persistedParity": true,
+        "counts": {
+          "accounts": 16,
+          "operations": 5,
+          "postings": 8,
+          "outbox": 4
+        },
+        "oracle": {
+          "nonnegative": true,
+          "conserved": true,
+          "balancedPostings": true,
+          "twoPostingsPerCommit": true,
+          "noPostingsForRejection": true,
+          "outboxAtomic": true,
+          "projectionAgrees": true
+        }
+      }
+    ],
+    "observations": {
+      "faults": {
+        "race": [
+          {
+            "status": "REJECTED",
+            "retries": 0,
+            "elapsedMs": 363.118,
+            "retrySqlErrors": []
+          },
+          {
+            "status": "COMMITTED",
+            "retries": 0,
+            "elapsedMs": 353.669,
+            "retrySqlErrors": []
+          }
+        ],
+        "lockReleased": {
+          "status": "COMMITTED",
+          "retries": 2,
+          "elapsedMs": 1852.641,
+          "retrySqlErrors": [
+            1222,
+            1222
+          ]
+        },
+        "lockExhaustion": {
+          "status": "RETRY_EXHAUSTED",
+          "retries": 6,
+          "elapsedMs": 5183.162,
+          "retrySqlErrors": [
+            1222,
+            1222,
+            1222,
+            1222,
+            1222,
+            1222
+          ]
+        },
+        "oracleVectors": {
+          "before": {
+            "nonnegative": true,
+            "conserved": true,
+            "balancedPostings": true,
+            "twoPostingsPerCommit": true,
+            "noPostingsForRejection": true,
+            "outboxAtomic": true,
+            "projectionAgrees": true
+          },
+          "corrupted": {
+            "nonnegative": true,
+            "conserved": true,
+            "balancedPostings": false,
+            "twoPostingsPerCommit": false,
+            "noPostingsForRejection": true,
+            "outboxAtomic": true,
+            "projectionAgrees": false
+          },
+          "restored": {
+            "nonnegative": true,
+            "conserved": true,
+            "balancedPostings": true,
+            "twoPostingsPerCommit": true,
+            "noPostingsForRejection": true,
+            "outboxAtomic": true,
+            "projectionAgrees": true
+          }
+        }
+      },
+      "deadlock": [
+        {
+          "status": "COMMITTED",
+          "retries": 0,
+          "elapsedMs": 1728.226,
+          "retrySqlErrors": []
+        },
+        {
+          "status": "COMMITTED",
+          "retries": 1,
+          "elapsedMs": 1762.106,
+          "retrySqlErrors": [
+            1205
+          ]
+        }
+      ],
+      "isolation": {
+        "snapshot": {
+          "results": [
+            {
+              "status": "DISABLED",
+              "retries": 0,
+              "retrySqlErrors": []
+            },
+            {
+              "status": "DISABLED",
+              "retries": 0,
+              "retrySqlErrors": []
+            }
+          ],
+          "remainingActive": 0
+        },
+        "serializable": {
+          "results": [
+            {
+              "status": "SKIPPED",
+              "retries": 1,
+              "retrySqlErrors": [
+                1205
+              ]
+            },
+            {
+              "status": "DISABLED",
+              "retries": 0,
+              "retrySqlErrors": []
+            }
+          ],
+          "remainingActive": 1
+        }
+      }
+    },
+    "sourceSha256": {
+      "e1_sqlserver/schema.sql": "afca447dc6c6a420e71062444d25788e9c93390c6b4e689b915716370e405342",
+      "e1_sqlserver/SqlBank/Program.cs": "2af2bd31c70e5031dfe8ae9ba2c82b0e441214cfb156d329519b6c2b7a81a4cb",
+      "e1_sqlserver/SqlBank/SqlBank.csproj": "cf105657f99f01fddc92e6864807f500432777786525310fef2f98a8b285b61a",
+      "e1_sqlserver/SqlOracle/Program.cs": "687fd9d50c44012ae608b9437e3bfa501fc9e3364ccd20a9b9d091cb669a0324",
+      "e1_sqlserver/SqlFixtures/Program.cs": "ffb5b3df77c30d390f8f231ea61ca1be22229d0d2a40b21b2537533455e7796a",
+      "e1_sqlserver/test_e1c.py": "d3e62b4f96f9599d2deaa9c9e11bf5ae9c44fee06f772eb4898c1ec356c13e9b",
+      "Bank/Program.cs": "72e6ff2bf59fd8889158b2488e3b8a5eb6f67b8e05cab27dc2336b74b6ad8253"
+    },
+    "environment": {
+      "sqlServerVersion": "16.0.4305.5",
+      "sqliteVersion": "3.45.1",
+      "dotnetSdk": "10.0.403",
+      "platform": "Linux-7.0.0-1017-azure-x86_64-with-glibc2.39"
+    },
+    "elapsedSeconds": 38.318,
+    "limitations": "Disposable, one-runner synthetic SQL Server Developer edition. No customer data, production power-loss or failover testing, mainframe throughput, external messaging or vendor TCO."
+  }
+}

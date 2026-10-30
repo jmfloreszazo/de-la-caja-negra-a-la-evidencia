@@ -12,6 +12,7 @@ The question that worries me most when taking a workload off a mainframe is not 
 - [Chapter 23 · Concurrency that makes use of the machine](23-concurrency-that-makes-use-of-the-machine.md)
 - [Chapter 24 · The benchmark that counts: load, contention, failure and cost](24-the-benchmark-that-counts-load-contention-failure-and-cost.md)
 - [Chapter 25 · Azure or a huge machine at the customer's site](25-azure-or-a-huge-machine-at-the-customer-s-site.md)
+- [Chapter 25 bis · Infrastructure versus a current mainframe: on-premises, Azure and the branch network](25a-mainframe-on-prem-azure-and-banking-network-infrastructure.md)
 
 ---
 

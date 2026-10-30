@@ -27,22 +27,28 @@ Un libro abierto y un laboratorio ejecutable sobre cómo modernizar sistemas COB
 | Español (original) | [book/es](book/es/README.md) | [book/es.md](book/es.md) |
 | English | [book/en](book/en/README.md) | [book/en.md](book/en.md) |
 
-37 capítulos en siete partes, epílogo, siete anexos y 41 diagramas por idioma (C4, UML de secuencia, estados y clases, ER, gitGraph), escritos en Mermaid y publicados como imágenes con el estilo visual del libro. Las dos ediciones tienen exactamente la misma estructura y la CI falla si se separan.
+38 capítulos (incluido el capítulo 25 bis) en siete partes, epílogo, siete anexos y 41 diagramas por idioma (C4, UML de secuencia, estados y clases, ER, gitGraph), escritos en Mermaid y publicados como imágenes con el estilo visual del libro. Las dos ediciones tienen exactamente la misma estructura y la CI falla si se separan.
+
+## Idiomas: libro frente a código
+
+**El libro siempre se mantiene completo en español e inglés. Todos los proyectos ejecutables y sus README, código, comentarios, pruebas, logs y CI están exclusivamente en inglés.** Incluso los fragmentos de código incluidos en la edición española permanecen en inglés. [Política de idiomas](docs/LANGUAGE_POLICY.md).
 
 ## Ruta rápida y evidencia
 
-[**Matriz de evidencia verificable**](docs/EVIDENCE.es.md): CI real frente a experimentos E1–E4 no ejecutados.
+[**Capítulo 25 bis: infraestructura local, Azure y latencia de oficinas bancarias**](book/es/parte-5-capacidad/25a-infraestructura-mainframe-local-azure-y-redes-bancarias.md) · [Evidencia E1a/E1b con JSON de CI](evidence/runs/README.es.md) · [Protocolo WAN E3](docs/NETWORK_PROTOCOL.es.md).
 
-¿Quieres recorrer el argumento sin leer los 37 capítulos de forma lineal? Sigue la [ruta de siete capítulos](docs/READING_PATH.es.md). El [registro editorial y de evidencias](docs/EDITORIAL_REVIEW.es.md) distingue lo comprobado de lo todavía hipotético.
+[**Matriz de evidencia verificable**](docs/EVIDENCE.es.md): CI real, E1a/E1b ejecutados y E1 global parcialmente verificado frente a E2–E4 pendientes.
 
-La [CI del laboratorio](https://github.com/jmfloreszazo/de-la-caja-negra-a-la-evidencia/actions/runs/40900252152) ya ha ejecutado las pruebas offline, nativas y Podman en runners Linux. Esto no acredita todas las plataformas ni los experimentos E1–E4.
+¿Quieres recorrer el argumento sin leer los 38 capítulos de forma lineal? Sigue la [ruta de siete capítulos](docs/READING_PATH.es.md). El [registro editorial y de evidencias](docs/EDITORIAL_REVIEW.es.md) distingue lo comprobado de lo todavía hipotético.
+
+La [CI del laboratorio](https://github.com/jmfloreszazo/de-la-caja-negra-a-la-evidencia/actions/runs/40900252152) ya ha ejecutado las pruebas offline, nativas y Podman en runners Linux. Esto no acredita todas las plataformas ni la aceptación global de E1–E4. Las pruebas E1a/E1b y M1/M2 están documentadas en esta rama de la [PR #5](https://github.com/jmfloreszazo/de-la-caja-negra-a-la-evidencia/pull/5), con alcance limitado; E2–E4 siguen sin ejecutarse.
 
 ## Ejecutar el laboratorio
 
 ```bash
 cd lab
-python3 tools/verify_offline.py        # solo Python: ancla, política independiente y oráculo contable
-bash scripts/run-podman.sh --auto      # todo: COBOL, .NET 10, gate y transferencias, sin red
+python3 tools/verify_offline.py        # Python-only anchor, independent policy, and accounting oracle
+bash scripts/run-podman.sh --auto      # Full COBOL, .NET 10, gate, and transfer checks offline
 ```
 
 El laboratorio está en inglés. La guía en español es el [anexo A del libro](book/es/anexos/anexo-a-un-laboratorio-que-pueda-contradecirnos.md).
@@ -50,17 +56,17 @@ El laboratorio está en inglés. La guía en español es el [anexo A del libro](
 ## Estructura del repositorio
 
 ```text
-README.md · README.es.md      esta página, en inglés y en español
-ROADMAP.md · ROADMAP.es.md    trabajo abierto, en inglés y en español
+README.md · README.es.md      bilingual repository entrypoints
+ROADMAP.md · ROADMAP.es.md    bilingual open roadmaps
 book/
-  es/  en/                    el libro capítulo a capítulo (la fuente)
-  es.md  en.md                el libro entero en una página (lo genera scripts/build.py)
-  figures/                    fuentes de los diagramas (src/) e imágenes con el estilo del libro
+  es/  en/                    chapter-by-chapter source books
+  es.md  en.md                single-page generated books (scripts/build.py)
+  figures/                    diagram sources and rendered artwork
 lab/                          GnuCOBOL · .NET 10 · SQLite · Python · Podman
 scripts/                      build.py · check.py · render_figures.py · setup_github.sh
-assets/                       logotipo, símbolo, portadas e imagen social
-docs/LAUNCH.md                guía del mantenedor para la primera publicación
-.github/                      plantillas, CODEOWNERS y workflows
+assets/                       brand mark, covers, and social preview
+docs/LAUNCH.md                release preparation instructions
+.github/                      templates, CODEOWNERS, and workflows
 ```
 
 El resto de documentos del proyecto (guía de colaboración, gobernanza, código de conducta) está en inglés, para que cualquiera pueda participar.
@@ -68,10 +74,10 @@ El resto de documentos del proyecto (guía de colaboración, gobernanza, código
 ## Reproducirlo todo
 
 ```bash
-python3 scripts/build.py          # regenera los libros de una página
-python3 scripts/check.py          # enlaces, sincronía español/inglés y ficheros generados
-npx markdownlint-cli2 "**/*.md"   # estilo Markdown
-python3 scripts/render_figures.py # imágenes de los diagramas (npm i -g @mermaid-js/mermaid-cli)
+python3 scripts/build.py          # Regenerate both single-page books
+python3 scripts/check.py          # Check links, ES/EN sync, and generated files
+npx markdownlint-cli2 "**/*.md"   # Validate Markdown style
+python3 scripts/render_figures.py # Render diagrams (npm i -g @mermaid-js/mermaid-cli)
 python3 lab/tools/verify_offline.py
 ```
 

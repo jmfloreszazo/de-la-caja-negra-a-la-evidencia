@@ -27,7 +27,11 @@ An open book and a runnable lab on how to modernize COBOL systems without bettin
 | English | [book/en](book/en/README.md) | [book/en.md](book/en.md) |
 | Español (original) | [book/es](book/es/README.md) | [book/es.md](book/es.md) |
 
-37 chapters in seven parts, an epilogue, seven annexes and 41 diagrams per language (C4, UML sequence, state and class, ER, gitGraph), drawn in Mermaid and published as images in the book's visual style. Both editions have exactly the same structure, and CI fails if they drift apart.
+38 chapters (including chapter 25 bis) in seven parts, an epilogue, seven annexes and 41 diagrams per language (C4, UML sequence, state and class, ER, gitGraph), drawn in Mermaid and published as images in the book's visual style. Both editions have exactly the same structure, and CI fails if they drift apart.
+
+## Languages: book versus code
+
+**The book is always published in Spanish and English. All executable projects and their README files, code, comments, tests, logs and CI are in English only.** Code listings also stay in English in both editions. [Language policy](docs/LANGUAGE_POLICY.md) · [contribution and agent rules](AGENTS.md).
 
 ## Run the lab
 
@@ -80,11 +84,13 @@ Start with [CONTRIBUTING.md](CONTRIBUTING.md): paths by profile, a first contrib
 
 ## Evidence status
 
-[**Verifiable evidence matrix**](docs/EVIDENCE.md): real CI versus E1–E4 experiments not yet executed.
+[**Chapter 25 bis: on-premises, Azure and banking-branch WAN latency**](book/en/part-5-capacity/25a-mainframe-on-prem-azure-and-banking-network-infrastructure.md) · [E1a/E1b CI evidence JSON](evidence/runs/README.md) · [E3 WAN protocol](docs/NETWORK_PROTOCOL.md).
+
+[**Verifiable evidence matrix**](docs/EVIDENCE.md): real CI, verified E1a/E1b and partially verified overall E1 versus E2–E4 remaining open.
 
 **Verified in GitHub Actions:** [Book](https://github.com/jmfloreszazo/de-la-caja-negra-a-la-evidencia/actions/runs/40900252122), [Lab (offline, native, Podman)](https://github.com/jmfloreszazo/de-la-caja-negra-a-la-evidencia/actions/runs/40900252152), and [bilingual PDFs](https://github.com/jmfloreszazo/de-la-caja-negra-a-la-evidencia/actions/runs/40900252098).
 
-**Not yet established:** E1–E4 experimental outcomes, compilation of all *Illustrative* listings, a native-level English editorial review, or cross-platform reproductions beyond hosted Linux runners. See [editorial and evidence register](docs/EDITORIAL_REVIEW.md).
+**Not yet established:** complete E1 acceptance (E1a/E1b have only the documented partial CI evidence), E2–E4 experimental acceptance, compilation of all *Illustrative* listings, native-level English editorial review, or cross-platform reproductions beyond hosted Linux runners. M1/M2 are local experimental observations, not E3. See [editorial and evidence register](docs/EDITORIAL_REVIEW.md).
 
 ## Related work by the author
 

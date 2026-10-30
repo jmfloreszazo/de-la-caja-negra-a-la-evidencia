@@ -11,18 +11,38 @@
 | `SQLITE-LAB` | Accounting invariants and concurrency on SQLite | **Executed in CI** | Does not demonstrate PostgreSQL/SQL Server row locks or mainframe-scale throughput | [Workflow #40901043412](https://github.com/jmfloreszazo/de-la-caja-negra-a-la-evidencia/actions/runs/40901043412) |
 | `PODMAN-CI` | Container and lab executed with Podman in Linux CI | **Executed in CI** | Ubuntu CI does not establish universal portability | [Workflow #40901043412](https://github.com/jmfloreszazo/de-la-caja-negra-a-la-evidencia/actions/runs/40901043412) |
 | `RELEASE-BOOK` | ES/EN PDF and Markdown editions published | **Published** | A published artifact does not verify every claim it contains | [v2026.10.29](https://github.com/jmfloreszazo/de-la-caja-negra-a-la-evidencia/releases/tag/v2026.10.29) |
-| `E1` | SQL row locks, deadlocks and write skew | **Designed, NOT executed** | PostgreSQL/SQL Server E1 has no validated execution | [Protocol, not a result](../lab/docs/EXPERIMENT_PROTOCOL.md) |
+| `E1A` | Real PostgreSQL: row locks, 40P01 deadlock, 40001 write skew and independent oracle | **Executed in CI** | Synthetic Linux/Podman test, not a performance benchmark or production banking system. E1 remains incomplete. | [Run #40919268337](https://github.com/jmfloreszazo/de-la-caja-negra-a-la-evidencia/actions/runs/40919268337) |
+| `E1B` | .NET 10/Npgsql candidate: PostgreSQL state and failure parity | **Executed in CI** | Differential parity for the tested subset versus the Python candidate; does not cover the entire SQLite lab or SQL Server. | [Run #40919773614](https://github.com/jmfloreszazo/de-la-caja-negra-a-la-evidencia/actions/runs/40919773614) |
+| `E1B-EXT` | Extended .NET 10/Npgsql retry, recovery and independent negative oracle | **Executed in CI** | Ten controls, including `55P03` bounded retry and posting corruption rejection; full SQLite/SQL Server parity still open. | [Run #41024101879](https://github.com/jmfloreszazo/de-la-caja-negra-a-la-evidencia/actions/runs/41024101879) · [raw observation](../evidence/runs/e1b-extended.json) |
+| `E1B-REF` | Direct .NET 10 SQLite↔PostgreSQL durable contract parity | **Executed in CI** | 16 sequential cases plus a lock release during retries; all four persisted tables match after each step, independent oracle passes. Not full concurrent-workload or SQL Server parity. | [Run #41031578923](https://github.com/jmfloreszazo/de-la-caja-negra-a-la-evidencia/actions/runs/41031578923) · [original result](../evidence/runs/e1b-reference-parity.json) |
+| `E1B-ORACLE` | Independent accounting oracle's seven invariant vectors and deliberate posting corruption | **Executed in CI** | Baseline and restored 7/7 PASS; corrupted posting triggers exactly three failures. Synthetic single-database negative control, not a production proof. | [Run #41032714628](https://github.com/jmfloreszazo/de-la-caja-negra-a-la-evidencia/actions/runs/41032714628) · [raw vectors](../evidence/runs/e1b-oracle-vectors.json) |
+| `E1B-RUNTIME` | Toolchain and container provenance for E1b | **Executed in CI** | Linux runner versions, pinned PostgreSQL image digest, source-head SHA and distinct PR merge checkout; not a portability or throughput result. | [Run #41033595770](https://github.com/jmfloreszazo/de-la-caja-negra-a-la-evidencia/actions/runs/41033595770) · [manifest](../evidence/runs/e1b-runtime-manifest.json) |
+| `E1B-MP` | Full synthetic SQLite/PostgreSQL uniform/hot worker matrix | **Executed in CI** | 960 logical transfers across 1/2/4/8 workers: persisted states agree and seven independent ledger invariants pass in all eight cases. Different process-launch models preclude throughput comparison. | [Run #41034420329](https://github.com/jmfloreszazo/de-la-caja-negra-a-la-evidencia/actions/runs/41034420329) · [raw result](../evidence/runs/e1b-multiprocess-parity.json) |
+| `E1C` | SQL Server 2022 Developer local transactional and isolation slice | **Executed in CI** | 16 SQLite↔SQL Server sequential cases, 1205 deadlock with full retry, six 1222 timeouts, SNAPSHOT write-skew negative, SERIALIZABLE defense and independent seven-invariant oracle; no production/mainframe performance claim. | [CI #41040632819](https://github.com/jmfloreszazo/de-la-caja-negra-a-la-evidencia/actions/runs/41040632819) · [original JSON](../evidence/runs/e1c-sqlserver-initial.json) |
+| `E1C-EXT` | Verified SQL Server unique-key collision and SqlClient command timeout | **Executed in CI** | Ten controls: explicit database unique-key rejection (2601/2627), client command timeout -2, lock timeout 1222, deadlock 1205 and seven-invariant oracle; synthetic test only. | [Run #41041573996](https://github.com/jmfloreszazo/de-la-caja-negra-a-la-evidencia/actions/runs/41041573996) · [raw record](../evidence/runs/e1c-sqlserver-extended.json) |
+| `E1C-MP` | SQLite and SQL Server 2022 uniform/hot functional worker matrix | **Executed in CI** | Eight 1/2/4/8-worker cases and 960 committed transfers per engine; accounts, operations, postings and outbox match; all seven independent ledger invariants pass. Process-launch models differ; no comparable throughput or mainframe capacity result. | [CI #41042317263](https://github.com/jmfloreszazo/de-la-caja-negra-a-la-evidencia/actions/runs/41042317263) · [Original JSON](../evidence/runs/e1c-sqlserver-worker-parity.json) |
+| `E1C-MP-PERSISTENT` | SQLite ↔ SQL Server persistent .NET worker parity | **Executed in CI** | 960 logical transfers over eight uniform/hot 1/2/4/8-worker scenarios; persistent worker processes on both sides, four persisted tables identical, seven independent accounting invariants PASS. Synthetic only, no equivalent throughput claim. | [CI #41043087791](https://github.com/jmfloreszazo/de-la-caja-negra-a-la-evidencia/actions/runs/41043087791) · [immutable original JSON](../evidence/runs/e1c-sqlserver-worker-parity-persistent.json) |
+| `E1` | SQL row locks, deadlocks and write skew | **Partially verified (E1a + E1b + E1c)** | Synthetic functional controls verified across SQLite, PostgreSQL and SQL Server; system-level mainframe equivalence, fault/durability and acceptance review remain open | [Protocol, not a result](../lab/docs/EXPERIMENT_PROTOCOL.md) |
 | `E2` | Orleans and ledger under different load distributions | **Designed, NOT executed** | No executed E2 benchmark against E1 | [Protocol, not a result](../lab/docs/EXPERIMENT_PROTOCOL.md) |
 | `E3` | Azure vs on-premises and hybrid benchmark | **Designed, NOT executed** | No capacity, cost or failure experiment using a real contract | [Protocol, not a result](../lab/docs/EXPERIMENT_PROTOCOL.md) |
 | `E4` | Comparison of agents behind an independent oracle | **Designed, NOT executed** | No executed E4 evaluation of defects and cost | [Protocol, not a result](../lab/docs/EXPERIMENT_PROTOCOL.md) |
 | `CROSS-PLATFORM` | Independent reproduction on macOS/Windows | **Reproduction pending** | Only Linux CI execution has been verified | [Protocol, not a result](../ROADMAP.md) |
 | `ILLUSTRATIVE` | Compilation of all Illustrative examples | **Reproduction pending** | No exhaustive verification of these listings exists | [Protocol, not a result](../ROADMAP.md) |
 
+## Supplemental experiment observations in draft PR #5
+
+- **M1 (29 October 2026):** [raw transport-only evidence and measured results](../evidence/runs/M1.md), .NET 10 HTTP/2 loopback, without SQL durability, TLS or WAN. This is **not** evidence of committed banking TPS.
+- **M2 (30 October 2026):** [20 durable PostgreSQL test cases and independent oracle results](../evidence/runs/M2.md) on a **single hosted runner and shared database**, with REST/JSON and gRPC/Protobuf. Observed local contention does not establish distributed horizontal scalability or E3.
+
+These observations belong to [draft PR #5](https://github.com/jmfloreszazo/de-la-caja-negra-a-la-evidencia/pull/5), not to published release `v2026.10.29`. They do not promote any E1–E4 overall claim.
+
 ## How to interpret the matrix
 
 **Executed in CI** means the linked workflow succeeded on a GitHub-hosted Linux runner. It is not a production operating guarantee.
 
-**Designed, NOT executed** means there is an experiment protocol and acceptance criteria, but no experimental result. This explicitly includes E1–E4.
+**Designed, NOT executed** means there is an experiment protocol and acceptance criteria, but no accepted experimental result. This applies to E2, E3 and E4; E1 is **partially verified** through E1a/E1b, not complete.
+
+**Partially verified** means some subtests have their own passing CI but the overall experiment has not met all acceptance criteria; E1a/E1b/E1c synthetic CI evidence does not establish mainframe capacity or production equivalence.
 
 **Published** establishes that release assets exist; it does not validate all their technical assertions.
 
@@ -42,4 +62,4 @@ The **live** CI check also verifies the source commit, successful jobs and relea
 GITHUB_TOKEN=... python3 scripts/check_evidence.py --online
 ```
 
-The [E1–E4 experiment protocol](../lab/docs/EXPERIMENT_PROTOCOL.md) defines future tests; it is not evidence that they took place.
+The [E1–E4 experiment protocol](../lab/docs/EXPERIMENT_PROTOCOL.md) defines acceptance criteria, not execution evidence. The E1a/E1b and M1/M2 results above are separately recorded and retain their narrow test scope.

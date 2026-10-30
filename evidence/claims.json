@@ -81,12 +81,166 @@
       "protocol": null
     },
     {
+      "id": "E1A",
+      "status": "ci_verified",
+      "es": "PostgreSQL real: locks, deadlock 40P01, write skew 40001 y oráculo",
+      "en": "Real PostgreSQL: row locks, 40P01 deadlock, 40001 write skew and independent oracle",
+      "scope_es": "Prueba sintética en Linux/Podman, no benchmark ni implementación bancaria productiva. El conjunto E1 aún no está completo.",
+      "scope_en": "Synthetic Linux/Podman test, not a performance benchmark or production banking system. E1 remains incomplete.",
+      "evidence": {
+        "kind": "github_actions",
+        "run_id": 40919268337,
+        "head_sha": "29e0c010372b72e773b94151be99877debc56f2b"
+      },
+      "protocol": null
+    },
+    {
+      "id": "E1B",
+      "status": "ci_verified",
+      "es": "Candidato .NET 10/Npgsql: paridad de estados y fallos PostgreSQL",
+      "en": ".NET 10/Npgsql candidate: PostgreSQL state and failure parity",
+      "scope_es": "Paridad diferencial del subconjunto probado frente al candidato Python; no acredita todo el laboratorio SQLite ni SQL Server.",
+      "scope_en": "Differential parity for the tested subset versus the Python candidate; does not cover the entire SQLite lab or SQL Server.",
+      "evidence": {
+        "kind": "github_actions",
+        "run_id": 40919773614,
+        "head_sha": "937f0f87ddbd630def1fd1c3d4e410520b93f9d9"
+      },
+      "protocol": null
+    },
+    {
+      "id": "E1B-EXT",
+      "status": "ci_verified",
+      "es": "Extensión E1b .NET 10/Npgsql: agotamiento 55P03, recuperación idempotente y corrupción rechazada",
+      "en": "Extended E1b .NET 10/Npgsql: bounded 55P03 retry, idempotent recovery and rejected corruption",
+      "scope_es": "Diez controles sintéticos en PostgreSQL; incluye tres controles nuevos, sin paridad integral SQLite, SQL Server ni equivalencia mainframe.",
+      "scope_en": "Ten synthetic PostgreSQL controls, including three new cases; no complete SQLite or SQL Server parity or mainframe equivalence.",
+      "evidence": {
+        "kind": "github_actions",
+        "run_id": 41024101879,
+        "head_sha": "b84559ce06281eb79909640d69c298ba2f521367"
+      },
+      "protocol": null
+    },
+    {
+      "id": "E1B-REF",
+      "status": "ci_verified",
+      "es": "Paridad directa SQLite/.NET 10 frente a PostgreSQL/.NET 10 en 16 operaciones y liberación de bloqueo",
+      "en": "Direct SQLite/.NET 10 vs PostgreSQL/.NET 10 parity for 16 operations and mid-retry lock release",
+      "scope_es": "Solo los 16 escenarios secuenciales y un caso de desbloqueo sintéticos; todas las tablas persistidas coinciden y el oráculo PostgreSQL pasa. No equivale a la carga multiproceso completa, SQL Server ni mainframe.",
+      "scope_en": "Only 16 synthetic sequential scenarios and one lock-release case; all persisted tables match and the PostgreSQL oracle passes. No full multiprocess workload, SQL Server or mainframe equivalence.",
+      "evidence": {
+        "kind": "github_actions",
+        "run_id": 41031578923,
+        "head_sha": "222b10f4ff986c80edc0424e7bf107cd2e4f45b4"
+      },
+      "protocol": null
+    },
+    {
+      "id": "E1B-ORACLE",
+      "status": "ci_verified",
+      "es": "Siete invariantes del oráculo contable independiente: antes, con asiento corrupto y tras restaurarlo",
+      "en": "Seven independent accounting oracle invariants before, during deliberate posting corruption and after restoration",
+      "scope_es": "Prueba negativa sintética PostgreSQL con tres invariantes fallidos detectados y restauración verificada; no demuestra capacidad bancaria ni fallos distribuidos.",
+      "scope_en": "Synthetic PostgreSQL negative control detecting three failing invariants and verifying restoration; no banking capacity or distributed-fault proof.",
+      "evidence": {
+        "kind": "github_actions",
+        "run_id": 41032714628,
+        "head_sha": "b175041e411db5033aa25596d8c1f99f6f535680"
+      },
+      "protocol": null
+    },
+    {
+      "id": "E1B-RUNTIME",
+      "status": "ci_verified",
+      "es": "Manifiesto E1b: versiones y procedencia del contenedor",
+      "en": "E1b manifest: tool versions and container provenance",
+      "scope_es": "Una ejecución Linux sintética; no prueba de capacidad ni portabilidad general.",
+      "scope_en": "One synthetic Linux execution; no capacity or general portability proof.",
+      "evidence": {
+        "kind": "github_actions",
+        "run_id": 41033595770,
+        "head_sha": "338ef0292c67812cadfb3e9ab7436dad590dbcf8"
+      },
+      "protocol": null
+    },
+    {
+      "id": "E1B-MP",
+      "status": "ci_verified",
+      "es": "Paridad de 960 transferencias lógicas en la matriz SQLite/PostgreSQL: 1/2/4/8 trabajadores, tráfico uniforme y caliente",
+      "en": "Parity of 960 logical SQLite/PostgreSQL transfers over 1/2/4/8 worker counts with uniform/hot traffic",
+      "scope_es": "Ocho casos sintéticos con estado persistido y siete invariantes equivalentes; modelos de arranque distintos, sin comparación válida de throughput ni latencia.",
+      "scope_en": "Eight synthetic cases with matching persisted state and seven ledger invariants; different process-launch models, no valid throughput or latency comparison.",
+      "evidence": {
+        "kind": "github_actions",
+        "run_id": 41034420329,
+        "head_sha": "a1df6da8ecdd491c3a1f10686904c5ac55a98bf9"
+      },
+      "protocol": null
+    },
+    {
+      "id": "E1C",
+      "status": "ci_verified",
+      "es": "SQL Server 2022 Developer con .NET 10: paridad, deadlock 1205, bloqueo 1222, aislamiento y oráculo independiente",
+      "en": "SQL Server 2022 Developer with .NET 10: parity, 1205 deadlock, 1222 lock retries, isolation and independent oracle",
+      "scope_es": "Ocho grupos y 16 casos secuenciales sobre un contenedor desechable. SNAPSHOT rompe una invariante deliberada y SERIALIZABLE la preserva. Sin equivalencia de capacidad mainframe.",
+      "scope_en": "Eight control groups and sixteen sequential cases on a disposable SQL Server container. SNAPSHOT violates a deliberately unsafe invariant; SERIALIZABLE preserves it. No mainframe capacity equivalence.",
+      "evidence": {
+        "kind": "github_actions",
+        "run_id": 41040632819,
+        "head_sha": "4e1d79b597f8c393cdc349e92c604fcc0aecc9c4"
+      },
+      "protocol": null
+    },
+    {
+      "id": "E1C-EXT",
+      "status": "ci_verified",
+      "es": "Extensión SQL Server E1c: constraint de operación única y timeout real del comando SqlClient",
+      "en": "SQL Server E1c extension: database operation uniqueness and genuine SqlClient command timeout",
+      "scope_es": "Diez controles sintéticos ejecutados; se verificaron explícitamente el rechazo de una clave duplicada (2601/2627) y el timeout de comando (-2), distinto del bloqueo SQL Server 1222.",
+      "scope_en": "Ten synthetic controls executed; SQL Server rejected a duplicate unique key (2601/2627) and SqlClient raised a command timeout (-2), distinct from SQL Server lock timeout 1222.",
+      "evidence": {
+        "kind": "github_actions",
+        "run_id": 41041573996,
+        "head_sha": "8c3024349dd5c63c9b50fd0b9d41876f3bcddf2e"
+      },
+      "protocol": null
+    },
+    {
+      "id": "E1C-MP",
+      "status": "ci_verified",
+      "es": "Paridad funcional SQLite/SQL Server: 960 transferencias sintéticas en ocho escenarios uniformes y de cuenta caliente",
+      "en": "SQLite/SQL Server functional parity: 960 synthetic transfers across eight uniform and hot-account worker cases",
+      "scope_es": "Cuatro tablas persistidas iguales y siete invariantes contables válidos en 1/2/4/8 trabajadores. Procesos distintos: no es benchmark de throughput, Azure ni mainframe.",
+      "scope_en": "Matching persisted state in four tables and seven ledger invariants across 1/2/4/8 workers. Different process models: no throughput, Azure or mainframe benchmark.",
+      "evidence": {
+        "kind": "github_actions",
+        "run_id": 41042317263,
+        "head_sha": "9e9f5787aa99302acb86b1251d7657cb82f9513b"
+      },
+      "protocol": null
+    },
+    {
+      "id": "E1C-MP-PERSISTENT",
+      "status": "ci_verified",
+      "es": "SQL Server 2022 y SQLite: matriz de 960 transferencias con trabajadores .NET persistentes, 1/2/4/8 y tráfico uniforme/caliente",
+      "en": "SQL Server 2022 vs SQLite: 960-transfer 1/2/4/8 uniform/hot worker matrix with persistent .NET worker processes",
+      "scope_es": "Ocho casos sintéticos con idéntico estado persistido y siete invariantes contables verdaderos; sin comparación de rendimiento, latencia, durabilidad productiva ni capacidad mainframe.",
+      "scope_en": "Eight synthetic cases with equal persisted state and seven passing independent accounting invariants; no throughput, latency, production durability or mainframe-capacity equivalence.",
+      "evidence": {
+        "kind": "github_actions",
+        "run_id": 41043087791,
+        "head_sha": "7694e5c306d6c40dc76955b0a25b55382a023ae5"
+      },
+      "protocol": null
+    },
+    {
       "id": "E1",
-      "status": "designed_not_executed",
+      "status": "partially_verified",
       "es": "Bloqueo por fila, deadlocks y write skew en SQL",
       "en": "SQL row locks, deadlocks and write skew",
-      "scope_es": "PostgreSQL/SQL Server sin ejecución E1 validada",
-      "scope_en": "PostgreSQL/SQL Server E1 has no validated execution",
+      "scope_es": "E1a y E1b ejecutados y verificados en CI; faltan el contrato completo de referencia y SQL Server. No hay PASS global.",
+      "scope_en": "E1a and E1b executed and verified in CI; full reference parity and SQL Server remain open. No overall PASS.",
       "evidence": null,
       "protocol": "lab/docs/EXPERIMENT_PROTOCOL.md"
     },

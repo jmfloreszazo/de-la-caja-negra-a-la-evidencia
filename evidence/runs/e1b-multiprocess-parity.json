@@ -1,0 +1,244 @@
+{
+  "schemaVersion": 1,
+  "experiment": "E1b-multiprocess-logical-parity",
+  "runId": 41034420329,
+  "jobId": 123991639907,
+  "artifactId": 12966729904,
+  "sourceCommit": "a1df6da8ecdd491c3a1f10686904c5ac55a98bf9",
+  "checkoutCommit": "c612146a7035c7045de16743e34476a98d4b5c9d",
+  "source": "Unmodified structured JSON emitted by test_multiprocess_parity.py in GitHub Actions with original downloadable artifact",
+  "url": "https://github.com/jmfloreszazo/de-la-caja-negra-a-la-evidencia/actions/runs/41034420329",
+  "classification": "EXECUTED_SYNTHETIC_CONCURRENT_CONTRACT_NOT_BENCHMARK",
+  "observation": {
+    "schemaVersion": 1,
+    "experiment": "E1b-multiprocess-logical-parity",
+    "status": "PASS",
+    "classification": "SYNTHETIC_CONCURRENT_CONTRACT_NOT_THROUGHPUT",
+    "controls": {
+      "allReferenceWorkersCompleted": "PASS",
+      "sameLogicalRequests": "PASS",
+      "samePersistedStatePerCase": "PASS",
+      "allAccountAndLedgerOracles": "PASS"
+    },
+    "referenceWorkerCounts": [
+      1,
+      2,
+      4,
+      8
+    ],
+    "referencePatterns": [
+      "uniform",
+      "hot"
+    ],
+    "operationsPerWorker": 32,
+    "totalLogicalOperations": 960,
+    "cases": [
+      {
+        "pattern": "uniform",
+        "workers": 1,
+        "operationsPerWorker": 32,
+        "operations": 32,
+        "referenceCommitted": 32,
+        "postgresCommitted": 32,
+        "referenceBusyRetryCount": 0,
+        "postgresRetryCount": 0,
+        "persistedParity": true,
+        "accountCount": 16,
+        "operationCount": 32,
+        "postingCount": 64,
+        "outboxCount": 32,
+        "oracle": {
+          "nonnegative": true,
+          "conserved": true,
+          "balancedPostings": true,
+          "twoPostingsPerCommit": true,
+          "noPostingsForRejection": true,
+          "outboxAtomic": true,
+          "projectionAgrees": true
+        }
+      },
+      {
+        "pattern": "uniform",
+        "workers": 2,
+        "operationsPerWorker": 32,
+        "operations": 64,
+        "referenceCommitted": 64,
+        "postgresCommitted": 64,
+        "referenceBusyRetryCount": 0,
+        "postgresRetryCount": 0,
+        "persistedParity": true,
+        "accountCount": 16,
+        "operationCount": 64,
+        "postingCount": 128,
+        "outboxCount": 64,
+        "oracle": {
+          "nonnegative": true,
+          "conserved": true,
+          "balancedPostings": true,
+          "twoPostingsPerCommit": true,
+          "noPostingsForRejection": true,
+          "outboxAtomic": true,
+          "projectionAgrees": true
+        }
+      },
+      {
+        "pattern": "uniform",
+        "workers": 4,
+        "operationsPerWorker": 32,
+        "operations": 128,
+        "referenceCommitted": 128,
+        "postgresCommitted": 128,
+        "referenceBusyRetryCount": 0,
+        "postgresRetryCount": 0,
+        "persistedParity": true,
+        "accountCount": 16,
+        "operationCount": 128,
+        "postingCount": 256,
+        "outboxCount": 128,
+        "oracle": {
+          "nonnegative": true,
+          "conserved": true,
+          "balancedPostings": true,
+          "twoPostingsPerCommit": true,
+          "noPostingsForRejection": true,
+          "outboxAtomic": true,
+          "projectionAgrees": true
+        }
+      },
+      {
+        "pattern": "uniform",
+        "workers": 8,
+        "operationsPerWorker": 32,
+        "operations": 256,
+        "referenceCommitted": 256,
+        "postgresCommitted": 256,
+        "referenceBusyRetryCount": 5,
+        "postgresRetryCount": 0,
+        "persistedParity": true,
+        "accountCount": 16,
+        "operationCount": 256,
+        "postingCount": 512,
+        "outboxCount": 256,
+        "oracle": {
+          "nonnegative": true,
+          "conserved": true,
+          "balancedPostings": true,
+          "twoPostingsPerCommit": true,
+          "noPostingsForRejection": true,
+          "outboxAtomic": true,
+          "projectionAgrees": true
+        }
+      },
+      {
+        "pattern": "hot",
+        "workers": 1,
+        "operationsPerWorker": 32,
+        "operations": 32,
+        "referenceCommitted": 32,
+        "postgresCommitted": 32,
+        "referenceBusyRetryCount": 0,
+        "postgresRetryCount": 0,
+        "persistedParity": true,
+        "accountCount": 16,
+        "operationCount": 32,
+        "postingCount": 64,
+        "outboxCount": 32,
+        "oracle": {
+          "nonnegative": true,
+          "conserved": true,
+          "balancedPostings": true,
+          "twoPostingsPerCommit": true,
+          "noPostingsForRejection": true,
+          "outboxAtomic": true,
+          "projectionAgrees": true
+        }
+      },
+      {
+        "pattern": "hot",
+        "workers": 2,
+        "operationsPerWorker": 32,
+        "operations": 64,
+        "referenceCommitted": 64,
+        "postgresCommitted": 64,
+        "referenceBusyRetryCount": 0,
+        "postgresRetryCount": 0,
+        "persistedParity": true,
+        "accountCount": 16,
+        "operationCount": 64,
+        "postingCount": 128,
+        "outboxCount": 64,
+        "oracle": {
+          "nonnegative": true,
+          "conserved": true,
+          "balancedPostings": true,
+          "twoPostingsPerCommit": true,
+          "noPostingsForRejection": true,
+          "outboxAtomic": true,
+          "projectionAgrees": true
+        }
+      },
+      {
+        "pattern": "hot",
+        "workers": 4,
+        "operationsPerWorker": 32,
+        "operations": 128,
+        "referenceCommitted": 128,
+        "postgresCommitted": 128,
+        "referenceBusyRetryCount": 0,
+        "postgresRetryCount": 0,
+        "persistedParity": true,
+        "accountCount": 16,
+        "operationCount": 128,
+        "postingCount": 256,
+        "outboxCount": 128,
+        "oracle": {
+          "nonnegative": true,
+          "conserved": true,
+          "balancedPostings": true,
+          "twoPostingsPerCommit": true,
+          "noPostingsForRejection": true,
+          "outboxAtomic": true,
+          "projectionAgrees": true
+        }
+      },
+      {
+        "pattern": "hot",
+        "workers": 8,
+        "operationsPerWorker": 32,
+        "operations": 256,
+        "referenceCommitted": 256,
+        "postgresCommitted": 256,
+        "referenceBusyRetryCount": 5,
+        "postgresRetryCount": 0,
+        "persistedParity": true,
+        "accountCount": 16,
+        "operationCount": 256,
+        "postingCount": 512,
+        "outboxCount": 256,
+        "oracle": {
+          "nonnegative": true,
+          "conserved": true,
+          "balancedPostings": true,
+          "twoPostingsPerCommit": true,
+          "noPostingsForRejection": true,
+          "outboxAtomic": true,
+          "projectionAgrees": true
+        }
+      }
+    ],
+    "sourceSha256": {
+      "Bank/Program.cs": "72e6ff2bf59fd8889158b2488e3b8a5eb6f67b8e05cab27dc2336b74b6ad8253",
+      "bank_test.py": "4e633c890889bf7a6db48f0dfc9b1f6d1cb16c75a5795c6d497eb1c7545f6ca5",
+      "e1_pg/PgBank/Program.cs": "eb61acea9673cf14e999adf2c01a03df418c385dee0e3e1f6d777bbca53f5f32",
+      "e1_pg/test_reference_parity.py": "1eb6504d81227710fae7c91b905dc4c2055864c41fe7712b2a5141f0f2d92c62",
+      "e1_pg/test_multiprocess_parity.py": "829a9f706173916d5625bc83286f2097a275e1caf7b35d5b377d9a3e770137d9",
+      "e1_pg/oracle.py": "3f2874842e9febcc84584bf4a266920028840ccac9d404f75cb9f4363fb4fc09"
+    },
+    "environment": {
+      "platform": "Linux-7.0.0-1017-azure-x86_64-with-glibc2.39",
+      "dotnetSdk": "10.0.403"
+    },
+    "elapsedHarnessSeconds": 177.517,
+    "limits": "Comparable synthetic business operations and persisted state only. SQLite's long-lived worker processes and PostgreSQL's per-transfer process launches differ. Not a throughput, latency, Azure, WAN, SQL Server, power-failure or mainframe-capacity benchmark."
+  }
+}

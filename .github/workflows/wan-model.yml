@@ -1,0 +1,35 @@
+name: WAN latency model (illustrative only)
+on:
+  pull_request:
+    paths:
+      - 'lab/network/**'
+      - 'docs/NETWORK_PROTOCOL*.md'
+      - '.github/workflows/wan-model.yml'
+  push:
+    branches: [main]
+    paths:
+      - 'lab/network/**'
+      - '.github/workflows/wan-model.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  deterministic-arithmetic:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-python@v6
+        with:
+          python-version: '3.12'
+      - name: Verify model inputs are marked hypothetical
+        run: python3 lab/network/test_wan_model.py
+      - name: Export explicitly illustrative projections
+        run: |
+          mkdir -p lab/results/network
+          python3 lab/network/wan_model.py > lab/results/network/model-only.json
+      - name: Attach non-measured network model (NOT E3 evidence)
+        uses: actions/upload-artifact@v6
+        with:
+          name: illustrative-wan-model-not-e3
+          path: lab/results/network/model-only.json
+          if-no-files-found: error

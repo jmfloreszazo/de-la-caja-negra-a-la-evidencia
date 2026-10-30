@@ -43,6 +43,7 @@ José María Flores Zazo · Edition v2026.10.29 · [The whole book on one page](
   - [Chapter 23 · Concurrency that makes use of the machine](part-5-capacity/23-concurrency-that-makes-use-of-the-machine.md)
   - [Chapter 24 · The benchmark that counts: load, contention, failure and cost](part-5-capacity/24-the-benchmark-that-counts-load-contention-failure-and-cost.md)
   - [Chapter 25 · Azure or a huge machine at the customer's site](part-5-capacity/25-azure-or-a-huge-machine-at-the-customer-s-site.md)
+  - [Chapter 25 bis · Infrastructure versus a current mainframe: on-premises, Azure and the branch network](part-5-capacity/25a-mainframe-on-prem-azure-and-banking-network-infrastructure.md)
 - **[Part VI · The lab: from demo to evidence](part-6-lab/README.md)**
   - [Chapter 26 · A local lab you can understand](part-6-lab/26-a-local-lab-you-can-understand.md)
   - [Chapter 27 · Making the error visible](part-6-lab/27-making-the-error-visible.md)

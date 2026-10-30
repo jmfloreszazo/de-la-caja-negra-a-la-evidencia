@@ -43,6 +43,7 @@ José María Flores Zazo · Edición v2026.10.29 · [El libro entero en una pág
   - [Capítulo 23 · Concurrencia que aprovecha la máquina](parte-5-capacidad/23-concurrencia-que-aprovecha-la-maquina.md)
   - [Capítulo 24 · El benchmark que vale: carga, contención, fallo y coste](parte-5-capacidad/24-el-benchmark-que-vale-carga-contencion-fallo-y-coste.md)
   - [Capítulo 25 · Azure o una máquina enorme en el cliente](parte-5-capacidad/25-azure-o-una-maquina-enorme-en-el-cliente.md)
+  - [Capítulo 25 bis · Infraestructura frente a un mainframe actual: local, Azure y la red de oficinas](parte-5-capacidad/25a-infraestructura-mainframe-local-azure-y-redes-bancarias.md)
 - **[Parte VI · El laboratorio: de la demo a la evidencia](parte-6-laboratorio/README.md)**
   - [Capítulo 26 · Un laboratorio local que se puede entender](parte-6-laboratorio/26-un-laboratorio-local-que-se-puede-entender.md)
   - [Capítulo 27 · Hacer que el error se vea](parte-6-laboratorio/27-hacer-que-el-error-se-vea.md)
