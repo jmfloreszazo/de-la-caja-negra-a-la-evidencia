@@ -6,17 +6,22 @@ Este documento pertenece a la **siguiente revisión editorial**. No modifica la 
 
 ## Estado comprobado
 
-| Afirmación | Estado a 29-10-2026 | Evidencia y límite |
+| Afirmación | Estado a 30-10-2026 | Evidencia y límite |
 |---|---|---|
-| El repositorio y la release son accesibles | Verificado | [Release v2026.10.29](https://github.com/jmfloreszazo/de-la-caja-negra-a-la-evidencia/releases/tag/v2026.10.29), con PDF ES/EN y Markdown ES/EN |
+| El repositorio y la release son accesibles para colaboradores autorizados | Verificado | El repositorio continúa privado; la [release v2026.10.29](https://github.com/jmfloreszazo/de-la-caja-negra-a-la-evidencia/releases/tag/v2026.10.29) incluye PDF y Markdown ES/EN. No está aprobada su apertura pública. |
 | La CI del libro se ejecutó | Verificado | [Book PR #2](https://github.com/jmfloreszazo/de-la-caja-negra-a-la-evidencia/actions/runs/40900252122) completó Markdown, enlaces, sincronía y diagramas |
 | El laboratorio corrió en GitHub Actions | Verificado | [Lab PR #2](https://github.com/jmfloreszazo/de-la-caja-negra-a-la-evidencia/actions/runs/40900252152) pasó los jobs offline, native y Podman en runners Linux |
 | Ambos PDF se generan | Verificado | [Book PDF preview](https://github.com/jmfloreszazo/de-la-caja-negra-a-la-evidencia/actions/runs/40900252098) y assets de la release |
 | Portabilidad en cada equipo Linux/macOS/Windows | Pendiente de reproducción | La CI alojada en Linux no equivale a pruebas manuales en todos los sistemas |
 | Listados marcados *Ilustrativo* compilados | No acreditado | Hacer inventario, compilar y publicar resultados antes de cambiar su etiqueta |
-| E1: motor SQL con bloqueos por fila | Diseñado, no ejecutado | [Protocolo E1–E4](../lab/docs/EXPERIMENT_PROTOCOL.md) |
+| E1a: bloqueo por filas PostgreSQL y oráculo contable persistido | Ejecutado en CI | [Ejecución #40919268337](https://github.com/jmfloreszazo/de-la-caja-negra-a-la-evidencia/actions/runs/40919268337): PostgreSQL real con controles negativos independientes; prueba sintética, no paridad productiva. |
+| E1b: paridad de estado y fallos con .NET 10/Npgsql | Subconjunto ejecutado | [Ejecución #40919773614](https://github.com/jmfloreszazo/de-la-caja-negra-a-la-evidencia/actions/runs/40919773614): subconjunto comparado frente al candidato Python/PostgreSQL; paridad SQLite completa pendiente [#6](https://github.com/jmfloreszazo/de-la-caja-negra-a-la-evidencia/issues/6). |
+| E1 global | Parcialmente verificado | Falta SQL Server E1c [#7](https://github.com/jmfloreszazo/de-la-caja-negra-a-la-evidencia/issues/7) y completar la paridad funcional. No hay PASS global de E1. |
+| Pruebas M1/M2 de transporte local | Ejecutadas en CI | [M1](../evidence/runs/M1.es.md) aísla el protocolo; [M2](../evidence/runs/M2.es.md) ejecuta 20 casos durables en un runner, sin demostrar Azure, TLS, WAN ni escala distribuida. |
 | E2: Orleans; E3: Azure/local; E4: agentes bajo oráculo | Diseñados, no ejecutados | No equivalen a mediciones de capacidad o garantías en producción |
 | Calidad idiomática integral del inglés | Revisión especializada pendiente | `scripts/check.py` verifica estructura, no calidad lingüística |
+
+**Límite de publicación:** estos resultados están en la [PR #5 en borrador](https://github.com/jmfloreszazo/de-la-caja-negra-a-la-evidencia/pull/5), no en la release `v2026.10.29`. Sus artefactos y versión permanecen intactos.
 
 ## Plan por puertas de calidad
 
@@ -27,7 +32,7 @@ Este documento pertenece a la **siguiente revisión editorial**. No modifica la 
 | P1 | Revisar reiteraciones de locks, transferencias, equivalencia y mandato | Matriz de solapes con capítulos concretos y propuesta de cortes; autor aprueba cada supresión | Pendiente |
 | P1 | Verificar afirmaciones atribuidas a artículos del autor | Fuente primaria leída, pasaje identificable y alcance preciso; registrar corrección o respaldo | Pendiente |
 | P1 | Revisión idiomática nativa de inglés (prólogo y parte I primero) | Observaciones con ejemplos, sin modificar unilateralmente la voz | Pendiente |
-| P2 | E1 PostgreSQL o SQL Server | Mismo contrato contable y controles SQLite + deadlocks/write skew/pool, evidencias reproducibles | Pendiente |
+| P2 | Completar paridad E1 y cobertura SQL Server | Conservar E1a/E1b parcial y ejecutar los casos de equivalencia SQLite pendientes [#6](https://github.com/jmfloreszazo/de-la-caja-negra-a-la-evidencia/issues/6) y controles SQL Server [#7](https://github.com/jmfloreszazo/de-la-caja-negra-a-la-evidencia/issues/7) | Parcialmente ejecutado; cierre pendiente |
 | P2 | Compilar los fragmentos *Ilustrativo* | Registro por fragmento: compilador, prueba y veredicto; sin promover ejemplos sin ejecución | Pendiente |
 | P2 | Reproducciones fuera de la CI | Linux, macOS y Windows/WSL, versiones fijadas y artefactos con procedencia | Pendiente |
 
