@@ -35,7 +35,8 @@ NODES = {
     "e2f10-client": "10.78.30.13",
 }
 CONN = ("Host=e2f10-pg;Port=5432;Database=e2lab;"
-        "Username=postgres;Password=e2local;Pooling=true;Maximum Pool Size=32")
+        "Username=postgres;Password=e2local;Pooling=true;Maximum Pool Size=32;"
+        "GSS Encryption Mode=Disable")
 
 
 def podman(*args, timeout=45, check=True, stdin=None):
@@ -238,6 +239,20 @@ def main():
         }
         assert container_ips == NODES, (container_ips, NODES)
         assert len({entry["Id"] for entry in inspections.values()}) == 4
+
+        # Database and both gateways must be reachable from each separate
+        # real namespace before performing a financial transaction.
+        # This narrows failures from remote Npgsql exception serialization.
+        preflight = {}
+        for node in ("e2f10-primary", "e2f10-secondary", "e2f10-client"):
+            probe = json.loads(podman(
+                "exec", node, "dotnet", "/app/OrleansLab.dll",
+                "cluster", "network-check", timeout=30
+            ))
+            assert probe["databaseHealthy"] is True, (node, probe)
+            assert probe["primaryGatewayReachable"] is True, (node, probe)
+            assert probe["secondaryGatewayReachable"] is True, (node, probe)
+            preflight[node] = probe
 
         before_probe, node_hosts = probe_hosts(True)
         assert before_probe["clientNodeIdentity"].startswith("e2f10-client:")

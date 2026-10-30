@@ -1,4 +1,5 @@
 using System.Net;
+using System.Net.Sockets;
 using System.Text.Json;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -38,7 +39,7 @@ public static class ClusterModes
 
     private static bool DisposableHost(string? host) =>
         host is "127.0.0.1" or "localhost" ||
-        (ContainerFixture && host == "e2f10-pg");
+        (ContainerFixture && (host is "e2f10-pg" or "10.78.31.10"));
 
     // Switching providers is a test-fixture choice, not a change in
     // account authority or a different durable transfer implementation.
@@ -74,6 +75,9 @@ public static class ClusterModes
             throw new InvalidOperationException(
                 "The cluster fixture requires disposable loopback e2lab or opted-in e2f10-pg");
 
+        if (args.Length == 1 && args[0] == "network-check" && ContainerFixture)
+            return await RunNetworkCheck(conn);
+
         if (args.Length == 2 && args[0] == "silo" && (args[1] is "primary" or "secondary"))
             return await RunSilo(conn, args[1]);
         if (args.Length == 2 && args[0] == "client" && args[1] == "probe")
@@ -97,6 +101,44 @@ public static class ClusterModes
             throw new InvalidOperationException(
                 "E2-F10 silo must advertise the exact fixed private bridge address");
         return IPAddress.Parse(expected);
+    }
+
+    // C02 checks a live silo's separate SQL network and exact private
+    // Orleans transport bridge. TCP reachability is NOT grain rebalancing.
+    private static async Task<int> RunNetworkCheck(string conn)
+    {
+        using var dataSource = NpgsqlDataSource.Create(conn);
+        await using var command = dataSource.CreateCommand("SELECT 1");
+        var value = await command.ExecuteScalarAsync();
+        if (Convert.ToInt32(value) != 1)
+            throw new InvalidOperationException("Disposable SQL health probe failed");
+
+        static async Task<bool> CanConnect(IPAddress address, int port)
+        {
+            using var socket = new TcpClient();
+            using var timeout = new CancellationTokenSource(TimeSpan.FromSeconds(2));
+            try
+            {
+                await socket.ConnectAsync(address, port, timeout.Token);
+                return true;
+            }
+            catch (SocketException) { return false; }
+            catch (OperationCanceledException) { return false; }
+        }
+
+        var primaryReachable = await CanConnect(
+            IPAddress.Parse("10.78.30.11"), PrimaryGatewayPort);
+        var secondaryReachable = await CanConnect(
+            IPAddress.Parse("10.78.30.12"), SecondaryGatewayPort);
+        Console.WriteLine(JsonSerializer.Serialize(new {
+            experiment = "E2-F10-C02-Transport-Partition-Probe",
+            status = "PROBED",
+            hostIdentity = Environment.MachineName,
+            databaseHealthy = true,
+            primaryGatewayReachable = primaryReachable,
+            secondaryGatewayReachable = secondaryReachable
+        }, JsonOptions));
+        return 0;
     }
 
     private static async Task<int> RunSilo(string conn, string role)

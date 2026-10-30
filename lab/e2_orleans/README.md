@@ -79,6 +79,57 @@ This test is **not** evidence of a cross-grain transaction, a real
 deadlock or persistence failure. The accepted `AccountGrain` is never
 marked reentrant. [CI #41060526872](https://github.com/jmfloreszazo/de-la-caja-negra-a-la-evidencia/actions/runs/41060526872) verified this negative result. The [archived observation](../../evidence/runs/e2-orleans-reentrancy.json) links to its [original, unmodified CI artifact](https://github.com/jmfloreszazo/de-la-caja-negra-a-la-evidencia/actions/runs/41060526872/artifacts/12978961633).
 
+## E2-F10-C02 · Actual packet-loss partition with the same live silo
+
+**Original Linux tc/netem experiment CI [#41132190043](https://github.com/jmfloreszazo/de-la-caja-negra-a-la-evidencia/actions/runs/41132190043) passed** at source commit `10c5e0cc6d300af0cc23cff448f0214100e1036c` and uploaded the [immutable complete original artifact](https://github.com/jmfloreszazo/de-la-caja-negra-a-la-evidencia/actions/runs/41132190043/artifacts/13013089253) (ZIP SHA-256 `fc58f27ca4f4b0a695c5a21e54553d6292ac6f4d388d867ad3e446045f8c6583`). Its [archived result](../../evidence/runs/e2-orleans-live-network-loss.json) is narrowly `ci_verified`; E2 overall remains `partially_verified` because in-fault business commands, convergence, fencing, sustained capacity and physical HA are not established. A prior
+negative-control attempt used `podman network disconnect`; that actual
+experiment **stopped the secondary container** (host PID zero and ADO.NET
+status Dead 6). Its raw failure record remains in CI
+[#41131370049](https://github.com/jmfloreszazo/de-la-caja-negra-a-la-evidencia/actions/runs/41131370049)
+([artifact #13012863038](https://github.com/jmfloreszazo/de-la-caja-negra-a-la-evidencia/actions/runs/41131370049/artifacts/13012863038)).
+It is **not** accepted as evidence of a network partition with a live silo.
+
+The revised, deliberately opt-in experiment uses four Podman network
+namespaces on ONE physical Linux runner and two separate private bridges:
+`e2f10-net` (application transport, `10.78.30.0/24`) and
+`e2f10-sql` (PostgreSQL/ADO.NET, `10.78.31.0/24`).
+A temporary, test-only `nicolaka/netshoot:v0.13` helper joins the
+secondary silo's **existing network namespace**, discovers the exact
+interface carrying `10.78.30.12`, and executes
+`tc qdisc replace dev <interface> root netem loss 100%`.
+This drops packets **egressing the application's bridge**, while its SQL
+interface and all container memberships remain untouched.
+
+Independent probes must establish: both gateways reachable initially;
+with packet loss, external client reaches primary but **not secondary**;
+secondary reaches **neither remote primary** (the local self gateway can
+still be reachable through loopback); secondary still connects to
+PostgreSQL and is the **same running OS process** and container ID.
+No financial commands are sent while packet loss is active. The test
+then removes the exact qdisc and requires complete restored TCP
+reachability, unchanged process/container/network identity, unchanged
+durable posting/outbox cardinality, 7/7 independent Oracle Gates and
+unaltered SQL access. Original CI artifacts retain qdisc state,
+network identities, ADO.NET membership observations and source hashes.
+On failure they retain pre-teardown diagnostics instead of inventing a
+passing outcome.
+
+```bash
+# Dedicated GitHub Actions job publishes .NET and pulls the test-only
+# netshoot image. Only disposable, private Podman namespaces are allowed.
+E2_NETWORK_TEST=1 \
+  E1_PG_DSN='host=127.0.0.1 port=55435 dbname=e2lab user=postgres password=e2local' \
+  python3 lab/e2_orleans/test_podman_disconnect.py
+```
+
+**Strict limits:** `tc/netem` packet loss is a real Linux network
+impairment but NOT a physical-host network cut, verified Orleans
+application recovery, split-brain fencing, in-flight transactional
+resilience or a measured production RTO. SQL remains reachable by a
+second intentionally configured bridge. Separate C03 tests must send
+real commands under partition and verify the post-heal grain/ledger
+semantics. E2 remains `partially_verified`.
+
 ## E2-F10-C01 · Routable Orleans cluster across Podman network namespaces
 
 **Original CI [#41126502385](https://github.com/jmfloreszazo/de-la-caja-negra-a-la-evidencia/actions/runs/41126502385) passed** on source `0aff6e22eecece2157cf867eddece5d9b7964ccc`, uploading [the unmodified original raw observation](https://github.com/jmfloreszazo/de-la-caja-negra-a-la-evidencia/actions/runs/41126502385/artifacts/13010797803) (artifact ZIP SHA-256 `840842e3549ed3bf23b0fbeff3e4b0133dae0f5c086bcade7fb168f413e8c6be`). The [archived evidence summary](../../evidence/runs/e2-orleans-podman-network.json) and an independent validator pin precisely this **single physical CI runner** result; overall E2 remains `partially_verified`.

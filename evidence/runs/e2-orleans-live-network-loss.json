@@ -1,0 +1,79 @@
+{
+  "schemaVersion": 1,
+  "experiment": "E2-F10-C02-Real-Live-Silo-100Percent-Packet-Loss",
+  "status": "PASS",
+  "classification": "TC_NETEM_LIVE_SILO_APP_EGRESS_DROP_SQL_PRESERVED_SINGLE_HOST",
+  "provenance": {
+    "sourceRunId": 41132190043,
+    "jobId": 124325598055,
+    "headSha": "10c5e0cc6d300af0cc23cff448f0214100e1036c",
+    "artifactId": 13013089253,
+    "artifactName": "e2-f10-c02-original-network-fault",
+    "rawFile": "e2-f10-c02-packet-loss.json",
+    "originalArtifactUrl": "https://github.com/jmfloreszazo/de-la-caja-negra-a-la-evidencia/actions/runs/41132190043/artifacts/13013089253",
+    "runUrl": "https://github.com/jmfloreszazo/de-la-caja-negra-a-la-evidencia/actions/runs/41132190043",
+    "artifactZipSha256": "fc58f27ca4f4b0a695c5a21e54553d6292ac6f4d388d867ad3e446045f8c6583",
+    "auditNote": "Values transcribed from original archived raw artifact, downloaded and SHA256-verified. Full original container/namespace IDs, raw qdiscs, sources and JSON remain in that immutable run artifact."
+  },
+  "observations": {
+    "distinctNetworkNamespaces": 4,
+    "privateBridgeCount": 2,
+    "faultMethod": "tc qdisc replace dev eth0 root netem loss 100%",
+    "faultEgressLossPercent": 100,
+    "qdiscBefore": "qdisc noqueue 0: root refcnt 2",
+    "qdiscAfter": "qdisc noqueue 0: root refcnt 2",
+    "qdiscDuringHasLoss100Percent": true,
+    "victimHostPidBeforeDuringAfter": [
+      4160,
+      4160,
+      4160
+    ],
+    "victimStateBeforeDuringAfter": [
+      "running",
+      "running",
+      "running"
+    ],
+    "victimContainerIdUnchanged": true,
+    "victimNetworksUnchanged": true,
+    "sqlBridgeAvailableDuringFault": true,
+    "tcpExternalClientBefore": {
+      "primary": true,
+      "secondary": true
+    },
+    "tcpExternalClientDuring": {
+      "primary": true,
+      "secondary": false
+    },
+    "tcpExternalClientAfter": {
+      "primary": true,
+      "secondary": true
+    },
+    "membershipStatusesBeforeDuringAfter": {
+      "primary": 3,
+      "secondary": 3,
+      "version": 4
+    },
+    "businessEffectsBeforeDuringAfter": {
+      "committedOperations": 1,
+      "postings": 2,
+      "outboxEvents": 1
+    },
+    "independentSqlOraclesBeforeDuringAfter": {
+      "nonnegative": true,
+      "conserved": true,
+      "balancedPostings": true,
+      "twoPostingsPerCommit": true,
+      "noPostingsForRejection": true,
+      "outboxAtomic": true,
+      "projectionAgrees": true
+    },
+    "orleansApplicationConvergence": "NOT_TESTED",
+    "externalFinancialCommandsDuringFault": 0
+  },
+  "negativeControl": {
+    "originalRunId": 41131370049,
+    "originalArtifactId": 13012863038,
+    "observed": "podman network disconnect stopped the secondary container (host PID 0), membership secondary Dead 6; the original test correctly failed. Not interpreted as a live-silo partition."
+  },
+  "limitations": "Linux tc/netem 100% egress packet loss on the secondary APP interface. ONE physical CI runner, four independent Podman network namespaces and two isolated bridges. Secondary continues running and PostgreSQL bridge remains available. No banking commands during the fault, no long partition / in-flight operation / Orleans grain convergence / fencing proof, DB HA, physical fault domain or mainframe capacity evidence."
+}

@@ -1,0 +1,59 @@
+name: E2 F10 C02 Linux netem live-silo packet loss with SQL retained
+
+on:
+  pull_request:
+    paths:
+      - 'lab/e2_orleans/**'
+      - '.github/workflows/e2-f10-disconnect.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  transport-partition:
+    name: E2-F10 actual tc/netem packet loss, unchanged silo PID, SQL and 7/7 oracle
+    runs-on: ubuntu-24.04
+    timeout-minutes: 35
+    env:
+      E2_NETWORK_TEST: '1'
+      E1_PG_DSN: 'host=127.0.0.1 port=55435 dbname=e2lab user=postgres password=e2local'
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-python@v6
+        with:
+          python-version: '3.12'
+      - uses: actions/setup-dotnet@v5
+        with:
+          dotnet-version: '10.0.x'
+      - name: Install PostgreSQL read-only Oracle Gate requirements
+        run: python3 -m pip install -r lab/e1_pg/requirements.txt
+      - name: Build version-pinned Orleans 10.4.0 application for local Podman
+        run: |
+          mkdir -p lab/results/e2f10
+          dotnet publish lab/e2_orleans/OrleansLab/OrleansLab.csproj \
+            -c Release -m:1 --disable-build-servers \
+            -o lab/results/e2f10/app
+          dotnet --version > lab/results/e2f10/dotnet-sdk.txt
+          podman --version > lab/results/e2f10/podman-version.txt
+          podman info --format '{{.Host.NetworkBackend}}' > lab/results/e2f10/network-backend.txt
+          podman pull docker.io/nicolaka/netshoot:v0.13
+      - name: Inject real 100 percent packet loss only on the live secondary app NIC
+        run: python3 lab/e2_orleans/test_podman_disconnect.py
+      - name: Upload original network state and Oracle Gate observations
+        if: always()
+        uses: actions/upload-artifact@v6
+        with:
+          name: e2-f10-c02-original-network-fault
+          path: lab/results/e2f10/c02/*.json
+          if-no-files-found: warn
+      - name: Clean disposable containers and both networks on failure or success
+        if: always()
+        shell: bash
+        run: |
+          for name in e2f10-client e2f10-secondary e2f10-primary e2f10-pg; do
+            podman rm -f "$name" 2>/dev/null || true
+          done
+          for name in e2f10-sql e2f10-net; do
+            podman network rm "$name" 2>/dev/null || true
+          done
