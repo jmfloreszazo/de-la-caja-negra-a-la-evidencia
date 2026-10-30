@@ -63,7 +63,7 @@ def main():
     run_id = os.environ.get("GITHUB_RUN_ID")
     checkout_commit = run("git", "rev-parse", "HEAD")
     source_parent = optional("git", "rev-parse", "HEAD^2")
-    source_head = source_parent or checkout_commit
+    source_head = os.environ.get("E1_SOURCE_HEAD") or source_parent or checkout_commit
     assert re.fullmatch(r"[0-9a-f]{40}", checkout_commit)
     assert re.fullmatch(r"[0-9a-f]{40}", source_head)
 
