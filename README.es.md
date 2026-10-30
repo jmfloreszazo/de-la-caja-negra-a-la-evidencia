@@ -41,14 +41,14 @@ Un libro abierto y un laboratorio ejecutable sobre cómo modernizar sistemas COB
 
 ¿Quieres recorrer el argumento sin leer los 38 capítulos de forma lineal? Sigue la [ruta de siete capítulos](docs/READING_PATH.es.md). El [registro editorial y de evidencias](docs/EDITORIAL_REVIEW.es.md) distingue lo comprobado de lo todavía hipotético.
 
-La [CI del laboratorio](https://github.com/jmfloreszazo/de-la-caja-negra-a-la-evidencia/actions/runs/40900252152) ya ha ejecutado las pruebas offline, nativas y Podman en runners Linux. Esto no acredita todas las plataformas ni los experimentos E1–E4.
+La [CI del laboratorio](https://github.com/jmfloreszazo/de-la-caja-negra-a-la-evidencia/actions/runs/40900252152) ya ha ejecutado las pruebas offline, nativas y Podman en runners Linux. Esto no acredita todas las plataformas ni la aceptación global de E1–E4. Las pruebas E1a/E1b y M1/M2 están documentadas en esta rama de la [PR #5](https://github.com/jmfloreszazo/de-la-caja-negra-a-la-evidencia/pull/5), con alcance limitado; E2–E4 siguen sin ejecutarse.
 
 ## Ejecutar el laboratorio
 
 ```bash
 cd lab
-python3 tools/verify_offline.py        # solo Python: ancla, política independiente y oráculo contable
-bash scripts/run-podman.sh --auto      # todo: COBOL, .NET 10, gate y transferencias, sin red
+python3 tools/verify_offline.py        # Python-only anchor, independent policy, and accounting oracle
+bash scripts/run-podman.sh --auto      # Full COBOL, .NET 10, gate, and transfer checks offline
 ```
 
 El laboratorio está en inglés. La guía en español es el [anexo A del libro](book/es/anexos/anexo-a-un-laboratorio-que-pueda-contradecirnos.md).
@@ -74,10 +74,10 @@ El resto de documentos del proyecto (guía de colaboración, gobernanza, código
 ## Reproducirlo todo
 
 ```bash
-python3 scripts/build.py          # regenera los libros de una página
-python3 scripts/check.py          # enlaces, sincronía español/inglés y ficheros generados
-npx markdownlint-cli2 "**/*.md"   # estilo Markdown
-python3 scripts/render_figures.py # imágenes de los diagramas (npm i -g @mermaid-js/mermaid-cli)
+python3 scripts/build.py          # Regenerate both single-page books
+python3 scripts/check.py          # Check links, ES/EN sync, and generated files
+npx markdownlint-cli2 "**/*.md"   # Validate Markdown style
+python3 scripts/render_figures.py # Render diagrams (npm i -g @mermaid-js/mermaid-cli)
 python3 lab/tools/verify_offline.py
 ```
 
