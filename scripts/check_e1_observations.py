@@ -127,4 +127,47 @@ assert data["environment"]["dotnetVersion"].startswith("10.")
 print("E1b-reference-parity: verified 16 cases + lock-release, original run",
       record["runId"], "and source manifest")
 
+# Full read-only oracle verdict vectors before, during and after an
+# independent deliberately corrupted persisted posting.
+oracle_record = json.loads((BASE / "e1b-oracle-vectors.json").read_text(encoding="utf-8"))
+oracle_data = oracle_record["observation"]
+assert oracle_record["schemaVersion"] == oracle_data["schemaVersion"] == 1
+assert oracle_record["experiment"] == oracle_data["experiment"] == (
+    "E1b-independent-oracle-negative-control"
+)
+assert oracle_record["runId"] == 41032714628
+assert oracle_record["jobId"] == 123986044852
+assert oracle_record["artifactId"] == 12967270069
+assert oracle_record["sourceCommit"] == "b175041e411db5033aa25596d8c1f99f6f535680"
+assert re.fullmatch(r"[0-9a-f]{40}", oracle_record["checkoutCommit"])
+assert oracle_record["url"].endswith("/" + str(oracle_record["runId"]))
+assert oracle_record["classification"] == "EXECUTED_SYNTHETIC_ACCOUNTING_ORACLE_NOT_CAPACITY"
+assert oracle_data["status"] == "PASS" and len(oracle_data["controls"]) == 3
+assert all(v == "PASS" for v in oracle_data["controls"].values())
+expected_fields = {
+    "nonnegative", "conserved", "balancedPostings",
+    "twoPostingsPerCommit", "noPostingsForRejection",
+    "outboxAtomic", "projectionAgrees"
+}
+before = oracle_data["vectors"]["before"]
+corrupted = oracle_data["vectors"]["corrupted"]
+restored = oracle_data["vectors"]["restored"]
+assert set(before) == set(corrupted) == set(restored) == expected_fields
+assert all(before.values()) and all(restored.values())
+assert before == restored
+assert {k for k, v in corrupted.items() if v is False} == {
+    "balancedPostings", "twoPostingsPerCommit", "projectionAgrees"
+}
+assert all(isinstance(v, bool) for vector in (before, corrupted, restored)
+           for v in vector.values())
+assert oracle_data["originalOperationCount"] == 6
+assert oracle_data["targetPosting"]["operation"] == "unblocked"
+assert len(oracle_data["sourceSha256"]) == 4
+for name, expected in oracle_data["sourceSha256"].items():
+    source = ROOT / "lab" / "e1_pg" / name
+    assert source.is_file(), source
+    assert hashlib.sha256(source.read_bytes()).hexdigest() == expected, name
+print("E1b-oracle-vectors: seven independent invariants, negative "
+      "mutation and restoration verified; original run", oracle_record["runId"])
+
 print("E1 OBSERVATION SNAPSHOTS: PASS")
