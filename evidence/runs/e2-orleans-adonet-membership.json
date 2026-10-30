@@ -1,0 +1,127 @@
+{
+  "schemaVersion": 1,
+  "experiment": "E2-ADO-NET-Persistent-SQL-Membership-SIGKILL",
+  "status": "PASS",
+  "classification": "EXECUTED_SYNTHETIC_ADONET_SQL_MEMBERSHIP_TWO_SILOS_ONE_HOST_NOT_PHYSICAL",
+  "provenance": {
+    "runId": 41098437285,
+    "jobId": 124210177795,
+    "artifactId": 12996714385,
+    "sourceCommit": "107de8637fd1447fa08e026582c60619186bbdc5",
+    "mergeCheckoutCommit": "5ad2bc089e7ee0e5bf10aa008b0643f5a33dd82d",
+    "runUrl": "https://github.com/jmfloreszazo/de-la-caja-negra-a-la-evidencia/actions/runs/41098437285",
+    "rawArtifactUrl": "https://github.com/jmfloreszazo/de-la-caja-negra-a-la-evidencia/actions/runs/41098437285/artifacts/12996714385",
+    "rawFiles": [
+      "e2-adonet-recovery.json",
+      "e2-adonet-official-scripts.json"
+    ],
+    "origin": "Exact values transcribed from the original successful CI job output; complete unaltered observations are in the run artifact."
+  },
+  "officialSchema": {
+    "upstreamTag": "v10.4.0",
+    "commit": "d114d7522a53b8cce4c6b97d44293e5c7273d766",
+    "schema": "PostgreSQL 16.13",
+    "membershipQueryCount": 10,
+    "scripts": [
+      {
+        "path": "src/AdoNet/Shared/PostgreSQL-Main.sql",
+        "gitBlobSha": "e4f78c86342297b7c7ffeb271b7be066e08f3508",
+        "sha256": "623c15320e640cdd3e84d0668dcae481312f2631ac4977bf2eb8cf22e05deb8b",
+        "bytes": 2127
+      },
+      {
+        "path": "src/AdoNet/Orleans.Clustering.AdoNet/PostgreSQL-Clustering.sql",
+        "gitBlobSha": "e90af40c886a47ea9ea4e84f640c48b572cee494",
+        "sha256": "39dff7cbb72a390223cd48a9bc7d4a90252092dcba5677318bd510cc9fc1af08",
+        "bytes": 10370
+      }
+    ]
+  },
+  "observation": {
+    "primarySiloPid": 4871,
+    "secondarySiloPid": 4893,
+    "externalClientPid": 4916,
+    "memberProvider": "adonet",
+    "sqlMembershipBeforeKill": {
+      "providerQueryCount": 7,
+      "membershipRows": [
+        [
+          "e2-local-recovery",
+          "127.0.0.1",
+          11150,
+          152385956,
+          3,
+          30050
+        ],
+        [
+          "e2-local-recovery",
+          "127.0.0.1",
+          11151,
+          152385957,
+          3,
+          30051
+        ]
+      ],
+      "versions": [
+        [
+          "e2-local-recovery",
+          4
+        ]
+      ]
+    },
+    "sqlMembershipAfterRecovery": {
+      "providerQueryCount": 7,
+      "membershipRows": [
+        [
+          "e2-local-recovery",
+          "127.0.0.1",
+          11150,
+          152385956,
+          3,
+          30050
+        ],
+        [
+          "e2-local-recovery",
+          "127.0.0.1",
+          11151,
+          152385957,
+          6,
+          30051
+        ]
+      ],
+      "versions": [
+        [
+          "e2-local-recovery",
+          5
+        ]
+      ]
+    },
+    "actualSecondaryExitSignal": "SIGKILL",
+    "grainReactivatedOnPrimary": true,
+    "idempotentReplay": "DUPLICATE_COMMITTED",
+    "newBusinessOperation": "COMMITTED",
+    "businessEffects": {
+      "committedOperations": 3,
+      "postings": 6,
+      "outboxEvents": 3
+    },
+    "independentSqlOracle": {
+      "nonnegative": true,
+      "conserved": true,
+      "balancedPostings": true,
+      "twoPostingsPerCommit": true,
+      "noPostingsForRejection": true,
+      "outboxAtomic": true,
+      "projectionAgrees": true
+    },
+    "ledgerSha256": "05d4812442774853c98d42f7ff5c78cdd2b2f7ca888fd5521dd993f2a74c949b"
+  },
+  "sourceSha256": {
+    "e2_orleans/test_multiprocess.py": "63c4f52e8ce067c968f7cae4f228676e0f732d4573067237fe6424e2fb9f96d1",
+    "e2_orleans/setup_adonet_membership.py": "7d3b2020e3916aa387cee0e1a76fc56e85f36fde49d8e4342e7c1c117fe0be98",
+    "e2_orleans/OrleansLab/ClusterModes.cs": "4be6540a9e381e741580800d7465a6e6c9e1749dbd033dd68ec5f50a3120468e",
+    "e2_orleans/OrleansLab/Contracts.cs": "92d94f344fbe56cb0aa859655c29e688461c2933d98c174ad4bc00ed4c3ba027",
+    "e2_orleans/OrleansLab/PgDurableLedger.cs": "0dc223f52491757af143aa3b520b24fd5c95a9ff5047b5370902637c6bb6550b"
+  },
+  "limitations": "PostgreSQL-backed ADO.NET membership and actual SIGKILL with independently hosted client and two independent silo processes on ONE runner. No physical fault domain, network partition, in-flight SQL commit crash, HA PostgreSQL topology, sustained benchmark or mainframe equivalence."
+}

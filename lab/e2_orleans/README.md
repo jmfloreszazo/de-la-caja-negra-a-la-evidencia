@@ -79,7 +79,7 @@ This test is **not** evidence of a cross-grain transaction, a real
 deadlock or persistence failure. The accepted `AccountGrain` is never
 marked reentrant. [CI #41060526872](https://github.com/jmfloreszazo/de-la-caja-negra-a-la-evidencia/actions/runs/41060526872) verified this negative result. The [archived observation](../../evidence/runs/e2-orleans-reentrancy.json) links to its [original, unmodified CI artifact](https://github.com/jmfloreszazo/de-la-caja-negra-a-la-evidencia/actions/runs/41060526872/artifacts/12978961633).
 
-## E2-F08 · Pinned PostgreSQL ADO.NET membership (CI pending)
+## E2-F08 · Pinned PostgreSQL ADO.NET membership (CI-verified local-process slice)
 
 This separate functional trial keeps **the same authoritative SQL ledger**,
 nonreentrant account grain and two external silo OS processes used in E2-F07,
@@ -117,7 +117,7 @@ python3 lab/e2_orleans/setup_adonet_membership.py
 E2_CLUSTER_PROVIDER=adonet python3 lab/e2_orleans/test_multiprocess.py
 ```
 
-**Status: not accepted until original current-head CI passes.**
+**Original CI [#41098437285](https://github.com/jmfloreszazo/de-la-caja-negra-a-la-evidencia/actions/runs/41098437285) passed** with the [raw, unmodified artifact](https://github.com/jmfloreszazo/de-la-caja-negra-a-la-evidencia/actions/runs/41098437285/artifacts/12996714385) and [archived observation](../../evidence/runs/e2-orleans-adonet-membership.json). The membership table actually changed from active (3) to dead (6) for the secondary, while its version advanced from 4 to 5. This remains a one-physical-runner local-process test, NOT full E2 acceptance.
 The PostgreSQL membership catalog is **not** grain/account persistence.
 Both processes still share **one GitHub-hosted physical runner** and a
 single PostgreSQL instance. This is a persistent membership backend, not

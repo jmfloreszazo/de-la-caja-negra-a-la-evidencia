@@ -1,0 +1,56 @@
+name: One-time cleanup of merged E2-F08 experiment branch
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/e2-f08-prune.yml'
+
+permissions:
+  contents: write
+
+concurrency:
+  group: one-time-e2-f08-branch-prune
+  cancel-in-progress: false
+
+jobs:
+  prune-merged-e2-f08:
+    name: Delete only SHA-verified fully merged E2-F08 branch
+    if: >-
+      ${{ github.ref == 'refs/heads/main' && startsWith(github.event.head_commit.message, 'merge: E2 F08') }}
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - name: Checkout merged main
+        uses: actions/checkout@v5
+        with:
+          fetch-depth: 0
+      - name: Fail closed when PR head or branch ref changed
+        env:
+          GH_TOKEN: ${{ github.token }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          test "$GITHUB_REF" = "refs/heads/main"
+          git fetch --no-tags origin main
+          test "$(git rev-parse HEAD)" = "$(git rev-parse origin/main)"
+          branch="experiment/e2-f08-adonet-membership"
+          gh api "repos/$GITHUB_REPOSITORY/pulls/22" --jq '.merged' | grep -qx true
+          expected="$(gh api "repos/$GITHUB_REPOSITORY/pulls/22" --jq '.head.sha')"
+          current="$(gh api "repos/$GITHUB_REPOSITORY/git/ref/heads/$branch" --jq '.object.sha')"
+          test "$current" = "$expected" || {
+            echo "::error::E2-F08 branch changed after merge; refusing deletion"
+            exit 1
+          }
+          git fetch --no-tags origin "refs/heads/$branch:refs/remotes/origin/$branch"
+          git merge-base --is-ancestor "$expected" HEAD || {
+            echo "::error::E2-F08 still has unmerged commits"
+            exit 1
+          }
+          current="$(gh api "repos/$GITHUB_REPOSITORY/git/ref/heads/$branch" --jq '.object.sha')"
+          test "$current" = "$expected" || {
+            echo "::error::Concurrent ref update; refusing deletion"
+            exit 1
+          }
+          gh api --method DELETE "repos/$GITHUB_REPOSITORY/git/refs/heads/$branch"
+          echo "Deleted only verified merged E2-F08 branch at $expected"

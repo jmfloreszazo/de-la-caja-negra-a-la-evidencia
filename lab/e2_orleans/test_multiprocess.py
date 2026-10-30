@@ -255,9 +255,29 @@ def main():
                 assert after != initial
                 sql_membership_after = read_membership()
                 if PROVIDER == "adonet":
-                    assert sql_membership_after["versions"]
-                    assert any(int(row[2]) == 11150 for row
-                               in sql_membership_after["membershipRows"])
+                    # Verify the actual persisted membership transition.
+                    # Orleans 10.4.0 defines Active=3 and Dead=6.
+                    before_ports = {
+                        int(row[2]): int(row[4])
+                        for row in sql_membership_before["membershipRows"]
+                    }
+                    after_ports = {
+                        int(row[2]): int(row[4])
+                        for row in sql_membership_after["membershipRows"]
+                    }
+                    assert before_ports == {11150: 3, 11151: 3}, (
+                        "Both silos must start active", before_ports
+                    )
+                    assert after_ports == {11150: 3, 11151: 6}, (
+                        "Persistent SQL must mark killed secondary dead",
+                        after_ports
+                    )
+                    before_version = int(sql_membership_before["versions"][0][1])
+                    after_version = int(sql_membership_after["versions"][0][1])
+                    assert after_version > before_version, (
+                        "Membership ETag/version must advance", before_version,
+                        after_version
+                    )
 
                 outcome = {
                     "schemaVersion": 1,
