@@ -263,5 +263,5 @@ static Outcome Transfer(string op, int src, int dst, long amount,
         Math.Round(started.Elapsed.TotalMilliseconds, 3), retryNumbers);
 }
 
-sealed class ApplicationLockTimeoutException : Exception;
+sealed class ApplicationLockTimeoutException : Exception { }
 record Outcome(string status, int retries, double elapsedMs, List<int> retrySqlErrors);
