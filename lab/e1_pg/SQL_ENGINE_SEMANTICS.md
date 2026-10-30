@@ -17,7 +17,7 @@ and reproduction instructions are **English only**.
 | Operation ID | Lookup and insert in the serialized SQLite write transaction; primary key blocks duplicate IDs | Transactional advisory lock keyed by operation ID, lookup plus primary key; retry after unique conflicts |
 | Account invariant | Conditional debit and database nonnegative constraint | Conditional debit and database nonnegative constraint |
 | Durable write unit | Account debit/credit, operation, two postings and outbox in one SQLite transaction | Account debit/credit, operation, two postings and outbox in one PostgreSQL transaction |
-| Failure simulation | Exceptions and process exit before commit; exit 92 after committed response is deliberately lost | Same fault *intent* and exit codes; JDBC-style or exact storage durability is **not** implied |
+| Failure simulation | Exceptions and process exit before commit; exit 92 after committed response is deliberately lost | Same fault *intent* and exit codes; identical storage-level durability is **not** implied |
 | Isolation anomalies | SQLite's single-writer behavior does not establish PostgreSQL row-level isolation | PostgreSQL `READ COMMITTED` can exhibit write skew on a separately constructed duty invariant; E1a checks `SERIALIZABLE` / `40001` |
 
 The two candidates **do not share identical locking, timeout, retry-count,
