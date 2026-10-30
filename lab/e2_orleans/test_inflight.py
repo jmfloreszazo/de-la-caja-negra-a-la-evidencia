@@ -121,9 +121,31 @@ def close_client(client, hard=False):
     }
 
 
+def membership_for_current_cluster():
+    """Select exact F09 deployment; never mix in historical F07/F08 rows."""
+    deployment = os.environ["E2_CLUSTER_INSTANCE"]
+    assert deployment in ("e2-inflight-pre", "e2-inflight-post")
+    raw = read_membership()
+    assert raw is not None
+    selected = {
+        "providerQueryCount": raw["providerQueryCount"],
+        "membershipRows": [
+            row for row in raw["membershipRows"] if row[0] == deployment
+        ],
+        "versions": [
+            version for version in raw["versions"]
+            if version[0] == deployment
+        ],
+        "deploymentId": deployment,
+    }
+    assert len(selected["versions"]) == 1, (
+        "No unique persisted Orleans deployment version", selected
+    )
+    return selected
+
+
 def membership_transition(before):
-    current = read_membership()
-    assert current is not None
+    current = membership_for_current_cluster()
     b = {int(r[2]): int(r[4]) for r in before["membershipRows"]}
     a = {int(r[2]): int(r[4]) for r in current["membershipRows"]}
     assert b == {11150: 3, 11151: 3}, b
@@ -168,8 +190,11 @@ def run_case(case):
                 source = next(k for k, pid in hosts.items() if pid == secondary.pid)
                 target = next(k for k, pid in hosts.items() if pid == primary.pid)
                 assert probe["clientPid"] not in (primary.pid, secondary.pid)
-                before_membership = read_membership()
-                assert before_membership is not None
+                before_membership = membership_for_current_cluster()
+                assert {int(r[2]): int(r[4]) for r
+                        in before_membership["membershipRows"]} == {
+                            11150: 3, 11151: 3
+                        }, before_membership
 
                 op = "e2-inflight-" + case
                 amount = 47 if case == "pre" else 49
