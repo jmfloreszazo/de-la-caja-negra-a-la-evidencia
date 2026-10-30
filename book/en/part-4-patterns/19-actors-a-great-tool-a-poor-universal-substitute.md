@@ -98,7 +98,15 @@ I would compare a simple database solution, an actor-based solution and the obse
 
 I would add activation failures, duplicate messages, lost responses and the loss of a node. I would also test that an external call returning late does not apply a stale change. The test must observe the persisted state and the history, as well as the actor's response.
 
-The banking lab runs local SQL transactions. It does not include an Orleans or Dapr cluster. The chapter proposes an architectural option backed by their documented contracts; it does not attribute to the lab a comparison of those runtimes.
+The banking lab uses local SQL transactions and now includes a real Orleans silo co-hosted in a single .NET 10 process. It does not yet include a multi-node Orleans cluster or a Dapr comparison; the measured boundary is a synthetic accounting contract on one hosted runner.
+
+### E2: from architectural reasoning to evidence
+
+The [E2 laboratory](../../lab/e2_orleans/README.md) uses the exact same authoritative PostgreSQL transaction for the direct and grain-routed paths. The [original functional run](https://github.com/jmfloreszazo/de-la-caja-negra-a-la-evidencia/actions/runs/41053628769) passed 15 cases per path, including idempotency, concurrent overdraft and seven independent accounting invariants. A separate [synthetic workload run](https://github.com/jmfloreszazo/de-la-caja-negra-a-la-evidencia/actions/runs/41055928136) committed 600 transfers over six cases involving 1,000 accounts: uniform traffic, exactly 50 hot accounts out of 1,000 (5%), and one account receiving 50% of intent. The persisted account, operation, posting and outbox states matched between both paths.
+
+In the [abrupt process termination experiment](https://github.com/jmfloreszazo/de-la-caja-negra-a-la-evidencia/actions/runs/41056976342), the real co-hosted process was killed with `SIGKILL` before and after PostgreSQL commit, through both the direct and Orleans paths. The pre-commit death left no operation; the post-commit death retained exactly one operation, two postings and an outbox event, and replay was idempotent. An intentionally partial SQL mutation was also rejected by the independent oracle. Multi-silo reassignment and physical node failure were not tested.
+
+The experiment does not prove Orleans increases throughput. In fact, its p95 exceeded the direct path in all three small 100-request profiles. One local run is insufficient evidence for sustained throughput, production p99 or mainframe MIPS equivalence. An actor-based design must justify its operational value with actual workload, failure and cost data, not the assumption that per-account sequencing automatically provides scale.
 
 > **I would not fragment a financial invariant just to improve the benchmark.**
 
