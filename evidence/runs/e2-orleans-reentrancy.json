@@ -1,0 +1,38 @@
+{
+  "schemaVersion": 1,
+  "experiment": "E2-Orleans-Reentrant-Unsafe-Actor-State",
+  "classification": "EXECUTED_SYNTHETIC_ISOLATED_REENTRANCY_NEGATIVE_NOT_DURABLE_ACTOR",
+  "status": "NEGATIVE_CONTROL_DETECTED",
+  "originalRun": {
+    "runId": 41060526872,
+    "jobId": 124078812583,
+    "artifactId": 12978961633,
+    "sourceCommit": "3bfe52452cae316daa30731e627133ed05ce8305",
+    "checkoutCommit": "06e8f144c13d6f127c9ac267f5da4d34503a9b09",
+    "runUrl": "https://github.com/jmfloreszazo/de-la-caja-negra-a-la-evidencia/actions/runs/41060526872",
+    "artifactUrl": "https://github.com/jmfloreszazo/de-la-caja-negra-a-la-evidencia/actions/runs/41060526872/artifacts/12978961633",
+    "source": "UnsafeReentrancyNegative subset from the original CI job log; unabridged e2-smoke.json and runtime environment are kept in the original artifact"
+  },
+  "observation": {
+    "concurrentCalls": 16,
+    "expectedIfAtomic": 16,
+    "observedActorLocalValue": 1,
+    "lostUpdates": 15,
+    "durableSqlTransfers": 0,
+    "independentSqlOracle": {
+      "nonnegative": true,
+      "conserved": true,
+      "balancedPostings": true,
+      "twoPostingsPerCommit": true,
+      "noPostingsForRejection": true,
+      "outboxAtomic": true,
+      "projectionAgrees": true
+    }
+  },
+  "sourceSha256": {
+    "e2_orleans/OrleansLab/UnsafeReentrancyNegative.cs": "9f083e0977bcc9b995d0ce89e3b1bfbbdc493790c0ddba347985310abbce34e6",
+    "e2_orleans/OrleansLab/Program.cs": "63db287e960d10e5db9e80edc9a7012299bfb31e9d96f9a19dfdea4496937ed4",
+    "e2_orleans/test_e2.py": "843e70bff917750ab8f9099edf578bfd02413a14c279806663a51c9a9c84bc37"
+  },
+  "limitations": "This is a deliberately unsafe ephemeral in-memory Orleans grain fixture, not authoritative durable account state. It does not demonstrate a real SQL deadlock, cross-grain saga, node loss, failover or mainframe performance."
+}

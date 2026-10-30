@@ -54,8 +54,7 @@ is **16 accepted method calls but actor-local value 1**, with no ledger
 changes and all seven independent PostgreSQL invariants still valid.
 This test is **not** evidence of a cross-grain transaction, a real
 deadlock or persistence failure. The accepted `AccountGrain` is never
-marked reentrant. Do not cite this new negative control as verified
-until its current-head CI run succeeds.
+marked reentrant. [CI #41060526872](https://github.com/jmfloreszazo/de-la-caja-negra-a-la-evidencia/actions/runs/41060526872) verified this negative result. The [archived observation](../../evidence/runs/e2-orleans-reentrancy.json) links to its [original, unmodified CI artifact](https://github.com/jmfloreszazo/de-la-caja-negra-a-la-evidencia/actions/runs/41060526872/artifacts/12978961633).
 
 ## Reproduce the verified 1,000-account synthetic slice
 
@@ -118,7 +117,7 @@ original job/artifact IDs, source SHA-256 manifest and independent oracle.
 **This is one local process dying, not multi-silo reassignment, quorum
 recovery, node failure, power loss, or production durability certification.**
 The negative split is a SQL fixture, not production actor code; an
-additional Orleans reentrancy negative control is still pending.
+additional **cross-grain circular-call/reentrancy** negative control is still pending; the isolated actor-local stale-state fixture is verified separately.
 
 ## Evidence and release policy
 

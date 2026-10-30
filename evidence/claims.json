@@ -301,6 +301,20 @@
       "protocol": null
     },
     {
+      "id": "E2-REENTRANCY",
+      "status": "ci_verified",
+      "es": "Control negativo Orleans reentrante: 16 solicitudes y 15 actualizaciones perdidas deliberadamente",
+      "en": "Unsafe reentrant Orleans negative control: 16 requests and 15 deliberately lost updates",
+      "scope_es": "Grain descartable y aislado con estado en memoria: las 16 llamadas devolvieron el mismo estado obsoleto (valor final 1, no 16); SQL no se modifica y el oráculo mantiene 7/7 invariantes. No prueba fallos de saga, transacción entre grains ni failover.",
+      "scope_en": "Disposable isolated in-memory grain: all 16 calls observed stale state (final value 1, not 16); no SQL writes and the independent oracle passes 7/7 invariants. Not a saga, cross-grain transaction or failover test.",
+      "evidence": {
+        "kind": "github_actions",
+        "run_id": 41060526872,
+        "head_sha": "3bfe52452cae316daa30731e627133ed05ce8305"
+      },
+      "protocol": null
+    },
+    {
       "id": "E2",
       "status": "partially_verified",
       "es": "Orleans y ledger frente a distintas distribuciones de carga",
