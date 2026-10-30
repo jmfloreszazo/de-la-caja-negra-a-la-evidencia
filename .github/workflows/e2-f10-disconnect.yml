@@ -1,4 +1,4 @@
-name: E2 F10 C02 actual Podman transport partition preserving SQL
+name: E2 F10 C02 Linux netem live-silo packet loss with SQL retained
 
 on:
   pull_request:
@@ -12,7 +12,7 @@ permissions:
 
 jobs:
   transport-partition:
-    name: E2-F10 real bridge disconnect, unchanged silo PID, reachable SQL and 7/7 oracle
+    name: E2-F10 actual tc/netem packet loss, unchanged silo PID, SQL and 7/7 oracle
     runs-on: ubuntu-24.04
     timeout-minutes: 35
     env:
@@ -37,7 +37,8 @@ jobs:
           dotnet --version > lab/results/e2f10/dotnet-sdk.txt
           podman --version > lab/results/e2f10/podman-version.txt
           podman info --format '{{.Host.NetworkBackend}}' > lab/results/e2f10/network-backend.txt
-      - name: Cut only silo transport bridge and require SQL reachability from the live silo
+          podman pull docker.io/nicolaka/netshoot:v0.13
+      - name: Inject real 100 percent packet loss only on the live secondary app NIC
         run: python3 lab/e2_orleans/test_podman_disconnect.py
       - name: Upload original network state and Oracle Gate observations
         if: always()
