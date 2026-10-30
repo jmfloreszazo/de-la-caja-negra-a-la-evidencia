@@ -1,0 +1,245 @@
+{
+  "schemaVersion": 1,
+  "experiment": "E1c-SQLServer-Worker-Parity",
+  "runId": 41042317263,
+  "jobId": 124017850214,
+  "artifactId": 12970982648,
+  "sourceCommit": "9e9f5787aa99302acb86b1251d7657cb82f9513b",
+  "checkoutCommit": "7597eac37015f31d2047646663e4b02ef2a1069d",
+  "source": "Machine-readable exact SQL Server/SQLite worker test stdout from successful GitHub Actions job and independently retained original artifact",
+  "url": "https://github.com/jmfloreszazo/de-la-caja-negra-a-la-evidencia/actions/runs/41042317263",
+  "classification": "EXECUTED_SYNTHETIC_ACCOUNTING_WORKLOAD_NOT_CAPACITY",
+  "observation": {
+    "schemaVersion": 1,
+    "experiment": "E1c-SQLServer-Worker-Parity",
+    "status": "PASS",
+    "classification": "SYNTHETIC_ACCOUNTING_WORKLOAD_NOT_CAPACITY",
+    "controls": {
+      "eightUniformHotWorkerCases": "PASS",
+      "bothCandidatesCommitAll960": "PASS",
+      "completeFourTableParity": "PASS",
+      "sevenIndependentOracleInvariants": "PASS"
+    },
+    "workerCounts": [
+      1,
+      2,
+      4,
+      8
+    ],
+    "patterns": [
+      "uniform",
+      "hot"
+    ],
+    "operationsPerWorker": 32,
+    "totalLogicalOperations": 960,
+    "cases": [
+      {
+        "pattern": "uniform",
+        "workers": 1,
+        "operationsPerWorker": 32,
+        "operations": 32,
+        "referenceCommitted": 32,
+        "sqlServerCommitted": 32,
+        "referenceBusyRetries": 0,
+        "sqlServerRetries": 0,
+        "persistedParity": true,
+        "accounts": 16,
+        "operationsPersisted": 32,
+        "postings": 64,
+        "outbox": 32,
+        "oracle": {
+          "nonnegative": true,
+          "conserved": true,
+          "balancedPostings": true,
+          "twoPostingsPerCommit": true,
+          "noPostingsForRejection": true,
+          "outboxAtomic": true,
+          "projectionAgrees": true
+        }
+      },
+      {
+        "pattern": "uniform",
+        "workers": 2,
+        "operationsPerWorker": 32,
+        "operations": 64,
+        "referenceCommitted": 64,
+        "sqlServerCommitted": 64,
+        "referenceBusyRetries": 0,
+        "sqlServerRetries": 0,
+        "persistedParity": true,
+        "accounts": 16,
+        "operationsPersisted": 64,
+        "postings": 128,
+        "outbox": 64,
+        "oracle": {
+          "nonnegative": true,
+          "conserved": true,
+          "balancedPostings": true,
+          "twoPostingsPerCommit": true,
+          "noPostingsForRejection": true,
+          "outboxAtomic": true,
+          "projectionAgrees": true
+        }
+      },
+      {
+        "pattern": "uniform",
+        "workers": 4,
+        "operationsPerWorker": 32,
+        "operations": 128,
+        "referenceCommitted": 128,
+        "sqlServerCommitted": 128,
+        "referenceBusyRetries": 0,
+        "sqlServerRetries": 0,
+        "persistedParity": true,
+        "accounts": 16,
+        "operationsPersisted": 128,
+        "postings": 256,
+        "outbox": 128,
+        "oracle": {
+          "nonnegative": true,
+          "conserved": true,
+          "balancedPostings": true,
+          "twoPostingsPerCommit": true,
+          "noPostingsForRejection": true,
+          "outboxAtomic": true,
+          "projectionAgrees": true
+        }
+      },
+      {
+        "pattern": "uniform",
+        "workers": 8,
+        "operationsPerWorker": 32,
+        "operations": 256,
+        "referenceCommitted": 256,
+        "sqlServerCommitted": 256,
+        "referenceBusyRetries": 7,
+        "sqlServerRetries": 0,
+        "persistedParity": true,
+        "accounts": 16,
+        "operationsPersisted": 256,
+        "postings": 512,
+        "outbox": 256,
+        "oracle": {
+          "nonnegative": true,
+          "conserved": true,
+          "balancedPostings": true,
+          "twoPostingsPerCommit": true,
+          "noPostingsForRejection": true,
+          "outboxAtomic": true,
+          "projectionAgrees": true
+        }
+      },
+      {
+        "pattern": "hot",
+        "workers": 1,
+        "operationsPerWorker": 32,
+        "operations": 32,
+        "referenceCommitted": 32,
+        "sqlServerCommitted": 32,
+        "referenceBusyRetries": 0,
+        "sqlServerRetries": 0,
+        "persistedParity": true,
+        "accounts": 16,
+        "operationsPersisted": 32,
+        "postings": 64,
+        "outbox": 32,
+        "oracle": {
+          "nonnegative": true,
+          "conserved": true,
+          "balancedPostings": true,
+          "twoPostingsPerCommit": true,
+          "noPostingsForRejection": true,
+          "outboxAtomic": true,
+          "projectionAgrees": true
+        }
+      },
+      {
+        "pattern": "hot",
+        "workers": 2,
+        "operationsPerWorker": 32,
+        "operations": 64,
+        "referenceCommitted": 64,
+        "sqlServerCommitted": 64,
+        "referenceBusyRetries": 0,
+        "sqlServerRetries": 0,
+        "persistedParity": true,
+        "accounts": 16,
+        "operationsPersisted": 64,
+        "postings": 128,
+        "outbox": 64,
+        "oracle": {
+          "nonnegative": true,
+          "conserved": true,
+          "balancedPostings": true,
+          "twoPostingsPerCommit": true,
+          "noPostingsForRejection": true,
+          "outboxAtomic": true,
+          "projectionAgrees": true
+        }
+      },
+      {
+        "pattern": "hot",
+        "workers": 4,
+        "operationsPerWorker": 32,
+        "operations": 128,
+        "referenceCommitted": 128,
+        "sqlServerCommitted": 128,
+        "referenceBusyRetries": 0,
+        "sqlServerRetries": 0,
+        "persistedParity": true,
+        "accounts": 16,
+        "operationsPersisted": 128,
+        "postings": 256,
+        "outbox": 128,
+        "oracle": {
+          "nonnegative": true,
+          "conserved": true,
+          "balancedPostings": true,
+          "twoPostingsPerCommit": true,
+          "noPostingsForRejection": true,
+          "outboxAtomic": true,
+          "projectionAgrees": true
+        }
+      },
+      {
+        "pattern": "hot",
+        "workers": 8,
+        "operationsPerWorker": 32,
+        "operations": 256,
+        "referenceCommitted": 256,
+        "sqlServerCommitted": 256,
+        "referenceBusyRetries": 3,
+        "sqlServerRetries": 0,
+        "persistedParity": true,
+        "accounts": 16,
+        "operationsPersisted": 256,
+        "postings": 512,
+        "outbox": 256,
+        "oracle": {
+          "nonnegative": true,
+          "conserved": true,
+          "balancedPostings": true,
+          "twoPostingsPerCommit": true,
+          "noPostingsForRejection": true,
+          "outboxAtomic": true,
+          "projectionAgrees": true
+        }
+      }
+    ],
+    "sourceSha256": {
+      "Bank/Program.cs": "72e6ff2bf59fd8889158b2488e3b8a5eb6f67b8e05cab27dc2336b74b6ad8253",
+      "bank_test.py": "4e633c890889bf7a6db48f0dfc9b1f6d1cb16c75a5795c6d497eb1c7545f6ca5",
+      "e1_sqlserver/SqlBank/Program.cs": "2af2bd31c70e5031dfe8ae9ba2c82b0e441214cfb156d329519b6c2b7a81a4cb",
+      "e1_sqlserver/SqlOracle/Program.cs": "687fd9d50c44012ae608b9437e3bfa501fc9e3364ccd20a9b9d091cb669a0324",
+      "e1_sqlserver/test_e1c.py": "d3e62b4f96f9599d2deaa9c9e11bf5ae9c44fee06f772eb4898c1ec356c13e9b",
+      "e1_sqlserver/test_worker_parity.py": "f12230bb8680c56ce925344eea2cf1eac015f2847c255bfad8519ab145ca7f44"
+    },
+    "environment": {
+      "sqlServerVersion": "16.0.4305.5",
+      "dotnetSdk": "10.0.403",
+      "platform": "Linux-7.0.0-1017-azure-x86_64-with-glibc2.39"
+    },
+    "elapsedHarnessSeconds": 323.417,
+    "limitations": "Only business outcomes and persisted account/operation/posting/outbox state are compared. SQLite uses long-lived worker processes and SQL Server launches a new .NET CLI for each transfer. No throughput or tail latency comparison, power loss, SQL Server HA, Azure SQL or mainframe capacity equivalence."
+  }
+}
