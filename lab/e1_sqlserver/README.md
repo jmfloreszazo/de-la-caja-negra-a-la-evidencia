@@ -61,8 +61,7 @@ loopback access.
 
 ## Evidence and acceptance boundaries
 
-The runner tests these **targets**, which are not accepted as observed
-until actual SQL Server CI completes successfully:
+The [original E1c SQL Server 2022 CI run #41040632819](https://github.com/jmfloreszazo/de-la-caja-negra-a-la-evidencia/actions/runs/41040632819) **executed and passed** all eight synthetic control groups. The [versioned source/output record](../../evidence/runs/e1c-sqlserver-initial.json) preserves the exact job, source commit, test SHA-256 values and individual observations. The controls below were observed in that run:
 
 1. Sequential and persisted parity with the **unchanged** SQLite .NET 10
    baseline: committed, rejected, duplicate/operation-ID conflicts, invalid
@@ -93,6 +92,8 @@ identities or securely governed credentials and certificate validation.
 **Do not infer bank-grade durability, real CICS/Db2 behavior, power-loss
 recovery, Azure availability, linear horizontal scaling, or MIPS parity
 from this synthetic experiment.**
+
+For SQL Server-specific locks, error numbers and isolation outcomes versus PostgreSQL and the protected SQLite baseline, see [engine semantics](SQL_ENGINE_SEMANTICS.md). **The tested 16-case functional matrix is not the separate 960-transfer SQLite/PostgreSQL worker-matrix experiment.**
 
 Source references: [Microsoft SQL Server Linux containers](https://learn.microsoft.com/en-us/sql/linux/install-upgrade/quickstart-install-docker?view=sql-server-linux-ver16),
 [SqlClient package](https://www.nuget.org/packages/Microsoft.Data.SqlClient/7.1.1),
