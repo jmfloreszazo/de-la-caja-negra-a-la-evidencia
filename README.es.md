@@ -56,17 +56,17 @@ El laboratorio está en inglés. La guía en español es el [anexo A del libro](
 ## Estructura del repositorio
 
 ```text
-README.md · README.es.md      esta página, en inglés y en español
-ROADMAP.md · ROADMAP.es.md    trabajo abierto, en inglés y en español
+README.md · README.es.md      bilingual repository entrypoints
+ROADMAP.md · ROADMAP.es.md    bilingual open roadmaps
 book/
-  es/  en/                    el libro capítulo a capítulo (la fuente)
-  es.md  en.md                el libro entero en una página (lo genera scripts/build.py)
-  figures/                    fuentes de los diagramas (src/) e imágenes con el estilo del libro
+  es/  en/                    chapter-by-chapter source books
+  es.md  en.md                single-page generated books (scripts/build.py)
+  figures/                    diagram sources and rendered artwork
 lab/                          GnuCOBOL · .NET 10 · SQLite · Python · Podman
 scripts/                      build.py · check.py · render_figures.py · setup_github.sh
-assets/                       logotipo, símbolo, portadas e imagen social
-docs/LAUNCH.md                guía del mantenedor para la primera publicación
-.github/                      plantillas, CODEOWNERS y workflows
+assets/                       brand mark, covers, and social preview
+docs/LAUNCH.md                release preparation instructions
+.github/                      templates, CODEOWNERS, and workflows
 ```
 
 El resto de documentos del proyecto (guía de colaboración, gobernanza, código de conducta) está en inglés, para que cualquiera pueda participar.
