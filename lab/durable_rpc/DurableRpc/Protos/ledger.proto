@@ -1,0 +1,17 @@
+syntax = "proto3";
+option csharp_namespace = "DurableRpc";
+package durablerpc;
+service LedgerApi {
+  rpc Transfer (TransferInput) returns (TransferOutput);
+}
+message TransferInput {
+  string operation_id = 1;
+  int32 src = 2;
+  int32 dst = 3;
+  int64 amount_cents = 4;
+}
+message TransferOutput {
+  string operation_id = 1;
+  string status = 2;
+  int64 amount_cents = 3;
+}

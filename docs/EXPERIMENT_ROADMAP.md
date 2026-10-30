@@ -16,6 +16,12 @@ This is an **engineering execution plan**, not a new book edition. Every experim
 
 A [first executable .NET 10 microbenchmark](../lab/transport/README.md) compares **HTTP/2 REST/JSON versus HTTP/2 gRPC/Protobuf** against an identical stateless business decision, using an independent response oracle and CI artifacts. This only isolates protocol/serialization overhead: no SQL commit, real WAN, TLS or replica scaling is measured. **It is not an E3 result.** Follow up under [issue #12](https://github.com/jmfloreszazo/de-la-caja-negra-a-la-evidencia/issues/12) with TLS equivalence, PostgreSQL durability, 1/2/4/8/16 replicas, hot-key loads and cost per correct committed transfer.
 
+## M2: PostgreSQL-durable REST versus gRPC, single-host horizontal smoke
+
+[Source and reproduction instructions](../lab/durable_rpc/README.md). The experimental harness shares one real PostgreSQL 16 database between 1, 2, 4, 8 and 16 .NET 10 service processes, running REST/JSON and gRPC/Protobuf over HTTP/2 on localhost. It separately compares uniform and 50%-hot-key traffic. An **independent SQL oracle reads committed balances, postings and outbox** after every case and rejects deliberate corruption. Machine-generated reports show committed transactions/s and p99.
+
+**Deliberate classification**: local single-host / one database / 256 operations per scenario / closed-loop / no TLS. This is an experimental smoke test, not a cloud or mainframe benchmark; M2 does not complete E1 or E3. Follow on with real distributed infrastructure, TLS, open-loop load, failover and dated TCO in [issue #12](https://github.com/jmfloreszazo/de-la-caja-negra-a-la-evidencia/issues/12).
+
 ## Horizontal-first architecture and dated economics (new mandatory gates)
 
 **Do not replace the mainframe with a single enormous VM by default.** The workload must first be partitioned by business invariants and tested with horizontal replica counts 1/2/4/8/16 under fixed offered load. Candidate deployments: VM Scale Sets, AKS, Azure Container Apps and App Service, plus a viable on-premises baseline. Measure bottlenecks at the authoritative ledger, hot-key contention, CPU, memory, logging, quotas and WAN p99. Vertical scale remains a measured option for intrinsically serialized components, not the default answer.
