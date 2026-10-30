@@ -1,0 +1,54 @@
+{
+  "schemaVersion": 1,
+  "experiment": "E1b-runtime-provenance",
+  "runId": 41033595770,
+  "jobId": 123988931673,
+  "artifactId": 12967485208,
+  "sourceCommit": "338ef0292c67812cadfb3e9ab7436dad590dbcf8",
+  "checkoutCommit": "77344381ccd769bb1408ad1757dc64e39dd77b06",
+  "source": "Exact machine-readable runtime manifest emitted by capture_runtime.py in successful GitHub Actions with downloadable original artifact",
+  "url": "https://github.com/jmfloreszazo/de-la-caja-negra-a-la-evidencia/actions/runs/41033595770",
+  "classification": "EXECUTED_RUNTIME_PROVENANCE_NOT_CAPACITY",
+  "observation": {
+    "schemaVersion": 1,
+    "experiment": "E1b-runtime-provenance",
+    "status": "PASS",
+    "classification": "REPRODUCIBILITY_MANIFEST_NOT_PERFORMANCE_PROOF",
+    "github": {
+      "runId": 41033595770,
+      "checkoutCommit": "77344381ccd769bb1408ad1757dc64e39dd77b06",
+      "sourceHead": "338ef0292c67812cadfb3e9ab7436dad590dbcf8",
+      "event": "pull_request"
+    },
+    "host": {
+      "platform": "Linux-7.0.0-1017-azure-x86_64-with-glibc2.39",
+      "python": "3.12.15",
+      "dotnetSdk": "10.0.403",
+      "podman": "podman version 4.9.3"
+    },
+    "database": {
+      "postgres": "16.13 (Debian 16.13-1.pgdg13+1)",
+      "sqliteNativeDotnet": "3.45.1",
+      "sqlitePython": "3.45.1",
+      "psycopg": "3.2.10",
+      "npgsqlPackage": "10.0.3"
+    },
+    "container": {
+      "imageReference": "docker.io/library/postgres:16.13",
+      "imageId": "f7ebf09eb01b02bb9904972705248217baeaed03e2a0a7ed24a77740b0aee98c",
+      "repoDigests": [
+        "docker.io/library/postgres@sha256:3102b2114b39383b61fa194e5929734c72a56ce366dbb391509b1f07aef10f9f",
+        "docker.io/library/postgres@sha256:5d143123fdf80462d1778cd4f24b9f7ca13c87174bca19141fb194c5a1ebca59"
+      ]
+    },
+    "sourceSha256": {
+      "e1_pg/capture_runtime.py": "d822cd492fa9af9ddb38cf642a4879d4a21579c9b7f0815480a42e0f7c0845cb",
+      "e1_pg/test_reference_parity.py": "1eb6504d81227710fae7c91b905dc4c2055864c41fe7712b2a5141f0f2d92c62",
+      "e1_pg/test_oracle_vectors.py": "a6e258c4e0535c735837ef56ce96669953d76b77864a435fa475cbd43a610459",
+      "e1_pg/oracle.py": "3f2874842e9febcc84584bf4a266920028840ccac9d404f75cb9f4363fb4fc09",
+      "Bank/Program.cs": "72e6ff2bf59fd8889158b2488e3b8a5eb6f67b8e05cab27dc2336b74b6ad8253",
+      "e1_pg/PgBank/Program.cs": "eb61acea9673cf14e999adf2c01a03df418c385dee0e3e1f6d777bbca53f5f32"
+    },
+    "limits": "An observed, disposable GitHub-hosted Linux execution. Registry digest plus versions aid reproduction but do not validate other operating systems, complete workload parity or power-loss durability."
+  }
+}
