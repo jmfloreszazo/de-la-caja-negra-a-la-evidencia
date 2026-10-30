@@ -179,6 +179,20 @@
       "protocol": null
     },
     {
+      "id": "E1C",
+      "status": "ci_verified",
+      "es": "SQL Server 2022 Developer con .NET 10: paridad, deadlock 1205, bloqueo 1222, aislamiento y oráculo independiente",
+      "en": "SQL Server 2022 Developer with .NET 10: parity, 1205 deadlock, 1222 lock retries, isolation and independent oracle",
+      "scope_es": "Ocho grupos y 16 casos secuenciales sobre un contenedor desechable. SNAPSHOT rompe una invariante deliberada y SERIALIZABLE la preserva. Sin equivalencia de capacidad mainframe.",
+      "scope_en": "Eight control groups and sixteen sequential cases on a disposable SQL Server container. SNAPSHOT violates a deliberately unsafe invariant; SERIALIZABLE preserves it. No mainframe capacity equivalence.",
+      "evidence": {
+        "kind": "github_actions",
+        "run_id": 41040632819,
+        "head_sha": "4e1d79b597f8c393cdc349e92c604fcc0aecc9c4"
+      },
+      "protocol": null
+    },
+    {
       "id": "E1",
       "status": "partially_verified",
       "es": "Bloqueo por fila, deadlocks y write skew en SQL",
