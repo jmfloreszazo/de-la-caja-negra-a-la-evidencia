@@ -2,9 +2,9 @@
 """E1c SQL Server and SQLite reference worker-matrix functional parity.
 
 Runs 1/2/4/8 workers × 32 operations each for uniform and hot accounts.
-The SQLite reference retains long-lived worker processes while SQL Server
-launches one independent .NET CLI transfer process per operation. No
-throughput or latency equality can be inferred from the different models.
+Both candidates use one long-lived .NET CLI process per worker, but their
+storage engines, drivers and connection policies still differ. No validated
+throughput or latency equality can be inferred from this local harness.
 All databases and transfer records are synthetic and disposable.
 """
 from concurrent.futures import ThreadPoolExecutor
