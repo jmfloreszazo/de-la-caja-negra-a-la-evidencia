@@ -36,6 +36,10 @@ Se probaron confirmación y rechazo, duplicados y conflictos de identidad, entra
 
 Es un **control negativo sintético en una sola base de datos**, no una simulación de fallos productivos ni una demostración de capacidad mainframe. Los hashes del código se comprueban sin reescribir las observaciones históricas. E1 global continúa parcialmente verificado.
 
+## Manifiesto de reproducibilidad · 30 de octubre de 2026
+
+[Manifiesto versionado](e1b-runtime-manifest.json) · [ejecución CI #41033595770](https://github.com/jmfloreszazo/de-la-caja-negra-a-la-evidencia/actions/runs/41033595770). La evidencia conserva las versiones de Python, .NET SDK, Npgsql, psycopg, SQLite nativo, PostgreSQL y Podman; el identificador y digests SHA-256 de la imagen PostgreSQL; seis hashes de código; y por separado el **HEAD original de la PR** y el **checkout temporal de merge** de GitHub. La CI verifica el job de procedencia. Estos datos permiten reproducir mejor el ensayo, pero no prueban portabilidad multiplataforma ni equivalencia operativa.
+
 ## Tres hallazgos que se pueden comprobar
 
 1. **Deadlock recuperado:** PostgreSQL emitió `40P01`, se reintentó la transacción completa y terminaron dos transferencias confirmadas, sin duplicar asientos.
