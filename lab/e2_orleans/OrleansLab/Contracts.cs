@@ -10,7 +10,8 @@ public sealed record TransferCommand(
     [property: Id(1)] int SourceAccountId,
     [property: Id(2)] int TargetAccountId,
     [property: Id(3)] long AmountCents,
-    [property: Id(4)] string Fault = "none");
+    [property: Id(4)] string Fault = "none",
+    [property: Id(5)] int ArrivalOffsetMs = 0);
 
 [GenerateSerializer]
 public sealed record TransferResult(
