@@ -241,8 +241,22 @@ def main():
         assert not client_observation["acknowledgedCommitted"], client_observation
         # Require actual grain execution rather than only a failed gateway.
         victim_logs = P("logs", "e2f10-secondary", check=False)
-        assert "E2_F10_GRAIN_EXCEPTION:" in victim_logs, (
-            "No evidence that the isolated silo executed the financial call",
+        # An Orleans timeout includes the actual remote activation and its
+        # running call, even when Npgsql is still waiting and has not yet
+        # thrown on the silo. Do not require a premature grain exception.
+        transport = client_observation.get("transportCause", "")
+        observed_execution = (
+            "E2_F10_GRAIN_EXCEPTION:" in victim_logs
+            or (
+                "System.TimeoutException" in transport
+                and "IsExecuting: True" in transport
+                and "Activation: S10.78.30.12:" in transport
+                and "IAccountGrain.Transfer" in transport
+                and f"account/{source}" in transport
+            )
+        )
+        assert observed_execution, (
+            "No direct proof that the isolated silo executed the financial call",
             client_observation, victim_logs[-3500:]
         )
         cut_state = snapshot()
