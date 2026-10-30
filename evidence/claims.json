@@ -207,6 +207,20 @@
       "protocol": null
     },
     {
+      "id": "E1C-MP",
+      "status": "ci_verified",
+      "es": "Paridad funcional SQLite/SQL Server: 960 transferencias sintéticas en ocho escenarios uniformes y de cuenta caliente",
+      "en": "SQLite/SQL Server functional parity: 960 synthetic transfers across eight uniform and hot-account worker cases",
+      "scope_es": "Cuatro tablas persistidas iguales y siete invariantes contables válidos en 1/2/4/8 trabajadores. Procesos distintos: no es benchmark de throughput, Azure ni mainframe.",
+      "scope_en": "Matching persisted state in four tables and seven ledger invariants across 1/2/4/8 workers. Different process models: no throughput, Azure or mainframe benchmark.",
+      "evidence": {
+        "kind": "github_actions",
+        "run_id": 41042317263,
+        "head_sha": "9e9f5787aa99302acb86b1251d7657cb82f9513b"
+      },
+      "protocol": null
+    },
+    {
       "id": "E1",
       "status": "partially_verified",
       "es": "Bloqueo por fila, deadlocks y write skew en SQL",
