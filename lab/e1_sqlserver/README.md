@@ -59,6 +59,25 @@ production credentials or customer records belong in this lab. Source and
 schema are intentionally constrained to a dedicated test database and
 loopback access.
 
+## Full uniform/hot workload reproduction
+
+After building both the unchanged SQLite reference and SQL Server candidate
+and starting the disposable database, run:
+
+```bash
+python3 lab/e1_sqlserver/test_e1c.py
+python3 lab/e1_sqlserver/test_worker_parity.py
+python3 scripts/check_e1c_worker_observations.py
+```
+
+The second command resets the disposable `E1SqlLab` database for every
+case. It validates 960 synthetic transfers per candidate across 1, 2, 4
+and 8 workers with uniform and hot-account traffic. All four persisted
+tables must match in every case and all seven independent ledger
+invariants must pass. Original CI evidence is versioned separately from
+the core E1c controls. Different worker process-launch models prevent
+cross-engine throughput or latency comparisons.
+
 ## Evidence and acceptance boundaries
 
 The [original E1c SQL Server 2022 CI run #41040632819](https://github.com/jmfloreszazo/de-la-caja-negra-a-la-evidencia/actions/runs/41040632819) **executed and passed** all eight synthetic control groups. The [versioned source/output record](../../evidence/runs/e1c-sqlserver-initial.json) preserves the exact job, source commit, test SHA-256 values and individual observations. The controls below were observed in that run:
@@ -93,7 +112,7 @@ identities or securely governed credentials and certificate validation.
 recovery, Azure availability, linear horizontal scaling, or MIPS parity
 from this synthetic experiment.**
 
-For SQL Server-specific locks, error numbers and isolation outcomes versus PostgreSQL and the protected SQLite baseline, see [engine semantics](SQL_ENGINE_SEMANTICS.md). **The tested 16-case functional matrix is not the separate 960-transfer SQLite/PostgreSQL worker-matrix experiment.**
+For SQL Server-specific locks, error numbers and isolation outcomes versus PostgreSQL and the protected SQLite baseline, see [engine semantics](SQL_ENGINE_SEMANTICS.md). **The 16-case core contract and the additional full 960-transfer uniform/hot worker matrix have both been executed on SQL Server.** [Original full-matrix CI #41042317263](https://github.com/jmfloreszazo/de-la-caja-negra-a-la-evidencia/actions/runs/41042317263) and [versioned raw evidence](../../evidence/runs/e1c-sqlserver-worker-parity.json) show matching persisted accounting outcomes in all eight cases, with seven independent invariants passing. SQLite uses long-lived worker processes while SQL Server starts a .NET process for each transfer; cross-engine latency and throughput are **not comparable**.
 
 Source references: [Microsoft SQL Server Linux containers](https://learn.microsoft.com/en-us/sql/linux/install-upgrade/quickstart-install-docker?view=sql-server-linux-ver16),
 [SqlClient package](https://www.nuget.org/packages/Microsoft.Data.SqlClient/7.1.1),
