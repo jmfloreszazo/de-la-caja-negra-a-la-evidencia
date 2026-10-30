@@ -273,6 +273,20 @@
       "protocol": null
     },
     {
+      "id": "E2-PROCESS-KILL",
+      "status": "ci_verified",
+      "es": "Orleans y ledger: cuatro terminaciones SIGKILL reales del proceso local antes y después del commit, con recuperación idempotente",
+      "en": "Orleans and ledger: four actual local-process SIGKILL tests before/after commit with idempotent recovery",
+      "scope_es": "Dos rutas (directa y Orleans), sin persistencia parcial antes del commit y una única contabilización después; control negativo de escritura SQL dividida detectado por oráculo. No es failover entre silos.",
+      "scope_en": "Two routes (direct and Orleans), no partial persistence before commit and one durable business effect afterward; split SQL write negative control rejected by oracle. Not a multi-silo failover test.",
+      "evidence": {
+        "kind": "github_actions",
+        "run_id": 41056976342,
+        "head_sha": "63b062f18b5eb8dc427d807c49019a4657215f07"
+      },
+      "protocol": null
+    },
+    {
       "id": "E2",
       "status": "designed_not_executed",
       "es": "Orleans y ledger frente a distintas distribuciones de carga",
