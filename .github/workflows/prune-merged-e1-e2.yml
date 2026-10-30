@@ -16,7 +16,8 @@ concurrency:
 jobs:
   prune-verified-branches:
     name: Delete exact E1/E2 heads only after ancestry and lease checks
-    if: ${{ github.ref == 'refs/heads/main' && startsWith(github.event.head_commit.message, 'merge: prune verified merged E1 E2 branches') }}
+    if: >-
+      ${{ github.ref == 'refs/heads/main' && startsWith(github.event.head_commit.message, 'merge: prune verified merged E1 E2 branches') }}
     runs-on: ubuntu-24.04
     timeout-minutes: 10
     steps:
@@ -81,6 +82,23 @@ jobs:
             echo "::error::Maintenance branch contains unmerged work"; exit 1;
           }
 
+          # This YAML-repair PR also becomes obsolete after it merges.
+          # Verify it via PR #21's recorded head SHA before any deletion.
+          fix_branch="maintenance/fix-one-time-prune-workflow-yaml"
+          fix_merged="$(gh api "repos/$GITHUB_REPOSITORY/pulls/21" --jq '.merged')"
+          test "$fix_merged" = "true" || {
+            echo "::error::Repair PR #21 has not merged"; exit 1;
+          }
+          expected_fix="$(gh api "repos/$GITHUB_REPOSITORY/pulls/21" --jq '.head.sha')"
+          current_fix="$(gh api "repos/$GITHUB_REPOSITORY/git/ref/heads/$fix_branch" --jq '.object.sha')"
+          test "$current_fix" = "$expected_fix" || {
+            echo "::error::Repair branch changed after merge"; exit 1;
+          }
+          git fetch --no-tags origin "refs/heads/$fix_branch:refs/remotes/origin/$fix_branch"
+          git merge-base --is-ancestor "$expected_fix" HEAD || {
+            echo "::error::Repair branch contains unmerged work"; exit 1;
+          }
+
           for branch in "${branches[@]}"; do
             # Recheck immediately before each destructive API call.
             current="$(gh api "repos/$GITHUB_REPOSITORY/git/ref/heads/$branch" --jq '.object.sha')"
@@ -97,3 +115,9 @@ jobs:
           }
           gh api --method DELETE "repos/$GITHUB_REPOSITORY/git/refs/heads/$maintenance"
           echo "Deleted merged maintenance PR branch: $maintenance"
+          current_fix="$(gh api "repos/$GITHUB_REPOSITORY/git/ref/heads/$fix_branch" --jq '.object.sha')"
+          test "$current_fix" = "$expected_fix" || {
+            echo "::error::Repair branch changed during cleanup"; exit 1;
+          }
+          gh api --method DELETE "repos/$GITHUB_REPOSITORY/git/refs/heads/$fix_branch"
+          echo "Deleted merged workflow-repair PR branch: $fix_branch"
