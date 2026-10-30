@@ -45,7 +45,17 @@ public sealed class AccountGrain(IDurableLedger ledger) : Grain, IAccountGrain
         if (command.SourceAccountId != this.GetPrimaryKeyLong())
             throw new ArgumentException("Grain key must equal the source account");
 
-        var committedOutcome = await ledger.Transfer(command);
-        return committedOutcome with { HandledBy = $"grain-{this.GetPrimaryKeyLong()}" };
+        try
+        {
+            var committedOutcome = await ledger.Transfer(command);
+            return committedOutcome with { HandledBy = $"grain-{this.GetPrimaryKeyLong()}" };
+        }
+        catch (Exception ex) when (Environment.GetEnvironmentVariable("E2_NETWORK_TEST") == "1")
+        {
+            // Opt-in disposable synthetic CI diagnostics only.
+            // Never silently convert a failed transfer to a COMMITTED result.
+            Console.Error.WriteLine("E2_F10_GRAIN_EXCEPTION: " + ex);
+            throw;
+        }
     }
 }

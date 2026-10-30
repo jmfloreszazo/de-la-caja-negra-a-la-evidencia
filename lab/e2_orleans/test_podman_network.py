@@ -110,7 +110,14 @@ def client(mode, commands=None, timeout=65):
             path = Path(stream.name)
         args.append("/fixtures/" + path.name)
     try:
-        return json.loads(podman(*args, timeout=timeout))
+        try:
+            return json.loads(podman(*args, timeout=timeout))
+        except (RuntimeError, subprocess.TimeoutExpired) as error:
+            for node in ("e2f10-primary", "e2f10-secondary"):
+                print("E2_F10_DIAGNOSTIC " + node + ": " +
+                      podman("logs", node, check=False)[-9000:],
+                      file=sys.stderr, flush=True)
+            raise RuntimeError("E2-F10 external-client request failed") from error
     finally:
         if path:
             path.unlink(missing_ok=True)
