@@ -62,6 +62,25 @@ jobs:
             echo "Validated $branch at $current as ancestor of main."
           done
 
+          # The maintenance PR head itself becomes obsolete after merge.
+          # Its immutable expected SHA comes from the *merged* PR #20, so
+          # the cleanup workflow never needs an impossible self-referential
+          # hard-coded commit hash.
+          maintenance="maintenance/prune-merged-e1-e2-experiment-branches"
+          pr_merged="$(gh api "repos/$GITHUB_REPOSITORY/pulls/20" --jq '.merged')"
+          test "$pr_merged" = "true" || {
+            echo "::error::Cleanup PR #20 has not merged"; exit 1;
+          }
+          expected_maintenance="$(gh api "repos/$GITHUB_REPOSITORY/pulls/20" --jq '.head.sha')"
+          current_maintenance="$(gh api "repos/$GITHUB_REPOSITORY/git/ref/heads/$maintenance" --jq '.object.sha')"
+          test "$current_maintenance" = "$expected_maintenance" || {
+            echo "::error::Maintenance branch changed after merging"; exit 1;
+          }
+          git fetch --no-tags origin "refs/heads/$maintenance:refs/remotes/origin/$maintenance"
+          git merge-base --is-ancestor "$expected_maintenance" HEAD || {
+            echo "::error::Maintenance branch contains unmerged work"; exit 1;
+          }
+
           for branch in "${branches[@]}"; do
             # Recheck immediately before each destructive API call.
             current="$(gh api "repos/$GITHUB_REPOSITORY/git/ref/heads/$branch" --jq '.object.sha')"
@@ -71,3 +90,10 @@ jobs:
             gh api --method DELETE "repos/$GITHUB_REPOSITORY/git/refs/heads/$branch"
             echo "Deleted verified merged branch: $branch"
           done
+
+          current_maintenance="$(gh api "repos/$GITHUB_REPOSITORY/git/ref/heads/$maintenance" --jq '.object.sha')"
+          test "$current_maintenance" = "$expected_maintenance" || {
+            echo "::error::Maintenance branch changed during cleanup"; exit 1;
+          }
+          gh api --method DELETE "repos/$GITHUB_REPOSITORY/git/refs/heads/$maintenance"
+          echo "Deleted merged maintenance PR branch: $maintenance"
