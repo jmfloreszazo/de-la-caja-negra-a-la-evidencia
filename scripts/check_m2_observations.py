@@ -26,6 +26,25 @@ assert {x["case"] for x in values}==expected and len(values)==20
 assert all(x["commits"]==256 and x["oracle"]=="PASS" and
            x["tps"]>0 and x["p99"]>0 for x in values)
 assert "detected" in record["independentOracle"]["finalNegativeControl"]
+fullFile=root/"evidence/runs/m2-full-summary.json"
+assert fullFile.is_file(),"Full original M2 report must be versioned, not only ephemeral ZIP"
+raw=json.loads(fullFile.read_text(encoding="utf-8"))
+assert raw["schemaVersion"]==1
+assert raw["classification"]=="M2_LOCAL_SINGLE_HOST_POSTGRES_DURABLE_SMOKE_NOT_CLOUD_OR_MAINFRAME"
+assert len(raw["cases"])==20
+assert raw["oracleNegativeControl"]["restored"] is True
+assert {"balancedPostings","projectionAgrees","twoPostingsPerCommit"}.issubset(
+    set(raw["oracleNegativeControl"]["detected"]))
+full={x["label"]:x for x in raw["cases"]}
+for item in values:
+    case=full[item["case"]]
+    assert case["ledger"]=={"commits":256,"postings":512,"outbox":256,"uniqueOperations":256}
+    assert all(case["oracle"].values())
+    assert case["client"]["failures"]==0 and case["client"]["committed"]==256
+    assert case["client"]["durableCommittedPerSecond"]==item["tps"]
+    assert case["client"]["p99Ms"]==item["p99"]
+    assert sum(case["client"]["perReplicaCommits"])==256
+print("M2 FULL VERSIONED REPORT: PASS, all 20 original cases and oracle outcomes match")
 print("M2 OFFLINE EVIDENCE: PASS, 20 correctly scoped PostgreSQL observations")
 
 if "--online" in sys.argv:
@@ -46,5 +65,5 @@ if "--online" in sys.argv:
                j["conclusion"]=="success" for j in jobs)
     artifact=fetch("actions/artifacts/"+str(p["artifactId"]))
     assert artifact["name"]==p["artifactName"]
-    assert not artifact.get("expired",False)
+    # Actions artifacts may expire: the original complete JSON is kept in Git.
     print("M2 LIVE SOURCE AND ARTIFACT PROVENANCE: PASS")
