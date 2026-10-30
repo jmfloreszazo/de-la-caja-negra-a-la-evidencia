@@ -1,0 +1,70 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 490" role="img" aria-labelledby="title desc">
+<title id="title">M2: local PostgreSQL committed transfers per second, one to sixteen service processes</title>
+<desc id="desc">Actual 20 experiments on one hosted runner, two protocols and uniform or hot-account distribution; increasing processes reduced throughput in this single-host test. Not cloud scale evidence.</desc>
+<rect width="1000" height="490" fill="#ffffff"/>
+<text x="45" y="42" fill="#111820" font-family="sans-serif" font-size="23" font-weight="bold">M2 · Durable PostgreSQL, local scale-out</text>
+<text x="45" y="66" fill="#667078" font-family="sans-serif" font-size="14">Observed 30 Oct 2026 · one shared runner and database · 256 transfers per case · NOT Azure performance</text>
+<text x="80" y="105" fill="#263039" font-family="sans-serif" font-size="19" font-weight="bold">Distributed accounts</text>
+<line x1="80" y1="395" x2="435" y2="395" stroke="#dfe3e6" stroke-width="1"/>
+<text x="71" y="400" font-size="12" text-anchor="end" font-family="sans-serif" fill="#6a7379">0</text>
+<line x1="80" y1="328.75" x2="435" y2="328.75" stroke="#dfe3e6" stroke-width="1"/>
+<text x="71" y="333.75" font-size="12" text-anchor="end" font-family="sans-serif" fill="#6a7379">100</text>
+<line x1="80" y1="262.5" x2="435" y2="262.5" stroke="#dfe3e6" stroke-width="1"/>
+<text x="71" y="267.5" font-size="12" text-anchor="end" font-family="sans-serif" fill="#6a7379">200</text>
+<line x1="80" y1="196.25" x2="435" y2="196.25" stroke="#dfe3e6" stroke-width="1"/>
+<text x="71" y="201.25" font-size="12" text-anchor="end" font-family="sans-serif" fill="#6a7379">300</text>
+<line x1="80" y1="130" x2="435" y2="130" stroke="#dfe3e6" stroke-width="1"/>
+<text x="71" y="135" font-size="12" text-anchor="end" font-family="sans-serif" fill="#6a7379">400</text>
+<text x="80" y="449" font-family="sans-serif" font-size="12" fill="#6a7379">Processes (single host)</text>
+<path d="M80.0,178.0 L168.8,226.6 L257.5,244.8 L346.3,332.0 L435.0,345.6" fill="none" stroke="#263039" stroke-width="3"/>
+<circle cx="80.0" cy="178.0" r="4" fill="#263039"><title>rest 327.59 committed tx/s</title></circle>
+<circle cx="168.8" cy="226.6" r="4" fill="#263039"><title>rest 254.24 committed tx/s</title></circle>
+<circle cx="257.5" cy="244.8" r="4" fill="#263039"><title>rest 226.77 committed tx/s</title></circle>
+<circle cx="346.3" cy="332.0" r="4" fill="#263039"><title>rest 95.11 committed tx/s</title></circle>
+<circle cx="435.0" cy="345.6" r="4" fill="#263039"><title>rest 74.62 committed tx/s</title></circle>
+<path d="M80.0,134.3 L168.8,174.5 L257.5,292.7 L346.3,311.6 L435.0,348.1" fill="none" stroke="#D22B35" stroke-width="3"/>
+<circle cx="80.0" cy="134.3" r="4" fill="#D22B35"><title>grpc 393.55 committed tx/s</title></circle>
+<circle cx="168.8" cy="174.5" r="4" fill="#D22B35"><title>grpc 332.82 committed tx/s</title></circle>
+<circle cx="257.5" cy="292.7" r="4" fill="#D22B35"><title>grpc 154.45 committed tx/s</title></circle>
+<circle cx="346.3" cy="311.6" r="4" fill="#D22B35"><title>grpc 125.86 committed tx/s</title></circle>
+<circle cx="435.0" cy="348.1" r="4" fill="#D22B35"><title>grpc 70.73 committed tx/s</title></circle>
+<text x="80.0" y="416" font-size="13" text-anchor="middle" font-family="sans-serif" fill="#4f5962">1</text>
+<text x="168.8" y="416" font-size="13" text-anchor="middle" font-family="sans-serif" fill="#4f5962">2</text>
+<text x="257.5" y="416" font-size="13" text-anchor="middle" font-family="sans-serif" fill="#4f5962">4</text>
+<text x="346.3" y="416" font-size="13" text-anchor="middle" font-family="sans-serif" fill="#4f5962">8</text>
+<text x="435.0" y="416" font-size="13" text-anchor="middle" font-family="sans-serif" fill="#4f5962">16</text>
+<text x="540" y="105" fill="#263039" font-family="sans-serif" font-size="19" font-weight="bold">50% hot account</text>
+<line x1="540" y1="395" x2="895" y2="395" stroke="#dfe3e6" stroke-width="1"/>
+<text x="531" y="400" font-size="12" text-anchor="end" font-family="sans-serif" fill="#6a7379">0</text>
+<line x1="540" y1="328.75" x2="895" y2="328.75" stroke="#dfe3e6" stroke-width="1"/>
+<text x="531" y="333.75" font-size="12" text-anchor="end" font-family="sans-serif" fill="#6a7379">100</text>
+<line x1="540" y1="262.5" x2="895" y2="262.5" stroke="#dfe3e6" stroke-width="1"/>
+<text x="531" y="267.5" font-size="12" text-anchor="end" font-family="sans-serif" fill="#6a7379">200</text>
+<line x1="540" y1="196.25" x2="895" y2="196.25" stroke="#dfe3e6" stroke-width="1"/>
+<text x="531" y="201.25" font-size="12" text-anchor="end" font-family="sans-serif" fill="#6a7379">300</text>
+<line x1="540" y1="130" x2="895" y2="130" stroke="#dfe3e6" stroke-width="1"/>
+<text x="531" y="135" font-size="12" text-anchor="end" font-family="sans-serif" fill="#6a7379">400</text>
+<text x="540" y="449" font-family="sans-serif" font-size="12" fill="#6a7379">Processes (single host)</text>
+<path d="M540.0,153.5 L628.8,204.7 L717.5,273.1 L806.3,332.8 L895.0,349.5" fill="none" stroke="#263039" stroke-width="3"/>
+<circle cx="540.0" cy="153.5" r="4" fill="#263039"><title>rest 364.49 committed tx/s</title></circle>
+<circle cx="628.8" cy="204.7" r="4" fill="#263039"><title>rest 287.2 committed tx/s</title></circle>
+<circle cx="717.5" cy="273.1" r="4" fill="#263039"><title>rest 184.06 committed tx/s</title></circle>
+<circle cx="806.3" cy="332.8" r="4" fill="#263039"><title>rest 93.92 committed tx/s</title></circle>
+<circle cx="895.0" cy="349.5" r="4" fill="#263039"><title>rest 68.7 committed tx/s</title></circle>
+<path d="M540.0,144.9 L628.8,203.1 L717.5,281.1 L806.3,335.3 L895.0,361.4" fill="none" stroke="#D22B35" stroke-width="3"/>
+<circle cx="540.0" cy="144.9" r="4" fill="#D22B35"><title>grpc 377.49 committed tx/s</title></circle>
+<circle cx="628.8" cy="203.1" r="4" fill="#D22B35"><title>grpc 289.68 committed tx/s</title></circle>
+<circle cx="717.5" cy="281.1" r="4" fill="#D22B35"><title>grpc 171.88 committed tx/s</title></circle>
+<circle cx="806.3" cy="335.3" r="4" fill="#D22B35"><title>grpc 90.14 committed tx/s</title></circle>
+<circle cx="895.0" cy="361.4" r="4" fill="#D22B35"><title>grpc 50.76 committed tx/s</title></circle>
+<text x="540.0" y="416" font-size="13" text-anchor="middle" font-family="sans-serif" fill="#4f5962">1</text>
+<text x="628.8" y="416" font-size="13" text-anchor="middle" font-family="sans-serif" fill="#4f5962">2</text>
+<text x="717.5" y="416" font-size="13" text-anchor="middle" font-family="sans-serif" fill="#4f5962">4</text>
+<text x="806.3" y="416" font-size="13" text-anchor="middle" font-family="sans-serif" fill="#4f5962">8</text>
+<text x="895.0" y="416" font-size="13" text-anchor="middle" font-family="sans-serif" fill="#4f5962">16</text>
+<line x1="666" y1="436" x2="702" y2="436" stroke="#263039" stroke-width="3"/>
+<text x="708" y="440" font-size="13" font-family="sans-serif" fill="#263039">REST/JSON</text>
+<line x1="811" y1="436" x2="848" y2="436" stroke="#D22B35" stroke-width="3"/>
+<text x="853" y="440" font-size="13" font-family="sans-serif" fill="#263039">gRPC/Protobuf</text>
+<text x="45" y="465" fill="#6a7379" font-family="sans-serif" font-size="12">Source: GitHub Actions run #41016081107 · all 20 cases passed independent ledger oracle · smoke test only</text>
+</svg>

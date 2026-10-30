@@ -6,6 +6,7 @@ on:
       - 'docs/EVIDENCE*.md'
       - 'scripts/check_evidence.py'
       - 'scripts/check_m1_observations.py'
+      - 'scripts/check_m2_observations.py'
       - '.github/workflows/evidence.yml'
   pull_request:
     paths:
@@ -25,6 +26,7 @@ jobs:
       - run: python3 scripts/check_evidence.py
       - run: python3 scripts/check_e1_observations.py
       - run: python3 scripts/check_m1_observations.py
+      - run: python3 scripts/check_m2_observations.py
   provenance:
     name: Live run and release provenance
     runs-on: ubuntu-24.04
@@ -36,3 +38,6 @@ jobs:
       - env:
           GITHUB_TOKEN: ${{ github.token }}
         run: python3 scripts/check_m1_observations.py --online
+      - env:
+          GITHUB_TOKEN: ${{ github.token }}
+        run: python3 scripts/check_m2_observations.py --online

@@ -1,0 +1,195 @@
+{
+  "schemaVersion": 1,
+  "experiment": "M2",
+  "classification": "EXECUTED_SINGLE_HOST_POSTGRES_LOCAL_SMOKE_NOT_CLOUD_OR_MAINFRAME",
+  "provenance": {
+    "runId": 41016081107,
+    "jobId": 123932598591,
+    "headSha": "c9152d50c9ca713eda0627341233221b9c1180a3",
+    "runUrl": "https://github.com/jmfloreszazo/de-la-caja-negra-a-la-evidencia/actions/runs/41016081107",
+    "artifactId": 12959965944,
+    "artifactName": "m2-durable-sql-local-replica-smoke-not-azure",
+    "source": "GitHub Actions successful run stdout, M2 test_m2.py per-case machine JSON; full raw summary and per-case JSON preserved in artifact",
+    "checkedOn": "2026-10-30"
+  },
+  "workload": {
+    "clients": "closed-loop",
+    "concurrency": 16,
+    "requestsPerCase": 256,
+    "database": "PostgreSQL 16.13, one Podman container on same hosted Linux runner",
+    "protocols": [
+      "rest",
+      "grpc"
+    ],
+    "distributions": [
+      "uniform",
+      "hot"
+    ],
+    "replicas": [
+      1,
+      2,
+      4,
+      8,
+      16
+    ],
+    "cases": 20,
+    "limits": [
+      "same host for all service processes",
+      "no TLS/mTLS",
+      "no Azure/AKS/VMSS",
+      "no real WAN",
+      "not an open-loop load generator",
+      "no failover trial",
+      "no real banking data"
+    ]
+  },
+  "independentOracle": {
+    "perCase": "PASS for every case",
+    "perCaseCommitted": 256,
+    "perCasePostings": 512,
+    "perCaseOutbox": 256,
+    "finalNegativeControl": "deliberately removed posting detected then restored"
+  },
+  "cases": [
+    {
+      "case": "uniform-1-rest",
+      "commits": 256,
+      "tps": 327.59,
+      "p99": 358.058,
+      "oracle": "PASS"
+    },
+    {
+      "case": "uniform-1-grpc",
+      "commits": 256,
+      "tps": 393.55,
+      "p99": 246.554,
+      "oracle": "PASS"
+    },
+    {
+      "case": "uniform-2-rest",
+      "commits": 256,
+      "tps": 254.24,
+      "p99": 352.036,
+      "oracle": "PASS"
+    },
+    {
+      "case": "uniform-2-grpc",
+      "commits": 256,
+      "tps": 332.82,
+      "p99": 310.186,
+      "oracle": "PASS"
+    },
+    {
+      "case": "uniform-4-rest",
+      "commits": 256,
+      "tps": 226.77,
+      "p99": 573.697,
+      "oracle": "PASS"
+    },
+    {
+      "case": "uniform-4-grpc",
+      "commits": 256,
+      "tps": 154.45,
+      "p99": 1010.5,
+      "oracle": "PASS"
+    },
+    {
+      "case": "uniform-8-rest",
+      "commits": 256,
+      "tps": 95.11,
+      "p99": 1152.908,
+      "oracle": "PASS"
+    },
+    {
+      "case": "uniform-8-grpc",
+      "commits": 256,
+      "tps": 125.86,
+      "p99": 1158.944,
+      "oracle": "PASS"
+    },
+    {
+      "case": "uniform-16-rest",
+      "commits": 256,
+      "tps": 74.62,
+      "p99": 1940.251,
+      "oracle": "PASS"
+    },
+    {
+      "case": "uniform-16-grpc",
+      "commits": 256,
+      "tps": 70.73,
+      "p99": 2025.398,
+      "oracle": "PASS"
+    },
+    {
+      "case": "hot-1-rest",
+      "commits": 256,
+      "tps": 364.49,
+      "p99": 244.529,
+      "oracle": "PASS"
+    },
+    {
+      "case": "hot-1-grpc",
+      "commits": 256,
+      "tps": 377.49,
+      "p99": 248.724,
+      "oracle": "PASS"
+    },
+    {
+      "case": "hot-2-rest",
+      "commits": 256,
+      "tps": 287.2,
+      "p99": 364.508,
+      "oracle": "PASS"
+    },
+    {
+      "case": "hot-2-grpc",
+      "commits": 256,
+      "tps": 289.68,
+      "p99": 331.248,
+      "oracle": "PASS"
+    },
+    {
+      "case": "hot-4-rest",
+      "commits": 256,
+      "tps": 184.06,
+      "p99": 612.033,
+      "oracle": "PASS"
+    },
+    {
+      "case": "hot-4-grpc",
+      "commits": 256,
+      "tps": 171.88,
+      "p99": 690.342,
+      "oracle": "PASS"
+    },
+    {
+      "case": "hot-8-rest",
+      "commits": 256,
+      "tps": 93.92,
+      "p99": 1065.188,
+      "oracle": "PASS"
+    },
+    {
+      "case": "hot-8-grpc",
+      "commits": 256,
+      "tps": 90.14,
+      "p99": 1121.307,
+      "oracle": "PASS"
+    },
+    {
+      "case": "hot-16-rest",
+      "commits": 256,
+      "tps": 68.7,
+      "p99": 1912.24,
+      "oracle": "PASS"
+    },
+    {
+      "case": "hot-16-grpc",
+      "commits": 256,
+      "tps": 50.76,
+      "p99": 2106.017,
+      "oracle": "PASS"
+    }
+  ]
+}
