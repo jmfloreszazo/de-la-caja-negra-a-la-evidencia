@@ -47,7 +47,8 @@ def podman(*args, timeout=45, check=True, stdin=None):
         raise RuntimeError(
             "podman " + " ".join(map(str, args[:6])) +
             " exited " + str(process.returncode) + ": " +
-            process.stderr.decode(errors="replace")[-1800:]
+            "\\nSTDERR: " + process.stderr.decode(errors="replace")[-12000:] +
+            "\\nSTDOUT: " + process.stdout.decode(errors="replace")[-2500:]
         )
     return process.stdout.decode(errors="replace").strip()
 
