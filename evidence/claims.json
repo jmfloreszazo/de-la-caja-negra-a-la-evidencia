@@ -245,6 +245,20 @@
       "protocol": "lab/docs/EXPERIMENT_PROTOCOL.md"
     },
     {
+      "id": "E2-SMOKE",
+      "status": "ci_verified",
+      "es": "Orleans 10.4.0 y .NET 10: coordinación por grain con PostgreSQL como ledger autoritativo",
+      "en": "Orleans 10.4.0 and .NET 10: account-grain coordination with authoritative PostgreSQL ledger",
+      "scope_es": "Cinco controles sintéticos en CI: 15 casos por ruta directa/Orleans, carrera de sobregiro, idempotencia, fallos simulados y oráculo negativo independiente. Un único silo local; sin fallo real de silo, benchmark, escalado multinodo ni E2 global.",
+      "scope_en": "Five CI-tested synthetic controls: 15 cases per direct/Orleans route, overdraft race, idempotency, simulated faults and independent negative oracle. One local silo; no real silo crash, throughput benchmark, multinode scaling or overall E2 acceptance.",
+      "evidence": {
+        "kind": "github_actions",
+        "run_id": 41053628769,
+        "head_sha": "8eac88f835451e42e9adeb997c933aa4ac41427c"
+      },
+      "protocol": null
+    },
+    {
       "id": "E2",
       "status": "designed_not_executed",
       "es": "Orleans y ledger frente a distintas distribuciones de carga",
