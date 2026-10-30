@@ -201,7 +201,7 @@ assert runtime["database"]["npgsqlPackage"] == "10.0.3"
 assert re.fullmatch(r"[0-9a-f]{64}", runtime["container"]["imageId"])
 assert runtime["container"]["imageReference"] == "docker.io/library/postgres:16.13"
 assert len(runtime["container"]["repoDigests"]) >= 1
-assert all(re.fullmatch(r"[^\\s]+@sha256:[0-9a-f]{64}", digest)
+assert all(re.fullmatch(r"docker\\.io/library/postgres@sha256:[0-9a-f]{64}", digest)
            for digest in runtime["container"]["repoDigests"])
 assert len(runtime["sourceSha256"]) == 6
 for name, digest in runtime["sourceSha256"].items():
