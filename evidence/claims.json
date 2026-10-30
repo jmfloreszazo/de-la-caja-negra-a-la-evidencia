@@ -109,6 +109,20 @@
       "protocol": null
     },
     {
+      "id": "E1B-EXT",
+      "status": "ci_verified",
+      "es": "Extensión E1b .NET 10/Npgsql: agotamiento 55P03, recuperación idempotente y corrupción rechazada",
+      "en": "Extended E1b .NET 10/Npgsql: bounded 55P03 retry, idempotent recovery and rejected corruption",
+      "scope_es": "Diez controles sintéticos en PostgreSQL; incluye tres controles nuevos, sin paridad integral SQLite, SQL Server ni equivalencia mainframe.",
+      "scope_en": "Ten synthetic PostgreSQL controls, including three new cases; no complete SQLite or SQL Server parity or mainframe equivalence.",
+      "evidence": {
+        "kind": "github_actions",
+        "run_id": 41024101879,
+        "head_sha": "b84559ce06281eb79909640d69c298ba2f521367"
+      },
+      "protocol": null
+    },
+    {
       "id": "E1",
       "status": "partially_verified",
       "es": "Bloqueo por fila, deadlocks y write skew en SQL",
