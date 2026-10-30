@@ -123,6 +123,20 @@
       "protocol": null
     },
     {
+      "id": "E1B-REF",
+      "status": "ci_verified",
+      "es": "Paridad directa SQLite/.NET 10 frente a PostgreSQL/.NET 10 en 16 operaciones y liberación de bloqueo",
+      "en": "Direct SQLite/.NET 10 vs PostgreSQL/.NET 10 parity for 16 operations and mid-retry lock release",
+      "scope_es": "Solo los 16 escenarios secuenciales y un caso de desbloqueo sintéticos; todas las tablas persistidas coinciden y el oráculo PostgreSQL pasa. No equivale a la carga multiproceso completa, SQL Server ni mainframe.",
+      "scope_en": "Only 16 synthetic sequential scenarios and one lock-release case; all persisted tables match and the PostgreSQL oracle passes. No full multiprocess workload, SQL Server or mainframe equivalence.",
+      "evidence": {
+        "kind": "github_actions",
+        "run_id": 41031578923,
+        "head_sha": "222b10f4ff986c80edc0424e7bf107cd2e4f45b4"
+      },
+      "protocol": null
+    },
+    {
       "id": "E1",
       "status": "partially_verified",
       "es": "Bloqueo por fila, deadlocks y write skew en SQL",
