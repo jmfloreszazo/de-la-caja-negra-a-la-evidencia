@@ -36,7 +36,7 @@ public static class ClusterModes
         Environment.GetEnvironmentVariable("E2_CLUSTER_TEST") == "1" &&
         Environment.GetEnvironmentVariable("E2_CLUSTER_PROVIDER") == "adonet";
 
-    private static bool DisposableHost(string host) =>
+    private static bool DisposableHost(string? host) =>
         host is "127.0.0.1" or "localhost" ||
         (ContainerFixture && host == "e2f10-pg");
 
