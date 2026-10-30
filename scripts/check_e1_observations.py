@@ -211,4 +211,51 @@ for name, digest in runtime["sourceSha256"].items():
 print("E1b-runtime-manifest: source HEAD and checkout distinct; "
       "tool versions, image digest, six source hashes checked")
 
+# Full synthetic reference worker-matrix parity, with no throughput claim.
+matrix_record = json.loads((BASE / "e1b-multiprocess-parity.json").read_text(encoding="utf-8"))
+matrix = matrix_record["observation"]
+assert matrix_record["schemaVersion"] == matrix["schemaVersion"] == 1
+assert matrix_record["experiment"] == matrix["experiment"] == (
+    "E1b-multiprocess-logical-parity"
+)
+assert matrix_record["runId"] == 41034420329
+assert matrix_record["jobId"] == 123991639907
+assert matrix_record["artifactId"] == 12966729904
+assert matrix_record["sourceCommit"] == "a1df6da8ecdd491c3a1f10686904c5ac55a98bf9"
+assert re.fullmatch(r"[0-9a-f]{40}", matrix_record["checkoutCommit"])
+assert matrix_record["url"].endswith("/" + str(matrix_record["runId"]))
+assert matrix_record["classification"] == (
+    "EXECUTED_SYNTHETIC_CONCURRENT_CONTRACT_NOT_BENCHMARK"
+)
+assert matrix["classification"] == "SYNTHETIC_CONCURRENT_CONTRACT_NOT_THROUGHPUT"
+assert matrix["status"] == "PASS"
+assert len(matrix["controls"]) == 4
+assert all(s == "PASS" for s in matrix["controls"].values())
+assert matrix["referenceWorkerCounts"] == [1, 2, 4, 8]
+assert matrix["referencePatterns"] == ["uniform", "hot"]
+assert matrix["operationsPerWorker"] == 32
+assert matrix["totalLogicalOperations"] == 960
+assert len(matrix["cases"]) == 8
+for idx, case in enumerate(matrix["cases"]):
+    workers = (1, 2, 4, 8)[idx % 4]
+    pattern = ("uniform", "hot")[idx // 4]
+    assert case["pattern"] == pattern and case["workers"] == workers
+    assert case["operationsPerWorker"] == 32
+    assert case["operations"] == case["referenceCommitted"] == (
+        case["postgresCommitted"]
+    ) == workers * 32
+    assert case["persistedParity"] is True
+    assert case["accountCount"] == 16
+    assert case["operationCount"] == workers * 32
+    assert case["postingCount"] == workers * 64
+    assert case["outboxCount"] == workers * 32
+    assert len(case["oracle"]) == 7 and all(case["oracle"].values())
+assert len(matrix["sourceSha256"]) == 6
+for relative, digest in matrix["sourceSha256"].items():
+    file = ROOT / "lab" / relative
+    assert file.is_file(), file
+    assert hashlib.sha256(file.read_bytes()).hexdigest() == digest, relative
+print("E1b-multiprocess-parity: 8 cases, 960 logical transfers, all "
+      "persisted states and independent seven-invariant oracle checks PASS")
+
 print("E1 OBSERVATION SNAPSHOTS: PASS")
