@@ -151,6 +151,20 @@
       "protocol": null
     },
     {
+      "id": "E1B-RUNTIME",
+      "status": "ci_verified",
+      "es": "Manifiesto E1b: versiones y procedencia del contenedor",
+      "en": "E1b manifest: tool versions and container provenance",
+      "scope_es": "Una ejecución Linux sintética; no prueba de capacidad ni portabilidad general.",
+      "scope_en": "One synthetic Linux execution; no capacity or general portability proof.",
+      "evidence": {
+        "kind": "github_actions",
+        "run_id": 41033595770,
+        "head_sha": "338ef0292c67812cadfb3e9ab7436dad590dbcf8"
+      },
+      "protocol": null
+    },
+    {
       "id": "E1",
       "status": "partially_verified",
       "es": "Bloqueo por fila, deadlocks y write skew en SQL",
