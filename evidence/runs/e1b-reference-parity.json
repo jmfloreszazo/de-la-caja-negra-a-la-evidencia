@@ -1,0 +1,229 @@
+{
+  "schemaVersion": 1,
+  "experiment": "E1b-reference-parity",
+  "runId": 41031578923,
+  "jobId": 123982315732,
+  "artifactId": 12965693127,
+  "sourceCommit": "222b10f4ff986c80edc0424e7bf107cd2e4f45b4",
+  "checkoutCommit": "2a42c38952db2fbb80a17e8594647f414a39b84c",
+  "source": "GitHub Actions job log and original uploaded artifact; result was parsed from exact JSON emitted by test_reference_parity.py",
+  "url": "https://github.com/jmfloreszazo/de-la-caja-negra-a-la-evidencia/actions/runs/41031578923",
+  "classification": "EXECUTED_SYNTHETIC_FUNCTIONAL_PARITY_NOT_CAPACITY",
+  "observation": {
+    "schemaVersion": 1,
+    "experiment": "E1b-reference-parity",
+    "status": "PASS",
+    "classification": "SYNTHETIC_FUNCTIONAL_PARITY_NOT_CAPACITY",
+    "controls": {
+      "sequentialReferenceParity": "PASS",
+      "invalidInputNoMutation": "PASS",
+      "duplicateRejectionAndConflict": "PASS",
+      "faultRecoveryAndAmbiguousCommit": "PASS",
+      "lockReleaseUnderRetry": "PASS",
+      "persistedIndependentOracle": "PASS"
+    },
+    "cases": [
+      {
+        "case": "accepted",
+        "exitCode": 0,
+        "expectedStatus": "COMMITTED",
+        "persistedParity": true,
+        "accounts": 16,
+        "operations": 1,
+        "postings": 2,
+        "outbox": 1,
+        "oracle": "PASS"
+      },
+      {
+        "case": "duplicate-commit",
+        "exitCode": 0,
+        "expectedStatus": "DUPLICATE_COMMITTED",
+        "persistedParity": true,
+        "accounts": 16,
+        "operations": 1,
+        "postings": 2,
+        "outbox": 1,
+        "oracle": "PASS"
+      },
+      {
+        "case": "id-conflict",
+        "exitCode": 0,
+        "expectedStatus": "ID_CONFLICT",
+        "persistedParity": true,
+        "accounts": 16,
+        "operations": 1,
+        "postings": 2,
+        "outbox": 1,
+        "oracle": "PASS"
+      },
+      {
+        "case": "rejected",
+        "exitCode": 0,
+        "expectedStatus": "REJECTED",
+        "persistedParity": true,
+        "accounts": 16,
+        "operations": 2,
+        "postings": 2,
+        "outbox": 1,
+        "oracle": "PASS"
+      },
+      {
+        "case": "duplicate-rejection",
+        "exitCode": 0,
+        "expectedStatus": "DUPLICATE_REJECTED",
+        "persistedParity": true,
+        "accounts": 16,
+        "operations": 2,
+        "postings": 2,
+        "outbox": 1,
+        "oracle": "PASS"
+      },
+      {
+        "case": "rejection-conflict",
+        "exitCode": 0,
+        "expectedStatus": "ID_CONFLICT",
+        "persistedParity": true,
+        "accounts": 16,
+        "operations": 2,
+        "postings": 2,
+        "outbox": 1,
+        "oracle": "PASS"
+      },
+      {
+        "case": "invalid-operation-id",
+        "exitCode": 5,
+        "expectedStatus": null,
+        "persistedParity": true,
+        "accounts": 16,
+        "operations": 2,
+        "postings": 2,
+        "outbox": 1,
+        "oracle": "PASS"
+      },
+      {
+        "case": "invalid-zero",
+        "exitCode": 5,
+        "expectedStatus": null,
+        "persistedParity": true,
+        "accounts": 16,
+        "operations": 2,
+        "postings": 2,
+        "outbox": 1,
+        "oracle": "PASS"
+      },
+      {
+        "case": "invalid-self-transfer",
+        "exitCode": 5,
+        "expectedStatus": null,
+        "persistedParity": true,
+        "accounts": 16,
+        "operations": 2,
+        "postings": 2,
+        "outbox": 1,
+        "oracle": "PASS"
+      },
+      {
+        "case": "invalid-account",
+        "exitCode": 5,
+        "expectedStatus": null,
+        "persistedParity": true,
+        "accounts": 16,
+        "operations": 2,
+        "postings": 2,
+        "outbox": 1,
+        "oracle": "PASS"
+      },
+      {
+        "case": "exception-rollback",
+        "exitCode": 5,
+        "expectedStatus": null,
+        "persistedParity": true,
+        "accounts": 16,
+        "operations": 2,
+        "postings": 2,
+        "outbox": 1,
+        "oracle": "PASS"
+      },
+      {
+        "case": "process-crash-rollback",
+        "exitCode": 91,
+        "expectedStatus": null,
+        "persistedParity": true,
+        "accounts": 16,
+        "operations": 2,
+        "postings": 2,
+        "outbox": 1,
+        "oracle": "PASS"
+      },
+      {
+        "case": "lost-acknowledgment",
+        "exitCode": 92,
+        "expectedStatus": null,
+        "persistedParity": true,
+        "accounts": 16,
+        "operations": 3,
+        "postings": 4,
+        "outbox": 2,
+        "oracle": "PASS"
+      },
+      {
+        "case": "idempotent-replay",
+        "exitCode": 0,
+        "expectedStatus": "DUPLICATE_COMMITTED",
+        "persistedParity": true,
+        "accounts": 16,
+        "operations": 3,
+        "postings": 4,
+        "outbox": 2,
+        "oracle": "PASS"
+      },
+      {
+        "case": "retry-exception-operation",
+        "exitCode": 0,
+        "expectedStatus": "COMMITTED",
+        "persistedParity": true,
+        "accounts": 16,
+        "operations": 4,
+        "postings": 6,
+        "outbox": 3,
+        "oracle": "PASS"
+      },
+      {
+        "case": "retry-crashed-operation",
+        "exitCode": 0,
+        "expectedStatus": "COMMITTED",
+        "persistedParity": true,
+        "accounts": 16,
+        "operations": 5,
+        "postings": 8,
+        "outbox": 4,
+        "oracle": "PASS"
+      }
+    ],
+    "lockRelease": {
+      "referenceRetriesObserved": true,
+      "postgresRetrySqlstate": "55P03",
+      "candidateRetryCount": 1,
+      "persistedParity": true,
+      "accounts": 16,
+      "operations": 6,
+      "postings": 10,
+      "outbox": 5,
+      "oracle": "PASS"
+    },
+    "sourceSha256": {
+      "Bank/Program.cs": "72e6ff2bf59fd8889158b2488e3b8a5eb6f67b8e05cab27dc2336b74b6ad8253",
+      "Bank/Bank.csproj": "38e201f047792df530db8c7d157c2b6b19d1ed2e4134dba5da5c59e97d3b0da2",
+      "e1_pg/PgBank/Program.cs": "eb61acea9673cf14e999adf2c01a03df418c385dee0e3e1f6d777bbca53f5f32",
+      "e1_pg/PgBank/PgBank.csproj": "2ba00aa88740c8903fad8d3cddc3f72f06709b5a7c4ab5abed71b5c40a60f43e",
+      "e1_pg/test_reference_parity.py": "1eb6504d81227710fae7c91b905dc4c2055864c41fe7712b2a5141f0f2d92c62"
+    },
+    "environment": {
+      "postgresVersion": "16.13 (Debian 16.13-1.pgdg13+1)",
+      "sqliteVersion": "3.45.1",
+      "dotnetVersion": "10.0.403"
+    },
+    "elapsedSeconds": 11.038,
+    "limits": "Disposable, single-runner synthetic functional comparison: not a multi-process workload or performance parity test; not SQL Server, CICS, Db2, Azure, WAN or mainframe equivalence."
+  }
+}
