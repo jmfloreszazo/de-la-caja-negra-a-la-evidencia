@@ -72,7 +72,7 @@ def commands(profile):
         if dst >= src:
             dst += 1
         result.append({
-            "operationId": f"e2-{profile}-{i:03}",
+            "operationId": f"e2-{profile.replace('_', '-')}-{i:03}",
             "sourceAccountId": src,
             "targetAccountId": dst,
             "amountCents": 1,
