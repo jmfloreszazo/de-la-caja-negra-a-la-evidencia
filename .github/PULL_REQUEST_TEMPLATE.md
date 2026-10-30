@@ -23,7 +23,7 @@
 - [ ] Any new/changed chapter is maintained in **both Spanish and English** (`book/es/` and `book/en/`)
 - [ ] All code listings embedded in both book editions remain **in English**, including code comments and examples
 - [ ] No localized README or duplicated project documentation has been added under `lab/`
-- [ ] `python3 scripts/check_language_policy.py` passed; [policy](docs/LANGUAGE_POLICY.md) reviewed
+- [ ] `python3 scripts/check_language_policy.py` passed; [policy](../docs/LANGUAGE_POLICY.md) reviewed
 
 **Checks**
 
