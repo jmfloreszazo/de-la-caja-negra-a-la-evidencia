@@ -63,7 +63,6 @@ if "--online" in sys.argv:
     jobs=fetch("actions/runs/"+str(p["runId"])+"/jobs?per_page=100")["jobs"]
     assert any(j["id"]==p["jobId"] and j["name"]=="durable-evidence" and
                j["conclusion"]=="success" for j in jobs)
-    artifact=fetch("actions/artifacts/"+str(p["artifactId"]))
-    assert artifact["name"]==p["artifactName"]
-    # Actions artifacts may expire: the original complete JSON is kept in Git.
-    print("M2 LIVE SOURCE AND ARTIFACT PROVENANCE: PASS")
+    # GitHub Action artifacts expire; durable source-of-truth evidence is now
+    # the full raw JSON committed to Git and checked offline above.
+    print("M2 LIVE RUN/JOB PROVENANCE: PASS; original full JSON versioned in Git")

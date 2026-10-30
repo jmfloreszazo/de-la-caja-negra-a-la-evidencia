@@ -22,6 +22,12 @@ A [first executable .NET 10 microbenchmark](../lab/transport/README.md) compares
 
 **Deliberate classification**: local single-host / one database / 256 operations per scenario / closed-loop / no TLS. This is an experimental smoke test, not a cloud or mainframe benchmark; M2 does not complete E1 or E3. Follow on with real distributed infrastructure, TLS, open-loop load, failover and dated TCO in [issue #12](https://github.com/jmfloreszazo/de-la-caja-negra-a-la-evidencia/issues/12).
 
+## M2 verified local evidence · 30 October 2026
+
+[ES experimental report](../evidence/runs/M2.es.md) · [EN report](../evidence/runs/M2.md) · [full original CI result committed to Git](../evidence/runs/m2-full-summary.json) · [run #41016081107](https://github.com/jmfloreszazo/de-la-caja-negra-a-la-evidencia/actions/runs/41016081107).
+
+**All 20 synthetic SQL-backed cases passed**, with an independent read-only oracle after each case and a negative control rejecting a corrupted ledger. Observed throughput **fell** when multiple Kestrel processes competed for one hosted runner and one PostgreSQL database. This is **local smoke evidence**, not a mainframe or Azure scaling benchmark and not a basis to claim gRPC superiority. **E3 remains unexecuted.** The next gate is distributed replicas on separate nodes, equal TLS, an open-loop load generator, durability/failure injection, and dated TCO.
+
 ## Horizontal-first architecture and dated economics (new mandatory gates)
 
 **Do not replace the mainframe with a single enormous VM by default.** The workload must first be partitioned by business invariants and tested with horizontal replica counts 1/2/4/8/16 under fixed offered load. Candidate deployments: VM Scale Sets, AKS, Azure Container Apps and App Service, plus a viable on-premises baseline. Measure bottlenecks at the authoritative ledger, hot-key contention, CPU, memory, logging, quotas and WAN p99. Vertical scale remains a measured option for intrinsically serialized components, not the default answer.
