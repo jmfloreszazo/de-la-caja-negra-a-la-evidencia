@@ -51,22 +51,32 @@ The E1 experiment remains **partially verified**, and issue
 [#6](https://github.com/jmfloreszazo/de-la-caja-negra-a-la-evidencia/issues/6)
 remains open.
 
-## Outstanding gates
+## Completed additional E1b gates
 
-1. **Multiprocess logical-workload parity:** compare the reference's
-   `uniform` and `hot` workloads for 1/2/4/8 workers, with the same
-   operations and independent accounting controls. Distinguish an SQLite
-   *worker process* from a PostgreSQL *service replica* and report no
-   throughput-equivalence conclusion based on different launch models.
-2. **Evidence granularity and reproducibility:** retain full independent
-   oracle verdict vectors and negative-control outputs per comparison,
-   plus exact runtime/container digests and case manifests.
-3. **SQL Server:** isolation, deadlocks, retries and failure semantics
-   require their own implementation and test run under issue #7.
-4. **Operational capacity:** WAL checkpointing, PostgreSQL MVCC/VACUUM,
-   transaction-log storage, connection limits, replication, power loss,
-   backup/recovery, mainframe workload and branch WAN remain outside this
-   synthetic experiment.
+- The [uniform/hot reference worker matrix](../../evidence/runs/e1b-multiprocess-parity.json)
+  has now been executed: **1/2/4/8 workers × 32 transfers per worker ×
+  2 distributions = 960 logical transfers**. All eight scenarios retained
+  matching persisted account, operation, posting and outbox state, and all
+  seven independent accounting invariants passed in
+  [CI #41034420329](https://github.com/jmfloreszazo/de-la-caja-negra-a-la-evidencia/actions/runs/41034420329).
+  SQLite ran the original long-lived worker processes; PostgreSQL started
+  separate .NET CLI processes per transfer. **This is not equivalent
+  throughput or latency evidence.**
+- The [full independent oracle vectors](../../evidence/runs/e1b-oracle-vectors.json)
+  record all seven invariant verdicts before, during and after deliberate
+  ledger corruption. The [dated runtime manifest](../../evidence/runs/e1b-runtime-manifest.json)
+  pins the observed source and test checkout commits, tool versions and
+  PostgreSQL image digests.
+
+## Outstanding gates beyond E1b
+
+1. **SQL Server (E1c):** implement and test vendor-specific deadlock,
+   isolation, retry and recovery behavior under [issue #7](https://github.com/jmfloreszazo/de-la-caja-negra-a-la-evidencia/issues/7).
+2. **Production and operational capacity:** WAL checkpointing, PostgreSQL
+   MVCC/VACUUM, logging/storage capacity, connections, replica/failover
+   semantics, power loss, backup/recovery, mainframe workload and branch WAN
+   remain outside this synthetic contract. E3 requires an approved capacity
+   contract and independent real-infrastructure measurements.
 
 ## Primary technical references
 
