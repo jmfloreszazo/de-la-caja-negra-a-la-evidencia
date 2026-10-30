@@ -22,7 +22,7 @@ def invoke(*args, expected=0):
     p=subprocess.run([DOTNET,str(DLL),"transfer",*map(str,args)],
                      text=True,capture_output=True,timeout=35,env=os.environ)
     assert p.returncode==expected,(p.returncode,p.stdout,p.stderr)
-    return json.loads(p.stdout) if expected==0 else None
+    return json.loads(p.stdout) if p.stdout.strip().startswith("{") else None
 
 
 def snapshot():
@@ -93,6 +93,56 @@ def main():
     assert invoke("lost",2,1,10)["status"]=="DUPLICATE_COMMITTED"
     assert all(verify().values()),verify()
 
+    # E1b-specific bounded lock retry: a real PostgreSQL row remains locked
+    # longer than all six Npgsql lock_timeout attempts (SQLSTATE 55P03).
+    # A failed transfer must have no postings or outbox side effects.
+    with connect() as holder:
+        with holder.transaction():
+            holder.execute("SELECT id FROM accounts WHERE id=5 FOR UPDATE")
+            exhausted=invoke("dotnet-exhausted",5,6,10,expected=7)
+            assert exhausted["status"]=="RETRY_EXHAUSTED",exhausted
+            assert exhausted["retries"]==6,exhausted
+            assert exhausted["retry_sqlstates"]==["55P03"]*6,exhausted
+            with connect() as observer:
+                assert observer.execute(
+                    "SELECT COUNT(*) FROM operations WHERE id=%s",
+                    ("dotnet-exhausted",)
+                ).fetchone()[0]==0
+                assert observer.execute(
+                    "SELECT COUNT(*) FROM postings WHERE op=%s",
+                    ("dotnet-exhausted",)
+                ).fetchone()[0]==0
+                assert observer.execute(
+                    "SELECT COUNT(*) FROM outbox WHERE op=%s",
+                    ("dotnet-exhausted",)
+                ).fetchone()[0]==0
+
+    # The same operation commits once after the lock is released.
+    recovered=invoke("dotnet-exhausted",5,6,10)
+    assert recovered["status"]=="COMMITTED",recovered
+    assert invoke("dotnet-exhausted",5,6,10)["status"]=="DUPLICATE_COMMITTED"
+
+    # Corrupt a committed .NET posting, require independent oracle rejection,
+    # then restore the exact original row (never leave test data corrupted).
+    with connect() as db:
+        posting=db.execute(
+            "SELECT op,account,delta FROM postings "
+            "WHERE op=%s ORDER BY account LIMIT 1",("dotnet-exhausted",)
+        ).fetchone()
+        assert posting is not None
+        db.execute("DELETE FROM postings WHERE op=%s AND account=%s",
+                   (posting[0],posting[1]))
+    try:
+        corrupted=verify()
+        assert corrupted["twoPostingsPerCommit"] is False,corrupted
+    finally:
+        with connect() as db:
+            db.execute(
+                "INSERT INTO postings(op,account,delta) VALUES(%s,%s,%s)",
+                posting
+            )
+    assert all(verify().values()),verify()
+
     summary={
         "status":"PASS",
         "module":"E1b PostgreSQL Npgsql 10.0.3 / .NET 10 differential slice",
@@ -108,6 +158,9 @@ def main():
             "idempotencyAndConflict":"PASS","exceptionRollback":"PASS",
             "processCrashRollback":"PASS","commitWithoutResponse":"PASS",
             "independentOracle":"PASS",
+            "boundedNpgsqlLockRetry":"PASS",
+            "postTimeoutRecoveryAndIdempotency":"PASS",
+            "dotnetPostingCorruptionRejected":"PASS",
         },
         "elapsedSeconds":round(time.perf_counter()-start,3),
         "limits":"Synthetic controlled PostgreSQL; no real CICS/Db2 or mainframe performance equivalence."
