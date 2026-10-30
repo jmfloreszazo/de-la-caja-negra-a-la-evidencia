@@ -39,7 +39,7 @@ public static class ClusterModes
 
     private static bool DisposableHost(string? host) =>
         host is "127.0.0.1" or "localhost" ||
-        (ContainerFixture && (host is "e2f10-pg" or "10.78.31.10"));
+        (ContainerFixture && (host is "e2f10-pg" or "10.78.30.10" or "10.78.31.10"));
 
     // Switching providers is a test-fixture choice, not a change in
     // account authority or a different durable transfer implementation.
