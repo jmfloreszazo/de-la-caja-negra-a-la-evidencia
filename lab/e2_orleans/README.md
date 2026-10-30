@@ -1,7 +1,6 @@
 # E2 · Orleans-led account coordination (planned experiment)
 
-**NOT IMPLEMENTED OR EXECUTED.** E2 has no passing Orleans CI test,
-throughput result or production claim. Its detailed executable acceptance
+**FIRST FUNCTIONAL SLICE IMPLEMENTED, NOT YET VERIFIED.** The E2 branch contains a .NET 10 Orleans 10.4.0 co-hosted silo and a shared PostgreSQL ledger for direct and grain-routed transfers. The newly added CI must PASS before any execution claim can be recorded. No throughput, multiple-silo or production proof exists. Its detailed executable acceptance
 contract is in [EXPERIMENT_PROTOCOL.md](EXPERIMENT_PROTOCOL.md). This
 engineering laboratory and all future source, fixtures and READMEs are
 **English only**.
