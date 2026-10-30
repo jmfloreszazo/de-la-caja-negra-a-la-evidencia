@@ -14,6 +14,14 @@ This is **experimental evidence**, not a benchmark or a claim of mainframe equiv
 | Tested environment | PostgreSQL 16.13, Linux/Podman runner | .NET 10, Npgsql 10.0.3 and PostgreSQL |
 | Not demonstrated | Production load, MIPS, CICS, distributed recovery | All SQLite contract controls and SQL Server |
 
+## SQL Server E1c: full synthetic worker-matrix result · 30 October 2026
+
+[Original successful CI #41042317263](https://github.com/jmfloreszazo/de-la-caja-negra-a-la-evidencia/actions/runs/41042317263) · [versioned machine-readable execution](e1c-sqlserver-worker-parity.json). The unchanged .NET 10/SQLite reference and an independent .NET 10/SQL Server 2022 Developer candidate performed eight synthetic uniform/hot-account scenarios with **1, 2, 4 and 8 workers, 32 commands per worker**. Across all eight cases, **960 transfers were committed by each candidate**, all four persisted tables matched and each of the seven independent accounting invariants returned true. The preserved record contains the exact run and job, original artifact ID, source and merge-checkout SHAs, source hashes and case-level results.
+
+The earlier [E1c initial 8-control run](e1c-sqlserver-initial.json) and [10-control extension](e1c-sqlserver-extended.json) independently demonstrate real SQL Server `1205` deadlock retries, six bounded `1222` lock timeouts, `SNAPSHOT` write-skew negative control, `SERIALIZABLE` defense, rejected ledger corruption, database uniqueness, and a separate SqlClient `-2` command timeout. The old E1a/E1b rows above describe their **original historical runs only**.
+
+**Scope boundary:** SQLite's long-lived workers differ from SQL Server's per-transfer .NET CLI processes. This is functional/accounting parity within the exact synthetic matrix, **not** latency, throughput, production bank, power-loss durability, SQL Server HA or mainframe MIPS evidence. Overall E1 is still marked partially verified and the branch is not merged.
+
 ## Extended E1b observation · 30 October 2026
 
 The original [7-control E1b record](e1b.json) remains unchanged. A **separate, actual GitHub Actions execution** added three controls to the .NET 10/Npgsql candidate: bounded `55P03` lock retry exhaustion (six attempts with no ledger side effects), successful retry and idempotency after unlocking, and an independent SQL oracle rejecting a deliberately corrupted .NET posting before the posting was restored.
