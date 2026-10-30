@@ -27,7 +27,20 @@ for x in claims:
         if evidence is not None: errors.append(label+': unexecuted status has purported proof')
         if not x.get('protocol') or not (ROOT/x.get('protocol','__missing__')).is_file(): errors.append(label+': no protocol')
     if label=='E1' and st!='partially_verified': errors.append('E1: expected partial verification status until full acceptance')
-    if label in {'E2','E3','E4'} and st!='designed_not_executed': errors.append(label+': promotion needs new executed evidence and revised gate')
+    if label in {'E3','E4'} and st!='designed_not_executed':
+        errors.append(label+': promotion needs new executed evidence and revised gate')
+    if label=='E2' and st not in {'designed_not_executed','partially_verified'}:
+        errors.append('E2: full acceptance requires a separately validated evidence gate')
+e2_status=next((x['status'] for x in claims if x['id']=='E2'),None)
+if e2_status=='partially_verified':
+    # Promotion from a design-only umbrella is allowed ONLY when separate
+    # independently traced, successful CI claims already exist. The umbrella
+    # still must not claim distributed failover or sustained capacity.
+    prerequisites=('E2-SMOKE','E2-LOAD','E2-PROCESS-KILL')
+    for child in prerequisites:
+        claim=next((x for x in claims if x['id']==child),{})
+        if claim.get('status')!='ci_verified' or not claim.get('evidence'):
+            errors.append('E2 partial verification missing CI provenance: '+child)
 if any(next((x for x in claims if x['id']==key),{}).get('status')!='ci_verified' for key in ('E1A','E1B')):
     errors.append('E1 may be partially verified only if E1A/E1B have independent CI proof')
 for f in ('docs/EVIDENCE.md','docs/EVIDENCE.es.md'):

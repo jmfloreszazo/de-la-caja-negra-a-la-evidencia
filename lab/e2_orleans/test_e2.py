@@ -124,7 +124,7 @@ def baseline_sequences():
     reset()
     reset_reference()
     for label, cmd, exit_code, status in commands:
-        args = [cmd["operationId"], cmd["sourceAccountIdId"] if False else cmd["sourceAccountId"],
+        args = [cmd["operationId"], cmd["sourceAccountId"],
                 cmd["targetAccountId"], cmd["amountCents"]]
         sqlite_args = ["transfer", SQLITE_FILE, *args]
         pg_args = ["transfer", *args]
@@ -316,7 +316,7 @@ def main():
         },
         "limitations": (
             "Real single-host co-located Orleans grain with PostgreSQL durability. "
-             "Exception and lost-response controls are simulated, NOT actual silo "
+            "Exception and lost-response controls are simulated, NOT actual silo "
             "process crash. No distributed Orleans silos, open-loop workload, "
             "5-percent-hot/50-percent-intent benchmarks, p99 or production/MIPS."
         )
