@@ -12,9 +12,9 @@ permissions:
 
 jobs:
   orleans-functional:
-    name: Orleans grain and independent SQL oracle
+    name: Orleans grain, SQL oracle and synthetic workloads
     runs-on: ubuntu-24.04
-    timeout-minutes: 30
+    timeout-minutes: 45
     env:
       E1_PG_DSN: "host=127.0.0.1 port=55434 dbname=e2lab user=postgres password=e2local"
       E1_PG_NPGSQL: "Host=127.0.0.1;Port=55434;Database=e2lab;Username=postgres;Password=e2local;Pooling=false"
@@ -55,6 +55,8 @@ jobs:
           podman --version > lab/results/e2/podman-version.txt
       - name: Execute direct and real Orleans grain differential controls
         run: python3 lab/e2_orleans/test_e2.py
+      - name: Verify fixed-seed 1000-account route parity and hot-key workloads
+        run: python3 lab/e2_orleans/test_workloads.py
       - name: Upload original, non-promoted E2 smoke evidence
         if: always()
         uses: actions/upload-artifact@v6
