@@ -22,6 +22,14 @@ The original [7-control E1b record](e1b.json) remains unchanged. A **separate, a
 
 **Observed: PASS for all 10 controls.** The original 7-control execution is historical and its source digest is pinned to its 2026-10-29 commit; the extended record's source digests are matched to the current branch. The offline validator does **not** pretend that the historical test script equals the updated one. Neither result completes the full SQLite reference contract, E1c, or E1 overall.
 
+## Direct SQLite ↔ PostgreSQL contract parity · 30 October 2026
+
+The new [immutable E1b-reference-parity JSON](e1b-reference-parity.json) preserves the **actual** [CI run #41031578923](https://github.com/jmfloreszazo/de-la-caja-negra-a-la-evidencia/actions/runs/41031578923), its job and artifact identifiers, source commit, original checkout, source hashes, 16 individual cases and tool versions. The original **unchanged .NET 10/SQLite executable** and the **.NET 10/Npgsql PostgreSQL executable** received identical synthetic operations. After **each** case, balances, operation records, postings and outbox matched, with a passing independent PostgreSQL accounting oracle.
+
+Coverage includes committed/rejected and duplicate operations, conflicting IDs, invalid inputs, exceptions and process death before commit, lost acknowledgment after commit and subsequent safe replay. A real SQLite write lock and a PostgreSQL row lock were each released while their respective clients retried; PostgreSQL observed `55P03` and then committed once. The six control groups and all 16 sequential cases passed.
+
+**Not demonstrated:** the entire SQLite multiprocess workload matrix, identical lock implementations or timings, SQL Server equivalence, durability after power loss, WAN, or mainframe throughput. The earlier E1b records remain intact. E1 remains partially verified.
+
 ## Three inspectable findings
 
 1. **Recovered deadlock:** PostgreSQL returned `40P01`; the whole transaction was retried and both transfers ultimately committed without duplicate postings.
