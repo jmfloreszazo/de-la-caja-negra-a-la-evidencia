@@ -30,6 +30,12 @@ Se probaron confirmación y rechazo, duplicados y conflictos de identidad, entra
 
 **No demostrado:** toda la matriz multiproceso SQLite, equivalencia de mecanismos o tiempos de bloqueo, SQL Server, durabilidad ante corte eléctrico, WAN ni capacidad mainframe. Se mantienen intactos los registros E1b anteriores y E1 global sigue parcialmente verificado.
 
+## Vectores completos del oráculo independiente · 30 de octubre de 2026
+
+[Ejecución original #41032714628](https://github.com/jmfloreszazo/de-la-caja-negra-a-la-evidencia/actions/runs/41032714628) · [Vectores antes/corrupto/restaurado](e1b-oracle-vectors.json). El oráculo PostgreSQL independiente y de solo lectura evaluó siete invariantes tras la prueba directa entre motores. Los siete pasaron inicialmente. Al eliminar un asiento realmente confirmado se detectaron exactamente **tres fallos**: `balancedPostings`, `twoPostingsPerCommit` y `projectionAgrees`. La restauración de la misma fila devolvió los siete a PASS. Se conservan la ejecución, el manifiesto y el artefacto CI originales.
+
+Es un **control negativo sintético en una sola base de datos**, no una simulación de fallos productivos ni una demostración de capacidad mainframe. Los hashes del código se comprueban sin reescribir las observaciones históricas. E1 global continúa parcialmente verificado.
+
 ## Tres hallazgos que se pueden comprobar
 
 1. **Deadlock recuperado:** PostgreSQL emitió `40P01`, se reintentó la transacción completa y terminaron dos transferencias confirmadas, sin duplicar asientos.
