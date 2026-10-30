@@ -6,6 +6,8 @@ import sys
 import argparse
 import os
 from urllib.request import Request, urlopen
+from urllib.error import HTTPError, URLError
+import time
 ROOT=Path(__file__).resolve().parents[1]
 data=json.loads((ROOT/'evidence/claims.json').read_text(encoding='utf-8'))
 errors=[]
@@ -55,8 +57,22 @@ def github_resource(path, token):
         'X-GitHub-Api-Version':'2022-11-28',
         'User-Agent':'Evidence-Audit-CI'
     })
-    with urlopen(req, timeout=25) as stream:
-        return json.load(stream)
+    # GitHub's historical run API can briefly return 502/503. Retry
+    # transient transport failures only; NEVER waive provenance checks.
+    # Authentication failures, missing resources, mismatched SHA or CI
+    # failures must still fail closed.
+    for attempt in range(4):
+        try:
+            with urlopen(req, timeout=25) as stream:
+                return json.load(stream)
+        except HTTPError as ex:
+            if ex.code not in {429, 500, 502, 503, 504} or attempt == 3:
+                raise
+        except URLError:
+            if attempt == 3:
+                raise
+        time.sleep(2 ** attempt)
+    raise RuntimeError('GitHub provenance API did not recover')
 
 def validate_live_provenance():
     token=os.environ.get('GITHUB_TOKEN')
