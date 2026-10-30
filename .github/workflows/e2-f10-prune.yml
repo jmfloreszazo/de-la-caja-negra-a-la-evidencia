@@ -1,0 +1,57 @@
+name: One-time safe cleanup of merged E2-F10 experiment branch
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/e2-f10-prune.yml'
+
+permissions:
+  contents: write
+
+concurrency:
+  group: once-e2-f10-merge-pruning
+  cancel-in-progress: false
+
+jobs:
+  prune-verified-merged-e2-f10:
+    name: Delete E2-F10 branch only at exact merged SHA
+    if: >-
+      ${{ github.ref == 'refs/heads/main' && startsWith(github.event.head_commit.message, 'merge: E2 F10') }}
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          fetch-depth: 0
+      - name: Refuse deletion on any mismatch, unmerged change or concurrent update
+        env:
+          GH_TOKEN: ${{ github.token }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          test "$GITHUB_REF" = "refs/heads/main"
+          test "$GITHUB_REPOSITORY" = "jmfloreszazo/de-la-caja-negra-a-la-evidencia"
+          git fetch --no-tags origin main
+          test "$(git rev-parse HEAD)" = "$(git rev-parse origin/main)"
+          branch="experiment/e2-f10-podman-network-namespaces"
+          test "$(gh api "repos/$GITHUB_REPOSITORY/pulls/27" --jq '.merged')" = "true"
+          expected="$(gh api "repos/$GITHUB_REPOSITORY/pulls/27" --jq '.head.sha')"
+          test -n "$expected"
+          current="$(gh api "repos/$GITHUB_REPOSITORY/git/ref/heads/$branch" --jq '.object.sha')"
+          test "$current" = "$expected" || {
+            echo "::error::Branch changed; refusing deletion"
+            exit 1
+          }
+          git fetch --no-tags origin "refs/heads/$branch:refs/remotes/origin/$branch"
+          git merge-base --is-ancestor "$expected" HEAD || {
+            echo "::error::Unmerged commits; refusing deletion"
+            exit 1
+          }
+          current="$(gh api "repos/$GITHUB_REPOSITORY/git/ref/heads/$branch" --jq '.object.sha')"
+          test "$current" = "$expected" || {
+            echo "::error::Concurrent ref update; refusing deletion"
+            exit 1
+          }
+          gh api --method DELETE "repos/$GITHUB_REPOSITORY/git/refs/heads/$branch"
+          echo "Removed only the exact safely merged PR 27 branch: $branch at $expected"

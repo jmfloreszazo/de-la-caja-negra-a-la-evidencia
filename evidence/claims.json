@@ -371,6 +371,20 @@
       "protocol": null
     },
     {
+      "id": "E2-PODMAN",
+      "status": "ci_verified",
+      "es": "Orleans 10.4.0 con cuatro espacios de red Podman distintos, cliente externo y recuperación real tras SIGKILL",
+      "en": "Orleans 10.4.0 with four distinct Podman network namespaces, external client, and actual SIGKILL recovery",
+      "scope_es": "CI original confirma cuatro namespaces de red y direcciones privadas distintas para PostgreSQL, dos silos y cliente; Orleans descubre gateways mediante ADO.NET; el secundario muere con salida 137, membresía pasa de Active 3 a Dead 6, grain se reactiva, replay idempotente, ledger 3/6/3 y oráculo 7/7. Todos los contenedores viven en UN solo host físico. No se ha simulado partición de red ni probado HA física.",
+      "scope_en": "Original CI establishes four separate Podman network namespaces and private IPs for PostgreSQL, two silos and external client; Orleans discovers gateways through ADO.NET. The secondary is SIGKILLed with exit code 137, membership transitions Active 3 to Dead 6, the grain reactivates, replay is idempotent, ledger counts 3/6/3 and independent oracle 7/7. ONE physical runner; no injected network partitions or physical HA.",
+      "evidence": {
+        "kind": "github_actions",
+        "run_id": 41126502385,
+        "head_sha": "0aff6e22eecece2157cf867eddece5d9b7964ccc"
+      },
+      "protocol": null
+    },
+    {
       "id": "E2",
       "status": "partially_verified",
       "es": "Orleans y ledger frente a distintas distribuciones de carga",

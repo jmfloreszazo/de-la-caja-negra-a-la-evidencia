@@ -38,7 +38,7 @@ if e2_status=='partially_verified':
     # Promotion from a design-only umbrella is allowed ONLY when separate
     # independently traced, successful CI claims already exist. The umbrella
     # still must not claim distributed failover or sustained capacity.
-    prerequisites=('E2-SMOKE','E2-LOAD','E2-PROCESS-KILL','E2-CROSSED','E2-REENTRANCY','E2-DEADLOCK','E2-MULTIPROCESS','E2-ADONET','E2-INFLIGHT')
+    prerequisites=('E2-SMOKE','E2-LOAD','E2-PROCESS-KILL','E2-CROSSED','E2-REENTRANCY','E2-DEADLOCK','E2-MULTIPROCESS','E2-ADONET','E2-INFLIGHT','E2-PODMAN')
     for child in prerequisites:
         claim=next((x for x in claims if x['id']==child),{})
         if claim.get('status')!='ci_verified' or not claim.get('evidence'):
@@ -118,6 +118,7 @@ def validate_live_provenance():
                 41084584229:{'Orleans grain, SQL oracle and synthetic workloads'},
                 41098437285:{'Orleans grain, SQL oracle and synthetic workloads'},
                 41102529778:{'Orleans grain, SQL oracle and synthetic workloads'},
+                41126502385:{'E2-F10 four Podman netns and SQL-grain recovery oracle'},
             }.get(run_id,set())
             if not expected.issubset({j['name'] for j in jobs if j['conclusion']=='success'}):
                 errors.append('CI run '+str(run_id)+' is missing a required successful job')

@@ -25,11 +25,21 @@ public static class ClusterModes
     // Only the isolated E2-F09 fixture may choose a different deployment
     // identity; this avoids stale membership records between failure cases.
     private static string Cluster =>
+        ContainerFixture ? "e2-f10-podman-bridge" :
         Environment.GetEnvironmentVariable("E2_INFLIGHT_TEST") == "1" &&
         Environment.GetEnvironmentVariable("E2_CLUSTER_INSTANCE") is
             ("e2-inflight-pre" or "e2-inflight-post")
         ? Environment.GetEnvironmentVariable("E2_CLUSTER_INSTANCE")!
         : "e2-local-recovery";
+    private static bool ContainerFixture =>
+        Environment.GetEnvironmentVariable("E2_NETWORK_TEST") == "1" &&
+        Environment.GetEnvironmentVariable("E2_CLUSTER_TEST") == "1" &&
+        Environment.GetEnvironmentVariable("E2_CLUSTER_PROVIDER") == "adonet";
+
+    private static bool DisposableHost(string? host) =>
+        host is "127.0.0.1" or "localhost" ||
+        (ContainerFixture && host == "e2f10-pg");
+
     // Switching providers is a test-fixture choice, not a change in
     // account authority or a different durable transfer implementation.
     private static bool AdoNet =>
@@ -41,10 +51,9 @@ public static class ClusterModes
             ?? throw new InvalidOperationException(
                 "An explicitly configured E2_MEMBERSHIP_NPGSQL is required for ADO.NET membership");
         var info = new NpgsqlConnectionStringBuilder(connection);
-        if (info.Database != "e2lab" ||
-            info.Host is not ("127.0.0.1" or "localhost"))
+        if (info.Database != "e2lab" || !DisposableHost(info.Host))
             throw new InvalidOperationException(
-                "The disposable membership database must be e2lab over loopback");
+                "Membership requires disposable loopback e2lab or explicitly opted-in e2f10-pg container");
         return connection;
     }
     private static readonly JsonSerializerOptions JsonOptions =
@@ -61,9 +70,9 @@ public static class ClusterModes
         var conn = Environment.GetEnvironmentVariable("E2_PG_NPGSQL")
             ?? throw new InvalidOperationException("E2_PG_NPGSQL is required");
         var info = new NpgsqlConnectionStringBuilder(conn);
-        if (info.Database != "e2lab" ||
-            info.Host is not ("127.0.0.1" or "localhost"))
-            throw new InvalidOperationException("The cluster fixture requires a disposable loopback e2lab database");
+        if (info.Database != "e2lab" || !DisposableHost(info.Host))
+            throw new InvalidOperationException(
+                "The cluster fixture requires disposable loopback e2lab or opted-in e2f10-pg");
 
         if (args.Length == 2 && args[0] == "silo" && (args[1] is "primary" or "secondary"))
             return await RunSilo(conn, args[1]);
@@ -75,6 +84,19 @@ public static class ClusterModes
 
         Console.Error.WriteLine("Usage: cluster silo <primary|secondary> | cluster client probe | cluster client execute <scenario.json>");
         return 4;
+    }
+
+    private static IPAddress AdvertisedAddress(string role)
+    {
+        if (!ContainerFixture)
+            return IPAddress.Loopback;
+        // No arbitrary advertised addresses or public endpoints. This is
+        // an explicitly disposable Podman bridge, NOT a production mode.
+        var expected = role == "primary" ? "10.78.30.11" : "10.78.30.12";
+        if (Environment.GetEnvironmentVariable("E2_ADVERTISED_IP") != expected)
+            throw new InvalidOperationException(
+                "E2-F10 silo must advertise the exact fixed private bridge address");
+        return IPAddress.Parse(expected);
     }
 
     private static async Task<int> RunSilo(string conn, string role)
@@ -107,7 +129,8 @@ public static class ClusterModes
                     options.ClusterId = Cluster;
                 })
                 .ConfigureEndpoints(siloPort: port, gatewayPort: gateway,
-                    advertisedIP: IPAddress.Loopback));
+                    advertisedIP: AdvertisedAddress(role),
+                    listenOnAnyHostAddress: ContainerFixture));
         }
         else
         {
@@ -162,13 +185,20 @@ public static class ClusterModes
             if (scenarioPath is null)
             {
                 var hosts = new Dictionary<int, int>();
+                var nodes = new Dictionary<int, string>();
                 for (var account = 1; account <= 16; account++)
-                    hosts.Add(account, await cluster.GetGrain<IAccountGrain>(account).HostProcessId());
+                {
+                    var grain = cluster.GetGrain<IAccountGrain>(account);
+                    hosts.Add(account, await grain.HostProcessId());
+                    nodes.Add(account, await grain.HostNodeIdentity());
+                }
                 Console.WriteLine(JsonSerializer.Serialize(new {
                     experiment = "E2-Two-Independent-OS-Silos",
                     status = "PROBED",
                     clientPid = Environment.ProcessId,
-                    accountHostPids = hosts
+                    accountHostPids = hosts,
+                    accountHostNodes = nodes,
+                    clientNodeIdentity = Environment.MachineName + ":" + Environment.ProcessId
                 }, JsonOptions));
                 return 0;
             }
@@ -188,7 +218,8 @@ public static class ClusterModes
                 outcome.Add(new {
                     command = cmd.OperationId, result.Status, result.Retries,
                     result.RetrySqlStates, result.HandledBy,
-                    actualSiloProcessId = await grain.HostProcessId()
+                    actualSiloProcessId = await grain.HostProcessId(),
+                    actualSiloNodeIdentity = await grain.HostNodeIdentity()
                 });
             }
             Console.WriteLine(JsonSerializer.Serialize(new {

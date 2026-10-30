@@ -27,6 +27,14 @@ def main():
     assert os.environ.get("E1_PG_DSN"), "Disposable E1_PG_DSN is required"
     # The container and database are named constants to prevent accidental
     # provisioning of membership into external or production databases.
+    target = os.environ.get("E2_POSTGRES_CONTAINER", "e2-postgres")
+    assert target in ("e2-postgres", "e2f10-pg"), (
+        "Membership schema may be installed only in an allowlisted disposable container"
+    )
+    if target == "e2f10-pg":
+        assert os.environ.get("E2_NETWORK_TEST") == "1", (
+            "E2-F10 requires explicit network-fixture opt-in"
+        )
     manifest = []
     for path, expected in SCRIPTS:
         url = "https://raw.githubusercontent.com/dotnet/orleans/" + COMMIT + "/" + path
@@ -38,7 +46,7 @@ def main():
         ).hexdigest()
         assert git_sha == expected, ("Official source changed", path, git_sha)
         result = subprocess.run(
-            ["podman", "exec", "-i", "e2-postgres",
+            ["podman", "exec", "-i", target,
              "psql", "-X", "-v", "ON_ERROR_STOP=1", "-U", "postgres",
              "-d", "e2lab", "-q"],
             input=data, stdout=subprocess.PIPE, stderr=subprocess.PIPE,
