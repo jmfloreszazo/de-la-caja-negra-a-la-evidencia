@@ -19,7 +19,7 @@ The overall protocol is in [`lab/docs/EXPERIMENT_PROTOCOL.md`](lab/docs/EXPERIME
 | Phase | Verified state and limits | Tracking |
 |---|---|---|
 | E1a · PostgreSQL 16 under Podman | Executed in CI: deadlocks, isolation and persisted oracle; not a banking-capacity or complete-E1 claim. | [Evidence](evidence/runs/README.md) |
-| E1b · .NET 10/Npgsql | Initial 7-control and extended [10-control E1b CI run](https://github.com/jmfloreszazo/de-la-caja-negra-a-la-evidencia/actions/runs/41024101879) passed; exhaustive SQLite reference parity remains outstanding. | [#6](https://github.com/jmfloreszazo/de-la-caja-negra-a-la-evidencia/issues/6) |
+| E1b · .NET 10/Npgsql | Initial 7-control and extended [10-control E1b CI run](https://github.com/jmfloreszazo/de-la-caja-negra-a-la-evidencia/actions/runs/41024101879) passed; [16-case direct SQLite/PostgreSQL parity + lock release](https://github.com/jmfloreszazo/de-la-caja-negra-a-la-evidencia/actions/runs/41031578923) also passed. Full multiprocess reference parity remains open. | [#6](https://github.com/jmfloreszazo/de-la-caja-negra-a-la-evidencia/issues/6) |
 | E1c · SQL Server | Implementation and SQL Server-specific semantic tests pending. | [#7](https://github.com/jmfloreszazo/de-la-caja-negra-a-la-evidencia/issues/7) |
 | M1 · non-durable gRPC/REST | Executed localhost microbenchmark; neither banking transaction nor WAN benchmark. | [Report](evidence/runs/M1.md) · [#12](https://github.com/jmfloreszazo/de-la-caja-negra-a-la-evidencia/issues/12) |
 | M2 · PostgreSQL-backed gRPC/REST | Twenty durable cases executed on one runner with one shared database; no distributed-scale claim. | [Report](evidence/runs/M2.md) · [#12](https://github.com/jmfloreszazo/de-la-caja-negra-a-la-evidencia/issues/12) |
