@@ -14,6 +14,14 @@ This is **experimental evidence**, not a benchmark or a claim of mainframe equiv
 | Tested environment | PostgreSQL 16.13, Linux/Podman runner | .NET 10, Npgsql 10.0.3 and PostgreSQL |
 | Not demonstrated | Production load, MIPS, CICS, distributed recovery | All SQLite contract controls and SQL Server |
 
+## Extended E1b observation · 30 October 2026
+
+The original [7-control E1b record](e1b.json) remains unchanged. A **separate, actual GitHub Actions execution** added three controls to the .NET 10/Npgsql candidate: bounded `55P03` lock retry exhaustion (six attempts with no ledger side effects), successful retry and idempotency after unlocking, and an independent SQL oracle rejecting a deliberately corrupted .NET posting before the posting was restored.
+
+[Immutable extended record](e1b-extended.json) · [GitHub Actions run #41024101879](https://github.com/jmfloreszazo/de-la-caja-negra-a-la-evidencia/actions/runs/41024101879) · [original job and raw artifact](https://github.com/jmfloreszazo/de-la-caja-negra-a-la-evidencia/actions/runs/41024101879).
+
+**Observed: PASS for all 10 controls.** The original 7-control execution is historical and its source digest is pinned to its 2026-10-29 commit; the extended record's source digests are matched to the current branch. The offline validator does **not** pretend that the historical test script equals the updated one. Neither result completes the full SQLite reference contract, E1c, or E1 overall.
+
 ## Three inspectable findings
 
 1. **Recovered deadlock:** PostgreSQL returned `40P01`; the whole transaction was retried and both transfers ultimately committed without duplicate postings.
@@ -26,6 +34,6 @@ This is **experimental evidence**, not a benchmark or a claim of mainframe equiv
 python3 scripts/check_e1_observations.py
 ```
 
-The check verifies original source SHA-256 values and cited controls. Each JSON preserves `runId`, `jobId`, source commit, limitations and observations. The elapsed time reflects only **this synthetic test**, not production transactional latency.
+The checker validates recorded controls, current source SHA-256 values for current-code observations, and the pinned commit/source manifest of the historical E1b observation; it does not byte-match historical sources against updated code. Each JSON preserves `runId`, `jobId`, source commit, limitations and observations. The elapsed time reflects only **this synthetic test**, not production transactional latency.
 
 The overall experiment remains **E1 partially verified**: E1c and comprehensive reference-contract parity are outstanding.
