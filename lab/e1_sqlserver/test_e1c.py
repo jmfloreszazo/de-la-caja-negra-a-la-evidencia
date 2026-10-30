@@ -46,7 +46,7 @@ def cli(dll, *args, expected=0, timeout=70, extra_env=None):
         str(dll), args, result.returncode, result.stdout, result.stderr
     )
     text = result.stdout.strip()
-    return json.loads(text) if text.startswith("{") else text
+    return json.loads(text) if text.startswith(("{", "[")) else text
 
 
 def fixture(*args):
