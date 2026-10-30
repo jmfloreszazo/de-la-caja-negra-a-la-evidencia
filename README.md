@@ -29,6 +29,10 @@ An open book and a runnable lab on how to modernize COBOL systems without bettin
 
 38 chapters (including chapter 25 bis) in seven parts, an epilogue, seven annexes and 41 diagrams per language (C4, UML sequence, state and class, ER, gitGraph), drawn in Mermaid and published as images in the book's visual style. Both editions have exactly the same structure, and CI fails if they drift apart.
 
+## Languages: book versus code
+
+**The book is always published in Spanish and English. All executable projects and their README files, code, comments, tests, logs and CI are in English only.** Code listings also stay in English in both editions. [Language policy](docs/LANGUAGE_POLICY.md) · [contribution and agent rules](AGENTS.md).
+
 ## Run the lab
 
 ```bash

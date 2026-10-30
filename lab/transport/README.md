@@ -1,6 +1,6 @@
 # M1 · gRPC/Protobuf vs REST/JSON: a reproducible transport-only experiment
 
-**Status: implementation awaiting CI evidence. Not a bank transaction performance result.** [Español](README.es.md).
+**Status: executed and archived in the evidence registry. Not a bank transaction performance result.**
 
 This is an independent .NET 10 test service exposing the **same stateless transfer decision** through:
 - `POST /v1/transfer` with JSON over **HTTP/2**
@@ -29,4 +29,4 @@ CI runs separate 2,500-request-per-round profiles at concurrency 8 and 32; each 
 
 The named packages are pinned: [Grpc.AspNetCore 2.84.0](https://www.nuget.org/packages/Grpc.AspNetCore/2.84.0), Grpc.Net.Client 2.84.0 and Grpc.Tools 2.84.0.
 
-Results are uploaded as a CI artifact **and not copied into the repository as verified evidence until a successful run is inspected and its provenance is recorded**.
+Recorded runs, original p99/throughput observations and their provenance are preserved in [the M1 evidence report](../../evidence/runs/M1.md) and checked in CI. These are local transport-only observations, not a cloud or banking-core benchmark.

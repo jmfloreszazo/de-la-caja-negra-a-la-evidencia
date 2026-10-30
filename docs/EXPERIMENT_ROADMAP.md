@@ -1,6 +1,6 @@
 # Experimental completion roadmap (E1–E4)
 
-This is an **engineering execution plan**, not a new book edition. Every experiment starts unverified and must produce an independent, inspectable result before the status in `evidence/claims.json` may change. Core COBOL/SQLite reference snapshots remain pinned.
+This is an **English-only engineering execution plan**, not a new book edition. Every executable lab and its README stays in English; the book itself is maintained in both Spanish and English (see [language policy](LANGUAGE_POLICY.md)). Every experiment starts unverified and must produce an independent, inspectable result before the status in `evidence/claims.json` may change. Core COBOL/SQLite reference snapshots remain pinned.
 
 | Phase | Work | Exit gate | State | Tracking |
 | --- | --- | --- | --- | --- |

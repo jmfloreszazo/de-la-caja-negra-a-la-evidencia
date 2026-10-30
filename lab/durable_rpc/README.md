@@ -1,6 +1,6 @@
 # M2 · Durable ledger behind REST and gRPC, local scale-out
 
-[Español](README.es.md)
+**Language:** English-only engineering project. The book provides both Spanish and English explanations.
 
 **First executable slice, not a production benchmark.** This experiment extends M1: REST/JSON and gRPC/Protobuf now call the **same** .NET 10/Npgsql implementation that commits to a real PostgreSQL 16.13 database. Both are HTTP/2 **without TLS** on the same GitHub Linux runner.
 
@@ -19,6 +19,6 @@ python3 lab/durable_rpc/test_m2.py
 podman rm -f m2-pg
 ```
 
-**Evidence rules:** every CI job uploads `lab/results/m2/`. A verified run may be summarized under `evidence/runs/` with run/job SHA and independent oracle results. No change to the baseline COBOL/SQLite hashes. E1 remains partially verified; E3 remains unexecuted until representative infrastructure, open-loop offered load, capacity contract and WAN costs have been tested.
+**Evidence rules:** every CI job uploads `lab/results/m2/`. The original complete 20-scenario M2 execution report, independent SQL-oracle outcomes and CI provenance are now versioned in [M2 evidence](../../evidence/runs/M2.md). No change to the baseline COBOL/SQLite hashes. E1 remains partially verified; E3 remains unexecuted until representative infrastructure, open-loop offered load, capacity contract and WAN costs have been tested.
 
 Next: equivalent TLS/mTLS; warm and cold service health; true distributed ingress, retries, cancellation, account-hotspot contention and N-1 failure; then Azure VMSS, AKS and PaaS cost per durable accepted transfer.

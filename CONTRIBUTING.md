@@ -3,7 +3,7 @@
 > [!IMPORTANT]
 > This repository is governed like the book it contains: every change brings its reason and, whenever possible, its proof. Nobody approves their own oracle, and an honest `INCONCLUSIVE` is worth more than a forced `PASS`.
 
-You do not need to write a chapter to help. A well-reported erratum, a report that the lab does not start on your Mac or a clearer diagram improve the book as much as a new section. Questions are welcome in Spanish or English in [Discussions](../../discussions); everything else in the repository is written in English so that anyone can take part.
+You do not need to write a chapter to help. A well-reported erratum, a report that the lab does not start on your Mac or a clearer diagram improve the book as much as a new section. Questions are welcome in Spanish or English in [Discussions](../../discussions). **Engineering projects, tests, CLI documentation and automation are English-only**; the book and reader-facing companion commentary may be Spanish/English. See [Language policy](docs/LANGUAGE_POLICY.md).
 
 ## Choose your path
 
@@ -35,6 +35,7 @@ git switch -c errata/ch-17-deadlock
 #   book/es/parte-4-patrones/17-...md  and  book/en/part-4-patterns/17-...md
 
 python3 scripts/build.py      # regenerate book/es.md and book/en.md
+python3 scripts/check_language_policy.py # English code/projects, bilingual book boundary
 python3 scripts/check.py      # links, es/en sync, generated files
 npx markdownlint-cli2 "**/*.md"
 
