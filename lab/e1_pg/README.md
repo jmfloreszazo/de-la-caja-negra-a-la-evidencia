@@ -4,6 +4,18 @@ This is the **first executable slice** of [E1](../docs/EXPERIMENT_PROTOCOL.md). 
 
 The [Npgsql 10.0.3](https://www.nuget.org/packages/Npgsql/10.0.3) candidate is validated by running `python3 lab/e1_pg/test_dotnet.py` after installing .NET 10 SDK. The test resets the disposable database between Python and C# runs and compares persisted account, operation, posting and outbox state. It also runs concurrent and injected-failure cases.
 
+A new **direct cross-engine contract comparison** runs the unchanged .NET 10 SQLite executable and the PostgreSQL .NET 10 candidate against the same sequence. It compares the full persisted state (accounts, operations, postings and outbox) after each of 16 requests and independently checks the PostgreSQL ledger. It also verifies a lock released during a retry on each engine; PostgreSQL must record SQLSTATE `55P03` and commit safely once. [CI run #41031578923](https://github.com/jmfloreszazo/de-la-caja-negra-a-la-evidencia/actions/runs/41031578923) and [immutable raw snapshot](../../evidence/runs/e1b-reference-parity.json) document the observed PASS.
+
+After starting the disposable database as above and setting both `E1_PG_DSN` and `E1_PG_NPGSQL`, reproduce the **direct** comparison only after building the candidate:
+
+```bash
+dotnet build lab/e1_pg/PgBank -c Release
+python3 lab/e1_pg/test_reference_parity.py
+python3 scripts/check_e1_observations.py
+```
+
+Both test harnesses **reset/destroy the disposable test database**. Neither reproduces the full SQLite multiprocess workload, a SQL Server implementation, power-loss behavior, production load or mainframe capacity; [issue #6](https://github.com/jmfloreszazo/de-la-caja-negra-a-la-evidencia/issues/6) stays open.
+
 The protected reference ledger under `lab/Bank/`, `lab/bank_test.py` and `lab/reference-results/` remains untouched.
 
 ## Run
