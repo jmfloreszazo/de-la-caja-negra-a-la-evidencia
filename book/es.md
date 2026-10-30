@@ -1727,6 +1727,10 @@ En [Azure Container Apps](https://learn.microsoft.com/en-us/azure/container-apps
 
 El [ensayo ejecutado M1](../evidence/runs/M1.es.md) comparó gRPC/Protobuf y REST/JSON con **HTTP/2 sobre localhost, sin TLS ni base de datos**, en .NET 10. GitHub registró 2.500 solicitudes por ronda y concurrencia 8 y 32. Ambas rutas devolvieron resultados correctos, pero **no hubo superioridad sistemática de gRPC en el p99**. Es una advertencia importante: ni el protocolo ni el payload más pequeño prueban una mejora del commit bancario; la siguiente prueba debe incluir persistencia, canales TLS y distribución entre réplicas.
 
+##### M2 · Cuando 16 procesos rinden menos que uno
+
+La [evidencia M2 ejecutada](../evidence/runs/M2.es.md) conecta **REST y gRPC al mismo ledger PostgreSQL durable**. Sobre un runner compartido, la serie de 20 casos (1/2/4/8/16 procesos, dos protocolos, tráfico uniforme y cuenta caliente) produjo **20 PASS contables**: 256 commits, 512 asientos y 256 eventos outbox por caso. Los procesos adicionales **no aceleraron el sistema**; a 16 procesos la carga competía por una CPU pequeña y una única BD. El gráfico y todos los valores están conservados en el repositorio. **No lo confundamos con un benchmark Azure**: faltan nodos independientes, TLS, carga abierta y fallos de red.
+
 #### Precios fechados y TCO: que no nos engañe el precio por vCPU
 
 La consulta oficial realizada **el 29-10-2026 a las 18:26 UTC**, en West Europe (Linux, consumo, EUR orientativo), devolvió **D4as_v5 0,1830 €/h**, **D4s_v5 0,2024 €/h** y **D8as_v5 0,3661 €/h**. Esto implica **400,77 €/mes** de cómputo para tres D4as_v5 durante 730 horas, frente a **801,54 €/mes** para seis, siempre sin BD, discos, redes o alta disponibilidad. Los medidores, `effectiveStartDate` y fuente CI están en el registro enlazado.

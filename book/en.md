@@ -1729,6 +1729,10 @@ Compare offered load, committed TPS, p50/p95/p99, CPU and allocated MB per reque
 
 The [executed M1 study](../evidence/runs/M1.md) compared gRPC/Protobuf with REST/JSON using **HTTP/2 on loopback without TLS or a database**, under .NET 10. GitHub recorded 2,500 requests per trial at concurrency 8 and 32. Both paths returned oracle-correct results, but **gRPC did not show consistent p99 superiority**. A smaller transport payload does not prove a faster banking commit; the next experiment must include durable persistence, equivalent TLS and per-replica distribution.
 
+##### M2 · When sixteen service processes are slower than one
+
+The [executed M2 evidence](../evidence/runs/M2.md) connects **REST and gRPC to the same durable PostgreSQL ledger**. On one hosted runner, the 20-scenario matrix (1/2/4/8/16 processes, two protocols, uniform and hot-account traffic) achieved **20 accounting PASS results**: 256 commits, 512 postings and 256 outbox entries per scenario. Adding processes **did not improve throughput** on this constrained machine and shared database. The results and chart are versioned. **This is not an Azure scale-out benchmark**: independent nodes, TLS, open-loop traffic and failover still need testing.
+
 #### Dated prices, not a deceptive vCPU-to-mainframe TCO
 
 The official Azure API retrieval on **29 October 2026 at 18:26 UTC** (West Europe, Linux, pay-as-you-go, indicative EUR) returned **D4as_v5 €0.1830/h**, **D4s_v5 €0.2024/h** and **D8as_v5 €0.3661/h**. Three always-on D4as_v5 workers for 730 hours represent **€400.77/month of compute alone**; six represent **€801.54/month**, excluding database, disks, networking and redundancy. Exact meters, `effectiveStartDate` and CI source are in the linked registry.
