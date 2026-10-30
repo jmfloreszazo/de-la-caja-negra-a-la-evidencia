@@ -64,5 +64,5 @@
       }
     }
   ],
-  "limitations": "Two Orleans silo OS processes, independent client and one PostgreSQL backend on a single Linux runner. The observed pre-commit waiting condition uses a synthetic test-only advisory-lock gate. Not physical node/failure-zone isolation, network partition, PostgreSQL high availability, production capacity or IBM Z/MIPS performance equivalence."
+  "limitations": "Two Orleans silo OS processes, independent client and one PostgreSQL backend on a single Linux runner. The observed pre-commit waiting condition uses a synthetic test-only advisory-lock gate. Not physical node/failure-zone isolation, network partition, PostgreSQL high availability, production capacity or mainframe/IBM Z MIPS performance equivalence."
 }
