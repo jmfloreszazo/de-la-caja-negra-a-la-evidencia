@@ -72,6 +72,37 @@ retains the raw six-run metrics and environment fingerprints. **The
 measured p95/p99 are from one co-located local runner and must not be
 presented as an Orleans scaling advantage or production SLA.**
 
+## Real single-cohost process-death control
+
+The [original run #41056976342](https://github.com/jmfloreszazo/de-la-caja-negra-a-la-evidencia/actions/runs/41056976342)
+hard-killed the **actual** co-hosted Orleans/.NET process using SIGKILL
+through both the direct-ledger and grain-routed paths. For each route,
+the run injected death both **before** and **after** PostgreSQL COMMIT.
+
+- Before COMMIT: the connection terminated and **zero** operation,
+  posting or outbox rows persisted; fresh-host retry committed once.
+- After COMMIT: the original operation, **two** postings and **one**
+  outbox row persisted; fresh-host retry returned
+  `DUPLICATE_COMMITTED` with no second debit.
+- An isolated **deliberately unsafe split-SQL debit** failed the
+  independent `conserved` and `projectionAgrees` invariants, and
+  restoring the row made all seven pass.
+
+Run the recorded controls on the same disposable E2 PostgreSQL fixture:
+
+```bash
+python3 lab/e2_orleans/test_process_crash.py
+python3 scripts/check_e2_process_kill_observations.py
+```
+
+The [complete original vectors](../../evidence/runs/e2-orleans-process-kill.json)
+retain the SIGKILL exit codes, four post-death states, recovery outcomes,
+original job/artifact IDs, source SHA-256 manifest and independent oracle.
+**This is one local process dying, not multi-silo reassignment, quorum
+recovery, node failure, power loss, or production durability certification.**
+The negative split is a SQL fixture, not production actor code; an
+additional Orleans reentrancy negative control is still pending.
+
 ## Evidence and release policy
 
 No E2 claims may enter the verified evidence registry until actual
