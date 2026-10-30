@@ -44,6 +44,31 @@ conditional debit or operation-ID uniqueness.
 
 `test_e2.py` additionally exercises 32 concurrent, evenly balanced A→B and B→A transfers through each of the direct and Orleans routes. The required checks are all 32 durable commits, exactly 64 postings and 32 outbox events, unchanged opening balances for both accounts, equal persisted snapshots and seven independent SQL invariants. This exercises competing source-account requests, **not** an artificially induced PostgreSQL 40P01 deadlock, Orleans reentrancy or multi-silo failover. [CI #41059475191](https://github.com/jmfloreszazo/de-la-caja-negra-a-la-evidencia/actions/runs/41059475191) passed this gate, with [the archived summary](../../evidence/runs/e2-orleans-crossed.json) and the [unaltered original raw artifact](https://github.com/jmfloreszazo/de-la-caja-negra-a-la-evidencia/actions/runs/41059475191/artifacts/12977474457).
 
+## Real PostgreSQL deadlock and whole-transaction retry fixture
+
+A deliberately unsafe **test-only** first attempt acquires the source
+account's PostgreSQL row lock, synchronizes two opposing transactions
+and then requests the other account's row. A real PostgreSQL deadlock
+detector must abort one transaction with `40P01`. The failed operation
+must retry its **entire** SQL transaction using the normal ordered
+locking path, preserving the authoritative ledger.
+
+Only `E2_ENABLE_DEADLOCK_FIXTURE=1`, two exact synthetic IDs,
+account pairs 1→2 / 2→1 and amount 41 cents can activate the
+unsafe path; the fixture rejects commands otherwise.
+
+```bash
+python3 lab/e2_orleans/test_deadlock.py
+```
+
+The gate requires one real `40P01` victim per route, both transfers
+committed, exactly two operations/four postings/two outbox events,
+idempotent stable-ID replay, payload-conflict rejection, matching
+four-table SHA across routes and seven independent SQL invariants.
+**This fixture is pending an original successful CI execution** and
+is not evidence of a natural deadlock rate, multi-silo failover or
+mainframe capacity.
+
 ## Unsafe Orleans reentrancy negative control
 
 The isolated `UnsafeReentrantCounterGrain` deliberately uses Orleans

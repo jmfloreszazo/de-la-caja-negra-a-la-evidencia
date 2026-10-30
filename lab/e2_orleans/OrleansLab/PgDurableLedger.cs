@@ -9,6 +9,29 @@ public sealed class PgDurableLedger(NpgsqlDataSource source) : IDurableLedger
     private static readonly int MaxSyntheticAccount =
         Environment.GetEnvironmentVariable("E2_MAX_ACCOUNT_ID") == "1000" ? 1000 : 16;
 
+    // Only two fixed synthetic commands may bypass the safe lock order.
+    private static bool DeadlockFixture(TransferCommand c) =>
+        Environment.GetEnvironmentVariable("E2_ENABLE_DEADLOCK_FIXTURE") == "1" &&
+        c.Fault == "deadlock-once" && c.AmountCents == 41 &&
+        ((c.OperationId == "e2-deadlock-a" &&
+          c.SourceAccountId == 1 && c.TargetAccountId == 2) ||
+         (c.OperationId == "e2-deadlock-b" &&
+          c.SourceAccountId == 2 && c.TargetAccountId == 1));
+
+    private static class DeadlockBarrier
+    {
+        private static int _arrivals;
+        private static readonly TaskCompletionSource<bool> Ready =
+            new(TaskCreationOptions.RunContinuationsAsynchronously);
+
+        public static async Task BothSourceLocksHeld()
+        {
+            if (Interlocked.Increment(ref _arrivals) == 2)
+                Ready.TrySetResult(true);
+            await Ready.Task.WaitAsync(TimeSpan.FromSeconds(15));
+        }
+    }
+
     public static bool Valid(TransferCommand command) =>
         command.OperationId is not null &&
         Regex.IsMatch(command.OperationId, @"\A[A-Za-z0-9-]{1,80}\z") &&
@@ -16,8 +39,8 @@ public sealed class PgDurableLedger(NpgsqlDataSource source) : IDurableLedger
         command.TargetAccountId >= 1 && command.TargetAccountId <= MaxSyntheticAccount &&
         command.SourceAccountId != command.TargetAccountId &&
         command.AmountCents is > 0 and <= 1_000_000_000_000 &&
-        command.Fault is "none" or "throw-after-debit" or "lost-response" or
-        "kill-before-commit" or "kill-after-commit";
+        (command.Fault is "none" or "throw-after-debit" or "lost-response" or
+        "kill-before-commit" or "kill-after-commit" || DeadlockFixture(command));
 
     public async Task<TransferResult> Transfer(TransferCommand command)
     {
@@ -31,7 +54,10 @@ public sealed class PgDurableLedger(NpgsqlDataSource source) : IDurableLedger
             {
                 await using var db = await source.OpenConnectionAsync();
                 await using var tx = await db.BeginTransactionAsync();
-                await Execute(tx, "SET LOCAL lock_timeout = '750ms'");
+                var inject = attempt == 0 && DeadlockFixture(command);
+                await Execute(tx, inject
+                    ? "SET LOCAL lock_timeout = '5s'"
+                    : "SET LOCAL lock_timeout = '750ms'");
                 await Execute(tx, "SELECT pg_advisory_xact_lock(hashtextextended($1,0))",
                     command.OperationId);
 
@@ -48,11 +74,33 @@ public sealed class PgDurableLedger(NpgsqlDataSource source) : IDurableLedger
                 }
                 else
                 {
-                    foreach (var account in new[] {command.SourceAccountId, command.TargetAccountId}.Order())
+                    if (inject)
                     {
+                        // Deliberately unsafe two-transaction cycle, test-only:
+                        // acquire the source row, synchronize, then lock the
+                        // opposite row. PostgreSQL must choose a 40P01 victim.
                         if (await Scalar(tx,
-                            "SELECT id FROM accounts WHERE id=$1 FOR UPDATE", account) is null)
-                            throw new InvalidOperationException("Missing account row");
+                            "SELECT id FROM accounts WHERE id=$1 FOR UPDATE",
+                            command.SourceAccountId) is null)
+                            throw new InvalidOperationException("Missing source row");
+                        await DeadlockBarrier.BothSourceLocksHeld();
+                        if (await Scalar(tx,
+                            "SELECT id FROM accounts WHERE id=$1 FOR UPDATE",
+                            command.TargetAccountId) is null)
+                            throw new InvalidOperationException("Missing target row");
+                    }
+                    else
+                    {
+                        // All ordinary commands, including the victim's retry,
+                        // acquire rows in one safe, ascending order.
+                        foreach (var account in new[] {
+                            command.SourceAccountId, command.TargetAccountId
+                        }.Order())
+                        {
+                            if (await Scalar(tx,
+                                "SELECT id FROM accounts WHERE id=$1 FOR UPDATE", account) is null)
+                                throw new InvalidOperationException("Missing account row");
+                        }
                     }
 
                     var affected = await Execute(tx,

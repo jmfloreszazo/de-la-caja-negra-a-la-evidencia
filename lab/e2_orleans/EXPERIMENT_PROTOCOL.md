@@ -90,7 +90,7 @@ in a performance comparison.
 | E2-F01 | Protected 16-account E1 sequential reference suite | Same statuses and all four persisted tables; 7/7 independent oracle verdicts |
 | E2-F02 | Parallel duplicate IDs and two-source overdraft race | One durable effect per operation ID, no negative balances |
 | E2-F03 | Lost response after commit; replay and competing retries | Exactly once **durable business effect** via operation-ID idempotency (not exactly-once message delivery) |
-| E2-F04 | Opposite-account transfers and database deadlock | Crossed A→B/B→A concurrent transfer parity **CI-verified**; a deterministic 40P01 deadlock and full-transaction retry are **not yet verified**. No partial postings/outbox |
+| E2-F04 | Opposite-account transfers and database deadlock | Crossed transfer parity **CI-verified**; a separate opt-in PostgreSQL 40P01 deadlock + full-transaction retry test is **implemented, CI pending**. Safe ordered locks remain the default |
 | E2-F05 | Crash a grain/silo before SQL commit; restart | No partial SQL state; retry succeeds or remains a recorded failure |
 | E2-F06 | Crash a grain/silo after SQL commit, before response | Recovered persisted COMMITTED outcome; no duplicate debit/posting/outbox |
 | E2-N01 | Unsafe two-grain independent debit/credit, isolated disposable fixture | Independent oracle **rejects** non-atomic split; candidate must never use this design |
@@ -132,6 +132,31 @@ from durable committed transfers.
 - Use the **same independent seven-invariant SQL oracle** as E1 on
   each case and a negative corrupted-ledger fixture independent of the
   candidate grain code.
+
+## Real PostgreSQL deadlock and whole-transaction retry fixture
+
+A deliberately unsafe **test-only** first attempt acquires the source
+account's PostgreSQL row lock, synchronizes two opposing transactions
+and then requests the other account's row. A real PostgreSQL deadlock
+detector must abort one transaction with `40P01`. The failed operation
+must retry its **entire** SQL transaction using the normal ordered
+locking path, preserving the authoritative ledger.
+
+Only `E2_ENABLE_DEADLOCK_FIXTURE=1`, two exact synthetic IDs,
+account pairs 1→2 / 2→1 and amount 41 cents can activate the
+unsafe path; the fixture rejects commands otherwise.
+
+```bash
+python3 lab/e2_orleans/test_deadlock.py
+```
+
+The gate requires one real `40P01` victim per route, both transfers
+committed, exactly two operations/four postings/two outbox events,
+idempotent stable-ID replay, payload-conflict rejection, matching
+four-table SHA across routes and seven independent SQL invariants.
+**This fixture is pending an original successful CI execution** and
+is not evidence of a natural deadlock rate, multi-silo failover or
+mainframe capacity.
 
 ## Failure and cancellation semantics
 

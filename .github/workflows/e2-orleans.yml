@@ -55,6 +55,8 @@ jobs:
           podman --version > lab/results/e2/podman-version.txt
       - name: Execute direct and real Orleans grain differential controls
         run: python3 lab/e2_orleans/test_e2.py
+      - name: Require a real PostgreSQL 40P01 and full-transaction recovery on each route
+        run: python3 lab/e2_orleans/test_deadlock.py
       - name: Verify fixed-seed 1000-account route parity and hot-key workloads
         run: python3 lab/e2_orleans/test_workloads.py
       - name: Exercise real Orleans cohost SIGKILL, recovery and negative split oracle
