@@ -1,0 +1,73 @@
+name: One-time prune of verified merged E1/E2 branches
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/prune-merged-e1-e2.yml'
+
+permissions:
+  contents: write
+
+concurrency:
+  group: one-time-merged-e1-e2-prune
+  cancel-in-progress: false
+
+jobs:
+  prune-verified-branches:
+    name: Delete exact E1/E2 heads only after ancestry and lease checks
+    if: ${{ github.ref == 'refs/heads/main' && startsWith(github.event.head_commit.message, 'merge: prune verified merged E1 E2 branches') }}
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - name: Checkout merged main
+        uses: actions/checkout@v5
+        with:
+          fetch-depth: 0
+      - name: Fail closed and delete only three already-merged experiment refs
+        env:
+          GH_TOKEN: ${{ github.token }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          test "$GITHUB_REF" = "refs/heads/main"
+          git fetch --no-tags origin main
+          test "$(git rev-parse HEAD)" = "$(git rev-parse origin/main)"
+
+          # Snapshot SHA leases verified by comparing each old branch with
+          # main after PR #19 merged. Never delete a changed branch.
+          declare -A expected=(
+            [experiment/e1-postgres-row-locking]=5053d50f4dffc4899cec1277d4b63b4512609c3d
+            [experiment/e2-orleans-durable-ledger]=e87d873759460b1437a54afe116d4a2e9b85047b
+            [experiment/e2-multiprocess-silo-recovery]=8df38ab599ddb48140c38eb5e748e58aac5bbf5f
+          )
+          branches=(
+            experiment/e1-postgres-row-locking
+            experiment/e2-orleans-durable-ledger
+            experiment/e2-multiprocess-silo-recovery
+          )
+
+          # Validate ALL candidates before deleting ANY of them.
+          for branch in "${branches[@]}"; do
+            current="$(gh api "repos/$GITHUB_REPOSITORY/git/ref/heads/$branch" --jq '.object.sha')"
+            if [[ "$current" != "${expected[$branch]}" ]]; then
+              echo "::error::Ref changed: $branch; refusing to remove anything."
+              exit 1
+            fi
+            git fetch --no-tags origin "refs/heads/$branch:refs/remotes/origin/$branch"
+            if ! git merge-base --is-ancestor "$current" HEAD; then
+              echo "::error::Unmerged work found on $branch; refusing cleanup."
+              exit 1
+            fi
+            echo "Validated $branch at $current as ancestor of main."
+          done
+
+          for branch in "${branches[@]}"; do
+            # Recheck immediately before each destructive API call.
+            current="$(gh api "repos/$GITHUB_REPOSITORY/git/ref/heads/$branch" --jq '.object.sha')"
+            test "$current" = "${expected[$branch]}" || {
+              echo "::error::Concurrent ref update: $branch"; exit 1;
+            }
+            gh api --method DELETE "repos/$GITHUB_REPOSITORY/git/refs/heads/$branch"
+            echo "Deleted verified merged branch: $branch"
+          done
