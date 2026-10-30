@@ -1,10 +1,10 @@
 #!/usr/bin/env python3
 """Verify the archived E1c SQL Server worker-matrix execution, fail closed.
 
-This is a check of one completed CI observation and its exact current source
-bytes, NOT a benchmark or proof of production/mainframe capacity.
+This validates the immutable historical source manifest of one CI execution;
+the latest persistent-worker source is validated by the companion E1c checker.
+Neither is a production or mainframe performance benchmark.
 """
-import hashlib
 import json
 from pathlib import Path
 import re
@@ -62,12 +62,21 @@ for i, case in enumerate(data["cases"]):
 
 assert data["environment"]["sqlServerVersion"].startswith("16.")
 assert data["environment"]["dotnetSdk"].startswith("10.")
-assert len(data["sourceSha256"]) == 6
-for rel, expected in data["sourceSha256"].items():
-    source = ROOT / "lab" / rel
-    assert source.is_file(), rel
-    actual = hashlib.sha256(source.read_bytes()).hexdigest()
-    assert actual == expected, (rel, expected, actual)
+# The 41042317263 observation was produced before the persistent-worker
+# source change. Its original source manifest is immutable and must match
+# the recorded hashes, NOT the latest working-tree files. Current source
+# hashes are checked separately against the subsequent 41043087791
+# persistent-worker run in scripts/check_e1c_observations.py.
+EXPECTED_HISTORICAL_SOURCE_SHA256 = {
+    "Bank/Program.cs": "72e6ff2bf59fd8889158b2488e3b8a5eb6f67b8e05cab27dc2336b74b6ad8253",
+    "bank_test.py": "4e633c890889bf7a6db48f0dfc9b1f6d1cb16c75a5795c6d497eb1c7545f6ca5",
+    "e1_sqlserver/SqlBank/Program.cs": "2af2bd31c70e5031dfe8ae9ba2c82b0e441214cfb156d329519b6c2b7a81a4cb",
+    "e1_sqlserver/SqlOracle/Program.cs": "687fd9d50c44012ae608b9437e3bfa501fc9e3364ccd20a9b9d091cb669a0324",
+    "e1_sqlserver/test_e1c.py": "d3e62b4f96f9599d2deaa9c9e11bf5ae9c44fee06f772eb4898c1ec356c13e9b",
+    "e1_sqlserver/test_worker_parity.py": "f12230bb8680c56ce925344eea2cf1eac015f2847c255bfad8519ab145ca7f44",
+}
+assert data["sourceSha256"] == EXPECTED_HISTORICAL_SOURCE_SHA256
+assert len(EXPECTED_HISTORICAL_SOURCE_SHA256) == 6
 
 print("E1C SQL SERVER WORKER MATRIX: PASS; eight cases, 960 matching "
       "transfers per engine, seven independent invariants per case. "
