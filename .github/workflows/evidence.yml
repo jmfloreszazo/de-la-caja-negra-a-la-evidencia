@@ -15,6 +15,7 @@ on:
       - 'scripts/check_e2_inflight_observations.py'
       - 'scripts/check_e2_podman_observations.py'
       - 'scripts/check_e2_live_network_loss_observations.py'
+      - 'scripts/check_e2_sql_partition_observations.py'
       - 'scripts/check_m1_observations.py'
       - 'scripts/check_m2_observations.py'
       - '.github/workflows/evidence.yml'
@@ -32,6 +33,7 @@ on:
       - 'scripts/check_e2_inflight_observations.py'
       - 'scripts/check_e2_podman_observations.py'
       - 'scripts/check_e2_live_network_loss_observations.py'
+      - 'scripts/check_e2_sql_partition_observations.py'
       - 'scripts/check_m1_observations.py'
       - 'scripts/check_m2_observations.py'
       - '.github/workflows/evidence.yml'
@@ -55,6 +57,7 @@ jobs:
       - run: python3 scripts/check_e2_inflight_observations.py
       - run: python3 scripts/check_e2_podman_observations.py
       - run: python3 scripts/check_e2_live_network_loss_observations.py
+      - run: python3 scripts/check_e2_sql_partition_observations.py
       - run: python3 scripts/check_m1_observations.py
       - run: python3 scripts/check_m2_observations.py
   provenance:
