@@ -16,7 +16,8 @@ public sealed class PgDurableLedger(NpgsqlDataSource source) : IDurableLedger
         command.TargetAccountId >= 1 && command.TargetAccountId <= MaxSyntheticAccount &&
         command.SourceAccountId != command.TargetAccountId &&
         command.AmountCents is > 0 and <= 1_000_000_000_000 &&
-        command.Fault is "none" or "throw-after-debit" or "lost-response";
+        command.Fault is "none" or "throw-after-debit" or "lost-response" or
+        "kill-before-commit" or "kill-after-commit";
 
     public async Task<TransferResult> Transfer(TransferCommand command)
     {
@@ -61,6 +62,13 @@ public sealed class PgDurableLedger(NpgsqlDataSource source) : IDurableLedger
                     {
                         if (command.Fault == "throw-after-debit")
                             throw new InjectedRollbackException();
+                        if (command.Fault == "kill-before-commit")
+                        {
+                            // Only run inside disposable E2 CI. Abrupt process
+                            // death releases the DB session and rolls back
+                            // the entire uncommitted transaction.
+                            System.Diagnostics.Process.GetCurrentProcess().Kill();
+                        }
                         await Execute(tx,
                             "UPDATE accounts SET balance=balance+$1 WHERE id=$2",
                             command.AmountCents, command.TargetAccountId);
@@ -83,6 +91,12 @@ public sealed class PgDurableLedger(NpgsqlDataSource source) : IDurableLedger
                     }
                 }
                 await tx.CommitAsync();
+                if (command.Fault == "kill-after-commit" && verdict == "COMMITTED")
+                {
+                    // Actual host process termination after SQL COMMIT.
+                    // A fresh host must replay the stable operation ID.
+                    System.Diagnostics.Process.GetCurrentProcess().Kill();
+                }
 
                 // The COMMIT is durable before the response is deliberately hidden.
                 // A replay must resolve via the persisted operation ID.
