@@ -61,6 +61,8 @@ jobs:
         run: python3 lab/e2_orleans/test_workloads.py
       - name: Exercise real Orleans cohost SIGKILL, recovery and negative split oracle
         run: python3 lab/e2_orleans/test_process_crash.py
+      - name: Prove two Orleans silo OS processes, external client and actual secondary SIGKILL
+        run: python3 lab/e2_orleans/test_multiprocess.py
       - name: Upload original, non-promoted E2 smoke evidence
         if: always()
         uses: actions/upload-artifact@v6

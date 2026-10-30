@@ -7,6 +7,11 @@ using Microsoft.Extensions.Logging;
 using Npgsql;
 using Orleans;
 
+// Explicitly separate Orleans silos and the external client into independent
+// OS processes; never fall back to the single co-host path for this experiment.
+if (args.Length > 0 && args[0] == "cluster")
+    return await ClusterModes.Run(args[1..]);
+
 // Isolated deliberately unsafe actor-state negative control. No SQL ledger
 // command is executed in this mode; never use this route for business transfers.
 if (args is ["negative-reentrancy"])
