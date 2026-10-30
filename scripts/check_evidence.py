@@ -81,6 +81,7 @@ def validate_live_provenance():
                 41042317263:{'sqlserver-evidence'},
                 41043087791:{'sqlserver-evidence'},
                 41053628769:{'Orleans grain and independent SQL oracle'},
+                41055928136:{'Orleans grain, SQL oracle and synthetic workloads'},
             }.get(run_id,set())
             if not expected.issubset({j['name'] for j in jobs if j['conclusion']=='success'}):
                 errors.append('CI run '+str(run_id)+' is missing a required successful job')
