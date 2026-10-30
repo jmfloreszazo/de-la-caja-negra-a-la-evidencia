@@ -1,3 +1,4 @@
+using System.Diagnostics;
 using System.Text.Json;
 using E2.OrleansLab;
 using Microsoft.Extensions.DependencyInjection;
@@ -54,26 +55,50 @@ try
                     .Transfer(command);
         }
 
-        TransferResult[] outcomes;
+        var clock = Stopwatch.StartNew();
+        async Task<TimedResult> TimedExecution(TransferCommand command)
+        {
+            if (command.ArrivalOffsetMs is < 0 or > 30000)
+                throw new ArgumentException("Invalid offered arrival offset");
+            if (definition.Concurrent && command.ArrivalOffsetMs > 0)
+            {
+                var delay = command.ArrivalOffsetMs - clock.Elapsed.TotalMilliseconds;
+                if (delay > 0)
+                    await Task.Delay(TimeSpan.FromMilliseconds(delay));
+            }
+            var dispatchedAtMs = clock.Elapsed.TotalMilliseconds;
+            var request = Stopwatch.StartNew();
+            var result = await Execute(command);
+            return new TimedResult(result,
+                Math.Round(dispatchedAtMs, 3),
+                Math.Round(request.Elapsed.TotalMilliseconds, 3),
+                Math.Round(clock.Elapsed.TotalMilliseconds, 3));
+        }
+
+        TimedResult[] samples;
         if (definition.Concurrent)
         {
-            outcomes = await Task.WhenAll(definition.Commands.Select(Execute));
+            samples = await Task.WhenAll(definition.Commands.Select(TimedExecution));
         }
         else
         {
-            var results = new List<TransferResult>();
+            var result = new List<TimedResult>();
             foreach (var command in definition.Commands)
-                results.Add(await Execute(command));
-            outcomes = [..results];
+                result.Add(await TimedExecution(command));
+            samples = [..result];
         }
 
+        var outcomes = samples.Select(sample => sample.Result).ToArray();
         Console.WriteLine(JsonSerializer.Serialize(new
         {
             experiment = "E2-orleans-ledger",
             route = definition.Route,
             concurrent = definition.Concurrent,
             sourceOfTruth = "postgresql-transaction",
-            results = outcomes
+            results = outcomes,
+            timing = samples.Select(sample => new {
+                sample.DispatchedAtMs, sample.ElapsedMs, sample.CompletedAtMs
+            }).ToArray()
         }, new JsonSerializerOptions { PropertyNamingPolicy = JsonNamingPolicy.CamelCase }));
     }
     finally
@@ -89,3 +114,5 @@ catch (Exception ex)
 }
 
 internal sealed record Scenario(string Route, bool Concurrent, List<TransferCommand> Commands);
+
+internal sealed record TimedResult(TransferResult Result, double DispatchedAtMs, double ElapsedMs, double CompletedAtMs);
