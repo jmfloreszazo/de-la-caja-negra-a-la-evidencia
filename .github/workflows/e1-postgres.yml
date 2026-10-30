@@ -60,6 +60,10 @@ jobs:
         env:
           E1_PG_DSN: "host=127.0.0.1 port=55432 dbname=e1lab user=postgres password=e1local"
         run: python3 lab/e1_pg/test_oracle_vectors.py
+      - name: Capture exact tool and Podman image provenance
+        env:
+          E1_PG_DSN: "host=127.0.0.1 port=55432 dbname=e1lab user=postgres password=e1local"
+        run: python3 lab/e1_pg/capture_runtime.py
       - name: Upload reproducible test evidence
         uses: actions/upload-artifact@v6
         if: always()
