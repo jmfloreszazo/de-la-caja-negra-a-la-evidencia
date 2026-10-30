@@ -165,6 +165,20 @@
       "protocol": null
     },
     {
+      "id": "E1B-MP",
+      "status": "ci_verified",
+      "es": "Paridad de 960 transferencias lógicas en la matriz SQLite/PostgreSQL: 1/2/4/8 trabajadores, tráfico uniforme y caliente",
+      "en": "Parity of 960 logical SQLite/PostgreSQL transfers over 1/2/4/8 worker counts with uniform/hot traffic",
+      "scope_es": "Ocho casos sintéticos con estado persistido y siete invariantes equivalentes; modelos de arranque distintos, sin comparación válida de throughput ni latencia.",
+      "scope_en": "Eight synthetic cases with matching persisted state and seven ledger invariants; different process-launch models, no valid throughput or latency comparison.",
+      "evidence": {
+        "kind": "github_actions",
+        "run_id": 41034420329,
+        "head_sha": "a1df6da8ecdd491c3a1f10686904c5ac55a98bf9"
+      },
+      "protocol": null
+    },
+    {
       "id": "E1",
       "status": "partially_verified",
       "es": "Bloqueo por fila, deadlocks y write skew en SQL",
