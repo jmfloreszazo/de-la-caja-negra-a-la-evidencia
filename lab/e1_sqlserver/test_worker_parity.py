@@ -43,16 +43,13 @@ def sqlite_worker(worker, workers, pattern):
 
 
 def sql_worker(worker, workers, pattern):
-    rows = []
-    for index in range(COUNT):
-        source = 1 if pattern == "hot" else 1 + (worker*COUNT+index) % 16
-        destination = 2 if pattern == "hot" else 1 + source % 16
-        identity = f"load-{worker}-{index}"
-        result = cli(SQL, "transfer", identity, source, destination, 1)
-        assert result["status"] == "COMMITTED", (
-            "SQL Server transfer", pattern, workers, identity, result
-        )
-        rows.append(result)
+    # Match the SQLite reference's one long-lived CLI process per worker.
+    # Each transfer still owns its own SQL Server local transaction.
+    rows = cli(SQL, "worker", worker, COUNT, pattern, "load", timeout=150)
+    assert isinstance(rows, list) and len(rows) == COUNT, (
+        "SQL Server worker output", pattern, workers, worker, rows
+    )
+    assert all(row["status"] == "COMMITTED" for row in rows), rows
     return rows
 
 
