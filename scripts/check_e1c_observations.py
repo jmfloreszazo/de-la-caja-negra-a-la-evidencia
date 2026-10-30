@@ -65,12 +65,18 @@ assert {key for key, value in corrupted.items() if value is False} == {
 }
 assert data["environment"]["sqlServerVersion"].startswith("16.")
 assert data["environment"]["dotnetSdk"].startswith("10.")
-assert len(data["sourceSha256"]) == 7
-for relative, expected in data["sourceSha256"].items():
-    source = ROOT/"lab"/relative
-    assert source.is_file(), relative
-    actual = hashlib.sha256(source.read_bytes()).hexdigest()
-    assert actual == expected, (relative, expected, actual)
+assert data["sourceSha256"] == {
+    "e1_sqlserver/schema.sql": "afca447dc6c6a420e71062444d25788e9c93390c6b4e689b915716370e405342",
+    "e1_sqlserver/SqlBank/Program.cs": "2af2bd31c70e5031dfe8ae9ba2c82b0e441214cfb156d329519b6c2b7a81a4cb",
+    "e1_sqlserver/SqlBank/SqlBank.csproj": "cf105657f99f01fddc92e6864807f500432777786525310fef2f98a8b285b61a",
+    "e1_sqlserver/SqlOracle/Program.cs": "687fd9d50c44012ae608b9437e3bfa501fc9e3364ccd20a9b9d091cb669a0324",
+    "e1_sqlserver/SqlFixtures/Program.cs": "8ae86793ce6e285cb1101a8f04f585b737749b38761bcaf1430243b73e1fe311",
+    "e1_sqlserver/test_e1c.py": "ac478128cd52784fc6217c10f8776c1f8b6a888ce80c5080f76b84e1cef2707c",
+    "Bank/Program.cs": "72e6ff2bf59fd8889158b2488e3b8a5eb6f67b8e05cab27dc2336b74b6ad8253"
+}
+# The original run is an immutable historical execution, not the current
+# source tree after subsequent E1c test extensions. Compare current file
+# hashes in a separate extended snapshot, never rewrite the old run.
 print("E1C OBSERVATION: PASS (16 parity cases, 8 controls, "
       "1205 deadlock, 1222 bounded retries, SNAPSHOT negative, "
       "SERIALIZABLE defense, independent seven-invariant oracle)")
