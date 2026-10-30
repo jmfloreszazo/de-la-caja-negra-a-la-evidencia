@@ -385,6 +385,20 @@
       "protocol": null
     },
     {
+      "id": "E2-NETEM",
+      "status": "ci_verified",
+      "es": "Pérdida real del 100 % de paquetes de un silo Orleans vivo, manteniendo el transporte SQL separado",
+      "en": "Actual 100% packet loss on a live Orleans silo, with separately preserved SQL transport",
+      "scope_es": "En un solo runner Linux, cuatro namespaces Podman, dos redes, tc/netem 100% loss sobre eth0 del secundario; PID 4160 y contenedor inalterados antes/durante/después; cliente ve gateway secundario inaccesible, pero primario accesible; SQL responde, membresía ADO.NET 3/3 versión 4 sin cambios, ledger 1/2/1 y oráculo 7/7. Después recupera TCP. No se envían operaciones durante el fallo, no hay evidencia de convergencia Orleans ni HA física.",
+      "scope_en": "One physical Linux runner, four Podman namespaces and two bridges; tc/netem 100% loss on secondary app eth0. PID 4160 and container identity unchanged before/during/after; external client loses only secondary gateway; SQL remains available, ADO.NET membership stays 3/3 at version 4, ledger 1/2/1 and independent 7/7 oracle. TCP reconnects after removing qdisc. No financial command during fault, Orleans convergence or physical HA claim.",
+      "evidence": {
+        "kind": "github_actions",
+        "run_id": 41132190043,
+        "head_sha": "10c5e0cc6d300af0cc23cff448f0214100e1036c"
+      },
+      "protocol": null
+    },
+    {
       "id": "E2",
       "status": "partially_verified",
       "es": "Orleans y ledger frente a distintas distribuciones de carga",

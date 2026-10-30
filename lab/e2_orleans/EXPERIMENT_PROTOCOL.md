@@ -112,7 +112,7 @@ from durable committed transfers.
 
 ## E2-F10-C02 · Actual packet-loss partition with the same live silo
 
-**Status: awaiting original GitHub Actions CI on this version.** A prior
+**Original Linux tc/netem experiment CI [#41132190043](https://github.com/jmfloreszazo/de-la-caja-negra-a-la-evidencia/actions/runs/41132190043) passed** at source commit `10c5e0cc6d300af0cc23cff448f0214100e1036c` and uploaded the [immutable complete original artifact](https://github.com/jmfloreszazo/de-la-caja-negra-a-la-evidencia/actions/runs/41132190043/artifacts/13013089253) (ZIP SHA-256 `fc58f27ca4f4b0a695c5a21e54553d6292ac6f4d388d867ad3e446045f8c6583`). Its [archived result](../../evidence/runs/e2-orleans-live-network-loss.json) is narrowly `ci_verified`; E2 overall remains `partially_verified` because in-fault business commands, convergence, fencing, sustained capacity and physical HA are not established. A prior
 negative-control attempt used `podman network disconnect`; that actual
 experiment **stopped the secondary container** (host PID zero and ADO.NET
 status Dead 6). Its raw failure record remains in CI
