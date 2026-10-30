@@ -137,6 +137,20 @@
       "protocol": null
     },
     {
+      "id": "E1B-ORACLE",
+      "status": "ci_verified",
+      "es": "Siete invariantes del oráculo contable independiente: antes, con asiento corrupto y tras restaurarlo",
+      "en": "Seven independent accounting oracle invariants before, during deliberate posting corruption and after restoration",
+      "scope_es": "Prueba negativa sintética PostgreSQL con tres invariantes fallidos detectados y restauración verificada; no demuestra capacidad bancaria ni fallos distribuidos.",
+      "scope_en": "Synthetic PostgreSQL negative control detecting three failing invariants and verifying restoration; no banking capacity or distributed-fault proof.",
+      "evidence": {
+        "kind": "github_actions",
+        "run_id": 41032714628,
+        "head_sha": "b175041e411db5033aa25596d8c1f99f6f535680"
+      },
+      "protocol": null
+    },
+    {
       "id": "E1",
       "status": "partially_verified",
       "es": "Bloqueo por fila, deadlocks y write skew en SQL",
