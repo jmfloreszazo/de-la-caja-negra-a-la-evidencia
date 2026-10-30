@@ -1,0 +1,180 @@
+{
+  "schemaVersion": 1,
+  "experiment": "E2-Orleans-Persistent-Ledger-Smoke",
+  "runId": 41053628769,
+  "jobId": 124055556076,
+  "artifactId": 12975297794,
+  "sourceCommit": "8eac88f835451e42e9adeb997c933aa4ac41427c",
+  "checkoutCommit": "5f438d7a5595971c477a8530ff76dcc12d3e6214",
+  "url": "https://github.com/jmfloreszazo/de-la-caja-negra-a-la-evidencia/actions/runs/41053628769",
+  "classification": "EXECUTED_SYNTHETIC_SINGLE_SILO_FUNCTIONAL_NOT_CAPACITY",
+  "source": "Exact machine-readable JSON emitted by completed GitHub Actions E2 test and original artifact; preserving the historical source/merge commits",
+  "observation": {
+    "schemaVersion": 1,
+    "experiment": "E2-Orleans-Persistent-Ledger-Smoke",
+    "classification": "SYNTHETIC_SINGLE_SILO_FUNCTIONAL_NOT_CAPACITY",
+    "status": "PASS",
+    "controls": {
+      "sequentialProtectedSQLiteAndE1bParity": "PASS",
+      "directAndGrainShareDurableLedger": "PASS",
+      "concurrentOverdraftAndOperationId": "PASS",
+      "simulatedRollbackAndLostResponseReplay": "PASS",
+      "independentSqlOracleNegativeMutation": "PASS"
+    },
+    "functional": [
+      {
+        "route": "direct",
+        "cases": 15,
+        "statuses": [
+          "COMMITTED",
+          "DUPLICATE_COMMITTED",
+          "ID_CONFLICT",
+          "REJECTED",
+          "DUPLICATE_REJECTED",
+          "ID_CONFLICT",
+          "INVALID",
+          "INVALID",
+          "INVALID",
+          "INVALID",
+          "INJECTED_ROLLBACK",
+          "AMBIGUOUS_RESPONSE",
+          "DUPLICATE_COMMITTED",
+          "COMMITTED",
+          "COMMITTED"
+        ],
+        "persistedStateMatchesProtectedSQLite": true,
+        "independentOracle": {
+          "nonnegative": true,
+          "conserved": true,
+          "balancedPostings": true,
+          "twoPostingsPerCommit": true,
+          "noPostingsForRejection": true,
+          "outboxAtomic": true,
+          "projectionAgrees": true
+        }
+      },
+      {
+        "route": "orleans",
+        "cases": 15,
+        "statuses": [
+          "COMMITTED",
+          "DUPLICATE_COMMITTED",
+          "ID_CONFLICT",
+          "REJECTED",
+          "DUPLICATE_REJECTED",
+          "ID_CONFLICT",
+          "INVALID",
+          "INVALID",
+          "INVALID",
+          "INVALID",
+          "INJECTED_ROLLBACK",
+          "AMBIGUOUS_RESPONSE",
+          "DUPLICATE_COMMITTED",
+          "COMMITTED",
+          "COMMITTED"
+        ],
+        "persistedStateMatchesProtectedSQLite": true,
+        "independentOracle": {
+          "nonnegative": true,
+          "conserved": true,
+          "balancedPostings": true,
+          "twoPostingsPerCommit": true,
+          "noPostingsForRejection": true,
+          "outboxAtomic": true,
+          "projectionAgrees": true
+        }
+      }
+    ],
+    "concurrent": [
+      {
+        "route": "direct",
+        "overdraftStatuses": [
+          "COMMITTED",
+          "REJECTED"
+        ],
+        "duplicateStatuses": [
+          "COMMITTED",
+          "DUPLICATE_COMMITTED",
+          "DUPLICATE_COMMITTED",
+          "DUPLICATE_COMMITTED"
+        ],
+        "committed": 2,
+        "postings": 4,
+        "outbox": 2,
+        "independentOracle": {
+          "nonnegative": true,
+          "conserved": true,
+          "balancedPostings": true,
+          "twoPostingsPerCommit": true,
+          "noPostingsForRejection": true,
+          "outboxAtomic": true,
+          "projectionAgrees": true
+        }
+      },
+      {
+        "route": "orleans",
+        "overdraftStatuses": [
+          "COMMITTED",
+          "REJECTED"
+        ],
+        "duplicateStatuses": [
+          "COMMITTED",
+          "DUPLICATE_COMMITTED",
+          "DUPLICATE_COMMITTED",
+          "DUPLICATE_COMMITTED"
+        ],
+        "committed": 2,
+        "postings": 4,
+        "outbox": 2,
+        "independentOracle": {
+          "nonnegative": true,
+          "conserved": true,
+          "balancedPostings": true,
+          "twoPostingsPerCommit": true,
+          "noPostingsForRejection": true,
+          "outboxAtomic": true,
+          "projectionAgrees": true
+        }
+      }
+    ],
+    "oracleNegative": {
+      "before": {
+        "nonnegative": true,
+        "conserved": true,
+        "balancedPostings": true,
+        "twoPostingsPerCommit": true,
+        "noPostingsForRejection": true,
+        "outboxAtomic": true,
+        "projectionAgrees": true
+      },
+      "corrupted": {
+        "nonnegative": true,
+        "conserved": true,
+        "balancedPostings": false,
+        "twoPostingsPerCommit": false,
+        "noPostingsForRejection": true,
+        "outboxAtomic": true,
+        "projectionAgrees": false
+      },
+      "restored": {
+        "nonnegative": true,
+        "conserved": true,
+        "balancedPostings": true,
+        "twoPostingsPerCommit": true,
+        "noPostingsForRejection": true,
+        "outboxAtomic": true,
+        "projectionAgrees": true
+      }
+    },
+    "sourceSha256": {
+      "Bank/Program.cs": "72e6ff2bf59fd8889158b2488e3b8a5eb6f67b8e05cab27dc2336b74b6ad8253",
+      "e1_pg/PgBank/Program.cs": "eb61acea9673cf14e999adf2c01a03df418c385dee0e3e1f6d777bbca53f5f32",
+      "e2_orleans/OrleansLab/OrleansLab.csproj": "c1cc127ea0fa9f4527bc37c6a6a19dd36f3f5a7916a197e207760d37a6c58fa5",
+      "e2_orleans/OrleansLab/Program.cs": "5505c066b7f9bdda38848087d1f5e9bd770616ae0fe419a287b4910876269e35",
+      "e2_orleans/OrleansLab/Contracts.cs": "de4eb9d23da4ec213a54fd52e3ea48c9de43bb6fc2d86aaa5ecc4b5a9c917ebb",
+      "e2_orleans/OrleansLab/PgDurableLedger.cs": "b86d2ca9425b2c15349ea32a728d3f0b695b6c6943e6c6d7b4f38fed677950a2",
+      "e2_orleans/test_e2.py": "ee9718ca72b245955a1e1677028e90502610ec645a4bd1201bf4f2852b223eb5"
+    },
+    "limitations": "Real single-host co-located Orleans grain with PostgreSQL durability. Exception and lost-response controls are simulated, NOT actual silo process crash. No distributed Orleans silos, open-loop workload, 5-percent-hot/50-percent-intent benchmarks, p99 or production/MIPS."
+  }
+}
