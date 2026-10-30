@@ -259,6 +259,20 @@
       "protocol": null
     },
     {
+      "id": "E2-LOAD",
+      "status": "ci_verified",
+      "es": "Orleans y ledger directo: tres perfiles deterministas sobre 1.000 cuentas sintéticas, 600 transferencias confirmadas y oráculo independiente",
+      "en": "Orleans and direct ledger: three deterministic profiles on 1,000 synthetic accounts, 600 committed transfers and independent oracle",
+      "scope_es": "Seis ejecuciones en un solo silo local, 100 operaciones por ruta y perfil, 50 de 1.000 cuentas calientes o una cuenta con el 50 % de las solicitudes. Igualdad de ledger, latencias observadas sin significación estadística ni prueba de escalado multinodo. El JSON completo está en el artefacto original de CI.",
+      "scope_en": "Six executions on a single local silo, 100 operations per route/profile, exactly 50/1000 hot accounts or one account receiving 50% of intent. Matching ledger, observed latencies without statistical or multi-node scaling claim. Full JSON retained in original CI artifact.",
+      "evidence": {
+        "kind": "github_actions",
+        "run_id": 41055928136,
+        "head_sha": "4bd9e4da6ac1d8f6609813dfbd81da96c23946e0"
+      },
+      "protocol": null
+    },
+    {
       "id": "E2",
       "status": "designed_not_executed",
       "es": "Orleans y ledger frente a distintas distribuciones de carga",
