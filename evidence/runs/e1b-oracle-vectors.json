@@ -1,0 +1,70 @@
+{
+  "schemaVersion": 1,
+  "experiment": "E1b-independent-oracle-negative-control",
+  "runId": 41032714628,
+  "jobId": 123986044852,
+  "artifactId": 12967270069,
+  "sourceCommit": "b175041e411db5033aa25596d8c1f99f6f535680",
+  "checkoutCommit": "2b122482983f1d300dfe463072d6ed306e65912b",
+  "source": "Unmodified structured JSON emitted by CI test_oracle_vectors.py and preserved original workflow artifact",
+  "url": "https://github.com/jmfloreszazo/de-la-caja-negra-a-la-evidencia/actions/runs/41032714628",
+  "classification": "EXECUTED_SYNTHETIC_ACCOUNTING_ORACLE_NOT_CAPACITY",
+  "observation": {
+    "schemaVersion": 1,
+    "experiment": "E1b-independent-oracle-negative-control",
+    "status": "PASS",
+    "classification": "SYNTHETIC_LEDGER_ORACLE_NOT_PRODUCTION_CAPACITY",
+    "controls": {
+      "sevenInvariantsBefore": "PASS",
+      "deliberateCorruptionRejected": "PASS",
+      "sevenInvariantsRestored": "PASS"
+    },
+    "originalOperationCount": 6,
+    "targetPosting": {
+      "operation": "unblocked",
+      "account": 5,
+      "delta": -10
+    },
+    "vectors": {
+      "before": {
+        "nonnegative": true,
+        "conserved": true,
+        "balancedPostings": true,
+        "twoPostingsPerCommit": true,
+        "noPostingsForRejection": true,
+        "outboxAtomic": true,
+        "projectionAgrees": true
+      },
+      "corrupted": {
+        "nonnegative": true,
+        "conserved": true,
+        "balancedPostings": false,
+        "twoPostingsPerCommit": false,
+        "noPostingsForRejection": true,
+        "outboxAtomic": true,
+        "projectionAgrees": false
+      },
+      "restored": {
+        "nonnegative": true,
+        "conserved": true,
+        "balancedPostings": true,
+        "twoPostingsPerCommit": true,
+        "noPostingsForRejection": true,
+        "outboxAtomic": true,
+        "projectionAgrees": true
+      }
+    },
+    "sourceSha256": {
+      "schema.sql": "76715aabaacc5d5486dc1ac186adc10c5143d8e0d5c73a4db71ed262ff66c3b9",
+      "oracle.py": "3f2874842e9febcc84584bf4a266920028840ccac9d404f75cb9f4363fb4fc09",
+      "test_oracle_vectors.py": "a6e258c4e0535c735837ef56ce96669953d76b77864a435fa475cbd43a610459",
+      "test_reference_parity.py": "1eb6504d81227710fae7c91b905dc4c2055864c41fe7712b2a5141f0f2d92c62"
+    },
+    "environment": {
+      "postgresVersion": "16.13 (Debian 16.13-1.pgdg13+1)",
+      "pythonVersion": "3.12.15",
+      "runtime": "GitHub Actions disposable Linux runner / Podman"
+    },
+    "limitations": "Synthetic one-database negative control, not full transaction fault coverage, vendor equivalence, power-loss durability or mainframe/Azure capacity evidence."
+  }
+}
