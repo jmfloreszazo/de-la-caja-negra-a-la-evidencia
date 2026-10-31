@@ -496,7 +496,7 @@ Cada eslabón de la cadena tiene una entrada, un artefacto de salida y algo que 
 
 ![Figura 7.1 · La cadena de agentes: cada eslabón produce un artefacto y ninguno escribe la baseline.](figures/es/agent_chain.png)
 
-*Figura 7.1 · Ejemplo ilustrativo de una **rama opcional** de investigación técnica con parser y grafo; no representa el camino obligatorio. Primero se descubren capacidades y contratos de negocio. Ningún agente escribe la baseline.*
+*Figura 7.1 · Flujo principal desde capacidades y contratos de negocio hasta oráculos TODM y autorización humana G6. Golden Master conserva observaciones por separado; analizar COBOL/JCL es una rama opcional. Ningún agente modifica la baseline aprobada.*
 
 #### La especificación viva
 
@@ -747,7 +747,7 @@ El verificador ejecuta o consume observaciones obtenidas de forma controlada, co
 
 ![Figura 11.2 · Responsabilidades y evidencia vinculada. El constructor no modifica unilateralmente la baseline; separar carpetas en la demo no impone permisos de producción.](figures/es/c4_containers.png)
 
-*Figura 11.2 · Responsabilidades y evidencia vinculada. El constructor no modifica unilateralmente la baseline; separar carpetas en la demo no impone permisos de producción.*
+*Figura 11.2 · Descubrimiento funcional, Golden Master independiente, arqueología técnica opcional y TODM con autorización G6. El constructor no modifica la baseline; separar carpetas no impone permisos de producción.*
 
 #### Las fronteras que importan
 
