@@ -3,13 +3,14 @@ C4Container
   Person(owner, "Business authority")
   System_Ext(policy, "Policies and contracts", "Authorized business rules")
   System_Ext(legacy, "Legacy system", "Black-box observations")
-  System_Boundary(b, "Greenfield modernization with TODM") {
+  System_Boundary(b, "Brownfield modernization with TODM") {
     Container(disc, "Functional discovery", "Interviews and contracts", "Capabilities, exceptions and uncertainties")
     Container(golden, "Golden Master", "Controlled observation", "Incumbent behavior, not approval")
     Container(research, "Optional investigation", "COBOL, JCL, Db2", "Provenance-linked technical unknowns")
     ContainerDb(exp, "Evidence record", "Git and manifests", "Sources, limitations and contradictions")
     Container(gov, "Approved baseline", "Rules and decisions", "Authority independent from agents")
-    Container(build, "Greenfield construction", ".NET 10 and domains", "Candidate from specifications")
+    Container(build, "Replacement implementation", ".NET 10 and domains", "Candidate from specifications")
+    Container(transition, "Coexistence and cutover", "Strangler, ACL and rollback", "Legacy and replacement remain controlled")
     Container(verify, "TODM oracles", "G3 and G5", "PASS, FAIL or INCONCLUSIVE")
     Container(release, "G6 release authority", "Human and mandate", "Exact verified artifact")
   }
@@ -23,6 +24,9 @@ C4Container
   Rel(exp, gov, "Requests evaluation")
   Rel(owner, gov, "Approves rules")
   Rel(gov, build, "Contracts and mandate")
+  Rel(build, transition, "Provides replacement capability")
+  Rel(legacy, transition, "Legacy functions")
+  Rel(transition, verify, "Produces comparable observations")
   Rel(build, verify, "Pins candidate")
   Rel(gov, verify, "Independent baseline")
   Rel(golden, verify, "Separate characterization")
