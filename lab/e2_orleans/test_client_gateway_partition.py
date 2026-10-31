@@ -321,10 +321,17 @@ def main():
             failure_observation
         )
         cause = failure_observation["cause"].casefold()
-        assert (
-            "gateway" in cause or "orleans" in cause or "timeout" in cause
+        # "OrleansLab.dll" appears in every client command, including
+        # unrelated crashes, so matching the project name is NOT evidence.
+        expected_transport_diagnostics = (
+            "no gateways", "gateway connection", "gateway",
+            "system.timeoutexception", "orleansexception",
+            "could not connect", "unable to connect"
+        )
+        assert any(
+            marker in cause for marker in expected_transport_diagnostics
         ), (
-            "Unexpected client failure: cannot attribute this to gateway loss",
+            "An unrelated client exception must never pass as gateway isolation",
             failure_observation
         )
         during_after = accounting()
