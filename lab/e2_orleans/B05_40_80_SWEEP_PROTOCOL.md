@@ -1,6 +1,6 @@
 # E2-B05 — 40/80 offered-per-second hot-source exploration (60-second windows)
 
-**Predeclared experimental protocol: NOT evidence, NOT an accepted saturation or mainframe-capacity result.** The proven 20.0 PostgreSQL COMMIT/s at 20 offered requests/s remains the only independently verified 60-second load point until original new CI and artifact audits succeed.
+**Predeclared protocol; now ORIGINAL CI + independent ZIP audit verified at two more offered load points, NOT a capacity/saturation result.** [Original corrected-head CI #41210913483](https://github.com/jmfloreszazo/de-la-caja-negra-a-la-evidencia/actions/runs/41210913483) passed 14/14 checks on SHA `6c1bb9b96d5118477b527f410fa66e08520055cf`. [Original artifact #13045879294](https://github.com/jmfloreszazo/de-la-caja-negra-a-la-evidencia/actions/runs/41210913483/artifacts/13045879294) ZIP SHA-256 `7ea9062c80dc92f1354f5076c543e3105d8a6ebfccac25c266c8398fe35dc262` was downloaded and independently audited for all 14,880 durable operations, 28/28 SQL oracles and four full 60-second commit histograms. PostgreSQL recorded **40.0 and 80.0 COMMIT/s at these offered rates**, with per-second bins **exactly 40** at 40/s and **79–81** at 80/s. [Immutable evidence record](../../evidence/runs/e2-b05-hot-40-80-sql-commit-sweep.json). Neither this nor the previously verified 20.0 COMMIT/s point demonstrates saturation, production p99 or mainframe equivalence.
 
 ## Scientific question
 
