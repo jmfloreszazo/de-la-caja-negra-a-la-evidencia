@@ -95,6 +95,13 @@ public static class ClusterModes
             return await RunSilo(conn, args[1]);
         if (args.Length == 2 && args[0] == "client" && args[1] == "probe")
             return await RunClient(null);
+        // Diagnostic-only fresh grain activation probe: no ledger writes.
+        // The original 1..16 financial-account probe and its acceptance gate
+        // remain unchanged. Exactly 17..64, only on disposable CI networks.
+        if (ContainerFixture && args.Length == 4 &&
+            args[0] == "client" && args[1] == "probe-range" &&
+            args[2] == "17" && args[3] == "48")
+            return await RunClient(null, probeStart: 17, probeCount: 48);
         if (args.Length == 3 && args[0] == "client" && args[1] == "execute" &&
             File.Exists(args[2]))
             return await RunClient(args[2]);
@@ -233,7 +240,8 @@ public static class ClusterModes
         return 0;
     }
 
-    private static async Task<int> RunClient(string? scenarioPath)
+    private static async Task<int> RunClient(
+        string? scenarioPath, int probeStart = 1, int probeCount = 16)
     {
         var builder = Host.CreateApplicationBuilder();
         builder.Logging.ClearProviders();
@@ -273,8 +281,14 @@ public static class ClusterModes
             {
                 var hosts = new Dictionary<int, int>();
                 var nodes = new Dictionary<int, string>();
-                for (var account = 1; account <= 16; account++)
+                if (!((probeStart == 1 && probeCount == 16) ||
+                      (ContainerFixture && probeStart == 17 && probeCount == 48)))
+                    throw new InvalidOperationException(
+                        "Unapproved test-only grain placement diagnostic range");
+                for (var account = probeStart; account < probeStart + probeCount; account++)
                 {
+                    // Host identity only. No Transfer command or SQL business
+                    // operation is executed for diagnostic-only keys 17..64.
                     var grain = cluster.GetGrain<IAccountGrain>(account);
                     hosts.Add(account, await grain.HostProcessId());
                     nodes.Add(account, await grain.HostNodeIdentity());
@@ -282,6 +296,9 @@ public static class ClusterModes
                 Console.WriteLine(JsonSerializer.Serialize(new {
                     experiment = "E2-Two-Independent-OS-Silos",
                     status = "PROBED",
+                    diagnosticOnly = probeStart == 17,
+                    probeStart,
+                    probeCount,
                     clientPid = Environment.ProcessId,
                     accountHostPids = hosts,
                     accountHostNodes = nodes,
