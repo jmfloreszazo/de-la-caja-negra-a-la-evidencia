@@ -270,6 +270,17 @@ def committed_inside_window(vector, result):
         "possibleWindowEndUtc": t3.isoformat(),
         "measurementDurationSeconds": MEASUREMENT_SECONDS,
         "allDurableCommitTimestampsPresent": True,
+        "originalServerCommitTimestampsByOperation": [
+            {
+                "operationId": op_id,
+                "sourcePhase": next(
+                    offer["phase"] for offer in vector["operations"]
+                    if offer["operationId"] == op_id
+                ),
+                "postgresCommitTimestampUtc": committed_at.isoformat()
+            }
+            for op_id, committed_at in rows
+        ],
         "serverCommitsCertainlyWithinWindow": strict,
         "serverCommitsPossiblyWithinWindow": possible,
         "certainServerCommitsPerMeasurementSecond": round(
