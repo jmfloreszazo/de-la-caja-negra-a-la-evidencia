@@ -273,6 +273,11 @@ def main():
                 assert all(verify().values())
                 step = "replay-" + profile + "-" + route
                 result = run_client(route, file)
+                # Preserve every original sample BEFORE assertions; a
+                # failed timing contract must remain fully inspectable.
+                (OUT / (profile + "-" + route + "-raw-client.json")).write_text(
+                    json.dumps(result, indent=2) + "\n", encoding="utf-8"
+                )
                 client_summary = summarize_client(vector, result)
                 sql = observed_sql(vector)
                 assert sql["durableCommittedOperationCount"] == len(
