@@ -10,8 +10,9 @@ flowchart TB
   spec --> owner
   owner --> base[("Approved functional baseline")]
   base --> arch["Domain-based architecture"]
-  arch --> build["Greenfield implementation"]
-  build --> ver["Independent TODM oracles"]
+  arch --> build["New implementation (brownfield)"]
+  build --> transition["Coexistence and reconciliation"]
+  transition --> ver["Independent TODM oracles"]
   base --> ver
   obs -. "Separate comparison" .-> ver
   ver --> release["G6: human decision"]
