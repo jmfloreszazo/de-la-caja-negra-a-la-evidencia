@@ -37,7 +37,7 @@ Cada eslabón de la cadena tiene una entrada, un artefacto de salida y algo que 
 
 ![Figura 7.1 · La cadena de agentes: cada eslabón produce un artefacto y ninguno escribe la baseline.](../../figures/es/agent_chain.png)
 
-*Figura 7.1 · Ejemplo ilustrativo de una **rama opcional** de investigación técnica con parser y grafo; no representa el camino obligatorio. Primero se descubren capacidades y contratos de negocio. Ningún agente escribe la baseline.*
+*Figura 7.1 · Flujo principal desde capacidades y contratos de negocio hasta oráculos TODM y autorización humana G6. Golden Master conserva observaciones por separado; analizar COBOL/JCL es una rama opcional. Ningún agente modifica la baseline aprobada.*
 
 ## La especificación viva
 
