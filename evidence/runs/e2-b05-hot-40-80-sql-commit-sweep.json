@@ -1,0 +1,144 @@
+{
+  "schemaVersion": 1,
+  "experiment": "E2-B05-40-80-Offer-Rate-Sweep",
+  "status": "CI_AND_ORIGINAL_ZIP_AUDITED_EXPLORATORY_COMMIT_WINDOWS_NOT_CAPACITY",
+  "capacityEvidence": false,
+  "saturationCeilingMeasured": false,
+  "mainframeMipsEquivalence": false,
+  "source": {
+    "sourcePr": 43,
+    "sourceHeadSha": "6c1bb9b96d5118477b527f410fa66e08520055cf",
+    "mergedMainSha": "6c9f8ea9989cb8c572a1e5bc51f4004c95e4a1ca",
+    "originalCiRunId": 41210913483,
+    "originalCiUrl": "https://github.com/jmfloreszazo/de-la-caja-negra-a-la-evidencia/actions/runs/41210913483",
+    "originalArtifactId": 13045879294,
+    "originalArtifactUrl": "https://github.com/jmfloreszazo/de-la-caja-negra-a-la-evidencia/actions/runs/41210913483/artifacts/13045879294",
+    "originalArtifactZipSha256": "7ea9062c80dc92f1354f5076c543e3105d8a6ebfccac25c266c8398fe35dc262",
+    "originalCiChecksGreen": 14,
+    "originalCiChecksTotal": 14,
+    "originalArtifactZipMembers": 15,
+    "auditNote": "Independently downloaded and byte-SHA256 checked the immutable source-head GitHub Actions ZIP. Recomputed all four vector SHA256 hashes, matched every original client and SQL observation, 14,880 distinct client and SQL operations, per-operation PostgreSQL UTC COMMIT timestamps and 60-bin per-second histograms, 28/28 independent SQL Oracle Gates, exact two postings and one outbox per committed transfer, 50/1000 hot eligibility with 80% source intents and matched direct/Orleans input and final state hashes."
+  },
+  "setup": {
+    "postgresVersion": "16.13",
+    "serverCommitTimestampSource": "pg_xact_commit_timestamp(operations.xmin)",
+    "trackCommitTimestamp": "on",
+    "accountCount": 1000,
+    "eligibleHotSourceAccountCount": 50,
+    "hotSourceOfferFraction": 0.8,
+    "profile": "five_percent_hot",
+    "routes": [
+      "direct",
+      "orleans"
+    ],
+    "offeredRequestsPerSecond": [
+      40,
+      80
+    ],
+    "repetitionsPerRateAndRoute": 1,
+    "warmupSeconds": 1,
+    "measurementSeconds": 60,
+    "cooldownSeconds": 1,
+    "physicalLinuxHostCount": 1,
+    "networkNamespaces": 4,
+    "maxInFlightClientRequests": 32,
+    "sqlAuthority": "PostgreSQL"
+  },
+  "audit": {
+    "trialCount": 4,
+    "scheduledOffers": 14880,
+    "dispatchedOffers": 14880,
+    "missedOffers": 0,
+    "ambiguousOutcomes": 0,
+    "acknowledgedCommits": 14880,
+    "independentDurableSqlCommitsByRunEnd": 14880,
+    "postings": 29760,
+    "outboxEvents": 14880,
+    "sqlInWindowCommitsCertainly": 14400,
+    "sqlInWindowCommitsPossibly": 14400,
+    "perOperationOriginalPostgresTimestampsReconciled": 14880,
+    "independentSqlOracleChecksPassed": 28,
+    "independentSqlOracleChecksTotal": 28,
+    "matchedSourceAndSqlFinalStatePairs": 2,
+    "originalRunPreserved": true
+  },
+  "cases": [
+    {
+      "offeredRatePerSecond": 40,
+      "route": "direct",
+      "totalScheduled": 2480,
+      "sqlCommittedByRunEnd": 2480,
+      "serverCommitsCertainlyIn60s": 2400,
+      "serverCommitsPossiblyIn60s": 2400,
+      "serverCommitRatePerSecond": 40,
+      "perSecondBucketCounts": {
+        "40": 60
+      },
+      "inputSha256": "866cc99c77fe63551335a9caf315ba3d1b2590aff7a6dda69b55634a618d4728",
+      "persistedStateSha256": "ff762f3921609a810769379007b92e3420ee35b38bcc655698b3380920b4bdec",
+      "ackOnlyP99Ms": 53.682
+    },
+    {
+      "offeredRatePerSecond": 40,
+      "route": "orleans",
+      "totalScheduled": 2480,
+      "sqlCommittedByRunEnd": 2480,
+      "serverCommitsCertainlyIn60s": 2400,
+      "serverCommitsPossiblyIn60s": 2400,
+      "serverCommitRatePerSecond": 40,
+      "perSecondBucketCounts": {
+        "40": 60
+      },
+      "inputSha256": "866cc99c77fe63551335a9caf315ba3d1b2590aff7a6dda69b55634a618d4728",
+      "persistedStateSha256": "ff762f3921609a810769379007b92e3420ee35b38bcc655698b3380920b4bdec",
+      "ackOnlyP99Ms": 53.046
+    },
+    {
+      "offeredRatePerSecond": 80,
+      "route": "direct",
+      "totalScheduled": 4960,
+      "sqlCommittedByRunEnd": 4960,
+      "serverCommitsCertainlyIn60s": 4800,
+      "serverCommitsPossiblyIn60s": 4800,
+      "serverCommitRatePerSecond": 80,
+      "perSecondBucketCounts": {
+        "79": 1,
+        "80": 58,
+        "81": 1
+      },
+      "inputSha256": "68c938582bd248b7e4ba477f9cb164ac897881932dd965720d9bdd598508c20a",
+      "persistedStateSha256": "d42653efa7b100c78bd5bf238f66b6e658a7a9d5447de6a1e4ada6e8b1c0cfed",
+      "ackOnlyP99Ms": 94.755
+    },
+    {
+      "offeredRatePerSecond": 80,
+      "route": "orleans",
+      "totalScheduled": 4960,
+      "sqlCommittedByRunEnd": 4960,
+      "serverCommitsCertainlyIn60s": 4800,
+      "serverCommitsPossiblyIn60s": 4800,
+      "serverCommitRatePerSecond": 80,
+      "perSecondBucketCounts": {
+        "79": 2,
+        "80": 56,
+        "81": 2
+      },
+      "inputSha256": "68c938582bd248b7e4ba477f9cb164ac897881932dd965720d9bdd598508c20a",
+      "persistedStateSha256": "d42653efa7b100c78bd5bf238f66b6e658a7a9d5447de6a1e4ada6e8b1c0cfed",
+      "ackOnlyP99Ms": 154.345
+    }
+  ],
+  "negativeOriginal": {
+    "runId": 41210325811,
+    "failedC01JobUrl": "https://github.com/jmfloreszazo/de-la-caja-negra-a-la-evidencia/actions/runs/41210325811/job/124563784711",
+    "originalArtifactId": 13046077362,
+    "originalArtifactSha256": "91e19d4c5e2d84874b0f4c79ce0afde57dae43b9dc1d21a4861bfadfcc5ae097",
+    "openInvestigation": "https://github.com/jmfloreszazo/de-la-caja-negra-a-la-evidencia/issues/44",
+    "finding": "C01 original grain-placement precondition failed: all 16 sampled grains on secondary despite two reachable silo gateways. Subsequent C01 pass does not establish its cause and must not erase the original negative run."
+  },
+  "interpretation": {
+    "es": "En cuatro ensayos de 62 segundos, con 60 segundos de medición, la base PostgreSQL confirmó 14.880 transferencias persistidas, 29.760 asientos y 14.880 eventos outbox, con 28/28 oráculos SQL correctos. Las tasas reales medidas a partir de timestamps de COMMIT de PostgreSQL fueron 40,0 y 80,0 COMMIT/s, tanto para la ruta directa como para Orleans. A 40/s hubo 40 COMMIT cada segundo; a 80/s las ventanas de un segundo oscilaron entre 79 y 81 COMMIT. No hubo solicitudes perdidas ni respuestas ambiguas. Es una exploración de dos puntos de carga, con una sola repetición en un host físico; NO demuestra saturación, p99 de producción, ventaja de rendimiento de Orleans ni equivalencia MIPS de mainframe. La regresión C01 que falló inicialmente queda registrada en el issue #44.",
+    "en": "Across four 62-second trials with sixty measured seconds, PostgreSQL durably committed 14,880 transfers with 29,760 postings, 14,880 outbox entries and 28/28 passing independent SQL Oracle Gates. Real server-recorded COMMIT rates were 40.0 and 80.0 per second for both direct and Orleans routes. At 40/s there were exactly 40 COMMIT timestamps per one-second bucket; at 80/s, buckets ranged from 79 to 81. No offered intents were missed and no ambiguous outcomes occurred. This is a two-point exploratory load result with one repetition on one physical host; it does NOT establish saturation, production p99, Orleans speed superiority or mainframe MIPS equivalence. The initial negative C01 placement regression remains tracked under issue #44."
+  },
+  "limits": "One physical Ubuntu runner, four Podman namespaces, one 5%-hot source profile with 80% hot-intent concentration, one repeated run per rate and route, only 60 measurement seconds for offered rates 40 and 80/s. No 3+ independently hosted cohorts, 160+ offered-rate sweep to saturation, physical HA, production p99 SLA, dated cloud/on-prem TCO, hardware mainframe reference workload or MIPS equivalence. SQL pg_stat_database counters contain non-business transactions. ACK-only p99 values are descriptive and cannot rank routes due to sequential order and single-run confounding. E2 remains partially_verified, B05 issue #25 OPEN, C01 placement issue #44 OPEN, release v2026.10.29 unchanged."
+}
