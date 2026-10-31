@@ -1,0 +1,141 @@
+{
+  "schemaVersion": 1,
+  "experiment": "E2-B05-40-80-Offer-Rate-Sweep",
+  "status": "CI_VERIFIED_BOUNDED_HOT_40_80_SQL_COMMIT_RATES_NOT_CAPACITY",
+  "capacityCeilingEstablished": false,
+  "capacityEvidence": false,
+  "source": {
+    "sourcePr": 43,
+    "sourceHeadSha": "6c1bb9b96d5118477b527f410fa66e08520055cf",
+    "mergedMainSha": "6c9f8ea9989cb8c572a1e5bc51f4004c95e4a1ca",
+    "originalCiRunId": 41210913483,
+    "originalCiUrl": "https://github.com/jmfloreszazo/de-la-caja-negra-a-la-evidencia/actions/runs/41210913483",
+    "originalArtifactId": 13045879294,
+    "originalArtifactUrl": "https://github.com/jmfloreszazo/de-la-caja-negra-a-la-evidencia/actions/runs/41210913483/artifacts/13045879294",
+    "originalArtifactZipSha256": "7ea9062c80dc92f1354f5076c543e3105d8a6ebfccac25c266c8398fe35dc262",
+    "independentlyAuditedOriginal": "Original CI ZIP downloaded, byte SHA256 checked against GitHub original-upload digest, 15 unique entries tested, 4 original raw client and SQL observation files, all 14,880 original operation IDs, per-operation server COMMIT timestamp + source phase, 4 independent seven-invariant SQL gate results, 2 stable route input/state SHA pairs, client monotonic arrival/dispatch/result integrity and all 60 per-second SQL COMMIT histogram bins per case checked independently.",
+    "originalPrecorrectionAttempt": {
+      "ciRunId": 41210325810,
+      "ciUrl": "https://github.com/jmfloreszazo/de-la-caja-negra-a-la-evidencia/actions/runs/41210325810",
+      "originalArtifactId": 13046247153,
+      "originalArtifactZipSha256": "7c418d9c3ad8682b22c5043bbc88cec2123079fae93c5ea25a688976bf14cbf2",
+      "issue": "The first original successful sweep persisted 14,880 operations, but its summary metadata/protocol incorrectly claimed 7,440 scheduled offers by forgetting the second route. Original unmodified evidence is preserved. The corrected source head asserts exact 14,880 and was independently rerun/audited.",
+      "firstRunC01Failure": {
+        "ciRunId": 41210325811,
+        "phase": "C01 grain-placement precondition before the financial fault",
+        "observed": "All 16 probed account grain hosts on e2f10-secondary; neither SQL accounting nor financial transaction failure established",
+        "issueUrl": "https://github.com/jmfloreszazo/de-la-caja-negra-a-la-evidencia/issues/44",
+        "artifactId": 13046077362
+      }
+    }
+  },
+  "setup": {
+    "accounts": 1000,
+    "eligibleHotSourceAccounts": 50,
+    "hotSourceIntentPercent": 80,
+    "profile": "five_percent_hot",
+    "routes": [
+      "direct",
+      "orleans"
+    ],
+    "offeredRatesPerSecond": [
+      40,
+      80
+    ],
+    "repetitionsPerPoint": 1,
+    "warmupSeconds": 1,
+    "measurementSeconds": 60,
+    "cooldownSeconds": 1,
+    "maximumInFlightClientRequests": 32,
+    "physicalLinuxHostCount": 1,
+    "podmanNetworkNamespaces": 4,
+    "oracle": "authoritative PostgreSQL 16.13 with track_commit_timestamp=on, plus seven independent ledger invariants",
+    "timestampSource": "pg_xact_commit_timestamp(operations.xmin)",
+    "noFinancialRequestRetries": true
+  },
+  "audit": {
+    "finalSourceCiChecksPassing": 14,
+    "finalSourceCiChecksTotal": 14,
+    "originalZipMembers": 15,
+    "trials": 4,
+    "distinctSourceVectors": 2,
+    "scheduledRequests": 14880,
+    "dispatchedRequests": 14880,
+    "independentlyVerifiedDurableCommittedByRunEnd": 14880,
+    "postings": 29760,
+    "outboxEvents": 14880,
+    "sqlSevenOracleChecksPassing": 28,
+    "sqlSevenOracleChecksTotal": 28,
+    "originalServerCommitTimestampsAudited": 14880,
+    "conservativeServerCommitsInsideAllFourMeasurementWindows": 14400,
+    "conservativePossibleServerCommitsInsideAllFourMeasurementWindows": 14400,
+    "scheduledMeasurementPhaseIntents": 14400,
+    "missedOffers": 0,
+    "ambiguousOutcomes": 0,
+    "matchedDirectOrleansInputAndFinalStatePairs": 2,
+    "monotonicClientSchedulesValidated": true,
+    "all60OneSecondServerCommitBucketsPerTrialRecomputed": true,
+    "actualSaturationObserved": false,
+    "productionP99Established": false,
+    "mainframeMipsEquivalenceEstablished": false
+  },
+  "cases": [
+    {
+      "rateOfferedPerSecond": 40,
+      "route": "direct",
+      "durableByRunEnd": 2480,
+      "commitsCertainInside60s": 2400,
+      "commitsPossibleInside60s": 2400,
+      "actualServerCommitRatePerSecond": 40,
+      "perSecondCommitHistogramMinimum": 40,
+      "perSecondCommitHistogramMaximum": 40,
+      "missed": 0,
+      "ambiguous": 0,
+      "p99AckOnlyMilliseconds": 53.682
+    },
+    {
+      "rateOfferedPerSecond": 40,
+      "route": "orleans",
+      "durableByRunEnd": 2480,
+      "commitsCertainInside60s": 2400,
+      "commitsPossibleInside60s": 2400,
+      "actualServerCommitRatePerSecond": 40,
+      "perSecondCommitHistogramMinimum": 40,
+      "perSecondCommitHistogramMaximum": 40,
+      "missed": 0,
+      "ambiguous": 0,
+      "p99AckOnlyMilliseconds": 53.046
+    },
+    {
+      "rateOfferedPerSecond": 80,
+      "route": "direct",
+      "durableByRunEnd": 4960,
+      "commitsCertainInside60s": 4800,
+      "commitsPossibleInside60s": 4800,
+      "actualServerCommitRatePerSecond": 80,
+      "perSecondCommitHistogramMinimum": 79,
+      "perSecondCommitHistogramMaximum": 81,
+      "missed": 0,
+      "ambiguous": 0,
+      "p99AckOnlyMilliseconds": 94.755
+    },
+    {
+      "rateOfferedPerSecond": 80,
+      "route": "orleans",
+      "durableByRunEnd": 4960,
+      "commitsCertainInside60s": 4800,
+      "commitsPossibleInside60s": 4800,
+      "actualServerCommitRatePerSecond": 80,
+      "perSecondCommitHistogramMinimum": 79,
+      "perSecondCommitHistogramMaximum": 81,
+      "missed": 0,
+      "ambiguous": 0,
+      "p99AckOnlyMilliseconds": 154.345
+    }
+  ],
+  "interpretation": {
+    "es": "Una campaña exploratoria de cuatro ensayos (1 minuto medido cada uno) confirmó, mediante las marcas COMMIT independientes de PostgreSQL, 40,0 y 80,0 transacciones por segundo en las rutas directa y Orleans. Se verificaron 14.880 transferencias persistidas, 29.760 asientos, 14.880 eventos outbox y 28/28 oráculos contables. No se observaron admisiones perdidas ni respuestas ambiguas. La prueba corrigió y documentó un error previo de metadatos (7.440 en lugar de 14.880 solicitudes programadas). Los percentiles p99 son descriptivos de un único ensayo por ruta/tasa, no un SLA ni evidencia de superioridad de Orleans. No se ha observado un límite de saturación ni demostrado equivalencia con un mainframe.",
+    "en": "An exploratory four-trial campaign (one minute measured per case) confirmed independently server-recorded PostgreSQL COMMIT rates of 40.0 and 80.0 transactions/s through both direct and Orleans routes. The source artifact verifies 14,880 durable transfers, 29,760 postings, 14,880 outbox events and 28/28 independent accounting oracles. No missed admissions or ambiguous outcomes were observed. A previous metadata-count error (7,440 instead of 14,880 scheduled requests) was explicitly corrected and its original run preserved. The p99 measurements describe only one case per route/rate and do not establish SLA or Orleans superiority. No saturation limit or mainframe equivalence has been demonstrated."
+  },
+  "limitations": "One physical Linux runner with four separate Podman namespaces; only 40 and 80 offered requests/s, exactly one seeded repetition per route/rate and one 80%-hot-source profile. These observations demonstrate actual server-side SQL COMMIT rates at two bounded load points, NOT sustainable maximum capacity, statistical SLO/p99, physically independent horizontal scaling, distributed clock synchronization, mainframe MIPS throughput equivalence or dated Azure TCO. ACK-only latency percentiles are not reliable when outcomes are censored; even with zero omissions, one trial cannot rank routes. Auxiliary pg_stat_database samples include observer/membership traffic, not only business COMMITs. Overall E2 partially_verified, issue #25 OPEN, issue #44 OPEN, C04 draft #34 separate, published v2026.10.29 unchanged."
+}
