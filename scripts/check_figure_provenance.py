@@ -74,7 +74,7 @@ def self_test() -> None:
         (folder / "theme.css").write_bytes(b"css")
         (folder / "accents.json").write_text(json.dumps({n: [] for n in FIGURES}))
         records = {}
-        png = PNG_MAGIC + b"\x00\x00\x00\x0dIHDR" + struct.pack(">II", 100, 100) + b"\x08\x06\x00\x00\x00" + b"\x00\x00\x00\x00"
+        png = PNG_MAGIC + b"\x00\x00\x00\x0dIHDR" + struct.pack(">II", 100, 100) + b"\x08\x06\x00\x00\x00" + b"\x00\x00\x00\x00" + b"\x00\x00\x00\x00"
         for name in FIGURES:
             for lang in LANGUAGES:
                 data = f"{lang}/{name}".encode()
