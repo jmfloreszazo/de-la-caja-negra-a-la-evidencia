@@ -48,10 +48,13 @@ def check_catalog(document: dict) -> dict:
         for k in ("domain", "name", "objective", "trigger", "outcome", "invariant"):
             if not isinstance(capability[k], str) or not capability[k].strip():
                 raise ContractError(f"{ident}: missing functional contract field {k}")
-        for k in ("exceptions", "acceptanceCriteria", "unknowns"):
+        for k in ("exceptions", "acceptanceCriteria"):
             values = capability[k]
             if not isinstance(values, list) or not values or not all(isinstance(s, str) and s.strip() for s in values):
                 raise ContractError(f"{ident}: {k} must contain nonempty descriptions")
+        unknowns = capability["unknowns"]
+        if not isinstance(unknowns, list) or not all(isinstance(s, str) and s.strip() for s in unknowns):
+            raise ContractError(f"{ident}: invalid uncertainty list")
         if not all(s.strip().lower().startswith(("given ", "dado ")) for s in capability["acceptanceCriteria"]):
             raise ContractError(f"{ident}: acceptance scenarios must begin with Given")
         if capability["consistency"] not in CONSISTENCY or capability["criticality"] not in CRITICALITY:
