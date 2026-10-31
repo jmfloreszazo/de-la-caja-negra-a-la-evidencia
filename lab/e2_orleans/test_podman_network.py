@@ -7,6 +7,8 @@ measures native routable bridge endpoints and ADO.NET SQL membership, not
 a cross-machine failover, a partition or a production SLO.
 """
 import hashlib
+from datetime import datetime, timezone
+import psycopg
 import json
 import os
 from pathlib import Path
@@ -182,6 +184,102 @@ def namespace_id(container):
     return podman("exec", container, "readlink", "/proc/self/ns/net")
 
 
+def wait_disposable_sql_ready(timeout=65):
+    """Require two real host-side SQL sessions, not only pg_isready.
+
+    This bounded preflight never retries a financial command. A transient
+    PostgreSQL socket disconnect is a startup observation, NOT a passing
+    database operation; persist each unsuccessful observation.
+    """
+    started = time.monotonic()
+    attempts = []
+    consecutive_sql_successes = 0
+    while time.monotonic() - started < timeout:
+        ready = podman(
+            "exec", "e2f10-pg", "pg_isready",
+            "-U", "postgres", "-d", "e2lab", check=False
+        )
+        observation = {
+            "timestampUtc": datetime.now(timezone.utc).isoformat(),
+            "pgIsReady": ready,
+            "hostSql": "NOT_ATTEMPTED"
+        }
+        if "accepting connections" in ready:
+            try:
+                with connect() as db:
+                    row = db.execute("SELECT 1, current_database()").fetchone()
+                assert row == (1, "e2lab"), (
+                    "Connected to unexpected disposable SQL database", row
+                )
+                consecutive_sql_successes += 1
+                observation["hostSql"] = "SELECT_1_OK"
+            except psycopg.OperationalError as exc:
+                consecutive_sql_successes = 0
+                observation["hostSql"] = "CONNECT_FAILED"
+                observation["error"] = repr(exc)[-1200:]
+        else:
+            consecutive_sql_successes = 0
+        attempts.append(observation)
+        if consecutive_sql_successes >= 2:
+            result = {
+                "experiment": "E2-F10-C01-Disposable-PostgreSQL-Readiness",
+                "status": "READY",
+                "timestampUtc": datetime.now(timezone.utc).isoformat(),
+                "requiredConsecutiveIndependentHostSqlSessions": 2,
+                "observedAttempts": len(attempts),
+                "elapsedSeconds": round(time.monotonic() - started, 3),
+                "observations": attempts[-20:],
+                "limits": (
+                    "Preflight proves only disposable local SQL connectivity "
+                    "at two sampled instants; not PostgreSQL high availability "
+                    "or elimination of intermittent startup failure."
+                )
+            }
+            (OUT / "e2-f10-c01-postgres-startup.json").write_text(
+                json.dumps(result, indent=2) + "\n", encoding="utf-8"
+            )
+            return result
+        time.sleep(0.5)
+    raise AssertionError(
+        "Disposable PostgreSQL did not demonstrate two consecutive "
+        "independent host-side SELECT 1 sessions: " +
+        json.dumps(attempts[-8:])
+    )
+
+
+def preserve_startup_failure(stage, error, containers):
+    """Original failure evidence must survive the finally cleanup path."""
+    record = {
+        "experiment": "E2-F10-C01-Podman-Startup-Diagnostic",
+        "status": "FAIL",
+        "classification": "ORIGINAL_FAILED_RUN_NOT_ACCEPTED",
+        "stage": stage,
+        "timestampUtc": datetime.now(timezone.utc).isoformat(),
+        "error": repr(error),
+        "disposableSqlHostPort": "127.0.0.1:55435",
+        "containers": {}
+    }
+    for name in containers:
+        try:
+            value = json.loads(podman("inspect", name))[0]
+            record["containers"][name] = {
+                "status": value["State"]["Status"],
+                "exitCode": value["State"]["ExitCode"],
+                "id": value["Id"],
+                "networkAddresses": {
+                    network: state["IPAddress"]
+                    for network, state in
+                    value["NetworkSettings"]["Networks"].items()
+                },
+                "logsTail": podman("logs", name, check=False)[-9000:]
+            }
+        except Exception as exc:
+            record["containers"][name] = {"diagnosticError": repr(exc)}
+    (OUT / "e2-f10-c01-failure-diagnostic.json").write_text(
+        json.dumps(record, indent=2) + "\n", encoding="utf-8"
+    )
+
+
 def main():
     assert os.environ.get("E2_NETWORK_TEST") == "1", (
         "Explicit E2_NETWORK_TEST=1 is required"
@@ -190,6 +288,7 @@ def main():
     assert (APP_DIR / "OrleansLab.dll").is_file()
     created = []
     network_created = False
+    stage = "startup"
     try:
         podman("network", "create", "--subnet", "10.78.30.0/24", NETWORK)
         network_created = True
@@ -198,17 +297,12 @@ def main():
               "-p", "127.0.0.1:55435:5432",
               POSTGRES, app=False)
         created.append("e2f10-pg")
-        for _ in range(65):
-            ready = podman(
-                "exec", "e2f10-pg", "pg_isready", "-U", "postgres", "-d",
-                "e2lab", check=False
-            )
-            if "accepting connections" in ready:
-                break
-            time.sleep(1)
-        else:
-            raise AssertionError("Disposable Podman PostgreSQL not ready")
+        stage = "disposable-sql-host-readiness"
+        readiness_observation = wait_disposable_sql_ready()
+        assert readiness_observation["status"] == "READY"
+        stage = "disposable-sql-schema-reset"
         reset()
+        stage = "adonet-membership-setup"
         os.environ["E2_POSTGRES_CONTAINER"] = "e2f10-pg"
         from setup_adonet_membership import main as setup
         setup()
@@ -374,6 +468,9 @@ def main():
             "oracle": oracle,
             "limitations": manifest["limitations"],
         }, indent=2))
+    except Exception as error:
+        preserve_startup_failure(stage, error, created)
+        raise
     finally:
         for name in reversed(created):
             podman("rm", "-f", name, check=False, timeout=50)
