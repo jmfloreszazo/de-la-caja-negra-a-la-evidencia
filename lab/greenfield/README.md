@@ -24,3 +24,13 @@ A candidate fails if it duplicates postings, breaks conservation, omits outbox, 
 ## Release and evidence
 
 This lab is independent of the historical E1/E2 financial baseline. The 12-step synthetic contract provides no real mainframe comparison. Do not market it as CAP-005 or CAP-007 accepted at a bank. Record exact PR SHA, original CI logs and both positive and deliberately failing negative controls. Published `v2026.10.29` must remain untouched.
+
+## TODM and Golden Master are intentionally different
+
+- **Golden Master / Characterization Testing** observes what the incumbent *actually does*; it is not the source of approved business truth. The included `contracts/golden_master_synthetic.json` is a **fabricated demonstration** with one matching observation and one deliberately contradictory stale-projection response, NOT captured COBOL output.
+- **TODM** [research v1.5](https://github.com/jmfloreszazo/TODM) governs G0 scope, G1 discovery, G2 baseline approval, G3 oracle qualification, G4 bounded construction, G5 independent verification, G6 release authorization and G7 controlled evolution. The local `todm_assurance.py` is an explicitly **TODM-inspired stage mapping**, NOT the official TODM demo/cryptographic attestation engine.
+- In this synthetic case, **G5 may PASS while G6 must BLOCK**: business owner, signed G2 baseline, approved mandate and independent release signoff are absent. An observed Golden Master discrepancy does not silently rewrite the expected behavior.
+- Tests deliberately corrupt the Golden Master, expected provenance and candidate outputs. A local SHA-256 only fingerprints evidence and **is not a digital signature or an approval**.
+- A real modernization environment may use a [client/provider confidential-computing study](https://github.com/jmfloreszazo/de-la-caja-negra-a-la-evidencia/issues/53), but a TEE alone never certifies TODM approval or suppresses sensitive outputs.
+
+The original synthetic `GREENFIELD CONTRACT: PASS` remains a **technical comparison only**. The new `TODM_ASSURANCE: G5=PASS G6=BLOCK` status is the *expected* safe result, not a contradiction.
