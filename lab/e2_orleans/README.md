@@ -1,9 +1,15 @@
 # E2 · Orleans-led account coordination (partially verified experiment)
 
-**SINGLE-SILO FUNCTIONAL AND FIXED-WORKLOAD SLICES VERIFIED IN CI; OVERALL E2 NOT ACCEPTED.** The .NET 10/Orleans 10.4.0 co-hosted silo shares one authoritative PostgreSQL ledger across the direct and grain-routed paths. [Functional smoke #41053628769](https://github.com/jmfloreszazo/de-la-caja-negra-a-la-evidencia/actions/runs/41053628769) passed five controls. [Seeded workload #41055928136](https://github.com/jmfloreszazo/de-la-caja-negra-a-la-evidencia/actions/runs/41055928136) passed six route/profile runs with 600 committed transfers. No sustained capacity ceiling, multiple-silo or production proof exists. Its detailed executable acceptance
+**SINGLE-SILO FUNCTIONAL AND FIXED-WORKLOAD SLICES VERIFIED IN CI; OVERALL E2 NOT ACCEPTED.** The .NET 10/Orleans 10.4.0 co-hosted silo shares one authoritative PostgreSQL ledger across the direct and grain-routed paths. [Functional smoke #41053628769](https://github.com/jmfloreszazo/de-la-caja-negra-a-la-evidencia/actions/runs/41053628769) passed five controls. [Seeded workload #41055928136](https://github.com/jmfloreszazo/de-la-caja-negra-a-la-evidencia/actions/runs/41055928136) passed six route/profile runs with 600 committed transfers. No sustained capacity ceiling, independently hosted physical-node scaling or production proof exists. Its detailed executable acceptance
 contract is in [EXPERIMENT_PROTOCOL.md](EXPERIMENT_PROTOCOL.md). This
 engineering laboratory and all future source, fixtures and READMEs are
 **English only**.
+
+## E2-B05 real external client — bounded repeatability verified, not capacity
+
+[Original CI #41204905763](https://github.com/jmfloreszazo/de-la-caja-negra-a-la-evidencia/actions/runs/41204905763) verified a pre-registered **24-run pilot** with two fixed-clock *offered* rates (20/40 operations per second), three seeded repetitions, uniform and eligible-5%-hot source profiles, and the same operations routed directly through the durable ledger or through Orleans grains. This involved four separate Podman network namespaces on **one physical GitHub Linux host**. An independent audit of [the original raw ZIP #13044531582](https://github.com/jmfloreszazo/de-la-caja-negra-a-la-evidencia/actions/runs/41204905763/artifacts/13044531582) checked SHA-256 `93a7be851b9cd17f4e848cf1ca773c770e2ebc74bfcd651f7bba66f9b0cb4510`, all 24 client/SQL traces and all 12 matched-route input/state hashes.
+
+The ledger has **7,200 durably COMMITTED operations, 14,400 postings, 7,200 outbox events, zero missed/ambiguous client outcomes, and 168/168 independent SQL oracle results**. These numbers prove this synthetic workload's **bounded ledger correctness**. The clock schedule is an **offered arrival rate**, not the independently observed in-window PostgreSQL COMMIT rate. Each trial has only 8 measurement seconds. No sustained saturation, steady-state p99, mainframe MIPS equivalence, cross-physical-host scaling or Azure cost comparison was established. Review the [narrowly scoped archived report](../../evidence/runs/e2-b05-repeatability-pilot.json) and [test protocol](B05_REPEATABILITY_PROTOCOL.md); overall E2 remains `partially_verified` and [B05 issue #25](https://github.com/jmfloreszazo/de-la-caja-negra-a-la-evidencia/issues/25) remains open.
 
 ## Why this experiment exists
 
