@@ -15,6 +15,7 @@ namespace E2.OrleansLab;
 internal static class B05LoadClient
 {
     private const int MaximumOffers = 120;
+    private const int MaximumPilotOffers = 2_000;
     private const int MaximumInflight = 32;
     private static readonly JsonSerializerOptions Options = new()
     {
@@ -43,6 +44,7 @@ internal static class B05LoadClient
         string route, string file, string conn, string? membership,
         string service, string cluster)
     {
+        var pilot = Environment.GetEnvironmentVariable("E2_B05_REPEATABILITY") == "1";
         if (Environment.GetEnvironmentVariable("E2_B05_SMOKE") != "1" ||
             Environment.GetEnvironmentVariable("E2_NETWORK_TEST") != "1" ||
             Environment.GetEnvironmentVariable("E2_MAX_ACCOUNT_ID") != "1000")
@@ -56,11 +58,13 @@ internal static class B05LoadClient
             ?? throw new InvalidOperationException("Missing B05 vector");
         if (vector.Status != "GENERATED_NOT_EXECUTED" ||
             vector.CapacityEvidence || vector.AccountCount != 1000 ||
-            vector.OfferedRatePerSecond is < 1 or > 100 ||
+            vector.OfferedRatePerSecond < 1 ||
+            vector.OfferedRatePerSecond > 100 ||
             vector.Operations is null ||
             vector.Operations.Count != vector.TotalOfferedRequests ||
-            vector.Operations.Count is < 1 or > MaximumOffers)
-            throw new InvalidOperationException("Unaccepted bounded B05 smoke vector");
+            vector.Operations.Count < 1 ||
+            vector.Operations.Count > (pilot ? MaximumPilotOffers : MaximumOffers))
+            throw new InvalidOperationException("Unaccepted bounded B05 vector");
 
         long previous = -1;
         var ids = new HashSet<string>(StringComparer.Ordinal);
@@ -72,7 +76,7 @@ internal static class B05LoadClient
             if (!PgDurableLedger.Valid(cmd) ||
                 operation.Phase is not ("warmup" or "measurement" or "cooldown") ||
                 operation.ScheduledAtNs <= previous ||
-                operation.ScheduledAtNs > 10_000_000_000L ||
+                operation.ScheduledAtNs > (pilot ? 60_000_000_000L : 10_000_000_000L) ||
                 !ids.Add(operation.OperationId))
                 throw new InvalidOperationException(
                     "Invalid, duplicate or unbounded B05 scheduled offer");
@@ -181,10 +185,16 @@ internal static class B05LoadClient
             var report = new
             {
                 schemaVersion = 1,
-                experiment = "E2-B05-External-Open-Loop-Smoke",
-                classification = "SHORT_SINGLE_HOST_BOUNDED_NOT_CAPACITY",
+                experiment = pilot
+                    ? "E2-B05-External-Repeatability-Pilot"
+                    : "E2-B05-External-Open-Loop-Smoke",
+                classification = pilot
+                    ? "BOUNDED_MULTIRUN_ONE_HOST_NOT_CAPACITY"
+                    : "SHORT_SINGLE_HOST_BOUNDED_NOT_CAPACITY",
                 route,
-                status = "OBSERVED_NOT_SUSTAINED_CAPACITY",
+                status = pilot
+                    ? "OBSERVED_REPEATABILITY_PILOT_NOT_CAPACITY"
+                    : "OBSERVED_NOT_SUSTAINED_CAPACITY",
                 independentExternalProcessId = Environment.ProcessId,
                 hostIdentity = Environment.MachineName,
                 offered = vector.TotalOfferedRequests,
@@ -194,7 +204,9 @@ internal static class B05LoadClient
                 ambiguous = observed.Count(s => s.ClientOutcome == "AMBIGUOUS_EXCEPTION"),
                 runWallClockNs = Ns(clock),
                 samples = observed,
-                limits = "One physical Linux host with separate Podman processes and namespaces. Bounded four-second replay only. No sustained throughput ceiling, mainframe MIPS or production p99 claim. Acknowledgements are NOT a substitute for the independent PostgreSQL oracle."
+                limits = pilot
+                    ? "A bounded repeated fixed-clock pilot on ONE Linux host, not a production system or an independent load host. No sustainable capacity limit, SLA p99, mainframe MIPS or cross-host scaling. Only SQL can confirm business effects."
+                    : "One physical Linux host with separate Podman processes and namespaces. Bounded four-second replay only. No sustained throughput ceiling, mainframe MIPS or production p99 claim. Acknowledgements are NOT a substitute for the independent PostgreSQL oracle."
             };
             Console.WriteLine(JsonSerializer.Serialize(report, Options));
             return 0;
