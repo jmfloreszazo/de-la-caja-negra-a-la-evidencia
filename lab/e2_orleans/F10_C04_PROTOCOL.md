@@ -10,7 +10,7 @@ The test targets a disposable, single physical Ubuntu runner with four isolated 
 
 ## Predeclared acceptance
 
-1. Inspect and record four distinct network namespaces, container IDs, fixed addresses and actual process IDs; verify both ADO.NET membership rows active and both client gateways reachable.
+1. Before creating the ledger schema, require two consecutive independent PostgreSQL host-loopback SQL connections after in-container readiness and retain a C04-specific startup observation. Then inspect four distinct network namespaces, container IDs, fixed addresses and actual process IDs; verify both ADO.NET membership rows active and both client gateways reachable.
 2. Commit a baseline transaction and require 1 operation / 2 postings / 1 outbox event and seven independent SQL oracles.
 3. Block **only the external client's primary gateway** TCP destination and prove secondary gateway and PostgreSQL remain reachable. A **fresh client process in the same isolated client container/network namespace** must commit a transaction to a grain confirmed on the primary silo through the remaining gateway. Require 2/4/2 durable effects, exact 1 operation/2 postings/1 outbox for this individual operation, and SQL oracle 7/7. This is a fresh-client fallback case, not seamless recovery of an already-connected client.
 4. Block the secondary client gateway as well. Verify both endpoints are unreachable from the client while both are healthy from the silo namespaces; the client retains SQL connectivity. Attempt a new operation with a stable ID. Require an **actual transport-related client exception or timeout**; a normal non-COMMITTED business response is insufficient. Reject unrelated process/runtime errors; the test must never match the application name alone as evidence of a gateway outage. Inspect authoritative SQL before and after the attempted request and at three additional one-second intervals **while both cuts remain active**. Require no new operation/posting/outbox rows. A startup failure is **not** a proven in-flight financial-request failure.
@@ -29,7 +29,7 @@ The test targets a disposable, single physical Ubuntu runner with four isolated 
 
 ## Implementation status
 
-Candidate source: lab/e2_orleans/test_client_gateway_partition.py.
+Candidate source: lab/e2_orleans/test_client_gateway_partition.py. The previously merged shared PostgreSQL readiness helper in test_podman_network.py is now explicitly enabled for C04, without modifying C01/C02/C03 fault semantics. This is a **preflight**, not a C04 runtime PASS.
 
 The dedicated workflow is **not committed** due to the safety block reported above. CI must not be claimed as passing. Source code and technical documentation remain English; editorial book content will be Spanish and English.
 ## Previous C01 baseline regression
