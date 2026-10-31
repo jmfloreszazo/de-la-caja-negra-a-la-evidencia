@@ -14,6 +14,7 @@ Exit code 0 when everything is in order.
 import pathlib, re, sys
 sys.path.insert(0, str(pathlib.Path(__file__).resolve().parent))
 import build
+import check_modernization_method
 
 ROOT = build.ROOT
 problems = []
@@ -120,6 +121,11 @@ for lang in ('es', 'en'):
     for ident in sorted(img[lang] - src[lang]):
         problems.append(f'image without source: book/figures/{lang}/{ident}.png')
 print(f'[4] figures ....... {len(src["es"])} sources per language, each with its image')
+
+# 5. Editorial method: do not silently reinstate parser-first modernization.
+check_modernization_method.self_test()
+problems.extend(check_modernization_method.problems(ROOT))
+print('[5] method ........ business capabilities first, optional source archaeology')
 
 print()
 for p in problems:
