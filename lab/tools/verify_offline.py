@@ -142,6 +142,17 @@ reference_run = subprocess.run(
 if reference_run.returncode != 0:
     failures.append("greenfield independent oracle tests failed")
 
+# 7. Brownfield claim/evidence gap: technical experiments never imply G6 approval.
+print("[7] brownfield capability ...... classification and negative controls")
+brownfield = ROOT / "brownfield"
+brownfield_run = subprocess.run(
+    [sys.executable, "-m", "unittest", "discover", "-s", str(brownfield),
+     "-p", "test_*.py", "-v"],
+    cwd=brownfield, check=False,
+)
+if brownfield_run.returncode != 0:
+    failures.append("brownfield functional-evidence coverage checks failed")
+
 print()
 if failures:
     print('VERIFY: FAIL')
