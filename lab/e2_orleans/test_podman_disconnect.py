@@ -193,15 +193,10 @@ def main():
         containers.append("e2f10-pg")
         P("network","connect","--ip",SQL_IPS["e2f10-pg"],
           SQL_NETWORK,"e2f10-pg")
-        for _ in range(65):
-            if "accepting connections" in P(
-                "exec","e2f10-pg","pg_isready","-U","postgres",
-                "-d","e2lab",check=False
-            ):
-                break
-            time.sleep(1)
-        else:
-            raise AssertionError("Disposable PostgreSQL not ready")
+        # The in-container readiness signal is not enough: require two
+        # independent successful SQL connections from the host loopback
+        # before any schema operation or Orleans silo is started.
+        fx.wait_disposable_sql_ready(case="c02", output_dir=OUT)
         fx.reset()
         os.environ["E2_POSTGRES_CONTAINER"] = "e2f10-pg"
         from setup_adonet_membership import main as install
