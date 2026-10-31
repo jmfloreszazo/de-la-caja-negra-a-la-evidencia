@@ -13,7 +13,7 @@ jobs:
     # The PR #2 merge commit is the ONLY automatic first-release trigger.
     # Subsequent releases require an explicit v* tag, as before.
     if: >-
-      ${{ startsWith(github.ref, 'refs/tags/v') || (github.ref == 'refs/heads/main' && startsWith(github.event.head_commit.message, 'release: publish first PDF edition after PR #2 merge')) }}
+      ${{ startsWith(github.ref, 'refs/tags/v') || (github.ref == 'refs/heads/main' && (startsWith(github.event.head_commit.message, 'release: publish first PDF edition after PR #2 merge') || startsWith(github.event.head_commit.message, 'release: publish research preview v2026.10.31-rc1'))) }}
     runs-on: ubuntu-24.04
     timeout-minutes: 40
     steps:
@@ -42,21 +42,29 @@ jobs:
       - name: Create release and attach both books
         env:
           GH_TOKEN: ${{ github.token }}
+          GITHUB_EVENT_HEAD_COMMIT_MESSAGE: ${{ github.event.head_commit.message }}
         run: |
           set -euo pipefail
           if [ "$GITHUB_REF" = "refs/heads/main" ]; then
-            TAG=v2026.10.29
-            if git show-ref --verify --quiet "refs/tags/$TAG"; then
-              echo "::error::Tag $TAG already exists. Refusing to overwrite."
+            if [[ "$GITHUB_EVENT_HEAD_COMMIT_MESSAGE" == "release: publish research preview v2026.10.31-rc1"* ]]; then
+              TAG=v2026.10.31-rc1
+              NOTE=docs/releases/v2026.10.31-rc1.md
+              CHANNEL=--prerelease
+            else
+              # Preserve original one-time first-edition behavior unchanged.
+              TAG=v2026.10.29
+              NOTE=CHANGELOG.md
+              CHANNEL=
+            fi
+            if git show-ref --verify --quiet "refs/tags/$TAG" || gh release view "$TAG" >/dev/null 2>&1; then
+              echo "::error::Tag or release $TAG already exists. Refusing to overwrite."
               exit 1
             fi
-            # gh release create creates the tag from this merged commit and
-            # publishes everything in the SAME action. No second trigger needed.
             gh release create "$TAG" \
               book/es.md book/en.md \
               dist/de-la-caja-negra-a-la-evidencia-es.pdf \
               dist/from-black-box-to-evidence-en.pdf \
-              --target "$GITHUB_SHA" --title "$TAG" --notes-file CHANGELOG.md
+              --target "$GITHUB_SHA" --title "$TAG" --notes-file "$NOTE" ${CHANNEL}
           else
             TAG="$GITHUB_REF_NAME"
             gh release create "$TAG" \
