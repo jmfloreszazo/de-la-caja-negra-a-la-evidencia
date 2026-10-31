@@ -34,6 +34,13 @@ def analyze(data):
             raise InvalidEvidence("Missing observation provenance")
         if edge["atomicGroup"] is not None and (not isinstance(edge["atomicGroup"], str) or not edge["atomicGroup"]):
             raise InvalidEvidence("Invalid atomic group")
+    # Atomic groups are hyperedges: all participating endpoints must remain
+    # under one authority, even if no individual edge crosses the cut.
+    atomic_members = {}
+    for edge in edges:
+        if edge["atomicGroup"] is not None:
+            atomic_members.setdefault(edge["atomicGroup"], set()).update(
+                (edge["source"], edge["target"]))
     proposals = data["proposals"]
     if not isinstance(proposals, list) or not proposals:
         raise InvalidEvidence("Proposals required")
@@ -47,9 +54,12 @@ def analyze(data):
         if proposal["approvedAtomicGroups"] != []:
             raise InvalidEvidence("Exception/override mechanism is not supported")
         cut = [edge for edge in edges if (edge["source"] in selected) != (edge["target"] in selected)]
-        violations = sorted({e["atomicGroup"] for e in cut if e["atomicGroup"] is not None})
+        violations = sorted(group for group, members in atomic_members.items()
+                            if bool(members & set(selected)) and
+                            bool(members - set(selected)))
         unknown = sum(e["confidence"] == "unknown" for e in cut)
-        results.append({"id": proposal["id"], "decision": "REJECT" if violations or unknown else "CANDIDATE_ONLY", "crossingEdges": len(cut), "atomicGroupsSplit": violations, "unknownCrossingEdges": unknown})
+        inferred = sum(e["confidence"] == "inferred" for e in cut)
+        results.append({"id": proposal["id"], "decision": "REJECT" if violations or unknown or inferred else "CANDIDATE_ONLY", "crossingEdges": len(cut), "atomicGroupsSplit": violations, "unknownCrossingEdges": unknown, "inferredCrossingEdges": inferred})
     if len({r["id"] for r in results}) != len(results):
         raise InvalidEvidence("Duplicate proposal IDs")
     return {"status": "DESIGN_ONLY_NOT_RUNTIME_PROOF", "proposals": results}
