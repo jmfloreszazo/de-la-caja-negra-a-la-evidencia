@@ -1,0 +1,68 @@
+{
+  "schemaVersion": 1,
+  "experiment": "E2-B05-Offline-Fixed-Clock-Offer-Contract",
+  "status": "OFFLINE_INPUT_ONLY_NOT_CAPACITY",
+  "capacityEvidence": false,
+  "provenance": {
+    "sourceRunId": 41191862734,
+    "sourceHeadSha": "75f20ee77d77d6183d57e123481381bb72326308",
+    "originalArtifactId": 13039026356,
+    "originalArtifactName": "e2-b05-original-offline-offer-contract-not-capacity",
+    "originalArtifactUrl": "https://github.com/jmfloreszazo/de-la-caja-negra-a-la-evidencia/actions/runs/41191862734/artifacts/13039026356",
+    "sourceRunUrl": "https://github.com/jmfloreszazo/de-la-caja-negra-a-la-evidencia/actions/runs/41191862734",
+    "downloadedArtifactZipSha256": "d85ff398cd686e5f1b161524f080988faca340eec0ff59de292f442d64bedf88",
+    "originalArtifactVerified": "ZIP SHA256 recalculated independently, 12 raw JSON vector byte hashes checked against embedded SHA list; original raw ZIP retained by GitHub Actions"
+  },
+  "originalCi": {
+    "conclusion": "success",
+    "pureOfflineUnitTests": 7,
+    "unitTestsPassing": 7,
+    "originalVectors": 12,
+    "profiles": 4,
+    "repetitionsPerProfile": 3
+  },
+  "observations": {
+    "profileNames": [
+      "uniform",
+      "five_percent_hot",
+      "one_account_half_intents",
+      "crossed"
+    ],
+    "accountsEligible": 1000,
+    "hotAccountsEligible": 50,
+    "requestedRatePerSecond": 20,
+    "scenarioSeconds": 4,
+    "phasesSeconds": {
+      "warmup": 1,
+      "measurement": 2,
+      "cooldown": 1
+    },
+    "offeredRequestsPerVector": 80,
+    "totalScheduledOffersAcrossAllVectors": 960,
+    "scheduledGapNanoseconds": 50000000,
+    "observedOperationsExecuted": 0,
+    "actualDurableSqlCommitsMeasured": false,
+    "actualLatencyPercentilesMeasured": false,
+    "independentLedgerOracleExecutedForB05": false,
+    "sourceIntentPercentages": {
+      "fivePercentHot": "Exactly 80% source IDs 1..50 per nonempty phase",
+      "oneAccountHalf": "Exactly 50% source ID 1 per nonempty phase",
+      "crossed": "Equal counts of 1-to-2 and 2-to-1; shuffled, NOT strictly alternating"
+    },
+    "rawShaPinsAndScheduleRechecked": true
+  },
+  "interpretation": {
+    "es": "Se verificaron únicamente la reproducibilidad y la integridad de 12 vectores de solicitudes programadas. No se ejecutó ningún benchmark B05 y no existen mediciones de TPS confirmadas, p99 ni capacidad mainframe.",
+    "en": "Only the reproducibility and integrity of 12 scheduled-request vectors were verified. No B05 benchmark ran and there are no committed TPS, p99 or mainframe-capacity measurements."
+  },
+  "outstanding": [
+    "Independent external open-loop load generator and actual dispatch admission",
+    "Persistent external Orleans client and matched durable direct PostgreSQL route",
+    "Measured offered, attempted, durable SQL COMMIT and timeout/rejection vectors",
+    "Sustained load sweep with >=3 repetitions and p50/p95/p99 from prescheduled arrival",
+    "Independent 1000-account SQL oracle after every executed run",
+    "Resource, lock, GC, pool, network and hardware baseline provenance",
+    "Separate physically deployed horizontal scaling and dated cloud cost/TCO analysis"
+  ],
+  "limitations": "This archived record concerns an OFFLINE input contract only. No bank transaction, SQL operation, Orleans grain, real network, sustained benchmark, actual p99, split-brain, physical HA or MIPS equivalence was tested. E2 remains partially_verified; B05 issue #25 remains OPEN."
+}
