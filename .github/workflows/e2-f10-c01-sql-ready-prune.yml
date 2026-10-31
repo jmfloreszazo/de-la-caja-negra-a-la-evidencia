@@ -1,0 +1,57 @@
+name: One-time safe deletion of merged E2-F10-C01 startup readiness fix branch
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/e2-f10-c01-sql-ready-prune.yml'
+
+permissions:
+  contents: write
+
+concurrency:
+  group: once-e2-f10-c01-sql-ready-merge-pruning
+  cancel-in-progress: false
+
+jobs:
+  prune-only-if-exact-sha-merged:
+    name: Verify PR 36 exact ancestry and remove only its merged branch
+    if: >-
+      ${{ github.ref == 'refs/heads/main' && startsWith(github.event.head_commit.message, 'merge: E2 F10 C01') }}
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          fetch-depth: 0
+      - name: Refuse deletion if PR unmerged, head SHA changed, or commits missing
+        env:
+          GH_TOKEN: ${{ github.token }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          test "$GITHUB_REF" = "refs/heads/main"
+          test "$GITHUB_REPOSITORY" = "jmfloreszazo/de-la-caja-negra-a-la-evidencia"
+          git fetch --no-tags origin main
+          test "$(git rev-parse HEAD)" = "$(git rev-parse origin/main)"
+          branch="fix/e2-f10-postgres-readiness"
+          test "$(gh api "repos/$GITHUB_REPOSITORY/pulls/36" --jq '.merged')" = "true"
+          expected="$(gh api "repos/$GITHUB_REPOSITORY/pulls/36" --jq '.head.sha')"
+          test -n "$expected"
+          current="$(gh api "repos/$GITHUB_REPOSITORY/git/ref/heads/$branch" --jq '.object.sha')"
+          test "$current" = "$expected" || {
+            echo "::error::Branch changed; refusing deletion"
+            exit 1
+          }
+          git fetch --no-tags origin "refs/heads/$branch:refs/remotes/origin/$branch"
+          git merge-base --is-ancestor "$expected" HEAD || {
+            echo "::error::Unmerged commits; refusing deletion"
+            exit 1
+          }
+          current="$(gh api "repos/$GITHUB_REPOSITORY/git/ref/heads/$branch" --jq '.object.sha')"
+          test "$current" = "$expected" || {
+            echo "::error::Concurrent branch update; refusing deletion"
+            exit 1
+          }
+          gh api --method DELETE "repos/$GITHUB_REPOSITORY/git/refs/heads/$branch"
+          echo "Safely deleted only merged PR 36 branch: $branch at $expected"
