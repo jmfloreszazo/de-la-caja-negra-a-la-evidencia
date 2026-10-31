@@ -25,7 +25,7 @@ The verifier executes or consumes observations obtained in a controlled way, che
 
 ![Figure 11.2 · Separate responsibilities and bound evidence. The builder reads the public contract; it does not write the baseline. Separating folders in the demo does not impose production permissions.](../../figures/en/c4_containers.png)
 
-*Figure 11.2 · Separate responsibilities and bound evidence. The builder reads the public contract; it does not write the baseline. Separating folders in the demo does not impose production permissions.*
+*Figure 11.2 · Functional discovery, separate Golden Master, optional source archaeology, and TODM with G6 release authority. The builder cannot write the baseline; separate folders do not enforce production permissions.*
 
 ## The boundaries that matter
 
