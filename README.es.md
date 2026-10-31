@@ -20,7 +20,7 @@ Un libro abierto y un laboratorio ejecutable sobre cómo modernizar sistemas COB
 
 ## Leer
 
-[Descargar PDF en español e inglés](https://github.com/jmfloreszazo/de-la-caja-negra-a-la-evidencia/releases/tag/v2026.10.29) · [Ruta rápida: siete capítulos](docs/READING_PATH.es.md) · [Ediciones PDF y proceso de publicación](docs/PDF.md).
+[Prepublicación de investigación v2026.10.31-rc1 — greenfield + TODM, experimental](docs/releases/v2026.10.31-rc1.md) · [Descargar PDF en español e inglés](https://github.com/jmfloreszazo/de-la-caja-negra-a-la-evidencia/releases/tag/v2026.10.29) · [Ruta rápida: siete capítulos](docs/READING_PATH.es.md) · [Ediciones PDF y proceso de publicación](docs/PDF.md).
 
 | | Capítulo a capítulo | El libro entero en una página |
 |---|---|---|
