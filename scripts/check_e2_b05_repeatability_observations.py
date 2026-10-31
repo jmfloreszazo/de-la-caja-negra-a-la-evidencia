@@ -81,7 +81,7 @@ def manifest_gate(record: dict) -> None:
     assert "7,200" in en and "14,400" in en and "168" in en
     assert "no" in es and "not" in en
     limits = record["limitations"].lower()
-    for term in ("one physical", "eight measured seconds", "mainframe", "partially_verified", "open"):
+    for term in ("single physical", "eight measured seconds", "mainframe", "partially_verified", "open"):
         assert term in limits, (term, limits)
 
 
