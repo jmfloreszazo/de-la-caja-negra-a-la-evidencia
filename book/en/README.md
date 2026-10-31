@@ -22,6 +22,7 @@ José María Flores Zazo · Edition v2026.10.29 · [The whole book on one page](
 - **[Part II · Archaeology, knowledge and authority](part-2-archaeology-and-authority/README.md)**
   - [Chapter 6 · REA and archaeology that leaves a trail](part-2-archaeology-and-authority/06-rea-and-archaeology-that-leaves-a-trail.md)
   - [Chapter 7 · Legacy Archaeology assisted by agents](part-2-archaeology-and-authority/07-legacy-archaeology-assisted-by-agents.md)
+  - [Companion chapter 7 bis · Decomposing a mainframe with evidence](part-2-archaeology-and-authority/07a-decomposing-a-mainframe-with-evidence.md)
   - [Chapter 8 · The agent's knowledge and the system's record](part-2-archaeology-and-authority/08-the-agent-s-knowledge-and-the-system-s-record.md)
   - [Chapter 9 · From the agent's authority to the rule's authority](part-2-archaeology-and-authority/09-from-the-agent-s-authority-to-the-rule-s-authority.md)
 - **[Part III · Oracles: the right to accept](part-3-oracles/README.md)**
