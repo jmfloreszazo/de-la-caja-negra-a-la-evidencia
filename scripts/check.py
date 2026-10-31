@@ -15,6 +15,7 @@ import pathlib, re, sys
 sys.path.insert(0, str(pathlib.Path(__file__).resolve().parent))
 import build
 import check_modernization_method
+import check_figure_provenance
 
 ROOT = build.ROOT
 problems = []
@@ -126,6 +127,11 @@ print(f'[4] figures ....... {len(src["es"])} sources per language, each with its
 check_modernization_method.self_test()
 problems.extend(check_modernization_method.problems(ROOT))
 print('[5] method ........ business capabilities first, optional source archaeology')
+
+# 6. Keep diagram source, fingerprints and committed PNGs coherent.
+check_figure_provenance.self_test()
+problems.extend(check_figure_provenance.problems(ROOT))
+print('[6] figure provenance ... Mermaid source/theme/PNG continuity')
 
 print()
 for p in problems:

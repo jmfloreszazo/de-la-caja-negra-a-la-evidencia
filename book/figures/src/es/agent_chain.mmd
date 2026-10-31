@@ -1,14 +1,21 @@
 flowchart TB
-  inv["Inventario y procedencia"] --> parse["Parser y grafo"]
-  parse --> rules["Descubrimiento de reglas"]
-  obs["Observador de ejecución"] --> rules
-  rules --> spec["Redactor de especificaciones"]
-  spec --> owner(("Autoridad de dominio"))
-  owner --> base[("Baseline aprobada")]
-  base --> arch["Diseñador de arquitectura"]
-  arch --> build["Constructor"]
-  build --> ver["Verificador"]
+  owner(("Autoridad de negocio")) --> scope["Mandato y políticas"]
+  scope --> inv["Capacidades y contratos"]
+  legacy["Sistema legado autorizado"] --> obs["Golden Master: lo observado"]
+  inv --> rules["Hipótesis y excepciones"]
+  obs -. "Caracteriza; no aprueba" .-> rules
+  inv -. "Solo ante duda técnica" .-> parse["Investigación COBOL/JCL opcional"]
+  parse -. "Hallazgos con procedencia" .-> rules
+  rules --> spec["Especificación y casos"]
+  spec --> owner
+  owner --> base[("Baseline funcional aprobada")]
+  base --> arch["Arquitectura por dominios"]
+  arch --> build["Nueva implementación brownfield"]
+  build --> transition["Coexistencia y conciliación"]
+  transition --> ver["Oráculos TODM independientes"]
   base --> ver
-  ver --> drift["Auditor de deriva"]
-  drift -.-> owner
-  build -. "no puede escribir" .-x base
+  obs -. "Comparación separada" .-> ver
+  ver --> release["G6: decisión humana"]
+  release --> drift["G7: control de deriva"]
+  drift -. "Revisión de reglas" .-> owner
+  build -. "no puede modificar" .-x base

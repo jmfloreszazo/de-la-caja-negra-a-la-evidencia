@@ -466,7 +466,7 @@ Look at the last two fields. `approval` is empty because observing a behaviour d
 > [!IMPORTANT]
 > **Chapter thesis.** AI-assisted modernization should start by asking **which business capabilities are needed and which guarantees must survive**. Who authorizes transfers? What happens when a reply is lost? Which exceptions and end-of-day rules apply? Interviews, approved policies, external contracts and authorized black-box tests establish the capability map first. Syntactic analysis may resolve later technical questions, but is neither mandatory nor a way to derive the new domain boundaries.
 
-An AI-assisted migration starts better with questions than with generation prompts. Which programs modify this account? Where is the interest decided? How many dialects, versions and copybooks are there? What happens when the final write fails? What changes arrive through nightly jobs? Who maintains the code tables? Answering requires combining syntactic analysis, metadata and dynamic observation.
+Start with the business capabilities and observable outcomes that have to survive a brownfield migration. Which customer journey authorizes a transfer, who owns account state, and which failures leave the result uncertain? Authorized interviews, policy, interfaces and black-box observations come first. Source and metadata inspection are optional ways to resolve named technical uncertainties, never the migration unit.
 
 I propose specialized agents under one controller: **functional discovery and provenance**, **optional technical investigation**, **rule discovery**, **execution observer**, **specification writer**, **architecture designer**, **builder**, **verifier** and **drift auditor**. These are not nine chatbots giving opinions on the same file. Business authority defines the capabilities; the incumbent offers observations and sometimes technical clues. Each agent has typed inputs, artifacts and limited permissions.
 
@@ -496,7 +496,7 @@ Each link in the chain has an input, an output artifact and something it is expr
 
 ![Figure 7.1 · The agent chain: each link produces an artifact and none writes the baseline.](figures/en/agent_chain.png)
 
-*Figure 7.1 · Illustrative **optional branch** for parser-and-graph source investigation, not the required flow. Business capabilities and contracts come first. No agent writes the baseline.*
+*Figure 7.1 · Brownfield modernization: business capabilities and contracts, independent TODM oracles, coexistence and G6 human authorization. Golden Master keeps legacy observations separate; COBOL/JCL investigation is optional. No agent modifies the approved baseline.*
 
 #### The living specification
 
@@ -737,7 +737,7 @@ I would organize the solution around four responsibilities: discovering evidence
 
 *Figure 11.1 · Context of a verifiable modernization: people, systems and responsibilities.*
 
-The discovery layer accesses sources, binaries, configurations and authorized captures. Comprehension agents work on that material. Their conclusions keep references and doubts. The proposed COBOL Evidence Adapter acts as a boundary to normalize findings without erasing their provenance.
+Capability discovery starts from business owners, approved policies, interface contracts, exceptional outcomes and authorized observations. The incumbent is part of the **brownfield** context, with controlled coexistence and reconciliation. Technical investigation of sources, binaries, configurations or COBOL dependencies is optional when a specific unknown requires evidence; an Evidence Adapter can normalize such findings but cannot approve business rules.
 
 The oracle factory turns business decisions into executable contracts. An expert can review a decision table more easily than a collection of scattered assertions. But the table needs a known, tested executable interpretation. Drawing a BPMN process does not turn its image into an engine that checks traces.
 
@@ -747,7 +747,7 @@ The verifier executes or consumes observations obtained in a controlled way, che
 
 ![Figure 11.2 · Separate responsibilities and bound evidence. The builder reads the public contract; it does not write the baseline. Separating folders in the demo does not impose production permissions.](figures/en/c4_containers.png)
 
-*Figure 11.2 · Separate responsibilities and bound evidence. The builder reads the public contract; it does not write the baseline. Separating folders in the demo does not impose production permissions.*
+*Figure 11.2 · Brownfield capability discovery, separate Golden Master, optional source archaeology, TODM oracles and controlled coexistence/cutover. G6 requires independent release authority; the builder cannot write the baseline.*
 
 #### The boundaries that matter
 

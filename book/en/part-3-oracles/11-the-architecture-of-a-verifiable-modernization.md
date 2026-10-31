@@ -15,7 +15,7 @@ I would organize the solution around four responsibilities: discovering evidence
 
 *Figure 11.1 · Context of a verifiable modernization: people, systems and responsibilities.*
 
-The discovery layer accesses sources, binaries, configurations and authorized captures. Comprehension agents work on that material. Their conclusions keep references and doubts. The proposed COBOL Evidence Adapter acts as a boundary to normalize findings without erasing their provenance.
+Capability discovery starts from business owners, approved policies, interface contracts, exceptional outcomes and authorized observations. The incumbent is part of the **brownfield** context, with controlled coexistence and reconciliation. Technical investigation of sources, binaries, configurations or COBOL dependencies is optional when a specific unknown requires evidence; an Evidence Adapter can normalize such findings but cannot approve business rules.
 
 The oracle factory turns business decisions into executable contracts. An expert can review a decision table more easily than a collection of scattered assertions. But the table needs a known, tested executable interpretation. Drawing a BPMN process does not turn its image into an engine that checks traces.
 
@@ -25,7 +25,7 @@ The verifier executes or consumes observations obtained in a controlled way, che
 
 ![Figure 11.2 · Separate responsibilities and bound evidence. The builder reads the public contract; it does not write the baseline. Separating folders in the demo does not impose production permissions.](../../figures/en/c4_containers.png)
 
-*Figure 11.2 · Separate responsibilities and bound evidence. The builder reads the public contract; it does not write the baseline. Separating folders in the demo does not impose production permissions.*
+*Figure 11.2 · Brownfield capability discovery, separate Golden Master, optional source archaeology, TODM oracles and controlled coexistence/cutover. G6 requires independent release authority; the builder cannot write the baseline.*
 
 ## The boundaries that matter
 
