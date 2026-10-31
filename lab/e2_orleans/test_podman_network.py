@@ -191,7 +191,7 @@ def wait_disposable_sql_ready(timeout=65, *, case="c01", output_dir=OUT):
     PostgreSQL socket disconnect is a startup observation, NOT a passing
     database operation; persist each unsuccessful observation.
     """
-    assert case in ("c01", "c02", "c03"), case
+    assert case in ("c01", "c02", "c03", "b05"), case
     started = time.monotonic()
     attempts = []
     consecutive_sql_successes = 0
