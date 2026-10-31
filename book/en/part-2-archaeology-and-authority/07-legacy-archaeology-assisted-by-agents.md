@@ -7,7 +7,7 @@
 > [!IMPORTANT]
 > **Chapter thesis.** AI-assisted modernization should start by asking **which business capabilities are needed and which guarantees must survive**. Who authorizes transfers? What happens when a reply is lost? Which exceptions and end-of-day rules apply? Interviews, approved policies, external contracts and authorized black-box tests establish the capability map first. Syntactic analysis may resolve later technical questions, but is neither mandatory nor a way to derive the new domain boundaries.
 
-An AI-assisted migration starts better with questions than with generation prompts. Which programs modify this account? Where is the interest decided? How many dialects, versions and copybooks are there? What happens when the final write fails? What changes arrive through nightly jobs? Who maintains the code tables? Answering requires combining syntactic analysis, metadata and dynamic observation.
+Start with the business capabilities and observable outcomes that have to survive a brownfield migration. Which customer journey authorizes a transfer, who owns account state, and which failures leave the result uncertain? Authorized interviews, policy, interfaces and black-box observations come first. Source and metadata inspection are optional ways to resolve named technical uncertainties, never the migration unit.
 
 I propose specialized agents under one controller: **functional discovery and provenance**, **optional technical investigation**, **rule discovery**, **execution observer**, **specification writer**, **architecture designer**, **builder**, **verifier** and **drift auditor**. These are not nine chatbots giving opinions on the same file. Business authority defines the capabilities; the incumbent offers observations and sometimes technical clues. Each agent has typed inputs, artifacts and limited permissions.
 
@@ -37,7 +37,7 @@ Each link in the chain has an input, an output artifact and something it is expr
 
 ![Figure 7.1 · The agent chain: each link produces an artifact and none writes the baseline.](../../figures/en/agent_chain.png)
 
-*Figure 7.1 · Main workflow from business capabilities and contracts to TODM oracles and G6 human authorization. Golden Master separately preserves observations; COBOL/JCL investigation is optional. No agent modifies the approved baseline.*
+*Figure 7.1 · Brownfield modernization: business capabilities and contracts, independent TODM oracles, coexistence and G6 human authorization. Golden Master keeps legacy observations separate; COBOL/JCL investigation is optional. No agent modifies the approved baseline.*
 
 ## The living specification
 
