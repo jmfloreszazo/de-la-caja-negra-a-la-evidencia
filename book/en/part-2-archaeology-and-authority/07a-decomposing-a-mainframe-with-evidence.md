@@ -1,3 +1,5 @@
+**English** · [Español](../../es/parte-2-arqueologia-y-autoridad/07a-descomponer-el-mainframe-con-evidencia.md)
+
 # Companion chapter · Decomposing a mainframe with evidence
 
 > **Editorial review draft.** Not part of published v2026.10.29. Tracks issue #32.
