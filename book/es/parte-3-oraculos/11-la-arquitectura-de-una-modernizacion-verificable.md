@@ -15,7 +15,7 @@ Organizaría la solución alrededor de cuatro responsabilidades: descubrir evide
 
 *Figura 11.1 · Contexto de una modernización verificable: personas, sistemas y responsabilidades.*
 
-La capa de descubrimiento accede a fuentes, binarios, configuraciones y capturas autorizadas. Los agentes de comprensión trabajan sobre ese material. Sus conclusiones conservan referencias y dudas. El COBOL Evidence Adapter propuesto sirve de frontera para normalizar los hallazgos sin borrar su procedencia.
+El descubrimiento funcional parte de responsables de negocio, políticas aprobadas, contratos externos, resultados excepcionales y observaciones autorizadas. El legado forma parte del contexto **brownfield**, con coexistencia y conciliación controladas. La investigación técnica de fuentes, binarios, configuraciones o dependencias COBOL es opcional cuando una duda concreta lo justifica; un Evidence Adapter puede normalizar hallazgos, pero nunca aprobar reglas.
 
 La factoría de oráculos convierte las decisiones de negocio en contratos ejecutables. Un experto puede revisar una tabla de decisiones con más facilidad que una colección de aserciones dispersas. Pero la tabla necesita una interpretación ejecutable conocida y probada. Dibujar un proceso BPMN no convierte su imagen en un motor que comprueba trazas.
 
@@ -25,7 +25,7 @@ El verificador ejecuta o consume observaciones obtenidas de forma controlada, co
 
 ![Figura 11.2 · Responsabilidades y evidencia vinculada. El constructor no modifica unilateralmente la baseline; separar carpetas en la demo no impone permisos de producción.](../../figures/es/c4_containers.png)
 
-*Figura 11.2 · Descubrimiento funcional, Golden Master independiente, arqueología técnica opcional y TODM con autorización G6. El constructor no modifica la baseline; separar carpetas no impone permisos de producción.*
+*Figura 11.2 · Descubrimiento funcional brownfield, Golden Master separado, arqueología técnica opcional, oráculos TODM y coexistencia/corte controlado. G6 exige autoridad independiente; el constructor no modifica la baseline.*
 
 ## Las fronteras que importan
 
