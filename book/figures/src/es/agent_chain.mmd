@@ -10,8 +10,9 @@ flowchart TB
   spec --> owner
   owner --> base[("Baseline funcional aprobada")]
   base --> arch["Arquitectura por dominios"]
-  arch --> build["Implementación nueva"]
-  build --> ver["Oráculos TODM independientes"]
+  arch --> build["Nueva implementación brownfield"]
+  build --> transition["Coexistencia y conciliación"]
+  transition --> ver["Oráculos TODM independientes"]
   base --> ver
   obs -. "Comparación separada" .-> ver
   ver --> release["G6: decisión humana"]
