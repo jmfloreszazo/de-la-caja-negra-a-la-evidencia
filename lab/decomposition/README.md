@@ -19,3 +19,15 @@ Links: [English research](../../docs/research/mainframe-decomposition.en.md) · 
 Run the entire offline suite above from this directory. The suite includes the base oracle, observation merge, pipeline integration and adversarial hyperedge controls. A green offline run only checks the synthetic model, **not** any deployed mainframe or the correctness of its discovered dependencies. Preserve stdout, source commit SHA, Python version and failed runs before describing this as a CI-verified result. The fixture contains an intentionally rejected proposal; `python3 oracle.py fixture.json` therefore returns **1 by design** and is not the test-suite exit code.
 
 **Not yet demonstrated on the final PR HEAD:** GitHub-hosted CI execution, original immutable log/artifact, real static COBOL parser, runtime capture, complete batch/authorization contracts, business signoff or bilingual generated-book validation.
+
+## Full manuscript regeneration gate
+
+After changes to the book chapter indexes, run the repository generator from its root:
+
+```bash
+python3 scripts/build.py
+python3 scripts/check.py
+cd lab/decomposition && python3 -m unittest discover -v -p 'test_*.py'
+```
+
+Commit both regenerated `book/es.md` and `book/en.md` in the same draft PR **only after** verifying that the generated content exactly follows the indexed ES/EN source chapters. The current draft has the chapter source and both indexes but **the monolithic editions have not yet been regenerated**; the book consistency gate may therefore fail. Do not confuse a missing GitHub Actions run with a passing test. PDF builds are likewise unverified. Never edit generated whole-book Markdown by hand and never alter the published release.
