@@ -229,9 +229,12 @@ def committed_inside_window(vector, result):
     t2 = before + timedelta(seconds=WARMUP_SECONDS + MEASUREMENT_SECONDS)
     t3 = after + timedelta(seconds=WARMUP_SECONDS + MEASUREMENT_SECONDS)
     allowed_ids = {o["operationId"] for o in vector["operations"]}
+    phase_by_id = {
+        o["operationId"]: o["phase"] for o in vector["operations"]
+    }
     measurement_ids = {
-        o["operationId"] for o in vector["operations"]
-        if o["phase"] == "measurement"
+        op_id for op_id, phase in phase_by_id.items()
+        if phase == "measurement"
     }
     with fx.connect() as db:
         assert db.execute(
@@ -273,10 +276,7 @@ def committed_inside_window(vector, result):
         "originalServerCommitTimestampsByOperation": [
             {
                 "operationId": op_id,
-                "sourcePhase": next(
-                    offer["phase"] for offer in vector["operations"]
-                    if offer["operationId"] == op_id
-                ),
+                "sourcePhase": phase_by_id[op_id],
                 "postgresCommitTimestampUtc": committed_at.isoformat()
             }
             for op_id, committed_at in rows
