@@ -10,7 +10,7 @@ HERE = Path(__file__).resolve().parent
 CONTRACT = HERE / "contracts" / "cap007_cap005_synthetic.json"
 
 def main() -> int:
-    command = ["dotnet", "run", "--no-restore", "--project",
+    command = ["dotnet", "run", "--project",
                str(HERE / "Greenfield.csproj"), "--", str(CONTRACT)]
     execution = subprocess.run(command, capture_output=True, text=True, timeout=90, check=False)
     if execution.returncode:
