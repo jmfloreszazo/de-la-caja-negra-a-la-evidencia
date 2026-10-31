@@ -10,8 +10,9 @@ concurrency:
   cancel-in-progress: false
 jobs:
   edition:
-    # The PR #2 merge commit is the ONLY automatic first-release trigger.
-    # Subsequent releases require an explicit v* tag, as before.
+    # One exact approved merge title publishes the historical first edition.
+    # A second exact title publishes the bounded research preview; otherwise
+    # subsequent editions require an explicit v* tag.
     if: >-
       ${{ startsWith(github.ref, 'refs/tags/v') || (github.ref == 'refs/heads/main' && (startsWith(github.event.head_commit.message, 'release: publish first PDF edition after PR #2 merge') || startsWith(github.event.head_commit.message, 'release: publish research preview v2026.10.31-rc1'))) }}
     runs-on: ubuntu-24.04
