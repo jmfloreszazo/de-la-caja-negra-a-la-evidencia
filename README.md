@@ -20,7 +20,7 @@ An open book and a runnable lab on how to modernize COBOL systems without bettin
 
 ## Read
 
-[Download Spanish and English PDFs](https://github.com/jmfloreszazo/de-la-caja-negra-a-la-evidencia/releases/tag/v2026.10.29) · [Fast reading path: seven chapters](docs/READING_PATH.md) · [PDF editions and release process](docs/PDF.md).
+[Research preview v2026.10.31-rc1 — greenfield + TODM, experimental](docs/releases/v2026.10.31-rc1.md) · [Download Spanish and English PDFs](https://github.com/jmfloreszazo/de-la-caja-negra-a-la-evidencia/releases/tag/v2026.10.29) · [Fast reading path: seven chapters](docs/READING_PATH.md) · [PDF editions and release process](docs/PDF.md).
 
 | | Chapter by chapter | Whole book on one page |
 |---|---|---|
