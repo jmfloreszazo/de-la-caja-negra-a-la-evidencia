@@ -28,6 +28,10 @@ jobs:
           dotnet-version: '10.0.x'
       - name: Install exact PostgreSQL oracle requirements
         run: python3 -m pip install -r lab/e1_pg/requirements.txt
+      - name: Validate placement preconditions with nine offline negative controls
+        run: |
+          python3 -m py_compile lab/e2_orleans/test_podman_network.py lab/e2_orleans/placement_contract.py lab/e2_orleans/test_c01_placement_contract.py
+          python3 -m unittest discover -s lab/e2_orleans -p 'test_c01_placement_contract.py' -v
       - name: Publish Orleans 10.4.0 .NET 10 app for Podman ASP.NET runtime containers
         run: |
           mkdir -p lab/results/e2f10
