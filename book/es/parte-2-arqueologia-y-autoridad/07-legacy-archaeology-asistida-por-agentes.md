@@ -7,7 +7,7 @@
 > [!IMPORTANT]
 > **Tesis del capítulo.** Una migración con IA empieza mejor preguntando **qué funcionalidades necesita el negocio y qué garantías debe conservar**. ¿Quién autoriza una transferencia? ¿Qué ocurre si se pierde la respuesta? ¿Cuáles son las excepciones y los cierres diarios? Entrevistas, políticas, contratos y pruebas de caja negra autorizadas construyen primero el mapa de capacidades. El análisis sintáctico puede resolver dudas técnicas después, pero no es obligatorio ni determina los dominios de la nueva aplicación.
 
-Una migración con IA empieza mejor con preguntas que con prompts de generación. ¿Qué programas modifican esta cuenta? ¿Dónde se decide el interés? ¿Cuántos dialectos, versiones y copybooks hay? ¿Qué ocurre cuando falla la escritura final? ¿Qué cambios llegan por jobs nocturnos? ¿Quién mantiene las tablas de códigos? Responder exige combinar análisis sintáctico, metadatos y observación dinámica.
+Empezamos por las capacidades y resultados observables que deben sobrevivir a la modernización brownfield. ¿Qué proceso autoriza una transferencia, quién gobierna el estado de una cuenta y qué fallos dejan el resultado incierto? Primero entrevistas autorizadas, políticas, contratos y observación de caja negra. El análisis del código y los metadatos es opcional para resolver dudas técnicas explícitas, nunca la unidad de migración.
 
 Propongo agentes especializados bajo un controlador común: **descubrimiento funcional y procedencia**, **investigación técnica opcional**, **descubrimiento de reglas**, **observador de ejecución**, **redactor de especificaciones**, **diseñador de arquitectura**, **constructor**, **verificador** y **auditor de drift**. No son nueve chatbots opinando sobre el mismo fichero. El negocio determina las capacidades; el legado ofrece observaciones y, cuando sea útil, pistas técnicas. Cada agente tiene entradas, artefactos y permisos limitados.
 
@@ -37,7 +37,7 @@ Cada eslabón de la cadena tiene una entrada, un artefacto de salida y algo que 
 
 ![Figura 7.1 · La cadena de agentes: cada eslabón produce un artefacto y ninguno escribe la baseline.](../../figures/es/agent_chain.png)
 
-*Figura 7.1 · Flujo principal desde capacidades y contratos de negocio hasta oráculos TODM y autorización humana G6. Golden Master conserva observaciones por separado; analizar COBOL/JCL es una rama opcional. Ningún agente modifica la baseline aprobada.*
+*Figura 7.1 · Modernización brownfield: capacidades y contratos, oráculos TODM independientes, coexistencia y autorización humana G6. Golden Master conserva las observaciones del legado por separado; analizar COBOL/JCL es opcional. Ningún agente modifica la baseline aprobada.*
 
 ## La especificación viva
 
