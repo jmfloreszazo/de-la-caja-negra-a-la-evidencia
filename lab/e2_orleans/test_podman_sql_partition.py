@@ -246,7 +246,10 @@ def main():
                 and "IsExecuting: True" in transport
                 and "Activation: S10.78.30.12:" in transport
                 and "IAccountGrain.Transfer" in transport
-                and f"account/{source}" in transport
+                and (
+                    f"account/{source}" in transport
+                    or f"account/{source:X}" in transport
+                )
             )
         )
         assert observed_execution, (

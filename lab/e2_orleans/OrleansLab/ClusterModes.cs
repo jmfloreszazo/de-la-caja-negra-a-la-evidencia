@@ -75,6 +75,17 @@ public static class ClusterModes
             throw new InvalidOperationException(
                 "The cluster fixture requires disposable loopback e2lab or opted-in e2f10-pg");
 
+        // A separate, explicitly disposable load-generator process.
+        // These observations are a short functional smoke, never B05 capacity.
+        if (args.Length == 4 && args[0] == "benchmark" &&
+            args[1] is "direct" or "orleans" &&
+            args[2] == "replay" && File.Exists(args[3]) &&
+            ContainerFixture)
+            return await B05LoadClient.Run(
+                args[1], args[3], conn,
+                args[1] == "orleans" ? MembershipConnection() : null,
+                Service, Cluster);
+
         if (args.Length == 1 && args[0] == "network-check" && ContainerFixture)
             return await RunNetworkCheck(conn, observeDatabaseFailure: false);
         if (args.Length == 1 && args[0] == "network-check-sql" && ContainerFixture)

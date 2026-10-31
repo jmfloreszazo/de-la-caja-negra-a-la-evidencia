@@ -1,0 +1,68 @@
+{
+  "schemaVersion": 1,
+  "experiment": "E2-B05-External-Client-Open-Loop-Smoke",
+  "status": "CI_VERIFIED_BOUNDED_FUNCTIONAL_SMOKE_NOT_CAPACITY",
+  "capacityEvidence": false,
+  "source": {
+    "runId": 41196070831,
+    "sourceHeadSha": "e545b861045d3a6f6bee9262028fd05fb5bb9c63",
+    "runUrl": "https://github.com/jmfloreszazo/de-la-caja-negra-a-la-evidencia/actions/runs/41196070831",
+    "originalArtifactId": 13040601633,
+    "originalArtifactName": "e2-b05-external-openloop-smoke-original-not-sustained-capacity",
+    "originalArtifactUrl": "https://github.com/jmfloreszazo/de-la-caja-negra-a-la-evidencia/actions/runs/41196070831/artifacts/13040601633",
+    "rawFile": "e2-b05-smoke-summary.json",
+    "downloadedOriginalZipSha256": "6b2ba79ed6379118a20b890050d198862443d248aaf2cf7fc5d271bc84afa4c0",
+    "verifiedBy": "Original ZIP independently downloaded; all raw route/profile summaries, scheduled/dispatch/completion offsets, SQL hashes and seven SQL-oracle values inspected."
+  },
+  "observations": {
+    "physicalHostCount": 1,
+    "distinctPodmanNetworkNamespaces": 4,
+    "liveSilos": 2,
+    "externalClientInSeparateProcess": true,
+    "loadProcessPersistentPerVector": true,
+    "clientAheadOfScheduleObserved": false,
+    "accounts": 1000,
+    "hotEligibleAccountCount": 50,
+    "profiles": [
+      "uniform",
+      "five_percent_hot"
+    ],
+    "routes": [
+      "direct",
+      "orleans"
+    ],
+    "repetitionsPerPoint": 1,
+    "routeProfileTrials": 4,
+    "scheduledOffersPerTrial": 80,
+    "totalScheduledOffers": 320,
+    "offeredRequestsPerSecond": 20,
+    "durationSecondsPerTrial": 4,
+    "measurementSecondsPerTrial": 2,
+    "totalDispatched": 320,
+    "totalMissedOffers": 0,
+    "totalAmbiguousClientResults": 0,
+    "totalAckCommitted": 320,
+    "independentlyVerifiedDurableCommitted": 320,
+    "totalPostings": 640,
+    "totalOutboxEvents": 320,
+    "independentSqlOracleChecksPerTrial": 7,
+    "allFourTrialsSevenOracleChecksPassed": true,
+    "exactAccountOperationIdCardinalityVerified": true,
+    "persistedStateHashesPerProfile": {
+      "uniform": "cf191635f452",
+      "five_percent_hot": "8601e7b61372"
+    },
+    "directAndOrleansPersistedStateHashesEqualForEachProfile": true,
+    "latencyComparisonValidAsCapacityStudy": false
+  },
+  "negativeOriginal": {
+    "runId": 41195913857,
+    "artifactId": 13040616454,
+    "finding": "Initial CI correctly FAILED because a request was observed dispatched before its scheduled monotonic deadline. A bounded monotonic-clock recheck resolved the false timing classification; initial failure artifact retained, not promoted as capacity evidence."
+  },
+  "interpretation": {
+    "es": "Cuatro ejecuciones reales de 80 solicitudes programadas con un cliente externo y dos silos Orleans en namespaces Podman del mismo host; PostgreSQL confirma 320 COMMIT, 640 asientos y 320 eventos outbox, con 7/7 oráculos por ejecución. Esto acredita solo una prueba funcional breve, no throughput sostenido, p99 de capacidad, HA entre máquinas ni equivalencia MIPS.",
+    "en": "Four real 80-offer replays through an external client and two Orleans silos in Podman namespaces on one host; PostgreSQL independently confirms 320 committed operations, 640 postings and 320 outbox events, with 7/7 oracles per trial. This is a bounded functional smoke, not sustained throughput, capacity p99, independent-host HA or MIPS equivalence."
+  },
+  "limitations": "Only 80 samples over four seconds per route/profile and one repetition, sharing one Linux physical runner. Routes run sequentially; warm-up, cache and ordering confound any direct/Orleans latency comparison. No sustained capacity, saturation, 3+ repetitions, independent physical load host, SQL lock/pool/GC diagnosis, dated Azure costs, production SLO, mainframe reference workload or MIPS parity. Issue #25 open and E2 partially_verified."
+}
