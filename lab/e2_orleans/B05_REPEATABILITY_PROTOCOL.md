@@ -1,6 +1,6 @@
 # E2-B05 repeatability pilot — fixed-clock real workload, NOT capacity
 
-**Pre-registered status: implementation candidate, NOT original CI evidence.**
+**Status: ORIGINAL CI VERIFIED as a bounded repeatability pilot; NOT a sustained-capacity benchmark.** [GitHub Actions #41204905763](https://github.com/jmfloreszazo/de-la-caja-negra-a-la-evidencia/actions/runs/41204905763) passed on source SHA `6b546c99f31fdd42f96da9960408df5716dd36c6`. The [unaltered original artifact #13044531582](https://github.com/jmfloreszazo/de-la-caja-negra-a-la-evidencia/actions/runs/41204905763/artifacts/13044531582) was downloaded and its ZIP SHA-256 independently checked (`93a7be851b9cd17f4e848cf1ca773c770e2ebc74bfcd651f7bba66f9b0cb4510`), along with all 24 raw client and SQL trial observations. See the [archived evidence](../../evidence/runs/e2-b05-repeatability-pilot.json). E2 overall remains `partially_verified`.
 
 ## Goal and experimental slice
 
@@ -39,6 +39,6 @@ Do not infer that Orleans is faster or slower from sequential routes on a single
 - Collect actual SQL COMMIT timing (or independently sampled PostgreSQL durable state) to distinguish completed throughput per interval from **work offered during** that interval and drained after it.
 - Record PostgreSQL lock/deadlock/pool waiting, CPU, memory, .NET GC, network RTT and client utilization. Show true bottleneck and confidence intervals.
 - Explore client overload, missed offers and ambiguity with explicit classifications and independent durable reconciliation rather than expecting 100% business acceptance at every load point.
-- Only after original CI and independent raw-artifact checks, add a narrowly scoped ES+EN evidence entry. Do not promote E2 from partially_verified.
+- The original CI and independent raw-artifact audit now permit a narrowly scoped ES+EN **bounded pilot** evidence entry; they do not authorize a capacity claim. Do not promote E2 from partially_verified.
 
 Published v2026.10.29 unchanged; issue #25 remains OPEN. All source and lab docs are English. Book editorial outcomes require both Spanish and English.
