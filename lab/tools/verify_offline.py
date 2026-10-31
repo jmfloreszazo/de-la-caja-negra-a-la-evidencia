@@ -131,6 +131,17 @@ test_run = subprocess.run(
 if test_run.returncode != 0:
     failures.append("synthetic mainframe decomposition tests failed")
 
+# 6. Synthetic greenfield reference oracle and adversarial mutations; no .NET needed.
+print("[6] greenfield contract ...... Python negative controls")
+greenfield = ROOT / "greenfield"
+reference_run = subprocess.run(
+    [sys.executable, "-m", "unittest", "discover", "-s", str(greenfield),
+     "-p", "test_*.py", "-v"],
+    cwd=greenfield, check=False,
+)
+if reference_run.returncode != 0:
+    failures.append("greenfield independent oracle tests failed")
+
 print()
 if failures:
     print('VERIFY: FAIL')
