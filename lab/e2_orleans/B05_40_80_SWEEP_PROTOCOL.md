@@ -17,7 +17,7 @@ Unlike the previous success-only 20/s experiment, **load shedding and ambiguous 
 | Offered rates | **40 and 80 requests/second** independently; these are NOT COMMIT rates |
 | Original trials | Two rates × two routes = **four** trials, no cherry-picking |
 | Timing | 1-second warm-up + **60-second measurement** + 1-second cool-down |
-| Scheduled intents | 2,480 or 4,960 per vector; 7,440 across the four route trials |
+| Scheduled intents | 2,480 or 4,960 per vector; 14,880 across the four route trials (40 × 62 × 2 + 80 × 62 × 2) |
 | Physical topology | One Ubuntu Linux host, PostgreSQL 16.13, two live Orleans silos, external .NET 10 client, four isolated Podman network namespaces |
 | Concurrency ceiling | 32 outstanding client operations; non-admitted offers recorded as MISSED, not queued |
 | SQL COMMIT timestamp | `pg_xact_commit_timestamp(operations.xmin)` with explicit disposable `track_commit_timestamp=on` |
