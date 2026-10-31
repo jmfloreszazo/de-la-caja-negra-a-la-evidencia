@@ -46,8 +46,13 @@ def characterize(contract: dict, golden_master: dict) -> dict:
             raise AssuranceError("Duplicate or invalid observation index")
         seen.add(idx)
         output = item["observed"]
-        if not isinstance(output, dict) or set(output) != set(expected[idx]):
-            raise AssuranceError("Observation fields differ from comparable contract shape")
+        if (not isinstance(output, dict) or
+            not {"status", "version"} <= set(output) or
+            not set(output) <= {"status", "version", "balance"} or
+            not isinstance(output["status"], str) or
+            type(output["version"]) is not int or
+            ("balance" in output and type(output["balance"]) is not int)):
+            raise AssuranceError("Golden Master result has invalid business observation schema")
         entry = {"stepIndex": idx, "expected": expected[idx],
                  "characterized": output}
         (matches if output == expected[idx] else mismatches).append(entry)
