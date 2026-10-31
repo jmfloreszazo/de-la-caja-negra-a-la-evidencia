@@ -20,6 +20,7 @@ on:
       - 'scripts/check_e2_b05_repeatability_observations.py'
       - 'scripts/check_e2_b05_sql_commit_window.py'
       - 'scripts/check_e2_b05_hot_40_80_observations.py'
+      - 'scripts/check_e2_b05_160_320_observations.py'
       - 'scripts/check_m1_observations.py'
       - 'scripts/check_m2_observations.py'
       - '.github/workflows/evidence.yml'
@@ -42,6 +43,7 @@ on:
       - 'scripts/check_e2_b05_repeatability_observations.py'
       - 'scripts/check_e2_b05_sql_commit_window.py'
       - 'scripts/check_e2_b05_hot_40_80_observations.py'
+      - 'scripts/check_e2_b05_160_320_observations.py'
       - 'scripts/check_m1_observations.py'
       - 'scripts/check_m2_observations.py'
       - '.github/workflows/evidence.yml'
@@ -70,6 +72,7 @@ jobs:
       - run: python3 scripts/check_e2_b05_repeatability_observations.py
       - run: python3 scripts/check_e2_b05_sql_commit_window.py
       - run: python3 scripts/check_e2_b05_hot_40_80_observations.py
+      - run: python3 scripts/check_e2_b05_160_320_observations.py
       - run: python3 scripts/check_m1_observations.py
       - run: python3 scripts/check_m2_observations.py
   provenance:

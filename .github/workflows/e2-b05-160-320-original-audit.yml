@@ -1,0 +1,39 @@
+name: B05 160 320 original ZIP independent full SQL COMMIT audit
+
+on:
+  pull_request:
+    paths:
+      - 'evidence/runs/e2-b05-160-320-sql-overload.json'
+      - 'scripts/check_e2_b05_160_320_observations.py'
+      - '.github/workflows/e2-b05-160-320-original-audit.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  actions: read
+
+jobs:
+  original-raw-audit:
+    name: Recompute all 59520 offered and 59508 original PostgreSQL COMMIT outcomes
+    if: >-
+      ${{ github.event_name == 'workflow_dispatch' || github.event.pull_request.number == 49 }}
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v5
+      - name: Validate original source/ZIP provenance and ES EN noncapacity claims
+        run: python3 scripts/check_e2_b05_160_320_observations.py
+      - name: Download exact immutable original GitHub ZIP with read-only token
+        env:
+          GH_TOKEN: ${{ github.token }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          curl --fail --silent --show-error --location --retry 3 \
+            --header "Authorization: Bearer $GH_TOKEN" \
+            --header "Accept: application/vnd.github+json" \
+            "https://api.github.com/repos/jmfloreszazo/de-la-caja-negra-a-la-evidencia/actions/artifacts/13047313472/zip" \
+            --output /tmp/original-b05-160-320.zip
+          echo "376f8053d3f70012a6ca2ad4088aa0f05ae71a57542ceb5fe027f6ce282837ce  /tmp/original-b05-160-320.zip" | sha256sum -c -
+      - name: Recompute every input ID, warmup MISS, SQL COMMIT timestamp and sixty-bin histogram
+        run: python3 scripts/check_e2_b05_160_320_observations.py --original-zip /tmp/original-b05-160-320.zip
