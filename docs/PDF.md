@@ -24,7 +24,7 @@ The **Book PDF preview** GitHub Actions workflow builds and uploads both PDF edi
 
 ## Publish after merge
 
-The **Release** workflow runs **only when someone pushes a `v*` tag** pointing to a commit already merged into `main`. It attaches the two PDFs alongside the two existing Markdown files to the GitHub Release. Merging the PR alone does not tag a release.
+The **Release** workflow publishes a normal edition from a deliberately pushed `v*` tag pointing to a commit already merged into `main`. It attaches both PDF editions and both existing whole-book Markdown files. Two *exactly named*, maintainer-approved mainline merge commits are exceptional one-shot triggers: the historical first edition `v2026.10.29` and the explicitly labelled **research pre-release `v2026.10.31-rc1`**. An ordinary PR merge does not publish a release; the preview trigger refuses existing tags and never overwrites an edition.
 
 No existing edition number is changed by this PDF feature. The first version/release is an explicit maintainer decision **after** the PR is merged and validated.
 
