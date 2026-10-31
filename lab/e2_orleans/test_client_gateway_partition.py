@@ -290,6 +290,19 @@ def main():
         double_rules = add_drop(1)
         all_down = await_gateways(False, False)
         assert all_down["databaseHealthy"] is True
+        # The fault must remain local to the client namespace. Prove that
+        # neither silo lost SQL access or its two internal gateway routes
+        # after BOTH outbound client rules have been inserted.
+        silo_checks_during_full_cut = {
+            name: c02.check(name)
+            for name in ("e2f10-primary", "e2f10-secondary")
+        }
+        assert all(
+            x["databaseHealthy"]
+            and x["primaryGatewayReachable"]
+            and x["secondaryGatewayReachable"]
+            for x in silo_checks_during_full_cut.values()
+        ), silo_checks_during_full_cut
         both_cut_at = stamp()
         during_before = accounting()
         request = command(BLOCKED_OPERATION, source, target, 19)
@@ -367,6 +380,13 @@ def main():
         installed.remove(0)
         fully_restored = await_gateways(True, True)
         assert fully_restored["databaseHealthy"] is True
+        # Restored TCP reachability alone cannot prove the injected firewall
+        # rules were removed. Require the exact original OUTPUT rule list.
+        rules_after_recovery = rules()
+        assert rules_after_recovery == before_rules, (
+            "Client firewall not restored to its original state",
+            before_rules, rules_after_recovery
+        )
         assert membership()["rows"] == membership_initial["rows"]
 
         stage = "reconcile-identical-operation-id"
@@ -408,6 +428,7 @@ def main():
             "clientOutputRulesBothCut": double_rules,
             "clientOutputRulesFirstRestored": restored_secondary_rule,
             "clientOutputRulesFinal": restored_primary_rule,
+            "clientOutputRulesVerifiedRestored": rules_after_recovery,
             "clientNetworkInitial": initial,
             "clientNetworkSingleCut": single_probe,
             "clientNetworkBothCut": all_down,
@@ -416,6 +437,7 @@ def main():
             "siloNetworkDuringClientSingleCut": {
                 "primary": primary_during, "secondary": secondary_during
             },
+            "siloNetworkDuringFullClientCut": silo_checks_during_full_cut,
             "sourceGrainOriginalHost": placement[source],
             "sourceAccountId": source,
             "targetAccountId": target,
