@@ -26,6 +26,7 @@ sys.path.insert(0, str(LAB / "e1_pg"))
 from ledger import connect, reset
 from oracle import verify
 from test_e2 import command, postgres_snapshot
+from placement_contract import classify_placement
 
 NETWORK = "e2f10-net"
 IMAGE = "mcr.microsoft.com/dotnet/aspnet:10.0"
@@ -159,9 +160,66 @@ def business_counts():
         }
 
 
+def record_placement_precondition_failure(last_nodes, *, last_report=None):
+    """Preserve a failed 1..16 sample; fresh 17..64 grains diagnose only.
+
+    Never use a new diagnostic key as a substitute valid financial source.
+    A two-silo membership and reachable gateways alone do not prove that
+    the original sixteen account grains span both silos.
+    """
+    evidence = {
+        "schemaVersion": 1,
+        "experiment": "E2-F10-C01-Grain-Placement-Negative-Diagnostic",
+        "status": "FAIL_PRECONDITION_NOT_BUSINESS_FAILURE",
+        "isSuccessfulFailoverEvidence": False,
+        "timestampUtc": datetime.now(timezone.utc).isoformat(),
+        "originalAccountRange": [1, 16],
+        "freshDiagnosticAccountRange": [17, 64],
+        "originalAccountHostNodes": last_nodes,
+        "originalClientProbe": last_report,
+        "freshDiagnosticProbedOnlyForNodeIdentity": True,
+        "testAuthoritativeLedgerUnchanged": True,
+    }
+    try:
+        membership = persisted_membership()
+        evidence["independentSqlMembership"] = membership
+        evidence["originalClassification"] = classify_placement(
+            last_nodes, set(range(1, 17)), membership, require_dual=True
+        )
+    except Exception as error:
+        evidence["membershipOrOriginalClassificationError"] = repr(error)
+    try:
+        raw = podman(
+            "exec", "e2f10-client", "dotnet", "/app/OrleansLab.dll",
+            "cluster", "client", "probe-range", "17", "48", timeout=75
+        )
+        fresh = json.loads(raw)
+        assert fresh["status"] == "PROBED"
+        assert fresh["diagnosticOnly"] is True
+        assert set(map(int, fresh["accountHostNodes"])) == set(range(17, 65))
+        evidence["freshDiagnosticProbe"] = fresh
+        if "independentSqlMembership" in evidence:
+            evidence["freshDiagnosticClassification"] = classify_placement(
+                fresh["accountHostNodes"], set(range(17, 65)),
+                evidence["independentSqlMembership"], require_dual=True
+            )
+    except Exception as error:
+        evidence["freshDiagnosticError"] = repr(error)
+    for node in ("e2f10-primary", "e2f10-secondary"):
+        evidence.setdefault("siloOriginalLogsTail", {})[node] = podman(
+            "logs", node, check=False
+        )[-9000:]
+    path = OUT / "e2-f10-c01-placement-negative-original.json"
+    path.write_text(json.dumps(evidence, indent=2) + "\n", encoding="utf-8")
+    print("E2_C01_PLACEMENT_NEGATIVE: " + str(path), file=sys.stderr, flush=True)
+    return evidence
+
+
 def probe_hosts(secondary_alive, timeout=155):
     started = time.monotonic()
     previous = ""
+    last_nodes = {}
+    last_report = None
     while time.monotonic() - started < timeout:
         try:
             report = client("probe", timeout=35)
@@ -169,14 +227,22 @@ def probe_hosts(secondary_alive, timeout=155):
                 int(k): str(value).split(":", 1)[0]
                 for k, value in report["accountHostNodes"].items()
             }
+            last_nodes = names
+            last_report = report
             required = ({"e2f10-primary", "e2f10-secondary"}
                         if secondary_alive else {"e2f10-primary"})
             if set(names.values()) == required:
+                # Do not weaken the original dual-silo precondition. Its
+                # actual initial SQL membership is checked in main().
                 return report, names
             previous = str(names)
         except (RuntimeError, subprocess.TimeoutExpired, json.JSONDecodeError) as exc:
             previous = str(exc)[-350:]
         time.sleep(3)
+    if secondary_alive and last_nodes:
+        record_placement_precondition_failure(
+            last_nodes, last_report=last_report
+        )
     raise AssertionError("Grain placement not achieved: " + previous)
 
 
