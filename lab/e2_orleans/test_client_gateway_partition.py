@@ -117,6 +117,12 @@ def count_operation(op_id):
         }
 
 
+def assert_operation(op_id, expected):
+    actual = count_operation(op_id)
+    assert actual == expected, (op_id, expected, actual)
+    return actual
+
+
 def accounting():
     oracle = verify()
     assert len(oracle) == 7 and all(x is True for x in oracle.values()), oracle
@@ -275,6 +281,9 @@ def main():
         assert single_accounting["effects"] == {
             "committedOperations": 2, "postings": 4, "outboxEvents": 2
         }, single_accounting
+        one_gateway_operation = assert_operation(ONE_GATEWAY_OPERATION, {
+            "operationRows": 1, "postingRows": 2, "outboxRows": 1
+        })
         membership_single = membership()
 
         # Block the remaining secondary gateway FROM CLIENT ONLY. A fresh
@@ -307,6 +316,17 @@ def main():
                 "semantics": "REQUEST_NOT_ACKNOWLEDGED_NO_ROLLBACK_INFERRED"
             }
         assert not failure_observation["acknowledgedCommitted"], failure_observation
+        assert failure_observation["kind"] == "client_failure_or_timeout", (
+            "A non-COMMITTED response is insufficient proof of gateway loss",
+            failure_observation
+        )
+        cause = failure_observation["cause"].casefold()
+        assert (
+            "gateway" in cause or "orleans" in cause or "timeout" in cause
+        ), (
+            "Unexpected client failure: cannot attribute this to gateway loss",
+            failure_observation
+        )
         during_after = accounting()
         assert during_after == during_before, (
             "No durable effect is permitted during complete client gateway cut",
@@ -315,6 +335,17 @@ def main():
         assert during_after["blockedOperation"] == {
             "operationRows": 0, "postingRows": 0, "outboxRows": 0
         }
+        # A single immediate query could miss delayed effects. Sample SQL
+        # repeatedly while BOTH outbound gateway cuts are still active.
+        repeated_observations = []
+        for _ in range(3):
+            time.sleep(1)
+            observation = accounting()
+            assert observation == during_before, (
+                "Unexpected durable SQL change under confirmed gateway cut",
+                observation, during_before
+            )
+            repeated_observations.append(observation)
         membership_cut = membership()
         alive_during = {name: c02.inspect(name) for name in containers}
         for name in containers:
@@ -346,6 +377,12 @@ def main():
         assert final["blockedOperation"] == {
             "operationRows": 1, "postingRows": 2, "outboxRows": 1
         }, final
+        final_baseline = assert_operation(BASELINE_OPERATION, {
+            "operationRows": 1, "postingRows": 2, "outboxRows": 1
+        })
+        final_fallback = assert_operation(ONE_GATEWAY_OPERATION, {
+            "operationRows": 1, "postingRows": 2, "outboxRows": 1
+        })
         membership_final = membership()
         final_inspection = {name: c02.inspect(name) for name in containers}
 
@@ -383,8 +420,12 @@ def main():
             "bothGatewayLossTimestampUtc": both_cut_at,
             "independentSqlInitial": start_accounting,
             "independentSqlSingleGatewayCut": single_accounting,
+            "survivingGatewayOperationCardinality": one_gateway_operation,
             "independentSqlBeforeAndDuringFullCut": during_after,
+            "repeatedSqlObservationsDuringFullCut": repeated_observations,
             "independentSqlAfterRestore": final,
+            "baselineOperationCardinalityAfterRecovery": final_baseline,
+            "fallbackOperationCardinalityAfterRecovery": final_fallback,
             "replayStatus": replay["results"][0]["status"],
             "secondReplayStatus": duplicate["results"][0]["status"],
             "membershipBefore": membership_initial,
