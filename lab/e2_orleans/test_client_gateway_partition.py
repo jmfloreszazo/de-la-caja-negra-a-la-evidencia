@@ -197,14 +197,11 @@ def main():
         containers.append("e2f10-pg")
         P("network", "connect", "--ip", c02.SQL_IPS["e2f10-pg"],
           c02.SQL_NETWORK, "e2f10-pg")
-        for _ in range(65):
-            ready = P("exec", "e2f10-pg", "pg_isready", "-U", "postgres",
-                      "-d", "e2lab", check=False)
-            if "accepting connections" in ready:
-                break
-            time.sleep(1)
-        else:
-            raise AssertionError("Disposable PostgreSQL not ready")
+        # Two actual host-side SQL sessions must succeed before the schema
+        # reset; pg_isready alone can precede a working host-port connection.
+        # This is startup readiness, NOT the C04 gateway-fault result.
+        readiness = fx.wait_disposable_sql_ready(case="c04", output_dir=OUT)
+        assert readiness["status"] == "READY"
         fx.reset()
         os.environ["E2_POSTGRES_CONTAINER"] = "e2f10-pg"
         from setup_adonet_membership import main as install_membership
@@ -404,6 +401,7 @@ def main():
                 "containerStatesAfter": final_inspection,
                 "privateBridgeCount": 2, "physicalHostCount": 1
             },
+            "disposablePostgresStartup": readiness,
             "tool": {"image": c02.NET_TOOL_IMAGE, "id": image_id},
             "clientOutputRulesBefore": before_rules,
             "clientOutputRulesSingleCut": single_rules,
