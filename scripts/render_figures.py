@@ -76,7 +76,9 @@ def main():
                                   'es/c4_containers', 'en/c4_containers'}:
                     import base64
                     png = base64.b64encode(rendered.read_bytes()).decode('ascii')
-                    print(f'__FIGURE_B64_BEGIN__{key}__{png}__FIGURE_B64_END__', flush=True)
+                    for offset in range(0, len(png), 8192):
+                        print(f'__FIGURE_B64_CHUNK__{key}::{offset//8192:04d}::{png[offset:offset+8192]}', flush=True)
+                    print(f'__FIGURE_B64_DONE__{key}::{(len(png)+8191)//8192}', flush=True)
         elif hashes.get(key) == digest and out.is_file():
             skipped += 1
             continue
