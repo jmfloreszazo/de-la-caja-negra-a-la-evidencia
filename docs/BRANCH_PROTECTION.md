@@ -7,6 +7,7 @@
 `.github/workflows/premerge.yml` triggers on **all pull requests**, push to `main`, and manual dispatch. It does **not** use `paths:` filters, unlike the optional Book and Lab workflows. The sole stable required job is called `premerge-gate`.
 
 It validates:
+
 1. Book/language policy, ES/EN parity, generated single-page books, source-level evidence links and figure provenance if installed.
 2. Evidence claim statuses and reference consistency in **offline** mode, without implying online attestation.
 3. Python-only baseline checks, reference data/accounting oracle, mainframe decomposition negative controls and brownfield candidate TODM/Golden Master gates.
