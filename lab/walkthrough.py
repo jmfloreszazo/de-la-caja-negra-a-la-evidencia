@@ -56,5 +56,11 @@ step('6 From a calculation to transactions',
 if a.bank or (not a.auto and input('Run the bank module? [y/N] ').lower() == 'y'):
     call('bank_test.py')
 
+if a.bank:
+    step('7 Greenfield business contract',
+         'Run a NEW in-memory .NET 10 implementation from hypothetical business behavior, '
+         'then independently verify its full output using a Python oracle. No COBOL translation.')
+    call('greenfield/run_contract.py')
+
 print('\nDone. Open results/summary.json, and results/bank/summary.json if you ran the bank module.',
       flush=True)
