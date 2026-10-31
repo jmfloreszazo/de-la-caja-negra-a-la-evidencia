@@ -1,0 +1,69 @@
+name: One-time SHA-verified prune of merged B05 60s experiment and evidence branches
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/e2-b05-60s-prune.yml'
+
+permissions:
+  contents: write
+
+concurrency:
+  group: once-e2-b05-sql-commit-window-branch-prune
+  cancel-in-progress: false
+
+jobs:
+  exact-merged-pr-heads:
+    name: Prune only merged PR 41 and PR 42 branches after SHA and ancestry checks
+    if: >-
+      ${{ github.ref == 'refs/heads/main' && startsWith(github.event.head_commit.message, 'merge: E2 B05 60s evidence') }}
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          fetch-depth: 0
+      - name: Verify main, PR merges, exact branch refs and ancestry
+        env:
+          GH_TOKEN: ${{ github.token }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          test "$GITHUB_REF" = "refs/heads/main"
+          test "$GITHUB_REPOSITORY" = "jmfloreszazo/de-la-caja-negra-a-la-evidencia"
+          git fetch --no-tags origin main
+          test "$(git rev-parse HEAD)" = "$(git rev-parse origin/main)"
+          verify() {
+            local pr="$1" branch="$2" expected current
+            test "$(gh api "repos/$GITHUB_REPOSITORY/pulls/$pr" --jq '.merged')" = "true"
+            expected="$(gh api "repos/$GITHUB_REPOSITORY/pulls/$pr" --jq '.head.sha')"
+            test -n "$expected"
+            current="$(gh api "repos/$GITHUB_REPOSITORY/git/ref/heads/$branch" --jq '.object.sha')"
+            test "$current" = "$expected" || {
+              echo "::error::Branch moved; no cleanup"
+              exit 1
+            }
+            git fetch --no-tags origin "refs/heads/$branch:refs/remotes/origin/$branch"
+            git merge-base --is-ancestor "$expected" HEAD || {
+              echo "::error::Branch does not belong to main"
+              exit 1
+            }
+          }
+          verify 41 experiment/e2-b05-commit-timestamp-60s
+          verify 42 docs/e2-b05-60s-sql-commit-evidence
+          for branch in experiment/e2-b05-commit-timestamp-60s docs/e2-b05-60s-sql-commit-evidence; do
+            case "$branch" in
+              experiment/e2-b05-commit-timestamp-60s) pr=41 ;;
+              docs/e2-b05-60s-sql-commit-evidence) pr=42 ;;
+              *) echo "::error::Unexpected branch"; exit 1 ;;
+            esac
+            current="$(gh api "repos/$GITHUB_REPOSITORY/git/ref/heads/$branch" --jq '.object.sha')"
+            expected="$(gh api "repos/$GITHUB_REPOSITORY/pulls/$pr" --jq '.head.sha')"
+            test "$current" = "$expected" || {
+              echo "::error::Concurrent ref movement; refusing cleanup"
+              exit 1
+            }
+            gh api --method DELETE "repos/$GITHUB_REPOSITORY/git/refs/heads/$branch"
+          done
+          echo "Both exact merged branches removed, unmerged C04 preserved"
