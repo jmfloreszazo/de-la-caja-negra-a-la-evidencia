@@ -5,6 +5,7 @@ import sys
 from pathlib import Path
 
 from contract_oracle import OracleFailure, load_contract, verify
+from todm_assurance import AssuranceError, evaluate
 
 HERE = Path(__file__).resolve().parent
 CONTRACT = HERE / "contracts" / "cap007_cap005_synthetic.json"
@@ -19,12 +20,20 @@ def main() -> int:
         return 2
     try:
         candidate = json.loads(execution.stdout)
-        verify(load_contract(CONTRACT), candidate)
-    except (json.JSONDecodeError, OracleFailure, KeyError, ValueError) as exc:
+        contract = load_contract(CONTRACT)
+        verify(contract, candidate)
+        golden_master = load_contract(HERE / "contracts" / "golden_master_synthetic.json")
+        todm = evaluate(contract, candidate, golden_master)
+        if (todm["independentOracleVerdict"] != "PASS" or
+            todm["releaseAuthorization"] != "BLOCK" or
+            len(todm["goldenMaster"]["disagreements"]) != 1):
+            raise AssuranceError("Unexpected TODM/Golden Master evidence decision")
+    except (json.JSONDecodeError, OracleFailure, AssuranceError, KeyError, ValueError) as exc:
         print("GREENFIELD CONTRACT: REJECT", str(exc), file=sys.stderr)
         return 1
     print("GREENFIELD CONTRACT: PASS (synthetic, sequential, in-memory only)")
     print(f"Applied operations: {candidate['version']}; signed postings: {len(candidate['postings'])}; projection version: {candidate['projectionVersion']}")
+    print("TODM_ASSURANCE: G5=PASS G6=BLOCK; Golden Master disagrees at one step; business baseline unapproved")
     return 0
 
 if __name__ == "__main__":
