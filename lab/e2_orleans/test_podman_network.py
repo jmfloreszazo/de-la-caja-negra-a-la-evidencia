@@ -184,13 +184,14 @@ def namespace_id(container):
     return podman("exec", container, "readlink", "/proc/self/ns/net")
 
 
-def wait_disposable_sql_ready(timeout=65):
+def wait_disposable_sql_ready(timeout=65, *, case="c01", output_dir=OUT):
     """Require two real host-side SQL sessions, not only pg_isready.
 
     This bounded preflight never retries a financial command. A transient
     PostgreSQL socket disconnect is a startup observation, NOT a passing
     database operation; persist each unsuccessful observation.
     """
+    assert case in ("c01", "c02", "c03"), case
     started = time.monotonic()
     attempts = []
     consecutive_sql_successes = 0
@@ -222,7 +223,7 @@ def wait_disposable_sql_ready(timeout=65):
         attempts.append(observation)
         if consecutive_sql_successes >= 2:
             result = {
-                "experiment": "E2-F10-C01-Disposable-PostgreSQL-Readiness",
+                "experiment": "E2-F10-" + case.upper() + "-Disposable-PostgreSQL-Readiness",
                 "status": "READY",
                 "timestampUtc": datetime.now(timezone.utc).isoformat(),
                 "requiredConsecutiveIndependentHostSqlSessions": 2,
@@ -235,7 +236,7 @@ def wait_disposable_sql_ready(timeout=65):
                     "or elimination of intermittent startup failure."
                 )
             }
-            (OUT / "e2-f10-c01-postgres-startup.json").write_text(
+            (output_dir / ("e2-f10-" + case + "-postgres-startup.json")).write_text(
                 json.dumps(result, indent=2) + "\n", encoding="utf-8"
             )
             return result
