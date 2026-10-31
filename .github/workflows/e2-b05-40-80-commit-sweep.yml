@@ -1,0 +1,65 @@
+name: E2 B05 hot-key 40/80 offered load and original PostgreSQL COMMIT stamps
+
+on:
+  pull_request:
+    paths:
+      - 'lab/e2_orleans/**'
+      - '.github/workflows/e2-b05-40-80-commit-sweep.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  sql-observed-overload:
+    name: E2-B05 hot 40/80 offers, original SQL COMMIT histogram, no SLA claim
+    runs-on: ubuntu-24.04
+    timeout-minutes: 25
+    env:
+      E2_NETWORK_TEST: '1'
+      E1_PG_DSN: 'host=127.0.0.1 port=55435 dbname=e2lab user=postgres password=e2local'
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-python@v6
+        with:
+          python-version: '3.12'
+      - uses: actions/setup-dotnet@v5
+        with:
+          dotnet-version: '10.0.x'
+      - name: Install independent SQL ledger observer
+        run: python3 -m pip install -r lab/e1_pg/requirements.txt
+      - name: Run negative/offline attribution controls before the live experiment
+        run: |
+          python3 -m py_compile lab/e2_orleans/b05_sweep_analysis.py lab/e2_orleans/test_b05_rate_sweep.py lab/e2_orleans/test_b05_sweep_analysis.py
+          python3 -m unittest discover -s lab/e2_orleans -p 'test_b05_sweep_analysis.py' -v
+          python3 -m unittest discover -s lab/e2_orleans -p 'test_b05_arrival_contract.py' -v
+      - name: Build exact source .NET 10 persistent Orleans client
+        run: |
+          mkdir -p lab/results/e2f10/b05-sweep-40-80
+          dotnet publish lab/e2_orleans/OrleansLab/OrleansLab.csproj \
+            --disable-build-servers -c Release -m:1 \
+            -o lab/results/e2f10/app
+          dotnet --version > lab/results/e2f10/b05-sweep-40-80/dotnet-version.txt
+          podman --version > lab/results/e2f10/b05-sweep-40-80/podman-version.txt
+          podman info --format '{{.Host.NetworkBackend}}' \
+            > lab/results/e2f10/b05-sweep-40-80/podman-network-backend.txt
+      - name: Run exactly four 60s trials retaining overload and SQL evidence
+        run: python3 lab/e2_orleans/test_b05_rate_sweep.py
+      - name: Preserve ALL raw client and PostgreSQL evidence, including negative runs
+        if: always()
+        uses: actions/upload-artifact@v6
+        with:
+          name: e2-b05-hot-40-80-original-sql-and-client-not-capacity
+          path: |
+            lab/results/e2f10/b05-sweep-40-80/*.json
+            lab/results/e2f10/b05-sweep-40-80/*.txt
+          if-no-files-found: warn
+      - name: Clean disposable Podman resources without touching shared networks
+        if: always()
+        run: |
+          for name in e2f10-client e2f10-secondary e2f10-primary e2f10-pg; do
+            podman rm -f "$name" 2>/dev/null || true
+          done
+          for name in e2f10-sql e2f10-net; do
+            podman network rm "$name" 2>/dev/null || true
+          done
