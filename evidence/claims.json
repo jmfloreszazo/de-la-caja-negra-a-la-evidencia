@@ -413,6 +413,20 @@
       "protocol": null
     },
     {
+      "id": "E2-B05-SMOKE",
+      "status": "ci_verified",
+      "es": "Reproducción real de llegadas programadas con cliente externo, dos silos Orleans y oráculo PostgreSQL: cuatro ejecuciones funcionales breves",
+      "en": "Real scheduled-arrival playback through external client, two Orleans silos and independent PostgreSQL oracle: four short functional trials",
+      "scope_es": "Un único host: dos perfiles x dos rutas, 80 solicitudes por ejecución y 320 COMMIT SQL independientes en total (640 asientos, 320 outbox; 7/7 oráculos por ejecución). 4 s y una sola repetición por perfil/ruta. No es una prueba de capacidad sostenida, p99 representativo, HA física ni equivalencia MIPS.",
+      "scope_en": "One physical host: two profiles x two routes, 80 offers per trial and 320 independent SQL-verified COMMITs total (640 postings, 320 outbox; 7/7 SQL oracles per trial). Four seconds and one repetition per route/profile. Not sustained capacity, representative p99, physical HA or MIPS equivalence.",
+      "evidence": {
+        "kind": "github_actions",
+        "run_id": 41196070831,
+        "head_sha": "e545b861045d3a6f6bee9262028fd05fb5bb9c63"
+      },
+      "protocol": null
+    },
+    {
       "id": "E2",
       "status": "partially_verified",
       "es": "Orleans y ledger frente a distintas distribuciones de carga",
