@@ -25,7 +25,7 @@ El verificador ejecuta o consume observaciones obtenidas de forma controlada, co
 
 ![Figura 11.2 · Responsabilidades y evidencia vinculada. El constructor no modifica unilateralmente la baseline; separar carpetas en la demo no impone permisos de producción.](../../figures/es/c4_containers.png)
 
-*Figura 11.2 · Responsabilidades y evidencia vinculada. El constructor no modifica unilateralmente la baseline; separar carpetas en la demo no impone permisos de producción.*
+*Figura 11.2 · Descubrimiento funcional, Golden Master independiente, arqueología técnica opcional y TODM con autorización G6. El constructor no modifica la baseline; separar carpetas no impone permisos de producción.*
 
 ## Las fronteras que importan
 
