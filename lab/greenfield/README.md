@@ -34,3 +34,7 @@ This lab is independent of the historical E1/E2 financial baseline. The 12-step 
 - A real modernization environment may use a [client/provider confidential-computing study](https://github.com/jmfloreszazo/de-la-caja-negra-a-la-evidencia/issues/53), but a TEE alone never certifies TODM approval or suppresses sensitive outputs.
 
 The original synthetic `GREENFIELD CONTRACT: PASS` remains a **technical comparison only**. The new `TODM_ASSURANCE: G5=PASS G6=BLOCK` status is the *expected* safe result, not a contradiction.
+
+## Editorial architecture cross-reference
+
+The paired [Spanish Chapter 7](../../book/es/parte-2-arqueologia-y-autoridad/07-legacy-archaeology-asistida-por-agentes.md) and [English Chapter 7](../../book/en/part-2-archaeology-and-authority/07-legacy-archaeology-assisted-by-agents.md) now visualize functional discovery first, a separate Golden Master observation lane, optional source archaeology, independent TODM oracles, and G6 human authorization. The paired C4 container figures in Chapter 11 explain the same boundary. A diagram is an architectural hypothesis, **not security isolation, an approved business baseline, or permission to release a banking system**.
