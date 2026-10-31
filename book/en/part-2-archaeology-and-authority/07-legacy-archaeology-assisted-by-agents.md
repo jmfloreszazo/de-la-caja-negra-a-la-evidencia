@@ -37,7 +37,7 @@ Each link in the chain has an input, an output artifact and something it is expr
 
 ![Figure 7.1 · The agent chain: each link produces an artifact and none writes the baseline.](../../figures/en/agent_chain.png)
 
-*Figure 7.1 · Illustrative **optional branch** for parser-and-graph source investigation, not the required flow. Business capabilities and contracts come first. No agent writes the baseline.*
+*Figure 7.1 · Main workflow from business capabilities and contracts to TODM oracles and G6 human authorization. Golden Master separately preserves observations; COBOL/JCL investigation is optional. No agent modifies the approved baseline.*
 
 ## The living specification
 
