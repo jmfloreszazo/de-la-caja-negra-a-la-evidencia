@@ -86,14 +86,13 @@ def run_client(route, vector_path):
 
 def original_failure(error, stage, containers):
     # Failure snapshots are never a PASS artifact.
-    base.diagnose(error, stage, containers)
     details = {
         "experiment": "E2-B05-40-80-Offer-Rate-Sweep",
         "status": "ORIGINAL_FAIL_NOT_CAPACITY",
         "stage": stage,
         "error": repr(error),
         "timestampUtc": datetime.now(timezone.utc).isoformat(),
-        "rawClientsAlreadyRetained": True,
+        "rawClientTracesPreservedBeforeSubsequentOracleChecks": True,
         "containers": {},
     }
     for name in containers:
