@@ -2,7 +2,7 @@
 """Pure offline checks for the E2-B05 arrival contract, no networking."""
 import unittest
 
-from b05_arrival_contract import MAX_OFFERS, PHASES, PROFILES, generate
+from b05_arrival_contract import PHASES, PROFILES, generate
 
 
 class ArrivalContractTests(unittest.TestCase):
@@ -67,8 +67,12 @@ class ArrivalContractTests(unittest.TestCase):
         self.assertEqual(before["offeredVectorSha256"],
                          after["offeredVectorSha256"])
         self.assertEqual(before["operations"], after["operations"])
-        self.assertNotIn("orleans", before["route"].lower().replace(
-            "orleans", ""))  # no executable route selected
+        self.assertEqual(
+            before["route"],
+            "UNBOUND_SAME_VECTOR_MUST_BE_USED_FOR_DIRECT_AND_ORLEANS"
+        )
+        self.assertTrue(all("route" not in row
+                            for row in before["operations"]))
         changed = self.make("uniform", repetition=1)
         self.assertNotEqual(before["offeredVectorSha256"],
                             changed["offeredVectorSha256"])
