@@ -17,6 +17,7 @@ internal static class B05LoadClient
     private const int MaximumOffers = 120;
     private const int MaximumPilotOffers = 2_000;
     private const int MaximumCommitWindowOffers = 5_000;
+    private const int MaximumOverloadOffers = 20_000;
     private const int MaximumInflight = 32;
     private static readonly JsonSerializerOptions Options = new()
     {
@@ -47,6 +48,9 @@ internal static class B05LoadClient
     {
         var pilot = Environment.GetEnvironmentVariable("E2_B05_REPEATABILITY") == "1";
         var commitWindow = Environment.GetEnvironmentVariable("E2_B05_COMMIT_WINDOW") == "1";
+        var overload = Environment.GetEnvironmentVariable("E2_B05_OVERLOAD_SWEEP") == "1";
+        if (overload && (!commitWindow || pilot))
+            throw new InvalidOperationException("B05 overload must be an isolated SQL COMMIT-window mode");
         if (pilot && commitWindow)
             throw new InvalidOperationException("Mutually exclusive B05 experimental modes");
         if (Environment.GetEnvironmentVariable("E2_B05_SMOKE") != "1" ||
@@ -63,11 +67,13 @@ internal static class B05LoadClient
         if (vector.Status != "GENERATED_NOT_EXECUTED" ||
             vector.CapacityEvidence || vector.AccountCount != 1000 ||
             vector.OfferedRatePerSecond < 1 ||
-            vector.OfferedRatePerSecond > 100 ||
+            vector.OfferedRatePerSecond > (overload ? 320 : 100) ||
+            (overload && vector.OfferedRatePerSecond is not (160 or 320)) ||
             vector.Operations is null ||
             vector.Operations.Count != vector.TotalOfferedRequests ||
             vector.Operations.Count < 1 ||
-            vector.Operations.Count > (commitWindow ? MaximumCommitWindowOffers :
+            vector.Operations.Count > (overload ? MaximumOverloadOffers :
+                commitWindow ? MaximumCommitWindowOffers :
                 pilot ? MaximumPilotOffers : MaximumOffers))
             throw new InvalidOperationException("Unaccepted bounded B05 vector");
 
@@ -196,17 +202,20 @@ internal static class B05LoadClient
             var report = new
             {
                 schemaVersion = 1,
-                experiment = commitWindow
-                    ? "E2-B05-Independent-SQL-Commit-Window"
+                experiment = overload
+                    ? "E2-B05-160-320-Offer-Rate-Overload"
+                    : commitWindow ? "E2-B05-Independent-SQL-Commit-Window"
                     : pilot ? "E2-B05-External-Repeatability-Pilot"
                     : "E2-B05-External-Open-Loop-Smoke",
-                classification = commitWindow
-                    ? "SINGLE_HOST_FIRST_60_SECOND_COMMIT_TIME_SLICE_NOT_CAPACITY"
+                classification = overload
+                    ? "SINGLE_HOST_FINITE_OVERLOAD_SWEEP_NOT_CAPACITY"
+                    : commitWindow ? "SINGLE_HOST_FIRST_60_SECOND_COMMIT_TIME_SLICE_NOT_CAPACITY"
                     : pilot ? "BOUNDED_MULTIRUN_ONE_HOST_NOT_CAPACITY"
                     : "SHORT_SINGLE_HOST_BOUNDED_NOT_CAPACITY",
                 route,
-                status = commitWindow
-                    ? "OBSERVED_COMMIT_WINDOW_PROBE_NOT_CAPACITY"
+                status = overload
+                    ? "OBSERVED_OVERLOAD_SWEEP_NOT_CAPACITY"
+                    : commitWindow ? "OBSERVED_COMMIT_WINDOW_PROBE_NOT_CAPACITY"
                     : pilot ? "OBSERVED_REPEATABILITY_PILOT_NOT_CAPACITY"
                     : "OBSERVED_NOT_SUSTAINED_CAPACITY",
                 independentExternalProcessId = Environment.ProcessId,
@@ -220,8 +229,9 @@ internal static class B05LoadClient
                 clockOriginUtcBefore = clockOriginUtcBefore.ToString("O"),
                 clockOriginUtcAfter = clockOriginUtcAfter.ToString("O"),
                 samples = observed,
-                limits = commitWindow
-                    ? "One physical Linux host, bounded 60-second SQL COMMIT-time probe. Timestamp tracking must be enabled on the disposable PostgreSQL instance and independently audited. PostgreSQL and .NET share the same host wall clock; this is not a multi-host clock-synchronization proof. No durable capacity ceiling, MIPS parity or production p99."
+                limits = overload
+                    ? "One physical Linux host, exactly 160/320 offered intents/s with 60-second SQL COMMIT observation, 32 maximum inflight and finite 20,000-offer/trial cap. Missed and ambiguous work must be retained. No saturation-capacity guarantee, production p99, physical HA or IBM Z/MIPS parity."
+                    : commitWindow ? "One physical Linux host, bounded 60-second SQL COMMIT-time probe. Timestamp tracking must be enabled on the disposable PostgreSQL instance and independently audited. PostgreSQL and .NET share the same host wall clock; this is not a multi-host clock-synchronization proof. No durable capacity ceiling, MIPS parity or production p99."
                     : pilot
                     ? "A bounded repeated fixed-clock pilot on ONE Linux host, not a production system or an independent load host. No sustainable capacity limit, SLA p99, mainframe MIPS or cross-host scaling. Only SQL can confirm business effects."
                     : "One physical Linux host with separate Podman processes and namespaces. Bounded four-second replay only. No sustained throughput ceiling, mainframe MIPS or production p99 claim. Acknowledgements are NOT a substitute for the independent PostgreSQL oracle."
