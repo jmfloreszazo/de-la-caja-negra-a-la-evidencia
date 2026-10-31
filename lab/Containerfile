@@ -21,6 +21,7 @@ COPY . .
 RUN dotnet restore Candidate \
  && dotnet restore Gate \
  && dotnet restore Bank \
+ && dotnet restore greenfield/Greenfield.csproj \
  && dotnet restore examples/commission-three-way/dotnet/Commission.csproj
 
 CMD ["python3", "walkthrough.py"]

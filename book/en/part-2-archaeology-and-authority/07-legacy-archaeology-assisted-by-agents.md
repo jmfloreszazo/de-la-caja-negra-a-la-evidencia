@@ -5,13 +5,13 @@
 # Chapter 7 · Legacy Archaeology assisted by agents
 
 > [!IMPORTANT]
-> **Chapter thesis.** An AI-assisted migration starts better with questions than with generation prompts. Specialized agents receive typed inputs, produce verifiable artifacts and operate with limited permissions.
+> **Chapter thesis.** AI-assisted modernization should start by asking **which business capabilities are needed and which guarantees must survive**. Who authorizes transfers? What happens when a reply is lost? Which exceptions and end-of-day rules apply? Interviews, approved policies, external contracts and authorized black-box tests establish the capability map first. Syntactic analysis may resolve later technical questions, but is neither mandatory nor a way to derive the new domain boundaries.
 
 An AI-assisted migration starts better with questions than with generation prompts. Which programs modify this account? Where is the interest decided? How many dialects, versions and copybooks are there? What happens when the final write fails? What changes arrive through nightly jobs? Who maintains the code tables? Answering requires combining syntactic analysis, metadata and dynamic observation.
 
-I propose a chain of specialized agents under a common controller: **inventory and provenance**, **parser and dependency graph**, **rule discovery**, **execution observer**, **specification writer**, **architecture designer**, **builder**, **verifier** and **drift auditor**. They are not nine chatbots giving opinions on the same file. Each receives typed inputs, produces verifiable artifacts and operates with limited permissions.
+I propose specialized agents under one controller: **functional discovery and provenance**, **optional technical investigation**, **rule discovery**, **execution observer**, **specification writer**, **architecture designer**, **builder**, **verifier** and **drift auditor**. These are not nine chatbots giving opinions on the same file. Business authority defines the capabilities; the incumbent offers observations and sometimes technical clues. Each agent has typed inputs, artifacts and limited permissions.
 
-The COBOL analyser generates an AST of the real dialect, resolves copybooks and locates data references, CALLs, embedded SQL and control structures. I would not ask an LLM to replace the parser. The agent takes the result and produces hypotheses about intent: for example, "a withdrawal on blocked accounts returns a specific code without modifying state". That hypothesis must come with paths, positions, observed examples and limitations. If production execution cannot be observed, we document the risk and design tests on an authorized copy.
+Functional discovery first produces positive and negative scenarios, decisions and accountable owners. For example: "a withdrawal on blocked accounts returns a particular code without changing state". The hypothesis needs approved policy and corroborating observations. **If an unresolved question calls for legacy source inspection**, a COBOL dialect parser may examine AST, CALL, COPY or SQL; that branch is optional and does not dictate the target architecture. Unknowns remain open rather than being approved by an agent.
 
 REA is a useful methodological reference for investigation with tools and evidence [35, 3]. For the mainframe, its concrete support must be evaluated before it is claimed; I would not confuse "inspired by REA" with "REA natively analyses CICS". The integration architecture could use a neutral contract such as `EvidenceItem`, with hashes, provenance, coverage and an `observed / inferred / unknown` status. That lets findings flow between analysers and agents without losing their origin.
 
@@ -25,9 +25,9 @@ Each link in the chain has an input, an output artifact and something it is expr
 
 | Agent | Receives | Produces | Cannot |
 |---|---|---|---|
-| Inventory and provenance | Repositories, datasets, catalogs | Inventory with hashes and owners | Modify sources |
-| Parser and graph | Sources with resolved copybooks | AST, graph of CALL, COPY and SQL | Infer business intent |
-| Rule discovery | Graph and observed executions | Hypotheses with locators | Approve rules |
+| Functional discovery and provenance | Owners, policy, channels and authorized observations | Capabilities and uncertainties with sources | Approve rules |
+| Optional technical investigation | Authorized source, copybooks and relevant metadata | Dependencies with coverage and provenance | Choose business boundaries |
+| Rule discovery | Capabilities and observed outcomes | Hypotheses and exceptions with sources | Approve rules |
 | Execution observer | Authorized environment | Input, state, output and effects | Run outside the mandate |
 | Specification writer | Approved hypotheses | Specification, DMN, scenarios | Change the baseline |
 | Architecture designer | Specification and constraints | ADRs and comparable options | Choose without capacity evidence |
@@ -37,7 +37,7 @@ Each link in the chain has an input, an output artifact and something it is expr
 
 ![Figure 7.1 · The agent chain: each link produces an artifact and none writes the baseline.](../../figures/en/agent_chain.png)
 
-*Figure 7.1 · The agent chain: each link produces an artifact and none writes the baseline.*
+*Figure 7.1 · Illustrative **optional branch** for parser-and-graph source investigation, not the required flow. Business capabilities and contracts come first. No agent writes the baseline.*
 
 ## The living specification
 

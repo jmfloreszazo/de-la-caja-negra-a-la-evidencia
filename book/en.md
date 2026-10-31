@@ -383,7 +383,7 @@ How to recover what the system knows without mistaking a well-written hypothesis
 
 Lost documentation and accumulated rules are real problems. But an engineering clarification is worth adding: source code is not the only evidence. There are shared copybooks, dataset definitions, version control, historical deployments, JCL, CICS configurations, DDL, catalogs, load statistics, incidents, tickets and, above all, behaviours the system still executes. Some rules live in a parameter table. Others live in a routine nobody has called for years. Some are historical bugs that consuming systems depend on.
 
-That is why I would not start by asking "convert these two million lines for me". I would start with an **evidence map**. Each artifact gets an identity, version, hash, origin, owner and constraints. A specific parser builds dependencies between programs and copybooks; JCL analysers reconstruct batch chains; an SQL extractor locates tables and transactions; an observation system captures inputs, outputs and execution effects. Agents correlate that information, but they do not automatically turn it into truth.
+That is why I would not start by asking "convert these two million lines for me". I would start with a **business capability and behavior map**: accountable owners, approved rules, exceptions and observable outcomes. Then I would build an **evidence map** with provenance, versions, hashes and permissions. Only when a specific technical hypothesis needs corroboration would I use COBOL parsers, JCL or SQL analysers to find dependencies. Black-box observation captures inputs, outputs and effects; no parser is required to build from scratch, and no inference automatically becomes approved policy.
 
 #### What Reverse Engineer Anything brings
 
@@ -423,7 +423,7 @@ I propose a component I call the COBOL Evidence Adapter. It is not a capability 
 
 Each finding should identify the artifact, its hash, the source locator, the tool and its version, the method used and the known limits. A relationship inferred by the agent would be recorded as a hypothesis. An observed execution would keep input, relevant state, output and conditions. An approved rule would have a different authority and version.
 
-Imagine a fee rule found in a COBOL paragraph. The parser locates the expression. An execution confirms a result at the rounding boundary. The business owner confirms that this is the policy to be kept. They are three related pieces, but none replaces the others.
+Imagine a fee observed in a business contract and black-box execution. The business owner determines the correct rule and exceptions. If a question remains about the incumbent implementation, **optional** COBOL analysis may locate its rounding logic. Observation, technical investigation and approval are separate evidence types: none replaces the others.
 
 A knowledge graph can make navigating between them easier. Its value is not in using a graph database on principle, but in letting us reconstruct the path from a conclusion back to the evidence that supports it. A well-designed table may be enough to begin with.
 
@@ -464,13 +464,13 @@ Look at the last two fields. `approval` is empty because observing a behaviour d
 ### Chapter 7 · Legacy Archaeology assisted by agents
 
 > [!IMPORTANT]
-> **Chapter thesis.** An AI-assisted migration starts better with questions than with generation prompts. Specialized agents receive typed inputs, produce verifiable artifacts and operate with limited permissions.
+> **Chapter thesis.** AI-assisted modernization should start by asking **which business capabilities are needed and which guarantees must survive**. Who authorizes transfers? What happens when a reply is lost? Which exceptions and end-of-day rules apply? Interviews, approved policies, external contracts and authorized black-box tests establish the capability map first. Syntactic analysis may resolve later technical questions, but is neither mandatory nor a way to derive the new domain boundaries.
 
 An AI-assisted migration starts better with questions than with generation prompts. Which programs modify this account? Where is the interest decided? How many dialects, versions and copybooks are there? What happens when the final write fails? What changes arrive through nightly jobs? Who maintains the code tables? Answering requires combining syntactic analysis, metadata and dynamic observation.
 
-I propose a chain of specialized agents under a common controller: **inventory and provenance**, **parser and dependency graph**, **rule discovery**, **execution observer**, **specification writer**, **architecture designer**, **builder**, **verifier** and **drift auditor**. They are not nine chatbots giving opinions on the same file. Each receives typed inputs, produces verifiable artifacts and operates with limited permissions.
+I propose specialized agents under one controller: **functional discovery and provenance**, **optional technical investigation**, **rule discovery**, **execution observer**, **specification writer**, **architecture designer**, **builder**, **verifier** and **drift auditor**. These are not nine chatbots giving opinions on the same file. Business authority defines the capabilities; the incumbent offers observations and sometimes technical clues. Each agent has typed inputs, artifacts and limited permissions.
 
-The COBOL analyser generates an AST of the real dialect, resolves copybooks and locates data references, CALLs, embedded SQL and control structures. I would not ask an LLM to replace the parser. The agent takes the result and produces hypotheses about intent: for example, "a withdrawal on blocked accounts returns a specific code without modifying state". That hypothesis must come with paths, positions, observed examples and limitations. If production execution cannot be observed, we document the risk and design tests on an authorized copy.
+Functional discovery first produces positive and negative scenarios, decisions and accountable owners. For example: "a withdrawal on blocked accounts returns a particular code without changing state". The hypothesis needs approved policy and corroborating observations. **If an unresolved question calls for legacy source inspection**, a COBOL dialect parser may examine AST, CALL, COPY or SQL; that branch is optional and does not dictate the target architecture. Unknowns remain open rather than being approved by an agent.
 
 REA is a useful methodological reference for investigation with tools and evidence [35, 3]. For the mainframe, its concrete support must be evaluated before it is claimed; I would not confuse "inspired by REA" with "REA natively analyses CICS". The integration architecture could use a neutral contract such as `EvidenceItem`, with hashes, provenance, coverage and an `observed / inferred / unknown` status. That lets findings flow between analysers and agents without losing their origin.
 
@@ -484,9 +484,9 @@ Each link in the chain has an input, an output artifact and something it is expr
 
 | Agent | Receives | Produces | Cannot |
 |---|---|---|---|
-| Inventory and provenance | Repositories, datasets, catalogs | Inventory with hashes and owners | Modify sources |
-| Parser and graph | Sources with resolved copybooks | AST, graph of CALL, COPY and SQL | Infer business intent |
-| Rule discovery | Graph and observed executions | Hypotheses with locators | Approve rules |
+| Functional discovery and provenance | Owners, policy, channels and authorized observations | Capabilities and uncertainties with sources | Approve rules |
+| Optional technical investigation | Authorized source, copybooks and relevant metadata | Dependencies with coverage and provenance | Choose business boundaries |
+| Rule discovery | Capabilities and observed outcomes | Hypotheses and exceptions with sources | Approve rules |
 | Execution observer | Authorized environment | Input, state, output and effects | Run outside the mandate |
 | Specification writer | Approved hypotheses | Specification, DMN, scenarios | Change the baseline |
 | Architecture designer | Specification and constraints | ADRs and comparable options | Choose without capacity evidence |
@@ -496,7 +496,7 @@ Each link in the chain has an input, an output artifact and something it is expr
 
 ![Figure 7.1 · The agent chain: each link produces an artifact and none writes the baseline.](figures/en/agent_chain.png)
 
-*Figure 7.1 · The agent chain: each link produces an artifact and none writes the baseline.*
+*Figure 7.1 · Illustrative **optional branch** for parser-and-graph source investigation, not the required flow. Business capabilities and contracts come first. No agent writes the baseline.*
 
 #### The living specification
 
@@ -2193,7 +2193,7 @@ The agent can consult sources and the public contract, run its own tests and fix
 
 If we change models, budgets, prompts or tools, we record it as a different experimental condition. Saying "AI did it" does not let us explain which combination produced the result or repeat the process.
 
-A comprehension agent could propose rules from the COBOL. That proposal still needs contrast. The builder agent could translate them into C#. The gate checks the observed behaviour. Human approval establishes which rule is accepted and when a difference from the legacy is intentional.
+A discovery agent may propose rules from policies, interviews and authorized observations; COBOL is supplementary evidence when needed. The builder can **implement the capability from scratch** in C# without copying legacy structure. TODM verifies outcomes against independent oracles and approved rules; Golden Master separately preserves observed incumbent behavior. Business authority decides what to preserve, correct or retire.
 
 #### REA comes in when the problem needs it
 
@@ -2201,7 +2201,7 @@ For the lab's small source we do not need a decompiler. Including REA for the sa
 
 A coherent extension would be to take an authorized executable, pin its hash and ask an agent to investigate a specific function through REA. The findings would feed hypotheses and tests. The reconstruction would then be evaluated against a suitable oracle. The result would document what was observed directly and what was inferred.
 
-For larger COBOL sources, I would first evaluate the parser and the dialect. An MCP server can expose the inventory, relationships and executions of a specialized adapter. The protocol makes access to tools easier; it does not guarantee their correctness or grant authority to use them.
+For larger COBOL estates, I would begin with **capabilities, external contracts, exceptions and operational guarantees**. Only when a specific technical uncertainty remains would I evaluate dialect parsers or dependency tools. MCP can expose findings, but syntactic analysis is not required to reimplement a system and does not approve business rules.
 
 #### Correlated errors are still possible
 

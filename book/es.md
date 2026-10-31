@@ -383,7 +383,7 @@ Cómo recuperar lo que el sistema sabe sin confundir una hipótesis bien redacta
 
 La pérdida de documentación y la acumulación de reglas son problemas reales. Pero conviene añadir una precisión de ingeniería: el código fuente no es la única evidencia. Hay copybooks compartidos, definiciones de datasets, control de versiones, despliegues históricos, JCL, configuraciones CICS, DDL, catálogos, estadísticas de carga, incidencias, tickets y, sobre todo, comportamientos que el sistema todavía ejecuta. Algunas reglas están en una tabla de parametrización. Otras viven en una rutina no llamada desde hace años. Algunas son errores históricos de los que dependen sistemas consumidores.
 
-Por eso no empezaría pidiendo «conviérteme estos dos millones de líneas». Empezaría por un **mapa de evidencias**. Cada artefacto recibe identidad, versión, hash, origen, propietario y restricciones. Un parser específico construye dependencias entre programas y copybooks; analizadores de JCL reconstruyen cadenas batch; un extractor de SQL localiza tablas y transacciones; un sistema de observación captura entradas, salidas y efectos de ejecución. Los agentes correlacionan esa información, pero no la convierten automáticamente en verdad.
+Por eso no empezaría pidiendo «conviérteme estos dos millones de líneas». Empezaría por un **mapa de capacidades y comportamiento de negocio**: responsables, reglas aprobadas, excepciones y resultados observables. Después construiría un **mapa de evidencias** con procedencia, versión, hash y autorización de uso. Sólo cuando una hipótesis técnica concreta lo requiera recurriría a parsers COBOL, analizadores JCL o SQL para encontrar dependencias. La observación de caja negra captura entradas, salidas y efectos; ningún analizador es requisito para programar de cero ni convierte una inferencia en política aprobada.
 
 #### Qué aporta Reverse Engineer Anything
 
@@ -423,7 +423,7 @@ Propongo un componente que denomino COBOL Evidence Adapter. No es una capacidad 
 
 Cada hallazgo debería identificar el artefacto, su hash, el localizador de origen, la herramienta y su versión, el método de obtención y los límites conocidos. Una relación deducida por el agente se registraría como hipótesis. Una ejecución observada conservaría entrada, estado relevante, salida y condiciones. Una regla aprobada tendría una autoridad y una versión distintas.
 
-Imaginemos una regla de comisión hallada en un párrafo COBOL. El parser localiza la expresión. Una ejecución confirma un resultado en el límite de redondeo. El responsable de negocio confirma que esa es la política que debe mantenerse. Son tres piezas relacionadas, pero ninguna sustituye a las demás.
+Imaginemos una comisión observada en un contrato y en una ejecución de caja negra. El responsable de negocio determina la regla y sus excepciones. Si queda una duda sobre la implementación heredada, un análisis **opcional** del COBOL puede localizar el redondeo. La observación, la investigación técnica y la aprobación son evidencias distintas: ninguna sustituye a las demás.
 
 El grafo de conocimiento puede facilitar la navegación entre ellas. Su valor no está en usar una base de datos de grafos por principio, sino en permitir reconstruir el camino desde una conclusión hasta la evidencia que la sostiene. Una tabla bien diseñada puede ser suficiente al empezar.
 
@@ -464,13 +464,13 @@ Fíjate en los dos últimos campos. `approval` está vacío porque observar un c
 ### Capítulo 7 · Legacy Archaeology asistida por agentes
 
 > [!IMPORTANT]
-> **Tesis del capítulo.** Una migración con IA empieza mejor con preguntas que con prompts de generación. Los agentes especializados reciben entradas tipadas, producen artefactos comprobables y operan con permisos limitados.
+> **Tesis del capítulo.** Una migración con IA empieza mejor preguntando **qué funcionalidades necesita el negocio y qué garantías debe conservar**. ¿Quién autoriza una transferencia? ¿Qué ocurre si se pierde la respuesta? ¿Cuáles son las excepciones y los cierres diarios? Entrevistas, políticas, contratos y pruebas de caja negra autorizadas construyen primero el mapa de capacidades. El análisis sintáctico puede resolver dudas técnicas después, pero no es obligatorio ni determina los dominios de la nueva aplicación.
 
 Una migración con IA empieza mejor con preguntas que con prompts de generación. ¿Qué programas modifican esta cuenta? ¿Dónde se decide el interés? ¿Cuántos dialectos, versiones y copybooks hay? ¿Qué ocurre cuando falla la escritura final? ¿Qué cambios llegan por jobs nocturnos? ¿Quién mantiene las tablas de códigos? Responder exige combinar análisis sintáctico, metadatos y observación dinámica.
 
-Propongo una cadena de agentes especializados, bajo un controlador común: **inventario y procedencia**, **parser y grafo de dependencias**, **descubrimiento de reglas**, **observador de ejecución**, **redactor de especificaciones**, **diseñador de arquitectura**, **constructor**, **verificador** y **auditor de drift**. No son nueve chatbots opinando sobre el mismo fichero. Cada uno recibe entradas tipadas, produce artefactos comprobables y opera con permisos limitados.
+Propongo agentes especializados bajo un controlador común: **descubrimiento funcional y procedencia**, **investigación técnica opcional**, **descubrimiento de reglas**, **observador de ejecución**, **redactor de especificaciones**, **diseñador de arquitectura**, **constructor**, **verificador** y **auditor de drift**. No son nueve chatbots opinando sobre el mismo fichero. El negocio determina las capacidades; el legado ofrece observaciones y, cuando sea útil, pistas técnicas. Cada agente tiene entradas, artefactos y permisos limitados.
 
-El analizador de COBOL genera un AST del dialecto real, resuelve copybooks y localiza referencias a datos, CALL, SQL embebido y estructuras de control. No le pediría a un LLM que reemplace al parser. El agente toma el resultado y produce hipótesis sobre intenciones: por ejemplo, «una retirada sobre cuentas bloqueadas retorna un código específico sin modificar estado». Esa hipótesis debe ir acompañada de rutas, posiciones, ejemplos observados y limitaciones. Si la ejecución de producción no puede observarse, documentamos el riesgo y diseñamos pruebas en una copia autorizada.
+El descubrimiento funcional produce primero escenarios positivos y negativos, decisiones y responsables. Por ejemplo: «una retirada sobre cuentas bloqueadas retorna un código específico sin modificar estado». La hipótesis requiere política aprobada y observaciones contrastables. **Si una incógnita exige inspección del legado**, se puede utilizar un parser del dialecto COBOL para estudiar AST, CALL, COPY o SQL; esa rama es opcional y no define la arquitectura objetivo. Las incertidumbres quedan abiertas, nunca aprobadas por el agente.
 
 REA representa una referencia metodológica útil en la parte de investigación con herramientas y evidencia [35, 3]. Para mainframe, su soporte concreto debe evaluarse antes de afirmarlo; no confundiría «inspirado por REA» con «REA analiza nativamente CICS». La arquitectura de integración podría utilizar un contrato neutral como `EvidenceItem`, con hashes, procedencia, cobertura y estado `observed / inferred / unknown`. Eso permite intercambiar hallazgos entre analizadores y agentes sin perder su origen.
 
@@ -484,9 +484,9 @@ Cada eslabón de la cadena tiene una entrada, un artefacto de salida y algo que 
 
 | Agente | Recibe | Produce | No puede |
 |---|---|---|---|
-| Inventario y procedencia | Repositorios, datasets, catálogos | Inventario con hashes y propietarios | Modificar fuentes |
-| Parser y grafo | Fuentes con copybooks resueltos | AST, grafo de CALL, COPY y SQL | Inferir intención de negocio |
-| Descubrimiento de reglas | Grafo y ejecuciones observadas | Hipótesis con localizadores | Aprobar reglas |
+| Descubrimiento funcional y procedencia | Responsables, políticas, canales y observaciones autorizadas | Capacidades y dudas con fuentes | Aprobar reglas |
+| Investigación técnica opcional | Fuentes autorizadas, copybooks y metadatos pertinentes | Dependencias con cobertura y procedencia | Elegir límites de negocio |
+| Descubrimiento de reglas | Capacidades y resultados observados | Hipótesis y excepciones con fuentes | Aprobar reglas |
 | Observador de ejecución | Entorno autorizado | Entrada, estado, salida y efectos | Ejecutar fuera del mandato |
 | Redactor de especificaciones | Hipótesis aprobadas | Especificación, DMN, escenarios | Cambiar la baseline |
 | Diseñador de arquitectura | Especificación y restricciones | ADR y opciones comparables | Elegir sin evidencia de capacidad |
@@ -496,7 +496,7 @@ Cada eslabón de la cadena tiene una entrada, un artefacto de salida y algo que 
 
 ![Figura 7.1 · La cadena de agentes: cada eslabón produce un artefacto y ninguno escribe la baseline.](figures/es/agent_chain.png)
 
-*Figura 7.1 · La cadena de agentes: cada eslabón produce un artefacto y ninguno escribe la baseline.*
+*Figura 7.1 · Ejemplo ilustrativo de una **rama opcional** de investigación técnica con parser y grafo; no representa el camino obligatorio. Primero se descubren capacidades y contratos de negocio. Ningún agente escribe la baseline.*
 
 #### La especificación viva
 
@@ -2191,7 +2191,7 @@ El agente puede consultar fuentes y el contrato público, ejecutar sus tests y c
 
 Si cambiamos modelos, presupuestos, prompts o herramientas, lo registramos como una condición experimental distinta. Decir que «lo hizo la IA» no permite explicar qué combinación produjo el resultado ni repetir el proceso.
 
-Un agente de comprensión podría proponer reglas a partir del COBOL. Esa propuesta todavía necesita contraste. El agente de construcción podría traducirlas a C#. El gate comprueba el comportamiento observado. La aprobación humana establece qué regla se acepta y cuándo una diferencia respecto del legado es intencional.
+Un agente investigador puede proponer reglas desde políticas, entrevistas y observaciones autorizadas; el COBOL es una fuente auxiliar cuando sea necesario. El constructor puede **programar desde cero** la capacidad en C# sin copiar la estructura del legado. TODM compara el resultado con oráculos independientes y reglas aprobadas; Golden Master conserva por separado el comportamiento observado. La autoridad del negocio decide qué mantener, corregir o retirar.
 
 #### REA entra cuando el problema lo necesita
 
@@ -2199,7 +2199,7 @@ Para el fuente pequeño del laboratorio no necesitamos un decompilador. Incluir 
 
 Una extensión coherente consistiría en tomar un ejecutable autorizado, fijar su hash y pedir a un agente que investigue una función concreta mediante REA. Los hallazgos alimentarían hipótesis y pruebas. La reconstrucción se evaluaría después contra un oráculo adecuado. El resultado documentaría qué se observó directamente y qué se dedujo.
 
-Para fuentes COBOL de mayor tamaño, evaluaría primero el parser y el dialecto. Un MCP puede exponer el inventario, las relaciones y las ejecuciones de un adaptador especializado. El protocolo facilita el acceso a herramientas; no garantiza su corrección ni concede autoridad para usarlas.
+Para sistemas COBOL de mayor tamaño, empezaría por las **capacidades, contratos externos, excepciones y garantías operativas**. Sólo ante una duda técnica concreta evaluaría parsers de dialecto o herramientas de dependencias. MCP puede exponer los hallazgos, pero el análisis sintáctico no es un requisito para reprogramar el sistema ni autoriza una regla de negocio.
 
 #### Los errores correlacionados siguen siendo posibles
 
