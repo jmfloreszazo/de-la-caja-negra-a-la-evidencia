@@ -147,10 +147,18 @@ internal static class B05LoadClient
 
             foreach (var offer in vector.Operations)
             {
-                var remainingNs = offer.ScheduledAtNs - Ns(clock);
-                if (remainingNs > 0)
-                    await Task.Delay(TimeSpan.FromMilliseconds(
-                        remainingNs / 1_000_000.0));
+                // Task.Delay may wake BEFORE the requested monotonic
+                // deadline because of timer resolution. Never declare a
+                // scheduled offer dispatched early; recheck the clock.
+                long remainingNs;
+                while ((remainingNs = offer.ScheduledAtNs - Ns(clock)) > 0)
+                {
+                    if (remainingNs > 2_000_000L)
+                        await Task.Delay(TimeSpan.FromMilliseconds(
+                            (remainingNs - 1_000_000L) / 1_000_000.0));
+                    else
+                        await Task.Yield();
+                }
                 var dispatchedAt = Ns(clock);
                 if (!capacity.Wait(0))
                 {
