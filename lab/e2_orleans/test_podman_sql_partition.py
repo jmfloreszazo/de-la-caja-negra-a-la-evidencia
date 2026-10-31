@@ -125,15 +125,9 @@ def main():
         names.append("e2f10-pg")
         P("network", "connect", "--ip", c02.SQL_IPS["e2f10-pg"],
           c02.SQL_NETWORK, "e2f10-pg")
-        for _ in range(65):
-            if "accepting connections" in P(
-                "exec", "e2f10-pg", "pg_isready", "-U", "postgres",
-                "-d", "e2lab", check=False
-            ):
-                break
-            time.sleep(1)
-        else:
-            raise AssertionError("Disposable PostgreSQL did not start")
+        # Preserve the C03 original SQL-only fault semantics: this startup
+        # preflight happens BEFORE the network cut and financial requests.
+        fx.wait_disposable_sql_ready(case="c03", output_dir=OUT)
         fx.reset()
         os.environ["E2_POSTGRES_CONTAINER"] = "e2f10-pg"
         from setup_adonet_membership import main as install
