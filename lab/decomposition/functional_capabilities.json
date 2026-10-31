@@ -1,0 +1,871 @@
+{
+  "schemaVersion": "functional-discovery-1",
+  "classification": "REFERENCE_HYPOTHESES_ONLY",
+  "purpose": "Discover business behavior for clean-room reimplementation, not code/COBOL translation or source parsing.",
+  "decisionRule": "No capability is accepted without owner-reviewed scenarios, observed evidence, an independent oracle and production-equivalent controls.",
+  "capabilities": [
+    {
+      "id": "CAP-001",
+      "domain": "Customer & identity",
+      "name": "Customer onboarding",
+      "objective": "Open and maintain a customer relationship",
+      "trigger": "Onboarding request",
+      "outcome": "Customer record or documented rejection",
+      "exceptions": [
+        "Duplicate identity",
+        "incomplete KYC",
+        "restricted customer"
+      ],
+      "invariant": "No account activation without required approval",
+      "consistency": "strong",
+      "criticality": "high",
+      "status": "HYPOTHESIS_NOT_OBSERVED",
+      "sources": [],
+      "owner": null,
+      "approval": null,
+      "acceptanceCriteria": [
+        "Given onboarding request, when the capability executes, then customer record or documented rejection.",
+        "Given duplicate identity, when the command is handled, then no account activation without required approval."
+      ],
+      "unknowns": [
+        "Actual institution-specific contract and responsible business owner",
+        "Quantitative SLA, volume, failure deadline and operational calendar",
+        "Legacy exceptional behavior and audit evidence"
+      ]
+    },
+    {
+      "id": "CAP-002",
+      "domain": "Customer & identity",
+      "name": "Customer profile changes",
+      "objective": "Amend customer contact and identity attributes",
+      "trigger": "Authenticated change request",
+      "outcome": "Audited version of profile",
+      "exceptions": [
+        "Unauthorized changes",
+        "conflicting edits"
+      ],
+      "invariant": "Only authorized amendments survive; history retained",
+      "consistency": "strong",
+      "criticality": "medium",
+      "status": "HYPOTHESIS_NOT_OBSERVED",
+      "sources": [],
+      "owner": null,
+      "approval": null,
+      "acceptanceCriteria": [
+        "Given authenticated change request, when the capability executes, then audited version of profile.",
+        "Given unauthorized changes, when the command is handled, then only authorized amendments survive; history retained."
+      ],
+      "unknowns": [
+        "Actual institution-specific contract and responsible business owner",
+        "Quantitative SLA, volume, failure deadline and operational calendar",
+        "Legacy exceptional behavior and audit evidence"
+      ]
+    },
+    {
+      "id": "CAP-003",
+      "domain": "Customer & identity",
+      "name": "Customer relationship closure",
+      "objective": "Close a relationship when obligations permit",
+      "trigger": "Closure request",
+      "outcome": "Closed relationship or reasoned refusal",
+      "exceptions": [
+        "Unsettled obligations",
+        "legal retention"
+      ],
+      "invariant": "Closure never erases required audit history",
+      "consistency": "strong",
+      "criticality": "medium",
+      "status": "HYPOTHESIS_NOT_OBSERVED",
+      "sources": [],
+      "owner": null,
+      "approval": null,
+      "acceptanceCriteria": [
+        "Given closure request, when the capability executes, then closed relationship or reasoned refusal.",
+        "Given unsettled obligations, when the command is handled, then closure never erases required audit history."
+      ],
+      "unknowns": [
+        "Actual institution-specific contract and responsible business owner",
+        "Quantitative SLA, volume, failure deadline and operational calendar",
+        "Legacy exceptional behavior and audit evidence"
+      ]
+    },
+    {
+      "id": "CAP-004",
+      "domain": "Accounts",
+      "name": "Account opening",
+      "objective": "Create a deposit account under approved product conditions",
+      "trigger": "Approved opening command",
+      "outcome": "Unique account with agreed terms",
+      "exceptions": [
+        "Duplicate request",
+        "unsupported product"
+      ],
+      "invariant": "Idempotent account creation and explicit ownership",
+      "consistency": "strong",
+      "criticality": "high",
+      "status": "HYPOTHESIS_NOT_OBSERVED",
+      "sources": [],
+      "owner": null,
+      "approval": null,
+      "acceptanceCriteria": [
+        "Given approved opening command, when the capability executes, then unique account with agreed terms.",
+        "Given duplicate request, when the command is handled, then idempotent account creation and explicit ownership."
+      ],
+      "unknowns": [
+        "Actual institution-specific contract and responsible business owner",
+        "Quantitative SLA, volume, failure deadline and operational calendar",
+        "Legacy exceptional behavior and audit evidence"
+      ]
+    },
+    {
+      "id": "CAP-005",
+      "domain": "Accounts",
+      "name": "Balance enquiry",
+      "objective": "Provide an authorized view of booked and available funds",
+      "trigger": "Balance request",
+      "outcome": "Booked and available balance with as-of markers",
+      "exceptions": [
+        "Stale read",
+        "offline channel",
+        "unauthorized caller"
+      ],
+      "invariant": "Available funds cannot be inferred from delayed statements",
+      "consistency": "strong",
+      "criticality": "high",
+      "status": "HYPOTHESIS_NOT_OBSERVED",
+      "sources": [],
+      "owner": null,
+      "approval": null,
+      "acceptanceCriteria": [
+        "Given balance request, when the capability executes, then booked and available balance with as-of markers.",
+        "Given stale read, when the command is handled, then available funds cannot be inferred from delayed statements."
+      ],
+      "unknowns": [
+        "Actual institution-specific contract and responsible business owner",
+        "Quantitative SLA, volume, failure deadline and operational calendar",
+        "Legacy exceptional behavior and audit evidence"
+      ]
+    },
+    {
+      "id": "CAP-006",
+      "domain": "Accounts",
+      "name": "Account hold/release",
+      "objective": "Reserve or release funds for contractual reasons",
+      "trigger": "Hold or release request",
+      "outcome": "Audited reservation state",
+      "exceptions": [
+        "Duplicate hold",
+        "expiry",
+        "invalid release"
+      ],
+      "invariant": "Reserved funds cannot be spent twice",
+      "consistency": "strong",
+      "criticality": "critical",
+      "status": "HYPOTHESIS_NOT_OBSERVED",
+      "sources": [],
+      "owner": null,
+      "approval": null,
+      "acceptanceCriteria": [
+        "Given hold or release request, when the capability executes, then audited reservation state.",
+        "Given duplicate hold, when the command is handled, then reserved funds cannot be spent twice."
+      ],
+      "unknowns": [
+        "Actual institution-specific contract and responsible business owner",
+        "Quantitative SLA, volume, failure deadline and operational calendar",
+        "Legacy exceptional behavior and audit evidence"
+      ]
+    },
+    {
+      "id": "CAP-007",
+      "domain": "Payments",
+      "name": "Internal transfer",
+      "objective": "Move funds between accounts with ledger conservation",
+      "trigger": "Authorized transfer command with operationId",
+      "outcome": "Paired postings, operation status and outbox",
+      "exceptions": [
+        "Retry",
+        "insufficient funds",
+        "timeout",
+        "ambiguous acknowledgment"
+      ],
+      "invariant": "Atomic balanced postings and stable-id durable idempotency",
+      "consistency": "strong",
+      "criticality": "critical",
+      "status": "HYPOTHESIS_NOT_OBSERVED",
+      "sources": [],
+      "owner": null,
+      "approval": null,
+      "acceptanceCriteria": [
+        "Given authorized transfer command with operationid, when the capability executes, then paired postings, operation status and outbox.",
+        "Given retry, when the command is handled, then atomic balanced postings and stable-id durable idempotency."
+      ],
+      "unknowns": [
+        "Actual institution-specific contract and responsible business owner",
+        "Quantitative SLA, volume, failure deadline and operational calendar",
+        "Legacy exceptional behavior and audit evidence"
+      ]
+    },
+    {
+      "id": "CAP-008",
+      "domain": "Payments",
+      "name": "External payment initiation",
+      "objective": "Validate and queue an outgoing payment to an external rail",
+      "trigger": "Authorized payment request",
+      "outcome": "Accepted instruction or reasoned rejection",
+      "exceptions": [
+        "Invalid beneficiary",
+        "duplicate",
+        "sanction restriction"
+      ],
+      "invariant": "Never equate instruction accepted with externally settled",
+      "consistency": "mixed",
+      "criticality": "critical",
+      "status": "HYPOTHESIS_NOT_OBSERVED",
+      "sources": [],
+      "owner": null,
+      "approval": null,
+      "acceptanceCriteria": [
+        "Given authorized payment request, when the capability executes, then accepted instruction or reasoned rejection.",
+        "Given invalid beneficiary, when the command is handled, then never equate instruction accepted with externally settled."
+      ],
+      "unknowns": [
+        "Actual institution-specific contract and responsible business owner",
+        "Quantitative SLA, volume, failure deadline and operational calendar",
+        "Legacy exceptional behavior and audit evidence"
+      ]
+    },
+    {
+      "id": "CAP-009",
+      "domain": "Payments",
+      "name": "Incoming payment posting",
+      "objective": "Post incoming settlement into an authoritative account",
+      "trigger": "Confirmed settlement message",
+      "outcome": "Booked posting and reconciliation reference",
+      "exceptions": [
+        "Duplicate settlement",
+        "missing account",
+        "ordering"
+      ],
+      "invariant": "Single durable effect per external reference",
+      "consistency": "strong",
+      "criticality": "critical",
+      "status": "HYPOTHESIS_NOT_OBSERVED",
+      "sources": [],
+      "owner": null,
+      "approval": null,
+      "acceptanceCriteria": [
+        "Given confirmed settlement message, when the capability executes, then booked posting and reconciliation reference.",
+        "Given duplicate settlement, when the command is handled, then single durable effect per external reference."
+      ],
+      "unknowns": [
+        "Actual institution-specific contract and responsible business owner",
+        "Quantitative SLA, volume, failure deadline and operational calendar",
+        "Legacy exceptional behavior and audit evidence"
+      ]
+    },
+    {
+      "id": "CAP-010",
+      "domain": "Payments",
+      "name": "Payment cancellation / return",
+      "objective": "Cancel, return or reverse where rail rules allow",
+      "trigger": "Cancellation or return request",
+      "outcome": "State transition with traceable compensating effects",
+      "exceptions": [
+        "Too late to cancel",
+        "already settled",
+        "duplicate"
+      ],
+      "invariant": "Historical postings not silently deleted or mutated",
+      "consistency": "mixed",
+      "criticality": "critical",
+      "status": "HYPOTHESIS_NOT_OBSERVED",
+      "sources": [],
+      "owner": null,
+      "approval": null,
+      "acceptanceCriteria": [
+        "Given cancellation or return request, when the capability executes, then state transition with traceable compensating effects.",
+        "Given too late to cancel, when the command is handled, then historical postings not silently deleted or mutated."
+      ],
+      "unknowns": [
+        "Actual institution-specific contract and responsible business owner",
+        "Quantitative SLA, volume, failure deadline and operational calendar",
+        "Legacy exceptional behavior and audit evidence"
+      ]
+    },
+    {
+      "id": "CAP-011",
+      "domain": "Cards & ATM",
+      "name": "ATM withdrawal authorization",
+      "objective": "Evaluate available funds, limits and fraud controls",
+      "trigger": "Authenticated authorization request",
+      "outcome": "Approve/decline with response code",
+      "exceptions": [
+        "Network loss",
+        "suspected fraud",
+        "duplicate auth"
+      ],
+      "invariant": "Authorization is not proof that cash was dispensed",
+      "consistency": "strong",
+      "criticality": "critical",
+      "status": "HYPOTHESIS_NOT_OBSERVED",
+      "sources": [],
+      "owner": null,
+      "approval": null,
+      "acceptanceCriteria": [
+        "Given authenticated authorization request, when the capability executes, then approve/decline with response code.",
+        "Given network loss, when the command is handled, then authorization is not proof that cash was dispensed."
+      ],
+      "unknowns": [
+        "Actual institution-specific contract and responsible business owner",
+        "Quantitative SLA, volume, failure deadline and operational calendar",
+        "Legacy exceptional behavior and audit evidence"
+      ]
+    },
+    {
+      "id": "CAP-012",
+      "domain": "Cards & ATM",
+      "name": "ATM dispense reconciliation",
+      "objective": "Reconcile requested versus physically dispensed cash",
+      "trigger": "Dispenser outcome and switch advice",
+      "outcome": "Captured/reversed/exception state",
+      "exceptions": [
+        "Partial dispense",
+        "reversal timeout",
+        "missing advice"
+      ],
+      "invariant": "Ledger changes reflect proven dispense outcomes",
+      "consistency": "mixed",
+      "criticality": "critical",
+      "status": "HYPOTHESIS_NOT_OBSERVED",
+      "sources": [],
+      "owner": null,
+      "approval": null,
+      "acceptanceCriteria": [
+        "Given dispenser outcome and switch advice, when the capability executes, then captured/reversed/exception state.",
+        "Given partial dispense, when the command is handled, then ledger changes reflect proven dispense outcomes."
+      ],
+      "unknowns": [
+        "Actual institution-specific contract and responsible business owner",
+        "Quantitative SLA, volume, failure deadline and operational calendar",
+        "Legacy exceptional behavior and audit evidence"
+      ]
+    },
+    {
+      "id": "CAP-013",
+      "domain": "Cards & ATM",
+      "name": "Card purchase authorization",
+      "objective": "Approve or decline merchant authorizations",
+      "trigger": "Card network request",
+      "outcome": "Auth response and reservation",
+      "exceptions": [
+        "Duplicate network messages",
+        "expiry",
+        "chargeback"
+      ],
+      "invariant": "Authorization reservation and financial posting remain distinct",
+      "consistency": "strong",
+      "criticality": "critical",
+      "status": "HYPOTHESIS_NOT_OBSERVED",
+      "sources": [],
+      "owner": null,
+      "approval": null,
+      "acceptanceCriteria": [
+        "Given card network request, when the capability executes, then auth response and reservation.",
+        "Given duplicate network messages, when the command is handled, then authorization reservation and financial posting remain distinct."
+      ],
+      "unknowns": [
+        "Actual institution-specific contract and responsible business owner",
+        "Quantitative SLA, volume, failure deadline and operational calendar",
+        "Legacy exceptional behavior and audit evidence"
+      ]
+    },
+    {
+      "id": "CAP-014",
+      "domain": "Cards & ATM",
+      "name": "Card clearing and dispute",
+      "objective": "Post clearing, reversals, chargebacks and dispute lifecycle",
+      "trigger": "Clearing or dispute message",
+      "outcome": "Ledger postings and dispute status",
+      "exceptions": [
+        "Late clearing",
+        "mismatch",
+        "duplicate chargeback"
+      ],
+      "invariant": "Each adjustment is traceable and conserves money",
+      "consistency": "mixed",
+      "criticality": "high",
+      "status": "HYPOTHESIS_NOT_OBSERVED",
+      "sources": [],
+      "owner": null,
+      "approval": null,
+      "acceptanceCriteria": [
+        "Given clearing or dispute message, when the capability executes, then ledger postings and dispute status.",
+        "Given late clearing, when the command is handled, then each adjustment is traceable and conserves money."
+      ],
+      "unknowns": [
+        "Actual institution-specific contract and responsible business owner",
+        "Quantitative SLA, volume, failure deadline and operational calendar",
+        "Legacy exceptional behavior and audit evidence"
+      ]
+    },
+    {
+      "id": "CAP-015",
+      "domain": "Pricing & interest",
+      "name": "Interest accrual",
+      "objective": "Accrue contractual interest against dated balances",
+      "trigger": "Business-date accrual cycle",
+      "outcome": "Accrued interest and audit trace",
+      "exceptions": [
+        "Rounding differences",
+        "backdated balances"
+      ],
+      "invariant": "Day-count, rates and rounding must match approved contract",
+      "consistency": "strong",
+      "criticality": "high",
+      "status": "HYPOTHESIS_NOT_OBSERVED",
+      "sources": [],
+      "owner": null,
+      "approval": null,
+      "acceptanceCriteria": [
+        "Given business-date accrual cycle, when the capability executes, then accrued interest and audit trace.",
+        "Given rounding differences, when the command is handled, then day-count, rates and rounding must match approved contract."
+      ],
+      "unknowns": [
+        "Actual institution-specific contract and responsible business owner",
+        "Quantitative SLA, volume, failure deadline and operational calendar",
+        "Legacy exceptional behavior and audit evidence"
+      ]
+    },
+    {
+      "id": "CAP-016",
+      "domain": "Pricing & interest",
+      "name": "Fees and waivers",
+      "objective": "Apply approved pricing and conditional waivers",
+      "trigger": "Chargeable event or billing cycle",
+      "outcome": "Fee posting or waived decision",
+      "exceptions": [
+        "Pricing exception",
+        "duplicate charge"
+      ],
+      "invariant": "No fee without current applicable terms; reasons traceable",
+      "consistency": "strong",
+      "criticality": "high",
+      "status": "HYPOTHESIS_NOT_OBSERVED",
+      "sources": [],
+      "owner": null,
+      "approval": null,
+      "acceptanceCriteria": [
+        "Given chargeable event or billing cycle, when the capability executes, then fee posting or waived decision.",
+        "Given pricing exception, when the command is handled, then no fee without current applicable terms; reasons traceable."
+      ],
+      "unknowns": [
+        "Actual institution-specific contract and responsible business owner",
+        "Quantitative SLA, volume, failure deadline and operational calendar",
+        "Legacy exceptional behavior and audit evidence"
+      ]
+    },
+    {
+      "id": "CAP-017",
+      "domain": "Lending",
+      "name": "Loan origination decision",
+      "objective": "Assess eligibility and issue an approved offer",
+      "trigger": "Loan application",
+      "outcome": "Decision and conditional offer",
+      "exceptions": [
+        "Incomplete affordability",
+        "policy exception"
+      ],
+      "invariant": "Approval authority and conditions are recorded",
+      "consistency": "mixed",
+      "criticality": "high",
+      "status": "HYPOTHESIS_NOT_OBSERVED",
+      "sources": [],
+      "owner": null,
+      "approval": null,
+      "acceptanceCriteria": [
+        "Given loan application, when the capability executes, then decision and conditional offer.",
+        "Given incomplete affordability, when the command is handled, then approval authority and conditions are recorded."
+      ],
+      "unknowns": [
+        "Actual institution-specific contract and responsible business owner",
+        "Quantitative SLA, volume, failure deadline and operational calendar",
+        "Legacy exceptional behavior and audit evidence"
+      ]
+    },
+    {
+      "id": "CAP-018",
+      "domain": "Lending",
+      "name": "Loan installment posting",
+      "objective": "Apply principal, interest and late payment allocation",
+      "trigger": "Payment or due date event",
+      "outcome": "Schedule and ledger adjustment",
+      "exceptions": [
+        "Partial payment",
+        "overdue",
+        "duplicate debit"
+      ],
+      "invariant": "Allocation sequence and conservation follow approved terms",
+      "consistency": "strong",
+      "criticality": "high",
+      "status": "HYPOTHESIS_NOT_OBSERVED",
+      "sources": [],
+      "owner": null,
+      "approval": null,
+      "acceptanceCriteria": [
+        "Given payment or due date event, when the capability executes, then schedule and ledger adjustment.",
+        "Given partial payment, when the command is handled, then allocation sequence and conservation follow approved terms."
+      ],
+      "unknowns": [
+        "Actual institution-specific contract and responsible business owner",
+        "Quantitative SLA, volume, failure deadline and operational calendar",
+        "Legacy exceptional behavior and audit evidence"
+      ]
+    },
+    {
+      "id": "CAP-019",
+      "domain": "General ledger",
+      "name": "Subledger-to-GL posting",
+      "objective": "Reflect source ledger events into controlled general ledger",
+      "trigger": "Durable source posting",
+      "outcome": "Balanced GL journal with source lineage",
+      "exceptions": [
+        "Missing mapping",
+        "late event",
+        "duplicate"
+      ],
+      "invariant": "GL journal balances and has unique source lineage",
+      "consistency": "strong",
+      "criticality": "critical",
+      "status": "HYPOTHESIS_NOT_OBSERVED",
+      "sources": [],
+      "owner": null,
+      "approval": null,
+      "acceptanceCriteria": [
+        "Given durable source posting, when the capability executes, then balanced gl journal with source lineage.",
+        "Given missing mapping, when the command is handled, then gL journal balances and has unique source lineage."
+      ],
+      "unknowns": [
+        "Actual institution-specific contract and responsible business owner",
+        "Quantitative SLA, volume, failure deadline and operational calendar",
+        "Legacy exceptional behavior and audit evidence"
+      ]
+    },
+    {
+      "id": "CAP-020",
+      "domain": "General ledger",
+      "name": "Period closing",
+      "objective": "Close accounting period under explicit cut-off and approval",
+      "trigger": "Authorized EOD/EOM close",
+      "outcome": "Closed period, checkpoints and exceptions",
+      "exceptions": [
+        "Partial job",
+        "late transaction",
+        "restart"
+      ],
+      "invariant": "Closed periods cannot be silently edited; replay is controlled",
+      "consistency": "mixed",
+      "criticality": "critical",
+      "status": "HYPOTHESIS_NOT_OBSERVED",
+      "sources": [],
+      "owner": null,
+      "approval": null,
+      "acceptanceCriteria": [
+        "Given authorized eod/eom close, when the capability executes, then closed period, checkpoints and exceptions.",
+        "Given partial job, when the command is handled, then closed periods cannot be silently edited; replay is controlled."
+      ],
+      "unknowns": [
+        "Actual institution-specific contract and responsible business owner",
+        "Quantitative SLA, volume, failure deadline and operational calendar",
+        "Legacy exceptional behavior and audit evidence"
+      ]
+    },
+    {
+      "id": "CAP-021",
+      "domain": "Operations & batch",
+      "name": "Batch scheduling and dependencies",
+      "objective": "Execute dated jobs respecting dependencies and calendars",
+      "trigger": "Cut-off time or predecessor completion",
+      "outcome": "Job status and resumable checkpoint",
+      "exceptions": [
+        "Missed window",
+        "partial dataset",
+        "operator restart"
+      ],
+      "invariant": "Restart preserves idempotency and no double postings",
+      "consistency": "mixed",
+      "criticality": "high",
+      "status": "HYPOTHESIS_NOT_OBSERVED",
+      "sources": [],
+      "owner": null,
+      "approval": null,
+      "acceptanceCriteria": [
+        "Given cut-off time or predecessor completion, when the capability executes, then job status and resumable checkpoint.",
+        "Given missed window, when the command is handled, then restart preserves idempotency and no double postings."
+      ],
+      "unknowns": [
+        "Actual institution-specific contract and responsible business owner",
+        "Quantitative SLA, volume, failure deadline and operational calendar",
+        "Legacy exceptional behavior and audit evidence"
+      ]
+    },
+    {
+      "id": "CAP-022",
+      "domain": "Operations & batch",
+      "name": "Backdated and late-arriving processing",
+      "objective": "Apply approved effective dates with correction and traceability",
+      "trigger": "Late source event or backdated instruction",
+      "outcome": "Compensating entries and corrected projections",
+      "exceptions": [
+        "Closed period",
+        "reordered arrival"
+      ],
+      "invariant": "Historical truth and effective date both retained",
+      "consistency": "mixed",
+      "criticality": "high",
+      "status": "HYPOTHESIS_NOT_OBSERVED",
+      "sources": [],
+      "owner": null,
+      "approval": null,
+      "acceptanceCriteria": [
+        "Given late source event or backdated instruction, when the capability executes, then compensating entries and corrected projections.",
+        "Given closed period, when the command is handled, then historical truth and effective date both retained."
+      ],
+      "unknowns": [
+        "Actual institution-specific contract and responsible business owner",
+        "Quantitative SLA, volume, failure deadline and operational calendar",
+        "Legacy exceptional behavior and audit evidence"
+      ]
+    },
+    {
+      "id": "CAP-023",
+      "domain": "Risk & compliance",
+      "name": "Transaction limits and authorization",
+      "objective": "Enforce mandate, roles, thresholds and separation of duties",
+      "trigger": "Sensitive command",
+      "outcome": "Authorized decision and audit context",
+      "exceptions": [
+        "Limit exceeded",
+        "expired mandate",
+        "dual control"
+      ],
+      "invariant": "No execution before required policy approval",
+      "consistency": "strong",
+      "criticality": "critical",
+      "status": "HYPOTHESIS_NOT_OBSERVED",
+      "sources": [],
+      "owner": null,
+      "approval": null,
+      "acceptanceCriteria": [
+        "Given sensitive command, when the capability executes, then authorized decision and audit context.",
+        "Given limit exceeded, when the command is handled, then no execution before required policy approval."
+      ],
+      "unknowns": [
+        "Actual institution-specific contract and responsible business owner",
+        "Quantitative SLA, volume, failure deadline and operational calendar",
+        "Legacy exceptional behavior and audit evidence"
+      ]
+    },
+    {
+      "id": "CAP-024",
+      "domain": "Risk & compliance",
+      "name": "AML and sanctions screening",
+      "objective": "Screen instructed activity against current controlled policy",
+      "trigger": "Payment or customer change",
+      "outcome": "Screening decision and case",
+      "exceptions": [
+        "False positive",
+        "outdated list",
+        "blocked instruction"
+      ],
+      "invariant": "Unresolved blocked cases cannot bypass controls",
+      "consistency": "mixed",
+      "criticality": "critical",
+      "status": "HYPOTHESIS_NOT_OBSERVED",
+      "sources": [],
+      "owner": null,
+      "approval": null,
+      "acceptanceCriteria": [
+        "Given payment or customer change, when the capability executes, then screening decision and case.",
+        "Given false positive, when the command is handled, then unresolved blocked cases cannot bypass controls."
+      ],
+      "unknowns": [
+        "Actual institution-specific contract and responsible business owner",
+        "Quantitative SLA, volume, failure deadline and operational calendar",
+        "Legacy exceptional behavior and audit evidence"
+      ]
+    },
+    {
+      "id": "CAP-025",
+      "domain": "Risk & compliance",
+      "name": "Audit and evidence retention",
+      "objective": "Retain immutable explanation of consequential actions",
+      "trigger": "Business decision or state transition",
+      "outcome": "Traceable event, actor, policy/version and time",
+      "exceptions": [
+        "Clock discrepancy",
+        "missing context",
+        "privacy obligations"
+      ],
+      "invariant": "Provenance and access restrictions are verifiable",
+      "consistency": "mixed",
+      "criticality": "critical",
+      "status": "HYPOTHESIS_NOT_OBSERVED",
+      "sources": [],
+      "owner": null,
+      "approval": null,
+      "acceptanceCriteria": [
+        "Given business decision or state transition, when the capability executes, then traceable event, actor, policy/version and time.",
+        "Given clock discrepancy, when the command is handled, then provenance and access restrictions are verifiable."
+      ],
+      "unknowns": [
+        "Actual institution-specific contract and responsible business owner",
+        "Quantitative SLA, volume, failure deadline and operational calendar",
+        "Legacy exceptional behavior and audit evidence"
+      ]
+    },
+    {
+      "id": "CAP-026",
+      "domain": "Operations & resilience",
+      "name": "Incident recovery",
+      "objective": "Recover uncertain operations after process or network failure",
+      "trigger": "Crash, timeout or restoration",
+      "outcome": "Known durable state and safe retry/reversal",
+      "exceptions": [
+        "Ack lost after COMMIT",
+        "in-flight requests"
+      ],
+      "invariant": "No double financial effect; unknown stays UNKNOWN until reconciled",
+      "consistency": "strong",
+      "criticality": "critical",
+      "status": "HYPOTHESIS_NOT_OBSERVED",
+      "sources": [],
+      "owner": null,
+      "approval": null,
+      "acceptanceCriteria": [
+        "Given crash, timeout or restoration, when the capability executes, then known durable state and safe retry/reversal.",
+        "Given ack lost after commit, when the command is handled, then no double financial effect; unknown stays UNKNOWN until reconciled."
+      ],
+      "unknowns": [
+        "Actual institution-specific contract and responsible business owner",
+        "Quantitative SLA, volume, failure deadline and operational calendar",
+        "Legacy exceptional behavior and audit evidence"
+      ]
+    },
+    {
+      "id": "CAP-027",
+      "domain": "Channels",
+      "name": "Branch terminal operations",
+      "objective": "Serve branch staff within channel security/latency contracts",
+      "trigger": "Authenticated teller instruction",
+      "outcome": "Response and authoritative transaction reference",
+      "exceptions": [
+        "Wide-area outage",
+        "retries",
+        "terminal disconnect"
+      ],
+      "invariant": "Remote channel cannot bypass business authority",
+      "consistency": "mixed",
+      "criticality": "high",
+      "status": "HYPOTHESIS_NOT_OBSERVED",
+      "sources": [],
+      "owner": null,
+      "approval": null,
+      "acceptanceCriteria": [
+        "Given authenticated teller instruction, when the capability executes, then response and authoritative transaction reference.",
+        "Given wide-area outage, when the command is handled, then remote channel cannot bypass business authority."
+      ],
+      "unknowns": [
+        "Actual institution-specific contract and responsible business owner",
+        "Quantitative SLA, volume, failure deadline and operational calendar",
+        "Legacy exceptional behavior and audit evidence"
+      ]
+    },
+    {
+      "id": "CAP-028",
+      "domain": "Channels",
+      "name": "Mobile/web account servicing",
+      "objective": "Provide secure customer actions through APIs",
+      "trigger": "Authenticated API instruction",
+      "outcome": "Accepted/rejected business outcome",
+      "exceptions": [
+        "Duplicate REST calls",
+        "token expiration",
+        "race"
+      ],
+      "invariant": "Channel response preserves command idempotency",
+      "consistency": "mixed",
+      "criticality": "high",
+      "status": "HYPOTHESIS_NOT_OBSERVED",
+      "sources": [],
+      "owner": null,
+      "approval": null,
+      "acceptanceCriteria": [
+        "Given authenticated api instruction, when the capability executes, then accepted/rejected business outcome.",
+        "Given duplicate rest calls, when the command is handled, then channel response preserves command idempotency."
+      ],
+      "unknowns": [
+        "Actual institution-specific contract and responsible business owner",
+        "Quantitative SLA, volume, failure deadline and operational calendar",
+        "Legacy exceptional behavior and audit evidence"
+      ]
+    },
+    {
+      "id": "CAP-029",
+      "domain": "External integration",
+      "name": "Domestic/international clearing cutoffs",
+      "objective": "Enforce rail calendars, formats and settlement states",
+      "trigger": "Payment batch or external confirmation",
+      "outcome": "Rail submission and settlement/rejection state",
+      "exceptions": [
+        "Holiday",
+        "mismatched currency",
+        "timezone"
+      ],
+      "invariant": "Value date and finality semantics must be explicit",
+      "consistency": "mixed",
+      "criticality": "critical",
+      "status": "HYPOTHESIS_NOT_OBSERVED",
+      "sources": [],
+      "owner": null,
+      "approval": null,
+      "acceptanceCriteria": [
+        "Given payment batch or external confirmation, when the capability executes, then rail submission and settlement/rejection state.",
+        "Given holiday, when the command is handled, then value date and finality semantics must be explicit."
+      ],
+      "unknowns": [
+        "Actual institution-specific contract and responsible business owner",
+        "Quantitative SLA, volume, failure deadline and operational calendar",
+        "Legacy exceptional behavior and audit evidence"
+      ]
+    },
+    {
+      "id": "CAP-030",
+      "domain": "External integration",
+      "name": "File and message reconciliation",
+      "objective": "Match inbound/outbound payloads to accounted operations",
+      "trigger": "Received file, MQ message or control total",
+      "outcome": "Reconciled records and exception queue",
+      "exceptions": [
+        "Partial file",
+        "duplicate",
+        "missing record"
+      ],
+      "invariant": "Control totals, fingerprints and lineage reconcile",
+      "consistency": "mixed",
+      "criticality": "critical",
+      "status": "HYPOTHESIS_NOT_OBSERVED",
+      "sources": [],
+      "owner": null,
+      "approval": null,
+      "acceptanceCriteria": [
+        "Given received file, mq message or control total, when the capability executes, then reconciled records and exception queue.",
+        "Given partial file, when the command is handled, then control totals, fingerprints and lineage reconcile."
+      ],
+      "unknowns": [
+        "Actual institution-specific contract and responsible business owner",
+        "Quantitative SLA, volume, failure deadline and operational calendar",
+        "Legacy exceptional behavior and audit evidence"
+      ]
+    }
+  ]
+}
