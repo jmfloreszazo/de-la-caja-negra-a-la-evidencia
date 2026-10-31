@@ -272,7 +272,10 @@ def main():
                 "measurementSeconds": MEASUREMENT_SECONDS,
                 "cooldownSeconds": COOLDOWN_SECONDS,
                 "clientMaximumInFlight": 32,
-                "expectedScheduledOffers": 7440
+                "expectedScheduledOffers": sum(
+                    rate * (WARMUP_SECONDS + MEASUREMENT_SECONDS + COOLDOWN_SECONDS)
+                    * len(ROUTES) for rate in RATES
+                )
             },
             "topology": {
                 "physicalLinuxHostCount": 1,
@@ -297,6 +300,18 @@ def main():
                 "and are NOT independently attributable business COMMITs."
             )
         }
+        expected_count = sum(
+            rate * (WARMUP_SECONDS + MEASUREMENT_SECONDS + COOLDOWN_SECONDS)
+            * len(ROUTES) for rate in RATES
+        )
+        observed_count = sum(
+            row["originalIndependentResult"]["offered"] for row in observations
+        )
+        assert len(observations) == len(RATES) * len(ROUTES) == 4
+        assert expected_count == observed_count == 14880, (
+            "Predeclared total offered commands MUST include both routes",
+            expected_count, observed_count
+        )
         (OUT / "b05-sweep-summary.json").write_text(
             json.dumps(final, indent=2) + "\n", encoding="utf-8"
         )
