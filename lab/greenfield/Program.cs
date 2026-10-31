@@ -68,11 +68,16 @@ try
                     results.Add(new("REJECTED_INSUFFICIENT", null, version));
                     break;
                 }
+                // Compute both new balances before writing either one.
+                // This avoids partial in-memory mutation if arithmetic overflows.
+                long debited, credited;
                 checked
                 {
-                    balances[source] -= amount;
-                    balances[target] += amount;
+                    debited = balances[source] - amount;
+                    credited = balances[target] + amount;
                 }
+                balances[source] = debited;
+                balances[target] = credited;
                 operations.Add(id, (source, target, amount, authorized));
                 postings.Add(new(id, source, -amount));
                 postings.Add(new(id, target, amount));
