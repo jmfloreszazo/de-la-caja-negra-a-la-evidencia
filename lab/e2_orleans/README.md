@@ -79,6 +79,14 @@ This test is **not** evidence of a cross-grain transaction, a real
 deadlock or persistence failure. The accepted `AccountGrain` is never
 marked reentrant. [CI #41060526872](https://github.com/jmfloreszazo/de-la-caja-negra-a-la-evidencia/actions/runs/41060526872) verified this negative result. The [archived observation](../../evidence/runs/e2-orleans-reentrancy.json) links to its [original, unmodified CI artifact](https://github.com/jmfloreszazo/de-la-caja-negra-a-la-evidencia/actions/runs/41060526872/artifacts/12978961633).
 
+## E2-F10-C04 · External-client gateway isolation — NOT VERIFIED
+
+**Draft PR [#34](https://github.com/jmfloreszazo/de-la-caja-negra-a-la-evidencia/pull/34), not merged and NOT executed as a C04 experiment.** The dedicated C04 GitHub Actions workflow could not be created due to a connected tool safety block; existing C01/C02/C03 regression CI does not substitute for C04 original evidence. There is no C04 `ci_verified` claim, raw C04 artifact or result in the book.
+
+The [predeclared C04 protocol](F10_C04_PROTOCOL.md) and [candidate script](test_client_gateway_partition.py) model a client-only connection cut: first block the external client's primary gateway while preserving the secondary, then block both client gateways while both silos and the authoritative PostgreSQL ledger remain reachable. Acceptance requires independent SQL invariant checks, no durable changes during complete gateway unreachability, exact per-operation cardinality on stable-ID replay, unchanged silo processes and restored client firewall rules. It distinguishes **fresh-client fallback** from automatic recovery of an already connected Orleans client. A client timeout alone is **not** evidence of rollback.
+
+These would be **single-host Podman network namespace** observations, not proof of cross-node high availability, fencing, PostgreSQL HA, production RTO, sustained TPS or mainframe MIPS equivalence. The merged PostgreSQL startup hardening [PR #36](https://github.com/jmfloreszazo/de-la-caja-negra-a-la-evidencia/pull/36) is a separate reliability improvement, **not** a C04 result. E2 remains `partially_verified`.
+
 ## E2-F10-C03 · Actual SQL-only packet loss on a live Orleans silo
 
 **Original CI [#41136779085](https://github.com/jmfloreszazo/de-la-caja-negra-a-la-evidencia/actions/runs/41136779085) passed** on source `c91959521e7b10934f10f47e30f09496f555056a`. Its [complete unmodified original artifact](https://github.com/jmfloreszazo/de-la-caja-negra-a-la-evidencia/actions/runs/41136779085/artifacts/13017097945) was independently downloaded and SHA-256 verified (`9d66d1168d311e4363ef333a2707a29310845a60527c9deb2b053355628b28fe`). See the [archived summary](../../evidence/runs/e2-orleans-sql-partition.json), the [offline evidence validator](../../scripts/check_e2_sql_partition_observations.py) and the [experiment protocol](F10_C03_PROTOCOL.md).
