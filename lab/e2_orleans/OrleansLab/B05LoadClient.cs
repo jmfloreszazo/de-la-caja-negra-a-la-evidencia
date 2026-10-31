@@ -16,6 +16,7 @@ internal static class B05LoadClient
 {
     private const int MaximumOffers = 120;
     private const int MaximumPilotOffers = 2_000;
+    private const int MaximumCommitWindowOffers = 5_000;
     private const int MaximumInflight = 32;
     private static readonly JsonSerializerOptions Options = new()
     {
@@ -45,6 +46,9 @@ internal static class B05LoadClient
         string service, string cluster)
     {
         var pilot = Environment.GetEnvironmentVariable("E2_B05_REPEATABILITY") == "1";
+        var commitWindow = Environment.GetEnvironmentVariable("E2_B05_COMMIT_WINDOW") == "1";
+        if (pilot && commitWindow)
+            throw new InvalidOperationException("Mutually exclusive B05 experimental modes");
         if (Environment.GetEnvironmentVariable("E2_B05_SMOKE") != "1" ||
             Environment.GetEnvironmentVariable("E2_NETWORK_TEST") != "1" ||
             Environment.GetEnvironmentVariable("E2_MAX_ACCOUNT_ID") != "1000")
@@ -63,7 +67,8 @@ internal static class B05LoadClient
             vector.Operations is null ||
             vector.Operations.Count != vector.TotalOfferedRequests ||
             vector.Operations.Count < 1 ||
-            vector.Operations.Count > (pilot ? MaximumPilotOffers : MaximumOffers))
+            vector.Operations.Count > (commitWindow ? MaximumCommitWindowOffers :
+                pilot ? MaximumPilotOffers : MaximumOffers))
             throw new InvalidOperationException("Unaccepted bounded B05 vector");
 
         long previous = -1;
@@ -76,7 +81,8 @@ internal static class B05LoadClient
             if (!PgDurableLedger.Valid(cmd) ||
                 operation.Phase is not ("warmup" or "measurement" or "cooldown") ||
                 operation.ScheduledAtNs <= previous ||
-                operation.ScheduledAtNs > (pilot ? 60_000_000_000L : 10_000_000_000L) ||
+                operation.ScheduledAtNs > (commitWindow ? 90_000_000_000L :
+                    pilot ? 60_000_000_000L : 10_000_000_000L) ||
                 !ids.Add(operation.OperationId))
                 throw new InvalidOperationException(
                     "Invalid, duplicate or unbounded B05 scheduled offer");
@@ -114,7 +120,12 @@ internal static class B05LoadClient
             var grains = route == "orleans"
                 ? host.Services.GetRequiredService<IClusterClient>()
                 : null;
+            // Bracket the monotonic clock origin with two UTC samples. The
+            // independent SQL oracle computes conservative in-window commit
+            // bounds using these anchors and PostgreSQL commit timestamps.
+            var clockOriginUtcBefore = DateTimeOffset.UtcNow;
             var clock = Stopwatch.StartNew();
+            var clockOriginUtcAfter = DateTimeOffset.UtcNow;
             using var capacity = new SemaphoreSlim(MaximumInflight);
             var samples = new List<Task<Sample>>(vector.Operations.Count);
 
@@ -185,15 +196,18 @@ internal static class B05LoadClient
             var report = new
             {
                 schemaVersion = 1,
-                experiment = pilot
-                    ? "E2-B05-External-Repeatability-Pilot"
+                experiment = commitWindow
+                    ? "E2-B05-Independent-SQL-Commit-Window"
+                    : pilot ? "E2-B05-External-Repeatability-Pilot"
                     : "E2-B05-External-Open-Loop-Smoke",
-                classification = pilot
-                    ? "BOUNDED_MULTIRUN_ONE_HOST_NOT_CAPACITY"
+                classification = commitWindow
+                    ? "SINGLE_HOST_FIRST_60_SECOND_COMMIT_TIME_SLICE_NOT_CAPACITY"
+                    : pilot ? "BOUNDED_MULTIRUN_ONE_HOST_NOT_CAPACITY"
                     : "SHORT_SINGLE_HOST_BOUNDED_NOT_CAPACITY",
                 route,
-                status = pilot
-                    ? "OBSERVED_REPEATABILITY_PILOT_NOT_CAPACITY"
+                status = commitWindow
+                    ? "OBSERVED_COMMIT_WINDOW_PROBE_NOT_CAPACITY"
+                    : pilot ? "OBSERVED_REPEATABILITY_PILOT_NOT_CAPACITY"
                     : "OBSERVED_NOT_SUSTAINED_CAPACITY",
                 independentExternalProcessId = Environment.ProcessId,
                 hostIdentity = Environment.MachineName,
@@ -203,8 +217,12 @@ internal static class B05LoadClient
                 acknowledgedCommitted = acknowledgedCommits,
                 ambiguous = observed.Count(s => s.ClientOutcome == "AMBIGUOUS_EXCEPTION"),
                 runWallClockNs = Ns(clock),
+                clockOriginUtcBefore = clockOriginUtcBefore.ToString("O"),
+                clockOriginUtcAfter = clockOriginUtcAfter.ToString("O"),
                 samples = observed,
-                limits = pilot
+                limits = commitWindow
+                    ? "One physical Linux host, bounded 60-second SQL COMMIT-time probe. Timestamp tracking must be enabled on the disposable PostgreSQL instance and independently audited. PostgreSQL and .NET share the same host wall clock; this is not a multi-host clock-synchronization proof. No durable capacity ceiling, MIPS parity or production p99."
+                    : pilot
                     ? "A bounded repeated fixed-clock pilot on ONE Linux host, not a production system or an independent load host. No sustainable capacity limit, SLA p99, mainframe MIPS or cross-host scaling. Only SQL can confirm business effects."
                     : "One physical Linux host with separate Podman processes and namespaces. Bounded four-second replay only. No sustained throughput ceiling, mainframe MIPS or production p99 claim. Acknowledgements are NOT a substitute for the independent PostgreSQL oracle."
             };
