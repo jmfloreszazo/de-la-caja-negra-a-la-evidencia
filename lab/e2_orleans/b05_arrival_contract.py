@@ -31,7 +31,7 @@ PROFILE_DESCRIPTIONS = {
     "uniform": "Independent seeded uniform selection of source account IDs 1..1000",
     "five_percent_hot": "Exactly 80% of source intents from eligible accounts 1..50 (5% of 1000); remaining 20% from 51..1000",
     "one_account_half_intents": "Exactly 50% of source intents from account 1; remaining 50% from accounts 2..1000",
-    "crossed": "Exactly balanced alternating-direction source/target intents between accounts 1 and 2; no claim of 5% hot distribution",
+    "crossed": "Exactly balanced opposite-direction source/target intents between accounts 1 and 2, shuffled deterministically; NOT strictly alternating; no claim of 5% hot distribution",
 }
 
 
