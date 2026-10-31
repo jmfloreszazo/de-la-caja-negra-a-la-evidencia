@@ -1,0 +1,41 @@
+name: One-time original B05 40-80 ZIP SHA and full SQL COMMIT audit
+
+on:
+  pull_request:
+    paths:
+      - 'evidence/runs/e2-b05-hot-40-80-sql-commit-sweep.json'
+      - 'scripts/check_e2_b05_hot_40_80_observations.py'
+      - '.github/workflows/e2-b05-40-80-original-audit.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  actions: read
+
+jobs:
+  original-full-audit:
+    name: Recompute 14880 original SQL COMMIT timestamps from immutable GitHub ZIP
+    if: >-
+      ${{ github.event_name == 'workflow_dispatch' || github.event.pull_request.number == 45 }}
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v5
+      - name: Verify recorded claim does NOT imply capacity or MIPS parity
+        run: python3 scripts/check_e2_b05_hot_40_80_observations.py
+      - name: Download original SHA-pinned CI artifact using read-only token
+        env:
+          GH_TOKEN: ${{ github.token }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          curl --fail --silent --show-error --location --retry 3 \
+            --header "Authorization: Bearer $GH_TOKEN" \
+            --header "Accept: application/vnd.github+json" \
+            "https://api.github.com/repos/jmfloreszazo/de-la-caja-negra-a-la-evidencia/actions/artifacts/13045879294/zip" \
+            --output /tmp/original-b05-40-80.zip
+          echo "7ea9062c80dc92f1354f5076c543e3105d8a6ebfccac25c266c8398fe35dc262  /tmp/original-b05-40-80.zip" | sha256sum -c -
+      - name: Independently recompute all original input, SQL COMMIT, account and histogram claims
+        run: |
+          python3 scripts/check_e2_b05_hot_40_80_observations.py \
+            --original-zip /tmp/original-b05-40-80.zip
