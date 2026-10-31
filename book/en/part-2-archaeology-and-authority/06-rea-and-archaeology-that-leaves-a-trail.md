@@ -9,7 +9,7 @@
 
 Lost documentation and accumulated rules are real problems. But an engineering clarification is worth adding: source code is not the only evidence. There are shared copybooks, dataset definitions, version control, historical deployments, JCL, CICS configurations, DDL, catalogs, load statistics, incidents, tickets and, above all, behaviours the system still executes. Some rules live in a parameter table. Others live in a routine nobody has called for years. Some are historical bugs that consuming systems depend on.
 
-That is why I would not start by asking "convert these two million lines for me". I would start with an **evidence map**. Each artifact gets an identity, version, hash, origin, owner and constraints. A specific parser builds dependencies between programs and copybooks; JCL analysers reconstruct batch chains; an SQL extractor locates tables and transactions; an observation system captures inputs, outputs and execution effects. Agents correlate that information, but they do not automatically turn it into truth.
+That is why I would not start by asking "convert these two million lines for me". I would start with a **business capability and behavior map**: accountable owners, approved rules, exceptions and observable outcomes. Then I would build an **evidence map** with provenance, versions, hashes and permissions. Only when a specific technical hypothesis needs corroboration would I use COBOL parsers, JCL or SQL analysers to find dependencies. Black-box observation captures inputs, outputs and effects; no parser is required to build from scratch, and no inference automatically becomes approved policy.
 
 ## What Reverse Engineer Anything brings
 
@@ -49,7 +49,7 @@ I propose a component I call the COBOL Evidence Adapter. It is not a capability 
 
 Each finding should identify the artifact, its hash, the source locator, the tool and its version, the method used and the known limits. A relationship inferred by the agent would be recorded as a hypothesis. An observed execution would keep input, relevant state, output and conditions. An approved rule would have a different authority and version.
 
-Imagine a fee rule found in a COBOL paragraph. The parser locates the expression. An execution confirms a result at the rounding boundary. The business owner confirms that this is the policy to be kept. They are three related pieces, but none replaces the others.
+Imagine a fee observed in a business contract and black-box execution. The business owner determines the correct rule and exceptions. If a question remains about the incumbent implementation, **optional** COBOL analysis may locate its rounding logic. Observation, technical investigation and approval are separate evidence types: none replaces the others.
 
 A knowledge graph can make navigating between them easier. Its value is not in using a graph database on principle, but in letting us reconstruct the path from a conclusion back to the evidence that supports it. A well-designed table may be enough to begin with.
 

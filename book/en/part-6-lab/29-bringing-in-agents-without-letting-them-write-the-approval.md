@@ -19,7 +19,7 @@ The agent can consult sources and the public contract, run its own tests and fix
 
 If we change models, budgets, prompts or tools, we record it as a different experimental condition. Saying "AI did it" does not let us explain which combination produced the result or repeat the process.
 
-A comprehension agent could propose rules from the COBOL. That proposal still needs contrast. The builder agent could translate them into C#. The gate checks the observed behaviour. Human approval establishes which rule is accepted and when a difference from the legacy is intentional.
+A discovery agent may propose rules from policies, interviews and authorized observations; COBOL is supplementary evidence when needed. The builder can **implement the capability from scratch** in C# without copying legacy structure. TODM verifies outcomes against independent oracles and approved rules; Golden Master separately preserves observed incumbent behavior. Business authority decides what to preserve, correct or retire.
 
 ## REA comes in when the problem needs it
 
@@ -27,7 +27,7 @@ For the lab's small source we do not need a decompiler. Including REA for the sa
 
 A coherent extension would be to take an authorized executable, pin its hash and ask an agent to investigate a specific function through REA. The findings would feed hypotheses and tests. The reconstruction would then be evaluated against a suitable oracle. The result would document what was observed directly and what was inferred.
 
-For larger COBOL sources, I would first evaluate the parser and the dialect. An MCP server can expose the inventory, relationships and executions of a specialized adapter. The protocol makes access to tools easier; it does not guarantee their correctness or grant authority to use them.
+For larger COBOL estates, I would begin with **capabilities, external contracts, exceptions and operational guarantees**. Only when a specific technical uncertainty remains would I evaluate dialect parsers or dependency tools. MCP can expose findings, but syntactic analysis is not required to reimplement a system and does not approve business rules.
 
 ## Correlated errors are still possible
 

@@ -5,13 +5,13 @@
 # Capítulo 7 · Legacy Archaeology asistida por agentes
 
 > [!IMPORTANT]
-> **Tesis del capítulo.** Una migración con IA empieza mejor con preguntas que con prompts de generación. Los agentes especializados reciben entradas tipadas, producen artefactos comprobables y operan con permisos limitados.
+> **Tesis del capítulo.** Una migración con IA empieza mejor preguntando **qué funcionalidades necesita el negocio y qué garantías debe conservar**. ¿Quién autoriza una transferencia? ¿Qué ocurre si se pierde la respuesta? ¿Cuáles son las excepciones y los cierres diarios? Entrevistas, políticas, contratos y pruebas de caja negra autorizadas construyen primero el mapa de capacidades. El análisis sintáctico puede resolver dudas técnicas después, pero no es obligatorio ni determina los dominios de la nueva aplicación.
 
 Una migración con IA empieza mejor con preguntas que con prompts de generación. ¿Qué programas modifican esta cuenta? ¿Dónde se decide el interés? ¿Cuántos dialectos, versiones y copybooks hay? ¿Qué ocurre cuando falla la escritura final? ¿Qué cambios llegan por jobs nocturnos? ¿Quién mantiene las tablas de códigos? Responder exige combinar análisis sintáctico, metadatos y observación dinámica.
 
-Propongo una cadena de agentes especializados, bajo un controlador común: **inventario y procedencia**, **parser y grafo de dependencias**, **descubrimiento de reglas**, **observador de ejecución**, **redactor de especificaciones**, **diseñador de arquitectura**, **constructor**, **verificador** y **auditor de drift**. No son nueve chatbots opinando sobre el mismo fichero. Cada uno recibe entradas tipadas, produce artefactos comprobables y opera con permisos limitados.
+Propongo agentes especializados bajo un controlador común: **descubrimiento funcional y procedencia**, **investigación técnica opcional**, **descubrimiento de reglas**, **observador de ejecución**, **redactor de especificaciones**, **diseñador de arquitectura**, **constructor**, **verificador** y **auditor de drift**. No son nueve chatbots opinando sobre el mismo fichero. El negocio determina las capacidades; el legado ofrece observaciones y, cuando sea útil, pistas técnicas. Cada agente tiene entradas, artefactos y permisos limitados.
 
-El analizador de COBOL genera un AST del dialecto real, resuelve copybooks y localiza referencias a datos, CALL, SQL embebido y estructuras de control. No le pediría a un LLM que reemplace al parser. El agente toma el resultado y produce hipótesis sobre intenciones: por ejemplo, «una retirada sobre cuentas bloqueadas retorna un código específico sin modificar estado». Esa hipótesis debe ir acompañada de rutas, posiciones, ejemplos observados y limitaciones. Si la ejecución de producción no puede observarse, documentamos el riesgo y diseñamos pruebas en una copia autorizada.
+El descubrimiento funcional produce primero escenarios positivos y negativos, decisiones y responsables. Por ejemplo: «una retirada sobre cuentas bloqueadas retorna un código específico sin modificar estado». La hipótesis requiere política aprobada y observaciones contrastables. **Si una incógnita exige inspección del legado**, se puede utilizar un parser del dialecto COBOL para estudiar AST, CALL, COPY o SQL; esa rama es opcional y no define la arquitectura objetivo. Las incertidumbres quedan abiertas, nunca aprobadas por el agente.
 
 REA representa una referencia metodológica útil en la parte de investigación con herramientas y evidencia [35, 3]. Para mainframe, su soporte concreto debe evaluarse antes de afirmarlo; no confundiría «inspirado por REA» con «REA analiza nativamente CICS». La arquitectura de integración podría utilizar un contrato neutral como `EvidenceItem`, con hashes, procedencia, cobertura y estado `observed / inferred / unknown`. Eso permite intercambiar hallazgos entre analizadores y agentes sin perder su origen.
 
@@ -25,9 +25,9 @@ Cada eslabón de la cadena tiene una entrada, un artefacto de salida y algo que 
 
 | Agente | Recibe | Produce | No puede |
 |---|---|---|---|
-| Inventario y procedencia | Repositorios, datasets, catálogos | Inventario con hashes y propietarios | Modificar fuentes |
-| Parser y grafo | Fuentes con copybooks resueltos | AST, grafo de CALL, COPY y SQL | Inferir intención de negocio |
-| Descubrimiento de reglas | Grafo y ejecuciones observadas | Hipótesis con localizadores | Aprobar reglas |
+| Descubrimiento funcional y procedencia | Responsables, políticas, canales y observaciones autorizadas | Capacidades y dudas con fuentes | Aprobar reglas |
+| Investigación técnica opcional | Fuentes autorizadas, copybooks y metadatos pertinentes | Dependencias con cobertura y procedencia | Elegir límites de negocio |
+| Descubrimiento de reglas | Capacidades y resultados observados | Hipótesis y excepciones con fuentes | Aprobar reglas |
 | Observador de ejecución | Entorno autorizado | Entrada, estado, salida y efectos | Ejecutar fuera del mandato |
 | Redactor de especificaciones | Hipótesis aprobadas | Especificación, DMN, escenarios | Cambiar la baseline |
 | Diseñador de arquitectura | Especificación y restricciones | ADR y opciones comparables | Elegir sin evidencia de capacidad |
@@ -37,7 +37,7 @@ Cada eslabón de la cadena tiene una entrada, un artefacto de salida y algo que 
 
 ![Figura 7.1 · La cadena de agentes: cada eslabón produce un artefacto y ninguno escribe la baseline.](../../figures/es/agent_chain.png)
 
-*Figura 7.1 · La cadena de agentes: cada eslabón produce un artefacto y ninguno escribe la baseline.*
+*Figura 7.1 · Ejemplo ilustrativo de una **rama opcional** de investigación técnica con parser y grafo; no representa el camino obligatorio. Primero se descubren capacidades y contratos de negocio. Ningún agente escribe la baseline.*
 
 ## La especificación viva
 
