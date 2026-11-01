@@ -5,7 +5,11 @@ CREATE SCHEMA IF NOT EXISTS brownfield;
 CREATE TABLE IF NOT EXISTS brownfield.authority (
   id SMALLINT PRIMARY KEY CHECK (id = 1),
   writer TEXT NOT NULL CHECK (writer IN ('legacy', 'candidate')),
-  epoch BIGINT NOT NULL CHECK (epoch > 0),
+  epoch BIGINT NOT NULL CHECK (epoch > 0)
+);
+
+CREATE TABLE IF NOT EXISTS brownfield.commit_clock (
+  id SMALLINT PRIMARY KEY CHECK (id = 1),
   watermark BIGINT NOT NULL DEFAULT 0 CHECK (watermark >= 0)
 );
 
@@ -40,8 +44,10 @@ CREATE TABLE IF NOT EXISTS brownfield.outbox (
 );
 
 -- Idempotent first-time bootstrapping does not reset or overwrite any existing state.
-INSERT INTO brownfield.authority(id, writer, epoch, watermark)
-VALUES (1, 'legacy', 1, 0) ON CONFLICT (id) DO NOTHING;
+INSERT INTO brownfield.authority(id, writer, epoch)
+VALUES (1, 'legacy', 1) ON CONFLICT (id) DO NOTHING;
+INSERT INTO brownfield.commit_clock(id, watermark)
+VALUES (1, 0) ON CONFLICT (id) DO NOTHING;
 INSERT INTO brownfield.accounts(id, balance)
 SELECT n, 100000 FROM generate_series(1, 16) AS n
 ON CONFLICT (id) DO NOTHING;
