@@ -5,7 +5,8 @@ CREATE SCHEMA IF NOT EXISTS brownfield;
 CREATE TABLE IF NOT EXISTS brownfield.authority (
   id SMALLINT PRIMARY KEY CHECK (id = 1),
   writer TEXT NOT NULL CHECK (writer IN ('legacy', 'candidate')),
-  epoch BIGINT NOT NULL CHECK (epoch > 0)
+  epoch BIGINT NOT NULL CHECK (epoch > 0),
+  controller_required BOOLEAN NOT NULL DEFAULT FALSE
 );
 
 CREATE TABLE IF NOT EXISTS brownfield.commit_clock (

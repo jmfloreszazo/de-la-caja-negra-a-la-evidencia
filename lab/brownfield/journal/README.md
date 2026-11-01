@@ -1,84 +1,117 @@
 # C2 durable admission/UNKNOWN journal — synthetic research
 
-**CANDIDATE ONLY · NOT ACCEPTED · TODM G2=INCONCLUSIVE / G6=BLOCK.**
+**TECHNICAL CANDIDATE · NOT BANK ACCEPTANCE · TODM G2=INCONCLUSIVE / G6=BLOCK.**
 
-This bounded experiment adds an independent PostgreSQL 16 coordinator
-(`bf_control`) to the existing `bf_legacy` and `bf_lab` containers.
-It does **not** introduce a COBOL parser, financial 2PC, customer mandate,
-production gateway or real IBM Z fence. The gateway session advisory lock
-serializes one operation ID **only among cooperating gateway processes**;
-the incumbent and candidate CLI can still be invoked directly. This known
-bypass must be eliminated or externally fenced before a real migration.
+This bounded experiment uses three PostgreSQL 16 containers: `bf_control`,
+`bf_legacy` and `bf_lab`, on one CI runner. It models cooperative adapters,
+not a real CICS/Db2 fence, customer authorization, financial 2PC or production HA.
+The earlier [C2 observation](../../../evidence/runs/BROWNFIELD-JOURNAL.md)
+remains historical evidence for its exact source SHA.
 
-Each operation persists admission *before* dispatch. An unknown response
-remains `UNKNOWN` until a separate read-only source/target SQL oracle
-finds a durable matching decision. Missing records are **not** rejected
-operations. Cutover requires no unresolved or unjournaled effects and
-independent normalized ledger agreement. Candidate writes forbid a
-synthetic rollback; controller/target authority changes are **not atomic**
-and need a separate crash-repair protocol. Never claim split-brain safety.
+## Enrollment and admission
+
+The test enrolls **fresh, empty fixtures** by persisting
+`brownfield.authority.controller_required=TRUE`. Once enrolled, both the Python
+legacy adapter and .NET candidate require the controller, even if
+`BROWNFIELD_REQUIRE_CONTROLLER=NO` or controller variables are removed.
+Reinitializing an enrolled controller through `reset-controller` is refused.
+Fresh unenrolled fixtures retain the historical two-store behavior.
+Existing populated schemas are not upgraded in place; start disposable fixtures
+from the current schema. Interrupted enrollment leaves the latch enabled and
+requires a fresh disposable setup, rather than permitting unjournaled traffic.
+
+Before a financial decision, both adapters require matching `DISPATCHING`
+admission: operation ID, fingerprint, accounts, amount, writer and epoch.
+They hold controller authority/admission locks through the ledger COMMIT,
+and recheck the persistent latch under the candidate authority lock.
+A changed fingerprint conflicts; a lost ACK never authorizes a second writer.
+Only independent persisted operation/posting/outbox evidence finalizes
+`COMMITTED` or `REJECTED`. Missing decisions stay `UNKNOWN`.
+`RECONCILIATION_REQUIRED` is persisted as well as returned to the caller.
+
+The third-controller address is restricted to `127.0.0.1:55440/bf_control`
+before connecting. Python address/service overrides and Npgsql alternative
+hosts, ports and database names are refused. This is a disposable-data guard,
+not an authorization system. Privileged raw SQL can still bypass application
+checks, change the latch or reset the fixture; real writer revocation remains
+an external prerequisite.
+
+## Frozen transition and forward recovery
+
+The pre-registered protocol is
+`C2_SQL_ENROLLMENT_AND_FROZEN_FORWARD_RECOVERY_V1`.
+
+1. Lock controller authority exclusively, drain cooperating adapters and
+   require the journal-to-ledger audit to pass. Reject rollback after any
+   candidate-origin decision, before freezing the controller.
+2. Commit a `PREPARED` transition intent and `mode=SWITCHING` **before**
+   staging or changing the candidate authority. Admission, dispatch and both
+   adapters now refuse new financial commands.
+3. Stage the source only while the candidate is non-authoritative. Compare
+   normalized accounts, decisions, postings, outbox and watermark, then
+   change the candidate authority once.
+4. Under the same durable freeze, recover only the exact prepared old/new
+   writer and epoch. Reconcile both stores and the admission journal before
+   activating the controller and completing the intent in one controller
+   transaction. An unexpected epoch or missing outbox leaves traffic frozen.
+
+For a forward switch at epoch `e`:
+
+| Boundary | Controller | Candidate authority | New financial admission |
+|---|---|---|---|
+| Before preparation | legacy / e / ACTIVE | legacy / e | Allowed with matching journal |
+| Intent committed | legacy / e / SWITCHING | legacy / e | Blocked |
+| Candidate COMMIT | legacy / e / SWITCHING | candidate / e+1 | Blocked |
+| Controller completion | candidate / e+1 / ACTIVE | candidate / e+1 | Allowed with matching journal |
+
+This is **recoverable cooperation, not atomic cross-database COMMIT**.
+Recovery moves the prepared transition forward; it never guesses a rollback
+from an absent reply. The candidate's older standalone `switch` CLI also
+refuses authority changes after enrollment; use the journal coordinator.
+
+```bash
+python3 lab/brownfield/journal/journal.py switch candidate 1
+python3 lab/brownfield/journal/journal.py recover-switch
+```
 
 ## Disposable setup
 
-First use the two PostgreSQL containers and environment variables documented
-in [coexistence](../coexistence/README.md). Add:
+Use the two containers and environment in
+[coexistence](../coexistence/README.md), then add:
 
 ```bash
 podman run -d --name bf-control-pg -e POSTGRES_DB=bf_control \
   -e POSTGRES_PASSWORD=bflocal -p 127.0.0.1:55440:5432 \
   docker.io/library/postgres:16.13
 export BROWNFIELD_CONTROL_DSN='host=127.0.0.1 port=55440 dbname=bf_control user=postgres password=bflocal'
+export BROWNFIELD_CONTROL_NPGSQL='Host=127.0.0.1;Port=55440;Database=bf_control;Username=postgres;Password=bflocal;Pooling=false'
 python3 lab/brownfield/journal/test_journal.py
 podman rm -f bf-control-pg
 ```
 
-**WARNING:** The test intentionally drops the `legacy`, `brownfield` and
-`controller` schemas; every DB name is checked against its exact
-dedicated fixture name. It writes no customer data. Read original CI run
-artifacts rather than assuming that a successful PR description is evidence.
+**WARNING:** The test drops the `legacy`, `brownfield` and `controller`
+schemas in explicitly named disposable databases. It is not a migration tool
+for existing data. Original CI retains source hashes, environment, image
+digests, process signal/exit observations and `c2-summary.json`.
 
-## Fault matrix
+## Fault and negative-control matrix
 
-- `gateway-after-admit`: real process exit after durable ADMITTED;
-  unresolved admission must block cutover
-- `gateway-before-send`: real process exit after DISPATCHING;
-  absence of SQL does not prove a safe rollback
-- `gateway-after-send`: real process exit after remote COMMIT;
-  recovery independently confirms the decision
-- `adapter-lost-ack`: remote process exits after COMMIT;
-  replay cannot produce a second posting/outbox
-- Controller/candidate writer mismatch and forged terminal journal
-  must be rejected
-- Once the new candidate writes, rollback must fail closed
+- Existing gateway exits after admission, before send and after remote COMMIT;
+  lost ACK recovery with exactly one decision, two postings and one outbox.
+- Concurrent same-ID requests and changed-fingerprint conflicts.
+- Independent parent `SIGKILL` after durable transition preparation and after
+  candidate authority COMMIT. Both frozen adapters must reject writes.
+- Restart recovery, stale-epoch replay, unexpected authority and missing
+  outbox. Corruption must prevent thawing; repairing the disposable fixture
+  does not approve a real migration.
+- Both adapters refuse environment opt-out after SQL enrollment; missing or
+  unreachable controller refuses new commands.
+- A balanced, deliberately unjournaled privileged raw-SQL posting must still
+  fail the journal audit. Monetary conservation alone cannot approve cutover.
 
-No cross-host failure domain, external payment switch, true authority
-revocation, WAN, CDC, RTO/RPO, p99 benchmark or bank approval is proven.
-All source, tests, CI and lab README are English; engineering discussion is
-published separately in Spanish and English.
-
-## Cooperating adapter fence (C2 only)
-
-The C2 workflow sets `BROWNFIELD_REQUIRE_CONTROLLER=YES` and supplies both
-`BROWNFIELD_CONTROL_DSN` (legacy Python) and
-`BROWNFIELD_CONTROL_NPGSQL` (.NET candidate). Both adapters hold an SQL
-`FOR SHARE` lock on the controller epoch through their financial COMMIT; a
-missing controller rejects operations. The older two-store tests deliberately
-omit these opt-in variables to preserve their historical reference behavior.
-
-**Important:** direct invocation with valid coordinator credentials can still
-write without a gateway journal entry. The independent audit detects this
-but does not prevent it. An unsafe application that strips the opt-in guard
-can also bypass it. A real incumbent requires a mandatory independent fence,
-not simply this feature flag.
-
-## Admission enforcement boundary
-
-When `BROWNFIELD_REQUIRE_CONTROLLER=YES`, the financial adapters also
-check the matching persisted `DISPATCHING` admission (ID, request hash,
-accounts, amount, writer and epoch) before any new SQL ledger decision,
-retaining the controller locks through COMMIT. Direct CLI calls with no
-admission return `NOT_ADMITTED_BY_CONTROLLER`. The negative test then
-explicitly disables the opt-in environment guard to demonstrate that the
-historical permissive mode still bypasses this protection; independent
-audit detects the resulting unjournaled effect. **Configurable cooperation
-is not the same as revoking the actual mainframe writer.**
+[Original follow-up CI evidence](../../../evidence/runs/BROWNFIELD-C2-RECOVERY.md)
+records 19 passing controls, exact source hashes, the unchanged ZIP and the
+first failed concurrency run. Later source SHAs still require their own CI. The final negative audit intentionally fails for two unresolved
+admissions and one raw-SQL bypass; the test passes only if these are detected.
+No in-flight controller-partition proof, independent physical hosts, external
+payment effects, WAN, RTO/RPO, capacity benchmark or owner approval is claimed.
