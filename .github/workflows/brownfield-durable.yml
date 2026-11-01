@@ -4,6 +4,11 @@ on:
     paths:
       - 'lab/brownfield/durable/**'
       - '.github/workflows/brownfield-durable.yml'
+  push:
+    branches: [main]
+    paths:
+      - 'lab/brownfield/durable/**'
+      - '.github/workflows/brownfield-durable.yml'
   workflow_dispatch:
 permissions:
   contents: read
@@ -38,7 +43,7 @@ jobs:
           test "$ready" -eq 1
       - name: Capture environment and original source identity
         env:
-          SOURCE_HEAD_SHA: ${{ github.event.pull_request.head.sha }}
+          SOURCE_HEAD_SHA: ${{ github.event.pull_request.head.sha || github.sha }}
         run: |
           mkdir -p lab/results/brownfield
           echo "source_head_sha=$SOURCE_HEAD_SHA" > lab/results/brownfield/provenance.txt
