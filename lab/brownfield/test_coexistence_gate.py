@@ -38,6 +38,10 @@ class CutoverRehearsalTests(unittest.TestCase):
         self.assertEqual((self.gate.writer, self.gate.epoch), ("legacy", 1))
         self.assertEqual(self.gate.todm_g6, "BLOCK")
         self.assertFalse(self.gate.business_owner_approved)
+        with self.assertRaises(AttributeError):
+            self.gate.todm_g6 = "PASS"
+        with self.assertRaises(AttributeError):
+            self.gate.business_owner_approved = True
 
     def test_first_command_routes_only_to_legacy(self):
         self.assertEqual(self.gate.route_transfer("TX-1", F1, 1), "ROUTE_LEGACY")
