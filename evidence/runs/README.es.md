@@ -1,5 +1,7 @@
 # Evidencias ejecutadas · E1 PostgreSQL y .NET 10
 
+**Evidencia original C2:** [procedencia y límites en español](BROWNFIELD-JOURNAL.es.md) · [observaciones extraídas del log](brownfield-c2-pr66-ci-log-extracted.json). Ensayo sintético parcial; los negativos de UNKNOWN/bypass son intencionados, G6=BLOCK.
+
 **Edición experimental**, no resultados de benchmark ni equivalencia con un mainframe. Los JSON que acompañan esta página se extrajeron del bloque de resultados de las ejecuciones **reales** de GitHub Actions. No son capturas reconstruidas ni ejemplos sintéticos del informe.
 
 | Control | E1a · PostgreSQL/Python | E1b · PostgreSQL/.NET 10 |

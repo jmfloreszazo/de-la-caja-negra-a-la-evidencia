@@ -1,5 +1,7 @@
 # Executed evidence · E1 PostgreSQL and .NET 10
 
+**Brownfield C2 original journal evidence:** [EN CI provenance and limitations](BROWNFIELD-JOURNAL.md) · [log-extracted observations](brownfield-c2-pr66-ci-log-extracted.json). Technical synthetic slice only; unresolved and bypass negatives remain intentional, G6=BLOCK.
+
 This is **experimental evidence**, not a benchmark or a claim of mainframe equivalence. The accompanying JSON files were extracted from the result blocks emitted by **real GitHub Actions runs**. They are neither reconstructed screenshots nor fabricated example results.
 
 | Test | E1a · PostgreSQL/Python | E1b · PostgreSQL/.NET 10 |
