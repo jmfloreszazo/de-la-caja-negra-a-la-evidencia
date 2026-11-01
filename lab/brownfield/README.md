@@ -21,9 +21,42 @@ python3 lab/brownfield/gap_gate.py lab/brownfield/capability_gap.json
 
 The evaluator reports **zero business-approved requirements**, `productionEquivalent=false` and `todmG6=BLOCK`. It validates catalog structure, source lineage and protected negative assumptions only. Referencing a source file does not prove the stated technical behavior and a synthetic E1 PASS does not authorize migration of a real bank.
 
+## Synthetic coexistence and cutover rehearsal
+
+The independent [coexistence gate](coexistence_gate.py) is deliberately **not** a
+PostgreSQL gateway, an external transaction coordinator or a distributed lock.
+It models a capability-level single-writer decision and must not run on a real
+financial transaction path. Run the 21 adversarial scenarios:
+
+```bash
+python3 -m unittest discover -s lab/brownfield -p 'test_*.py' -v
+```
+
+The model begins with `legacy` as the only writer and epoch 1. Stable
+operation IDs with SHA-256 request fingerprints reject conflicting replays.
+`UNKNOWN` and `IN_FLIGHT` operations block a proposed cutover; a replay never
+assumes a timeout is a rollback. A *synthetic* reconciliation checks operation
+counts, source and target watermarks, and equal fixture digests for accounts,
+operations, postings and outbox. A simulated switch increments the writer epoch
+and fences a stale epoch. Rollback requires a new reconciliation after candidate
+activity. Read-model consumers reject a stale projection watermark.
+
+**Safety boundary:** fixture-level hashes and `evidence_id` strings are not
+cryptographic attestations, SQL observations, durable writer fencing or proof of
+two-party reconciliation. In-memory state disappears on restart and could
+diverge across processes. `todm_g6=BLOCK` and `business_owner_approved=False`
+are invariant even after a successful rehearsal. The next executable slice must
+replace these declarations with an independently checked, disposable PostgreSQL
+ledger, a persisted authority/epoch and process-failure evidence. No claim
+about a real customer's business policy, Golden Master or performance is made.
+
+See the bilingual engineering discussion:
+[English](../../docs/BROWNFIELD_CUTOVER.md) ·
+[Spanish](../../docs/BROWNFIELD_CUTOVER.es.md).
+
 ## Next concrete deliverable
 
-Implement a customer-independent **synthetic brownfield coexistence** contract and a PostgreSQL-backed CAP-007/005 replacement, reusing the proven E1 transaction ideas instead of translating COBOL or changing archived baselines. Define an ACL/gateway that can select the legacy simulation or new candidate **with exactly one financial writer**. Run fault injection before/after SQL COMMIT, retained operation ID, independent persisted-ledger oracle, stale balance watermark tests and controlled cutover/rollback.
+Build on the synthetic coexistence rehearsal with a PostgreSQL-backed CAP-007/005 replacement, reusing the proven E1 transaction ideas instead of translating COBOL or changing archived baselines. Define an ACL/gateway that can select the legacy simulation or new candidate **with exactly one financial writer**. Run fault injection before/after SQL COMMIT, retained operation ID, independent persisted-ledger oracle, stale balance watermark tests and controlled cutover/rollback.
 
 For productization the team must obtain approved policy and actual business owner mandates. No dataset containing real financial information may be committed to the public repository. E2 Orleans and E3 cloud scale remain separate, benchmark-controlled decisions.
 
