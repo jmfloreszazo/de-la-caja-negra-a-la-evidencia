@@ -49,5 +49,5 @@ VALUES (1, 'legacy', 1) ON CONFLICT (id) DO NOTHING;
 INSERT INTO brownfield.commit_clock(id, watermark)
 VALUES (1, 0) ON CONFLICT (id) DO NOTHING;
 INSERT INTO brownfield.accounts(id, balance)
-SELECT n, 100000 FROM generate_series(1, 16) AS n
+SELECT n, 100000 FROM generate_series(1, 16) AS n WHERE TRUE
 ON CONFLICT (id) DO NOTHING;
