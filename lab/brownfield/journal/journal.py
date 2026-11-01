@@ -213,9 +213,13 @@ def _observed(row: dict[str, Any]) -> tuple[str | None, str]:
             matches.append((side, op[7]))
     if not matches:
         return None, "NO_DURABLE_DECISION_OBSERVED"
-    if any(side != row["writer"] for side, _ in matches) or len(matches) != 1:
+    origin = [status for side, status in matches if side == row["writer"]]
+    copies = [status for side, status in matches if side != row["writer"]]
+    # A staged read-only copy can mirror an earlier source operation. It is
+    # not proof of independent execution; reject conflicting mirror decisions.
+    if len(origin) != 1 or any(s != origin[0] for s in copies):
         return None, "CROSS_STORE_AMBIGUOUS_EFFECT"
-    return matches[0][1], "PERSISTED_SQL_ORACLE"
+    return origin[0], "PERSISTED_SQL_ORACLE_WITH_POSSIBLE_STAGED_COPY"
 
 
 def recover(operation_id: str) -> dict[str, Any]:
