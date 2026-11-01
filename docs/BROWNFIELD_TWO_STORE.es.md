@@ -70,3 +70,25 @@ SLA operativos y aprobación humana en la [issue #58](https://github.com/jmflore
 Código, pruebas y [README reproducible](../lab/brownfield/coexistence/README.md)
 solo en inglés; texto de investigación emparejado en español e inglés.
 Sin modificar versión ni etiquetas de release.
+
+## Ampliación: gateway de capacidades (sintético)
+
+El [gateway externo de capacidades](../lab/brownfield/coexistence/gateway.py)
+selecciona el escritor y la época de la autoridad SQL cooperativa e invoca
+el CLI del legado en otro proceso o el candidato .NET 10. No interpreta COBOL
+ni ejecuta una segunda transferencia al realizar el shadow. El laboratorio
+comprueba el enrutamiento inicial al legado, el enrutamiento al candidato
+tras la promoción y el retorno al legado después de un rollback admisible.
+
+Hay un contrato funcional incompleto que ahora **falla de forma segura**:
+si el cliente exige una versión mínima del saldo superior a cero, el gateway
+lo rechaza mientras el CLI del legado no permita solicitar esa garantía.
+Ignorar el requisito de consistencia equivaldría a introducir una regresión.
+El laboratorio y el adaptador exigen exactamente los entornos locales
+`127.0.0.1:55438/bf_legacy` y `127.0.0.1:55439/bf_lab`, y la prueba
+comprueba identificadores distintos de los clústeres PostgreSQL.
+
+**Límite fundamental:** un mainframe real con permisos de escritura
+directa puede eludir este gateway cooperativo y su bloqueo transaccional.
+El laboratorio no resuelve ese riesgo en producción. G2 sigue
+INCONCLUSIVE y G6 permanece BLOCK.
