@@ -69,7 +69,7 @@ def observe(dsn: str | None = None) -> dict:
         ),
         "rejectedHaveNoEffects": not (rejected & (set(by_operation) | set(outbox_ids))),
         "exactOutbox": (
-            Counter(outbox_ids) == Counter(committed)
+            Counter(outbox_ids) == Counter(committed.keys())
             and all(event == "TransferCommitted" for _, event in outbox)
         ),
         "uniqueOperationIdsAndFingerprints": (
