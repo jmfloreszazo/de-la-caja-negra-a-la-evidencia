@@ -2289,9 +2289,10 @@ outbox ausente deben mantener el tráfico congelado; una respuesta perdida
 no decide quién escribe. Las decisiones originadas por el candidato siguen
 vetando la vuelta atrás. Esto cubre ventanas concretas del modelo cooperativo
 mediante intención duradera y recuperación hacia adelante,
-**no mediante COMMIT atómico entre bases de datos**. Estos controles nuevos
-necesitan evidencia CI propia con su SHA exacto: el ensayo anterior de C2
-no valida código posterior. Las particiones de red durante operaciones en
+**no mediante COMMIT atómico entre bases de datos**. La [CI original de esta continuación](../evidence/runs/BROWNFIELD-C2-RECOVERY.es.md)
+superó 19 controles, conservando el ZIP original y el primer fallo concurrente.
+Cada cambio posterior necesita CI con su SHA exacto: la observación histórica
+no valida otro checkout. Las particiones de red durante operaciones en
 curso, la retirada de autoridad al incumbente real, los efectos de pago
 externos y la política aprobada siguen siendo puertas de aceptación separadas.
 G2=INCONCLUSIVE y G6=BLOCK.

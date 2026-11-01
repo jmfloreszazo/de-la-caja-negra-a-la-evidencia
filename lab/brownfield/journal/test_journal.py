@@ -112,6 +112,14 @@ def main() -> None:
     # Re-enrollment cannot erase a live admission journal or clear the SQL latch.
     must_block(bootstrap_controller, "fresh disposable ledgers")
     controls.append("enrolledControllerCannotBeResetThroughRuntimeBootstrap")
+    standalone = subprocess.run(
+        [os.environ.get("DOTNET", "dotnet"),
+         str(DURABLE / "DurableBank" / "bin" / "Release" / "net10.0" / "DurableBank.dll"),
+         "switch", "legacy", "1", "candidate", "0", "0"],
+        capture_output=True, text=True, env=os.environ, timeout=35)
+    assert standalone.returncode == 0 and json.loads(standalone.stdout)["status"] == "USE_CONTROLLER_TRANSITION", (
+        standalone.stdout, standalone.stderr)
+    controls.append("enrolledStandaloneAuthoritySwitchCannotBypassJournalIntent")
 
     # Parse the controller target before connecting to any database. A familiar
     # database name cannot authorize a destructive remote reset.
@@ -355,7 +363,10 @@ def main() -> None:
     controls.append("privilegedRawSqlBypassDetectedDespiteBalancedLedger")
     paths = [HERE / "schema.sql", HERE / "journal.py", HERE / "test_journal.py",
              COEX / "legacy_api.py", COEX / "two_store.py",
-             DURABLE / "DurableBank" / "Program.cs", DURABLE / "schema.sql"]
+             COEX / "legacy_schema.sql", DURABLE / "DurableBank" / "Program.cs",
+             DURABLE / "DurableBank" / "DurableBank.csproj", DURABLE / "schema.sql",
+             HERE.parent.parent / "e1_pg" / "requirements.txt",
+             HERE.parent.parent.parent / ".github" / "workflows" / "brownfield-journal.yml"]
     report = {
         "status": "PASS",
         "claim": "SYNTHETIC_THREE_POSTGRESQL_CONTAINERS_ON_ONE_CI_RUNNER_C2_PARTIAL",

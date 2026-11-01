@@ -43,8 +43,9 @@ crashes, independent SQL recovery and an opt-in cooperative adapter fence.
 Its original opt-in bypass and non-atomic authority updates remain historical
 limitations of that exact source SHA. The [C2 follow-up](lab/brownfield/journal/README.md)
 adds SQL-persisted adapter enrollment, a durable traffic freeze and exact-intent
-forward recovery with external SIGKILL controls. It requires its own original
-CI evidence; it is not atomic cross-database COMMIT or real incumbent fencing.
+forward recovery with external SIGKILL controls. Its [original 19-control CI evidence](evidence/runs/BROWNFIELD-C2-RECOVERY.md)
+is archived with the failed first run; later source SHAs require new checks.
+It is not atomic cross-database COMMIT or real incumbent fencing.
 TODM G2=INCONCLUSIVE and G6=BLOCK; this does not create another release.
 
 Next: complete controller-partition and real source-fence acceptance under

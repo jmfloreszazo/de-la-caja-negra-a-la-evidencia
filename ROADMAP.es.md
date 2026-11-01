@@ -45,8 +45,9 @@ adaptadores. El bypass configurable y el cambio no atómico de autoridades
 siguen siendo límites históricos de aquel SHA. La [continuación de C2](lab/brownfield/journal/README.md)
 añade inscripción persistida en SQL, congelación duradera del tráfico y
 recuperación hacia adelante con intención exacta y controles SIGKILL externos.
-Exige evidencia CI original propia: no es COMMIT atómico entre bases ni fencing
-del incumbente real. TODM G2=INCONCLUSIVE y G6=BLOCK; no implica otra release.
+La [CI original de 19 controles](evidence/runs/BROWNFIELD-C2-RECOVERY.es.md)
+queda archivada junto al primer fallo; cada SHA posterior requiere nuevas
+comprobaciones. No es COMMIT atómico entre bases ni fencing del incumbente real. TODM G2=INCONCLUSIVE y G6=BLOCK; no implica otra release.
 
 Después: completar las particiones del controlador y el fencing real de origen
 ([#64](https://github.com/jmfloreszazo/de-la-caja-negra-a-la-evidencia/issues/64)),

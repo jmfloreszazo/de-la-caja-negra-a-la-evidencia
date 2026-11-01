@@ -234,8 +234,10 @@ boundaries and restarts recovery. An unexpected epoch or missing outbox must
 leave traffic frozen; a missing response cannot choose the next writer.
 Candidate-origin decisions still veto rollback. This closes specific
 cooperative crash windows through durable intent and forward recovery,
-**not atomic COMMIT across databases**. These new controls require their own
-exact-source CI evidence; the earlier C2 run cannot validate later code.
+**not atomic COMMIT across databases**. The [original follow-up CI](../../../evidence/runs/BROWNFIELD-C2-RECOVERY.md)
+passed 19 controls, preserving its raw ZIP and the initial failed concurrency
+run. Later code still requires its own exact-source CI evidence; historical
+observations cannot validate a different checkout.
 In-flight network partitions, real incumbent revocation, external payment
 effects and approved business policy remain separate acceptance gates.
 G2=INCONCLUSIVE and G6=BLOCK.

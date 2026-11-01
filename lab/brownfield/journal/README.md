@@ -109,8 +109,9 @@ digests, process signal/exit observations and `c2-summary.json`.
 - A balanced, deliberately unjournaled privileged raw-SQL posting must still
   fail the journal audit. Monetary conservation alone cannot approve cutover.
 
-Tests must run on the exact source SHA before this follow-up can be cited as
-executed. The final negative audit intentionally fails for two unresolved
+[Original follow-up CI evidence](../../../evidence/runs/BROWNFIELD-C2-RECOVERY.md)
+records 19 passing controls, exact source hashes, the unchanged ZIP and the
+first failed concurrency run. Later source SHAs still require their own CI. The final negative audit intentionally fails for two unresolved
 admissions and one raw-SQL bypass; the test passes only if these are detected.
 No in-flight controller-partition proof, independent physical hosts, external
 payment effects, WAN, RTO/RPO, capacity benchmark or owner approval is claimed.
