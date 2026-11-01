@@ -78,13 +78,26 @@ static TransferResult Transfer(string dsn, string id, int source, int destinatio
     if (fault is not ("none" or "crash-before-commit" or "pause-before-commit" or "lost-ack"))
         throw new ArgumentException("Unsupported fault injection.");
 
-    // C2's third-controller fence is optional for historical E1/two-store
-    // baselines, but mandatory in the C2 test environment. A real incumbent
-    // outside this cooperative CLI must be externally fenced.
+    // Fresh historical fixtures keep their baseline behavior. C2 enrollment
+    // persists in SQL and cannot be disabled by changing process variables.
+    using var configConnection = new NpgsqlConnection(dsn);
+    configConnection.Open();
+    using var configCommand = new NpgsqlCommand(
+        "SELECT controller_required FROM brownfield.authority WHERE id=1", configConnection);
+    bool enrolled = (bool?)configCommand.ExecuteScalar()
+        ?? throw new InvalidOperationException("Missing fixture authority");
+    bool controllerRequired = enrolled
+        || Environment.GetEnvironmentVariable("BROWNFIELD_REQUIRE_CONTROLLER") == "YES";
     string? coordinatorDsn = Environment.GetEnvironmentVariable("BROWNFIELD_CONTROL_NPGSQL");
-    if (Environment.GetEnvironmentVariable("BROWNFIELD_REQUIRE_CONTROLLER") == "YES"
-        && string.IsNullOrWhiteSpace(coordinatorDsn))
+    if (controllerRequired && string.IsNullOrWhiteSpace(coordinatorDsn))
         throw new InvalidOperationException("C2 controller required: fail closed");
+    if (!string.IsNullOrWhiteSpace(coordinatorDsn))
+    {
+        var controlBuilder = new NpgsqlConnectionStringBuilder(coordinatorDsn);
+        if (controlBuilder.Host != "127.0.0.1" || controlBuilder.Port != 55440
+            || controlBuilder.Database != "bf_control")
+            throw new InvalidOperationException("Only the loopback bf_control fixture is accepted");
+    }
     using var coordinatorConnection = string.IsNullOrWhiteSpace(coordinatorDsn)
         ? null : new NpgsqlConnection(coordinatorDsn);
     coordinatorConnection?.Open();
@@ -96,11 +109,11 @@ static TransferResult Transfer(string dsn, string id, int source, int destinatio
         if ((string?)nameCommand.ExecuteScalar() != "bf_control")
             throw new InvalidOperationException("Refusing non-bf_control coordinator");
         using var fenceCommand = new NpgsqlCommand(
-            "SELECT writer,epoch FROM controller.authority WHERE singleton=1 FOR SHARE",
+            "SELECT writer,epoch,mode FROM controller.authority WHERE singleton=1 FOR SHARE",
             coordinatorConnection!, coordinatorTx);
         using var reader = fenceCommand.ExecuteReader();
         if (!reader.Read() || reader.GetString(0) != writer
-            || reader.GetInt64(1) != expectedEpoch)
+            || reader.GetInt64(1) != expectedEpoch || reader.GetString(2) != "ACTIVE")
             return new TransferResult("FENCED_CONTROLLER_OR_EPOCH", -1,
                 0, new List<string>());
         reader.Close();
@@ -133,6 +146,10 @@ static TransferResult Transfer(string dsn, string id, int source, int destinatio
             // has finished. The commit clock is a DIFFERENT row, avoiding
             // upgrade deadlocks between concurrent shared authority readers.
             var authority = Authority(tx, "FOR SHARE");
+            if ((bool?)Scalar(tx, "SELECT controller_required FROM brownfield.authority WHERE id=1") == true
+                && coordinatorTx is null)
+                return new TransferResult("CONTROLLER_ENROLLMENT_CHANGED", -1,
+                    sqlstates.Count, sqlstates);
             Exec(tx, "SELECT pg_advisory_xact_lock(hashtextextended($1, 0))", id);
             var existing = Existing(tx, id);
             if (existing is not null)
@@ -237,6 +254,8 @@ static object SwitchWriter(string dsn, string expectedWriter, long expectedEpoch
     using var tx = conn.BeginTransaction();
     // Exclusive lock must wait for every transfer's FOR SHARE fence to finish.
     var current = Authority(tx, "FOR UPDATE");
+    if ((bool?)Scalar(tx, "SELECT controller_required FROM brownfield.authority WHERE id=1") == true)
+        return new { status = "USE_CONTROLLER_TRANSITION", todmG6 = "BLOCK" };
     long watermark = Convert.ToInt64(Scalar(tx,
         "SELECT watermark FROM brownfield.commit_clock WHERE id=1") ?? 0L);
     long count = Convert.ToInt64(Scalar(tx,

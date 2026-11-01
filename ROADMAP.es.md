@@ -41,12 +41,14 @@ sigue abierta: no se ha demostrado fencing en un mainframe real.
 La [PR #66, C2](https://github.com/jmfloreszazo/de-la-caja-negra-a-la-evidencia/pull/66)
 introduce un tercer PostgreSQL para registrar admisiones y resultados UNKNOWN,
 recuperar caídas con oráculos SQL y ensayar un fencing cooperativo en ambos
-adaptadores. Es un avance PARCIAL: una escritura directa todavía puede omitir
-el journal y la actualización de las dos autoridades no es atómica.
-TODM G2=INCONCLUSIVE y G6=BLOCK. Exige CI original sobre SHA exacto y no
-implica una nueva release.
+adaptadores. El bypass configurable y el cambio no atómico de autoridades
+siguen siendo límites históricos de aquel SHA. La [continuación de C2](lab/brownfield/journal/README.md)
+añade inscripción persistida en SQL, congelación duradera del tráfico y
+recuperación hacia adelante con intención exacta y controles SIGKILL externos.
+Exige evidencia CI original propia: no es COMMIT atómico entre bases ni fencing
+del incumbente real. TODM G2=INCONCLUSIVE y G6=BLOCK; no implica otra release.
 
-Después: eliminar el bypass, tratar ventanas de crash entre autoridades
+Después: completar las particiones del controlador y el fencing real de origen
 ([#64](https://github.com/jmfloreszazo/de-la-caja-negra-a-la-evidencia/issues/64)),
 completar E2 y medir E3 sobre Azure, local e híbrido, comparando escalado
 horizontal, gRPC y costes fechados; posteriormente E4 y agentes bajo Oracle Gates.

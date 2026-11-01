@@ -2252,7 +2252,7 @@ C2 y mantener un bloqueo compartido hasta confirmar la operación. Las
 se ejecutaron con un SHA concreto en CI. No sustituyen una homologación
 bancaria.
 
-**Una precisión incómoda pero imprescindible:** en modo C2 estricto,
+**En aquel SHA original de C2:** en modo C2 estricto,
 ambos adaptadores exigen una admisión `DISPATCHING` previa y rechazan
 llamadas directas sin ella. Si se desactiva deliberadamente esa opción,
 el acceso directo puede escribir sin journal: el oráculo detecta el efecto,
@@ -2262,6 +2262,39 @@ Un bloqueo cooperativo no retira la autoridad a un CICS/Db2 real. Faltan
 fencing externo, reparación ante crash entre cambios de autoridad,
 conciliación de terceros, pruebas entre nodos físicos y política de
 negocio aprobada. TODM G2=INCONCLUSIVE y G6=BLOCK.
+
+##### Continuación de C2 · Persistir el control y congelar cambios interrumpidos
+
+La [continuación del journal](../lab/brownfield/journal/README.md)
+cambia dos supuestos técnicos sin modificar la autoridad del negocio. La
+inscripción queda guardada en SQL: quitar una variable de proceso ya no
+permite desactivar la admisión en ninguno de los dos adaptadores cooperativos.
+Las fixtures históricas nuevas permanecen sin inscribir; el SQL directo con
+privilegios sigue fuera de este control.
+
+Antes de cambiar ninguna época, el coordinador confirma una intención
+`PREPARED` y `mode=SWITCHING` duraderas. Los dos adaptadores y el gateway
+rechazan nuevos comandos financieros hasta que la conciliación independiente
+del ledger y del journal permita completar exactamente esa transición.
+
+| Frontera duradera | Controlador | Autoridad del candidato | Nueva admisión |
+|---|---|---|---|
+| Intención preparada | legacy / e / SWITCHING | legacy / e | Bloqueada |
+| Autoridad del candidato confirmada | legacy / e / SWITCHING | candidate / e+1 | Bloqueada |
+| Conciliación completada | candidate / e+1 / ACTIVE | candidate / e+1 | Permitida con admisión coincidente |
+
+El protocolo envía `SIGKILL` desde un proceso independiente después de las
+dos primeras fronteras y reinicia la recuperación. Una época inesperada o un
+outbox ausente deben mantener el tráfico congelado; una respuesta perdida
+no decide quién escribe. Las decisiones originadas por el candidato siguen
+vetando la vuelta atrás. Esto cubre ventanas concretas del modelo cooperativo
+mediante intención duradera y recuperación hacia adelante,
+**no mediante COMMIT atómico entre bases de datos**. Estos controles nuevos
+necesitan evidencia CI propia con su SHA exacto: el ensayo anterior de C2
+no valida código posterior. Las particiones de red durante operaciones en
+curso, la retirada de autoridad al incumbente real, los efectos de pago
+externos y la política aprobada siguen siendo puertas de aceptación separadas.
+G2=INCONCLUSIVE y G6=BLOCK.
 
 ##### Qué falta antes de permitir un cutover real
 

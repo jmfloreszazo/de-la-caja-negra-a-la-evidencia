@@ -22,7 +22,7 @@ HERE = Path(__file__).resolve().parent
 COEX = HERE.parent / "coexistence"
 DURABLE = HERE.parent / "durable"
 sys.path.insert(0, str(COEX))
-from legacy_api import fingerprint
+from legacy_api import fingerprint, fixture_controller_dsn
 from two_store import (
     UnsafeCutover, connections, independent_oracle, reconcile, snapshot, stage,
     transition as two_store_transition,
@@ -33,10 +33,10 @@ TERMINAL = ("COMMITTED", "REJECTED")
 
 
 def controller_dsn() -> str:
+    dsn = fixture_controller_dsn()  # Validate before any connection or reset.
     connections()  # Also enforce the exact two existing disposable DB names.
     if os.environ.get("BROWNFIELD_DISPOSABLE") != "YES":
         raise UnsafeCutover("Explicit disposable fixture opt-in required")
-    dsn = os.environ["BROWNFIELD_CONTROL_DSN"]
     with psycopg.connect(dsn) as db:
         if db.execute("SELECT current_database()").fetchone()[0] != "bf_control":
             raise UnsafeCutover("Refusing controller DB other than bf_control")
@@ -45,20 +45,36 @@ def controller_dsn() -> str:
 
 def bootstrap_controller() -> None:
     dsn = controller_dsn()
-    with psycopg.connect(dsn, autocommit=True) as db:
+    old, candidate = connections()
+    # Enroll only a fresh fixture. The latch commits first: interrupted setup
+    # fails closed, rather than allowing financial writes without a controller.
+    with psycopg.connect(candidate) as db:
+        current = db.execute(
+            "SELECT writer,epoch,controller_required FROM brownfield.authority "
+            "WHERE id=1 FOR UPDATE"
+        ).fetchone()
+        if (current != ("legacy", 1, False)
+                or snapshot(old, "legacy")["operations"]
+                or snapshot(candidate, "candidate")["operations"]):
+            raise UnsafeCutover("Controller enrollment requires fresh disposable ledgers")
+        db.execute("UPDATE brownfield.authority SET controller_required=TRUE WHERE id=1")
+    with psycopg.connect(dsn) as db:
         db.execute("DROP SCHEMA IF EXISTS controller CASCADE")
         db.execute((HERE / "schema.sql").read_text(encoding="utf-8"))
 
 
-def _control_authority(db: psycopg.Connection, lock: str = "FOR SHARE") -> tuple[str, int]:
+def _control_authority(db: psycopg.Connection, lock: str = "FOR SHARE",
+                       allow_switching: bool = False) -> tuple[str, int]:
     # Caller-supplied lock is never accepted: these are fixed internal SQL clauses.
     if lock not in ("FOR SHARE", "FOR UPDATE"):
         raise ValueError("Invalid lock mode")
     row = db.execute(
-        "SELECT writer,epoch FROM controller.authority WHERE singleton=1 " + lock
+        "SELECT writer,epoch,mode FROM controller.authority WHERE singleton=1 " + lock
     ).fetchone()
     if row is None:
         raise UnsafeCutover("Controller authority is missing")
+    if row[2] != "ACTIVE" and not allow_switching:
+        raise UnsafeCutover("TRANSITION_IN_PROGRESS: admission and dispatch BLOCK")
     return row[0], row[1]
 
 
@@ -135,8 +151,8 @@ def dispatch(operation_id: str, source: int, destination: int,
              amount: int, epoch: int, fault: str = "none") -> dict[str, Any]:
     """Persist admission before remote execution; preserve ambiguity on failure.
 
-    The session advisory lock fences only *this gateway's* concurrent replays.
-    A non-cooperating writer bypasses the gateway: this is an explicit gap.
+    The session advisory lock serializes gateway replays. Enrolled adapters
+    also require matching admission, but privileged raw SQL remains outside it.
     """
     if fault not in ("none", "adapter-lost-ack", "gateway-after-admit",
                      "gateway-before-send", "gateway-after-send"):
@@ -238,10 +254,10 @@ def recover(operation_id: str) -> dict[str, Any]:
         if status is not None:
             _state(db, operation_id, status)
             return {"status": status, "evidence": evidence, "todmG6": "BLOCK"}
-        if row["state"] in TERMINAL:
-            _state(db, operation_id, "RECONCILIATION_REQUIRED")
-        return {"status": "UNKNOWN" if evidence == "NO_DURABLE_DECISION_OBSERVED"
-                else "RECONCILIATION_REQUIRED", "evidence": evidence,
+        unresolved = ("UNKNOWN" if evidence == "NO_DURABLE_DECISION_OBSERVED"
+                      else "RECONCILIATION_REQUIRED")
+        _state(db, operation_id, unresolved)
+        return {"status": unresolved, "evidence": evidence,
                 "todmG6": "BLOCK"}
 
 
@@ -277,10 +293,71 @@ def audit() -> dict[str, Any]:
     }
 
 
-def switch(target: str, epoch: int) -> dict[str, Any]:
-    """Cooperative rehearsal: no 2PC. Controller/candidate split must BLOCK."""
+def _transition_fault(fault: str, point: str) -> None:
+    if fault == "pause-after-" + point:
+        import signal
+        print("TRANSITION_DURABLE_" + point.upper(), flush=True)
+        signal.pause()  # Test parent independently sends SIGKILL after marker.
+
+
+def _complete_transition(db: psycopg.Connection, intent: tuple,
+                         fault: str = "none") -> dict[str, Any]:
+    transition_id, writer, epoch, target, next_epoch = intent
+    _, candidate = connections()
+    with psycopg.connect(candidate) as target_db:
+        current = target_db.execute(
+            "SELECT writer,epoch,controller_required FROM brownfield.authority WHERE id=1"
+        ).fetchone()
+    if current is None or not current[2]:
+        raise UnsafeCutover("Controller enrollment missing: transition BLOCK")
+    if not audit()["passed"]:
+        raise UnsafeCutover("PENDING_OR_UNJOURNALED_ADMISSION: recovery BLOCK")
+    if current[:2] == (writer, epoch):
+        if writer == "legacy":
+            stage()
+        two_store_transition(target, epoch)
+        _transition_fault(fault, "candidate")
+    elif current[:2] != (target, next_epoch):
+        raise UnsafeCutover("UNEXPECTED_AUTHORITY: recovery BLOCK; forward investigation required")
+    # A missing outbox, changed fingerprint, rogue posting or altered epoch
+    # leaves the durable freeze intact. Do not blindly copy an authority row.
+    if not reconcile()["allEqual"] or not audit()["passed"]:
+        raise UnsafeCutover("FORWARD_FIX_REQUIRED: recovery reconciliation failed")
+    db.execute("UPDATE controller.authority SET writer=%s,epoch=%s,mode='ACTIVE' "
+               "WHERE singleton=1", (target, next_epoch))
+    db.execute("UPDATE controller.writer_transition SET state='COMPLETED',"
+               "completed_at=clock_timestamp() WHERE transition_id=%s", (transition_id,))
+    return {"status": "SYNTHETIC_SWITCH", "transitionId": transition_id,
+            "writer": target, "epoch": next_epoch, "todmG6": "BLOCK",
+            "warning": "Recoverable cooperative freeze; not atomic cross-database COMMIT"}
+
+
+def recover_switch(fault: str = "none") -> dict[str, Any]:
+    """Finish one durable intent under a traffic freeze; never guess an epoch."""
+    if fault not in ("none", "pause-after-candidate"):
+        raise ValueError("Unsupported transition recovery fault")
+    with psycopg.connect(controller_dsn()) as db:
+        writer, epoch = _control_authority(db, "FOR UPDATE", allow_switching=True)
+        mode = db.execute("SELECT mode FROM controller.authority WHERE singleton=1").fetchone()[0]
+        intent = db.execute(
+            "SELECT transition_id,from_writer,from_epoch,to_writer,to_epoch "
+            "FROM controller.writer_transition WHERE state='PREPARED' FOR UPDATE"
+        ).fetchone()
+        if mode == "ACTIVE" and intent is None:
+            _check_alignment(writer, epoch)
+            return {"status": "NO_PENDING_TRANSITION", "writer": writer,
+                    "epoch": epoch, "todmG6": "BLOCK"}
+        if mode != "SWITCHING" or intent is None or (writer, epoch) != intent[1:3]:
+            raise UnsafeCutover("INCONSISTENT_TRANSITION_INTENT: recovery BLOCK")
+        return _complete_transition(db, intent, fault)
+
+
+def switch(target: str, epoch: int, fault: str = "none") -> dict[str, Any]:
+    """Commit a durable freeze before changing either database's authority."""
     if target not in ("legacy", "candidate"):
         raise UnsafeCutover("Invalid target")
+    if fault not in ("none", "pause-after-prepare", "pause-after-candidate"):
+        raise ValueError("Unsupported transition fault")
     with psycopg.connect(controller_dsn()) as db:
         writer, actual_epoch = _control_authority(db, "FOR UPDATE")
         if actual_epoch != epoch or writer == target:
@@ -289,14 +366,17 @@ def switch(target: str, epoch: int) -> dict[str, Any]:
         before = audit()
         if not before["passed"]:
             raise UnsafeCutover("PENDING_OR_UNJOURNALED_ADMISSION: BLOCK")
-        if writer == "legacy" and target == "candidate":
-            stage()
-        change = two_store_transition(target, epoch)
-        db.execute("UPDATE controller.authority SET writer=%s,epoch=epoch+1 "
-                   "WHERE singleton=1", (target,))
-    return {"status": "SYNTHETIC_SWITCH", "epoch": change["epoch"],
-            "writer": target, "todmG6": "BLOCK",
-            "warning": "Non-atomic controller/candidate authority update"}
+        if writer == "candidate":
+            _, candidate = connections()
+            if (any(op[2] == "candidate" for op in snapshot(candidate, "candidate")["operations"])
+                    or not reconcile()["allEqual"]):
+                raise UnsafeCutover("FORWARD_FIX_REQUIRED: candidate-origin decisions veto rollback")
+        db.execute("INSERT INTO controller.writer_transition "
+                   "(from_writer,from_epoch,to_writer,to_epoch,state) "
+                   "VALUES (%s,%s,%s,%s,'PREPARED')", (writer, epoch, target, epoch + 1))
+        db.execute("UPDATE controller.authority SET mode='SWITCHING' WHERE singleton=1")
+    _transition_fault(fault, "prepare")
+    return recover_switch("pause-after-candidate" if fault == "pause-after-candidate" else "none")
 
 
 def main() -> None:
@@ -314,9 +394,11 @@ def main() -> None:
     rec = sub.add_parser("recover")
     rec.add_argument("operation_id")
     sub.add_parser("audit")
+    sub.add_parser("recover-switch")
     sw = sub.add_parser("switch")
     sw.add_argument("writer", choices=["legacy", "candidate"])
     sw.add_argument("epoch", type=int)
+    sw.add_argument("--fault", default="none")
     args = parser.parse_args()
     if args.command == "reset-controller":
         bootstrap_controller()
@@ -328,8 +410,10 @@ def main() -> None:
         response = recover(args.operation_id)
     elif args.command == "audit":
         response = audit()
+    elif args.command == "recover-switch":
+        response = recover_switch()
     else:
-        response = switch(args.writer, args.epoch)
+        response = switch(args.writer, args.epoch, args.fault)
     print(json.dumps(response, sort_keys=True))
 
 

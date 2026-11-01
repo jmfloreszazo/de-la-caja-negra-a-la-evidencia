@@ -40,11 +40,14 @@ remains open: no real mainframe-side writer fence has been demonstrated.
 [PR #66, C2](https://github.com/jmfloreszazo/de-la-caja-negra-a-la-evidencia/pull/66)
 adds a third disposable PostgreSQL admission/UNKNOWN journal, real process
 crashes, independent SQL recovery and an opt-in cooperative adapter fence.
-This is PARTIAL: a direct adapter write can still bypass admission, and two
-authority changes are not atomic. TODM G2=INCONCLUSIVE and G6=BLOCK.
-Original exact-SHA CI is required; this does not create another release.
+Its original opt-in bypass and non-atomic authority updates remain historical
+limitations of that exact source SHA. The [C2 follow-up](lab/brownfield/journal/README.md)
+adds SQL-persisted adapter enrollment, a durable traffic freeze and exact-intent
+forward recovery with external SIGKILL controls. It requires its own original
+CI evidence; it is not atomic cross-database COMMIT or real incumbent fencing.
+TODM G2=INCONCLUSIVE and G6=BLOCK; this does not create another release.
 
-Next: remove that bypass and reconcile authority crash windows under
+Next: complete controller-partition and real source-fence acceptance under
 [#64](https://github.com/jmfloreszazo/de-la-caja-negra-a-la-evidencia/issues/64),
 finish E2, benchmark E3 across Azure/on-premises/hybrid using horizontal-first
 scale, internal gRPC and dated TCO, then E4 with agents behind Oracle Gates.

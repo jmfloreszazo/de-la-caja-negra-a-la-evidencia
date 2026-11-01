@@ -46,6 +46,20 @@ def fingerprint(src: int, dst: int, amount: int) -> str:
     return hashlib.sha256(canonical.encode("utf-8")).hexdigest()
 
 
+def fixture_controller_dsn() -> str:
+    """Validate before opening any controller connection, including resets."""
+    dsn = os.environ.get("BROWNFIELD_CONTROL_DSN")
+    if not dsn:
+        raise RuntimeError("C2 controller DSN required: fail closed")
+    params = psycopg.conninfo.conninfo_to_dict(dsn)
+    if (any(params.get(k) for k in ("hostaddr", "service", "servicefile"))
+            or any(os.environ.get(k) for k in ("PGHOSTADDR", "PGSERVICE", "PGSERVICEFILE"))
+            or (params.get("dbname"), params.get("host"), params.get("port"))
+            != ("bf_control", "127.0.0.1", "55440")):
+        raise RuntimeError("Only the named, loopback controller fixture is accepted")
+    return dsn
+
+
 def transfer(legacy_dsn: str, control_dsn: str, request_id: str,
              src: int, dst: int, amount: int, epoch: int,
              fault: str = "none") -> dict:
@@ -55,6 +69,13 @@ def transfer(legacy_dsn: str, control_dsn: str, request_id: str,
     ) or fault not in {"none", "lost-ack"}:
         raise ValueError("Invalid synthetic legacy request")
     requested_hash = fingerprint(src, dst, amount)
+    with psycopg.connect(control_dsn) as config:
+        enrolled = config.execute(
+            "SELECT controller_required FROM brownfield.authority WHERE id=1"
+        ).fetchone()
+        if enrolled is None:
+            raise RuntimeError("Missing fixture authority")
+    controller_required = enrolled[0] or os.environ.get("BROWNFIELD_REQUIRE_CONTROLLER") == "YES"
     # The central controller is read-locked for the entire remote SQL write.
     # Switch() uses FOR UPDATE: this blocks cutover until this command ends.
     # This is a cooperative fixture; a real unfenced legacy writer may bypass it.
@@ -63,18 +84,16 @@ def transfer(legacy_dsn: str, control_dsn: str, request_id: str,
             with ExitStack() as stack:
                 # A *cooperating* C2 adapter must hold controller FOR SHARE
                 # throughout the remote SQL COMMIT, not merely at admission.
-                if os.environ.get("BROWNFIELD_REQUIRE_CONTROLLER") == "YES":
-                    controller_dsn = os.environ.get("BROWNFIELD_CONTROL_DSN")
-                    if not controller_dsn:
-                        raise RuntimeError("C2 controller DSN required: fail closed")
+                if controller_required:
+                    controller_dsn = fixture_controller_dsn()
                     coordinator = stack.enter_context(psycopg.connect(controller_dsn))
                     if coordinator.execute("SELECT current_database()").fetchone()[0] != "bf_control":
                         raise RuntimeError("Not a disposable bf_control controller")
                     active = coordinator.execute(
-                        "SELECT writer,epoch FROM controller.authority "
+                        "SELECT writer,epoch,mode FROM controller.authority "
                         "WHERE singleton=1 FOR SHARE"
                     ).fetchone()
-                    if active != ("legacy", epoch):
+                    if active != ("legacy", epoch, "ACTIVE"):
                         return {"status": "FENCED_CONTROLLER_OR_EPOCH"}
                     # C2 writer-side admission check: gateway intent must
                     # already be durable before this financial SQL COMMIT.
@@ -89,10 +108,14 @@ def transfer(legacy_dsn: str, control_dsn: str, request_id: str,
                 ctrl = stack.enter_context(psycopg.connect(control_dsn))
                 ctrl.execute("SET LOCAL lock_timeout='750ms'")
                 row = ctrl.execute(
-                    "SELECT writer,epoch FROM brownfield.authority "
+                    "SELECT writer,epoch,controller_required FROM brownfield.authority "
                     "WHERE id=1 FOR SHARE").fetchone()
-                if row != ("legacy", epoch):
+                if row is None or row[:2] != ("legacy", epoch):
                     return {"status": "FENCED_WRITER_OR_EPOCH"}
+                # Enrollment may have occurred since the unlocked config read.
+                # Refuse this call instead of writing outside the new fence.
+                if row[2] and not controller_required:
+                    return {"status": "CONTROLLER_ENROLLMENT_CHANGED"}
                 with psycopg.connect(legacy_dsn) as old:
                     old.execute("SET LOCAL lock_timeout='750ms'")
                     old.execute("SELECT pg_advisory_xact_lock(hashtextextended(%s,0))",

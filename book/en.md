@@ -2250,7 +2250,7 @@ shared authority row lock through financial COMMIT. The
 [original C2 CI run](https://github.com/jmfloreszazo/de-la-caja-negra-a-la-evidencia/actions/runs/41341644829)
 is tied to one exact source SHA. It is not bank acceptance.
 
-**The uncomfortable but necessary qualification:** strict C2 mode
+**At that original C2 source SHA:** strict C2 mode
 requires a matching `DISPATCHING` journal admission at both adapters and
 rejects direct unadmitted commands. Deliberately disabling this opt-in
 allows direct unjournaled posts: the oracle detects that configuration
@@ -2260,6 +2260,36 @@ PostgreSQL servers. A cooperative lock cannot revoke a real CICS/Db2
 writer's authority. External fencing, split-authority crash repair,
 third-party side-effect reconciliation, cross-host tests and approved
 business policy remain missing. TODM G2=INCONCLUSIVE and G6=BLOCK.
+
+##### C2 follow-up · Persist the fence and freeze interrupted transitions
+
+The [journal follow-up](../lab/brownfield/journal/README.md) changes
+two engineering assumptions without changing business authority. Enrollment
+is stored in SQL: removing a process variable can no longer disable admission
+checks in either cooperating adapter. Fresh historical fixtures remain
+unenrolled, and privileged direct SQL remains outside that enforcement.
+
+Before changing either writer epoch, the coordinator commits a durable
+`PREPARED` intent and `mode=SWITCHING`. Both adapters and the gateway refuse
+new financial commands until independent ledger and journal reconciliation
+allows the controller to complete that exact transition.
+
+| Durable boundary | Controller | Candidate authority | New admission |
+|---|---|---|---|
+| Intent prepared | legacy / e / SWITCHING | legacy / e | Blocked |
+| Candidate authority committed | legacy / e / SWITCHING | candidate / e+1 | Blocked |
+| Reconciliation completed | candidate / e+1 / ACTIVE | candidate / e+1 | Allowed with matching admission |
+
+The protocol independently sends `SIGKILL` after each of the first two
+boundaries and restarts recovery. An unexpected epoch or missing outbox must
+leave traffic frozen; a missing response cannot choose the next writer.
+Candidate-origin decisions still veto rollback. This closes specific
+cooperative crash windows through durable intent and forward recovery,
+**not atomic COMMIT across databases**. These new controls require their own
+exact-source CI evidence; the earlier C2 run cannot validate later code.
+In-flight network partitions, real incumbent revocation, external payment
+effects and approved business policy remain separate acceptance gates.
+G2=INCONCLUSIVE and G6=BLOCK.
 
 ##### What would be needed for a real cutover
 
