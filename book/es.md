@@ -2226,6 +2226,41 @@ con `FORWARD_FIX_REQUIRED`**. La conclusión no es «ya podemos volver atrás»,
 sino la contraria: una vez que el nuevo escritor ha confirmado operaciones,
 el antiguo estado deja de ser automáticamente válido.
 
+##### C2 · Una respuesta desconocida necesita un journal duradero
+
+La convivencia anterior resuelve cómo comparar dos almacenes, pero deja un
+problema abierto: **el COMMIT puede ser correcto aunque el ACK no llegue**.
+Tratar un timeout como un rechazo y reintentar contra el otro escritor podría
+producir dos efectos contables. Por eso C2 incorpora un tercer PostgreSQL
+desechable, \`bf_control\`, con un journal de admisión independiente de los
+dos ledgers. Cada petición CAP-007 registra identificador estable, huella,
+escritor, época y estado antes de ejecutar el comando remoto.
+
+El estado avanza de \`ADMITTED\` a \`DISPATCHING\` y, si la respuesta
+desaparece, a \`UNKNOWN\`. Solo la inspección SQL independiente de la
+operación persistida, sus dos apuntes y el outbox puede concluir
+\`COMMITTED\` o \`REJECTED\`. La ausencia de fila en ambos almacenes
+**no demuestra un rechazo**: mantiene UNKNOWN y bloquea el cutover.
+
+El ensayo de tres contenedores mata procesos reales después de la admisión,
+antes del envío y después de un COMMIT cuyo resultado no llegó al gateway.
+También falsifica una decisión terminal del journal y verifica que el
+oráculo rechaza el cambio de escritor. Los adaptadores cooperativos del
+legado en Python y del nuevo servicio .NET 10 pueden exigir el controlador
+C2 y mantener un bloqueo compartido hasta confirmar la operación. Las
+[pruebas originales de C2](https://github.com/jmfloreszazo/de-la-caja-negra-a-la-evidencia/actions/runs/41341644829)
+se ejecutaron con un SHA concreto en CI. No sustituyen una homologación
+bancaria.
+
+**Una precisión incómoda pero imprescindible:** el acceso directo al
+adaptador puede escribir sin una admisión en el gateway; el oráculo detecta
+el efecto sin journal, pero no puede impedirlo. Las épocas del controlador
+y del candidato tampoco cambian atómicamente entre dos PostgreSQL.
+Un bloqueo cooperativo no retira la autoridad a un CICS/Db2 real. Faltan
+fencing externo, reparación ante crash entre cambios de autoridad,
+conciliación de terceros, pruebas entre nodos físicos y política de
+negocio aprobada. TODM G2=INCONCLUSIVE y G6=BLOCK.
+
 ##### Qué falta antes de permitir un cutover real
 
 Un contrato de caja negra simulado no concede al proveedor acceso a los

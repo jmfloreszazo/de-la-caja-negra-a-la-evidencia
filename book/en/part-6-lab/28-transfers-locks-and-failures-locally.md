@@ -174,6 +174,40 @@ on each store were true, but the stores no longer agreed: rollback was
 new writer posts new decisions, the old balances cannot simply be
 reactivated.
 
+### C2 · An unknown reply requires a durable admission journal
+
+The earlier coexistence experiment can compare two stores, but it leaves
+a separate failure mode: **COMMIT may be durable even when no ACK arrives**.
+Treating a timeout as rejection and retrying on a second writer can duplicate
+the financial effect. C2 therefore adds a third disposable PostgreSQL
+database, \`bf_control\`, with an admission journal independent of both
+ledgers. Each CAP-007 request records its stable ID, request hash, writer,
+epoch and state before remote execution.
+
+A request moves from \`ADMITTED\` to \`DISPATCHING\` and, when its reply
+disappears, to \`UNKNOWN\`. Only an independent SQL inspection of the
+persisted operation, paired postings and outbox may finalize
+\`COMMITTED\` or \`REJECTED\`. Missing SQL rows in both stores **do not
+prove rejection**: the journal remains UNKNOWN and cutover is blocked.
+
+The three-container experiment kills real processes after admission,
+before remote dispatch and after COMMIT but before the gateway receives
+the result. It also forges a terminal journal state and verifies that the
+independent oracle rejects promotion. The cooperating Python legacy
+adapter and .NET 10 candidate can require the C2 controller and hold a
+shared authority row lock through financial COMMIT. The
+[original C2 CI run](https://github.com/jmfloreszazo/de-la-caja-negra-a-la-evidencia/actions/runs/41341644829)
+is tied to one exact source SHA. It is not bank acceptance.
+
+**The uncomfortable but necessary qualification:** direct adapter calls
+can post without first entering the gateway journal. The independent
+oracle detects this unjournaled effect but cannot prevent it. Nor do the
+controller and candidate authority epochs change atomically across two
+PostgreSQL servers. A cooperative lock cannot revoke a real CICS/Db2
+writer's authority. External fencing, split-authority crash repair,
+third-party side-effect reconciliation, cross-host tests and approved
+business policy remain missing. TODM G2=INCONCLUSIVE and G6=BLOCK.
+
 ### What would be needed for a real cutover
 
 A simulated black-box contract cannot take away a bank's incumbent writer
