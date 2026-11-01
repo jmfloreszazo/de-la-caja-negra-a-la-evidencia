@@ -17,7 +17,7 @@ writer/epoch. Both modeled writers honor the shared lock while committing to
 their *own* database. This is cooperative fencing, not 2PC: if an actual legacy
 processor can bypass the controller, it may still post after cutover.
 
-<escape>###</escape> Before the writer moves
+## Before the writer moves
 
 1. Discover the capability behavior; capture both observed responses and
    separately approved business rules. This fixture has no customer Golden
