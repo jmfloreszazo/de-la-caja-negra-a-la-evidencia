@@ -52,7 +52,7 @@ about a real customer's business policy, Golden Master or performance is made.
 
 See the bilingual engineering discussion:
 [English](../../docs/BROWNFIELD_CUTOVER.md) ·
-[Español](../../docs/BROWNFIELD_CUTOVER.es.md).
+[Spanish](../../docs/BROWNFIELD_CUTOVER.es.md).
 
 ## Next concrete deliverable
 
