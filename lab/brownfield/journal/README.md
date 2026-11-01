@@ -70,3 +70,15 @@ write without a gateway journal entry. The independent audit detects this
 but does not prevent it. An unsafe application that strips the opt-in guard
 can also bypass it. A real incumbent requires a mandatory independent fence,
 not simply this feature flag.
+
+## Admission enforcement boundary
+
+When `BROWNFIELD_REQUIRE_CONTROLLER=YES`, the financial adapters also
+check the matching persisted `DISPATCHING` admission (ID, request hash,
+accounts, amount, writer and epoch) before any new SQL ledger decision,
+retaining the controller locks through COMMIT. Direct CLI calls with no
+admission return `NOT_ADMITTED_BY_CONTROLLER`. The negative test then
+explicitly disables the opt-in environment guard to demonstrate that the
+historical permissive mode still bypasses this protection; independent
+audit detects the resulting unjournaled effect. **Configurable cooperation
+is not the same as revoking the actual mainframe writer.**

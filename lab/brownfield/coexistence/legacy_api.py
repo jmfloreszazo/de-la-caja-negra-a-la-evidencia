@@ -68,6 +68,16 @@ def transfer(legacy_dsn: str, control_dsn: str, request_id: str,
                     ).fetchone()
                     if active != ("legacy", epoch):
                         return {"status": "FENCED_CONTROLLER_OR_EPOCH"}
+                    # C2 writer-side admission check: gateway intent must
+                    # already be durable before this financial SQL COMMIT.
+                    admitted = coordinator.execute(
+                        "SELECT request_hash,source_account,destination_account,"
+                        "amount_minor,state,writer,epoch FROM controller.admission "
+                        "WHERE operation_id=%s FOR SHARE", (request_id,)
+                    ).fetchone()
+                    if admitted != (requested_hash, src, dst, amount,
+                                    "DISPATCHING", "legacy", epoch):
+                        return {"status": "NOT_ADMITTED_BY_CONTROLLER"}
                 ctrl = stack.enter_context(psycopg.connect(control_dsn))
                 ctrl.execute("SET LOCAL lock_timeout='750ms'")
                 row = ctrl.execute(

@@ -181,19 +181,38 @@ def main() -> None:
     source_oracle = independent_oracle(snapshot(old, "legacy"))
     target_oracle = independent_oracle(snapshot(new, "candidate"))
     assert all(source_oracle.values()) and all(target_oracle.values())
-    # An adapter can still be invoked directly without a journal admission:
-    # record the bypass as a NEGATIVE control rather than calling it safe.
-    direct = subprocess.run(
-        [os.environ.get("DOTNET", "dotnet"),
-         str(DURABLE / "DurableBank" / "bin" / "Release" / "net10.0" / "DurableBank.dll"),
-         "transfer", "J-DIRECT-BYPASS", "10", "11", "7", "candidate", "2"],
-        capture_output=True, text=True, env=os.environ, timeout=35)
-    assert direct.returncode == 0, direct.stderr
-    assert json.loads(direct.stdout)["status"] == "COMMITTED"
+    # The C2 adapter requires a real journal DISPATCHING admission and
+    # controller epoch. A direct bypass in strict mode cannot financially post.
+    direct_command = [
+        os.environ.get("DOTNET", "dotnet"),
+        str(DURABLE / "DurableBank" / "bin" / "Release" / "net10.0" / "DurableBank.dll"),
+        "transfer", "J-DIRECT-BYPASS", "10", "11", "7", "candidate", "2"
+    ]
+    strict = subprocess.run(direct_command, capture_output=True, text=True,
+                            env=os.environ, timeout=35)
+    assert strict.returncode == 0 and (
+        json.loads(strict.stdout)["status"] == "NOT_ADMITTED_BY_CONTROLLER"
+    ), (strict.returncode, strict.stdout, strict.stderr)
+    assert count(candidate_dsn,
+                 "SELECT count(*) FROM brownfield.operations WHERE id=%s",
+                 "J-DIRECT-BYPASS") == 0
+    controls.append("directWithoutAdmissionPreventedInStrictC2Fixture")
+
+    # The older permissive mode remains selectable for historical CI. An
+    # operator who disables strict controller admission can still bypass it.
+    # Demonstrate and DETECT that bypass; do not call opt-in a real bank fence.
+    permissive = os.environ.copy()
+    permissive["BROWNFIELD_REQUIRE_CONTROLLER"] = "NO"
+    permissive.pop("BROWNFIELD_CONTROL_NPGSQL", None)
+    direct = subprocess.run(direct_command, capture_output=True, text=True,
+                            env=permissive, timeout=35)
+    assert direct.returncode == 0 and (
+        json.loads(direct.stdout)["status"] == "COMMITTED"
+    ), (direct.returncode, direct.stdout, direct.stderr)
     final = audit()
     assert not final["passed"] and len(final["unresolved"]) == 2, final
     assert "J-DIRECT-BYPASS" in final["unjournaledOperations"], final
-    controls.append("directCooperativeAdapterBypassDetectedButNotPrevented")
+    controls.append("configurationOptOutBypassDetectedNotPrevented")
     paths = [HERE / "schema.sql", HERE / "journal.py", HERE / "test_journal.py",
              COEX / "legacy_api.py", COEX / "two_store.py",
              DURABLE / "DurableBank" / "Program.cs"]

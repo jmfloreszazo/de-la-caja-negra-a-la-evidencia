@@ -103,8 +103,21 @@ static TransferResult Transfer(string dsn, string id, int source, int destinatio
             || reader.GetInt64(1) != expectedEpoch)
             return new TransferResult("FENCED_CONTROLLER_OR_EPOCH", -1,
                 0, new List<string>());
+        reader.Close();
+        using var admissionCommand = new NpgsqlCommand(
+            "SELECT request_hash,source_account,destination_account,amount_minor,"
+            + "state,writer,epoch FROM controller.admission WHERE operation_id=$1 FOR SHARE",
+            coordinatorConnection!, coordinatorTx);
+        admissionCommand.Parameters.AddWithValue(id);
+        using var admitted = admissionCommand.ExecuteReader();
+        if (!admitted.Read() || admitted.GetString(0) != Fingerprint(source, destination, amount)
+            || admitted.GetInt32(1) != source || admitted.GetInt32(2) != destination
+            || admitted.GetInt64(3) != amount || admitted.GetString(4) != "DISPATCHING"
+            || admitted.GetString(5) != writer || admitted.GetInt64(6) != expectedEpoch)
+            return new TransferResult("NOT_ADMITTED_BY_CONTROLLER", -1,
+                0, new List<string>());
     }
-    // The controller read lock remains held through the candidate SQL COMMIT.
+    // Controller epoch and admission row locks remain held until financial COMMIT.
     string fingerprint = Fingerprint(source, destination, amount);
     var sqlstates = new List<string>();
     for (int attempt = 0; attempt < 6; attempt++)
