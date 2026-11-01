@@ -80,3 +80,16 @@ de abrirlas y antes de cualquier reinicialización destructiva.
 directo aún puede evitar el fencing cooperativo. Las evidencias anteriores
 de la PR #63 y del journal C2 conservan su propia procedencia; esta prueba
 no demuestra cutover real IBM Z, HA física ni aprobación G2/G6.
+
+### C3: control negativo adicional — desvío de dirección libpq
+
+Tras reforzar la validación del DSN, la [ejecución original #41344197968](https://github.com/jmfloreszazo/de-la-caja-negra-a-la-evidencia/actions/runs/41344197968)
+terminó en **PASS** sobre el SHA
+`3cdcc25a03c94829e6770ca21314836f2c3271e6`.
+El [JSON original sin modificar](brownfield-gateway-hostaddr-pr68-original-summary.json)
+recoge **13** controles, incluido
+`hostaddrOverrideRejectedBeforeConnection`: un DSN que aparenta apuntar
+a loopback, pero incorpora `hostaddr` externo, se rechaza antes de conectar.
+Se mantienen 10/10 invariantes independientes en cada base; G2 sigue
+INCONCLUSIVE y G6 BLOCK. Artefacto original ID `13098128247` y
+SHA-256 del ZIP `297e68b05ba348af2a04758fe4f62bd01d5cd8d569ade4beb984c30d8256412a`.
