@@ -52,7 +52,7 @@ def snapshot(dsn: str, side: str) -> dict[str, Any]:
     """Normalize distinct physical schemas under independent consistent snapshots."""
     assert side in ("legacy", "candidate")
     with psycopg.connect(dsn) as db:
-        db.execute("SET TRANSACTION ISOLATION LEVEL REPEATABLE READ READ ONLY")
+        db.execute("SET TRANSACTION ISOLATION LEVEL REPEATABLE READ, READ ONLY")
         def rows(sql: str) -> list[tuple]:
             return db.execute(sql).fetchall()
         if side == "legacy":
