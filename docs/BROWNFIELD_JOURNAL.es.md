@@ -7,10 +7,10 @@ ambigüa: PostgreSQL confirma el COMMIT, pero el gateway no recibe el ACK.
 La ausencia de respuesta **no equivale a rollback**, ni permite reenviar
 la misma transferencia a otro escritor.
 
-La nueva base PostgreSQL \`bf_control\` conserva el identificador CAP-007,
+La nueva base PostgreSQL `bf_control` conserva el identificador CAP-007,
 la huella canónica de la petición, escritor y época, referencias sintéticas
-de tenant, actor y mandato, y estados \`ADMITTED\`, \`DISPATCHING\`,
-\`UNKNOWN\`, \`COMMITTED\`, \`REJECTED\` y \`RECONCILIATION_REQUIRED\`.
+de tenant, actor y mandato, y estados `ADMITTED`, `DISPATCHING`,
+`UNKNOWN`, `COMMITTED`, `REJECTED` y `RECONCILIATION_REQUIRED`.
 El gateway serializa por identificador entre clientes cooperativos y puede
 morir antes o después del COMMIT remoto. Un oráculo SQL independiente y
 de solo lectura inspecciona ambos almacenes y únicamente confirma decisiones
@@ -32,7 +32,7 @@ nunca inventa REJECTED.
 
 Los CLI existentes del legado sintético (Python) y del candidato (.NET 10)
 pueden invocarse directamente, evitando el gateway: **todavía no obedecen
-obligatoriamente al tercer controlador**. El bloqueo \`FOR SHARE\` de la base
+obligatoriamente al tercer controlador**. El bloqueo `FOR SHARE` de la base
 del candidato sigue siendo cooperativo. Las dos épocas de autoridad cambian
 en transacciones distintas: faltan una actualización atómica distribuida
 y un protocolo validado de reparación del estado intermedio. Un escritor

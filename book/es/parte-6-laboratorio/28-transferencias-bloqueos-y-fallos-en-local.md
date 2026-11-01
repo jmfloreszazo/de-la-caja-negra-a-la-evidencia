@@ -183,14 +183,14 @@ La convivencia anterior resuelve cómo comparar dos almacenes, pero deja un
 problema abierto: **el COMMIT puede ser correcto aunque el ACK no llegue**.
 Tratar un timeout como un rechazo y reintentar contra el otro escritor podría
 producir dos efectos contables. Por eso C2 incorpora un tercer PostgreSQL
-desechable, \`bf_control\`, con un journal de admisión independiente de los
+desechable, `bf_control`, con un journal de admisión independiente de los
 dos ledgers. Cada petición CAP-007 registra identificador estable, huella,
 escritor, época y estado antes de ejecutar el comando remoto.
 
-El estado avanza de \`ADMITTED\` a \`DISPATCHING\` y, si la respuesta
-desaparece, a \`UNKNOWN\`. Solo la inspección SQL independiente de la
+El estado avanza de `ADMITTED` a `DISPATCHING` y, si la respuesta
+desaparece, a `UNKNOWN`. Solo la inspección SQL independiente de la
 operación persistida, sus dos apuntes y el outbox puede concluir
-\`COMMITTED\` o \`REJECTED\`. La ausencia de fila en ambos almacenes
+`COMMITTED` o `REJECTED`. La ausencia de fila en ambos almacenes
 **no demuestra un rechazo**: mantiene UNKNOWN y bloquea el cutover.
 
 El ensayo de tres contenedores mata procesos reales después de la admisión,

@@ -2231,14 +2231,14 @@ The earlier coexistence experiment can compare two stores, but it leaves
 a separate failure mode: **COMMIT may be durable even when no ACK arrives**.
 Treating a timeout as rejection and retrying on a second writer can duplicate
 the financial effect. C2 therefore adds a third disposable PostgreSQL
-database, \`bf_control\`, with an admission journal independent of both
+database, `bf_control`, with an admission journal independent of both
 ledgers. Each CAP-007 request records its stable ID, request hash, writer,
 epoch and state before remote execution.
 
-A request moves from \`ADMITTED\` to \`DISPATCHING\` and, when its reply
-disappears, to \`UNKNOWN\`. Only an independent SQL inspection of the
+A request moves from `ADMITTED` to `DISPATCHING` and, when its reply
+disappears, to `UNKNOWN`. Only an independent SQL inspection of the
 persisted operation, paired postings and outbox may finalize
-\`COMMITTED\` or \`REJECTED\`. Missing SQL rows in both stores **do not
+`COMMITTED` or `REJECTED`. Missing SQL rows in both stores **do not
 prove rejection**: the journal remains UNKNOWN and cutover is blocked.
 
 The three-container experiment kills real processes after admission,

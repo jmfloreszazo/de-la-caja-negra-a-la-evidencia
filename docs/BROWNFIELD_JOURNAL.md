@@ -7,10 +7,10 @@ outcome of a command whose durable PostgreSQL COMMIT precedes an absent ACK.
 A missing response is neither a rolled-back transfer nor a safe reason to
 route the same operation ID to another financial writer.
 
-The new \`bf_control\` PostgreSQL database persists the CAP-007 operation ID,
+The new `bf_control` PostgreSQL database persists the CAP-007 operation ID,
 canonical request hash, writer and epoch, synthetic tenant/actor/mandate
-references and states \`ADMITTED\`, \`DISPATCHING\`, \`UNKNOWN\`,
-\`COMMITTED\`, \`REJECTED\` and \`RECONCILIATION_REQUIRED\`. The gateway
+references and states `ADMITTED`, `DISPATCHING`, `UNKNOWN`,
+`COMMITTED`, `REJECTED` and `RECONCILIATION_REQUIRED`. The gateway
 serializes one operation ID among cooperating callers. It can die on either
 side of remote COMMIT. A *separate* SQL read-only oracle then examines both
 stores and finalizes only a matching durable decision. If no decision can be
@@ -31,7 +31,7 @@ observed, it keeps UNKNOWN; it never invents REJECTED.
 
 The existing legacy Python CLI and .NET candidate CLI can be called without
 the gateway, so **their SQL writes are not yet fenced by the third controller**.
-The existing candidate-store \`FOR SHARE\` epoch fence remains cooperative.
+The existing candidate-store `FOR SHARE` epoch fence remains cooperative.
 The controller and candidate authority epochs are changed in separate
 transactions: there is no distributed atomic update or split-authority
 crash-repair proof. A direct rogue writer can bypass admission, and external
