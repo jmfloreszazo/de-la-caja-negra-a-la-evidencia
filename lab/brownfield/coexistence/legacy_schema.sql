@@ -33,12 +33,3 @@ CREATE TABLE legacy.clock (
 INSERT INTO legacy.clock(singleton,sequence_no) VALUES (1,0);
 INSERT INTO legacy.accounts(account_no,ledger_minor)
 SELECT n,100000 FROM generate_series(1,16) AS n;
-
--- Every accepted transfer must hold this row FOR SHARE throughout its SQL TX.
--- Cutover takes FOR UPDATE and commits FENCED before target can be activated.
-CREATE TABLE legacy.authority (
-  singleton INTEGER PRIMARY KEY CHECK (singleton=1),
-  mode TEXT NOT NULL CHECK (mode IN ('ACTIVE','FENCED')),
-  epoch BIGINT NOT NULL CHECK (epoch > 0)
-);
-INSERT INTO legacy.authority(singleton,mode,epoch) VALUES (1,'ACTIVE',1);
