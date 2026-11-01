@@ -163,7 +163,7 @@ static object Balance(string dsn, int account, long minimumVersion)
         throw new ArgumentException("Invalid balance query.");
     using var conn = new NpgsqlConnection(dsn);
     conn.Open();
-    using var tx = conn.BeginTransaction(IsolationLevel.RepeatableRead, readOnly: true);
+    using var tx = conn.BeginTransaction(IsolationLevel.RepeatableRead);
     long watermark = Convert.ToInt64(Scalar(tx,
         "SELECT watermark FROM brownfield.commit_clock WHERE id=1") ?? 0L);
     using var cmd = Command(tx,
@@ -244,7 +244,7 @@ static long Clock(NpgsqlConnection conn)
 static NpgsqlCommand Command(NpgsqlTransaction tx, string sql, params object[] values)
 {
     var cmd = new NpgsqlCommand(sql, tx.Connection, tx);
-    foreach (var value in values) cmd.Parameters.AddWithValue(value);
+    foreach (var value in values) cmd.Parameters.Add(new NpgsqlParameter { Value = value });
     return cmd;
 }
 
