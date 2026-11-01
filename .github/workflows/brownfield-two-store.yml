@@ -1,0 +1,83 @@
+name: Brownfield two-store coexistence
+on:
+  pull_request:
+    paths:
+      - 'lab/brownfield/coexistence/**'
+      - '.github/workflows/brownfield-two-store.yml'
+  push:
+    branches: [main]
+    paths:
+      - 'lab/brownfield/coexistence/**'
+      - '.github/workflows/brownfield-two-store.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  two-store-synthetic-coexistence:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+      - uses: actions/setup-dotnet@v5
+        with:
+          dotnet-version: '10.0.x'
+      - uses: actions/setup-python@v6
+        with:
+          python-version: '3.12'
+      - name: Install independent SQL clients
+        run: python3 -m pip install -r lab/e1_pg/requirements.txt
+      - name: Start two independently addressable disposable PostgreSQL containers
+        run: |
+          podman run -d --name bf-legacy-pg \
+            -e POSTGRES_DB=bf_legacy -e POSTGRES_PASSWORD=bflocal \
+            -p 127.0.0.1:55438:5432 docker.io/library/postgres:16.13
+          podman run -d --name bf-candidate-pg \
+            -e POSTGRES_DB=bf_lab -e POSTGRES_PASSWORD=bflocal \
+            -p 127.0.0.1:55439:5432 docker.io/library/postgres:16.13
+          ready=0
+          for i in $(seq 1 60); do
+            if podman exec bf-legacy-pg pg_isready -U postgres -d bf_legacy >/dev/null 2>&1 \
+               && podman exec bf-candidate-pg pg_isready -U postgres -d bf_lab >/dev/null 2>&1 \
+               && python3 -c 'import psycopg; a=psycopg.connect("host=127.0.0.1 port=55438 dbname=bf_legacy user=postgres password=bflocal"); b=psycopg.connect("host=127.0.0.1 port=55439 dbname=bf_lab user=postgres password=bflocal"); a.close(); b.close()' >/dev/null 2>&1; then
+              ready=1
+              break
+            fi
+            sleep 2
+          done
+          test "$ready" -eq 1
+      - name: Record actual original source SHA and topology
+        env:
+          SOURCE_HEAD_SHA: ${{ github.event.pull_request.head.sha || github.sha }}
+        run: |
+          mkdir -p lab/results/brownfield/coexistence
+          echo "source_head_sha=$SOURCE_HEAD_SHA" > lab/results/brownfield/coexistence/provenance.txt
+          echo "checkout_sha=$(git rev-parse HEAD)" >> lab/results/brownfield/coexistence/provenance.txt
+          test "$SOURCE_HEAD_SHA" = "$(git rev-parse HEAD)"
+          uname -a >> lab/results/brownfield/coexistence/provenance.txt
+          dotnet --info >> lab/results/brownfield/coexistence/provenance.txt
+          python3 --version >> lab/results/brownfield/coexistence/provenance.txt
+          podman version >> lab/results/brownfield/coexistence/provenance.txt
+          podman inspect bf-legacy-pg bf-candidate-pg --format '{{.Name}} {{.Id}} {{.NetworkSettings.Ports}}' >> lab/results/brownfield/coexistence/provenance.txt
+          podman image inspect docker.io/library/postgres:16.13 --format '{{.Id}} {{json .RepoDigests}}' >> lab/results/brownfield/coexistence/provenance.txt
+      - name: Execute two-store black-box failure and reconciliation matrix
+        env:
+          BROWNFIELD_DISPOSABLE: 'YES'
+          BROWNFIELD_LEGACY_DSN: 'host=127.0.0.1 port=55438 dbname=bf_legacy user=postgres password=bflocal'
+          BROWNFIELD_PG_DSN: 'host=127.0.0.1 port=55439 dbname=bf_lab user=postgres password=bflocal'
+          BROWNFIELD_PG_NPGSQL: 'Host=127.0.0.1;Port=55439;Database=bf_lab;Username=postgres;Password=bflocal;Pooling=false'
+        run: python3 lab/brownfield/coexistence/test_coexistence.py
+      - name: Upload complete original and negative evidence even on failure
+        if: always()
+        uses: actions/upload-artifact@v6
+        with:
+          name: brownfield-two-store-synthetic-not-mainframe-g6
+          path: lab/results/brownfield/coexistence/
+          if-no-files-found: warn
+      - name: Clean up disposable databases
+        if: always()
+        run: |
+          podman logs --tail 60 bf-legacy-pg || true
+          podman logs --tail 60 bf-candidate-pg || true
+          podman rm -f bf-legacy-pg bf-candidate-pg || true

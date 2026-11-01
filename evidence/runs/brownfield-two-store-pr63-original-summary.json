@@ -1,0 +1,55 @@
+{
+  "status": "PASS",
+  "classification": "SYNTHETIC_TWO_POSTGRESQL_CONTAINERS_SINGLE_RUNNER",
+  "startedUtc": "2026-11-01T19:00:19.925901+00:00",
+  "endedUtc": "2026-11-01T19:00:31.357807+00:00",
+  "sourceSha256": {
+    "lab/brownfield/coexistence/legacy_schema.sql": "050b6046303bd08af64d5be19740600764755f6dfe4146611539e69b465c840f",
+    "lab/brownfield/coexistence/legacy_api.py": "87e17aea0e5b368e11eff7d1459096696c0d4e494d24b6cae819b423e136a3c1",
+    "lab/brownfield/coexistence/two_store.py": "0d233f40f237341f1f36b20053d91882b97be719d6b3ad9daf3724a72ae1ea93",
+    "lab/brownfield/coexistence/test_coexistence.py": "b282293a761ab5d5f1ff7bfde8f3cd667f6900ecb87dbdc6a0bf84ad15a44d31",
+    "lab/brownfield/durable/schema.sql": "52ebd0ea8104dcbd0bd3d4d6a8332150a31514ce6745c44400b745a7044eeea0",
+    "lab/brownfield/durable/DurableBank/Program.cs": "cff7d56de30a24c0259c03c1d9ec42779944b4439f5067cb5fe1b935b71ff856"
+  },
+  "completedControls": [
+    "unmirroredLegacyCannotClaimShadowParity",
+    "cutoverBlockedUntilSourceTargetReconciled",
+    "shadowReadOnlyNoDuplicatePosting",
+    "postStageLegacyDriftFalsifiesCutover",
+    "missingOutboxBlocksCutover",
+    "lateLegacyEpochFenced",
+    "reversibleOnlyBeforeCandidateOriginatedWrites",
+    "candidateWritesVetoUnsafeRollback",
+    "rogueWriterDetectedNotPrevented"
+  ],
+  "sourceOperations": 8,
+  "targetOperations": 10,
+  "sourceOracle": {
+    "fixtureAccounts": true,
+    "conservedBalances": true,
+    "balancesFromPostings": true,
+    "atomicPairedPostings": true,
+    "exactOutbox": true,
+    "rejectedNoEffects": true,
+    "clockMatchesDecisionCount": true,
+    "versionsBounded": true,
+    "noUnknownDecisions": true,
+    "wellFormedFingerprint": true
+  },
+  "targetOracle": {
+    "fixtureAccounts": true,
+    "conservedBalances": true,
+    "balancesFromPostings": true,
+    "atomicPairedPostings": true,
+    "exactOutbox": true,
+    "rejectedNoEffects": true,
+    "clockMatchesDecisionCount": true,
+    "versionsBounded": true,
+    "noUnknownDecisions": true,
+    "wellFormedFingerprint": true
+  },
+  "rollback": "BLOCK_FORWARD_FIX_REQUIRED",
+  "todmG2": "INCONCLUSIVE",
+  "todmG6": "BLOCK",
+  "limitations": "Independent logical PostgreSQL containers on one CI host; no CICS/Db2, no customer Golden Master or mandate, no 2PC, no post-crash external routing admission journal, no HA. Direct rogue legacy writes are DETECTED but not prevented."
+}
