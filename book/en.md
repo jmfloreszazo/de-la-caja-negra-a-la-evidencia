@@ -2176,6 +2176,71 @@ The table teaches one true thing and nothing more: when we add processes that co
 
 > **The service can answer OK and leave something else behind. The oracle looks at what remains.**
 
+#### From atomic debit to authority transfer across two stores
+
+The next challenge is not making a PostgreSQL transfer work. It is
+**moving accounting authority from an incumbent system to a replacement**
+without two simultaneous writers or a lost acknowledgement becoming a
+second financial posting.
+
+The [brownfield coexistence lab](../lab/brownfield/coexistence/README.md)
+adds two PostgreSQL 16.13 instances, each in a separate Podman container,
+but **both hosted by one Linux CI runner**. One models a synthetic legacy
+black-box executable with deliberately different tables and column names;
+the other hosts the .NET 10 candidate. Neither parses COBOL. Actual
+customer business rules remain unknown: writing a component from scratch
+does not make an existing-system modernization greenfield.
+
+A common authority row and an epoch model the writer fence. Both adapters
+cooperate: they hold a shared row lock through their respective database
+commit. The transition takes the exclusive lock, waits for admitted work
+to finish and increments the epoch. This can establish rejection of an
+old-epoch command in the synthetic model. **It cannot establish that an
+uncontrolled CICS or Db2 writer will respect that lock.** The deliberately
+rogue direct-SQL control shows that such bypasses are detected by the
+oracle, but not prevented by this design.
+
+The protocol separates four decisions:
+
+1. **Observe without double posting.** Shadow execution predicts responses
+   using read-only snapshots. It publishes no second posting or outbox event.
+   Stale candidate state yields a visible disagreement.
+2. **Stage without declaring new authority.** While the transition gate is
+   locked, copy a consistent source snapshot into the non-authoritative
+   destination, including rejected decisions, operation IDs, fingerprints,
+   postings, events, versions and decision watermark.
+3. **Reconcile independently.** Normalize both storage models and compare
+   accounts, operations, postings, outbox and watermark. Require monetary
+   conservation, paired postings and zero effects for rejected operations.
+4. **Promote or block.** Increment the writer epoch only if every dimension
+   matches. A missing event or source decision after staging must reject
+   cutover, even if aggregate balances still look reasonable.
+
+The [original exact-source-SHA evidence](../evidence/runs/BROWNFIELD-TWO-STORE.md),
+executed on 1 November 2026, passed these synthetic controls. The
+legacy store ended with eight decisions and the candidate with ten,
+including two posted after authority transfer. All ten accounting checks
+on each store were true, but the stores no longer agreed: rollback was
+**rejected with `FORWARD_FIX_REQUIRED`**. That is the lesson. Once the
+new writer posts new decisions, the old balances cannot simply be
+reactivated.
+
+##### What would be needed for a real cutover
+
+A simulated black-box contract cannot take away a bank's incumbent writer
+privileges. We need a verifiable source-side fence, durable admission and
+unknown-outcome journals, recovery across interrupted copies, external
+side-effect reconciliation, and explicit resume/forward-repair protocols.
+Approved business rules and mandates also remain necessary: an observed
+Golden Master is not automatically an approved policy.
+
+In TODM terms, this synthetic run supplies bounded engineering evidence
+for G4/G5; **G2 remains inconclusive and G6 stays blocked**. It is not
+evidence of physically independent failure domains, production RTO/RPO,
+CICS/Db2 semantics, mainframe MIPS parity or Azure cost acceptance.
+The laboratory is useful because it makes these missing guarantees
+falsifiable before they become migration promises.
+
 ### Chapter 29 · Bringing in agents without letting them write the approval
 
 > [!IMPORTANT]
