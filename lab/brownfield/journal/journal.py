@@ -199,11 +199,15 @@ def dispatch(operation_id: str, source: int, destination: int,
             # Even a normal ACK is NOT final until independently reconciled.
             with psycopg.connect(dsn) as db:
                 _state(db, operation_id, "UNKNOWN")
+            # Retain the gateway operation lock through independent SQL
+            # finalization. Releasing it first lets queued duplicate requests
+            # race recovery and observe this gateway's provisional UNKNOWN.
+            with psycopg.connect(dsn) as db:
+                decision = _recover_decision(db, operation_id)
         finally:
             # Session-scoped lock is automatically released on real SIGKILL.
             session.execute("SELECT pg_advisory_unlock(hashtextextended(%s,0))",
                             (operation_id,))
-    decision = recover(operation_id)
     if child is not None:
         decision["childExitCode"] = child.returncode
     return decision
@@ -238,27 +242,27 @@ def _observed(row: dict[str, Any]) -> tuple[str | None, str]:
     return origin[0], "PERSISTED_SQL_ORACLE_WITH_POSSIBLE_STAGED_COPY"
 
 
+def _recover_decision(db: psycopg.Connection, operation_id: str) -> dict[str, Any]:
+    # Caller already owns the operation advisory lock (session or transaction).
+    row = _row(db, operation_id)
+    if row is None:
+        raise UnsafeCutover("No journal entry for operation")
+    status, evidence = _observed(row)
+    if status is not None:
+        _state(db, operation_id, status)
+        return {"status": status, "evidence": evidence, "todmG6": "BLOCK"}
+    unresolved = ("UNKNOWN" if evidence == "NO_DURABLE_DECISION_OBSERVED"
+                  else "RECONCILIATION_REQUIRED")
+    _state(db, operation_id, unresolved)
+    return {"status": unresolved, "evidence": evidence, "todmG6": "BLOCK"}
+
+
 def recover(operation_id: str) -> dict[str, Any]:
     """No ACK-based verdicts. A missing SQL row stays UNKNOWN, never REJECTED."""
-    dsn = controller_dsn()
-    with psycopg.connect(dsn) as db:
-        # Same operation lock prevents racing an active gateway dispatch.
+    with psycopg.connect(controller_dsn()) as db:
         db.execute("SELECT pg_advisory_xact_lock(hashtextextended(%s,0))",
                    (operation_id,))
-        row = _row(db, operation_id)
-        if row is None:
-            raise UnsafeCutover("No journal entry for operation")
-        if row["state"] not in TERMINAL:
-            _state(db, operation_id, "UNKNOWN")
-        status, evidence = _observed(row)
-        if status is not None:
-            _state(db, operation_id, status)
-            return {"status": status, "evidence": evidence, "todmG6": "BLOCK"}
-        unresolved = ("UNKNOWN" if evidence == "NO_DURABLE_DECISION_OBSERVED"
-                      else "RECONCILIATION_REQUIRED")
-        _state(db, operation_id, unresolved)
-        return {"status": unresolved, "evidence": evidence,
-                "todmG6": "BLOCK"}
+        return _recover_decision(db, operation_id)
 
 
 def audit() -> dict[str, Any]:

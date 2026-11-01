@@ -141,7 +141,8 @@ def main() -> None:
     controls.append("durableAdmissionIdempotencyAndRejectedDecision")
     with ThreadPoolExecutor(max_workers=4) as pool:
         raced = list(pool.map(lambda _: dispatch("J-RACE", 3, 4, 13, 1), range(6)))
-    assert sorted(r["status"] for r in raced) == ["COMMITTED"] + ["DUPLICATE_COMMITTED"] * 5
+    (RESULTS / "concurrent-replies.json").write_text(json.dumps(raced, indent=2) + "\n", encoding="utf-8")
+    assert sorted(r["status"] for r in raced) == ["COMMITTED"] + ["DUPLICATE_COMMITTED"] * 5, raced
     assert count(legacy_dsn, "SELECT count(*) FROM legacy.entries WHERE request_id=%s", "J-RACE") == 2
     assert count(legacy_dsn, "SELECT count(*) FROM legacy.notices WHERE request_id=%s", "J-RACE") == 1
     controls.append("concurrentSameIdHasOneDecisionTwoPostingsOneOutbox")
