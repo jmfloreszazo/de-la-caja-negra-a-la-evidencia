@@ -125,6 +125,76 @@ La tabla enseña una cosa verdadera y nada más: al añadir procesos que compite
 
 > **El servicio puede contestar OK y dejar otra cosa detrás. El oráculo mira lo que queda.**
 
+## Del débito atómico al traspaso de autoridad entre dos almacenes
+
+La siguiente dificultad no consiste en hacer funcionar una transferencia con
+PostgreSQL. Consiste en **trasladar la autoridad contable de un sistema heredado
+a otro nuevo**, sin que los dos escriban al mismo tiempo ni que una caída de
+red convierta una respuesta desconocida en un débito duplicado.
+
+La [prueba brownfield de convivencia](../../../lab/brownfield/coexistence/README.md)
+añade dos instancias PostgreSQL 16.13, cada una en un contenedor Podman
+distinto, pero **ambas dentro de un único runner Linux**. Una representa un
+legado sintético, expuesto mediante un ejecutable de caja negra y tablas con
+nombres y estructuras diferentes. La otra contiene el candidato .NET 10.
+Ninguna depende de un parser COBOL. Las reglas de negocio reales siguen
+siendo una incógnita: escribir código nuevo desde cero no convierte una
+migración brownfield en greenfield.
+
+El control de escritor se representa mediante una fila de autoridad y una
+época. Ambos adaptadores cooperan: mantienen un bloqueo compartido mientras
+confirman sus respectivas transacciones. El cambio de escritor adquiere el
+bloqueo exclusivo, espera a los comandos que ya estaban dentro y aumenta
+la época. Así podemos demostrar que un comando tardío con una época antigua
+es rechazado. **No hemos demostrado que un programa CICS o una transacción
+Db2 fuera de este controlador respeten ese bloqueo**; el ensayo adversarial
+de escritura directa prueba que el desvío se detecta, pero no se impide.
+
+El protocolo está organizado en cuatro decisiones separadas:
+
+1. **Observar sin escribir dos veces.** El shadow calcula respuestas a partir
+   de lecturas; no publica ni un segundo asiento ni otro evento outbox.
+   Si la réplica está desfasada, se declara la discrepancia.
+2. **Preparar sin declarar autoridad nueva.** Bajo el bloqueo de transición
+   se copia un snapshot consistente del legado al destino, incluidas las
+   operaciones rechazadas, los identificadores, huellas, apuntes,
+   eventos, versiones y contador de decisiones.
+3. **Conciliar independientemente.** El oráculo normaliza ambos modelos
+   de datos y compara cinco familias: cuentas, operaciones, apuntes,
+   outbox y watermark. Comprueba, además, la conservación monetaria,
+   la pareja de asientos y la ausencia de efectos de operaciones rechazadas.
+4. **Cambiar o bloquear.** Solo si el estado completo coincide se
+   aumenta la época y se acepta el cambio sintético de escritor.
+   Un apunte o evento ausente, o una decisión nueva después del snapshot,
+   debe bloquear la transición. No basta con que el saldo total coincida.
+
+La [ejecución original sobre SHA exacto](../../../evidence/runs/BROWNFIELD-TWO-STORE.es.md)
+del 1 de noviembre de 2026 superó los controles sintéticos. El legado terminó
+con ocho decisiones y el candidato con diez, dos de ellas posteriores al
+cutover. Los diez invariantes de cada almacén fueron verdaderos, pero las
+dos bases dejaron de ser idénticas; por eso el rollback quedó **bloqueado
+con `FORWARD_FIX_REQUIRED`**. La conclusión no es «ya podemos volver atrás»,
+sino la contraria: una vez que el nuevo escritor ha confirmado operaciones,
+el antiguo estado deja de ser automáticamente válido.
+
+### Qué falta antes de permitir un cutover real
+
+Un contrato de caja negra simulado no concede al proveedor acceso a los
+bloqueos del banco. Necesitamos un mecanismo verificable que retire al
+incumbente su autoridad de escritura, más un registro persistente de
+admisiones y resultados inciertos, conciliación ante interrupciones entre
+almacenes, detección de efectos en sistemas terceros y protocolos de
+reanudación o reparación hacia adelante. También hacen falta políticas
+aprobadas por el propietario del negocio: un Golden Master observado no
+basta para aprobar una política.
+
+En TODM, este ensayo aporta evidencia técnica para G4/G5; **G2 permanece
+inconcluso y G6 sigue bloqueado**. Tampoco prueba dominios físicos de fallo,
+RTO/RPO productivos, equivalencia CICS/Db2, capacidad MIPS ni viabilidad
+económica de Azure. Ese es precisamente el propósito del laboratorio:
+convertir los supuestos de arquitectura en afirmaciones que podamos
+refutar antes de prometer una migración.
+
 ---
 
 [← Capítulo 27 · Hacer que el error se vea](27-hacer-que-el-error-se-vea.md) · [Índice](../README.md) · [Capítulo 29 · Incorporar agentes sin permitir que escriban el aprobado →](29-incorporar-agentes-sin-permitir-que-escriban-el-aprobado.md)
