@@ -75,7 +75,7 @@ static TransferResult Transfer(string dsn, string id, int source, int destinatio
         || source == destination || amount is <= 0 or > 1_000_000_000_000L
         || !ValidWriter(writer) || expectedEpoch < 1)
         throw new ArgumentException("Invalid synthetic transfer scope.");
-    if (fault is not ("none" or "crash-before-commit" or "lost-ack"))
+    if (fault is not ("none" or "crash-before-commit" or "pause-before-commit" or "lost-ack"))
         throw new ArgumentException("Unsupported fault injection.");
 
     string fingerprint = Fingerprint(source, destination, amount);
@@ -123,6 +123,12 @@ static TransferResult Transfer(string dsn, string id, int source, int destinatio
             if (debited == 1)
             {
                 if (fault == "crash-before-commit") Environment.Exit(91);
+                if (fault == "pause-before-commit")
+                {
+                    Console.WriteLine("UNCOMMITTED_DEBIT_APPLIED");
+                    Console.Out.Flush();
+                    Thread.Sleep(TimeSpan.FromSeconds(20));
+                }
                 Exec(tx, "UPDATE brownfield.accounts SET balance=balance+$1 WHERE id=$2",
                     amount, destination);
             }
