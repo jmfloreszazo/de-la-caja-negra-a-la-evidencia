@@ -52,8 +52,13 @@ class RehearsalGate:
     """
 
     scope = "SYNTHETIC_REHEARSAL_NOT_PRODUCTION"
-    todm_g6 = "BLOCK"
-    business_owner_approved = False
+    @property
+    def todm_g6(self) -> str:
+        return "BLOCK"
+
+    @property
+    def business_owner_approved(self) -> bool:
+        return False
 
     def __init__(self) -> None:
         self.writer = "legacy"
