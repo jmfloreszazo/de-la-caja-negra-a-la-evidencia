@@ -18,6 +18,8 @@ jobs:
     timeout-minutes: 25
     steps:
       - uses: actions/checkout@v5
+        with:
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
       - uses: actions/setup-dotnet@v5
         with:
           dotnet-version: '10.0.x'
@@ -52,6 +54,7 @@ jobs:
           mkdir -p lab/results/brownfield/coexistence
           echo "source_head_sha=$SOURCE_HEAD_SHA" > lab/results/brownfield/coexistence/provenance.txt
           echo "checkout_sha=$(git rev-parse HEAD)" >> lab/results/brownfield/coexistence/provenance.txt
+          test "$SOURCE_HEAD_SHA" = "$(git rev-parse HEAD)"
           uname -a >> lab/results/brownfield/coexistence/provenance.txt
           dotnet --info >> lab/results/brownfield/coexistence/provenance.txt
           python3 --version >> lab/results/brownfield/coexistence/provenance.txt
