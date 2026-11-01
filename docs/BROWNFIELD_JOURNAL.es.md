@@ -3,7 +3,7 @@
 **Contrato experimental, 1 de noviembre de 2026. Sin aceptación bancaria.**
 
 El riesgo que sigue a la convivencia de dos almacenes es la operación
-ambigüa: PostgreSQL confirma el COMMIT, pero el gateway no recibe el ACK.
+ambigua: PostgreSQL confirma el COMMIT, pero el gateway no recibe el ACK.
 La ausencia de respuesta **no equivale a rollback**, ni permite reenviar
 la misma transferencia a otro escritor.
 
@@ -54,7 +54,8 @@ Con `BROWNFIELD_REQUIRE_CONTROLLER=YES`, tanto el adaptador legado en Python
 como el candidato .NET exigen `bf_control` accesible y mantienen un bloqueo
 compartido sobre la fila de autoridad hasta terminar la transacción financiera.
 Las pruebas históricas de dos almacenes conservan su funcionamiento al no
-activar esta opción. Sin embargo, una llamada directa al adaptador puede
-escribir sin registrar previamente el journal: el oráculo debe **detectarlo**,
-pero no puede afirmar que lo impida. Es un mecanismo cooperativo, no un fence
+activar esta opción. Además, en modo estricto ambos adaptadores exigen una admisión
+`DISPATCHING` persistida y rechazan las llamadas directas no admitidas.
+Si se desactiva deliberadamente el control opt-in, todavía se puede escribir
+sin journal: el oráculo detecta el bypass, pero no lo impide. No es un fence
 real de IBM Z.

@@ -199,9 +199,11 @@ shared authority row lock through financial COMMIT. The
 [original C2 CI run](https://github.com/jmfloreszazo/de-la-caja-negra-a-la-evidencia/actions/runs/41341644829)
 is tied to one exact source SHA. It is not bank acceptance.
 
-**The uncomfortable but necessary qualification:** direct adapter calls
-can post without first entering the gateway journal. The independent
-oracle detects this unjournaled effect but cannot prevent it. Nor do the
+**The uncomfortable but necessary qualification:** strict C2 mode
+requires a matching `DISPATCHING` journal admission at both adapters and
+rejects direct unadmitted commands. Deliberately disabling this opt-in
+allows direct unjournaled posts: the oracle detects that configuration
+bypass but cannot prevent it. Nor do the
 controller and candidate authority epochs change atomically across two
 PostgreSQL servers. A cooperative lock cannot revoke a real CICS/Db2
 writer's authority. External fencing, split-authority crash repair,

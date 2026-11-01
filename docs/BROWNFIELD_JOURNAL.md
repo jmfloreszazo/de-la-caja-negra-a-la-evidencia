@@ -52,6 +52,8 @@ With `BROWNFIELD_REQUIRE_CONTROLLER=YES`, both the Python legacy adapter and
 .NET candidate require reachable `bf_control` and retain a shared authority
 row lock until the financial database transaction completes. The original
 legacy two-store experiment is unaffected when this opt-in flag is absent.
-A direct adapter invocation can still omit gateway admission while retaining
-the controller lock: the audit must **detect, not claim to prevent**, its
-unjournaled posting. This is a cooperative fixture, not a genuine IBM Z fence.
+In strict mode, both adapters additionally require a matching persisted
+`DISPATCHING` journal row; direct unadmitted commands are rejected. If the
+opt-in requirement is deliberately disabled, unjournaled posting is still
+possible; the independent oracle detects, but cannot prevent, this
+configuration bypass. This is not a genuine IBM Z fence.

@@ -203,9 +203,11 @@ C2 y mantener un bloqueo compartido hasta confirmar la operación. Las
 se ejecutaron con un SHA concreto en CI. No sustituyen una homologación
 bancaria.
 
-**Una precisión incómoda pero imprescindible:** el acceso directo al
-adaptador puede escribir sin una admisión en el gateway; el oráculo detecta
-el efecto sin journal, pero no puede impedirlo. Las épocas del controlador
+**Una precisión incómoda pero imprescindible:** en modo C2 estricto,
+ambos adaptadores exigen una admisión `DISPATCHING` previa y rechazan
+llamadas directas sin ella. Si se desactiva deliberadamente esa opción,
+el acceso directo puede escribir sin journal: el oráculo detecta el efecto,
+pero no evita ese bypass de configuración. Las épocas del controlador
 y del candidato tampoco cambian atómicamente entre dos PostgreSQL.
 Un bloqueo cooperativo no retira la autoridad a un CICS/Db2 real. Faltan
 fencing externo, reparación ante crash entre cambios de autoridad,
