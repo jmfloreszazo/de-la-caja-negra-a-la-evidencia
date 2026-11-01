@@ -81,13 +81,21 @@ def main() -> None:
     (OUT / "build.log").write_text(build.stdout + build.stderr, encoding="utf-8")
     assert build.returncode == 0, build.stdout + build.stderr
     bootstrap()
+    # A DSN can spell host=127.0.0.1 while libpq hostaddr points elsewhere.
+    # Reject it *before* any connection or destructive setup.
+    saved_dsn=os.environ["BROWNFIELD_LEGACY_DSN"]
+    try:
+        os.environ["BROWNFIELD_LEGACY_DSN"]=saved_dsn+" hostaddr=192.0.2.1"
+        must_block(connections, "overrides are forbidden")
+    finally:
+        os.environ["BROWNFIELD_LEGACY_DSN"]=saved_dsn
     # Two PostgreSQL containers must have different cluster identifiers, not
     # merely two DSNs addressing the same server under different names.
     with psycopg.connect(old_dsn) as source_db, psycopg.connect(target_dsn) as target_db:
         legacy_cluster=source_db.execute("SELECT system_identifier::text FROM pg_control_system()").fetchone()[0]
         candidate_cluster=target_db.execute("SELECT system_identifier::text FROM pg_control_system()").fetchone()[0]
     assert legacy_cluster!=candidate_cluster, "Both databases share one PostgreSQL cluster"
-    controls = ["distinctPostgresqlClusterIdentifiers"]
+    controls = ["hostaddrOverrideRejectedBeforeConnection", "distinctPostgresqlClusterIdentifiers"]
     assert gateway_authority()==("legacy",1)
     assert gateway_balance(1)["routedTo"]=="legacy"
     try:
