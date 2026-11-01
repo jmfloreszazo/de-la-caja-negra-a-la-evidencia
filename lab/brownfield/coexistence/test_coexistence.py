@@ -201,7 +201,8 @@ def main() -> None:
     assert post["targetCount"] == post["sourceCount"] + 2, post
     assert post["todmG6"] == "BLOCK"
     files = [HERE / "legacy_schema.sql", HERE / "legacy_api.py",
-             HERE / "two_store.py", HERE / "test_coexistence.py",
+             HERE / "gateway.py", HERE / "two_store.py",
+             HERE / "test_coexistence.py",
              DURABLE / "schema.sql", DURABLE / "DurableBank" / "Program.cs"]
     report = {
         "status": "PASS",
