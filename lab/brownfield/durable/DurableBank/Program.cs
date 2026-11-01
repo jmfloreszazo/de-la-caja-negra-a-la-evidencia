@@ -15,8 +15,8 @@ try
     string connectionString = Environment.GetEnvironmentVariable("BROWNFIELD_PG_NPGSQL")
         ?? throw new InvalidOperationException("BROWNFIELD_PG_NPGSQL is required.");
     var builder = new NpgsqlConnectionStringBuilder(connectionString);
-    if (builder.Database is null || !builder.Database.StartsWith("bf_", StringComparison.Ordinal))
-        throw new InvalidOperationException("The database name must start with bf_.");
+    if (builder.Database is null || builder.Database != "bf_lab")
+        throw new InvalidOperationException("The database must be the dedicated bf_lab fixture.");
     if (args.Length == 0) return 4;
 
     if (args[0] == "transfer" && args.Length is >= 7 and <= 8)
