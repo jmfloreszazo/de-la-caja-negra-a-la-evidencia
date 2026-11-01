@@ -93,7 +93,7 @@ def main() -> None:
     before_stage = reconcile()
     assert not before_stage["allEqual"]
     assert before_stage["sourceCount"] == 7 and before_stage["targetCount"] == 0
-    assert shadow_prediction(1, 2, 100000)["equal"] is False
+    assert shadow_prediction(2, 1, 100000)["equal"] is False
     controls.append("unmirroredLegacyCannotClaimShadowParity")
     must_block(lambda: transition("candidate", 1), "stores differ")
     controls.append("cutoverBlockedUntilSourceTargetReconciled")
