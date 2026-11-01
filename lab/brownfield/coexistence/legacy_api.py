@@ -25,6 +25,8 @@ def require_fixture() -> tuple[str, str]:
     for dsn, expected, port in ((legacy, "bf_legacy", "55438"),
                                 (target, "bf_lab", "55439")):
         params = psycopg.conninfo.conninfo_to_dict(dsn)
+        if any(params.get(extra) for extra in ("hostaddr", "service", "servicefile")) or os.environ.get("PGHOSTADDR") or os.environ.get("PGSERVICE"):
+            raise RuntimeError("Connection address overrides are forbidden for disposable fixtures")
         if (params.get("dbname"), params.get("host"), params.get("port")) != (
                 expected, "127.0.0.1", port):
             raise RuntimeError("Refusing a non-loopback or non-fixture database")
