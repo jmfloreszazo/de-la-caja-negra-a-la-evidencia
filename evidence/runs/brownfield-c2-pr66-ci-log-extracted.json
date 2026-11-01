@@ -1,0 +1,81 @@
+{
+  "provenance": {
+    "classification": "EXTRACTED_FROM_GITHUB_ACTIONS_TEXT_LOG_NOT_ORIGINAL_ARTIFACT_BYTES",
+    "sourceHeadSha": "8dc391d276724726eca68373150dfceaf1e291e0",
+    "runId": 41342450730,
+    "jobId": 124955148855,
+    "runUrl": "https://github.com/jmfloreszazo/de-la-caja-negra-a-la-evidencia/actions/runs/41342450730",
+    "artifactId": 13098480178,
+    "artifactName": "brownfield-c2-journal-synthetic-g6-block",
+    "artifactZipSha256": "e0479df604fd607825a794b2b00a3487d9103cbc46aa8887d897f6f1a6175827",
+    "artifactZipSizeBytes": 3145,
+    "caveat": "The ZIP digest belongs to the original GitHub artifact, not this log-extracted JSON; this JSON is NOT a byte-copy of the ZIP summary."
+  },
+  "observed": {
+    "status": "PASS",
+    "claim": "SYNTHETIC_THREE_POSTGRESQL_CONTAINERS_ON_ONE_CI_RUNNER_C2_PARTIAL",
+    "startUtc": "2026-11-01T19:35:12.029876+00:00",
+    "endUtc": "2026-11-01T19:35:23.286759+00:00",
+    "sourceSha256": {
+      "lab/brownfield/journal/schema.sql": "957f5f8021044c3610e4d47ed65d583e4f99c111013a94bc2a197bdc051f56a6",
+      "lab/brownfield/journal/journal.py": "965a5ead5b1489f65091b46ba7861271c7f8cbd19618105707085ba8ffb98a25",
+      "lab/brownfield/journal/test_journal.py": "e769d0edbe6c4bb59b5dafe2f42677794fda4c0d971832aa2498d465745d05cf",
+      "lab/brownfield/coexistence/legacy_api.py": "cae937d13d8ce14763a956b67c64f5ee9aa183e53e4df62b31880355deb626d4",
+      "lab/brownfield/coexistence/two_store.py": "0d233f40f237341f1f36b20053d91882b97be719d6b3ad9daf3724a72ae1ea93",
+      "lab/brownfield/durable/DurableBank/Program.cs": "886335ba1e9d79933b63f2fc4f936255559de03c46b8382911fb64bfdd1b9d1d"
+    },
+    "completedControls": [
+      "durableAdmissionIdempotencyAndRejectedDecision",
+      "controllerUnreachableFencesBothCooperatingAdapters",
+      "remoteCommitLostAckIndependentRecoveryExactlyOneLedgerEffect",
+      "gatewayCrashAfterRemoteCommitReconcilesDurableDecision",
+      "forgedTerminalJournalFailsIndependentOracleAndCutover",
+      "candidateWritesPreventUnsafeRollback",
+      "admittedButNotDispatchedStaysUnknown",
+      "crashAfterDispatchMarkBlocksCutoverWithoutRemoteProof",
+      "controllerCandidateAuthoritySplitFailsClosed",
+      "directWithoutAdmissionPreventedInStrictC2Fixture",
+      "configurationOptOutBypassDetectedNotPrevented"
+    ],
+    "lastJournalAudit": {
+      "passed": false,
+      "unjournaledOperations": [
+        "J-DIRECT-BYPASS"
+      ],
+      "unresolved": [
+        "J-ADMIT-DEAD",
+        "J-DISPATCH-DEAD"
+      ],
+      "mismatchedFinalDecisions": [],
+      "todmG2": "INCONCLUSIVE",
+      "todmG6": "BLOCK"
+    },
+    "sourceSqlOracle": {
+      "fixtureAccounts": true,
+      "conservedBalances": true,
+      "balancesFromPostings": true,
+      "atomicPairedPostings": true,
+      "exactOutbox": true,
+      "rejectedNoEffects": true,
+      "clockMatchesDecisionCount": true,
+      "versionsBounded": true,
+      "noUnknownDecisions": true,
+      "wellFormedFingerprint": true
+    },
+    "targetSqlOracle": {
+      "fixtureAccounts": true,
+      "conservedBalances": true,
+      "balancesFromPostings": true,
+      "atomicPairedPostings": true,
+      "exactOutbox": true,
+      "rejectedNoEffects": true,
+      "clockMatchesDecisionCount": true,
+      "versionsBounded": true,
+      "noUnknownDecisions": true,
+      "wellFormedFingerprint": true
+    },
+    "todmG2": "INCONCLUSIVE",
+    "todmG6": "BLOCK",
+    "limitations": "Gateway-only cooperative fence; direct adapter calls bypass the third controller; non-atomic dual authority commits, no independent physical hosts or real incumbent/mandate/approved policy."
+  }
+}
