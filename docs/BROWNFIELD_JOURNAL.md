@@ -45,3 +45,13 @@ strings, not bank authorization. TODM G2 remains INCONCLUSIVE and G6 BLOCK.
 **Evidence status:** SOURCE CANDIDATE until the original CI at an exact head
 SHA passes and retains raw logs/artifact digests. See issue #64; #58 remains
 open. No change to published book release or to frozen #53.
+
+### C2 adapter enforcement experiment
+
+With `BROWNFIELD_REQUIRE_CONTROLLER=YES`, both the Python legacy adapter and
+.NET candidate require reachable `bf_control` and retain a shared authority
+row lock until the financial database transaction completes. The original
+legacy two-store experiment is unaffected when this opt-in flag is absent.
+A direct adapter invocation can still omit gateway admission while retaining
+the controller lock: the audit must **detect, not claim to prevent**, its
+unjournaled posting. This is a cooperative fixture, not a genuine IBM Z fence.

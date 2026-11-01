@@ -64,6 +64,8 @@ jobs:
           BROWNFIELD_LEGACY_DSN: 'host=127.0.0.1 port=55438 dbname=bf_legacy user=postgres password=bflocal'
           BROWNFIELD_PG_DSN: 'host=127.0.0.1 port=55439 dbname=bf_lab user=postgres password=bflocal'
           BROWNFIELD_CONTROL_DSN: 'host=127.0.0.1 port=55440 dbname=bf_control user=postgres password=bflocal'
+          BROWNFIELD_REQUIRE_CONTROLLER: 'YES'
+          BROWNFIELD_CONTROL_NPGSQL: 'Host=127.0.0.1;Port=55440;Database=bf_control;Username=postgres;Password=bflocal;Pooling=false'
           BROWNFIELD_PG_NPGSQL: 'Host=127.0.0.1;Port=55439;Database=bf_lab;Username=postgres;Password=bflocal;Pooling=false'
         run: python3 lab/brownfield/journal/test_journal.py
       - name: Preserve original evidence even when failing

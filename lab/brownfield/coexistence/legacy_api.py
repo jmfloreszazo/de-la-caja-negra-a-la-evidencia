@@ -5,6 +5,7 @@ It models an incumbent's external transfer/balance contract with a different
 storage schema. It is NOT COBOL/CICS/Db2 and is not a real incumbent fence.
 """
 import hashlib
+from contextlib import ExitStack
 import json
 import os
 import re
@@ -51,7 +52,23 @@ def transfer(legacy_dsn: str, control_dsn: str, request_id: str,
     # This is a cooperative fixture; a real unfenced legacy writer may bypass it.
     for attempt in range(6):
         try:
-            with psycopg.connect(control_dsn) as ctrl:
+            with ExitStack() as stack:
+                # A *cooperating* C2 adapter must hold controller FOR SHARE
+                # throughout the remote SQL COMMIT, not merely at admission.
+                if os.environ.get("BROWNFIELD_REQUIRE_CONTROLLER") == "YES":
+                    controller_dsn = os.environ.get("BROWNFIELD_CONTROL_DSN")
+                    if not controller_dsn:
+                        raise RuntimeError("C2 controller DSN required: fail closed")
+                    coordinator = stack.enter_context(psycopg.connect(controller_dsn))
+                    if coordinator.execute("SELECT current_database()").fetchone()[0] != "bf_control":
+                        raise RuntimeError("Not a disposable bf_control controller")
+                    active = coordinator.execute(
+                        "SELECT writer,epoch FROM controller.authority "
+                        "WHERE singleton=1 FOR SHARE"
+                    ).fetchone()
+                    if active != ("legacy", epoch):
+                        return {"status": "FENCED_CONTROLLER_OR_EPOCH"}
+                ctrl = stack.enter_context(psycopg.connect(control_dsn))
                 ctrl.execute("SET LOCAL lock_timeout='750ms'")
                 row = ctrl.execute(
                     "SELECT writer,epoch FROM brownfield.authority "

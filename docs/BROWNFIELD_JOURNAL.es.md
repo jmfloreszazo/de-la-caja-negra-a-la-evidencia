@@ -47,3 +47,14 @@ RTO/RPO ni aprobación de negocio. TODM G2=INCONCLUSIVE y G6=BLOCK.
 hasta obtener una ejecución original ligada al SHA exacto con artefactos.
 Continúan abiertas las issues #64 y #58. No se modifica la release ni
 se reactiva #53.
+
+### Experimento de fencing en los adaptadores C2
+
+Con `BROWNFIELD_REQUIRE_CONTROLLER=YES`, tanto el adaptador legado en Python
+como el candidato .NET exigen `bf_control` accesible y mantienen un bloqueo
+compartido sobre la fila de autoridad hasta terminar la transacción financiera.
+Las pruebas históricas de dos almacenes conservan su funcionamiento al no
+activar esta opción. Sin embargo, una llamada directa al adaptador puede
+escribir sin registrar previamente el journal: el oráculo debe **detectarlo**,
+pero no puede afirmar que lo impida. Es un mecanismo cooperativo, no un fence
+real de IBM Z.

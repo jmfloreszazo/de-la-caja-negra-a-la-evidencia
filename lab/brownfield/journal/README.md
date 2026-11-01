@@ -55,3 +55,18 @@ No cross-host failure domain, external payment switch, true authority
 revocation, WAN, CDC, RTO/RPO, p99 benchmark or bank approval is proven.
 All source, tests, CI and lab README are English; engineering discussion is
 published separately in Spanish and English.
+
+## Cooperating adapter fence (C2 only)
+
+The C2 workflow sets `BROWNFIELD_REQUIRE_CONTROLLER=YES` and supplies both
+`BROWNFIELD_CONTROL_DSN` (legacy Python) and
+`BROWNFIELD_CONTROL_NPGSQL` (.NET candidate). Both adapters hold an SQL
+`FOR SHARE` lock on the controller epoch through their financial COMMIT; a
+missing controller rejects operations. The older two-store tests deliberately
+omit these opt-in variables to preserve their historical reference behavior.
+
+**Important:** direct invocation with valid coordinator credentials can still
+write without a gateway journal entry. The independent audit detects this
+but does not prevent it. An unsafe application that strips the opt-in guard
+can also bypass it. A real incumbent requires a mandatory independent fence,
+not simply this feature flag.

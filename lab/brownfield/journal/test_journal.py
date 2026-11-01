@@ -74,6 +74,31 @@ def main() -> None:
     assert audit()["passed"]
     controls.append("durableAdmissionIdempotencyAndRejectedDecision")
 
+    # Both adapters must fail closed when the C2 controller is unavailable.
+    # This verifies the new optional C2 adapter fence under REQUIRE=YES.
+    broken = os.environ.copy()
+    broken["BROWNFIELD_CONTROL_DSN"] = (
+        "host=127.0.0.1 port=1 dbname=bf_control user=postgres password=bflocal connect_timeout=1")
+    broken["BROWNFIELD_CONTROL_NPGSQL"] = (
+        "Host=127.0.0.1;Port=1;Database=bf_control;Username=postgres;Password=bflocal;Pooling=false;Timeout=1")
+    old_call = subprocess.run(
+        [sys.executable, str(COEX / "legacy_api.py"), "transfer",
+         "J-CONTROLLER-OFF", "9", "10", "20", "1"],
+        capture_output=True, text=True, env=broken, timeout=20)
+    new_call = subprocess.run(
+        [os.environ.get("DOTNET", "dotnet"),
+         str(DURABLE / "DurableBank" / "bin" / "Release" / "net10.0" / "DurableBank.dll"),
+         "transfer", "J-CONTROLLER-OFF-NEW", "9", "10", "20", "legacy", "1"],
+        capture_output=True, text=True, env=broken, timeout=20)
+    assert old_call.returncode != 0 and new_call.returncode != 0
+    assert count(legacy_dsn,
+                 "SELECT count(*) FROM legacy.transactions WHERE request_id=%s",
+                 "J-CONTROLLER-OFF") == 0
+    assert count(candidate_dsn,
+                 "SELECT count(*) FROM brownfield.operations WHERE id=%s",
+                 "J-CONTROLLER-OFF-NEW") == 0
+    controls.append("controllerUnreachableFencesBothCooperatingAdapters")
+
     # Legacy dies after SQL COMMIT before its external response reaches gateway.
     lost = dispatch("J-LOST", 2, 3, 50, 1, fault="adapter-lost-ack")
     assert lost["status"] == "COMMITTED" and lost["childExitCode"] == 92, lost
@@ -156,8 +181,19 @@ def main() -> None:
     source_oracle = independent_oracle(snapshot(old, "legacy"))
     target_oracle = independent_oracle(snapshot(new, "candidate"))
     assert all(source_oracle.values()) and all(target_oracle.values())
+    # An adapter can still be invoked directly without a journal admission:
+    # record the bypass as a NEGATIVE control rather than calling it safe.
+    direct = subprocess.run(
+        [os.environ.get("DOTNET", "dotnet"),
+         str(DURABLE / "DurableBank" / "bin" / "Release" / "net10.0" / "DurableBank.dll"),
+         "transfer", "J-DIRECT-BYPASS", "10", "11", "7", "candidate", "2"],
+        capture_output=True, text=True, env=os.environ, timeout=35)
+    assert direct.returncode == 0, direct.stderr
+    assert json.loads(direct.stdout)["status"] == "COMMITTED"
     final = audit()
     assert not final["passed"] and len(final["unresolved"]) == 2, final
+    assert "J-DIRECT-BYPASS" in final["unjournaledOperations"], final
+    controls.append("directCooperativeAdapterBypassDetectedButNotPrevented")
     paths = [HERE / "schema.sql", HERE / "journal.py", HERE / "test_journal.py",
              COEX / "legacy_api.py", COEX / "two_store.py",
              DURABLE / "DurableBank" / "Program.cs"]

@@ -78,6 +78,33 @@ static TransferResult Transfer(string dsn, string id, int source, int destinatio
     if (fault is not ("none" or "crash-before-commit" or "pause-before-commit" or "lost-ack"))
         throw new ArgumentException("Unsupported fault injection.");
 
+    // C2's third-controller fence is optional for historical E1/two-store
+    // baselines, but mandatory in the C2 test environment. A real incumbent
+    // outside this cooperative CLI must be externally fenced.
+    string? coordinatorDsn = Environment.GetEnvironmentVariable("BROWNFIELD_CONTROL_NPGSQL");
+    if (Environment.GetEnvironmentVariable("BROWNFIELD_REQUIRE_CONTROLLER") == "YES"
+        && string.IsNullOrWhiteSpace(coordinatorDsn))
+        throw new InvalidOperationException("C2 controller required: fail closed");
+    using var coordinatorConnection = string.IsNullOrWhiteSpace(coordinatorDsn)
+        ? null : new NpgsqlConnection(coordinatorDsn);
+    coordinatorConnection?.Open();
+    using var coordinatorTx = coordinatorConnection?.BeginTransaction();
+    if (coordinatorTx is not null)
+    {
+        using var nameCommand = new NpgsqlCommand(
+            "SELECT current_database()", coordinatorConnection!, coordinatorTx);
+        if ((string?)nameCommand.ExecuteScalar() != "bf_control")
+            throw new InvalidOperationException("Refusing non-bf_control coordinator");
+        using var fenceCommand = new NpgsqlCommand(
+            "SELECT writer,epoch FROM controller.authority WHERE singleton=1 FOR SHARE",
+            coordinatorConnection!, coordinatorTx);
+        using var reader = fenceCommand.ExecuteReader();
+        if (!reader.Read() || reader.GetString(0) != writer
+            || reader.GetInt64(1) != expectedEpoch)
+            return new TransferResult("FENCED_CONTROLLER_OR_EPOCH", -1,
+                0, new List<string>());
+    }
+    // The controller read lock remains held through the candidate SQL COMMIT.
     string fingerprint = Fingerprint(source, destination, amount);
     var sqlstates = new List<string>();
     for (int attempt = 0; attempt < 6; attempt++)
