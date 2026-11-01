@@ -15,6 +15,9 @@ import sys
 
 import psycopg
 
+from gateway import (authority as gateway_authority, balance as gateway_balance,
+                     shadow as gateway_shadow, transfer as gateway_transfer)
+
 from two_store import (
     UnsafeCutover, bootstrap, connections, independent_oracle, reconcile,
     shadow_prediction, snapshot, stage, transition
@@ -78,7 +81,21 @@ def main() -> None:
     (OUT / "build.log").write_text(build.stdout + build.stderr, encoding="utf-8")
     assert build.returncode == 0, build.stdout + build.stderr
     bootstrap()
-    controls = []
+    # Two PostgreSQL containers must have different cluster identifiers, not
+    # merely two DSNs addressing the same server under different names.
+    with psycopg.connect(old_dsn) as source_db, psycopg.connect(target_dsn) as target_db:
+        legacy_cluster=source_db.execute("SELECT system_identifier::text FROM pg_control_system()").fetchone()[0]
+        candidate_cluster=target_db.execute("SELECT system_identifier::text FROM pg_control_system()").fetchone()[0]
+    assert legacy_cluster!=candidate_cluster, "Both databases share one PostgreSQL cluster"
+    controls = ["distinctPostgresqlClusterIdentifiers"]
+    assert gateway_authority()==("legacy",1)
+    assert gateway_balance(1)["routedTo"]=="legacy"
+    try:
+        gateway_balance(1,1)
+        raise AssertionError("Legacy adapter ignored minimum balance version")
+    except RuntimeError as ex:
+        assert "minimum version" in str(ex)
+    controls.append("gatewayRefusesUnavailableLegacyFreshness")
 
     # Legacy is the only authoritative writer; target remains unchanged.
     with ThreadPoolExecutor(max_workers=5) as pool:
@@ -86,6 +103,8 @@ def main() -> None:
             lambda n: legacy(f"SRC-{n}", 1, 2, 10, 1), range(5)))
     assert all(x["status"] == "COMMITTED" for x in values), values
     assert legacy("SRC-0", 1, 2, 10, 1)["status"] == "DUPLICATE_COMMITTED"
+    assert gateway_transfer("SRC-0",1,2,10)["routedTo"]=="legacy"
+    assert gateway_transfer("SRC-0",1,2,10)["status"]=="DUPLICATE_COMMITTED"
     assert legacy("SRC-0", 1, 2, 11, 1)["status"] == "ID_CONFLICT"
     assert legacy("SRC-REJECT", 1, 2, 200000, 1)["status"] == "REJECTED"
     legacy("SRC-ACK-LOST", 2, 1, 250, 1, fault="lost-ack", code=92)
@@ -103,6 +122,7 @@ def main() -> None:
     assert staged["reconciliation"]["allEqual"]
     baseline_target = snapshot(target_dsn, "candidate")
     forecast = shadow_prediction(1, 2, 30)
+    assert gateway_shadow(1,2,30)["isActualCandidateExecution"] is False
     assert forecast["equal"] and forecast["targetFinancialWrites"] == 0
     assert snapshot(target_dsn, "candidate") == baseline_target
     controls.append("shadowReadOnlyNoDuplicatePosting")
@@ -131,6 +151,10 @@ def main() -> None:
     assert (switched["status"], switched["epoch"], switched["todmG6"]) == (
         "SYNTHETIC_CUTOVER", 2, "BLOCK")
     assert legacy("LATE-LEGACY", 1, 2, 10, 1)["status"] == "FENCED_WRITER_OR_EPOCH"
+    assert gateway_authority()==("candidate",2)
+    assert gateway_transfer("SRC-0",1,2,10)["routedTo"]=="candidate"
+    assert gateway_transfer("SRC-0",1,2,10)["status"]=="DUPLICATE_COMMITTED"
+    controls.append("capabilityGatewayRoutesOneAuthoritativeWriter")
     assert_sql_healthy("after initial cutover")
     controls.append("lateLegacyEpochFenced")
 
@@ -138,6 +162,7 @@ def main() -> None:
     # *synthetic* rollback and another deliberate cutover.
     back = transition("legacy", 2)
     assert (back["writer"], back["epoch"]) == ("legacy", 3)
+    assert gateway_authority()==("legacy",3)
     assert candidate("STALE-CANDIDATE", 7, 8, 10, 2)["status"] == "FENCED_WRITER_OR_EPOCH"
     assert stage()["reconciliation"]["allEqual"]
     forward = transition("candidate", 3)
@@ -190,6 +215,7 @@ def main() -> None:
         "completedControls": controls,
         "sourceOperations": post["sourceCount"],
         "targetOperations": post["targetCount"],
+        "distinctPostgresqlClusterIdentifiers": True,
         "sourceOracle": post["sourceOracle"],
         "targetOracle": post["targetOracle"],
         "rollback": "BLOCK_FORWARD_FIX_REQUIRED",
