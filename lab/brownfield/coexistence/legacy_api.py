@@ -127,7 +127,7 @@ def balance(dsn: str, account_no: int, minimum_version: int) -> dict:
     if account_no not in range(1, 17) or minimum_version < 0:
         raise ValueError("Invalid balance request")
     with psycopg.connect(dsn) as db:
-        db.execute("SET TRANSACTION ISOLATION LEVEL REPEATABLE READ READ ONLY")
+        db.execute("SET TRANSACTION ISOLATION LEVEL REPEATABLE READ, READ ONLY")
         watermark = db.execute(
             "SELECT sequence_no FROM legacy.clock WHERE singleton=1"
         ).fetchone()[0]
