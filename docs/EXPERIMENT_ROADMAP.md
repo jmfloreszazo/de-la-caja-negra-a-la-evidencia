@@ -47,7 +47,6 @@ The [bilingual WAN field-measurement protocol](NETWORK_PROTOCOL.md) is a require
 - **E1c completed synthetic gates:** .NET 10/SQL Server 2022 Developer core, real `1205` and `1222` errors, isolation negatives and independent oracle, plus the [960-transfer worker matrix](https://github.com/jmfloreszazo/de-la-caja-negra-a-la-evidencia/actions/runs/41042317263) and a [persistent-worker follow-up](https://github.com/jmfloreszazo/de-la-caja-negra-a-la-evidencia/actions/runs/41043087791). [Issue #7](https://github.com/jmfloreszazo/de-la-caja-negra-a-la-evidencia/issues/7) remains open until authorized integration.
 - These checks prove **only** the synthetic scenarios listed. **Overall E1 stays partially verified:** production-scale performance, power-loss durability, HA/failover and bank/mainframe equivalence have not been accepted. E2 has verified synthetic CI slices but remains **partially verified**; E3 and E4 are still designed, not executed as complete experiments.
 
-
 ## Brownfield CAP-007/CAP-005 coexistence checkpoint — 1 November 2026
 
 The functional-first brownfield line is separately tracked by [#32](https://github.com/jmfloreszazo/de-la-caja-negra-a-la-evidencia/issues/32), [#58](https://github.com/jmfloreszazo/de-la-caja-negra-a-la-evidencia/issues/58) and [#64](https://github.com/jmfloreszazo/de-la-caja-negra-a-la-evidencia/issues/64). **This is not E1/E2/E3/E4 acceptance by relabeling.**
