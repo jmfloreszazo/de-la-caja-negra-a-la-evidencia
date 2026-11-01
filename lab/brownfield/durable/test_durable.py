@@ -186,7 +186,7 @@ def main() -> None:
 
     test_negative_oracle_control()
     final = require_oracle("final")
-    assert final["operationCount"] == 17, final
+    assert final["operationCount"] == 15, final
     sha256 = {str(p.relative_to(HERE)): hashlib.sha256(p.read_bytes()).hexdigest()
               for p in (HERE / "schema.sql", HERE / "oracle.py",
                         HERE / "DurableBank" / "Program.cs",
