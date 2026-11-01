@@ -30,8 +30,8 @@ def require_disposable() -> None:
         raise RuntimeError("Explicit BROWNFIELD_DISPOSABLE=YES is mandatory.")
     with psycopg.connect(DSN, autocommit=True) as db:
         name = db.execute("SELECT current_database()").fetchone()[0]
-        if not name.startswith("bf_"):
-            raise RuntimeError("Refusing destructive setup outside a bf_* database")
+        if name != "bf_lab":
+            raise RuntimeError("Refusing destructive setup outside the exact bf_lab fixture")
         if name != psycopg.conninfo.conninfo_to_dict(DSN)["dbname"]:
             raise RuntimeError("Cannot establish the intended disposable database")
 
