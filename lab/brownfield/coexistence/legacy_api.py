@@ -22,6 +22,14 @@ def require_fixture() -> tuple[str, str]:
         raise RuntimeError("Explicit disposable opt-in required")
     legacy = os.environ["BROWNFIELD_LEGACY_DSN"]
     target = os.environ["BROWNFIELD_PG_DSN"]
+    for dsn, expected, port in ((legacy, "bf_legacy", "55438"),
+                                (target, "bf_lab", "55439")):
+        params = psycopg.conninfo.conninfo_to_dict(dsn)
+        if any(params.get(extra) for extra in ("hostaddr", "service", "servicefile")) or os.environ.get("PGHOSTADDR") or os.environ.get("PGSERVICE"):
+            raise RuntimeError("Connection address overrides are forbidden for disposable fixtures")
+        if (params.get("dbname"), params.get("host"), params.get("port")) != (
+                expected, "127.0.0.1", port):
+            raise RuntimeError("Refusing a non-loopback or non-fixture database")
     with psycopg.connect(legacy) as db:
         if db.execute("SELECT current_database()").fetchone()[0] != "bf_legacy":
             raise RuntimeError("Refusing non-bf_legacy database")

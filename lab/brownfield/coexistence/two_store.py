@@ -29,7 +29,16 @@ def connections() -> tuple[str, str]:
         raise UnsafeCutover("BROWNFIELD_DISPOSABLE=YES required")
     old = os.environ["BROWNFIELD_LEGACY_DSN"]
     new = os.environ["BROWNFIELD_PG_DSN"]
-    for dsn, expected in ((old, "bf_legacy"), (new, "bf_lab")):
+    # Never allow an arbitrary remote DB merely because it has a familiar name.
+    # All destructive operations are restricted to the two fixed loopback ports.
+    for dsn, expected, port in ((old, "bf_legacy", "55438"),
+                                (new, "bf_lab", "55439")):
+        params = psycopg.conninfo.conninfo_to_dict(dsn)
+        if any(params.get(extra) for extra in ("hostaddr", "service", "servicefile")) or os.environ.get("PGHOSTADDR") or os.environ.get("PGSERVICE"):
+            raise UnsafeCutover("Connection address overrides are forbidden for disposable fixtures")
+        if (params.get("dbname"), params.get("host"), params.get("port")) != (
+                expected, "127.0.0.1", port):
+            raise UnsafeCutover("Only named, loopback disposable fixtures are accepted")
         with psycopg.connect(dsn) as db:
             actual = db.execute("SELECT current_database()").fetchone()[0]
             if actual != expected:

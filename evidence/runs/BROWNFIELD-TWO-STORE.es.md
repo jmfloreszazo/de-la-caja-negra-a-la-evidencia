@@ -54,3 +54,42 @@ resultados UNKNOWN; recuperación de copias interrumpidas; HA entre nodos;
 reglas del cliente y Golden Master aprobados; TODM G2/G6. Continúa abierta
 la [issue #58](https://github.com/jmfloreszazo/de-la-caja-negra-a-la-evidencia/issues/58).
 No se modifica la release.
+
+## Ampliación C3: enrutamiento y aislamiento de fixtures — 1 nov 2026
+
+La [ejecución original #41343867961 de la PR #68](https://github.com/jmfloreszazo/de-la-caja-negra-a-la-evidencia/actions/runs/41343867961)
+terminó en **PASS** sobre el SHA exacto
+`437ab93ca28765ba05cd49d02021b24f850a6e68`.
+El checkout coincidió con ese SHA y el informe incluye las huellas de los
+ficheros, entre ellos el nuevo gateway. El
+[JSON original sin modificar](brownfield-gateway-pr68-original-summary.json)
+conserva 12 controles positivos/negativos, **8 decisiones en origen** y
+**10 en destino** después de operaciones nuevas del candidato, 10/10
+invariantes contables independientes en cada almacén, dos identificadores
+distintos de clúster PostgreSQL y `G6=BLOCK`.
+El artefacto original de Actions tiene ID `13097984744` y SHA-256 del ZIP
+`4f967de09ea97b1e3e66b58bc03b0f049af7dbf7466b9c5ba8103a9c2ca8e6cb`.
+
+Se ha probado el gateway contra el CLI legado antes de la promoción, contra
+.NET 10 después, su rechazo de versiones mínimas de saldo que el legado no
+garantiza, el shadow solo lectura y el enrutamiento tras rollback admisible.
+Los procesos de laboratorio rechazan bases, hosts o puertos no previstos antes
+de abrirlas y antes de cualquier reinicialización destructiva.
+
+**Sin nuevas garantías de producción:** un escritor legado con acceso SQL
+directo aún puede evitar el fencing cooperativo. Las evidencias anteriores
+de la PR #63 y del journal C2 conservan su propia procedencia; esta prueba
+no demuestra cutover real IBM Z, HA física ni aprobación G2/G6.
+
+### C3: control negativo adicional — desvío de dirección libpq
+
+Tras reforzar la validación del DSN, la [ejecución original #41344197968](https://github.com/jmfloreszazo/de-la-caja-negra-a-la-evidencia/actions/runs/41344197968)
+terminó en **PASS** sobre el SHA
+`3cdcc25a03c94829e6770ca21314836f2c3271e6`.
+El [JSON original sin modificar](brownfield-gateway-hostaddr-pr68-original-summary.json)
+recoge **13** controles, incluido
+`hostaddrOverrideRejectedBeforeConnection`: un DSN que aparenta apuntar
+a loopback, pero incorpora `hostaddr` externo, se rechaza antes de conectar.
+Se mantienen 10/10 invariantes independientes en cada base; G2 sigue
+INCONCLUSIVE y G6 BLOCK. Artefacto original ID `13098128247` y
+SHA-256 del ZIP `297e68b05ba348af2a04758fe4f62bd01d5cd8d569ade4beb984c30d8256412a`.
