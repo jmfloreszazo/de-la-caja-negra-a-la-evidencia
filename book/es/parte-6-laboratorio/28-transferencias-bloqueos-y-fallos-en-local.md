@@ -174,6 +174,40 @@ tras COMMIT**. Son cuatro namespaces en un runner; no explica el fallo
 histórico de placement C01 ni demuestra dominios físicos, capacidad sostenida
 o un RTO productivo. E2 sigue parcialmente verificado.
 
+## C05/C06 · La dirección de los paquetes no decide qué se confirmó
+
+La [prueba de partición direccional](../../../evidence/runs/E2-C05-C06-DIRECTIONAL.es.md)
+parte de una colocación observada 8/8 y bloquea la salida TCP entre silos en
+una dirección cada vez. SQL y gateways siguen accesibles. Las capturas de
+45 segundos comprueban paquetes idénticos en ambos extremos en la dirección
+permitida y ninguno recibido en la bloqueada. Que fallen conexiones TCP
+iniciadas desde ambos lados no convierte el corte en simétrico: también
+necesitan tráfico de retorno.
+
+Dos clientes con gateways distintos envían el mismo ID con importes 31 y 37.
+En ambas orientaciones, el primero obtiene timeout tras enviar y el segundo
+COMMITTED; SQL identifica el importe 37 como ganador. Los catálogos de gestión
+no responden durante el corte: **una vista inaccesible no es una lista vacía**
+ni demuestra activación exclusiva.
+
+| Salida bloqueada | Corte observado | Primeros intentos con respuesta por ambos gateways tras restaurar |
+|---|---|---|
+| Primario hacia secundario | 46,0143 s | 1,6926 s |
+| Secundario hacia primario | 45,7963 s | 1,1831 s |
+
+Restauradas las reglas originales, no se reinician silos ni cambian sus
+contenedores, PID o generaciones. El replay idéntico devuelve
+DUPLICATE_COMMITTED, el importe distinto ID_CONFLICT y una orden nueva
+COMMITTED. Cada caso termina en tres operaciones, seis apuntes y tres outbox,
+con siete invariantes SQL correctos. Se conservan cuatro fallos previos:
+dos de preparación y dos de cierre de captura; no se convierten en aprobados.
+
+Estos tiempos son observaciones de primeros intentos con respuesta, **no un
+RTO ni servicio estable sostenido**. Un host por caso, dos cortes breves y
+muestras de catálogo no acreditan ausencia de split brain, fencing o
+recuperación tras particiones largas. Esas puertas, capacidad sostenida y
+dominios físicos siguen abiertas. E2 permanece parcialmente verificado.
+
 ## Del débito atómico al traspaso de autoridad entre dos almacenes
 
 La siguiente dificultad no consiste en hacer funcionar una transferencia con

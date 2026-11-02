@@ -1,0 +1,1209 @@
+﻿2026-11-02T21:29:37.3916876Z Current runner version: '2.338.2'
+2026-11-02T21:29:37.3940507Z ##[group]Runner Image Provisioner
+2026-11-02T21:29:37.3941363Z Hosted Compute Agent
+2026-11-02T21:29:37.3941915Z Version: 20261021.618
+2026-11-02T21:29:37.3942524Z Commit: 21505ad2541d5be6135ed84fc33697146cf75b8e
+2026-11-02T21:29:37.3943166Z Build Date: 2026-10-21T00:45:21Z
+2026-11-02T21:29:37.3943764Z Worker ID: {a99470c4-8a27-48c1-82c6-f534dcb2d159}
+2026-11-02T21:29:37.3944418Z Region: westus
+2026-11-02T21:29:37.3944934Z Cloud: Azure
+2026-11-02T21:29:37.3945405Z ##[endgroup]
+2026-11-02T21:29:37.3946919Z ##[group]Operating System
+2026-11-02T21:29:37.3947489Z Ubuntu
+2026-11-02T21:29:37.3948016Z 24.04.5
+2026-11-02T21:29:37.3948554Z LTS
+2026-11-02T21:29:37.3949014Z ##[endgroup]
+2026-11-02T21:29:37.3949592Z ##[group]Runner Image
+2026-11-02T21:29:37.3950134Z Image: ubuntu-24.04
+2026-11-02T21:29:37.3950662Z Version: 20261025.353.1
+2026-11-02T21:29:37.3951839Z Included Software: https://github.com/actions/runner-images/blob/ubuntu24/20261025.353/images/ubuntu/Ubuntu2404-Readme.md
+2026-11-02T21:29:37.3953160Z Image Release: https://github.com/actions/runner-images/releases/tag/ubuntu24%2F20261025.353
+2026-11-02T21:29:37.3953975Z ##[endgroup]
+2026-11-02T21:29:37.3955025Z ##[group]GITHUB_TOKEN Permissions
+2026-11-02T21:29:37.3957085Z Contents: read
+2026-11-02T21:29:37.3957674Z Metadata: read
+2026-11-02T21:29:37.3958198Z ##[endgroup]
+2026-11-02T21:29:37.3960174Z Secret source: Actions
+2026-11-02T21:29:37.3961142Z Cache mode: write
+2026-11-02T21:29:37.3961801Z Prepare workflow directory
+2026-11-02T21:29:37.4302875Z Prepare all required actions
+2026-11-02T21:29:37.4348090Z Getting action download info
+2026-11-02T21:29:37.7659409Z Download action repository 'actions/checkout@v5' (SHA:fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09)
+2026-11-02T21:29:37.8586484Z Download action repository 'actions/setup-python@v6' (SHA:ece7cb06caefa5fff74198d8649806c4678c61a1)
+2026-11-02T21:29:37.9607083Z Download action repository 'actions/setup-dotnet@v5' (SHA:26b0ec14cb23fa6904739307f278c14f94c95bf1)
+2026-11-02T21:29:38.3624230Z Download action repository 'actions/upload-artifact@v6' (SHA:b7c566a772e6b6bfb58ed0dc250532a479d7789f)
+2026-11-02T21:29:38.7300455Z Complete job name: Orleans grain, SQL oracle and synthetic workloads
+2026-11-02T21:29:38.8304042Z ##[group]Run actions/checkout@v5
+2026-11-02T21:29:38.8305229Z with:
+2026-11-02T21:29:38.8306389Z   repository: jmfloreszazo/de-la-caja-negra-a-la-evidencia
+2026-11-02T21:29:38.8314123Z   token: ***
+2026-11-02T21:29:38.8314867Z   ssh-strict: true
+2026-11-02T21:29:38.8315804Z   ssh-user: git
+2026-11-02T21:29:38.8316577Z   persist-credentials: true
+2026-11-02T21:29:38.8317417Z   clean: true
+2026-11-02T21:29:38.8318245Z   sparse-checkout-cone-mode: true
+2026-11-02T21:29:38.8319146Z   fetch-depth: 1
+2026-11-02T21:29:38.8319878Z   fetch-tags: false
+2026-11-02T21:29:38.8320643Z   show-progress: true
+2026-11-02T21:29:38.8321409Z   lfs: false
+2026-11-02T21:29:38.8322131Z   submodules: false
+2026-11-02T21:29:38.8396745Z   set-safe-directory: true
+2026-11-02T21:29:38.8398102Z   allow-unsafe-pr-checkout: false
+2026-11-02T21:29:38.8400439Z env:
+2026-11-02T21:29:38.8401775Z   E1_PG_DSN: host=127.0.0.1 port=55434 dbname=e2lab user=postgres ***
+2026-11-02T21:29:38.8403579Z   E1_PG_NPGSQL: Host=127.0.0.1;Port=55434;Database=e2lab;Username=postgres;***;Pooling=false
+2026-11-02T21:29:38.8405895Z   E2_PG_NPGSQL: Host=127.0.0.1;Port=55434;Database=e2lab;Username=postgres;***;Pooling=true;Maximum Pool Size=32
+2026-11-02T21:29:38.8407429Z ##[endgroup]
+2026-11-02T21:29:39.0450209Z Syncing repository: jmfloreszazo/de-la-caja-negra-a-la-evidencia
+2026-11-02T21:29:39.0453199Z ##[group]Getting Git version info
+2026-11-02T21:29:39.0454875Z Working directory is '/home/runner/work/de-la-caja-negra-a-la-evidencia/de-la-caja-negra-a-la-evidencia'
+2026-11-02T21:29:39.0457398Z [command]/usr/bin/git version
+2026-11-02T21:29:39.0488526Z git version 2.56.0
+2026-11-02T21:29:39.0507358Z ##[endgroup]
+2026-11-02T21:29:39.0520223Z Temporarily overriding HOME='/home/runner/work/_temp/4bf9592f-8d1a-435f-97ac-afca8bb1a490' before making global git config changes
+2026-11-02T21:29:39.0523024Z Adding repository directory to the temporary git global config as a safe directory
+2026-11-02T21:29:39.0526127Z [command]/usr/bin/git config --global --add safe.directory /home/runner/work/de-la-caja-negra-a-la-evidencia/de-la-caja-negra-a-la-evidencia
+2026-11-02T21:29:39.0720820Z Deleting the contents of '/home/runner/work/de-la-caja-negra-a-la-evidencia/de-la-caja-negra-a-la-evidencia'
+2026-11-02T21:29:39.0723498Z ##[group]Initializing the repository
+2026-11-02T21:29:39.0727835Z [command]/usr/bin/git init /home/runner/work/de-la-caja-negra-a-la-evidencia/de-la-caja-negra-a-la-evidencia
+2026-11-02T21:29:39.0806043Z hint: Using 'master' as the name for the initial branch. This default branch name
+2026-11-02T21:29:39.0807840Z hint: will change to "main" in Git 3.0. To configure the initial branch name
+2026-11-02T21:29:39.0809703Z hint: to use in all of your new repositories, which will suppress this warning,
+2026-11-02T21:29:39.0811356Z hint: call:
+2026-11-02T21:29:39.0812312Z hint:
+2026-11-02T21:29:39.0813556Z hint: 	git config --global init.defaultBranch <name>
+2026-11-02T21:29:39.0815018Z hint:
+2026-11-02T21:29:39.0816613Z hint: Names commonly chosen instead of 'master' are 'main', 'trunk' and
+2026-11-02T21:29:39.0818888Z hint: 'development'. The just-created branch can be renamed via this command:
+2026-11-02T21:29:39.0820675Z hint:
+2026-11-02T21:29:39.0821776Z hint: 	git branch -m <name>
+2026-11-02T21:29:39.0822967Z hint:
+2026-11-02T21:29:39.0824443Z hint: Disable this message with "git config set advice.defaultBranchName false"
+2026-11-02T21:29:39.0828336Z Initialized empty Git repository in /home/runner/work/de-la-caja-negra-a-la-evidencia/de-la-caja-negra-a-la-evidencia/.git/
+2026-11-02T21:29:39.0832899Z [command]/usr/bin/git remote add origin https://github.com/jmfloreszazo/de-la-caja-negra-a-la-evidencia
+2026-11-02T21:29:39.0899041Z ##[endgroup]
+2026-11-02T21:29:39.0900878Z ##[group]Disabling automatic garbage collection
+2026-11-02T21:29:39.0902726Z [command]/usr/bin/git config --local gc.auto 0
+2026-11-02T21:29:39.0936607Z ##[endgroup]
+2026-11-02T21:29:39.0938433Z ##[group]Setting up auth
+2026-11-02T21:29:39.0943673Z [command]/usr/bin/git config --local --name-only --get-regexp core\.sshCommand
+2026-11-02T21:29:39.0981226Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+2026-11-02T21:29:39.1281428Z [command]/usr/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+2026-11-02T21:29:39.1312056Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+2026-11-02T21:29:39.1519767Z [command]/usr/bin/git config --local --name-only --get-regexp ^includeIf\.gitdir:
+2026-11-02T21:29:39.1552591Z [command]/usr/bin/git submodule foreach --recursive git config --local --show-origin --name-only --get-regexp remote.origin.url
+2026-11-02T21:29:39.1758081Z [command]/usr/bin/git config --local http.https://github.com/.extraheader AUTHORIZATION: basic ***
+2026-11-02T21:29:39.1796782Z ##[endgroup]
+2026-11-02T21:29:39.1798124Z ##[group]Fetching the repository
+2026-11-02T21:29:39.1807133Z [command]/usr/bin/git -c protocol.version=2 fetch --no-tags --prune --no-recurse-submodules --depth=1 origin +9dd1ba7942f8b3ddf2fe00cbe461635d127a8822:refs/remotes/pull/73/merge
+2026-11-02T21:29:39.8621083Z From https://github.com/jmfloreszazo/de-la-caja-negra-a-la-evidencia
+2026-11-02T21:29:39.8621689Z  * [new ref]         9dd1ba7942f8b3ddf2fe00cbe461635d127a8822 -> pull/73/merge
+2026-11-02T21:29:39.8624069Z ##[endgroup]
+2026-11-02T21:29:39.8624548Z ##[group]Determining the checkout info
+2026-11-02T21:29:39.8626651Z ##[endgroup]
+2026-11-02T21:29:39.8631750Z [command]/usr/bin/git sparse-checkout disable
+2026-11-02T21:29:39.8680099Z [command]/usr/bin/git config --local --unset-all extensions.worktreeConfig
+2026-11-02T21:29:39.8709723Z ##[group]Checking out the ref
+2026-11-02T21:29:39.8712562Z [command]/usr/bin/git checkout --progress --force refs/remotes/pull/73/merge
+2026-11-02T21:29:39.9542747Z Note: switching to 'refs/remotes/pull/73/merge'.
+2026-11-02T21:29:39.9543096Z 
+2026-11-02T21:29:39.9543309Z You are in 'detached HEAD' state. You can look around, make experimental
+2026-11-02T21:29:39.9543766Z changes and commit them, and you can discard any commits you make in this
+2026-11-02T21:29:39.9544186Z state without impacting any branches by switching back to a branch.
+2026-11-02T21:29:39.9544426Z 
+2026-11-02T21:29:39.9544592Z If you want to create a new branch to retain commits you create, you may
+2026-11-02T21:29:39.9544991Z do so (now or later) by using -c with the switch command. Example:
+2026-11-02T21:29:39.9545212Z 
+2026-11-02T21:29:39.9545324Z   git switch -c <new-branch-name>
+2026-11-02T21:29:39.9545696Z 
+2026-11-02T21:29:39.9545886Z Or undo this operation with:
+2026-11-02T21:29:39.9546036Z 
+2026-11-02T21:29:39.9546135Z   git switch -
+2026-11-02T21:29:39.9546269Z 
+2026-11-02T21:29:39.9546524Z Turn off this advice by setting config variable advice.detachedHead to false
+2026-11-02T21:29:39.9546788Z 
+2026-11-02T21:29:39.9547081Z HEAD is now at 9dd1ba7 Merge 958961906de0ca5d3945d410c64d465ba7d34a3e into 4260b2e6abcf736c4fa725bdfe2bb3a0831dd533
+2026-11-02T21:29:39.9553823Z ##[endgroup]
+2026-11-02T21:29:39.9597296Z [command]/usr/bin/git log -1 --format=%H
+2026-11-02T21:29:39.9621421Z 9dd1ba7942f8b3ddf2fe00cbe461635d127a8822
+2026-11-02T21:29:39.9869918Z ##[group]Run actions/setup-python@v6
+2026-11-02T21:29:39.9870227Z with:
+2026-11-02T21:29:39.9870436Z   python-version: 3.12
+2026-11-02T21:29:39.9870667Z   check-latest: false
+2026-11-02T21:29:39.9872753Z   token: ***
+2026-11-02T21:29:39.9872973Z   update-environment: true
+2026-11-02T21:29:39.9873217Z   allow-prereleases: false
+2026-11-02T21:29:39.9873446Z   freethreaded: false
+2026-11-02T21:29:39.9873683Z env:
+2026-11-02T21:29:39.9873999Z   E1_PG_DSN: host=127.0.0.1 port=55434 dbname=e2lab user=postgres ***
+2026-11-02T21:29:39.9874503Z   E1_PG_NPGSQL: Host=127.0.0.1;Port=55434;Database=e2lab;Username=postgres;***;Pooling=false
+2026-11-02T21:29:39.9875091Z   E2_PG_NPGSQL: Host=127.0.0.1;Port=55434;Database=e2lab;Username=postgres;***;Pooling=true;Maximum Pool Size=32
+2026-11-02T21:29:39.9875659Z ##[endgroup]
+2026-11-02T21:29:40.0985072Z ##[group]Installed versions
+2026-11-02T21:29:40.1057349Z Successfully set up CPython (3.12.15)
+2026-11-02T21:29:40.1058094Z ##[endgroup]
+2026-11-02T21:29:40.1193383Z ##[group]Run actions/setup-dotnet@v5
+2026-11-02T21:29:40.1193690Z with:
+2026-11-02T21:29:40.1193910Z   dotnet-version: 10.0.x
+2026-11-02T21:29:40.1194163Z   cache: false
+2026-11-02T21:29:40.1194378Z env:
+2026-11-02T21:29:40.1194839Z   E1_PG_DSN: host=127.0.0.1 port=55434 dbname=e2lab user=postgres ***
+2026-11-02T21:29:40.1195375Z   E1_PG_NPGSQL: Host=127.0.0.1;Port=55434;Database=e2lab;Username=postgres;***;Pooling=false
+2026-11-02T21:29:40.1196272Z   E2_PG_NPGSQL: Host=127.0.0.1;Port=55434;Database=e2lab;Username=postgres;***;Pooling=true;Maximum Pool Size=32
+2026-11-02T21:29:40.1196764Z   pythonLocation: /opt/hostedtoolcache/Python/3.12.15/x64
+2026-11-02T21:29:40.1197210Z   PKG_CONFIG_PATH: /opt/hostedtoolcache/Python/3.12.15/x64/lib/pkgconfig
+2026-11-02T21:29:40.1197619Z   Python_ROOT_DIR: /opt/hostedtoolcache/Python/3.12.15/x64
+2026-11-02T21:29:40.1197981Z   Python2_ROOT_DIR: /opt/hostedtoolcache/Python/3.12.15/x64
+2026-11-02T21:29:40.1198378Z   Python3_ROOT_DIR: /opt/hostedtoolcache/Python/3.12.15/x64
+2026-11-02T21:29:40.1198744Z   LD_LIBRARY_PATH: /opt/hostedtoolcache/Python/3.12.15/x64/lib
+2026-11-02T21:29:40.1199062Z ##[endgroup]
+2026-11-02T21:29:40.2367841Z [command]/home/runner/work/_actions/actions/setup-dotnet/v5/externals/install-dotnet.sh --skip-non-versioned-files --runtime dotnet --channel LTS
+2026-11-02T21:29:40.7712513Z dotnet-install: .NET Core Runtime with version '10.0.14' is already installed.
+2026-11-02T21:29:40.7732778Z [command]/home/runner/work/_actions/actions/setup-dotnet/v5/externals/install-dotnet.sh --skip-non-versioned-files --channel 10.0
+2026-11-02T21:29:41.0722623Z dotnet-install: .NET Core SDK with version '10.0.403' is already installed.
+2026-11-02T21:29:41.0872676Z ##[group]Run python3 -m pip install -r lab/e1_pg/requirements.txt
+2026-11-02T21:29:41.0873217Z [36;1mpython3 -m pip install -r lab/e1_pg/requirements.txt[0m
+2026-11-02T21:29:41.0898360Z shell: /usr/bin/bash -e {0}
+2026-11-02T21:29:41.0898636Z env:
+2026-11-02T21:29:41.0899225Z   E1_PG_DSN: host=127.0.0.1 port=55434 dbname=e2lab user=postgres ***
+2026-11-02T21:29:41.0899751Z   E1_PG_NPGSQL: Host=127.0.0.1;Port=55434;Database=e2lab;Username=postgres;***;Pooling=false
+2026-11-02T21:29:41.0900368Z   E2_PG_NPGSQL: Host=127.0.0.1;Port=55434;Database=e2lab;Username=postgres;***;Pooling=true;Maximum Pool Size=32
+2026-11-02T21:29:41.0900870Z   pythonLocation: /opt/hostedtoolcache/Python/3.12.15/x64
+2026-11-02T21:29:41.0901266Z   PKG_CONFIG_PATH: /opt/hostedtoolcache/Python/3.12.15/x64/lib/pkgconfig
+2026-11-02T21:29:41.0901648Z   Python_ROOT_DIR: /opt/hostedtoolcache/Python/3.12.15/x64
+2026-11-02T21:29:41.0901996Z   Python2_ROOT_DIR: /opt/hostedtoolcache/Python/3.12.15/x64
+2026-11-02T21:29:41.0902367Z   Python3_ROOT_DIR: /opt/hostedtoolcache/Python/3.12.15/x64
+2026-11-02T21:29:41.0902740Z   LD_LIBRARY_PATH: /opt/hostedtoolcache/Python/3.12.15/x64/lib
+2026-11-02T21:29:41.0903053Z   DOTNET_ROOT: /usr/share/dotnet
+2026-11-02T21:29:41.0903294Z ##[endgroup]
+2026-11-02T21:29:42.4553910Z Collecting psycopg==3.2.10 (from psycopg[binary]==3.2.10->-r lab/e1_pg/requirements.txt (line 1))
+2026-11-02T21:29:42.5196213Z   Downloading psycopg-3.2.10-py3-none-any.whl.metadata (4.6 kB)
+2026-11-02T21:29:42.5319962Z Collecting psycopg_pool==3.2.6 (from -r lab/e1_pg/requirements.txt (line 2))
+2026-11-02T21:29:42.5440778Z   Downloading psycopg_pool-3.2.6-py3-none-any.whl.metadata (2.6 kB)
+2026-11-02T21:29:42.5581080Z Collecting typing-extensions>=4.6 (from psycopg==3.2.10->psycopg[binary]==3.2.10->-r lab/e1_pg/requirements.txt (line 1))
+2026-11-02T21:29:42.5695868Z   Downloading typing_extensions-4.16.0-py3-none-any.whl.metadata (3.3 kB)
+2026-11-02T21:29:42.7067735Z Collecting psycopg-binary==3.2.10 (from psycopg[binary]==3.2.10->-r lab/e1_pg/requirements.txt (line 1))
+2026-11-02T21:29:42.7180166Z   Downloading psycopg_binary-3.2.10-cp312-cp312-manylinux2014_x86_64.manylinux_2_17_x86_64.whl.metadata (3.0 kB)
+2026-11-02T21:29:42.7329659Z Downloading psycopg-3.2.10-py3-none-any.whl (206 kB)
+2026-11-02T21:29:42.7707811Z Downloading psycopg_pool-3.2.6-py3-none-any.whl (38 kB)
+2026-11-02T21:29:42.7863784Z Downloading psycopg_binary-3.2.10-cp312-cp312-manylinux2014_x86_64.manylinux_2_17_x86_64.whl (4.4 MB)
+2026-11-02T21:29:42.8683339Z    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 4.4/4.4 MB 57.2 MB/s  0:00:00
+2026-11-02T21:29:42.8795828Z Downloading typing_extensions-4.16.0-py3-none-any.whl (45 kB)
+2026-11-02T21:29:42.9707892Z Installing collected packages: typing-extensions, psycopg-binary, psycopg_pool, psycopg
+2026-11-02T21:29:43.2148042Z 
+2026-11-02T21:29:43.2166339Z 
+2026-11-02T21:29:43.2167307Z Successfully installed psycopg-3.2.10 psycopg-binary-3.2.10 psycopg_pool-3.2.6 typing-extensions-4.16.0
+2026-11-02T21:29:43.2168680Z [notice] A new release of pip is available: 26.2.2 -> 26.3
+2026-11-02T21:29:43.2169294Z [notice] To update, run: pip install --upgrade pip
+2026-11-02T21:29:43.2865113Z ##[group]Run dotnet build lab/Bank/Bank.csproj -c Release -m:1 --disable-build-servers
+2026-11-02T21:29:43.2865915Z [36;1mdotnet build lab/Bank/Bank.csproj -c Release -m:1 --disable-build-servers[0m
+2026-11-02T21:29:43.2866391Z [36;1mdotnet build lab/e1_pg/PgBank/PgBank.csproj -c Release -m:1 --disable-build-servers[0m
+2026-11-02T21:29:43.2866922Z [36;1mdotnet build lab/e2_orleans/OrleansLab/OrleansLab.csproj -c Release -m:1 --disable-build-servers[0m
+2026-11-02T21:29:43.2885329Z shell: /usr/bin/bash -e {0}
+2026-11-02T21:29:43.2885748Z env:
+2026-11-02T21:29:43.2886474Z   E1_PG_DSN: host=127.0.0.1 port=55434 dbname=e2lab user=postgres ***
+2026-11-02T21:29:43.2886942Z   E1_PG_NPGSQL: Host=127.0.0.1;Port=55434;Database=e2lab;Username=postgres;***;Pooling=false
+2026-11-02T21:29:43.2887480Z   E2_PG_NPGSQL: Host=127.0.0.1;Port=55434;Database=e2lab;Username=postgres;***;Pooling=true;Maximum Pool Size=32
+2026-11-02T21:29:43.2887962Z   pythonLocation: /opt/hostedtoolcache/Python/3.12.15/x64
+2026-11-02T21:29:43.2888348Z   PKG_CONFIG_PATH: /opt/hostedtoolcache/Python/3.12.15/x64/lib/pkgconfig
+2026-11-02T21:29:43.2888680Z   Python_ROOT_DIR: /opt/hostedtoolcache/Python/3.12.15/x64
+2026-11-02T21:29:43.2888988Z   Python2_ROOT_DIR: /opt/hostedtoolcache/Python/3.12.15/x64
+2026-11-02T21:29:43.2889299Z   Python3_ROOT_DIR: /opt/hostedtoolcache/Python/3.12.15/x64
+2026-11-02T21:29:43.2889596Z   LD_LIBRARY_PATH: /opt/hostedtoolcache/Python/3.12.15/x64/lib
+2026-11-02T21:29:43.2889875Z   DOTNET_ROOT: /usr/share/dotnet
+2026-11-02T21:29:43.2890076Z ##[endgroup]
+2026-11-02T21:29:48.1880699Z   Determining projects to restore...
+2026-11-02T21:29:48.8380093Z   Restored /home/runner/work/de-la-caja-negra-a-la-evidencia/de-la-caja-negra-a-la-evidencia/lab/Bank/Bank.csproj (in 70 ms).
+2026-11-02T21:29:53.2167236Z   Bank -> /home/runner/work/de-la-caja-negra-a-la-evidencia/de-la-caja-negra-a-la-evidencia/lab/Bank/bin/Release/net10.0/Bank.dll
+2026-11-02T21:29:53.2274530Z 
+2026-11-02T21:29:53.2279830Z Build succeeded.
+2026-11-02T21:29:53.2280370Z     0 Warning(s)
+2026-11-02T21:29:53.2280688Z     0 Error(s)
+2026-11-02T21:29:53.2286090Z 
+2026-11-02T21:29:53.2287727Z Time Elapsed 00:00:06.37
+2026-11-02T21:29:53.7901914Z   Determining projects to restore...
+2026-11-02T21:29:54.7406760Z   Restored /home/runner/work/de-la-caja-negra-a-la-evidencia/de-la-caja-negra-a-la-evidencia/lab/e1_pg/PgBank/PgBank.csproj (in 686 ms).
+2026-11-02T21:29:56.4116563Z   PgBank -> /home/runner/work/de-la-caja-negra-a-la-evidencia/de-la-caja-negra-a-la-evidencia/lab/e1_pg/PgBank/bin/Release/net10.0/PgBank.dll
+2026-11-02T21:29:56.4258337Z 
+2026-11-02T21:29:56.4265368Z Build succeeded.
+2026-11-02T21:29:56.4265884Z     0 Warning(s)
+2026-11-02T21:29:56.4266360Z     0 Error(s)
+2026-11-02T21:29:56.4267079Z 
+2026-11-02T21:29:56.4267614Z Time Elapsed 00:00:02.96
+2026-11-02T21:29:56.9795064Z   Determining projects to restore...
+2026-11-02T21:29:58.9479840Z   Restored /home/runner/work/de-la-caja-negra-a-la-evidencia/de-la-caja-negra-a-la-evidencia/lab/e2_orleans/OrleansLab/OrleansLab.csproj (in 1.66 sec).
+2026-11-02T21:30:01.9396295Z   OrleansLab -> /home/runner/work/de-la-caja-negra-a-la-evidencia/de-la-caja-negra-a-la-evidencia/lab/e2_orleans/OrleansLab/bin/Release/net10.0/OrleansLab.dll
+2026-11-02T21:30:01.9652786Z 
+2026-11-02T21:30:01.9658813Z Build succeeded.
+2026-11-02T21:30:01.9659129Z     0 Warning(s)
+2026-11-02T21:30:01.9659377Z     0 Error(s)
+2026-11-02T21:30:01.9660190Z 
+2026-11-02T21:30:01.9660472Z Time Elapsed 00:00:05.31
+2026-11-02T21:30:02.0015063Z ##[group]Run podman run -d --name e2-postgres \
+2026-11-02T21:30:02.0015433Z [36;1mpodman run -d --name e2-postgres \[0m
+2026-11-02T21:30:02.0016949Z [36;1m  -e POSTGRES_PASSWORD=e2local -e POSTGRES_DB=e2lab \[0m
+2026-11-02T21:30:02.0017295Z [36;1m  -p 127.0.0.1:55434:5432 docker.io/library/postgres:16.13[0m
+2026-11-02T21:30:02.0017552Z [36;1mready=0[0m
+2026-11-02T21:30:02.0017732Z [36;1mfor attempt in $(seq 1 60); do[0m
+2026-11-02T21:30:02.0018061Z [36;1m  if podman exec e2-postgres pg_isready -U postgres -d e2lab >/dev/null 2>&1; then[0m
+2026-11-02T21:30:02.0018389Z [36;1m    ready=1[0m
+2026-11-02T21:30:02.0018559Z [36;1m    break[0m
+2026-11-02T21:30:02.0018723Z [36;1m  fi[0m
+2026-11-02T21:30:02.0018887Z [36;1m  sleep 2[0m
+2026-11-02T21:30:02.0019051Z [36;1mdone[0m
+2026-11-02T21:30:02.0019219Z [36;1mtest "$ready" -eq 1[0m
+2026-11-02T21:30:02.0019423Z [36;1mmkdir -p lab/results/e2[0m
+2026-11-02T21:30:02.0019720Z [36;1mpodman image inspect docker.io/library/postgres:16.13 \[0m
+2026-11-02T21:30:02.0020113Z [36;1m  --format '{{json .RepoDigests}}' > lab/results/e2/postgresql-repo-digests.json[0m
+2026-11-02T21:30:02.0020639Z [36;1mdotnet --version > lab/results/e2/dotnet-sdk.txt[0m
+2026-11-02T21:30:02.0020948Z [36;1mpodman --version > lab/results/e2/podman-version.txt[0m
+2026-11-02T21:30:02.0040587Z shell: /usr/bin/bash -e {0}
+2026-11-02T21:30:02.0040853Z env:
+2026-11-02T21:30:02.0041302Z   E1_PG_DSN: host=127.0.0.1 port=55434 dbname=e2lab user=postgres ***
+2026-11-02T21:30:02.0041773Z   E1_PG_NPGSQL: Host=127.0.0.1;Port=55434;Database=e2lab;Username=postgres;***;Pooling=false
+2026-11-02T21:30:02.0042324Z   E2_PG_NPGSQL: Host=127.0.0.1;Port=55434;Database=e2lab;Username=postgres;***;Pooling=true;Maximum Pool Size=32
+2026-11-02T21:30:02.0042754Z   pythonLocation: /opt/hostedtoolcache/Python/3.12.15/x64
+2026-11-02T21:30:02.0043104Z   PKG_CONFIG_PATH: /opt/hostedtoolcache/Python/3.12.15/x64/lib/pkgconfig
+2026-11-02T21:30:02.0043452Z   Python_ROOT_DIR: /opt/hostedtoolcache/Python/3.12.15/x64
+2026-11-02T21:30:02.0043746Z   Python2_ROOT_DIR: /opt/hostedtoolcache/Python/3.12.15/x64
+2026-11-02T21:30:02.0044050Z   Python3_ROOT_DIR: /opt/hostedtoolcache/Python/3.12.15/x64
+2026-11-02T21:30:02.0044343Z   LD_LIBRARY_PATH: /opt/hostedtoolcache/Python/3.12.15/x64/lib
+2026-11-02T21:30:02.0044609Z   DOTNET_ROOT: /usr/share/dotnet
+2026-11-02T21:30:02.0044823Z ##[endgroup]
+2026-11-02T21:30:03.3683299Z Trying to pull docker.io/library/postgres:16.13...
+2026-11-02T21:30:04.2695261Z Getting image source signatures
+2026-11-02T21:30:04.2696959Z Copying blob sha256:89bd933b3504c1aadaa9c0c723ff41f9c29d6a52d06ea2576d0357e0557e0134
+2026-11-02T21:30:04.2697609Z Copying blob sha256:57fb71246055257a374deb7564ceca10f43c2352572b501efc08add5d24ebb61
+2026-11-02T21:30:04.2698085Z Copying blob sha256:deb6f5b1d4fcc7a7e9d2c9cf436a540a5652b30a1a2206681b2b3d68fb488ebd
+2026-11-02T21:30:04.2698698Z Copying blob sha256:70f810f97521bf3e8f49a7983a08a08284807a51649baa76760f447f47a86f27
+2026-11-02T21:30:04.2699183Z Copying blob sha256:28c7b001f7c185a25d8d6e6593598dc17b0b6555f1d9be4c6b4a45aef67d5d0f
+2026-11-02T21:30:04.2699656Z Copying blob sha256:20a683cffcdc0136b539df1300f44790972530bd31131a6d7c3b61f1225750a0
+2026-11-02T21:30:04.3972187Z Copying blob sha256:6fd786e9d2d8807a4db58e3905117d0ac882919d8dfa6dc17f5550711d52db42
+2026-11-02T21:30:04.4614609Z Copying blob sha256:538b1755faee8ed9e4ba73415d6d2331282e952a5841ad2a9a6d067e56dddd23
+2026-11-02T21:30:04.5203887Z Copying blob sha256:18f64d703d8929b401984d5cabd1e42bfd97de46b51b2f13bda6167ab3105195
+2026-11-02T21:30:04.5276838Z Copying blob sha256:a5321ae1fd2784292944155ad26341c69f12a41539a1f9a5fcfa228e291e77d8
+2026-11-02T21:30:04.5458930Z Copying blob sha256:9ece4c1ed352286f3018b7fc7003b48549f30c50f46066749f281d9aaae83c35
+2026-11-02T21:30:04.6441236Z Copying blob sha256:ec732245c890ff11e62f90a519bf8ffc6ec92e9ad2188090532534500dbebd3a
+2026-11-02T21:30:04.6494422Z Copying blob sha256:e40701225891c385428ec5018b9cfea7dcdbaa73dd140b03ccf123d330de2559
+2026-11-02T21:30:04.6545803Z Copying blob sha256:33b67bd603bd81ab194f3d96803aefacdb5fa72b5e36950b569df2399b72e0df
+2026-11-02T21:30:08.1349223Z Copying config sha256:f7ebf09eb01b02bb9904972705248217baeaed03e2a0a7ed24a77740b0aee98c
+2026-11-02T21:30:08.1364971Z Writing manifest to image destination
+2026-11-02T21:30:08.7017714Z c4455376136a266269552ab5925099baccb8ae8b1a2fec3f3dfa429df7f759af
+2026-11-02T21:30:11.1055150Z ##[group]Run python3 lab/e2_orleans/test_e2.py
+2026-11-02T21:30:11.1055460Z [36;1mpython3 lab/e2_orleans/test_e2.py[0m
+2026-11-02T21:30:11.1074360Z shell: /usr/bin/bash -e {0}
+2026-11-02T21:30:11.1074572Z env:
+2026-11-02T21:30:11.1074942Z   E1_PG_DSN: host=127.0.0.1 port=55434 dbname=e2lab user=postgres ***
+2026-11-02T21:30:11.1075398Z   E1_PG_NPGSQL: Host=127.0.0.1;Port=55434;Database=e2lab;Username=postgres;***;Pooling=false
+2026-11-02T21:30:11.1076175Z   E2_PG_NPGSQL: Host=127.0.0.1;Port=55434;Database=e2lab;Username=postgres;***;Pooling=true;Maximum Pool Size=32
+2026-11-02T21:30:11.1076608Z   pythonLocation: /opt/hostedtoolcache/Python/3.12.15/x64
+2026-11-02T21:30:11.1076942Z   PKG_CONFIG_PATH: /opt/hostedtoolcache/Python/3.12.15/x64/lib/pkgconfig
+2026-11-02T21:30:11.1077460Z   Python_ROOT_DIR: /opt/hostedtoolcache/Python/3.12.15/x64
+2026-11-02T21:30:11.1077753Z   Python2_ROOT_DIR: /opt/hostedtoolcache/Python/3.12.15/x64
+2026-11-02T21:30:11.1078075Z   Python3_ROOT_DIR: /opt/hostedtoolcache/Python/3.12.15/x64
+2026-11-02T21:30:11.1078396Z   LD_LIBRARY_PATH: /opt/hostedtoolcache/Python/3.12.15/x64/lib
+2026-11-02T21:30:11.1078667Z   DOTNET_ROOT: /usr/share/dotnet
+2026-11-02T21:30:11.1078883Z ##[endgroup]
+2026-11-02T21:30:29.3365781Z {
+2026-11-02T21:30:29.3366184Z   "schemaVersion": 1,
+2026-11-02T21:30:29.3366602Z   "experiment": "E2-Orleans-Persistent-Ledger-Smoke",
+2026-11-02T21:30:29.3367196Z   "classification": "SYNTHETIC_SINGLE_SILO_FUNCTIONAL_NOT_CAPACITY",
+2026-11-02T21:30:29.3367665Z   "status": "PASS",
+2026-11-02T21:30:29.3367901Z   "controls": {
+2026-11-02T21:30:29.3368244Z     "sequentialProtectedSQLiteAndE1bParity": "PASS",
+2026-11-02T21:30:29.3368708Z     "directAndGrainShareDurableLedger": "PASS",
+2026-11-02T21:30:29.3371783Z     "concurrentOverdraftAndOperationId": "PASS",
+2026-11-02T21:30:29.3372213Z     "crossedSourceAccountTransfers": "PASS",
+2026-11-02T21:30:29.3372624Z     "unsafeReentrantActorStateRejected": "PASS",
+2026-11-02T21:30:29.3373084Z     "simulatedRollbackAndLostResponseReplay": "PASS",
+2026-11-02T21:30:29.3373418Z     "independentSqlOracleNegativeMutation": "PASS"
+2026-11-02T21:30:29.3373671Z   },
+2026-11-02T21:30:29.3373841Z   "functional": [
+2026-11-02T21:30:29.3374009Z     {
+2026-11-02T21:30:29.3374184Z       "route": "direct",
+2026-11-02T21:30:29.3374379Z       "cases": 15,
+2026-11-02T21:30:29.3374552Z       "statuses": [
+2026-11-02T21:30:29.3374732Z         "COMMITTED",
+2026-11-02T21:30:29.3374923Z         "DUPLICATE_COMMITTED",
+2026-11-02T21:30:29.3375128Z         "ID_CONFLICT",
+2026-11-02T21:30:29.3375306Z         "REJECTED",
+2026-11-02T21:30:29.3375665Z         "DUPLICATE_REJECTED",
+2026-11-02T21:30:29.3375958Z         "ID_CONFLICT",
+2026-11-02T21:30:29.3376224Z         "INVALID",
+2026-11-02T21:30:29.3376481Z         "INVALID",
+2026-11-02T21:30:29.3376726Z         "INVALID",
+2026-11-02T21:30:29.3376972Z         "INVALID",
+2026-11-02T21:30:29.3377237Z         "INJECTED_ROLLBACK",
+2026-11-02T21:30:29.3377549Z         "AMBIGUOUS_RESPONSE",
+2026-11-02T21:30:29.3377870Z         "DUPLICATE_COMMITTED",
+2026-11-02T21:30:29.3378172Z         "COMMITTED",
+2026-11-02T21:30:29.3378435Z         "COMMITTED"
+2026-11-02T21:30:29.3378659Z       ],
+2026-11-02T21:30:29.3378993Z       "persistedStateMatchesProtectedSQLite": true,
+2026-11-02T21:30:29.3379302Z       "independentOracle": {
+2026-11-02T21:30:29.3379515Z         "nonnegative": true,
+2026-11-02T21:30:29.3379718Z         "conserved": true,
+2026-11-02T21:30:29.3379940Z         "balancedPostings": true,
+2026-11-02T21:30:29.3380174Z         "twoPostingsPerCommit": true,
+2026-11-02T21:30:29.3380418Z         "noPostingsForRejection": true,
+2026-11-02T21:30:29.3380647Z         "outboxAtomic": true,
+2026-11-02T21:30:29.3380864Z         "projectionAgrees": true
+2026-11-02T21:30:29.3381112Z       }
+2026-11-02T21:30:29.3381329Z     },
+2026-11-02T21:30:29.3381479Z     {
+2026-11-02T21:30:29.3381650Z       "route": "orleans",
+2026-11-02T21:30:29.3381945Z       "cases": 15,
+2026-11-02T21:30:29.3382188Z       "statuses": [
+2026-11-02T21:30:29.3382717Z         "COMMITTED",
+2026-11-02T21:30:29.3383023Z         "DUPLICATE_COMMITTED",
+2026-11-02T21:30:29.3383231Z         "ID_CONFLICT",
+2026-11-02T21:30:29.3383414Z         "REJECTED",
+2026-11-02T21:30:29.3383599Z         "DUPLICATE_REJECTED",
+2026-11-02T21:30:29.3383796Z         "ID_CONFLICT",
+2026-11-02T21:30:29.3383976Z         "INVALID",
+2026-11-02T21:30:29.3384159Z         "INVALID",
+2026-11-02T21:30:29.3384325Z         "INVALID",
+2026-11-02T21:30:29.3384487Z         "INVALID",
+2026-11-02T21:30:29.3384666Z         "INJECTED_ROLLBACK",
+2026-11-02T21:30:29.3384869Z         "AMBIGUOUS_RESPONSE",
+2026-11-02T21:30:29.3385072Z         "DUPLICATE_COMMITTED",
+2026-11-02T21:30:29.3385268Z         "COMMITTED",
+2026-11-02T21:30:29.3385738Z         "COMMITTED"
+2026-11-02T21:30:29.3385984Z       ],
+2026-11-02T21:30:29.3386240Z       "persistedStateMatchesProtectedSQLite": true,
+2026-11-02T21:30:29.3386514Z       "independentOracle": {
+2026-11-02T21:30:29.3386722Z         "nonnegative": true,
+2026-11-02T21:30:29.3386931Z         "conserved": true,
+2026-11-02T21:30:29.3387140Z         "balancedPostings": true,
+2026-11-02T21:30:29.3387372Z         "twoPostingsPerCommit": true,
+2026-11-02T21:30:29.3387624Z         "noPostingsForRejection": true,
+2026-11-02T21:30:29.3387863Z         "outboxAtomic": true,
+2026-11-02T21:30:29.3388098Z         "projectionAgrees": true
+2026-11-02T21:30:29.3388293Z       }
+2026-11-02T21:30:29.3388437Z     }
+2026-11-02T21:30:29.3388580Z   ],
+2026-11-02T21:30:29.3388741Z   "concurrent": [
+2026-11-02T21:30:29.3388906Z     {
+2026-11-02T21:30:29.3389168Z       "route": "direct",
+2026-11-02T21:30:29.3389380Z       "overdraftStatuses": [
+2026-11-02T21:30:29.3389583Z         "COMMITTED",
+2026-11-02T21:30:29.3389772Z         "REJECTED"
+2026-11-02T21:30:29.3389938Z       ],
+2026-11-02T21:30:29.3390113Z       "duplicateStatuses": [
+2026-11-02T21:30:29.3390315Z         "COMMITTED",
+2026-11-02T21:30:29.3390507Z         "DUPLICATE_COMMITTED",
+2026-11-02T21:30:29.3390719Z         "DUPLICATE_COMMITTED",
+2026-11-02T21:30:29.3390927Z         "DUPLICATE_COMMITTED"
+2026-11-02T21:30:29.3391109Z       ],
+2026-11-02T21:30:29.3391279Z       "committed": 2,
+2026-11-02T21:30:29.3391465Z       "postings": 4,
+2026-11-02T21:30:29.3391645Z       "outbox": 2,
+2026-11-02T21:30:29.3391837Z       "independentOracle": {
+2026-11-02T21:30:29.3392040Z         "nonnegative": true,
+2026-11-02T21:30:29.3392254Z         "conserved": true,
+2026-11-02T21:30:29.3392465Z         "balancedPostings": true,
+2026-11-02T21:30:29.3392694Z         "twoPostingsPerCommit": true,
+2026-11-02T21:30:29.3392937Z         "noPostingsForRejection": true,
+2026-11-02T21:30:29.3393167Z         "outboxAtomic": true,
+2026-11-02T21:30:29.3393378Z         "projectionAgrees": true
+2026-11-02T21:30:29.3393569Z       }
+2026-11-02T21:30:29.3393715Z     },
+2026-11-02T21:30:29.3393859Z     {
+2026-11-02T21:30:29.3394027Z       "route": "orleans",
+2026-11-02T21:30:29.3394229Z       "overdraftStatuses": [
+2026-11-02T21:30:29.3394430Z         "COMMITTED",
+2026-11-02T21:30:29.3394605Z         "REJECTED"
+2026-11-02T21:30:29.3394757Z       ],
+2026-11-02T21:30:29.3394926Z       "duplicateStatuses": [
+2026-11-02T21:30:29.3395120Z         "COMMITTED",
+2026-11-02T21:30:29.3395308Z         "DUPLICATE_COMMITTED",
+2026-11-02T21:30:29.3395970Z         "DUPLICATE_COMMITTED",
+2026-11-02T21:30:29.3396348Z         "DUPLICATE_COMMITTED"
+2026-11-02T21:30:29.3396561Z       ],
+2026-11-02T21:30:29.3396734Z       "committed": 2,
+2026-11-02T21:30:29.3396931Z       "postings": 4,
+2026-11-02T21:30:29.3397122Z       "outbox": 2,
+2026-11-02T21:30:29.3397317Z       "independentOracle": {
+2026-11-02T21:30:29.3397531Z         "nonnegative": true,
+2026-11-02T21:30:29.3397738Z         "conserved": true,
+2026-11-02T21:30:29.3397967Z         "balancedPostings": true,
+2026-11-02T21:30:29.3398210Z         "twoPostingsPerCommit": true,
+2026-11-02T21:30:29.3398458Z         "noPostingsForRejection": true,
+2026-11-02T21:30:29.3398693Z         "outboxAtomic": true,
+2026-11-02T21:30:29.3399114Z         "projectionAgrees": true
+2026-11-02T21:30:29.3399409Z       }
+2026-11-02T21:30:29.3418636Z     }
+2026-11-02T21:30:29.3418852Z   ],
+2026-11-02T21:30:29.3419116Z   "crossedTransfers": [
+2026-11-02T21:30:29.3419370Z     {
+2026-11-02T21:30:29.3419602Z       "route": "direct",
+2026-11-02T21:30:29.3419895Z       "crossedOperations": 32,
+2026-11-02T21:30:29.3420195Z       "sourceAccounts": [
+2026-11-02T21:30:29.3420444Z         1,
+2026-11-02T21:30:29.3420654Z         2
+2026-11-02T21:30:29.3420860Z       ],
+2026-11-02T21:30:29.3421095Z       "committed": 32,
+2026-11-02T21:30:29.3421348Z       "postings": 64,
+2026-11-02T21:30:29.3421610Z       "outbox": 32,
+2026-11-02T21:30:29.3421888Z       "retrySqlStates": [],
+2026-11-02T21:30:29.3422789Z       "persistedStateSha256": "a27436d0dae6405041d8ceeb6d765b0ef2e1e0199b5e64afd70d1cc26b94974d",
+2026-11-02T21:30:29.3423389Z       "sevenIndependentOracleInvariants": {
+2026-11-02T21:30:29.3423734Z         "nonnegative": true,
+2026-11-02T21:30:29.3424034Z         "conserved": true,
+2026-11-02T21:30:29.3424325Z         "balancedPostings": true,
+2026-11-02T21:30:29.3424694Z         "twoPostingsPerCommit": true,
+2026-11-02T21:30:29.3425050Z         "noPostingsForRejection": true,
+2026-11-02T21:30:29.3425411Z         "outboxAtomic": true,
+2026-11-02T21:30:29.3425918Z         "projectionAgrees": true
+2026-11-02T21:30:29.3426178Z       },
+2026-11-02T21:30:29.3426672Z       "limitations": "Crossed requests, but no forced deadlock or multi-silo failover"
+2026-11-02T21:30:29.3427156Z     },
+2026-11-02T21:30:29.3427374Z     {
+2026-11-02T21:30:29.3427633Z       "route": "orleans",
+2026-11-02T21:30:29.3427948Z       "crossedOperations": 32,
+2026-11-02T21:30:29.3428278Z       "sourceAccounts": [
+2026-11-02T21:30:29.3428553Z         1,
+2026-11-02T21:30:29.3428771Z         2
+2026-11-02T21:30:29.3428966Z       ],
+2026-11-02T21:30:29.3429193Z       "committed": 32,
+2026-11-02T21:30:29.3429457Z       "postings": 64,
+2026-11-02T21:30:29.3429735Z       "outbox": 32,
+2026-11-02T21:30:29.3430032Z       "retrySqlStates": [],
+2026-11-02T21:30:29.3430602Z       "persistedStateSha256": "a27436d0dae6405041d8ceeb6d765b0ef2e1e0199b5e64afd70d1cc26b94974d",
+2026-11-02T21:30:29.3431258Z       "sevenIndependentOracleInvariants": {
+2026-11-02T21:30:29.3431650Z         "nonnegative": true,
+2026-11-02T21:30:29.3432054Z         "conserved": true,
+2026-11-02T21:30:29.3432401Z         "balancedPostings": true,
+2026-11-02T21:30:29.3432761Z         "twoPostingsPerCommit": true,
+2026-11-02T21:30:29.3433145Z         "noPostingsForRejection": true,
+2026-11-02T21:30:29.3433498Z         "outboxAtomic": true,
+2026-11-02T21:30:29.3433836Z         "projectionAgrees": true
+2026-11-02T21:30:29.3434126Z       },
+2026-11-02T21:30:29.3434609Z       "limitations": "Crossed requests, but no forced deadlock or multi-silo failover"
+2026-11-02T21:30:29.3435124Z     }
+2026-11-02T21:30:29.3435341Z   ],
+2026-11-02T21:30:29.3435795Z   "unsafeReentrancyNegative": {
+2026-11-02T21:30:29.3436282Z     "experiment": "E2-Orleans-Reentrant-Unsafe-Actor-State",
+2026-11-02T21:30:29.3436764Z     "status": "NEGATIVE_CONTROL_DETECTED",
+2026-11-02T21:30:29.3437143Z     "concurrentCalls": 16,
+2026-11-02T21:30:29.3437467Z     "expectedIfAtomic": 16,
+2026-11-02T21:30:29.3437817Z     "observedActorLocalValue": 1,
+2026-11-02T21:30:29.3438165Z     "lostUpdates": 15,
+2026-11-02T21:30:29.3438489Z     "durableSqlTransfers": 0,
+2026-11-02T21:30:29.3439329Z     "limitation": "Deliberately unsafe in-memory demonstration only; not a cross-grain SQL transaction, deadlock, or multi-silo failover",
+2026-11-02T21:30:29.3440102Z     "independentSqlOracle": {
+2026-11-02T21:30:29.3440459Z       "nonnegative": true,
+2026-11-02T21:30:29.3440768Z       "conserved": true,
+2026-11-02T21:30:29.3441080Z       "balancedPostings": true,
+2026-11-02T21:30:29.3441442Z       "twoPostingsPerCommit": true,
+2026-11-02T21:30:29.3441801Z       "noPostingsForRejection": true,
+2026-11-02T21:30:29.3442227Z       "outboxAtomic": true,
+2026-11-02T21:30:29.3442565Z       "projectionAgrees": true
+2026-11-02T21:30:29.3443130Z     }
+2026-11-02T21:30:29.3443328Z   },
+2026-11-02T21:30:29.3443535Z   "oracleNegative": {
+2026-11-02T21:30:29.3443704Z     "before": {
+2026-11-02T21:30:29.3443880Z       "nonnegative": true,
+2026-11-02T21:30:29.3444068Z       "conserved": true,
+2026-11-02T21:30:29.3444271Z       "balancedPostings": true,
+2026-11-02T21:30:29.3444493Z       "twoPostingsPerCommit": true,
+2026-11-02T21:30:29.3444733Z       "noPostingsForRejection": true,
+2026-11-02T21:30:29.3444977Z       "outboxAtomic": true,
+2026-11-02T21:30:29.3445188Z       "projectionAgrees": true
+2026-11-02T21:30:29.3445373Z     },
+2026-11-02T21:30:29.3445727Z     "corrupted": {
+2026-11-02T21:30:29.3445963Z       "nonnegative": true,
+2026-11-02T21:30:29.3446306Z       "conserved": true,
+2026-11-02T21:30:29.3446515Z       "balancedPostings": false,
+2026-11-02T21:30:29.3446743Z       "twoPostingsPerCommit": false,
+2026-11-02T21:30:29.3446988Z       "noPostingsForRejection": true,
+2026-11-02T21:30:29.3447224Z       "outboxAtomic": true,
+2026-11-02T21:30:29.3447452Z       "projectionAgrees": false
+2026-11-02T21:30:29.3447639Z     },
+2026-11-02T21:30:29.3447800Z     "restored": {
+2026-11-02T21:30:29.3447992Z       "nonnegative": true,
+2026-11-02T21:30:29.3448192Z       "conserved": true,
+2026-11-02T21:30:29.3448396Z       "balancedPostings": true,
+2026-11-02T21:30:29.3448614Z       "twoPostingsPerCommit": true,
+2026-11-02T21:30:29.3448848Z       "noPostingsForRejection": true,
+2026-11-02T21:30:29.3449070Z       "outboxAtomic": true,
+2026-11-02T21:30:29.3449283Z       "projectionAgrees": true
+2026-11-02T21:30:29.3449479Z     }
+2026-11-02T21:30:29.3449628Z   },
+2026-11-02T21:30:29.3449798Z   "sourceSha256": {
+2026-11-02T21:30:29.3450149Z     "Bank/Program.cs": "72e6ff2bf59fd8889158b2488e3b8a5eb6f67b8e05cab27dc2336b74b6ad8253",
+2026-11-02T21:30:29.3450751Z     "e1_pg/PgBank/Program.cs": "eb61acea9673cf14e999adf2c01a03df418c385dee0e3e1f6d777bbca53f5f32",
+2026-11-02T21:30:29.3451350Z     "e2_orleans/OrleansLab/OrleansLab.csproj": "bc064aa1b1f593332ea7c99d4d56d75fa209ae84788a4e67c833f100b1e6a9c0",
+2026-11-02T21:30:29.3451956Z     "e2_orleans/OrleansLab/Program.cs": "d78d52c3cca03f401cbe40c5b96b7707003b53d0fd4c8bef94b1e3639c228dcc",
+2026-11-02T21:30:29.3452546Z     "e2_orleans/OrleansLab/Contracts.cs": "f3afb0096a594e8ec18a29f8775de21ab0df40ebc55c89ad3486ef2f4cc943e0",
+2026-11-02T21:30:29.3453213Z     "e2_orleans/OrleansLab/UnsafeReentrancyNegative.cs": "9f083e0977bcc9b995d0ce89e3b1bfbbdc493790c0ddba347985310abbce34e6",
+2026-11-02T21:30:29.3453880Z     "e2_orleans/OrleansLab/PgDurableLedger.cs": "50f4a26e74ee28f754dd39854098bd4333f8cef2faf2d39d269e38a8db4581ff",
+2026-11-02T21:30:29.3454459Z     "e2_orleans/test_e2.py": "843e70bff917750ab8f9099edf578bfd02413a14c279806663a51c9a9c84bc37"
+2026-11-02T21:30:29.3454798Z   },
+2026-11-02T21:30:29.3455912Z   "limitations": "Real single-host co-located Orleans grain with PostgreSQL durability. Exception and lost-response controls are simulated, NOT actual silo process crash. No distributed Orleans silos, open-loop workload, 5-percent-hot/50-percent-intent benchmarks, p99 or production/MIPS."
+2026-11-02T21:30:29.3456767Z }
+2026-11-02T21:30:29.3717991Z ##[group]Run python3 lab/e2_orleans/test_deadlock.py
+2026-11-02T21:30:29.3718335Z [36;1mpython3 lab/e2_orleans/test_deadlock.py[0m
+2026-11-02T21:30:29.3735939Z shell: /usr/bin/bash -e {0}
+2026-11-02T21:30:29.3736144Z env:
+2026-11-02T21:30:29.3736554Z   E1_PG_DSN: host=127.0.0.1 port=55434 dbname=e2lab user=postgres ***
+2026-11-02T21:30:29.3737019Z   E1_PG_NPGSQL: Host=127.0.0.1;Port=55434;Database=e2lab;Username=postgres;***;Pooling=false
+2026-11-02T21:30:29.3737551Z   E2_PG_NPGSQL: Host=127.0.0.1;Port=55434;Database=e2lab;Username=postgres;***;Pooling=true;Maximum Pool Size=32
+2026-11-02T21:30:29.3738001Z   pythonLocation: /opt/hostedtoolcache/Python/3.12.15/x64
+2026-11-02T21:30:29.3738340Z   PKG_CONFIG_PATH: /opt/hostedtoolcache/Python/3.12.15/x64/lib/pkgconfig
+2026-11-02T21:30:29.3738672Z   Python_ROOT_DIR: /opt/hostedtoolcache/Python/3.12.15/x64
+2026-11-02T21:30:29.3738969Z   Python2_ROOT_DIR: /opt/hostedtoolcache/Python/3.12.15/x64
+2026-11-02T21:30:29.3739297Z   Python3_ROOT_DIR: /opt/hostedtoolcache/Python/3.12.15/x64
+2026-11-02T21:30:29.3739594Z   LD_LIBRARY_PATH: /opt/hostedtoolcache/Python/3.12.15/x64/lib
+2026-11-02T21:30:29.3739863Z   DOTNET_ROOT: /usr/share/dotnet
+2026-11-02T21:30:29.3740064Z ##[endgroup]
+2026-11-02T21:30:38.9043341Z {
+2026-11-02T21:30:38.9043727Z   "schemaVersion": 1,
+2026-11-02T21:30:38.9044155Z   "experiment": "E2-PostgreSQL-Real-40P01-Atomic-Retry",
+2026-11-02T21:30:38.9044623Z   "status": "PASS",
+2026-11-02T21:30:38.9045079Z   "classification": "SYNTHETIC_OPT_IN_SQL_DEADLOCK_SINGLE_HOST_NOT_CAPACITY",
+2026-11-02T21:30:38.9045689Z   "fixture": {
+2026-11-02T21:30:38.9046280Z     "flag": "E2_ENABLE_DEADLOCK_FIXTURE=1",
+2026-11-02T21:30:38.9046616Z     "operationIds": [
+2026-11-02T21:30:38.9046886Z       "e2-deadlock-a",
+2026-11-02T21:30:38.9047138Z       "e2-deadlock-b"
+2026-11-02T21:30:38.9047359Z     ],
+2026-11-02T21:30:38.9047600Z     "sourceTargetPairs": [
+2026-11-02T21:30:38.9047846Z       [
+2026-11-02T21:30:38.9048040Z         1,
+2026-11-02T21:30:38.9048252Z         2
+2026-11-02T21:30:38.9048450Z       ],
+2026-11-02T21:30:38.9048633Z       [
+2026-11-02T21:30:38.9048819Z         2,
+2026-11-02T21:30:38.9049006Z         1
+2026-11-02T21:30:38.9049200Z       ]
+2026-11-02T21:30:38.9049392Z     ],
+2026-11-02T21:30:38.9049617Z     "amountCents": 41,
+2026-11-02T21:30:38.9049897Z     "firstAttemptUnorderedOnly": true,
+2026-11-02T21:30:38.9050230Z     "orderedOnRetry": true
+2026-11-02T21:30:38.9050473Z   },
+2026-11-02T21:30:38.9050668Z   "results": [
+2026-11-02T21:30:38.9050885Z     {
+2026-11-02T21:30:38.9051105Z       "route": "direct",
+2026-11-02T21:30:38.9051378Z       "optInRequired": true,
+2026-11-02T21:30:38.9051660Z       "statuses": [
+2026-11-02T21:30:38.9051898Z         "COMMITTED",
+2026-11-02T21:30:38.9052343Z         "COMMITTED"
+2026-11-02T21:30:38.9052584Z       ],
+2026-11-02T21:30:38.9052862Z       "retrySqlStates": [
+2026-11-02T21:30:38.9053117Z         [
+2026-11-02T21:30:38.9053343Z           "40P01"
+2026-11-02T21:30:38.9053657Z         ],
+2026-11-02T21:30:38.9055124Z         []
+2026-11-02T21:30:38.9055332Z       ],
+2026-11-02T21:30:38.9055787Z       "observed40P01Victims": 1,
+2026-11-02T21:30:38.9056295Z       "fullTransactionRetryRecovered": true,
+2026-11-02T21:30:38.9056642Z       "persisted": {
+2026-11-02T21:30:38.9056898Z         "committed": 2,
+2026-11-02T21:30:38.9057151Z         "postings": 4,
+2026-11-02T21:30:38.9057404Z         "outbox": 2,
+2026-11-02T21:30:38.9057641Z         "balances": [
+2026-11-02T21:30:38.9057856Z           [
+2026-11-02T21:30:38.9058045Z             1,
+2026-11-02T21:30:38.9058276Z             100000
+2026-11-02T21:30:38.9058481Z           ],
+2026-11-02T21:30:38.9058690Z           [
+2026-11-02T21:30:38.9058881Z             2,
+2026-11-02T21:30:38.9059098Z             100000
+2026-11-02T21:30:38.9059310Z           ]
+2026-11-02T21:30:38.9059501Z         ]
+2026-11-02T21:30:38.9059692Z       },
+2026-11-02T21:30:38.9059937Z       "replayStatuses": [
+2026-11-02T21:30:38.9060234Z         "DUPLICATE_COMMITTED",
+2026-11-02T21:30:38.9060847Z         "DUPLICATE_COMMITTED"
+2026-11-02T21:30:38.9061101Z       ],
+2026-11-02T21:30:38.9061369Z       "conflictingIdStatus": "ID_CONFLICT",
+2026-11-02T21:30:38.9061900Z       "stateSha256": "064279bc9fb11cae5e29a7d7c0d2907c3bd5458083ff000885bf79fa541aba14",
+2026-11-02T21:30:38.9062403Z       "independentOracle": {
+2026-11-02T21:30:38.9062686Z         "nonnegative": true,
+2026-11-02T21:30:38.9062966Z         "conserved": true,
+2026-11-02T21:30:38.9063256Z         "balancedPostings": true,
+2026-11-02T21:30:38.9063578Z         "twoPostingsPerCommit": true,
+2026-11-02T21:30:38.9063915Z         "noPostingsForRejection": true,
+2026-11-02T21:30:38.9064240Z         "outboxAtomic": true,
+2026-11-02T21:30:38.9064527Z         "projectionAgrees": true
+2026-11-02T21:30:38.9064802Z       }
+2026-11-02T21:30:38.9064985Z     },
+2026-11-02T21:30:38.9065172Z     {
+2026-11-02T21:30:38.9065389Z       "route": "orleans",
+2026-11-02T21:30:38.9066011Z       "optInRequired": true,
+2026-11-02T21:30:38.9066305Z       "statuses": [
+2026-11-02T21:30:38.9066558Z         "COMMITTED",
+2026-11-02T21:30:38.9066812Z         "COMMITTED"
+2026-11-02T21:30:38.9067019Z       ],
+2026-11-02T21:30:38.9067249Z       "retrySqlStates": [
+2026-11-02T21:30:38.9067479Z         [
+2026-11-02T21:30:38.9067685Z           "40P01"
+2026-11-02T21:30:38.9067886Z         ],
+2026-11-02T21:30:38.9068075Z         []
+2026-11-02T21:30:38.9068264Z       ],
+2026-11-02T21:30:38.9068501Z       "observed40P01Victims": 1,
+2026-11-02T21:30:38.9068844Z       "fullTransactionRetryRecovered": true,
+2026-11-02T21:30:38.9069168Z       "persisted": {
+2026-11-02T21:30:38.9069407Z         "committed": 2,
+2026-11-02T21:30:38.9069842Z         "postings": 4,
+2026-11-02T21:30:38.9070080Z         "outbox": 2,
+2026-11-02T21:30:38.9070312Z         "balances": [
+2026-11-02T21:30:38.9070521Z           [
+2026-11-02T21:30:38.9070707Z             1,
+2026-11-02T21:30:38.9070924Z             100000
+2026-11-02T21:30:38.9071126Z           ],
+2026-11-02T21:30:38.9071318Z           [
+2026-11-02T21:30:38.9071520Z             2,
+2026-11-02T21:30:38.9071735Z             100000
+2026-11-02T21:30:38.9071932Z           ]
+2026-11-02T21:30:38.9072120Z         ]
+2026-11-02T21:30:38.9072304Z       },
+2026-11-02T21:30:38.9072533Z       "replayStatuses": [
+2026-11-02T21:30:38.9072819Z         "DUPLICATE_COMMITTED",
+2026-11-02T21:30:38.9073112Z         "DUPLICATE_COMMITTED"
+2026-11-02T21:30:38.9073357Z       ],
+2026-11-02T21:30:38.9073611Z       "conflictingIdStatus": "ID_CONFLICT",
+2026-11-02T21:30:38.9074165Z       "stateSha256": "064279bc9fb11cae5e29a7d7c0d2907c3bd5458083ff000885bf79fa541aba14",
+2026-11-02T21:30:38.9074682Z       "independentOracle": {
+2026-11-02T21:30:38.9074975Z         "nonnegative": true,
+2026-11-02T21:30:38.9075257Z         "conserved": true,
+2026-11-02T21:30:38.9075766Z         "balancedPostings": true,
+2026-11-02T21:30:38.9076085Z         "twoPostingsPerCommit": true,
+2026-11-02T21:30:38.9076418Z         "noPostingsForRejection": true,
+2026-11-02T21:30:38.9076745Z         "outboxAtomic": true,
+2026-11-02T21:30:38.9077038Z         "projectionAgrees": true
+2026-11-02T21:30:38.9077288Z       }
+2026-11-02T21:30:38.9077467Z     }
+2026-11-02T21:30:38.9077669Z   ],
+2026-11-02T21:30:38.9077886Z   "sourceSha256": {
+2026-11-02T21:30:38.9078384Z     "e2_orleans/test_deadlock.py": "9e6b8c92c4943778c656554b07502a7898b9bf8f1abbda114197900f6763d5a4",
+2026-11-02T21:30:38.9079227Z     "e2_orleans/OrleansLab/PgDurableLedger.cs": "50f4a26e74ee28f754dd39854098bd4333f8cef2faf2d39d269e38a8db4581ff",
+2026-11-02T21:30:38.9080107Z     "e2_orleans/OrleansLab/Program.cs": "d78d52c3cca03f401cbe40c5b96b7707003b53d0fd4c8bef94b1e3639c228dcc",
+2026-11-02T21:30:38.9080851Z     "e1_pg/oracle.py": "3f2874842e9febcc84584bf4a266920028840ccac9d404f75cb9f4363fb4fc09"
+2026-11-02T21:30:38.9081283Z   },
+2026-11-02T21:30:38.9082800Z   "limitations": "Real 40P01 under controlled, deliberately unordered first-attempt row locking in a disposable single-host test; not evidence of natural production deadlock frequency, cross-silo failover, physical scaling, mainframe throughput or MIPS equivalence."
+2026-11-02T21:30:38.9083965Z }
+2026-11-02T21:30:38.9393714Z ##[group]Run python3 lab/e2_orleans/test_workloads.py
+2026-11-02T21:30:38.9394244Z [36;1mpython3 lab/e2_orleans/test_workloads.py[0m
+2026-11-02T21:30:38.9420696Z shell: /usr/bin/bash -e {0}
+2026-11-02T21:30:38.9421035Z env:
+2026-11-02T21:30:38.9421651Z   E1_PG_DSN: host=127.0.0.1 port=55434 dbname=e2lab user=postgres ***
+2026-11-02T21:30:38.9422420Z   E1_PG_NPGSQL: Host=127.0.0.1;Port=55434;Database=e2lab;Username=postgres;***;Pooling=false
+2026-11-02T21:30:38.9423288Z   E2_PG_NPGSQL: Host=127.0.0.1;Port=55434;Database=e2lab;Username=postgres;***;Pooling=true;Maximum Pool Size=32
+2026-11-02T21:30:38.9424004Z   pythonLocation: /opt/hostedtoolcache/Python/3.12.15/x64
+2026-11-02T21:30:38.9424569Z   PKG_CONFIG_PATH: /opt/hostedtoolcache/Python/3.12.15/x64/lib/pkgconfig
+2026-11-02T21:30:38.9425109Z   Python_ROOT_DIR: /opt/hostedtoolcache/Python/3.12.15/x64
+2026-11-02T21:30:38.9425782Z   Python2_ROOT_DIR: /opt/hostedtoolcache/Python/3.12.15/x64
+2026-11-02T21:30:38.9426329Z   Python3_ROOT_DIR: /opt/hostedtoolcache/Python/3.12.15/x64
+2026-11-02T21:30:38.9426775Z   LD_LIBRARY_PATH: /opt/hostedtoolcache/Python/3.12.15/x64/lib
+2026-11-02T21:30:38.9427194Z   DOTNET_ROOT: /usr/share/dotnet
+2026-11-02T21:30:38.9427486Z ##[endgroup]
+2026-11-02T21:30:46.5301288Z {
+2026-11-02T21:30:46.5301687Z   "status": "PASS",
+2026-11-02T21:30:46.5302056Z   "experiment": "E2-Orleans-Synthetic-Load-1000",
+2026-11-02T21:30:46.5302418Z   "controls": {
+2026-11-02T21:30:46.5302757Z     "deterministicIdenticalOfferedCommands": "PASS",
+2026-11-02T21:30:46.5303730Z     "sixMatchedRouteAndProfileRuns": "PASS",
+2026-11-02T21:30:46.5304154Z     "sixHundredDurableCommittedTransfers": "PASS",
+2026-11-02T21:30:46.5304627Z     "sevenIndependentLedgerInvariantsPerRun": "PASS",
+2026-11-02T21:30:46.5305101Z     "identicalPersistedStateByRoutePerProfile": "PASS"
+2026-11-02T21:30:46.5305444Z   },
+2026-11-02T21:30:46.5305815Z   "workloadRuns": [
+2026-11-02T21:30:46.5306028Z     {
+2026-11-02T21:30:46.5306281Z       "profile": "uniform",
+2026-11-02T21:30:46.5306563Z       "route": "direct",
+2026-11-02T21:30:46.5306844Z       "offeredRequests": 100,
+2026-11-02T21:30:46.5307134Z       "committed": 100,
+2026-11-02T21:30:46.5307384Z       "retries": 0,
+2026-11-02T21:30:46.5307679Z       "committedPerProcessWallSecond": 90.24,
+2026-11-02T21:30:46.5308060Z       "clientObservedRequestLatencyMs": {
+2026-11-02T21:30:46.5308394Z         "p50": 84.377,
+2026-11-02T21:30:46.5308644Z         "p95": 192.635,
+2026-11-02T21:30:46.5308887Z         "p99": 208.284,
+2026-11-02T21:30:46.5309144Z         "max": 221.797
+2026-11-02T21:30:46.5309364Z       },
+2026-11-02T21:30:46.5309794Z       "stateSha256": "2c4632152cde7938b9169f504e43df127046967ad7444b7a029ef4c6d34b0589"
+2026-11-02T21:30:46.5310253Z     },
+2026-11-02T21:30:46.5310448Z     {
+2026-11-02T21:30:46.5310702Z       "profile": "uniform",
+2026-11-02T21:30:46.5310980Z       "route": "orleans",
+2026-11-02T21:30:46.5311256Z       "offeredRequests": 100,
+2026-11-02T21:30:46.5311536Z       "committed": 100,
+2026-11-02T21:30:46.5311793Z       "retries": 0,
+2026-11-02T21:30:46.5312109Z       "committedPerProcessWallSecond": 85.303,
+2026-11-02T21:30:46.5312557Z       "clientObservedRequestLatencyMs": {
+2026-11-02T21:30:46.5312893Z         "p50": 191.629,
+2026-11-02T21:30:46.5313161Z         "p95": 295.72,
+2026-11-02T21:30:46.5313410Z         "p99": 309.368,
+2026-11-02T21:30:46.5313665Z         "max": 313.962
+2026-11-02T21:30:46.5313911Z       },
+2026-11-02T21:30:46.5314370Z       "stateSha256": "2c4632152cde7938b9169f504e43df127046967ad7444b7a029ef4c6d34b0589"
+2026-11-02T21:30:46.5314852Z     },
+2026-11-02T21:30:46.5315037Z     {
+2026-11-02T21:30:46.5315274Z       "profile": "five_percent_hot",
+2026-11-02T21:30:46.5315770Z       "route": "direct",
+2026-11-02T21:30:46.5316045Z       "offeredRequests": 100,
+2026-11-02T21:30:46.5316323Z       "committed": 100,
+2026-11-02T21:30:46.5316586Z       "retries": 0,
+2026-11-02T21:30:46.5316886Z       "committedPerProcessWallSecond": 93.723,
+2026-11-02T21:30:46.5317687Z       "clientObservedRequestLatencyMs": {
+2026-11-02T21:30:46.5318036Z         "p50": 76.318,
+2026-11-02T21:30:46.5318285Z         "p95": 188.833,
+2026-11-02T21:30:46.5318528Z         "p99": 213.373,
+2026-11-02T21:30:46.5318782Z         "max": 242.329
+2026-11-02T21:30:46.5318996Z       },
+2026-11-02T21:30:46.5319429Z       "stateSha256": "6c027f3c59c64a24aec1a175a2bfefc32dac3dad1aaf5f9fe6869c37301fe877"
+2026-11-02T21:30:46.5319906Z     },
+2026-11-02T21:30:46.5320086Z     {
+2026-11-02T21:30:46.5320323Z       "profile": "five_percent_hot",
+2026-11-02T21:30:46.5320634Z       "route": "orleans",
+2026-11-02T21:30:46.5320905Z       "offeredRequests": 100,
+2026-11-02T21:30:46.5321198Z       "committed": 100,
+2026-11-02T21:30:46.5321459Z       "retries": 0,
+2026-11-02T21:30:46.5321748Z       "committedPerProcessWallSecond": 87.884,
+2026-11-02T21:30:46.5322138Z       "clientObservedRequestLatencyMs": {
+2026-11-02T21:30:46.5322444Z         "p50": 181.641,
+2026-11-02T21:30:46.5322686Z         "p95": 287.414,
+2026-11-02T21:30:46.5322932Z         "p99": 302.134,
+2026-11-02T21:30:46.5323174Z         "max": 331.98
+2026-11-02T21:30:46.5323397Z       },
+2026-11-02T21:30:46.5323832Z       "stateSha256": "6c027f3c59c64a24aec1a175a2bfefc32dac3dad1aaf5f9fe6869c37301fe877"
+2026-11-02T21:30:46.5324294Z     },
+2026-11-02T21:30:46.5324478Z     {
+2026-11-02T21:30:46.5324728Z       "profile": "one_account_half_intents",
+2026-11-02T21:30:46.5325044Z       "route": "direct",
+2026-11-02T21:30:46.5325305Z       "offeredRequests": 100,
+2026-11-02T21:30:46.5325778Z       "committed": 100,
+2026-11-02T21:30:46.5326214Z       "retries": 0,
+2026-11-02T21:30:46.5326501Z       "committedPerProcessWallSecond": 93.412,
+2026-11-02T21:30:46.5326880Z       "clientObservedRequestLatencyMs": {
+2026-11-02T21:30:46.5327180Z         "p50": 91.763,
+2026-11-02T21:30:46.5327434Z         "p95": 225.358,
+2026-11-02T21:30:46.5327677Z         "p99": 290.497,
+2026-11-02T21:30:46.5327915Z         "max": 314.019
+2026-11-02T21:30:46.5328127Z       },
+2026-11-02T21:30:46.5328541Z       "stateSha256": "f37187367f74d010ac902728c5e867194f814b8994f6f201426a0f65072030d7"
+2026-11-02T21:30:46.5328964Z     },
+2026-11-02T21:30:46.5329150Z     {
+2026-11-02T21:30:46.5329398Z       "profile": "one_account_half_intents",
+2026-11-02T21:30:46.5329718Z       "route": "orleans",
+2026-11-02T21:30:46.5329996Z       "offeredRequests": 100,
+2026-11-02T21:30:46.5330278Z       "committed": 100,
+2026-11-02T21:30:46.5330521Z       "retries": 0,
+2026-11-02T21:30:46.5330807Z       "committedPerProcessWallSecond": 77.845,
+2026-11-02T21:30:46.5331175Z       "clientObservedRequestLatencyMs": {
+2026-11-02T21:30:46.5331482Z         "p50": 211.053,
+2026-11-02T21:30:46.5331720Z         "p95": 309.393,
+2026-11-02T21:30:46.5331945Z         "p99": 332.724,
+2026-11-02T21:30:46.5332180Z         "max": 354.782
+2026-11-02T21:30:46.5332386Z       },
+2026-11-02T21:30:46.5332773Z       "stateSha256": "f37187367f74d010ac902728c5e867194f814b8994f6f201426a0f65072030d7"
+2026-11-02T21:30:46.5333191Z     }
+2026-11-02T21:30:46.5333389Z   ],
+2026-11-02T21:30:46.5333593Z   "sourceSha256": {
+2026-11-02T21:30:46.5334092Z     "e2_orleans/test_workloads.py": "745061b5cb7b4c3596d3123708eb362734a5b1c22de67ccf5a75c4c433d41959",
+2026-11-02T21:30:46.5334870Z     "e2_orleans/oracle_workload.py": "1c5caa71e955674b31f4853b61fc1f84f747602b50528bc9478601fe630c3038",
+2026-11-02T21:30:46.5336590Z     "e2_orleans/OrleansLab/Program.cs": "d78d52c3cca03f401cbe40c5b96b7707003b53d0fd4c8bef94b1e3639c228dcc",
+2026-11-02T21:30:46.5337504Z     "e2_orleans/OrleansLab/Contracts.cs": "f3afb0096a594e8ec18a29f8775de21ab0df40ebc55c89ad3486ef2f4cc943e0",
+2026-11-02T21:30:46.5338434Z     "e2_orleans/OrleansLab/PgDurableLedger.cs": "50f4a26e74ee28f754dd39854098bd4333f8cef2faf2d39d269e38a8db4581ff"
+2026-11-02T21:30:46.5338979Z   }
+2026-11-02T21:30:46.5339162Z }
+2026-11-02T21:30:46.5664619Z ##[group]Run python3 lab/e2_orleans/test_process_crash.py
+2026-11-02T21:30:46.5664993Z [36;1mpython3 lab/e2_orleans/test_process_crash.py[0m
+2026-11-02T21:30:46.5682824Z shell: /usr/bin/bash -e {0}
+2026-11-02T21:30:46.5683032Z env:
+2026-11-02T21:30:46.5683406Z   E1_PG_DSN: host=127.0.0.1 port=55434 dbname=e2lab user=postgres ***
+2026-11-02T21:30:46.5683884Z   E1_PG_NPGSQL: Host=127.0.0.1;Port=55434;Database=e2lab;Username=postgres;***;Pooling=false
+2026-11-02T21:30:46.5684425Z   E2_PG_NPGSQL: Host=127.0.0.1;Port=55434;Database=e2lab;Username=postgres;***;Pooling=true;Maximum Pool Size=32
+2026-11-02T21:30:46.5684862Z   pythonLocation: /opt/hostedtoolcache/Python/3.12.15/x64
+2026-11-02T21:30:46.5685208Z   PKG_CONFIG_PATH: /opt/hostedtoolcache/Python/3.12.15/x64/lib/pkgconfig
+2026-11-02T21:30:46.5685739Z   Python_ROOT_DIR: /opt/hostedtoolcache/Python/3.12.15/x64
+2026-11-02T21:30:46.5686095Z   Python2_ROOT_DIR: /opt/hostedtoolcache/Python/3.12.15/x64
+2026-11-02T21:30:46.5686431Z   Python3_ROOT_DIR: /opt/hostedtoolcache/Python/3.12.15/x64
+2026-11-02T21:30:46.5686740Z   LD_LIBRARY_PATH: /opt/hostedtoolcache/Python/3.12.15/x64/lib
+2026-11-02T21:30:46.5687017Z   DOTNET_ROOT: /usr/share/dotnet
+2026-11-02T21:30:46.5687218Z ##[endgroup]
+2026-11-02T21:30:57.8189891Z {
+2026-11-02T21:30:57.8190320Z   "schemaVersion": 1,
+2026-11-02T21:30:57.8190755Z   "experiment": "E2-Orleans-Actual-Cohost-Process-Kill",
+2026-11-02T21:30:57.8191161Z   "status": "PASS",
+2026-11-02T21:30:57.8191601Z   "classification": "SYNTHETIC_SINGLE_COHOST_SIGKILL_NOT_MULTISILO_FAILOVER",
+2026-11-02T21:30:57.8192050Z   "controls": {
+2026-11-02T21:30:57.8192420Z     "actualProcessSIGKILLBeforeAndAfterCommit": "PASS",
+2026-11-02T21:30:57.8192863Z     "rollbackOnDatabaseSessionDeath": "PASS",
+2026-11-02T21:30:57.8193672Z     "postCommitAmbiguityResolvesByOperationId": "PASS",
+2026-11-02T21:30:57.8194125Z     "exactlyOneDurablePostingAndOutbox": "PASS",
+2026-11-02T21:30:57.8194649Z     "isolatedNonAtomicSplitRejectedByIndependentOracle": "PASS"
+2026-11-02T21:30:57.8195067Z   },
+2026-11-02T21:30:57.8195291Z   "killedRuns": [
+2026-11-02T21:30:57.8195694Z     {
+2026-11-02T21:30:57.8195941Z       "route": "direct",
+2026-11-02T21:30:57.8196232Z       "fault": "kill-before-commit",
+2026-11-02T21:30:57.8196590Z       "exitCode": -9,
+2026-11-02T21:30:57.8196848Z       "afterKill": {
+2026-11-02T21:30:57.8197103Z         "operations": 0,
+2026-11-02T21:30:57.8197378Z         "postings": 0,
+2026-11-02T21:30:57.8197637Z         "outbox": 0
+2026-11-02T21:30:57.8197853Z       },
+2026-11-02T21:30:57.8198099Z       "recoveryStatus": "COMMITTED",
+2026-11-02T21:30:57.8198455Z       "finalExactlyOneDurableEffect": true,
+2026-11-02T21:30:57.8198834Z       "independentOracle": {
+2026-11-02T21:30:57.8199152Z         "nonnegative": true,
+2026-11-02T21:30:57.8199440Z         "conserved": true,
+2026-11-02T21:30:57.8199739Z         "balancedPostings": true,
+2026-11-02T21:30:57.8200065Z         "twoPostingsPerCommit": true,
+2026-11-02T21:30:57.8200409Z         "noPostingsForRejection": true,
+2026-11-02T21:30:57.8200740Z         "outboxAtomic": true,
+2026-11-02T21:30:57.8201049Z         "projectionAgrees": true
+2026-11-02T21:30:57.8201323Z       }
+2026-11-02T21:30:57.8201518Z     },
+2026-11-02T21:30:57.8201723Z     {
+2026-11-02T21:30:57.8201950Z       "route": "direct",
+2026-11-02T21:30:57.8202254Z       "fault": "kill-after-commit",
+2026-11-02T21:30:57.8202560Z       "exitCode": -9,
+2026-11-02T21:30:57.8202812Z       "afterKill": {
+2026-11-02T21:30:57.8203070Z         "operations": 1,
+2026-11-02T21:30:57.8203339Z         "postings": 2,
+2026-11-02T21:30:57.8203588Z         "outbox": 1
+2026-11-02T21:30:57.8203800Z       },
+2026-11-02T21:30:57.8204062Z       "recoveryStatus": "DUPLICATE_COMMITTED",
+2026-11-02T21:30:57.8204453Z       "finalExactlyOneDurableEffect": true,
+2026-11-02T21:30:57.8204789Z       "independentOracle": {
+2026-11-02T21:30:57.8205090Z         "nonnegative": true,
+2026-11-02T21:30:57.8205377Z         "conserved": true,
+2026-11-02T21:30:57.8206072Z         "balancedPostings": true,
+2026-11-02T21:30:57.8206401Z         "twoPostingsPerCommit": true,
+2026-11-02T21:30:57.8206746Z         "noPostingsForRejection": true,
+2026-11-02T21:30:57.8207100Z         "outboxAtomic": true,
+2026-11-02T21:30:57.8207425Z         "projectionAgrees": true
+2026-11-02T21:30:57.8207679Z       }
+2026-11-02T21:30:57.8207868Z     },
+2026-11-02T21:30:57.8208066Z     {
+2026-11-02T21:30:57.8208289Z       "route": "orleans",
+2026-11-02T21:30:57.8208574Z       "fault": "kill-before-commit",
+2026-11-02T21:30:57.8208895Z       "exitCode": -9,
+2026-11-02T21:30:57.8209148Z       "afterKill": {
+2026-11-02T21:30:57.8209406Z         "operations": 0,
+2026-11-02T21:30:57.8209667Z         "postings": 0,
+2026-11-02T21:30:57.8209918Z         "outbox": 0
+2026-11-02T21:30:57.8210143Z       },
+2026-11-02T21:30:57.8210385Z       "recoveryStatus": "COMMITTED",
+2026-11-02T21:30:57.8210723Z       "finalExactlyOneDurableEffect": true,
+2026-11-02T21:30:57.8211058Z       "independentOracle": {
+2026-11-02T21:30:57.8211348Z         "nonnegative": true,
+2026-11-02T21:30:57.8211642Z         "conserved": true,
+2026-11-02T21:30:57.8211930Z         "balancedPostings": true,
+2026-11-02T21:30:57.8212241Z         "twoPostingsPerCommit": true,
+2026-11-02T21:30:57.8212583Z         "noPostingsForRejection": true,
+2026-11-02T21:30:57.8212901Z         "outboxAtomic": true,
+2026-11-02T21:30:57.8213206Z         "projectionAgrees": true
+2026-11-02T21:30:57.8213460Z       }
+2026-11-02T21:30:57.8213651Z     },
+2026-11-02T21:30:57.8213845Z     {
+2026-11-02T21:30:57.8214067Z       "route": "orleans",
+2026-11-02T21:30:57.8214347Z       "fault": "kill-after-commit",
+2026-11-02T21:30:57.8214653Z       "exitCode": -9,
+2026-11-02T21:30:57.8214901Z       "afterKill": {
+2026-11-02T21:30:57.8215344Z         "operations": 1,
+2026-11-02T21:30:57.8215743Z         "postings": 2,
+2026-11-02T21:30:57.8215989Z         "outbox": 1
+2026-11-02T21:30:57.8216194Z       },
+2026-11-02T21:30:57.8216454Z       "recoveryStatus": "DUPLICATE_COMMITTED",
+2026-11-02T21:30:57.8216820Z       "finalExactlyOneDurableEffect": true,
+2026-11-02T21:30:57.8217152Z       "independentOracle": {
+2026-11-02T21:30:57.8217435Z         "nonnegative": true,
+2026-11-02T21:30:57.8217718Z         "conserved": true,
+2026-11-02T21:30:57.8217995Z         "balancedPostings": true,
+2026-11-02T21:30:57.8218304Z         "twoPostingsPerCommit": true,
+2026-11-02T21:30:57.8218637Z         "noPostingsForRejection": true,
+2026-11-02T21:30:57.8218961Z         "outboxAtomic": true,
+2026-11-02T21:30:57.8219258Z         "projectionAgrees": true
+2026-11-02T21:30:57.8219518Z       }
+2026-11-02T21:30:57.8219703Z     }
+2026-11-02T21:30:57.8219891Z   ],
+2026-11-02T21:30:57.8220129Z   "negativeSplit": {
+2026-11-02T21:30:57.8220362Z     "before": {
+2026-11-02T21:30:57.8220634Z       "nonnegative": true,
+2026-11-02T21:30:57.8220907Z       "conserved": true,
+2026-11-02T21:30:57.8221180Z       "balancedPostings": true,
+2026-11-02T21:30:57.8221486Z       "twoPostingsPerCommit": true,
+2026-11-02T21:30:57.8221817Z       "noPostingsForRejection": true,
+2026-11-02T21:30:57.8222120Z       "outboxAtomic": true,
+2026-11-02T21:30:57.8222400Z       "projectionAgrees": true
+2026-11-02T21:30:57.8222651Z     },
+2026-11-02T21:30:57.8222871Z     "unsafeSplit": {
+2026-11-02T21:30:57.8223115Z       "nonnegative": true,
+2026-11-02T21:30:57.8223394Z       "conserved": false,
+2026-11-02T21:30:57.8223665Z       "balancedPostings": true,
+2026-11-02T21:30:57.8223967Z       "twoPostingsPerCommit": true,
+2026-11-02T21:30:57.8224293Z       "noPostingsForRejection": true,
+2026-11-02T21:30:57.8224601Z       "outboxAtomic": true,
+2026-11-02T21:30:57.8224886Z       "projectionAgrees": false
+2026-11-02T21:30:57.8225134Z     },
+2026-11-02T21:30:57.8225353Z     "restored": {
+2026-11-02T21:30:57.8225738Z       "nonnegative": true,
+2026-11-02T21:30:57.8226004Z       "conserved": true,
+2026-11-02T21:30:57.8226270Z       "balancedPostings": true,
+2026-11-02T21:30:57.8226573Z       "twoPostingsPerCommit": true,
+2026-11-02T21:30:57.8227441Z       "noPostingsForRejection": true,
+2026-11-02T21:30:57.8227754Z       "outboxAtomic": true,
+2026-11-02T21:30:57.8228035Z       "projectionAgrees": true
+2026-11-02T21:30:57.8228291Z     }
+2026-11-02T21:30:57.8228477Z   },
+2026-11-02T21:30:57.8228693Z   "sourceSha256": {
+2026-11-02T21:30:57.8229231Z     "e2_orleans/test_process_crash.py": "69703e3f053e875f9502b65edab5d8afa889c852d2c12e41ec2a14349f187b73",
+2026-11-02T21:30:57.8230130Z     "e2_orleans/OrleansLab/PgDurableLedger.cs": "50f4a26e74ee28f754dd39854098bd4333f8cef2faf2d39d269e38a8db4581ff",
+2026-11-02T21:30:57.8231053Z     "e2_orleans/OrleansLab/Program.cs": "d78d52c3cca03f401cbe40c5b96b7707003b53d0fd4c8bef94b1e3639c228dcc",
+2026-11-02T21:30:57.8231914Z     "e2_orleans/OrleansLab/Contracts.cs": "f3afb0096a594e8ec18a29f8775de21ab0df40ebc55c89ad3486ef2f4cc943e0",
+2026-11-02T21:30:57.8232676Z     "e1_pg/oracle.py": "3f2874842e9febcc84584bf4a266920028840ccac9d404f75cb9f4363fb4fc09"
+2026-11-02T21:30:57.8233108Z   },
+2026-11-02T21:30:57.8234515Z   "limitations": "Actual hard termination of the same local process hosting a single Orleans silo and .NET client. No real multi-silo reassignment, leader election, network partition, storage power loss, or banking mainframe equivalence. The deliberately unsafe split writes are a separate SQL fixture, not actor code."
+2026-11-02T21:30:57.8235995Z }
+2026-11-02T21:30:57.8559996Z ##[group]Run python3 lab/e2_orleans/test_multiprocess.py
+2026-11-02T21:30:57.8560347Z [36;1mpython3 lab/e2_orleans/test_multiprocess.py[0m
+2026-11-02T21:30:57.8578644Z shell: /usr/bin/bash -e {0}
+2026-11-02T21:30:57.8578855Z env:
+2026-11-02T21:30:57.8579238Z   E1_PG_DSN: host=127.0.0.1 port=55434 dbname=e2lab user=postgres ***
+2026-11-02T21:30:57.8579692Z   E1_PG_NPGSQL: Host=127.0.0.1;Port=55434;Database=e2lab;Username=postgres;***;Pooling=false
+2026-11-02T21:30:57.8580454Z   E2_PG_NPGSQL: Host=127.0.0.1;Port=55434;Database=e2lab;Username=postgres;***;Pooling=true;Maximum Pool Size=32
+2026-11-02T21:30:57.8580877Z   pythonLocation: /opt/hostedtoolcache/Python/3.12.15/x64
+2026-11-02T21:30:57.8581213Z   PKG_CONFIG_PATH: /opt/hostedtoolcache/Python/3.12.15/x64/lib/pkgconfig
+2026-11-02T21:30:57.8581542Z   Python_ROOT_DIR: /opt/hostedtoolcache/Python/3.12.15/x64
+2026-11-02T21:30:57.8581849Z   Python2_ROOT_DIR: /opt/hostedtoolcache/Python/3.12.15/x64
+2026-11-02T21:30:57.8582180Z   Python3_ROOT_DIR: /opt/hostedtoolcache/Python/3.12.15/x64
+2026-11-02T21:30:57.8582472Z   LD_LIBRARY_PATH: /opt/hostedtoolcache/Python/3.12.15/x64/lib
+2026-11-02T21:30:57.8582737Z   DOTNET_ROOT: /usr/share/dotnet
+2026-11-02T21:30:57.8582934Z ##[endgroup]
+2026-11-02T21:31:25.8427143Z {
+2026-11-02T21:31:25.8427518Z   "schemaVersion": 1,
+2026-11-02T21:31:25.8428004Z   "experiment": "E2-Independent-Process-Orleans-Secondary-SIGKILL",
+2026-11-02T21:31:25.8428548Z   "membershipProvider": "development",
+2026-11-02T21:31:25.8428892Z   "sqlMembershipBeforeKill": null,
+2026-11-02T21:31:25.8429242Z   "sqlMembershipAfterRecovery": null,
+2026-11-02T21:31:25.8429554Z   "status": "PASS",
+2026-11-02T21:31:25.8430014Z   "classification": "SYNTHETIC_TWO_SILOS_ONE_HOST_DEVELOPMENT_CLUSTER_NOT_PHYSICAL",
+2026-11-02T21:31:25.8430539Z   "primarySiloPid": 4372,
+2026-11-02T21:31:25.8430818Z   "secondarySiloPid": 4393,
+2026-11-02T21:31:25.8431131Z   "initialExternalClientPid": 4416,
+2026-11-02T21:31:25.8431449Z   "initialPlacement": {
+2026-11-02T21:31:25.8431708Z     "1": 4393,
+2026-11-02T21:31:25.8431938Z     "2": 4372,
+2026-11-02T21:31:25.8432136Z     "3": 4372,
+2026-11-02T21:31:25.8432332Z     "4": 4393,
+2026-11-02T21:31:25.8432532Z     "5": 4393,
+2026-11-02T21:31:25.8432736Z     "6": 4393,
+2026-11-02T21:31:25.8432942Z     "7": 4393,
+2026-11-02T21:31:25.8433153Z     "8": 4372,
+2026-11-02T21:31:25.8433344Z     "9": 4393,
+2026-11-02T21:31:25.8433556Z     "10": 4372,
+2026-11-02T21:31:25.8433773Z     "11": 4372,
+2026-11-02T21:31:25.8433967Z     "12": 4393,
+2026-11-02T21:31:25.8434161Z     "13": 4393,
+2026-11-02T21:31:25.8434364Z     "14": 4372,
+2026-11-02T21:31:25.8434561Z     "15": 4393,
+2026-11-02T21:31:25.8434774Z     "16": 4393
+2026-11-02T21:31:25.8434977Z   },
+2026-11-02T21:31:25.8435254Z   "sourceAccountPreviouslyOnSecondary": 1,
+2026-11-02T21:31:25.8435770Z   "sourceAccountOnPrimary": 2,
+2026-11-02T21:31:25.8436098Z   "actualSecondaryExitSignal": "SIGKILL",
+2026-11-02T21:31:25.8436463Z   "grainReactivatedOnPrimary": true,
+2026-11-02T21:31:25.8436863Z   "idempotentRecoveredReplay": "DUPLICATE_COMMITTED",
+2026-11-02T21:31:25.8437271Z   "newOperationAfterSiloDeath": "COMMITTED",
+2026-11-02T21:31:25.8437597Z   "businessEffects": {
+2026-11-02T21:31:25.8437868Z     "committedOperations": 3,
+2026-11-02T21:31:25.8438143Z     "postings": 6,
+2026-11-02T21:31:25.8438384Z     "outboxEvents": 3
+2026-11-02T21:31:25.8438598Z   },
+2026-11-02T21:31:25.8438848Z   "independentSqlOracle": {
+2026-11-02T21:31:25.8439162Z     "nonnegative": true,
+2026-11-02T21:31:25.8439425Z     "conserved": true,
+2026-11-02T21:31:25.8439699Z     "balancedPostings": true,
+2026-11-02T21:31:25.8439998Z     "twoPostingsPerCommit": true,
+2026-11-02T21:31:25.8440325Z     "noPostingsForRejection": true,
+2026-11-02T21:31:25.8440632Z     "outboxAtomic": true,
+2026-11-02T21:31:25.8440906Z     "projectionAgrees": true
+2026-11-02T21:31:25.8441146Z   },
+2026-11-02T21:31:25.8441561Z   "stateSha256": "05d4812442774853c98d42f7ff5c78cdd2b2f7ca888fd5521dd993f2a74c949b",
+2026-11-02T21:31:25.8442602Z   "sourceSha256": {
+2026-11-02T21:31:25.8443185Z     "e2_orleans/test_multiprocess.py": "8d54edcad91239b4eee6190d3f200b9cbf9709ad66bc035d225f246fbb56c863",
+2026-11-02T21:31:25.8444092Z     "e2_orleans/setup_adonet_membership.py": "8c63468d04e4e41886826347287ef8b14cf1a5c9d6ec99dc92feef460fb42af8",
+2026-11-02T21:31:25.8445017Z     "e2_orleans/OrleansLab/ClusterModes.cs": "f495025017de01438e5a4fe5ad4ea6d4e11845d45c17af21f17dc50ea4337ecd",
+2026-11-02T21:31:25.8446317Z     "e2_orleans/OrleansLab/Contracts.cs": "f3afb0096a594e8ec18a29f8775de21ab0df40ebc55c89ad3486ef2f4cc943e0",
+2026-11-02T21:31:25.8447211Z     "e2_orleans/OrleansLab/PgDurableLedger.cs": "50f4a26e74ee28f754dd39854098bd4333f8cef2faf2d39d269e38a8db4581ff"
+2026-11-02T21:31:25.8447755Z   },
+2026-11-02T21:31:25.8449320Z   "limitations": "Two different Orleans silo OS processes and an external client on ONE Linux runner. Provider=development; loopback transport, killed secondary AFTER the first client response, not during COMMIT. Not independently provisioned nodes, production membership provider, in-flight failover SLA, stress benchmark or mainframe equivalence."
+2026-11-02T21:31:25.8450782Z }
+2026-11-02T21:31:25.8818840Z ##[group]Run python3 lab/e2_orleans/setup_adonet_membership.py
+2026-11-02T21:31:25.8819221Z [36;1mpython3 lab/e2_orleans/setup_adonet_membership.py[0m
+2026-11-02T21:31:25.8837549Z shell: /usr/bin/bash -e {0}
+2026-11-02T21:31:25.8837813Z env:
+2026-11-02T21:31:25.8838285Z   E1_PG_DSN: host=127.0.0.1 port=55434 dbname=e2lab user=postgres ***
+2026-11-02T21:31:25.8838753Z   E1_PG_NPGSQL: Host=127.0.0.1;Port=55434;Database=e2lab;Username=postgres;***;Pooling=false
+2026-11-02T21:31:25.8839280Z   E2_PG_NPGSQL: Host=127.0.0.1;Port=55434;Database=e2lab;Username=postgres;***;Pooling=true;Maximum Pool Size=32
+2026-11-02T21:31:25.8839696Z   pythonLocation: /opt/hostedtoolcache/Python/3.12.15/x64
+2026-11-02T21:31:25.8840037Z   PKG_CONFIG_PATH: /opt/hostedtoolcache/Python/3.12.15/x64/lib/pkgconfig
+2026-11-02T21:31:25.8840360Z   Python_ROOT_DIR: /opt/hostedtoolcache/Python/3.12.15/x64
+2026-11-02T21:31:25.8840656Z   Python2_ROOT_DIR: /opt/hostedtoolcache/Python/3.12.15/x64
+2026-11-02T21:31:25.8840989Z   Python3_ROOT_DIR: /opt/hostedtoolcache/Python/3.12.15/x64
+2026-11-02T21:31:25.8841280Z   LD_LIBRARY_PATH: /opt/hostedtoolcache/Python/3.12.15/x64/lib
+2026-11-02T21:31:25.8841549Z   DOTNET_ROOT: /usr/share/dotnet
+2026-11-02T21:31:25.8841749Z ##[endgroup]
+2026-11-02T21:31:26.3759809Z {
+2026-11-02T21:31:26.3760325Z   "status": "INSTALLED",
+2026-11-02T21:31:26.3760717Z   "membershipQueryCount": 10,
+2026-11-02T21:31:26.3761071Z   "scripts": [
+2026-11-02T21:31:26.3761337Z     {
+2026-11-02T21:31:26.3761992Z       "path": "src/AdoNet/Shared/PostgreSQL-Main.sql",
+2026-11-02T21:31:26.3762519Z       "upstreamCommit": "d114d7522a53b8cce4c6b97d44293e5c7273d766",
+2026-11-02T21:31:26.3763078Z       "expectedGitBlobSha": "e4f78c86342297b7c7ffeb271b7be066e08f3508",
+2026-11-02T21:31:26.3763643Z       "observedGitBlobSha": "e4f78c86342297b7c7ffeb271b7be066e08f3508",
+2026-11-02T21:31:26.3764237Z       "sha256": "623c15320e640cdd3e84d0668dcae481312f2631ac4977bf2eb8cf22e05deb8b",
+2026-11-02T21:31:26.3764774Z       "bytes": 2127,
+2026-11-02T21:31:26.3765047Z       "database": "e2lab",
+2026-11-02T21:31:26.3765370Z       "target": "disposable Podman PostgreSQL"
+2026-11-02T21:31:26.3765889Z     },
+2026-11-02T21:31:26.3766097Z     {
+2026-11-02T21:31:26.3766526Z       "path": "src/AdoNet/Orleans.Clustering.AdoNet/PostgreSQL-Clustering.sql",
+2026-11-02T21:31:26.3767171Z       "upstreamCommit": "d114d7522a53b8cce4c6b97d44293e5c7273d766",
+2026-11-02T21:31:26.3767778Z       "expectedGitBlobSha": "e90af40c886a47ea9ea4e84f640c48b572cee494",
+2026-11-02T21:31:26.3768355Z       "observedGitBlobSha": "e90af40c886a47ea9ea4e84f640c48b572cee494",
+2026-11-02T21:31:26.3768991Z       "sha256": "39dff7cbb72a390223cd48a9bc7d4a90252092dcba5677318bd510cc9fc1af08",
+2026-11-02T21:31:26.3769481Z       "bytes": 10370,
+2026-11-02T21:31:26.3769751Z       "database": "e2lab",
+2026-11-02T21:31:26.3770081Z       "target": "disposable Podman PostgreSQL"
+2026-11-02T21:31:26.3770406Z     }
+2026-11-02T21:31:26.3770605Z   ]
+2026-11-02T21:31:26.3770805Z }
+2026-11-02T21:31:26.4137585Z ##[group]Run python3 lab/e2_orleans/test_multiprocess.py
+2026-11-02T21:31:26.4137934Z [36;1mpython3 lab/e2_orleans/test_multiprocess.py[0m
+2026-11-02T21:31:26.4156130Z shell: /usr/bin/bash -e {0}
+2026-11-02T21:31:26.4156341Z env:
+2026-11-02T21:31:26.4156731Z   E1_PG_DSN: host=127.0.0.1 port=55434 dbname=e2lab user=postgres ***
+2026-11-02T21:31:26.4157364Z   E1_PG_NPGSQL: Host=127.0.0.1;Port=55434;Database=e2lab;Username=postgres;***;Pooling=false
+2026-11-02T21:31:26.4157886Z   E2_PG_NPGSQL: Host=127.0.0.1;Port=55434;Database=e2lab;Username=postgres;***;Pooling=true;Maximum Pool Size=32
+2026-11-02T21:31:26.4158307Z   pythonLocation: /opt/hostedtoolcache/Python/3.12.15/x64
+2026-11-02T21:31:26.4158641Z   PKG_CONFIG_PATH: /opt/hostedtoolcache/Python/3.12.15/x64/lib/pkgconfig
+2026-11-02T21:31:26.4158966Z   Python_ROOT_DIR: /opt/hostedtoolcache/Python/3.12.15/x64
+2026-11-02T21:31:26.4159256Z   Python2_ROOT_DIR: /opt/hostedtoolcache/Python/3.12.15/x64
+2026-11-02T21:31:26.4159605Z   Python3_ROOT_DIR: /opt/hostedtoolcache/Python/3.12.15/x64
+2026-11-02T21:31:26.4159898Z   LD_LIBRARY_PATH: /opt/hostedtoolcache/Python/3.12.15/x64/lib
+2026-11-02T21:31:26.4160163Z   DOTNET_ROOT: /usr/share/dotnet
+2026-11-02T21:31:26.4160371Z   E2_CLUSTER_PROVIDER: adonet
+2026-11-02T21:31:26.4160571Z ##[endgroup]
+2026-11-02T21:33:19.3075284Z Traceback (most recent call last):
+2026-11-02T21:33:19.3086193Z   File "/home/runner/work/de-la-caja-negra-a-la-evidencia/de-la-caja-negra-a-la-evidencia/lab/e2_orleans/test_multiprocess.py", line 347, in <module>
+2026-11-02T21:33:19.3087007Z     main()
+2026-11-02T21:33:19.3087850Z   File "/home/runner/work/de-la-caja-negra-a-la-evidencia/de-la-caja-negra-a-la-evidencia/lab/e2_orleans/test_multiprocess.py", line 174, in main
+2026-11-02T21:33:19.3088631Z     raise AssertionError(
+2026-11-02T21:33:19.3089416Z AssertionError: Cannot establish that BOTH independent silos host grains: E2_PLACEMENT_STRATEGY:Orleans.Runtime.ResourceOptimizedPlacement
+2026-11-02T21:33:19.3090215Z E2_SILO_READY:primary:4670
+2026-11-02T21:33:19.3090640Z  / E2_PLACEMENT_STRATEGY:Orleans.Runtime.ResourceOptimizedPlacement
+2026-11-02T21:33:19.3091080Z E2_SILO_READY:secondary:4692
+2026-11-02T21:33:19.3091259Z 
+2026-11-02T21:33:19.3346593Z ##[error]Process completed with exit code 1.
+2026-11-02T21:33:19.3432513Z ##[group]Run actions/upload-artifact@v6
+2026-11-02T21:33:19.3432749Z with:
+2026-11-02T21:33:19.3432918Z   name: e2-orleans-smoke
+2026-11-02T21:33:19.3433100Z   path: lab/results/e2/
+2026-11-02T21:33:19.3433286Z   if-no-files-found: warn
+2026-11-02T21:33:19.3433482Z   compression-level: 6
+2026-11-02T21:33:19.3433659Z   overwrite: false
+2026-11-02T21:33:19.3433832Z   include-hidden-files: false
+2026-11-02T21:33:19.3434017Z env:
+2026-11-02T21:33:19.3434376Z   E1_PG_DSN: host=127.0.0.1 port=55434 dbname=e2lab user=postgres ***
+2026-11-02T21:33:19.3434815Z   E1_PG_NPGSQL: Host=127.0.0.1;Port=55434;Database=e2lab;Username=postgres;***;Pooling=false
+2026-11-02T21:33:19.3435378Z   E2_PG_NPGSQL: Host=127.0.0.1;Port=55434;Database=e2lab;Username=postgres;***;Pooling=true;Maximum Pool Size=32
+2026-11-02T21:33:19.3435970Z   pythonLocation: /opt/hostedtoolcache/Python/3.12.15/x64
+2026-11-02T21:33:19.3436307Z   PKG_CONFIG_PATH: /opt/hostedtoolcache/Python/3.12.15/x64/lib/pkgconfig
+2026-11-02T21:33:19.3436677Z   Python_ROOT_DIR: /opt/hostedtoolcache/Python/3.12.15/x64
+2026-11-02T21:33:19.3436972Z   Python2_ROOT_DIR: /opt/hostedtoolcache/Python/3.12.15/x64
+2026-11-02T21:33:19.3437268Z   Python3_ROOT_DIR: /opt/hostedtoolcache/Python/3.12.15/x64
+2026-11-02T21:33:19.3437563Z   LD_LIBRARY_PATH: /opt/hostedtoolcache/Python/3.12.15/x64/lib
+2026-11-02T21:33:19.3437824Z   DOTNET_ROOT: /usr/share/dotnet
+2026-11-02T21:33:19.3438020Z ##[endgroup]
+2026-11-02T21:33:19.5010646Z With the provided path, there will be 10 files uploaded
+2026-11-02T21:33:19.5014748Z Artifact name is valid!
+2026-11-02T21:33:19.5015312Z Root directory input is valid!
+2026-11-02T21:33:19.8851979Z Beginning upload of artifact content to blob storage
+2026-11-02T21:33:20.2411913Z Uploaded bytes 10124
+2026-11-02T21:33:20.3213956Z Finished uploading artifact content to blob storage!
+2026-11-02T21:33:20.3214642Z SHA256 digest of uploaded artifact zip is 55bed14ebac7f582b3d29a9dc13e97c6c75f11a48c64bfdf12a7b18db9fe5332
+2026-11-02T21:33:20.3215656Z Finalizing artifact upload
+2026-11-02T21:33:20.9480876Z Artifact e2-orleans-smoke.zip successfully finalized. Artifact ID 13180837720
+2026-11-02T21:33:20.9481601Z Artifact e2-orleans-smoke has been successfully uploaded! Final size is 10124 bytes. Artifact ID is 13180837720
+2026-11-02T21:33:20.9485385Z Artifact download URL: https://github.com/jmfloreszazo/de-la-caja-negra-a-la-evidencia/actions/runs/41528813076/artifacts/13180837720
+2026-11-02T21:33:20.9640017Z ##[group]Run podman logs --tail 40 e2-postgres || true
+2026-11-02T21:33:20.9640583Z [36;1mpodman logs --tail 40 e2-postgres || true[0m
+2026-11-02T21:33:20.9641008Z [36;1mpodman rm -f e2-postgres || true[0m
+2026-11-02T21:33:20.9666021Z shell: /usr/bin/bash -e {0}
+2026-11-02T21:33:20.9666336Z env:
+2026-11-02T21:33:20.9666848Z   E1_PG_DSN: host=127.0.0.1 port=55434 dbname=e2lab user=postgres ***
+2026-11-02T21:33:20.9667565Z   E1_PG_NPGSQL: Host=127.0.0.1;Port=55434;Database=e2lab;Username=postgres;***;Pooling=false
+2026-11-02T21:33:20.9668472Z   E2_PG_NPGSQL: Host=127.0.0.1;Port=55434;Database=e2lab;Username=postgres;***;Pooling=true;Maximum Pool Size=32
+2026-11-02T21:33:20.9669163Z   pythonLocation: /opt/hostedtoolcache/Python/3.12.15/x64
+2026-11-02T21:33:20.9669691Z   PKG_CONFIG_PATH: /opt/hostedtoolcache/Python/3.12.15/x64/lib/pkgconfig
+2026-11-02T21:33:20.9670235Z   Python_ROOT_DIR: /opt/hostedtoolcache/Python/3.12.15/x64
+2026-11-02T21:33:20.9670740Z   Python2_ROOT_DIR: /opt/hostedtoolcache/Python/3.12.15/x64
+2026-11-02T21:33:20.9671246Z   Python3_ROOT_DIR: /opt/hostedtoolcache/Python/3.12.15/x64
+2026-11-02T21:33:20.9671719Z   LD_LIBRARY_PATH: /opt/hostedtoolcache/Python/3.12.15/x64/lib
+2026-11-02T21:33:20.9672148Z   DOTNET_ROOT: /usr/share/dotnet
+2026-11-02T21:33:20.9672492Z ##[endgroup]
+2026-11-02T21:33:21.0113096Z 2026-11-02 21:30:09.990 UTC [1] LOG:  starting PostgreSQL 16.13 (Debian 16.13-1.pgdg13+1) on x86_64-pc-linux-gnu, compiled by gcc (Debian 14.2.0-19) 14.2.0, 64-bit
+2026-11-02T21:33:21.0114149Z 2026-11-02 21:30:09.990 UTC [1] LOG:  listening on IPv4 address "0.0.0.0", port 5432
+2026-11-02T21:33:21.0114867Z 2026-11-02 21:30:09.990 UTC [1] LOG:  listening on IPv6 address "::", port 5432
+2026-11-02T21:33:21.0115753Z 2026-11-02 21:30:09.991 UTC [1] LOG:  listening on Unix socket "/var/run/postgresql/.s.PGSQL.5432"
+2026-11-02T21:33:21.0116526Z 2026-11-02 21:30:09.993 UTC [60] LOG:  database system was shut down at 2026-11-02 21:30:09 UTC
+2026-11-02T21:33:21.0117246Z 2026-11-02 21:30:09.997 UTC [1] LOG:  database system is ready to accept connections
+2026-11-02T21:33:21.0117800Z 2026-11-02 21:30:32.120 UTC [194] ERROR:  deadlock detected
+2026-11-02T21:33:21.0118523Z 2026-11-02 21:30:32.120 UTC [194] DETAIL:  Process 194 waits for ShareLock on transaction 834; blocked by process 195.
+2026-11-02T21:33:21.0119044Z 
+2026-11-02T21:33:21.0119386Z 	Process 195 waits for ShareLock on transaction 833; blocked by process 194.
+2026-11-02T21:33:21.0119919Z 	Process 194: SELECT id FROM accounts WHERE id=$1 FOR UPDATE
+2026-11-02T21:33:21.0120356Z 	Process 195: SELECT id FROM accounts WHERE id=$1 FOR UPDATE
+2026-11-02T21:33:21.0120781Z 2026-11-02 21:30:32.120 UTC [194] HINT:  See server log for query details.
+2026-11-02T21:33:21.0121226Z 2026-11-02 21:30:32.120 UTC [194] CONTEXT:  while locking tuple (0,2) in relation "accounts"
+2026-11-02T21:33:21.0121671Z 2026-11-02 21:30:32.120 UTC [194] STATEMENT:  SELECT id FROM accounts WHERE id=$1 FOR UPDATE
+2026-11-02T21:33:21.0122061Z 2026-11-02 21:30:36.741 UTC [208] ERROR:  deadlock detected
+2026-11-02T21:33:21.0122525Z 2026-11-02 21:30:36.741 UTC [208] DETAIL:  Process 208 waits for ShareLock on transaction 838; blocked by process 207.
+2026-11-02T21:33:21.0123040Z 	Process 207 waits for ShareLock on transaction 837; blocked by process 208.
+2026-11-02T21:33:21.0123422Z 	Process 208: SELECT id FROM accounts WHERE id=$1 FOR UPDATE
+2026-11-02T21:33:21.0123761Z 	Process 207: SELECT id FROM accounts WHERE id=$1 FOR UPDATE
+2026-11-02T21:33:21.0124110Z 2026-11-02 21:30:36.741 UTC [208] HINT:  See server log for query details.
+2026-11-02T21:33:21.0124871Z 2026-11-02 21:30:36.741 UTC [208] CONTEXT:  while locking tuple (0,2) in relation "accounts"
+2026-11-02T21:33:21.0125315Z 2026-11-02 21:30:36.741 UTC [208] STATEMENT:  SELECT id FROM accounts WHERE id=$1 FOR UPDATE
+2026-11-02T21:33:21.0125994Z 2026-11-02 21:30:47.554 UTC [441] LOG:  unexpected EOF on client connection with an open transaction
+2026-11-02T21:33:21.0126667Z 2026-11-02 21:30:52.856 UTC [460] LOG:  unexpected EOF on client connection with an open transaction
+2026-11-02T21:33:21.0126941Z 
+2026-11-02T21:33:21.0127166Z /usr/local/bin/docker-entrypoint.sh: ignoring /docker-entrypoint-initdb.d/*
+2026-11-02T21:33:21.0127422Z 
+2026-11-02T21:33:21.0127677Z waiting for server to shut down...2026-11-02 21:30:09.772 UTC [44] LOG:  received fast shutdown request
+2026-11-02T21:33:21.0128134Z .2026-11-02 21:30:09.772 UTC [44] LOG:  aborting any active transactions
+2026-11-02T21:33:21.0128625Z 2026-11-02 21:30:09.774 UTC [44] LOG:  background worker "logical replication launcher" (PID 50) exited with exit code 1
+2026-11-02T21:33:21.0129073Z 2026-11-02 21:30:09.775 UTC [45] LOG:  shutting down
+2026-11-02T21:33:21.0129413Z 2026-11-02 21:30:09.775 UTC [45] LOG:  checkpoint starting: shutdown immediate
+2026-11-02T21:33:21.0130349Z 2026-11-02 21:30:09.865 UTC [45] LOG:  checkpoint complete: wrote 926 buffers (5.7%); 0 WAL file(s) added, 0 removed, 0 recycled; write=0.070 s, sync=0.020 s, total=0.090 s; sync files=301, longest=0.015 s, average=0.001 s; distance=4273 kB, estimate=4273 kB; lsn=0/191F0E8, redo lsn=0/191F0E8
+2026-11-02T21:33:21.0131178Z 2026-11-02 21:30:09.872 UTC [44] LOG:  database system is shut down
+2026-11-02T21:33:21.0131438Z  done
+2026-11-02T21:33:21.0131599Z server stopped
+2026-11-02T21:33:21.0131705Z 
+2026-11-02T21:33:21.0131847Z PostgreSQL init process complete; ready for start up.
+2026-11-02T21:33:21.0132033Z 
+2026-11-02T21:33:21.1250466Z e2-postgres
+2026-11-02T21:33:21.1392726Z Post job cleanup.
+2026-11-02T21:33:21.2138526Z [command]/usr/bin/git version
+2026-11-02T21:33:21.2174795Z git version 2.56.0
+2026-11-02T21:33:21.2206368Z Temporarily overriding HOME='/home/runner/work/_temp/ed608190-3ef8-4285-a2e7-11ea6033c73b' before making global git config changes
+2026-11-02T21:33:21.2207377Z Adding repository directory to the temporary git global config as a safe directory
+2026-11-02T21:33:21.2212681Z [command]/usr/bin/git config --global --add safe.directory /home/runner/work/de-la-caja-negra-a-la-evidencia/de-la-caja-negra-a-la-evidencia
+2026-11-02T21:33:21.2250920Z [command]/usr/bin/git config --local --name-only --get-regexp core\.sshCommand
+2026-11-02T21:33:21.2288018Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+2026-11-02T21:33:21.2539639Z [command]/usr/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+2026-11-02T21:33:21.2569152Z http.https://github.com/.extraheader
+2026-11-02T21:33:21.2580140Z [command]/usr/bin/git config --local --unset-all http.https://github.com/.extraheader
+2026-11-02T21:33:21.2617766Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+2026-11-02T21:33:21.2830908Z [command]/usr/bin/git config --local --name-only --get-regexp ^includeIf\.gitdir:
+2026-11-02T21:33:21.2860858Z [command]/usr/bin/git submodule foreach --recursive git config --local --show-origin --name-only --get-regexp remote.origin.url
+2026-11-02T21:33:21.3202221Z Cleaning up orphan processes
+2026-11-02T21:33:21.3483447Z Terminate orphan process: pid (2496) (catatonit)
+

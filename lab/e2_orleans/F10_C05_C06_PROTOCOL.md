@@ -1,6 +1,9 @@
 # C05/C06 — Directional silo packets, contested operation and recovery
 
-Status: **preregistered source candidate; NOT executed or verified**. Issue #24.
+Status: **bounded original CI verified**, run #41528812921 on source
+`958961906de0ca5d3945d410c64d465ba7d34a3e`; see the
+[audited paired report](../../evidence/runs/E2-C05-C06-DIRECTIONAL.md). Issue #24 stays open
+for remaining activation/recovery acceptance. This does not accept overall E2.
 Keep E2 partially_verified, G2 INCONCLUSIVE/G6 BLOCK, #53 frozen and release
 identifiers unchanged. Do not infer activation exclusivity from this test.
 
