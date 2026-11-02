@@ -65,3 +65,27 @@ loss, asymmetric partition, production RTO/RPO, sustained-capacity ceiling or
 mainframe equivalence is established. Overall E2 stays partially_verified,
 G2 INCONCLUSIVE/G6 BLOCK, #53 frozen and release/tag identifiers unchanged.
 The older default-placement C01 test and its rejection remain intact.
+
+## Acceptance workflow and explicit historical diagnostic
+
+PR #73's final-source regression run #41530411861 on
+`31945c91622ada4863d7058519f3533771f1147a` rejected the historical
+default-policy dual-host prerequisite: all original 1..16 keys were on primary.
+The original ZIP/negative JSON are retained unchanged. It is not an accounting
+defect or a completed failover case. The old startup diagnostic stage is stale;
+the placement-negative record and workflow traceback identify the real phase.
+
+The existing container acceptance workflow now explicitly selects this already
+verified controlled alternative for ordinary PR validation: a fresh one-sided
+negative must still reject the unchanged dual-host classifier without effects,
+then a fresh 8/8 positive must prove actual SIGKILL, SQL replay and new-generation
+rejoin. The independent three-cohort workflow remains mandatory when triggered.
+No failed assertion is converted into PASS, no continue-on-error is added and
+accepted grain/ledger/default placement policy are unchanged.
+
+The original `test_podman_network.py` assertion and test remain available as
+`workflow_dispatch` mode `historical-default`, with its original strict exit
+behavior and raw failure upload. That mode investigates default placement;
+controlled acceptance does not explain it. This explicitly separates a default
+policy diagnostic from a recovery test requiring known initial placement.
+Loopback default-placement observability remains open in issue #74.

@@ -87,6 +87,16 @@ def main():
     assert hashlib.sha256(log).hexdigest() == '677bad5736b70539523349d9da3dde0cf8fad5ee0c398d2077e337ca90b7440a'
     assert b'Cannot establish that BOTH independent silos host grains' in log
     assert b'Process completed with exit code 1' in log
+    default_zip = RUNS / 'e2-c05-default-baseline-failure-original.zip'
+    assert hashlib.sha256(default_zip.read_bytes()).hexdigest() == 'e9a703eaf4aec8cf1269ab953ea0ecce306fdb521be1163f3fd13c0ae3cb728a'
+    with zipfile.ZipFile(default_zip) as z:
+        raw = z.read('e2-f10-c01-placement-negative-original.json')
+        assert raw == (RUNS / 'e2-c05-default-baseline-failure-original.json').read_bytes()
+        negative = json.loads(raw)
+        assert negative['status'] == 'FAIL_PRECONDITION_NOT_BUSINESS_FAILURE'
+        assert negative['isSuccessfulFailoverEvidence'] is False
+        assert set(negative['originalAccountHostNodes']) == {str(k) for k in range(1, 17)}
+        assert set(negative['originalAccountHostNodes'].values()) == {'e2f10-primary'}
     runners, initial_ids = set(), set()
     for role, digest in DIGESTS.items():
         d, files = original('e2-c05-c06-' + role + '-original', digest)

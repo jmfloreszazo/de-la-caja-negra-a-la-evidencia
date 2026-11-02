@@ -110,3 +110,19 @@ identificado por proveedor/nombre de archivo, y ningún éxito ADO.NET. La
 SHA-256 `677bad5736b70539523349d9da3dde0cf8fad5ee0c398d2077e337ca90b7440a`,
 conserva el fallo posterior de ADO.NET. Un éxito en otro SHA no explica ni
 borra ese negativo.
+
+## Rechazo de la política predeterminada en contenedores durante la regresión final
+
+La ejecución #41530411861 sobre `31945c91622ada4863d7058519f3533771f1147a`
+falló la precondición histórica estricta C01: las 16 cuentas originales estaban
+en el primario. [ZIP original](e2-c05-default-baseline-failure-original.zip),
+artefacto 13180848622 de 4506 bytes, SHA-256
+`e9a703eaf4aec8cf1269ab953ea0ecce306fdb521be1163f3fd13c0ae3cb728a`;
+[extracción negativa sin modificar](e2-c05-default-baseline-failure-original.json).
+Es un rechazo de precondición, no un fallo financiero; el campo de fase de
+arranque quedó obsoleto. El workflow de aceptación C01 ahora ejecuta
+explícitamente la alternativa negativa/positiva controlada ya verificada y
+conserva la prueba estricta original como diagnóstico manual explícito. No se
+debilita ninguna aserción, oráculo contable o política del runtime. C05/C06
+sobre ese SHA final pasó por separado; la causa de concentración sigue sin
+demostrarse.

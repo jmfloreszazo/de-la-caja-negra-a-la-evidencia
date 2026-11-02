@@ -108,3 +108,18 @@ by provider/filename, and no ADO.NET success file. The
 SHA-256 `677bad5736b70539523349d9da3dde0cf8fad5ee0c398d2077e337ca90b7440a`,
 retains the later failed ADO.NET step. A later successful source run would
 not explain or erase this negative.
+
+## Container default-policy rejection during final-source regression
+
+Run #41530411861 on `31945c91622ada4863d7058519f3533771f1147a`
+failed its strict historical C01 prerequisite: all 16 original accounts were
+on primary. [Original ZIP](e2-c05-default-baseline-failure-original.zip),
+artifact 13180848622, 4506 bytes, SHA-256
+`e9a703eaf4aec8cf1269ab953ea0ecce306fdb521be1163f3fd13c0ae3cb728a`;
+[unchanged placement-negative extraction](e2-c05-default-baseline-failure-original.json).
+This is a prerequisite rejection, not a financial failure; the startup stage
+field is stale. The C01 acceptance workflow now explicitly runs the previously
+verified controlled negative/positive alternative, retaining the original
+strict default-policy test as an explicit manual diagnostic. No assertion,
+accounting oracle or default runtime policy is weakened. C05/C06 on this final
+source passed separately; the cause of default concentration remains unknown.
