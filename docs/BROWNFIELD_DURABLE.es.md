@@ -1,6 +1,6 @@
 # Capacidad brownfield persistente: una autoridad SQL aún no es un cutover bancario
 
-**Estado: implementación ejecutable propuesta; todavía sin resultados originales de CI con PostgreSQL.**
+**Estado: subconjunto SQL sintético ejecutado en CI; sin aceptación bancaria.** Véase la [evidencia original](../evidence/runs/BROWNFIELD-DURABLE.es.md). El alcance de un almacén descrito aquí es distinto de los posteriores experimentos de [dos almacenes](BROWNFIELD_TWO_STORE.es.md) y [journal C2](BROWNFIELD_JOURNAL.es.md).
 
 CAP-007 (transferencia interna) y CAP-005 (saldo contabilizado) se reescriben
 partiendo de un **contrato de capacidad definido por el legado**, no de la
@@ -49,8 +49,9 @@ El valor de G6 se mantiene siempre en `BLOCK`.
 5. **TODM G6**: aprobación humana responsable del artefacto y entorno exactos,
    jamás inferida de una CI técnica satisfactoria.
 
-Hasta superar 2–5, clasificar como **CÓDIGO IMPLEMENTADO /
-EVIDENCIA INCONCLUSA / APROBACIÓN DE NEGOCIO BLOQUEADA**.
+El paso 2 ya cuenta con evidencia SQL sintética original. La ampliación de
+dos almacenes aporta convivencia simulada cooperativa; política del cliente,
+fencing real de origen y G6 siguen con **APROBACIÓN DE NEGOCIO BLOQUEADA**.
 E2 sigue en estado `partially_verified` y no se modifica ninguna release
 publicada.
 

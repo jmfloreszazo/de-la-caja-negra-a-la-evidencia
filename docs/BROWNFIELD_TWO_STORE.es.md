@@ -1,8 +1,9 @@
 # Convivencia brownfield: trasladar la autoridad, no traducir COBOL
 
-**Estado: experimento propuesto con dos almacenes.** El código está
-implementado; solo la ejecución original satisfactoria de GitHub Actions
-permite acreditar sus resultados.
+**Estado: experimento sintético de dos almacenes ejecutado en CI.** La
+[evidencia original](../evidence/runs/BROWNFIELD-TWO-STORE.es.md) acredita su
+SHA concreto; no una migración bancaria. El [journal C2](BROWNFIELD_JOURNAL.es.md)
+añade admisión duradera y recuperación acotada en una continuación separada.
 
 ## Arquitectura y alcance
 
@@ -60,13 +61,35 @@ consecuencias en terceros y procesos de liquidación.
 ## TODM y garantías todavía pendientes
 
 G0/G1 describen un alcance y procedencia sintéticos. G2 de negocio permanece
-`INCONCLUSIVE`. G4 de construcción y G5 de oráculos técnicos solo podrán
-acreditarse tras una CI original sobre el SHA exacto. G6 continúa en
+`INCONCLUSIVE`. G4 de construcción y G5 de oráculos técnicos cuentan con
+evidencia sintética del SHA original; no son aceptación bancaria. G6 continúa en
 **BLOCK**. Quedan pendientes la interrupción entre bases independientes,
-journal persistente de resultados inciertos, bloqueo real del lado IBM Z,
+cobertura completa del journal ante particiones en curso, bloqueo real del lado IBM Z,
 CDC y orden de eventos, dominios de fallo separados, evidencias de RPO/RTO,
 SLA operativos y aprobación humana en la [issue #58](https://github.com/jmfloreszazo/de-la-caja-negra-a-la-evidencia/issues/58).
 
 Código, pruebas y [README reproducible](../lab/brownfield/coexistence/README.md)
 solo en inglés; texto de investigación emparejado en español e inglés.
 Sin modificar versión ni etiquetas de release.
+
+## Ampliación: gateway de capacidades (sintético)
+
+El [gateway externo de capacidades](../lab/brownfield/coexistence/gateway.py)
+selecciona el escritor y la época de la autoridad SQL cooperativa e invoca
+el CLI del legado en otro proceso o el candidato .NET 10. No interpreta COBOL
+ni ejecuta una segunda transferencia al realizar el shadow. El laboratorio
+comprueba el enrutamiento inicial al legado, el enrutamiento al candidato
+tras la promoción y el retorno al legado después de un rollback admisible.
+
+Hay un contrato funcional incompleto que ahora **falla de forma segura**:
+si el cliente exige una versión mínima del saldo superior a cero, el gateway
+lo rechaza mientras el CLI del legado no permita solicitar esa garantía.
+Ignorar el requisito de consistencia equivaldría a introducir una regresión.
+El laboratorio y el adaptador exigen exactamente los entornos locales
+`127.0.0.1:55438/bf_legacy` y `127.0.0.1:55439/bf_lab`, y la prueba
+comprueba identificadores distintos de los clústeres PostgreSQL.
+
+**Límite fundamental:** un mainframe real con permisos de escritura
+directa puede eludir este gateway cooperativo y su bloqueo transaccional.
+El laboratorio no resuelve ese riesgo en producción. G2 sigue
+INCONCLUSIVE y G6 permanece BLOCK.

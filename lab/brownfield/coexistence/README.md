@@ -31,10 +31,29 @@ capability-level behavior without parsing or translating the original program.
   with `FORWARD_FIX_REQUIRED`. The protocol does not auto-migrate financial
   effects backward to the historical source.
 
+## Gateway and fail-closed admission
+
+The English-only [gateway](gateway.py) routes a capability command according to
+the persisted candidate SQL authority and calls the legacy simulator through
+its **separate external CLI**, not through a COBOL parser or shared internal
+ledger implementation. `gateway.py transfer ID SRC DST AMOUNT` dispatches
+exactly one compliant financial writer. `gateway.py balance ACCOUNT [MIN_VER]`
+reads the currently authoritative store. Before cutover, a legacy balance
+request with a nonzero minimum version is explicitly **rejected** because the
+current legacy CLI does not implement that contract. `gateway.py shadow SRC
+DST AMOUNT` performs a read-only comparison, never a second financial posting.
+
+The test checks that the route changes after cutover and clean rollback,
+that matching operation-ID replay remains a duplicate, and that an unmet
+consistency parameter is not silently ignored. It also independently checks
+that the two named databases have distinct PostgreSQL cluster identifiers.
+**A privileged process with direct SQL credentials can still bypass this
+cooperative gateway**, so the experiment does not prove production fencing.
+
 ## Exact disposable run
 
-The harness **drops the legacy and brownfield schemas**. It refuses
-non-`bf_legacy` / non-`bf_lab` database names and requires the opt-in.
+The harness **drops the legacy and brownfield schemas**. It refuses non-`bf_legacy` / non-`bf_lab` database names, requires
+explicit loopback `127.0.0.1` ports `55438` and `55439`, and requires the opt-in.
 Never point these commands to a shared database, real transaction engine,
 customer data or production networks.
 

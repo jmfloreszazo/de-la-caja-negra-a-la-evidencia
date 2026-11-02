@@ -54,3 +54,39 @@ journal; distributed XA/2PC alternatives and partial-copy recovery; cross-node
 HA, externalized customer rules, approved Golden Master, TODM G2/G6.
 Issue [#58](https://github.com/jmfloreszazo/de-la-caja-negra-a-la-evidencia/issues/58)
 remains open. No release update.
+
+## Follow-up C3: external capability routing and fixture hardening — 1 Nov 2026
+
+Original [PR #68 source-head run #41343867961](https://github.com/jmfloreszazo/de-la-caja-negra-a-la-evidencia/actions/runs/41343867961)
+**PASS** on exact code SHA `437ab93ca28765ba05cd49d02021b24f850a6e68`.
+The run checked out this exact SHA and recorded its source file digests,
+including the new gateway. The [original unmodified JSON result](brownfield-gateway-pr68-original-summary.json)
+records 12 negative/positive controls, **8 source decisions**, **10 target
+decisions** after candidate-only writes, 10/10 independent accounting checks
+on each side, two distinct SQL cluster system identifiers, and `G6=BLOCK`.
+The original Actions artifact ID is `13097984744`, ZIP SHA-256
+`4f967de09ea97b1e3e66b58bc03b0f049af7dbf7466b9c5ba8103a9c2ca8e6cb`.
+
+Additional tested controls: route through the separate legacy CLI before
+promotion, route through .NET 10 after promotion, reject unsupported
+legacy balance minimum-version requests rather than silently ignoring them,
+read-only shadow, and consistent routing after reversible cutover. Destructive
+setup and the direct legacy CLI refuse mismatched database names, non-loopback
+hosts and non-fixture ports before opening the database.
+
+**No new production guarantee:** a privileged direct legacy write can still
+evade cooperative fencing. The original PR #63 two-store evidence and the
+separately implemented C2 admission-journal slice retain their own provenance;
+neither is rewritten as a real IBM Z cutover, physical HA or G2/G6 approval.
+
+### C3 additional negative control — libpq address override
+
+After hardening the DSN validator, original [source-head run #41344197968](https://github.com/jmfloreszazo/de-la-caja-negra-a-la-evidencia/actions/runs/41344197968)
+**PASS** on SHA `3cdcc25a03c94829e6770ca21314836f2c3271e6`.
+The [unchanged original JSON](brownfield-gateway-hostaddr-pr68-original-summary.json)
+records **13** completed controls, including
+`hostaddrOverrideRejectedBeforeConnection`: an apparent loopback DSN with
+an external libpq `hostaddr` is rejected before opening a connection.
+All 10 independent SQL checks per store remain true; G2 remains
+INCONCLUSIVE and G6 BLOCK. Original artifact ID `13098128247` and ZIP
+SHA-256 `297e68b05ba348af2a04758fe4f62bd01d5cd8d569ade4beb984c30d8256412a`.

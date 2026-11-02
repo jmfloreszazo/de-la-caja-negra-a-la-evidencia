@@ -174,6 +174,76 @@ on each store were true, but the stores no longer agreed: rollback was
 new writer posts new decisions, the old balances cannot simply be
 reactivated.
 
+### C2 · An unknown reply requires a durable admission journal
+
+The earlier coexistence experiment can compare two stores, but it leaves
+a separate failure mode: **COMMIT may be durable even when no ACK arrives**.
+Treating a timeout as rejection and retrying on a second writer can duplicate
+the financial effect. C2 therefore adds a third disposable PostgreSQL
+database, `bf_control`, with an admission journal independent of both
+ledgers. Each CAP-007 request records its stable ID, request hash, writer,
+epoch and state before remote execution.
+
+A request moves from `ADMITTED` to `DISPATCHING` and, when its reply
+disappears, to `UNKNOWN`. Only an independent SQL inspection of the
+persisted operation, paired postings and outbox may finalize
+`COMMITTED` or `REJECTED`. Missing SQL rows in both stores **do not
+prove rejection**: the journal remains UNKNOWN and cutover is blocked.
+
+The three-container experiment kills real processes after admission,
+before remote dispatch and after COMMIT but before the gateway receives
+the result. It also forges a terminal journal state and verifies that the
+independent oracle rejects promotion. The cooperating Python legacy
+adapter and .NET 10 candidate can require the C2 controller and hold a
+shared authority row lock through financial COMMIT. The
+[original C2 CI run](https://github.com/jmfloreszazo/de-la-caja-negra-a-la-evidencia/actions/runs/41341644829)
+is tied to one exact source SHA. It is not bank acceptance.
+
+**At that original C2 source SHA:** strict C2 mode
+requires a matching `DISPATCHING` journal admission at both adapters and
+rejects direct unadmitted commands. Deliberately disabling this opt-in
+allows direct unjournaled posts: the oracle detects that configuration
+bypass but cannot prevent it. Nor do the
+controller and candidate authority epochs change atomically across two
+PostgreSQL servers. A cooperative lock cannot revoke a real CICS/Db2
+writer's authority. External fencing, split-authority crash repair,
+third-party side-effect reconciliation, cross-host tests and approved
+business policy remain missing. TODM G2=INCONCLUSIVE and G6=BLOCK.
+
+### C2 follow-up · Persist the fence and freeze interrupted transitions
+
+The [journal follow-up](../../../lab/brownfield/journal/README.md) changes
+two engineering assumptions without changing business authority. Enrollment
+is stored in SQL: removing a process variable can no longer disable admission
+checks in either cooperating adapter. Fresh historical fixtures remain
+unenrolled, and privileged direct SQL remains outside that enforcement.
+
+Before changing either writer epoch, the coordinator commits a durable
+`PREPARED` intent and `mode=SWITCHING`. Both adapters and the gateway refuse
+new financial commands until independent ledger and journal reconciliation
+allows the controller to complete that exact transition.
+
+| Durable boundary | Controller | Candidate authority | New admission |
+|---|---|---|---|
+| Intent prepared | legacy / e / SWITCHING | legacy / e | Blocked |
+| Candidate authority committed | legacy / e / SWITCHING | candidate / e+1 | Blocked |
+| Reconciliation completed | candidate / e+1 / ACTIVE | candidate / e+1 | Allowed with matching admission |
+
+The protocol independently sends `SIGKILL` after each of the first two
+boundaries and restarts recovery. An unexpected epoch or missing outbox must
+leave traffic frozen; a missing response cannot choose the next writer.
+Candidate-origin decisions still veto rollback. This closes specific
+cooperative crash windows through durable intent and forward recovery,
+**not atomic COMMIT across databases**. The [original follow-up CI](../../../evidence/runs/BROWNFIELD-C2-RECOVERY.md)
+passed 19 controls, preserving its raw ZIP and the initial failed concurrency
+run. The later [run #41353221630](https://github.com/jmfloreszazo/de-la-caja-negra-a-la-evidencia/actions/runs/41353221630),
+on main `279ca566`, passed 20 controls and both SQL oracles 10/10; this is a
+separate observation, not retrospective coverage attributed to that ZIP. Later code still requires its own exact-source CI evidence; historical
+observations cannot validate a different checkout.
+In-flight network partitions, real incumbent revocation, external payment
+effects and approved business policy remain separate acceptance gates.
+G2=INCONCLUSIVE and G6=BLOCK.
+
 ### What would be needed for a real cutover
 
 A simulated black-box contract cannot take away a bank's incumbent writer

@@ -1,0 +1,30 @@
+{
+  "schemaVersion": 1,
+  "classification": "ORIGINAL_CI_FAILURE_LOG_EXTRACT",
+  "runId": 41352306908,
+  "jobId": 124984964230,
+  "sourceHeadSha": "fb7ef7f1e2f866a0b421b77f6d5e3e16b445154b",
+  "conclusion": "failure",
+  "observedFailure": "Assertion that six concurrent same-ID replies consist of one COMMITTED and five DUPLICATE_COMMITTED failed. Original failure log did not print the returned replies.",
+  "originalFailureLines": [
+    "2026-11-01T21:30:37.1711272Z Traceback (most recent call last):",
+    "2026-11-01T21:30:37.1723364Z   File \"/home/runner/work/de-la-caja-negra-a-la-evidencia/de-la-caja-negra-a-la-evidencia/lab/brownfield/journal/test_journal.py\", line 144, in main",
+    "2026-11-01T21:30:37.1724883Z     assert sorted(r[\"status\"] for r in raced) == [\"COMMITTED\"] + [\"DUPLICATE_COMMITTED\"] * 5",
+    "2026-11-01T21:30:37.1725774Z AssertionError",
+    "2026-11-01T21:30:37.1976537Z ##[error]Process completed with exit code 1."
+  ],
+  "inferredCauseFromSource": "The gateway session advisory lock was released before independent journal finalization, allowing a queued same-ID request to observe provisional UNKNOWN. This explanation is source analysis; the first failing log did not print individual replies.",
+  "correctionCommit": "3dd279c682ece00dfe62e68f68b1e4b967c4d333",
+  "correction": "Retain the operation lock through independent finalization; write concurrent-replies.json before asserting.",
+  "originalArtifact": [
+    {
+      "id": 13102255010,
+      "name": "brownfield-c2-journal-synthetic-g6-block",
+      "sizeBytes": 1722,
+      "digest": "sha256:870e185d6722238dd884f4ec60232019fd0d23254ffbd1cc740b820cd4767d68"
+    }
+  ],
+  "supersededByRunId": 41352470918,
+  "todmG2": "INCONCLUSIVE",
+  "todmG6": "BLOCK"
+}

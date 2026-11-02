@@ -2226,6 +2226,77 @@ con `FORWARD_FIX_REQUIRED`**. La conclusión no es «ya podemos volver atrás»,
 sino la contraria: una vez que el nuevo escritor ha confirmado operaciones,
 el antiguo estado deja de ser automáticamente válido.
 
+##### C2 · Una respuesta desconocida necesita un journal duradero
+
+La convivencia anterior resuelve cómo comparar dos almacenes, pero deja un
+problema abierto: **el COMMIT puede ser correcto aunque el ACK no llegue**.
+Tratar un timeout como un rechazo y reintentar contra el otro escritor podría
+producir dos efectos contables. Por eso C2 incorpora un tercer PostgreSQL
+desechable, `bf_control`, con un journal de admisión independiente de los
+dos ledgers. Cada petición CAP-007 registra identificador estable, huella,
+escritor, época y estado antes de ejecutar el comando remoto.
+
+El estado avanza de `ADMITTED` a `DISPATCHING` y, si la respuesta
+desaparece, a `UNKNOWN`. Solo la inspección SQL independiente de la
+operación persistida, sus dos apuntes y el outbox puede concluir
+`COMMITTED` o `REJECTED`. La ausencia de fila en ambos almacenes
+**no demuestra un rechazo**: mantiene UNKNOWN y bloquea el cutover.
+
+El ensayo de tres contenedores mata procesos reales después de la admisión,
+antes del envío y después de un COMMIT cuyo resultado no llegó al gateway.
+También falsifica una decisión terminal del journal y verifica que el
+oráculo rechaza el cambio de escritor. Los adaptadores cooperativos del
+legado en Python y del nuevo servicio .NET 10 pueden exigir el controlador
+C2 y mantener un bloqueo compartido hasta confirmar la operación. Las
+[pruebas originales de C2](https://github.com/jmfloreszazo/de-la-caja-negra-a-la-evidencia/actions/runs/41341644829)
+se ejecutaron con un SHA concreto en CI. No sustituyen una homologación
+bancaria.
+
+**En aquel SHA original de C2:** en modo C2 estricto,
+ambos adaptadores exigen una admisión `DISPATCHING` previa y rechazan
+llamadas directas sin ella. Si se desactiva deliberadamente esa opción,
+el acceso directo puede escribir sin journal: el oráculo detecta el efecto,
+pero no evita ese bypass de configuración. Las épocas del controlador
+y del candidato tampoco cambian atómicamente entre dos PostgreSQL.
+Un bloqueo cooperativo no retira la autoridad a un CICS/Db2 real. Faltan
+fencing externo, reparación ante crash entre cambios de autoridad,
+conciliación de terceros, pruebas entre nodos físicos y política de
+negocio aprobada. TODM G2=INCONCLUSIVE y G6=BLOCK.
+
+##### Continuación de C2 · Persistir el control y congelar cambios interrumpidos
+
+La [continuación del journal](../lab/brownfield/journal/README.md)
+cambia dos supuestos técnicos sin modificar la autoridad del negocio. La
+inscripción queda guardada en SQL: quitar una variable de proceso ya no
+permite desactivar la admisión en ninguno de los dos adaptadores cooperativos.
+Las fixtures históricas nuevas permanecen sin inscribir; el SQL directo con
+privilegios sigue fuera de este control.
+
+Antes de cambiar ninguna época, el coordinador confirma una intención
+`PREPARED` y `mode=SWITCHING` duraderas. Los dos adaptadores y el gateway
+rechazan nuevos comandos financieros hasta que la conciliación independiente
+del ledger y del journal permita completar exactamente esa transición.
+
+| Frontera duradera | Controlador | Autoridad del candidato | Nueva admisión |
+|---|---|---|---|
+| Intención preparada | legacy / e / SWITCHING | legacy / e | Bloqueada |
+| Autoridad del candidato confirmada | legacy / e / SWITCHING | candidate / e+1 | Bloqueada |
+| Conciliación completada | candidate / e+1 / ACTIVE | candidate / e+1 | Permitida con admisión coincidente |
+
+El protocolo envía `SIGKILL` desde un proceso independiente después de las
+dos primeras fronteras y reinicia la recuperación. Una época inesperada o un
+outbox ausente deben mantener el tráfico congelado; una respuesta perdida
+no decide quién escribe. Las decisiones originadas por el candidato siguen
+vetando la vuelta atrás. Esto cubre ventanas concretas del modelo cooperativo
+mediante intención duradera y recuperación hacia adelante,
+**no mediante COMMIT atómico entre bases de datos**. La [CI original de esta continuación](../evidence/runs/BROWNFIELD-C2-RECOVERY.es.md)
+superó 19 controles, conservando el ZIP original y el primer fallo concurrente. La ejecución posterior [#41353221630](https://github.com/jmfloreszazo/de-la-caja-negra-a-la-evidencia/actions/runs/41353221630), sobre el main `279ca566`, superó 20 controles y ambos oráculos SQL 10/10; es otra observación, no una ampliación retrospectiva de aquel ZIP.
+Cada cambio posterior necesita CI con su SHA exacto: la observación histórica
+no valida otro checkout. Las particiones de red durante operaciones en
+curso, la retirada de autoridad al incumbente real, los efectos de pago
+externos y la política aprobada siguen siendo puertas de aceptación separadas.
+G2=INCONCLUSIVE y G6=BLOCK.
+
 ##### Qué falta antes de permitir un cutover real
 
 Un contrato de caja negra simulado no concede al proveedor acceso a los
@@ -2694,13 +2765,13 @@ Los códigos de salida del gate son parte del contrato: 0 para el permiso sinté
 
 #### Lo que no acredita
 
-No hay integración de REA, ni agente autónomo, ni cluster de actores, ni motor SQL de producción, ni bloqueo por fila, ni deadlock SQL, ni commit en dos fases, ni failover, ni prueba de pérdida eléctrica, ni despliegue en Azure, ni publicador real de la outbox. No existe una baseline medida de un mainframe. No se demuestra eficacia industrial ni independencia entre personas: los componentes son procesos distintos, pero se construyeron en el mismo trabajo.
+En este recorrido de referencia original, no hay integración de REA, ni agente autónomo, ni cluster de actores, ni motor SQL de producción, ni bloqueo por fila, ni deadlock SQL, ni commit en dos fases, ni failover, ni prueba de pérdida eléctrica, ni despliegue en Azure, ni publicador real de la outbox. No existe una baseline medida de un mainframe. No se demuestra eficacia industrial ni independencia entre personas: los componentes son procesos distintos, pero se construyeron en el mismo trabajo.
 
 El hash de la baseline y su ancla viven en el mismo paquete escribible. En producción deben quedar fuera del alcance del constructor y vincularse a una aprobación real. El mandato es sintético.
 
 #### Hacia dónde crece
 
-El fichero `docs/EXPERIMENT_PROTOCOL.md` describe cuatro experimentos diseñados y no ejecutados. E1 porta el módulo bancario a un motor con bloqueo por fila y añade víctimas de deadlock, write skew y agotamiento del pool. E2 implementa el mismo contrato con actores de Orleans que coordinan y un ledger que confirma, bajo distribuciones uniformes, sesgadas y con una cuenta que recibe la mitad del tráfico. E3 compara Azure, un servidor local con su segunda unidad y una configuración híbrida con el mismo contrato de rendimiento. E4 pone a un agente a construir el candidato con escritura limitada a `Candidate/` y compara pruebas escritas por el agente, oráculo independiente y oráculo cualificado por mutaciones.
+En la referencia local del 29 de octubre de 2026, el fichero `docs/EXPERIMENT_PROTOCOL.md` planteaba cuatro experimentos todavía no ejecutados. En el repositorio actual, E1 PostgreSQL/SQL Server y E2 Orleans cuentan con subconjuntos ejecutados en CI y siguen parcialmente verificados; E3/E4 permanecen sin ejecución completa. La [matriz de evidencia](../docs/EVIDENCE.es.md) y el [roadmap](../ROADMAP.es.md) mantienen el estado actual. El diseño original se resume así: E1 porta el módulo bancario a un motor con bloqueo por fila y añade víctimas de deadlock, write skew y agotamiento del pool. E2 implementa el mismo contrato con actores de Orleans que coordinan y un ledger que confirma, bajo distribuciones uniformes, sesgadas y con una cuenta que recibe la mitad del tráfico. E3 compara Azure, un servidor local con su segunda unidad y una configuración híbrida con el mismo contrato de rendimiento. E4 pone a un agente a construir el candidato con escritura limitada a `Candidate/` y compara pruebas escritas por el agente, oráculo independiente y oráculo cualificado por mutaciones.
 
 ### Anexo B · Contrato del laboratorio
 

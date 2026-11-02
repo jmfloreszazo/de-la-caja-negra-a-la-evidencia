@@ -1,0 +1,140 @@
+{
+  "claim": "SYNTHETIC_THREE_POSTGRESQL_CONTAINERS_ON_ONE_CI_RUNNER_C2_PARTIAL",
+  "completedControls": [
+    "enrolledControllerCannotBeResetThroughRuntimeBootstrap",
+    "controllerDsnOverridesRejectedBeforeAnyConnection",
+    "durableAdmissionIdempotencyAndRejectedDecision",
+    "concurrentSameIdHasOneDecisionTwoPostingsOneOutbox",
+    "controllerUnreachableFencesBothCooperatingAdapters",
+    "remoteCommitLostAckIndependentRecoveryExactlyOneLedgerEffect",
+    "gatewayCrashAfterRemoteCommitReconcilesDurableDecision",
+    "forgedTerminalJournalFailsIndependentOracleAndCutover",
+    "sigkillAfterPreparedFreezeBlocksTrafficAndRecoversForward",
+    "sigkillAfterCandidateAuthorityCommitReconcilesExactPreparedIntent",
+    "unexpectedEpochOrMissingOutboxCannotThawDurableFreeze",
+    "recoveredTransitionsPreserveMonotonicEpochAndRejectStaleReplay",
+    "candidateWritesPreventUnsafeRollback",
+    "admittedButNotDispatchedStaysUnknown",
+    "crashAfterDispatchMarkBlocksCutoverWithoutRemoteProof",
+    "controllerCandidateAuthoritySplitFailsClosed",
+    "directWithoutAdmissionPreventedInStrictC2Fixture",
+    "sqlEnrollmentPreventsEnvironmentOptOutForBothAdapters",
+    "privilegedRawSqlBypassDetectedDespiteBalancedLedger"
+  ],
+  "endUtc": "2026-11-01T21:32:41.054270+00:00",
+  "lastJournalAudit": {
+    "mismatchedFinalDecisions": [],
+    "passed": false,
+    "todmG2": "INCONCLUSIVE",
+    "todmG6": "BLOCK",
+    "unjournaledOperations": [
+      "J-RAW-SQL"
+    ],
+    "unresolved": [
+      "J-ADMIT-DEAD",
+      "J-DISPATCH-DEAD"
+    ]
+  },
+  "limitations": "SQL-enrolled cooperative adapters; privileged direct SQL remains outside enforcement. Durable freeze and forward recovery, not atomic cross-store COMMIT. No in-flight network-partition proof, independent physical hosts, real incumbent fence, mandate or approved policy.",
+  "protocol": "C2_SQL_ENROLLMENT_AND_FROZEN_FORWARD_RECOVERY_V1",
+  "sourceHeadSha": "3dd279c682ece00dfe62e68f68b1e4b967c4d333",
+  "sourceSha256": {
+    "lab/brownfield/coexistence/legacy_api.py": "2a695a7c3b536af1d5d7e28aa0509824c4da83ff3eb7c302aedd4e753d48b779",
+    "lab/brownfield/coexistence/two_store.py": "c11b97f1dd8c7b668b085bd0465806a8b73e81f5a0f1805a4b9b5604597a53bd",
+    "lab/brownfield/durable/DurableBank/Program.cs": "aea97ba01990e364828c0bbba2e1443702c80497fdd59fc0ff22868123a36028",
+    "lab/brownfield/durable/schema.sql": "5bc745dede3a278fb7ab1f987f0e77dee78f241f5f4c3603e774424393b2d830",
+    "lab/brownfield/journal/journal.py": "7a285222996fbc0b77b0d033274507f9dd434fabe78dc12f1bc5acab750a696c",
+    "lab/brownfield/journal/schema.sql": "f0ce278afc0c57bcd1b29852c363cac38310b4526418d3a9fc241f241976e028",
+    "lab/brownfield/journal/test_journal.py": "305b7f0dcf3454d91bb72853661a016255b6d2427f0a3ff84471a325f369dc25"
+  },
+  "sourceSqlOracle": {
+    "atomicPairedPostings": true,
+    "balancesFromPostings": true,
+    "clockMatchesDecisionCount": true,
+    "conservedBalances": true,
+    "exactOutbox": true,
+    "fixtureAccounts": true,
+    "noUnknownDecisions": true,
+    "rejectedNoEffects": true,
+    "versionsBounded": true,
+    "wellFormedFingerprint": true
+  },
+  "startUtc": "2026-11-01T21:32:18.717181+00:00",
+  "status": "PASS",
+  "targetSqlOracle": {
+    "atomicPairedPostings": true,
+    "balancesFromPostings": true,
+    "clockMatchesDecisionCount": true,
+    "conservedBalances": true,
+    "exactOutbox": true,
+    "fixtureAccounts": true,
+    "noUnknownDecisions": true,
+    "rejectedNoEffects": true,
+    "versionsBounded": true,
+    "wellFormedFingerprint": true
+  },
+  "todmG2": "INCONCLUSIVE",
+  "todmG6": "BLOCK",
+  "transitionCrashObservations": [
+    {
+      "candidate": [
+        "legacy",
+        1
+      ],
+      "command": [
+        "switch",
+        "candidate",
+        "1",
+        "--fault",
+        "pause-after-prepare"
+      ],
+      "controller": [
+        "legacy",
+        1,
+        "SWITCHING"
+      ],
+      "exitCode": -9,
+      "marker": "TRANSITION_DURABLE_PREPARE",
+      "preparedIntent": [
+        "legacy",
+        1,
+        "candidate",
+        2,
+        "PREPARED"
+      ],
+      "signal": "SIGKILL",
+      "stderr": "",
+      "stdout": ""
+    },
+    {
+      "candidate": [
+        "legacy",
+        3
+      ],
+      "command": [
+        "switch",
+        "legacy",
+        "2",
+        "--fault",
+        "pause-after-candidate"
+      ],
+      "controller": [
+        "candidate",
+        2,
+        "SWITCHING"
+      ],
+      "exitCode": -9,
+      "marker": "TRANSITION_DURABLE_CANDIDATE",
+      "preparedIntent": [
+        "candidate",
+        2,
+        "legacy",
+        3,
+        "PREPARED"
+      ],
+      "signal": "SIGKILL",
+      "stderr": "",
+      "stdout": ""
+    }
+  ]
+}

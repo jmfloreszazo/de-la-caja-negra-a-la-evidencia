@@ -43,8 +43,8 @@ The [bilingual WAN field-measurement protocol](NETWORK_PROTOCOL.md) is a require
 ## Decision log
 
 - **E1a:** PostgreSQL 16.13, real deadlock / write-skew / pool and independent-oracle tests — [CI PASS](https://github.com/jmfloreszazo/de-la-caja-negra-a-la-evidencia/actions/runs/40919268337).
-- **E1b implemented subset:** .NET 10 + Npgsql persisted-state differential and selected fault/concurrency cases — [initial 7-control CI PASS](https://github.com/jmfloreszazo/de-la-caja-negra-a-la-evidencia/actions/runs/40919773614), [extended 10-control CI PASS](https://github.com/jmfloreszazo/de-la-caja-negra-a-la-evidencia/actions/runs/41024101879). The extension proves bounded `55P03` exhaustion, post-timeout idempotent recovery, and oracle rejection of deliberate ledger corruption. [Both original snapshots](../evidence/runs/README.md) remain versioned independently. The tested E1b synthetic reference contract, including the [960-transfer uniform/hot worker matrix](https://github.com/jmfloreszazo/de-la-caja-negra-a-la-evidencia/actions/runs/41034420329), passed. [Issue #6](https://github.com/jmfloreszazo/de-la-caja-negra-a-la-evidencia/issues/6) remains open until author-approved integration.
-- **E1c completed synthetic gates:** .NET 10/SQL Server 2022 Developer core, real `1205` and `1222` errors, isolation negatives and independent oracle, plus the [960-transfer worker matrix](https://github.com/jmfloreszazo/de-la-caja-negra-a-la-evidencia/actions/runs/41042317263) and a [persistent-worker follow-up](https://github.com/jmfloreszazo/de-la-caja-negra-a-la-evidencia/actions/runs/41043087791). [Issue #7](https://github.com/jmfloreszazo/de-la-caja-negra-a-la-evidencia/issues/7) remains open until authorized integration.
+- **E1b implemented subset:** .NET 10 + Npgsql persisted-state differential and selected fault/concurrency cases — [initial 7-control CI PASS](https://github.com/jmfloreszazo/de-la-caja-negra-a-la-evidencia/actions/runs/40919773614), [extended 10-control CI PASS](https://github.com/jmfloreszazo/de-la-caja-negra-a-la-evidencia/actions/runs/41024101879). The extension proves bounded `55P03` exhaustion, post-timeout idempotent recovery, and oracle rejection of deliberate ledger corruption. [Both original snapshots](../evidence/runs/README.md) remain versioned independently. The tested E1b synthetic reference contract, including the [960-transfer uniform/hot worker matrix](https://github.com/jmfloreszazo/de-la-caja-negra-a-la-evidencia/actions/runs/41034420329), passed. [Issue #6](https://github.com/jmfloreszazo/de-la-caja-negra-a-la-evidencia/issues/6) was integrated; its historical issue does not establish global E1 acceptance.
+- **E1c completed synthetic gates:** .NET 10/SQL Server 2022 Developer core, real `1205` and `1222` errors, isolation negatives and independent oracle, plus the [960-transfer worker matrix](https://github.com/jmfloreszazo/de-la-caja-negra-a-la-evidencia/actions/runs/41042317263) and a [persistent-worker follow-up](https://github.com/jmfloreszazo/de-la-caja-negra-a-la-evidencia/actions/runs/41043087791). [Issue #7](https://github.com/jmfloreszazo/de-la-caja-negra-a-la-evidencia/issues/7) was integrated; its historical issue does not establish global E1 acceptance.
 - These checks prove **only** the synthetic scenarios listed. **Overall E1 stays partially verified:** production-scale performance, power-loss durability, HA/failover and bank/mainframe equivalence have not been accepted. E2 has verified synthetic CI slices but remains **partially verified**; E3 and E4 are still designed, not executed as complete experiments.
 
 ## Brownfield CAP-007/CAP-005 coexistence checkpoint — 1 November 2026
@@ -54,8 +54,22 @@ The functional-first brownfield line is separately tracked by [#32](https://gith
 - [PR #60](https://github.com/jmfloreszazo/de-la-caja-negra-a-la-evidencia/pull/60): in-memory writer/epoch and cutover rehearsal; only synthetic control-model evidence.
 - [PRs #61–#62](https://github.com/jmfloreszazo/de-la-caja-negra-a-la-evidencia/pull/61): real PostgreSQL 16/.NET 10/Npgsql transfers, persisted ledger/postings/outbox and precommit SIGKILL versus COMMIT-before-lost-ACK. Dedicated postmerge SQL CI on exact main SHA; no external CICS fence or G6 authorization.
 - [PR #63](https://github.com/jmfloreszazo/de-la-caja-negra-a-la-evidencia/pull/63): two **logical** PostgreSQL stores, black-box simulated legacy process, read-only shadow, staged snapshot, complete two-store reconciliation, cooperative writer fencing and blocked rollback after candidate-origin decisions. Exact merged-main SHA `d04623e8c276bedda9918e87a09fa0c3f9da1f6a`; [SQL workflow #41340310748](https://github.com/jmfloreszazo/de-la-caja-negra-a-la-evidencia/actions/runs/41340310748) PASS. Original ES/EN source-run reports: [EN](../evidence/runs/BROWNFIELD-TWO-STORE.md) / [ES](../evidence/runs/BROWNFIELD-TWO-STORE.es.md).
-- **Next, not demonstrated:** [#64](https://github.com/jmfloreszazo/de-la-caja-negra-a-la-evidencia/issues/64) persistent admission/UNKNOWN journal for a router across process failures and stale epochs; bank-controlled source-side writer fence and independent business contract/Golden Master acceptance under #58. TODM G2 remains INCONCLUSIVE and G6 BLOCK.
-- Exactly **two containers on one hosted Linux machine** do not establish physically independent fault domains, production banking semantics, IBM Z MIPS equivalence, RTO/RPO or Azure TCO. No release was created by #60–#63.
+- **Historical next step at PR #63:** [#64](https://github.com/jmfloreszazo/de-la-caja-negra-a-la-evidencia/issues/64) persistent admission/UNKNOWN journal for a router across process failures and stale epochs; bank-controlled source-side writer fence and independent business contract/Golden Master acceptance under #58. TODM G2 remains INCONCLUSIVE and G6 BLOCK.
+- At the original two-store checkpoint, exactly **two containers on one hosted Linux machine** do not establish physically independent fault domains, production banking semantics, IBM Z MIPS equivalence, RTO/RPO or Azure TCO. No release was created by #60–#63.
+
+### Current brownfield checkpoint — 2 November 2026
+
+PR #66 added the three-store admission journal; #68 added capability gateway
+controls; #69 persisted adapter enrollment and interrupted-transition recovery.
+On merged main `279ca5662dd870c0f1bb7dab7d1474f346904df3`, original
+[C2 run #41353221630](https://github.com/jmfloreszazo/de-la-caja-negra-a-la-evidencia/actions/runs/41353221630)
+passed **20 controls**, both independent SQL oracles 10/10. Seven applicable
+main workflows succeeded; Release was skipped. The earlier 19-control ZIP
+remains an independent, immutable observation. In-flight controller partitions,
+lock-loss windows, external side effects, real bank-owned fencing and G2/G6
+approval are still open. Three SQL containers share one physical runner.
+Clean-room/confidential-computing issue #53 and branch protection #16 remain
+deferred. Published stable and research tags have not changed.
 
 ### E2 specific status correction
 
@@ -68,6 +82,6 @@ The functional-first brownfield line is separately tracked by [#32](https://gith
 3. Use an independent read-only oracle that does not share the candidate's decision function.
 4. Preserve existing benchmark constraints: `lab/performance-contract.json` is `UNCONFIGURED`; it must not be converted to PASS based on synthetic local runs.
 5. No status promotion for E1–E4 and no release without a complete acceptance record and editorial approval.
-6. E1a validates PostgreSQL behavior using a Python harness; E1b validates an independent .NET 10/Npgsql candidate on a controlled subset. Neither proves SQL Server parity or production/mainframe capacity.
+6. E1a validates PostgreSQL behavior using a Python harness; E1b validates an independent .NET 10/Npgsql candidate on a controlled subset. E1c supplies separate synthetic SQL Server parity evidence; none establishes production/mainframe capacity.
 
 See [E1 protocol](../lab/docs/EXPERIMENT_PROTOCOL.md) and [ES/EN evidence matrices](EVIDENCE.md).

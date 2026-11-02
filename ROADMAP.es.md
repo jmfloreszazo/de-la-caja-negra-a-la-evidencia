@@ -1,4 +1,4 @@
-# Hoja de ruta abierta — estado basado en evidencias (1 de noviembre de 2026)
+# Hoja de ruta abierta — estado basado en evidencias (2 de noviembre de 2026)
 
 [English](ROADMAP.md) · **Español**
 
@@ -8,10 +8,10 @@ Esta es la hoja de ruta **del repositorio**, no una declaración de que una migr
 
 | Línea de trabajo | Estado contrastado | Qué falta para cerrarla |
 | --- | --- | --- |
-| Libro, diagramas y CI bilingüe | **Integrado**: 38 capítulos, 41 diagramas por idioma, capítulo 28 ampliado con convivencia y PDF de vista previa reproducibles | Revisión editorial y técnica, listados ilustrativos, reproducción multiplataforma; la vista previa no es una release |
+| Libro, diagramas y CI bilingüe | **Integrado**: 37 capítulos numerados más dos complementarios, 41 diagramas por idioma, capítulo 28 ampliado con convivencia y PDF de vista previa reproducibles | Revisión editorial y técnica, listados ilustrativos, reproducción multiplataforma; la vista previa no es una release |
 | E1 PostgreSQL y SQL Server | **Parcialmente verificado**: CI sobre SQL real y desechable, oráculos independientes, subconjuntos de paridad .NET 10, concurrencia y controles negativos | Alcance funcional E1 completo, fallo eléctrico/HA, contrato del cliente y carga productiva |
 | E2 Orleans | **Parcialmente verificado y ejecutado**: pruebas de varios procesos/silos con Podman en una máquina, membership PostgreSQL, ledger durable, fallos y carga limitada; [#8](https://github.com/jmfloreszazo/de-la-caja-negra-a-la-evidencia/issues/8) | [Anomalía C01 #44](https://github.com/jmfloreszazo/de-la-caja-negra-a-la-evidencia/issues/44), [PR #34 C04 en draft](https://github.com/jmfloreszazo/de-la-caja-negra-a-la-evidencia/pull/34), particiones asimétricas, hosts físicos/HA y capacidad sostenida [#25](https://github.com/jmfloreszazo/de-la-caja-negra-a-la-evidencia/issues/25) |
-| Brownfield CAP-007/005 | **Subconjuntos sintéticos verificados en CI y fusionados**: época de escritor SQL, transacciones .NET 10, adaptador legado de caja negra, dos almacenes PostgreSQL distintos, shadow, conciliación y veto al rollback; [#58](https://github.com/jmfloreszazo/de-la-caja-negra-a-la-evidencia/issues/58) | Journal persistente de admisión/`UNKNOWN` [#64](https://github.com/jmfloreszazo/de-la-caja-negra-a-la-evidencia/issues/64), fencing real en el origen, políticas/mandatos/Golden Master del cliente y aprobación TODM G2/G6 |
+| Brownfield CAP-007/005 | **Subconjuntos sintéticos verificados en CI y fusionados**: época de escritor SQL, transacciones .NET 10, adaptador legado de caja negra, dos almacenes PostgreSQL distintos, shadow, conciliación y veto al rollback; [#58](https://github.com/jmfloreszazo/de-la-caja-negra-a-la-evidencia/issues/58) | Particiones del journal persistente durante operaciones y recuperación restante [#64](https://github.com/jmfloreszazo/de-la-caja-negra-a-la-evidencia/issues/64), fencing real en el origen, políticas/mandatos/Golden Master del cliente y aprobación TODM G2/G6 |
 | Descomposición funcional | **Inventario sintético**: 30 hipótesis de capacidades y 12 dominios, reescritura functional-first; [#32](https://github.com/jmfloreszazo/de-la-caja-negra-a-la-evidencia/issues/32) | Trazas autorizadas, reglas aprobadas, límites de dominio y aceptación independiente; sin parser COBOL obligatorio y sin conversión 1:1 |
 | E3 Azure/local/híbrido | **Diseñado, sin capacidad verificada**: M1/M2, precios de referencia fechados y modelo WAN son entradas, no un PASS de E3; [#9](https://github.com/jmfloreszazo/de-la-caja-negra-a-la-evidencia/issues/9), [#12](https://github.com/jmfloreszazo/de-la-caja-negra-a-la-evidencia/issues/12) | Contrato de carga aprobado, saturación abierta y commits/p99, dominios de fallo, WAN, gRPC/REST con TLS comparable y TCO integral fechado |
 | E4 agentes y Oracle Gates | **Diseñado, no ejecutado ni aceptado como E4**; [#10](https://github.com/jmfloreszazo/de-la-caja-negra-a-la-evidencia/issues/10) | Alcance de escritura del agente, propuestas evaluadas reproducibles, mutaciones de oráculos, revisión y aprobación independientes |
@@ -28,13 +28,16 @@ Esta es la hoja de ruta **del repositorio**, no una declaración de que una migr
 
 Todo ello es **ingeniería sintética**. No hemos observado ningún sistema bancario real; TODM G2 permanece INCONCLUSIVE y G6 en BLOCK. Dos contenedores en un runner no representan dos dominios físicos de fallo.
 
+- PR #66/#68/#69: journal duradero, gateway e inscripción persistida. En `279ca566`, [C2 main #41353221630](https://github.com/jmfloreszazo/de-la-caja-negra-a-la-evidencia/actions/runs/41353221630) superó 20 controles y ambos oráculos 10/10. La [ejecución original de 19 controles](evidence/runs/BROWNFIELD-C2-RECOVERY.es.md) se conserva sin reatribuir cobertura. Siete workflows aplicables de ese main pasaron; Release omitido.
+
 ## Orden de ejecución a partir de ahora (sin fechas inventadas)
 
-1. **P0 — [#64](https://github.com/jmfloreszazo/de-la-caja-negra-a-la-evidencia/issues/64): registro persistente de admisión y estado UNKNOWN.** Recuperación ante caída, pérdida de ACK, partición del controlador y épocas antiguas; consultar SQL autoritativo antes de reintentar. Bloquear cutover y rollback con incertidumbre no resuelta y conservar controles negativos.
-2. **P0 — [#58](https://github.com/jmfloreszazo/de-la-caja-negra-a-la-evidencia/issues/58) y [#32](https://github.com/jmfloreszazo/de-la-caja-negra-a-la-evidencia/issues/32): aceptación funcional brownfield.** Necesitamos un veto de escritura verificable en el mainframe del cliente, reglas y Golden Master aprobados por un propietario real; una simulación no puede proporcionar G2/G6.
-3. **P1 — [#8](https://github.com/jmfloreszazo/de-la-caja-negra-a-la-evidencia/issues/8), [#24](https://github.com/jmfloreszazo/de-la-caja-negra-a-la-evidencia/issues/24), [#25](https://github.com/jmfloreszazo/de-la-caja-negra-a-la-evidencia/issues/25): completar E2.** Diagnosticar o acotar C01, ejecutar C04 y particiones asimétricas con evidencia original, ensayar hosts físicos separados, saturación sostenida y p99/RTO medidos.
-4. **P1 — [#9](https://github.com/jmfloreszazo/de-la-caja-negra-a-la-evidencia/issues/9) y [#12](https://github.com/jmfloreszazo/de-la-caja-negra-a-la-evidencia/issues/12): capacidad E3 y economía.** Escalado horizontal 1/2/4/8/16 con VM/AKS/PaaS y alternativa local comparables, precios fechados y latencia WAN/SQL end-to-end. Nunca convertir MIPS a vCPU mediante una equivalencia inventada.
-5. **P2 — investigación, canales, batch y agentes.** Avanzar #17/#18/#28/#29/#30, E4 #10, refactor #15 y reproducción #11. Una hipótesis de investigación no es una garantía productiva.
+1. Consolidar libro y documentación ES/EN con las evidencias; mantener los SHA y resultados históricos.
+2. Completar C2 #64: particiones en operaciones en curso, pérdida de bloqueos y ventanas de respuesta; aprobación funcional y fencing real pendientes en #58/#32.
+3. Actualizar el capítulo 28 con contrato, implementación, fallo, corrección, evidencia y límites.
+4. Completar los gates acotados de E2 #8/#24/#25: C01/C04, particiones, repeticiones de carga, diagnóstico y dominios físicos.
+5. Preparar una vista previa de la siguiente edición: revisión inglesa, citas, solapes, listados y QA visual ES/EN; publicar solo tras el corte editorial autorizado.
+6. Ejecutar E3 #9/#12 con carga, infraestructura, WAN y TCO comparables; después E4 #10.
 
 **Congelado:** [#53](https://github.com/jmfloreszazo/de-la-caja-negra-a-la-evidencia/issues/53), clean rooms/confidential computing, queda fuera del plan activo hasta nueva indicación. La protección de rama [#16](https://github.com/jmfloreszazo/de-la-caja-negra-a-la-evidencia/issues/16) también está aplazada, aunque sigue abierta.
 
