@@ -33,7 +33,7 @@ IDs/digests and raw PASS or FAIL observations.
    packets to the peer with source **or** destination port 11150/11151. Leave
    both client gateway ports and PostgreSQL untouched. Save exact firewall
    rules and require the selected rule's packet counter to increase.
-4. Start real tcpdump observers sharing each silo namespace after injection;
+4. Start native, 45-second auto-stopping dumpcap observers sharing each silo namespace after injection;
    generate TCP SYNs in both directions. Preserve both original PCAPs and
    their decoded bytes/hash. Require packets from the unblocked host to reach
    the blocked host, and no selected-port packets from the blocked host to
@@ -94,3 +94,25 @@ Original failure ZIPs and byte-identical JSON extractions are retained under
 artifact 13180157790 (secondary), SHA-256
 `8eabe4d141b8430f5d426bfbcf53bce87886b307c6b2a393f7c299d5430d7f17`.
 Neither negative is a passing readiness or partition observation.
+
+## Second original execution — capture shutdown failure
+
+Run #41528077816 on source `72d93aee4cf148ade04c8e1979bc60d7439bdb75`
+reached the actual fault and contested requests, but both jobs failed when
+rootless crun denied host-side SIGINT delivery to tcpdump (`Permission denied`).
+Each job recorded one COMMITTED and one dispatched timeout; SQL held 2/4/2
+including baseline. Neither job reached completed recovery or is a PASS.
+The complete original archives, including incomplete PCAPs, remain unchanged:
+`evidence/runs/e2-c05-second-capture-{primary,secondary}.*`.
+Primary artifact 13180038964, SHA-256
+`f717bd165745bc4cd0d95485df559fc35bb15262ad6eff6562c1d63fb6fdfc41`;
+secondary artifact 13180631863, SHA-256
+`63e3778c681a73a08cd08330d441957e46d3e8d3d0f17fdee461e1b8b2848a55`.
+
+The next capture implementation uses dumpcap's native `-a duration:45`
+autostop, requires exit 0, retains the same private namespace and capabilities,
+and decodes the resulting original PCAP using tcpdump. It needs no host signal
+or elevated runtime permissions. Native autostop is documented by
+[Wireshark](https://www.wireshark.org/docs/man-pages/dumpcap.html); dumpcap is
+in the [pinned netshoot v0.13 source image](https://github.com/nicolaka/netshoot/blob/e1fbbfaf1a3f874a57103c4317f43444d8aae75d/Dockerfile).
+The firewall/payload/oracle/recovery acceptance criteria remain unchanged.

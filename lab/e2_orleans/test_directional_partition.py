@@ -85,22 +85,23 @@ def captures_start(containers):
         name = 'c05-capture-' + role
         P('run', '-d', '--name', name, '--network', 'container:e2f10-' + role,
           '--cap-add', 'NET_RAW', '--cap-add', 'NET_ADMIN',
-          '-v', str(OUT.resolve()) + ':/capture', '--entrypoint', 'tcpdump',
-          net.NET_TOOL_IMAGE, '-Z', 'root', '-U', '-nn', '-i', 'any',
+          '-v', str(OUT.resolve()) + ':/capture', '--entrypoint', 'dumpcap',
+          net.NET_TOOL_IMAGE, '-q', '-P', '-a', 'duration:45', '-i', 'any',
           '-w', '/capture/' + role + '.pcap',
+          '-f',
           'tcp and host 10.78.30.11 and host 10.78.30.12 and (port 11150 or port 11151)')
         containers.append(name)
         names.append(name)
-        seed.wait_for(lambda: 'listening on' in subprocess.run(
+        seed.wait_for(lambda: 'File:' in subprocess.run(
             ['podman', 'logs', name], stdout=subprocess.PIPE, stderr=subprocess.STDOUT,
-            text=True, timeout=10).stdout, 'tcpdump ready', timeout=15)
+            text=True, timeout=10).stdout, 'native timed capture ready', timeout=15)
     return names
 
 
 def captures_stop(names):
     for name in names:
-        P('kill', '--signal', 'SIGINT', name)
-        assert P('wait', name, timeout=15) == '0'
+        # Native dumpcap autostop avoids host-to-container signalling.
+        assert P('wait', name, timeout=60) == '0'
     result = {}
     for role in ('primary', 'secondary'):
         path = OUT / (role + '.pcap')
@@ -186,6 +187,8 @@ def main():
         assert all(x['status'] == 'OBSERVED' for x in report['catalogBefore']), report['catalogBefore']
         baseline_rules = rules(blocked)
         report['rulesBefore'] = baseline_rules
+        report['captureTool'] = helper(blocked, 'dumpcap', '--version')
+        report['captureAutostopSeconds'] = 45
         stage = 'directional-drop'
         installed = True
         report['faultUtc'] = seed.utc()
@@ -280,6 +283,7 @@ def main():
             raise AssertionError('Recovery exceeded the preregistered 240s experiment bound')
         report['recoveryAttempts'] = recovery_attempts
         report['firstBothGatewayAckSecondsAfterRestore'] = time.monotonic() - restored_clock
+        assert report['firstBothGatewayAckSecondsAfterRestore'] <= 240
         after = snapshot()
         assert {r[0] for r in after['operations']} == {BASE, CONTEST}
         winner = next(r for r in after['operations'] if r[0] == CONTEST)
@@ -318,7 +322,8 @@ def main():
             except Exception as exc:
                 report['cleanupRuleError'] = repr(exc)
         for name in capture_names:
-            P('kill', '--signal', 'SIGINT', name, check=False)
+            # Autostop is native even on failure; never escalate signalling.
+            P('wait', name, check=False, timeout=60)
         (OUT / 'directional-partition-summary.json').write_text(json.dumps(report, indent=2) + '\n')
         print(json.dumps({'status': report['status'], 'stage': stage, 'error': report.get('error')}))
         for name in reversed(containers):
