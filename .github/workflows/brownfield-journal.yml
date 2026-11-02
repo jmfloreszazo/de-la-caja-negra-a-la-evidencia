@@ -68,6 +68,32 @@ jobs:
           BROWNFIELD_CONTROL_NPGSQL: 'Host=127.0.0.1;Port=55440;Database=bf_control;Username=postgres;Password=bflocal;Pooling=false'
           BROWNFIELD_PG_NPGSQL: 'Host=127.0.0.1;Port=55439;Database=bf_lab;Username=postgres;Password=bflocal;Pooling=false'
         run: python3 lab/brownfield/journal/test_journal.py
+      - name: Recreate controller fixture behind an interruptible TCP link
+        run: |
+          podman rm -f bf-control-pg
+          podman run -d --name bf-control-pg -e POSTGRES_DB=bf_control -e POSTGRES_PASSWORD=bflocal -p 127.0.0.1:55441:5432 docker.io/library/postgres:16.13
+          ready=0
+          for i in $(seq 1 60); do
+            if podman exec bf-control-pg pg_isready -U postgres -d bf_control >/dev/null 2>&1; then
+              ready=1
+              break
+            fi
+            sleep 1
+          done
+          test "$ready" -eq 1
+          podman inspect bf-control-pg --format '{{.Name}} {{.Id}} {{.NetworkSettings.Ports}}' >> lab/results/brownfield/journal/provenance.txt
+      - name: Execute actual in-flight controller TCP session-loss matrix
+        env:
+          BROWNFIELD_DISPOSABLE: 'YES'
+          BROWNFIELD_LEGACY_DSN: 'host=127.0.0.1 port=55438 dbname=bf_legacy user=postgres password=bflocal'
+          BROWNFIELD_PG_DSN: 'host=127.0.0.1 port=55439 dbname=bf_lab user=postgres password=bflocal'
+          BROWNFIELD_CONTROL_DSN: 'host=127.0.0.1 port=55440 dbname=bf_control user=postgres password=bflocal connect_timeout=3'
+          BROWNFIELD_REQUIRE_CONTROLLER: 'YES'
+          BROWNFIELD_CONTROL_NPGSQL: 'Host=127.0.0.1;Port=55440;Database=bf_control;Username=postgres;Password=bflocal;Pooling=false;Timeout=3'
+          BROWNFIELD_PG_NPGSQL: 'Host=127.0.0.1;Port=55439;Database=bf_lab;Username=postgres;Password=bflocal;Pooling=false'
+        run: |
+          python3 -m unittest discover -s lab/brownfield/journal -p test_controller_link.py -v
+          python3 lab/brownfield/journal/test_controller_loss.py
       - name: Preserve original evidence even when failing
         if: always()
         uses: actions/upload-artifact@v6
