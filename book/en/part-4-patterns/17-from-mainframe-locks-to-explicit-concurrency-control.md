@@ -49,7 +49,9 @@ In the concurrency lab we will distinguish **safety** (never violating an invari
 
 ## The transfer written for an engine with row locking
 
-The lab uses SQLite, which serializes writes and therefore cannot show a row deadlock. This is how I would write the same operation in SQL Server or Azure SQL, extending the lab sketch `architecture/ledger_transaction.sql`. The decisions are commented in the code itself.
+The reference lab module uses SQLite, which serializes writes and therefore cannot show a row deadlock. This is how I would write the same operation in SQL Server or Azure SQL, extending the lab sketch `architecture/ledger_transaction.sql`. The decisions are commented in the code itself.
+
+The separately executed PostgreSQL and SQL Server extension is described in [chapter 28](../part-6-lab/28-transfers-locks-and-failures-locally.md); its results do not automatically turn the following illustrative listing into a compiled example.
 
 **Listing 17.1 · Transfer in T-SQL: idempotency, global lock order, conditional debit and outbox** — *Illustrative*
 

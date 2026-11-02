@@ -125,6 +125,27 @@ La tabla enseña una cosa verdadera y nada más: al añadir procesos que compite
 
 > **El servicio puede contestar OK y dejar otra cosa detrás. El oráculo mira lo que queda.**
 
+## C04 · El cliente pierde sus gateways, el ledger conserva la autoridad
+
+La [prueba original C04](../../../evidence/runs/E2-C04-GATEWAY.es.md) corta
+solo las salidas del cliente externo de Orleans: primero al gateway primario
+y después a los dos. Con uno disponible, un cliente nuevo confirmó la
+transferencia por el secundario hacia un grain alojado en el primario. Bajo
+el corte doble, ambos silos y PostgreSQL siguieron accesibles entre sí.
+
+El primer intento falló porque un timeout externo de 70 segundos no permitía
+clasificar la fase de aplicación. El ZIP negativo se conserva. El modo
+corregido observa un deadline de arranque antes de enviar comandos financieros:
+salió con código 74 en 20,8509 segundos. No hubo efectos nuevos durante el
+corte, incluidas tres muestras SQL adicionales. Restauradas las reglas de
+red originales, el mismo ID se confirmó y su repetición fue duplicada; el
+estado final tuvo tres operaciones, seis apuntes y tres outbox, con oráculo 7/7.
+
+Esto es indisponibilidad de arranque de un cliente nuevo, **no pérdida de ACK
+tras COMMIT**. Son cuatro namespaces en un runner; no explica el fallo
+histórico de placement C01 ni demuestra dominios físicos, capacidad sostenida
+o un RTO productivo. E2 sigue parcialmente verificado.
+
 ## Del débito atómico al traspaso de autoridad entre dos almacenes
 
 La siguiente dificultad no consiste en hacer funcionar una transferencia con

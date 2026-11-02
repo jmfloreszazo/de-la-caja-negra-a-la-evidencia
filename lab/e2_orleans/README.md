@@ -434,3 +434,17 @@ or open the repository without the maintainer's authorization.
 
 See [issue #8](https://github.com/jmfloreszazo/de-la-caja-negra-a-la-evidencia/issues/8)
 and the [global experiment roadmap](../../docs/EXPERIMENT_ROADMAP.md).
+
+## E2-F10-C04: original client-only gateway evidence
+
+[Original C04 CI #41513498050](https://github.com/jmfloreszazo/de-la-caja-negra-a-la-evidencia/actions/runs/41513498050) passed on exact source `434170ac`. The [audited original report](../../evidence/runs/E2-C04-GATEWAY.md) preserves both passing and first failed ZIPs. The earlier workflow-write rejection produced no result; unrelated C01/C02/C03 checks are not C04 evidence.
+
+The [preregistered protocol](F10_C04_PROTOCOL.md) and
+[test](test_client_gateway_partition.py) first cut only the external client's
+primary gateway, then both gateways, while preserving silo and PostgreSQL
+reachability. Require independent SQL oracles, exact operation/posting/outbox
+counts, stable-ID replay, unchanged silo processes and restored firewall
+rules. A fresh-client fallback is not recovery of an established session;
+a dual-cut startup exception is not in-flight COMMIT/ACK loss. The original
+1..16 dual-silo placement precondition remains mandatory, including negative
+diagnostics. No physical HA, production SLA, capacity or mainframe claim.

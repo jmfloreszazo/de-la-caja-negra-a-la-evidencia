@@ -113,8 +113,8 @@
       "status": "ci_verified",
       "es": "Extensión E1b .NET 10/Npgsql: agotamiento 55P03, recuperación idempotente y corrupción rechazada",
       "en": "Extended E1b .NET 10/Npgsql: bounded 55P03 retry, idempotent recovery and rejected corruption",
-      "scope_es": "Diez controles sintéticos en PostgreSQL; incluye tres controles nuevos, sin paridad integral SQLite, SQL Server ni equivalencia mainframe.",
-      "scope_en": "Ten synthetic PostgreSQL controls, including three new cases; no complete SQLite or SQL Server parity or mainframe equivalence.",
+      "scope_es": "Diez controles originales, incluido agotamiento 55P03 y rechazo de corrupción; esa ejecución no cubre toda la paridad SQLite/SQL Server. Las ampliaciones posteriores tienen evidencia propia.",
+      "scope_en": "Ten original controls, including bounded 55P03 exhaustion and corruption rejection; that run does not cover full SQLite/SQL Server parity. Later extensions have separate evidence.",
       "evidence": {
         "kind": "github_actions",
         "run_id": 41024101879,
@@ -427,12 +427,26 @@
       "protocol": null
     },
     {
+      "id": "E2-CLIENT-GATEWAY",
+      "status": "ci_verified",
+      "es": "Aislamiento de uno y ambos gateways del cliente Orleans externo con SQL independiente",
+      "en": "External Orleans client single/dual gateway isolation with independent SQL observation",
+      "scope_es": "Un runner, cuatro namespaces: fallback de cliente nuevo; corte doble con deadline de arranque observado antes del envío financiero, cero efectos durante corte, replay 1/2/1 y oráculo 7/7. No ACK perdido durante COMMIT, HA física ni capacidad sostenida.",
+      "scope_en": "One runner, four namespaces: fresh-client fallback; dual cut with observed pre-financial-dispatch startup deadline, zero effects during cut, replay 1/2/1 and oracle 7/7. No in-flight COMMIT ACK loss, physical HA or sustained capacity.",
+      "evidence": {
+        "kind": "github_actions",
+        "run_id": 41513498050,
+        "head_sha": "434170ac03f63925b517992d744aae531eb38965"
+      },
+      "protocol": null
+    },
+    {
       "id": "E2",
       "status": "partially_verified",
       "es": "Orleans y ledger frente a distintas distribuciones de carga",
       "en": "Orleans and ledger under different load distributions",
-      "scope_es": "Subconjuntos originales de CI cubren coordinación, controles negativos, deadlock, reentrancia, recuperación entre silos, membresía SQL y fallos de proceso/red en un host. Siguen pendientes C01/C04, particiones asimétricas, recuperación completa, capacidad sostenida comparable y dominios físicos independientes; no hay PASS global ni equivalencia mainframe.",
-      "scope_en": "Original CI slices cover coordination, negative controls, deadlock, reentrancy, inter-silo recovery, SQL membership and process/network faults on one host. C01/C04, asymmetric partitions, complete recovery, comparable sustained capacity and independent physical fault domains remain; no overall PASS or mainframe equivalence.",
+      "scope_es": "Subconjuntos originales de CI cubren coordinación, controles negativos, deadlock, reentrancia, recuperación entre silos, membresía SQL y fallos de proceso/red en un host. C04 añade fallback y corte de arranque del cliente; siguen pendientes C01, particiones asimétricas, recuperación completa, capacidad sostenida comparable y dominios físicos independientes; no hay PASS global ni equivalencia mainframe.",
+      "scope_en": "Original CI slices cover coordination, negative controls, deadlock, reentrancy, inter-silo recovery, SQL membership and process/network faults on one host. C04 adds client fallback and startup outage; C01, asymmetric partitions, complete recovery, comparable sustained capacity and independent physical fault domains remain; no overall PASS or mainframe equivalence.",
       "evidence": null,
       "protocol": "lab/e2_orleans/EXPERIMENT_PROTOCOL.md"
     },

@@ -12,7 +12,7 @@ This document is for the **next editorial iteration**. It does not modify the al
 | Book and lab on main | CI executed | [Commit 279ca566](https://github.com/jmfloreszazo/de-la-caja-negra-a-la-evidencia/commit/279ca5662dd870c0f1bb7dab7d1474f346904df3): seven applicable workflows succeeded; Release deliberately skipped. |
 | Published PDFs | Generated for their tags | Later brownfield changes are not automatically included; the next preview still needs generation and visual review. |
 | E1 PostgreSQL/SQL Server | Partially verified | Synthetic parity, concurrency, deadlocks and negative controls executed; no production capacity, HA or mainframe equivalence. |
-| E2 Orleans | Partially verified | Inter-silo recovery and process/network faults executed on one host; C01/C04, sustained capacity and physical fault domains remain. |
+| E2 Orleans | Partially verified | Inter-silo recovery and process/network faults executed on one host; C01, sustained capacity and physical fault domains remain. |
 | Brownfield C2/C3 | Executed slices | [C2 main #41353221630](https://github.com/jmfloreszazo/de-la-caja-negra-a-la-evidencia/actions/runs/41353221630): 20 controls and both SQL oracles 10/10. No real incumbent fence or G2/G6 acceptance. |
 | M1/M2 | Executed in local CI | Twenty durable M2 cases; no Azure benchmark, comparable TLS, WAN or distributed scale. |
 | E3 and E4 | Designed, not executed as complete experiments | Prices, WAN models and agent examples do not satisfy their acceptance gates. |

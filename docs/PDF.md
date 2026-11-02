@@ -16,7 +16,7 @@ Outputs (ignored by Git):
 - `dist/de-la-caja-negra-a-la-evidencia-es.pdf`
 - `dist/from-black-box-to-evidence-en.pdf`
 
-Each edition has its own full-page cover, a clickable table of contents with page numbers, 37 chapters, seven annexes, all 41 diagrams, code listings, selected searchable text and A4 pages. Remote resource fetching is blocked while rendering: all figures must be present in the repository.
+Each edition has its own full-page cover, a clickable table of contents with page numbers, 37 numbered chapters plus chapter 25 bis and the decomposition companion chapter, seven annexes, all 41 diagrams, code listings, selected searchable text and A4 pages. Remote resource fetching is blocked while rendering: all figures must be present in the repository.
 
 ## Preview in a pull request
 
@@ -31,3 +31,11 @@ No existing edition number is changed by this PDF feature. The first version/rel
 ## First tagged release
 
 The author-approved merge of PR #2 is the one-time publishing trigger for the existing edition identifier `v2026.10.29`. The merge commit must have the exact title `release: publish first PDF edition after PR #2 merge`. After the PDF build succeeds, the same GitHub Actions job creates the tag (without altering existing files or changing the edition number) and publishes the four assets together. GitHub's token-generated tag does not need to trigger a second workflow. Later releases are initiated only by a deliberately created `v*` tag pointing to `main`.
+
+## Print rendering review
+
+Standalone GitHub alert control lines such as `[!IMPORTANT]` are removed for
+PDF only; the thesis/warning text and blockquote remain. Fenced code and
+inline literal tokens are preserved. Focused regression cases run in the
+preview workflow. Both editions still need visual review for each editorial
+cut; a successful PDF build alone is not full layout or language approval.

@@ -1,6 +1,6 @@
 # Launch guide
 
-Maintainer guide for the first publication. It can be deleted after edition v2026.10.29. The guide is in English; each communication piece is in the language of its audience.
+Historical maintainer guide for the first publication, not the current execution roadmap. It can be deleted after edition v2026.10.29. The guide is in English; each communication piece is in the language of its audience.
 
 ## 1. Decisions only the author can make
 

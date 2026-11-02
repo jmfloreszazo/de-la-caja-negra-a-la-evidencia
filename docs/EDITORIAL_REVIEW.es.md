@@ -12,7 +12,7 @@ Este documento pertenece a la **siguiente revisión editorial**. No modifica la 
 | Libro y laboratorio en main | CI ejecutada | [Commit 279ca566](https://github.com/jmfloreszazo/de-la-caja-negra-a-la-evidencia/commit/279ca5662dd870c0f1bb7dab7d1474f346904df3): siete workflows aplicables satisfactorios; Release omitido deliberadamente. |
 | PDF publicados | Generados para sus tags | No incluyen automáticamente los cambios brownfield posteriores; falta generar y revisar visualmente la siguiente vista previa. |
 | E1 PostgreSQL/SQL Server | Parcialmente verificado | Paridad, concurrencia, deadlocks y controles negativos sintéticos ejecutados; no capacidad productiva, HA ni equivalencia mainframe. |
-| E2 Orleans | Parcialmente verificado | Recuperación y fallos de proceso/red ejecutados en un host; C01/C04, capacidad sostenida y dominios físicos siguen pendientes. |
+| E2 Orleans | Parcialmente verificado | Recuperación y fallos de proceso/red ejecutados en un host; C01, capacidad sostenida y dominios físicos siguen pendientes. |
 | Brownfield C2/C3 | Subconjuntos ejecutados | [C2 main #41353221630](https://github.com/jmfloreszazo/de-la-caja-negra-a-la-evidencia/actions/runs/41353221630): 20 controles y ambos oráculos SQL 10/10. No fencing real del banco ni aceptación G2/G6. |
 | M1/M2 | Ejecutados en CI local | Veinte casos durables M2; no benchmark Azure, TLS comparable, WAN ni escala distribuida. |
 | E3 y E4 | Diseñados, no ejecutados como experimentos completos | Precios, modelos WAN y ejemplos de agentes no sustituyen sus gates. |

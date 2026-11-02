@@ -29,6 +29,6 @@ cd lab
 bash scripts/run-podman.sh --auto
 ```
 
-**No extrapoles:** la prueba local valida mecanismos e invariantes, no la capacidad de un mainframe. Los experimentos E1–E4 se encuentran diseñados, pero no ejecutados. Consulta el [registro de evidencia y revisión](EDITORIAL_REVIEW.es.md) antes de citar resultados.
+**No extrapoles:** la prueba local valida mecanismos e invariantes, no la capacidad de un mainframe. E1 PostgreSQL/SQL Server y E2 Orleans tienen subconjuntos ejecutados y siguen parcialmente verificados; E3/E4 permanecen diseñados, sin ejecución completa. Consulta el [registro de evidencia y revisión](EDITORIAL_REVIEW.es.md) antes de citar resultados.
 
 Para seguir profundizando: capítulos 12 (equivalencia), 19 (actores) y 35 (cuándo no migrar).

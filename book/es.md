@@ -1070,7 +1070,9 @@ En el laboratorio de concurrencia distinguiremos **seguridad** (nunca violar un 
 
 #### La transferencia escrita para un motor con bloqueo por fila
 
-El laboratorio usa SQLite, que serializa las escrituras y por tanto no puede mostrar un deadlock de filas. Así escribiría la misma operación en SQL Server o Azure SQL, ampliando el boceto `architecture/ledger_transaction.sql` del laboratorio. Las decisiones están comentadas en el propio código.
+El módulo de referencia del laboratorio usa SQLite, que serializa las escrituras y por tanto no puede mostrar un deadlock de filas. Así escribiría la misma operación en SQL Server o Azure SQL, ampliando el boceto `architecture/ledger_transaction.sql` del laboratorio. Las decisiones están comentadas en el propio código.
+
+La ampliación ejecutada sobre PostgreSQL y SQL Server está en el [capítulo 28](#capítulo-28--transferencias-bloqueos-y-fallos-en-local); sus resultados no convierten automáticamente el listado ilustrativo siguiente en un ejemplo compilado.
 
 **Listado 17.1 · Transferencia en T-SQL: idempotencia, orden global de bloqueo, débito condicionado y outbox** — *Ilustrativo*
 
@@ -2173,6 +2175,27 @@ Conservar el total es necesario y no suficiente: un movimiento cargado a la cuen
 La tabla enseña una cosa verdadera y nada más: al añadir procesos que compiten por un recurso serializado, la mediana mejora y la cola se dispara. Es el mismo fenómeno que aparecerá con una cuenta caliente o con un log saturado. Pero son 32 operaciones por proceso, en circuito cerrado, incluyendo el arranque de cada proceso .NET, sobre un motor que serializa escrituras, en una sola máquina. No hay calentamiento ni duración suficiente, no hay baseline del mainframe y no hay Azure. Esta tabla no puede aprobar capacidad, y el código lo deja escrito en el propio resumen de resultados.
 
 > **El servicio puede contestar OK y dejar otra cosa detrás. El oráculo mira lo que queda.**
+
+#### C04 · El cliente pierde sus gateways, el ledger conserva la autoridad
+
+La [prueba original C04](../evidence/runs/E2-C04-GATEWAY.es.md) corta
+solo las salidas del cliente externo de Orleans: primero al gateway primario
+y después a los dos. Con uno disponible, un cliente nuevo confirmó la
+transferencia por el secundario hacia un grain alojado en el primario. Bajo
+el corte doble, ambos silos y PostgreSQL siguieron accesibles entre sí.
+
+El primer intento falló porque un timeout externo de 70 segundos no permitía
+clasificar la fase de aplicación. El ZIP negativo se conserva. El modo
+corregido observa un deadline de arranque antes de enviar comandos financieros:
+salió con código 74 en 20,8509 segundos. No hubo efectos nuevos durante el
+corte, incluidas tres muestras SQL adicionales. Restauradas las reglas de
+red originales, el mismo ID se confirmó y su repetición fue duplicada; el
+estado final tuvo tres operaciones, seis apuntes y tres outbox, con oráculo 7/7.
+
+Esto es indisponibilidad de arranque de un cliente nuevo, **no pérdida de ACK
+tras COMMIT**. Son cuatro namespaces en un runner; no explica el fallo
+histórico de placement C01 ni demuestra dominios físicos, capacidad sostenida
+o un RTO productivo. E2 sigue parcialmente verificado.
 
 #### Del débito atómico al traspaso de autoridad entre dos almacenes
 

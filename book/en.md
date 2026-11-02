@@ -1070,7 +1070,9 @@ In the concurrency lab we will distinguish **safety** (never violating an invari
 
 #### The transfer written for an engine with row locking
 
-The lab uses SQLite, which serializes writes and therefore cannot show a row deadlock. This is how I would write the same operation in SQL Server or Azure SQL, extending the lab sketch `architecture/ledger_transaction.sql`. The decisions are commented in the code itself.
+The reference lab module uses SQLite, which serializes writes and therefore cannot show a row deadlock. This is how I would write the same operation in SQL Server or Azure SQL, extending the lab sketch `architecture/ledger_transaction.sql`. The decisions are commented in the code itself.
+
+The separately executed PostgreSQL and SQL Server extension is described in [chapter 28](#chapter-28--transfers-locks-and-failures-locally); its results do not automatically turn the following illustrative listing into a compiled example.
 
 **Listing 17.1 · Transfer in T-SQL: idempotency, global lock order, conditional debit and outbox** — *Illustrative*
 
@@ -2175,6 +2177,27 @@ Preserving the total is necessary and not sufficient: a movement charged to the 
 The table teaches one true thing and nothing more: when we add processes that compete for a serialized resource, the median improves and the tail explodes. It is the same phenomenon that will appear with a hot account or a saturated log. But these are 32 operations per process, in a closed loop, including the start-up of each .NET process, on an engine that serializes writes, on a single machine. There is no warm-up or sufficient duration, no mainframe baseline and no Azure. This table cannot approve capacity, and the code writes that down in the results summary itself.
 
 > **The service can answer OK and leave something else behind. The oracle looks at what remains.**
+
+#### C04 · The client loses its gateways, the ledger retains authority
+
+The [original C04 test](../evidence/runs/E2-C04-GATEWAY.md) cuts only
+the external Orleans client's gateway egress: first primary, then both. With
+one gateway available, a fresh client committed through secondary to a grain
+hosted on primary. Under the dual cut, both silos and PostgreSQL remained
+reachable from one another.
+
+The first attempt failed because an outer 70-second timeout did not identify
+the application phase. Its negative ZIP is preserved. The corrected mode
+observes a startup deadline before financial dispatch: exit 74 after 20.8509
+seconds. No new effects appeared during the cut, including three additional
+SQL samples. After restoring the original network rules, the same ID committed
+and its replay was a duplicate; final state was three operations, six postings
+and three outbox events, with oracle 7/7.
+
+This is fresh-client startup unavailability, **not ACK loss after COMMIT**.
+Four namespaces share one runner; the result neither explains the historical
+C01 placement failure nor establishes physical domains, sustained capacity or
+a production RTO. E2 remains partially verified.
 
 #### From atomic debit to authority transfer across two stores
 

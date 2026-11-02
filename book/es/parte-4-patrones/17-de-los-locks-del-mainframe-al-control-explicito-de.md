@@ -49,7 +49,9 @@ En el laboratorio de concurrencia distinguiremos **seguridad** (nunca violar un 
 
 ## La transferencia escrita para un motor con bloqueo por fila
 
-El laboratorio usa SQLite, que serializa las escrituras y por tanto no puede mostrar un deadlock de filas. Así escribiría la misma operación en SQL Server o Azure SQL, ampliando el boceto `architecture/ledger_transaction.sql` del laboratorio. Las decisiones están comentadas en el propio código.
+El módulo de referencia del laboratorio usa SQLite, que serializa las escrituras y por tanto no puede mostrar un deadlock de filas. Así escribiría la misma operación en SQL Server o Azure SQL, ampliando el boceto `architecture/ledger_transaction.sql` del laboratorio. Las decisiones están comentadas en el propio código.
+
+La ampliación ejecutada sobre PostgreSQL y SQL Server está en el [capítulo 28](../parte-6-laboratorio/28-transferencias-bloqueos-y-fallos-en-local.md); sus resultados no convierten automáticamente el listado ilustrativo siguiente en un ejemplo compilado.
 
 **Listado 17.1 · Transferencia en T-SQL: idempotencia, orden global de bloqueo, débito condicionado y outbox** — *Ilustrativo*
 

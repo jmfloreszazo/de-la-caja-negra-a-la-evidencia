@@ -125,6 +125,27 @@ The table teaches one true thing and nothing more: when we add processes that co
 
 > **The service can answer OK and leave something else behind. The oracle looks at what remains.**
 
+## C04 · The client loses its gateways, the ledger retains authority
+
+The [original C04 test](../../../evidence/runs/E2-C04-GATEWAY.md) cuts only
+the external Orleans client's gateway egress: first primary, then both. With
+one gateway available, a fresh client committed through secondary to a grain
+hosted on primary. Under the dual cut, both silos and PostgreSQL remained
+reachable from one another.
+
+The first attempt failed because an outer 70-second timeout did not identify
+the application phase. Its negative ZIP is preserved. The corrected mode
+observes a startup deadline before financial dispatch: exit 74 after 20.8509
+seconds. No new effects appeared during the cut, including three additional
+SQL samples. After restoring the original network rules, the same ID committed
+and its replay was a duplicate; final state was three operations, six postings
+and three outbox events, with oracle 7/7.
+
+This is fresh-client startup unavailability, **not ACK loss after COMMIT**.
+Four namespaces share one runner; the result neither explains the historical
+C01 placement failure nor establishes physical domains, sustained capacity or
+a production RTO. E2 remains partially verified.
+
 ## From atomic debit to authority transfer across two stores
 
 The next challenge is not making a PostgreSQL transfer work. It is
