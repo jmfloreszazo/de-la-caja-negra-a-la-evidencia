@@ -6,6 +6,8 @@ on:
       - 'assets/cover-*.png'
       - 'scripts/build.py'
       - 'scripts/build_pdf.py'
+      - 'scripts/pdf_markdown.py'
+      - 'scripts/test_pdf_markdown.py'
       - '.github/workflows/pdf-preview.yml'
       - '.github/workflows/release.yml'
       - 'docs/PDF.md'
@@ -22,7 +24,9 @@ jobs:
         with:
           python-version: '3.12'
       - name: Check generated Markdown and bilingual consistency
-        run: python3 scripts/check.py
+        run: |
+          python3 scripts/check.py
+          python3 -m unittest discover -s scripts -p test_pdf_markdown.py -v
       - name: Install PDF runtime and fonts
         run: |
           sudo apt-get update -qq

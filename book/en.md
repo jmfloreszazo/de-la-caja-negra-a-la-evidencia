@@ -1070,7 +1070,9 @@ In the concurrency lab we will distinguish **safety** (never violating an invari
 
 #### The transfer written for an engine with row locking
 
-The lab uses SQLite, which serializes writes and therefore cannot show a row deadlock. This is how I would write the same operation in SQL Server or Azure SQL, extending the lab sketch `architecture/ledger_transaction.sql`. The decisions are commented in the code itself.
+The reference lab module uses SQLite, which serializes writes and therefore cannot show a row deadlock. This is how I would write the same operation in SQL Server or Azure SQL, extending the lab sketch `architecture/ledger_transaction.sql`. The decisions are commented in the code itself.
+
+The separately executed PostgreSQL and SQL Server extension is described in [chapter 28](#chapter-28--transfers-locks-and-failures-locally); its results do not automatically turn the following illustrative listing into a compiled example.
 
 **Listing 17.1 · Transfer in T-SQL: idempotency, global lock order, conditional debit and outbox** — *Illustrative*
 
@@ -2176,6 +2178,27 @@ The table teaches one true thing and nothing more: when we add processes that co
 
 > **The service can answer OK and leave something else behind. The oracle looks at what remains.**
 
+#### C04 · The client loses its gateways, the ledger retains authority
+
+The [original C04 test](../evidence/runs/E2-C04-GATEWAY.md) cuts only
+the external Orleans client's gateway egress: first primary, then both. With
+one gateway available, a fresh client committed through secondary to a grain
+hosted on primary. Under the dual cut, both silos and PostgreSQL remained
+reachable from one another.
+
+The first attempt failed because an outer 70-second timeout did not identify
+the application phase. Its negative ZIP is preserved. The corrected mode
+observes a startup deadline before financial dispatch: exit 74 after 20.8509
+seconds. No new effects appeared during the cut, including three additional
+SQL samples. After restoring the original network rules, the same ID committed
+and its replay was a duplicate; final state was three operations, six postings
+and three outbox events, with oracle 7/7.
+
+This is fresh-client startup unavailability, **not ACK loss after COMMIT**.
+Four namespaces share one runner; the result neither explains the historical
+C01 placement failure nor establishes physical domains, sustained capacity or
+a production RTO. E2 remains partially verified.
+
 #### From atomic debit to authority transfer across two stores
 
 The next challenge is not making a PostgreSQL transfer work. It is
@@ -2293,6 +2316,32 @@ separate observation, not retrospective coverage attributed to that ZIP. Later c
 observations cannot validate a different checkout.
 In-flight network partitions, real incumbent revocation, external payment
 effects and approved business policy remain separate acceptance gates.
+G2=INCONCLUSIVE and G6=BLOCK.
+
+##### C2 · Losing the controller after a financial operation has started
+
+The [new TCP-cut protocol](../lab/brownfield/journal/README.md) targets
+a different window from an unreachable controller before execution. A test
+trigger holds the financial operation before COMMIT; an independent SQL
+session must observe the real lock wait. A relay closes controller TCP
+connections and refuses reconnects; an external process then kills the gateway
+while leaving its adapter in flight. This is neither a silent nor asymmetric
+partition; all three PostgreSQL containers still share one runner.
+
+The contract requires UNKNOWN and a writer-switch veto until a durable
+decision is observed. After releasing the barrier, the cooperative model can
+commit its financial transaction even after losing the controller session.
+SQL reconciliation must precede replay: one decision, two postings and one
+outbox event. Losing a lock in another database does not atomically cancel
+financial COMMIT. CI must fail if observations contradict the contract.
+
+[Original run #41511782428](../evidence/runs/BROWNFIELD-CONTROLLER-LOSS.md)
+passed both cases: Python legacy and .NET candidate. SQL confirmed session
+loss; UNKNOWN vetoed the switch and later reconciliation found one decision,
+two postings and one outbox event per case, with both SQL oracles 10/10.
+The original ZIP preserves source/checkout and ten source hashes. This bounded
+evidence does not close #64 or establish bank fencing, RTO/RPO or production
+migration.
 G2=INCONCLUSIVE and G6=BLOCK.
 
 ##### What would be needed for a real cutover

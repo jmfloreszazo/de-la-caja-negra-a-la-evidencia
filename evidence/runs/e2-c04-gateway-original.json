@@ -1,0 +1,545 @@
+{
+  "schemaVersion": 1,
+  "experiment": "E2-F10-C04-External-Client-Gateway-Partition",
+  "status": "PASS",
+  "classification": "CLIENT_OUTPUT_GATEWAY_DROP_SINGLE_HOST_SQL_PRESERVED",
+  "topology": {
+    "namespaces": {
+      "e2f10-pg": "net:[4026532267]",
+      "e2f10-primary": "net:[4026532397]",
+      "e2f10-secondary": "net:[4026532465]",
+      "e2f10-client": "net:[4026532532]"
+    },
+    "containerStatesBefore": {
+      "e2f10-pg": {
+        "id": "de3a2d29239b257c3152ff3680036ceb3f40e443c0aa3154cdd19ebac61b596d",
+        "pidOnHost": 2991,
+        "status": "running",
+        "exitCode": 0,
+        "networks": {
+          "e2f10-net": "10.78.30.10",
+          "e2f10-sql": "10.78.31.10"
+        }
+      },
+      "e2f10-primary": {
+        "id": "03aabaf42ea29d36a252bffac8556d2fe55bd0c5d6e5521c990f8ca9ec7f698e",
+        "pidOnHost": 3345,
+        "status": "running",
+        "exitCode": 0,
+        "networks": {
+          "e2f10-net": "10.78.30.11",
+          "e2f10-sql": "10.78.31.11"
+        }
+      },
+      "e2f10-secondary": {
+        "id": "ef9a27382bc2aa592e98469fe7587e85f5a7ddceadf8fd545e126822fc4eabfa",
+        "pidOnHost": 4064,
+        "status": "running",
+        "exitCode": 0,
+        "networks": {
+          "e2f10-net": "10.78.30.12",
+          "e2f10-sql": "10.78.31.12"
+        }
+      },
+      "e2f10-client": {
+        "id": "7956a450b6aa16f8e3934ea02568abac65bf2e06b4e07a3ef69f0d6d17c277aa",
+        "pidOnHost": 4775,
+        "status": "running",
+        "exitCode": 0,
+        "networks": {
+          "e2f10-net": "10.78.30.13",
+          "e2f10-sql": "10.78.31.13"
+        }
+      }
+    },
+    "containerStatesDuring": {
+      "e2f10-pg": {
+        "id": "de3a2d29239b257c3152ff3680036ceb3f40e443c0aa3154cdd19ebac61b596d",
+        "pidOnHost": 2991,
+        "status": "running",
+        "exitCode": 0,
+        "networks": {
+          "e2f10-net": "10.78.30.10",
+          "e2f10-sql": "10.78.31.10"
+        }
+      },
+      "e2f10-primary": {
+        "id": "03aabaf42ea29d36a252bffac8556d2fe55bd0c5d6e5521c990f8ca9ec7f698e",
+        "pidOnHost": 3345,
+        "status": "running",
+        "exitCode": 0,
+        "networks": {
+          "e2f10-net": "10.78.30.11",
+          "e2f10-sql": "10.78.31.11"
+        }
+      },
+      "e2f10-secondary": {
+        "id": "ef9a27382bc2aa592e98469fe7587e85f5a7ddceadf8fd545e126822fc4eabfa",
+        "pidOnHost": 4064,
+        "status": "running",
+        "exitCode": 0,
+        "networks": {
+          "e2f10-net": "10.78.30.12",
+          "e2f10-sql": "10.78.31.12"
+        }
+      },
+      "e2f10-client": {
+        "id": "7956a450b6aa16f8e3934ea02568abac65bf2e06b4e07a3ef69f0d6d17c277aa",
+        "pidOnHost": 4775,
+        "status": "running",
+        "exitCode": 0,
+        "networks": {
+          "e2f10-net": "10.78.30.13",
+          "e2f10-sql": "10.78.31.13"
+        }
+      }
+    },
+    "containerStatesAfter": {
+      "e2f10-pg": {
+        "id": "de3a2d29239b257c3152ff3680036ceb3f40e443c0aa3154cdd19ebac61b596d",
+        "pidOnHost": 2991,
+        "status": "running",
+        "exitCode": 0,
+        "networks": {
+          "e2f10-net": "10.78.30.10",
+          "e2f10-sql": "10.78.31.10"
+        }
+      },
+      "e2f10-primary": {
+        "id": "03aabaf42ea29d36a252bffac8556d2fe55bd0c5d6e5521c990f8ca9ec7f698e",
+        "pidOnHost": 3345,
+        "status": "running",
+        "exitCode": 0,
+        "networks": {
+          "e2f10-net": "10.78.30.11",
+          "e2f10-sql": "10.78.31.11"
+        }
+      },
+      "e2f10-secondary": {
+        "id": "ef9a27382bc2aa592e98469fe7587e85f5a7ddceadf8fd545e126822fc4eabfa",
+        "pidOnHost": 4064,
+        "status": "running",
+        "exitCode": 0,
+        "networks": {
+          "e2f10-net": "10.78.30.12",
+          "e2f10-sql": "10.78.31.12"
+        }
+      },
+      "e2f10-client": {
+        "id": "7956a450b6aa16f8e3934ea02568abac65bf2e06b4e07a3ef69f0d6d17c277aa",
+        "pidOnHost": 4775,
+        "status": "running",
+        "exitCode": 0,
+        "networks": {
+          "e2f10-net": "10.78.30.13",
+          "e2f10-sql": "10.78.31.13"
+        }
+      }
+    },
+    "privateBridgeCount": 2,
+    "physicalHostCount": 1
+  },
+  "disposablePostgresStartup": {
+    "experiment": "E2-F10-C04-Disposable-PostgreSQL-Readiness",
+    "status": "READY",
+    "timestampUtc": "2026-11-02T19:50:10.874829+00:00",
+    "requiredConsecutiveIndependentHostSqlSessions": 2,
+    "observedAttempts": 3,
+    "elapsedSeconds": 1.59,
+    "observations": [
+      {
+        "timestampUtc": "2026-11-02T19:50:09.447558+00:00",
+        "pgIsReady": "/var/run/postgresql:5432 - no response",
+        "hostSql": "NOT_ATTEMPTED"
+      },
+      {
+        "timestampUtc": "2026-11-02T19:50:10.120695+00:00",
+        "pgIsReady": "/var/run/postgresql:5432 - accepting connections",
+        "hostSql": "SELECT_1_OK"
+      },
+      {
+        "timestampUtc": "2026-11-02T19:50:10.867686+00:00",
+        "pgIsReady": "/var/run/postgresql:5432 - accepting connections",
+        "hostSql": "SELECT_1_OK"
+      }
+    ],
+    "limits": "Preflight proves only disposable local SQL connectivity at two sampled instants; not PostgreSQL high availability or elimination of intermittent startup failure."
+  },
+  "tool": {
+    "image": "docker.io/nicolaka/netshoot:v0.13",
+    "id": "27b858cdcd8ac94fb049ca1bcce5b04ad26cca31558baee0f3c5fab684d42601"
+  },
+  "clientOutputRulesBefore": "-P OUTPUT ACCEPT",
+  "clientOutputRulesSingleCut": "-P OUTPUT ACCEPT\n-A OUTPUT -d 10.78.30.11/32 -p tcp -m tcp --dport 30050 -j DROP",
+  "clientOutputRulesBothCut": "-P OUTPUT ACCEPT\n-A OUTPUT -d 10.78.30.12/32 -p tcp -m tcp --dport 30051 -j DROP\n-A OUTPUT -d 10.78.30.11/32 -p tcp -m tcp --dport 30050 -j DROP",
+  "clientOutputRulesFirstRestored": "-P OUTPUT ACCEPT\n-A OUTPUT -d 10.78.30.11/32 -p tcp -m tcp --dport 30050 -j DROP",
+  "clientOutputRulesFinal": "-P OUTPUT ACCEPT",
+  "clientOutputRulesVerifiedRestored": "-P OUTPUT ACCEPT",
+  "clientNetworkInitial": {
+    "experiment": "E2-F10-C02-Transport-Partition-Probe",
+    "status": "PROBED",
+    "hostIdentity": "e2f10-client",
+    "databaseHealthy": true,
+    "primaryGatewayReachable": true,
+    "secondaryGatewayReachable": true
+  },
+  "clientNetworkSingleCut": {
+    "experiment": "E2-F10-C02-Transport-Partition-Probe",
+    "status": "PROBED",
+    "hostIdentity": "e2f10-client",
+    "databaseHealthy": true,
+    "primaryGatewayReachable": false,
+    "secondaryGatewayReachable": true
+  },
+  "clientNetworkBothCut": {
+    "experiment": "E2-F10-C02-Transport-Partition-Probe",
+    "status": "PROBED",
+    "hostIdentity": "e2f10-client",
+    "databaseHealthy": true,
+    "primaryGatewayReachable": false,
+    "secondaryGatewayReachable": false
+  },
+  "clientNetworkSecondaryRestored": {
+    "experiment": "E2-F10-C02-Transport-Partition-Probe",
+    "status": "PROBED",
+    "hostIdentity": "e2f10-client",
+    "databaseHealthy": true,
+    "primaryGatewayReachable": false,
+    "secondaryGatewayReachable": true
+  },
+  "clientNetworkFullyRestored": {
+    "experiment": "E2-F10-C02-Transport-Partition-Probe",
+    "status": "PROBED",
+    "hostIdentity": "e2f10-client",
+    "databaseHealthy": true,
+    "primaryGatewayReachable": true,
+    "secondaryGatewayReachable": true
+  },
+  "siloNetworkDuringClientSingleCut": {
+    "primary": {
+      "experiment": "E2-F10-C02-Transport-Partition-Probe",
+      "status": "PROBED",
+      "hostIdentity": "e2f10-primary",
+      "databaseHealthy": true,
+      "primaryGatewayReachable": true,
+      "secondaryGatewayReachable": true
+    },
+    "secondary": {
+      "experiment": "E2-F10-C02-Transport-Partition-Probe",
+      "status": "PROBED",
+      "hostIdentity": "e2f10-secondary",
+      "databaseHealthy": true,
+      "primaryGatewayReachable": true,
+      "secondaryGatewayReachable": true
+    }
+  },
+  "siloNetworkDuringFullClientCut": {
+    "e2f10-primary": {
+      "experiment": "E2-F10-C02-Transport-Partition-Probe",
+      "status": "PROBED",
+      "hostIdentity": "e2f10-primary",
+      "databaseHealthy": true,
+      "primaryGatewayReachable": true,
+      "secondaryGatewayReachable": true
+    },
+    "e2f10-secondary": {
+      "experiment": "E2-F10-C02-Transport-Partition-Probe",
+      "status": "PROBED",
+      "hostIdentity": "e2f10-secondary",
+      "databaseHealthy": true,
+      "primaryGatewayReachable": true,
+      "secondaryGatewayReachable": true
+    }
+  },
+  "sourceGrainOriginalHost": "e2f10-primary",
+  "sourceAccountId": 2,
+  "targetAccountId": 1,
+  "healthyBaseline": [
+    {
+      "command": "e2-f10-c04-baseline",
+      "status": "COMMITTED",
+      "retries": 0,
+      "retrySqlStates": [],
+      "handledBy": "grain-2",
+      "actualSiloProcessId": 1,
+      "actualSiloNodeIdentity": "e2f10-primary:1"
+    }
+  ],
+  "survivingGatewayFinancialResult": [
+    {
+      "command": "e2-f10-c04-fallback",
+      "status": "COMMITTED",
+      "retries": 0,
+      "retrySqlStates": [],
+      "handledBy": "grain-2",
+      "actualSiloProcessId": 1,
+      "actualSiloNodeIdentity": "e2f10-primary:1"
+    }
+  ],
+  "clientAttemptWhenBothGatewaysLost": {
+    "kind": "client_failure_or_timeout",
+    "exitCode": 74,
+    "diagnostic": {
+      "status": "CLIENT_STARTUP_DEADLINE",
+      "phase": "BEFORE_FINANCIAL_DISPATCH",
+      "deadlineSeconds": 20,
+      "financialCommandsDispatched": 0
+    },
+    "acknowledgedCommitted": false,
+    "semantics": "CLIENT_STARTUP_DEADLINE_NO_FINANCIAL_DISPATCH_NO_ROLLBACK_INFERRED",
+    "stdout": "",
+    "stderr": "{\"status\":\"CLIENT_STARTUP_DEADLINE\",\"phase\":\"BEFORE_FINANCIAL_DISPATCH\",\"deadlineSeconds\":20,\"financialCommandsDispatched\":0}\n",
+    "elapsedSeconds": 20.850890234000005
+  },
+  "bothGatewayLossTimestampUtc": "2026-11-02T19:51:01.418723+00:00",
+  "independentSqlInitial": {
+    "effects": {
+      "committedOperations": 1,
+      "postings": 2,
+      "outboxEvents": 1
+    },
+    "blockedOperation": {
+      "operationRows": 0,
+      "postingRows": 0,
+      "outboxRows": 0
+    },
+    "independentSqlOracles": {
+      "nonnegative": true,
+      "conserved": true,
+      "balancedPostings": true,
+      "twoPostingsPerCommit": true,
+      "noPostingsForRejection": true,
+      "outboxAtomic": true,
+      "projectionAgrees": true
+    }
+  },
+  "independentSqlSingleGatewayCut": {
+    "effects": {
+      "committedOperations": 2,
+      "postings": 4,
+      "outboxEvents": 2
+    },
+    "blockedOperation": {
+      "operationRows": 0,
+      "postingRows": 0,
+      "outboxRows": 0
+    },
+    "independentSqlOracles": {
+      "nonnegative": true,
+      "conserved": true,
+      "balancedPostings": true,
+      "twoPostingsPerCommit": true,
+      "noPostingsForRejection": true,
+      "outboxAtomic": true,
+      "projectionAgrees": true
+    }
+  },
+  "survivingGatewayOperationCardinality": {
+    "operationRows": 1,
+    "postingRows": 2,
+    "outboxRows": 1
+  },
+  "independentSqlBeforeAndDuringFullCut": {
+    "effects": {
+      "committedOperations": 2,
+      "postings": 4,
+      "outboxEvents": 2
+    },
+    "blockedOperation": {
+      "operationRows": 0,
+      "postingRows": 0,
+      "outboxRows": 0
+    },
+    "independentSqlOracles": {
+      "nonnegative": true,
+      "conserved": true,
+      "balancedPostings": true,
+      "twoPostingsPerCommit": true,
+      "noPostingsForRejection": true,
+      "outboxAtomic": true,
+      "projectionAgrees": true
+    }
+  },
+  "repeatedSqlObservationsDuringFullCut": [
+    {
+      "effects": {
+        "committedOperations": 2,
+        "postings": 4,
+        "outboxEvents": 2
+      },
+      "blockedOperation": {
+        "operationRows": 0,
+        "postingRows": 0,
+        "outboxRows": 0
+      },
+      "independentSqlOracles": {
+        "nonnegative": true,
+        "conserved": true,
+        "balancedPostings": true,
+        "twoPostingsPerCommit": true,
+        "noPostingsForRejection": true,
+        "outboxAtomic": true,
+        "projectionAgrees": true
+      }
+    },
+    {
+      "effects": {
+        "committedOperations": 2,
+        "postings": 4,
+        "outboxEvents": 2
+      },
+      "blockedOperation": {
+        "operationRows": 0,
+        "postingRows": 0,
+        "outboxRows": 0
+      },
+      "independentSqlOracles": {
+        "nonnegative": true,
+        "conserved": true,
+        "balancedPostings": true,
+        "twoPostingsPerCommit": true,
+        "noPostingsForRejection": true,
+        "outboxAtomic": true,
+        "projectionAgrees": true
+      }
+    },
+    {
+      "effects": {
+        "committedOperations": 2,
+        "postings": 4,
+        "outboxEvents": 2
+      },
+      "blockedOperation": {
+        "operationRows": 0,
+        "postingRows": 0,
+        "outboxRows": 0
+      },
+      "independentSqlOracles": {
+        "nonnegative": true,
+        "conserved": true,
+        "balancedPostings": true,
+        "twoPostingsPerCommit": true,
+        "noPostingsForRejection": true,
+        "outboxAtomic": true,
+        "projectionAgrees": true
+      }
+    }
+  ],
+  "independentSqlAfterRestore": {
+    "effects": {
+      "committedOperations": 3,
+      "postings": 6,
+      "outboxEvents": 3
+    },
+    "blockedOperation": {
+      "operationRows": 1,
+      "postingRows": 2,
+      "outboxRows": 1
+    },
+    "independentSqlOracles": {
+      "nonnegative": true,
+      "conserved": true,
+      "balancedPostings": true,
+      "twoPostingsPerCommit": true,
+      "noPostingsForRejection": true,
+      "outboxAtomic": true,
+      "projectionAgrees": true
+    }
+  },
+  "baselineOperationCardinalityAfterRecovery": {
+    "operationRows": 1,
+    "postingRows": 2,
+    "outboxRows": 1
+  },
+  "fallbackOperationCardinalityAfterRecovery": {
+    "operationRows": 1,
+    "postingRows": 2,
+    "outboxRows": 1
+  },
+  "replayStatus": "COMMITTED",
+  "secondReplayStatus": "DUPLICATE_COMMITTED",
+  "membershipBefore": {
+    "rows": [
+      [
+        "e2-f10-podman-bridge",
+        "10.78.30.11",
+        11150,
+        3,
+        30050
+      ],
+      [
+        "e2-f10-podman-bridge",
+        "10.78.30.12",
+        11151,
+        3,
+        30051
+      ]
+    ],
+    "version": 4
+  },
+  "membershipSingleCut": {
+    "rows": [
+      [
+        "e2-f10-podman-bridge",
+        "10.78.30.11",
+        11150,
+        3,
+        30050
+      ],
+      [
+        "e2-f10-podman-bridge",
+        "10.78.30.12",
+        11151,
+        3,
+        30051
+      ]
+    ],
+    "version": 4
+  },
+  "membershipBothCut": {
+    "rows": [
+      [
+        "e2-f10-podman-bridge",
+        "10.78.30.11",
+        11150,
+        3,
+        30050
+      ],
+      [
+        "e2-f10-podman-bridge",
+        "10.78.30.12",
+        11151,
+        3,
+        30051
+      ]
+    ],
+    "version": 4
+  },
+  "membershipAfter": {
+    "rows": [
+      [
+        "e2-f10-podman-bridge",
+        "10.78.30.11",
+        11150,
+        3,
+        30050
+      ],
+      [
+        "e2-f10-podman-bridge",
+        "10.78.30.12",
+        11151,
+        3,
+        30051
+      ]
+    ],
+    "version": 4
+  },
+  "sourceSha256": {
+    "e2_orleans/test_client_gateway_partition.py": "0c065ebac3b4c16192b5460a5122a913335146acb692930373169ddecff5ffcb",
+    "e2_orleans/gateway_failure_contract.py": "19bc50ed2dc3ecbb18c0ad2a0aefe3ea3a5f1712c3bc064fd0f91592ade50ef6",
+    "e2_orleans/test_podman_network.py": "42563e883ecb5f0613828b6aa833f618351ea6a55038c2959cfb91d23060ce26",
+    "e2_orleans/test_podman_disconnect.py": "b5798306940348721a24e6702722c04f7b31b6f4b29c4626f2130820e6b74f9d",
+    "e2_orleans/OrleansLab/ClusterModes.cs": "abf4326a9463b501d3cd6da9b2f774bf29ca7f5b9f717e2ac2e64889de20a97f"
+  },
+  "limitations": "This is ONE physical Linux CI host and four namespaces, NOT independent failure domains or production gateway HA. A single gateway cut demonstrates fallback for a fresh client to the surviving gateway; a dual cut can fail during client startup BEFORE delivery to any grain. Neither cut proves an in-flight ACK was lost after COMMIT. SQL remains healthy; no transaction is allowed to commit during a confirmed full gateway cut. The identical operation ID is committed once AFTER restoring both gateways and replayed idempotently. Does not prove multi-host HA, fencing, RTO, sustained TPS, end-to-end costs or mainframe MIPS."
+}

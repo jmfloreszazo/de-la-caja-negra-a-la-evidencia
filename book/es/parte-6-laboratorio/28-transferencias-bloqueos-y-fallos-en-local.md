@@ -125,6 +125,27 @@ La tabla enseña una cosa verdadera y nada más: al añadir procesos que compite
 
 > **El servicio puede contestar OK y dejar otra cosa detrás. El oráculo mira lo que queda.**
 
+## C04 · El cliente pierde sus gateways, el ledger conserva la autoridad
+
+La [prueba original C04](../../../evidence/runs/E2-C04-GATEWAY.es.md) corta
+solo las salidas del cliente externo de Orleans: primero al gateway primario
+y después a los dos. Con uno disponible, un cliente nuevo confirmó la
+transferencia por el secundario hacia un grain alojado en el primario. Bajo
+el corte doble, ambos silos y PostgreSQL siguieron accesibles entre sí.
+
+El primer intento falló porque un timeout externo de 70 segundos no permitía
+clasificar la fase de aplicación. El ZIP negativo se conserva. El modo
+corregido observa un deadline de arranque antes de enviar comandos financieros:
+salió con código 74 en 20,8509 segundos. No hubo efectos nuevos durante el
+corte, incluidas tres muestras SQL adicionales. Restauradas las reglas de
+red originales, el mismo ID se confirmó y su repetición fue duplicada; el
+estado final tuvo tres operaciones, seis apuntes y tres outbox, con oráculo 7/7.
+
+Esto es indisponibilidad de arranque de un cliente nuevo, **no pérdida de ACK
+tras COMMIT**. Son cuatro namespaces en un runner; no explica el fallo
+histórico de placement C01 ni demuestra dominios físicos, capacidad sostenida
+o un RTO productivo. E2 sigue parcialmente verificado.
+
 ## Del débito atómico al traspaso de autoridad entre dos almacenes
 
 La siguiente dificultad no consiste en hacer funcionar una transferencia con
@@ -246,6 +267,32 @@ Cada cambio posterior necesita CI con su SHA exacto: la observación histórica
 no valida otro checkout. Las particiones de red durante operaciones en
 curso, la retirada de autoridad al incumbente real, los efectos de pago
 externos y la política aprobada siguen siendo puertas de aceptación separadas.
+G2=INCONCLUSIVE y G6=BLOCK.
+
+### C2 · Perder el controlador con una operación ya iniciada
+
+El [nuevo protocolo de corte TCP](../../../lab/brownfield/journal/README.md)
+parte de una ventana distinta de «controlador inaccesible antes de empezar».
+Un trigger de prueba mantiene la operación financiera sin COMMIT; una sesión
+SQL independiente debe observar la espera real. Un relay cierra las conexiones
+TCP del controlador y rechaza reconexiones; después se mata el gateway desde
+otro proceso, dejando al adaptador en curso. No es una partición silenciosa ni
+asimétrica, y los tres PostgreSQL siguen en un único runner.
+
+El contrato exige UNKNOWN y veto al cambio de escritor mientras no se observe
+una decisión duradera. Al liberar la barrera, el modelo cooperativo puede
+confirmar su transacción financiera aunque haya perdido la sesión de control.
+Eso debe conciliarse por SQL antes de permitir el replay: una decisión, dos
+apuntes y un outbox. Perder un bloqueo de otra base no cancela atómicamente el
+COMMIT financiero. Si la observación contradice el contrato, la CI debe fallar.
+
+La [ejecución original #41511782428](../../../evidence/runs/BROWNFIELD-CONTROLLER-LOSS.es.md)
+superó ambos casos: legado Python y candidato .NET. El servidor confirmó
+la pérdida de sesiones; UNKNOWN bloqueó el cambio y la conciliación posterior
+obtuvo una decisión, dos apuntes y un outbox en cada caso, con ambos oráculos
+SQL 10/10. El ZIP original conserva source/checkout y diez hashes de origen.
+Esta evidencia acotada no cierra #64 ni acredita fencing bancario, RTO/RPO o
+una migración productiva.
 G2=INCONCLUSIVE y G6=BLOCK.
 
 ### Qué falta antes de permitir un cutover real

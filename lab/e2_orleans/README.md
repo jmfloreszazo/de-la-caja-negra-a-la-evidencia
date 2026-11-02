@@ -435,12 +435,9 @@ or open the repository without the maintainer's authorization.
 See [issue #8](https://github.com/jmfloreszazo/de-la-caja-negra-a-la-evidencia/issues/8)
 and the [global experiment roadmap](../../docs/EXPERIMENT_ROADMAP.md).
 
-## E2-F10-C04 candidate: client-only gateway isolation
+## E2-F10-C04: original client-only gateway evidence
 
-Draft PR #34 remains unverified until its dedicated original C04 workflow
-passes. Its earlier workflow-write rejection produced no C04 result. The
-current continuation adds a bounded CI path; unrelated C01/C02/C03 checks
-must never be represented as C04 execution.
+[Original C04 CI #41513498050](https://github.com/jmfloreszazo/de-la-caja-negra-a-la-evidencia/actions/runs/41513498050) passed on exact source `434170ac`. The [audited original report](../../evidence/runs/E2-C04-GATEWAY.md) preserves both passing and first failed ZIPs. The earlier workflow-write rejection produced no result; unrelated C01/C02/C03 checks are not C04 evidence.
 
 The [preregistered protocol](F10_C04_PROTOCOL.md) and
 [test](test_client_gateway_partition.py) first cut only the external client's

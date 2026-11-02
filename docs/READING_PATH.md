@@ -29,6 +29,6 @@ cd lab
 bash scripts/run-podman.sh --auto
 ```
 
-**Do not extrapolate:** local tests establish mechanisms and invariants, not mainframe-equivalent capacity. E1–E4 remain designed, not executed. Read the [evidence and editorial review register](EDITORIAL_REVIEW.md) before quoting performance claims.
+**Do not extrapolate:** local tests establish mechanisms and invariants, not mainframe-equivalent capacity. E1 PostgreSQL/SQL Server and E2 Orleans have executed slices and remain partially verified; E3/E4 remain designed, not executed as complete experiments. Read the [evidence and editorial review register](EDITORIAL_REVIEW.md) before quoting performance claims.
 
 To go deeper: chapters 12 (equivalence), 19 (actors) and 35 (when not to migrate).

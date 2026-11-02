@@ -1,6 +1,6 @@
 # E2-F10-C04 — External-client gateway isolation
 
-Status: **implementation candidate, NOT verified evidence**. This protocol records the proposed experiment; no GitHub-hosted C04 run has passed. The earlier dedicated workflow request was rejected and produced no C04 execution. A dedicated candidate workflow is now supplied in the maintainer-directed continuation; only its actual original run can establish a result.
+Status: **bounded synthetic original CI verified**, run #41513498050 on `434170ac03f63925b517992d744aae531eb38965`. See the [audited ES/EN report](../../evidence/runs/E2-C04-GATEWAY.md). This does not accept overall E2. The earlier dedicated workflow request was rejected and produced no C04 execution. The dedicated workflow now has its own original run; the earlier block is historical, not C04 evidence.
 
 ## Hypothesis and narrow scope
 
@@ -31,7 +31,7 @@ The test targets a disposable, single physical Ubuntu runner with four isolated 
 
 Candidate source: lab/e2_orleans/test_client_gateway_partition.py. The previously merged shared PostgreSQL readiness helper in test_podman_network.py is now explicitly enabled for C04, without modifying C01/C02/C03 fault semantics. This is a **preflight**, not a C04 runtime PASS.
 
-The dedicated workflow is now a **code candidate**, not passing evidence. Preserve the earlier blocked request as historical context; CI must not be claimed as passing before original execution. Source code and technical documentation remain English; editorial book content will be Spanish and English.
+The dedicated workflow now has an audited original passing execution. Preserve the earlier blocked request and first failed runtime as historical context; later source heads require their own CI. Source code and technical documentation remain English; editorial book content will be Spanish and English.
 
 ## Previous C01 baseline regression
 
@@ -55,4 +55,4 @@ the exact exit, fields, observed elapsed time and independently verified
 client-only network outage/healthy SQL. Generic outer timeouts, unrelated
 crashes, JSON with a wrong phase or post-dispatch counts must fail. This is
 bounded startup unavailability, NOT an in-flight financial transaction test.
-A new exact-source original run is mandatory; retain the first failure.
+The corrected exact-source original run #41513498050 passed; retain the first failure unchanged.

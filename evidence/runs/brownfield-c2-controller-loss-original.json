@@ -1,0 +1,207 @@
+{
+  "status": "PASS",
+  "protocol": "C2_INFLIGHT_CONTROLLER_TCP_LOSS_V1",
+  "startUtc": "2026-11-02T19:39:00.408393+00:00",
+  "cases": [
+    {
+      "writer": "legacy",
+      "epoch": 1,
+      "operationId": "J-LINK-LEGACY",
+      "status": "PASS",
+      "sqlBlockedAdapter": [
+        543,
+        "Lock",
+        "advisory",
+        "INSERT INTO legacy.transactions(request_id,request_hash,source_no,destination_no,value_minor,decision,authority_epoch)VALUES ($1,$2,$3,$4,$5,$6,$7)"
+      ],
+      "beforeCutCounts": [
+        0,
+        0,
+        0
+      ],
+      "controllerTransactionPidsBeforeCut": [
+        73
+      ],
+      "linkCut": {
+        "event": "TCP_LINK_CUT",
+        "monotonicNs": 61245985921,
+        "activeConnections": 2,
+        "acceptedConnections": 8,
+        "forwardedBytes": 13639
+      },
+      "controllerSessionsActuallyGone": true,
+      "gatewayExitCode": -9,
+      "blockedReconnect": "OperationalError",
+      "recoveredWhileFinancialTransactionInFlight": {
+        "status": "UNKNOWN",
+        "evidence": "NO_DURABLE_DECISION_OBSERVED",
+        "todmG6": "BLOCK"
+      },
+      "switchBlockedWhileUnknown": "PENDING_OR_UNJOURNALED_ADMISSION: BLOCK",
+      "reconciledDecision": {
+        "status": "COMMITTED",
+        "evidence": "PERSISTED_SQL_ORACLE_WITH_POSSIBLE_STAGED_COPY",
+        "todmG6": "BLOCK"
+      },
+      "finalCounts": [
+        1,
+        2,
+        1
+      ],
+      "sourceSqlOracle": {
+        "fixtureAccounts": true,
+        "conservedBalances": true,
+        "balancesFromPostings": true,
+        "atomicPairedPostings": true,
+        "exactOutbox": true,
+        "rejectedNoEffects": true,
+        "clockMatchesDecisionCount": true,
+        "versionsBounded": true,
+        "noUnknownDecisions": true,
+        "wellFormedFingerprint": true
+      },
+      "targetSqlOracle": {
+        "fixtureAccounts": true,
+        "conservedBalances": true,
+        "balancesFromPostings": true,
+        "atomicPairedPostings": true,
+        "exactOutbox": true,
+        "rejectedNoEffects": true,
+        "clockMatchesDecisionCount": true,
+        "versionsBounded": true,
+        "noUnknownDecisions": true,
+        "wellFormedFingerprint": true
+      },
+      "gatewayStdout": "",
+      "gatewayStderr": ""
+    },
+    {
+      "writer": "candidate",
+      "epoch": 2,
+      "operationId": "J-LINK-CANDIDATE",
+      "status": "PASS",
+      "sqlBlockedAdapter": [
+        685,
+        "Lock",
+        "advisory",
+        "INSERT INTO brownfield.operations\n                (id, fingerprint, writer, epoch, src, dst, amount, status)\n                VALUES ($1,$2,$3,$4,$5,$6,$7,$8)"
+      ],
+      "beforeCutCounts": [
+        0,
+        0,
+        0
+      ],
+      "controllerTransactionPidsBeforeCut": [
+        109
+      ],
+      "linkCut": {
+        "event": "TCP_LINK_CUT",
+        "monotonicNs": 63213753543,
+        "activeConnections": 2,
+        "acceptedConnections": 42,
+        "forwardedBytes": 74429
+      },
+      "controllerSessionsActuallyGone": true,
+      "gatewayExitCode": -9,
+      "blockedReconnect": "OperationalError",
+      "recoveredWhileFinancialTransactionInFlight": {
+        "status": "UNKNOWN",
+        "evidence": "NO_DURABLE_DECISION_OBSERVED",
+        "todmG6": "BLOCK"
+      },
+      "switchBlockedWhileUnknown": "PENDING_OR_UNJOURNALED_ADMISSION: BLOCK",
+      "reconciledDecision": {
+        "status": "COMMITTED",
+        "evidence": "PERSISTED_SQL_ORACLE_WITH_POSSIBLE_STAGED_COPY",
+        "todmG6": "BLOCK"
+      },
+      "finalCounts": [
+        1,
+        2,
+        1
+      ],
+      "sourceSqlOracle": {
+        "fixtureAccounts": true,
+        "conservedBalances": true,
+        "balancesFromPostings": true,
+        "atomicPairedPostings": true,
+        "exactOutbox": true,
+        "rejectedNoEffects": true,
+        "clockMatchesDecisionCount": true,
+        "versionsBounded": true,
+        "noUnknownDecisions": true,
+        "wellFormedFingerprint": true
+      },
+      "targetSqlOracle": {
+        "fixtureAccounts": true,
+        "conservedBalances": true,
+        "balancesFromPostings": true,
+        "atomicPairedPostings": true,
+        "exactOutbox": true,
+        "rejectedNoEffects": true,
+        "clockMatchesDecisionCount": true,
+        "versionsBounded": true,
+        "noUnknownDecisions": true,
+        "wellFormedFingerprint": true
+      },
+      "gatewayStdout": "",
+      "gatewayStderr": ""
+    }
+  ],
+  "sourceHeadSha": "bfa0ed55e5097b6341ac4f9f01e6b4f712d0fb6c",
+  "todmG2": "INCONCLUSIVE",
+  "todmG6": "BLOCK",
+  "limitations": "Cooperative one-runner TCP session-loss fixture; not a silent blackhole, directional partition, atomic distributed COMMIT, immediate write cancellation, real bank fencing, physical HA or RTO/RPO.",
+  "sourceSha256": {
+    "lab/brownfield/journal/controller_link.py": "cafc58e22334d08cec5af8ff96deb184f3dfd58cd1aa78e1e7aebad0896a7e34",
+    "lab/brownfield/journal/test_controller_loss.py": "73eeba062f6090c217f0dee6eb89804ced5be804299782634db3d5f72f385564",
+    "lab/brownfield/journal/journal.py": "7a285222996fbc0b77b0d033274507f9dd434fabe78dc12f1bc5acab750a696c",
+    "lab/brownfield/coexistence/legacy_api.py": "2a695a7c3b536af1d5d7e28aa0509824c4da83ff3eb7c302aedd4e753d48b779",
+    "lab/brownfield/coexistence/two_store.py": "c11b97f1dd8c7b668b085bd0465806a8b73e81f5a0f1805a4b9b5604597a53bd",
+    "lab/brownfield/coexistence/legacy_schema.sql": "050b6046303bd08af64d5be19740600764755f6dfe4146611539e69b465c840f",
+    "lab/brownfield/durable/DurableBank/Program.cs": "aea97ba01990e364828c0bbba2e1443702c80497fdd59fc0ff22868123a36028",
+    "lab/brownfield/durable/schema.sql": "5bc745dede3a278fb7ab1f987f0e77dee78f241f5f4c3603e774424393b2d830",
+    ".github/workflows/brownfield-journal.yml": "e031ff0a559e09136920aedbf2473e18ca6ef5dc3a3fa7934126b0b301e99802",
+    "lab/brownfield/journal/schema.sql": "f0ce278afc0c57bcd1b29852c363cac38310b4526418d3a9fc241f241976e028"
+  },
+  "linkEvents": [
+    {
+      "event": "TCP_LINK_CUT",
+      "monotonicNs": 61245985921,
+      "activeConnections": 2,
+      "acceptedConnections": 8,
+      "forwardedBytes": 13639
+    },
+    {
+      "event": "TCP_LINK_RESTORED",
+      "monotonicNs": 61269195053
+    },
+    {
+      "event": "TCP_LINK_RESTORED",
+      "monotonicNs": 61819981842
+    },
+    {
+      "event": "TCP_LINK_CUT",
+      "monotonicNs": 63213753543,
+      "activeConnections": 2,
+      "acceptedConnections": 42,
+      "forwardedBytes": 74429
+    },
+    {
+      "event": "TCP_LINK_RESTORED",
+      "monotonicNs": 63236893688
+    },
+    {
+      "event": "TCP_LINK_RESTORED",
+      "monotonicNs": 63785281714
+    },
+    {
+      "event": "TCP_LINK_CUT",
+      "monotonicNs": 63785580123,
+      "activeConnections": 0,
+      "acceptedConnections": 58,
+      "forwardedBytes": 94816
+    }
+  ],
+  "endUtc": "2026-11-02T19:39:04.200274+00:00"
+}
