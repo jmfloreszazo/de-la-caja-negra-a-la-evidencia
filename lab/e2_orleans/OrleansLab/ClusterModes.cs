@@ -93,6 +93,9 @@ public static class ClusterModes
 
         if (args.Length == 2 && args[0] == "silo" && (args[1] is "primary" or "secondary"))
             return await RunSilo(conn, args[1]);
+        if (ContainerFixture && args.Length == 3 && args[0] == "client" &&
+            args[1] == "controlled-probe" && args[2] is "secondary-only" or "alternating")
+            return await ControlledPlacementProbe.Run(MembershipConnection(), Service, Cluster, args[2]);
         if (args.Length == 2 && args[0] == "client" && args[1] == "probe")
             return await RunClient(null);
         // Diagnostic-only fresh grain activation probe: no ledger writes.
@@ -237,6 +240,8 @@ public static class ClusterModes
         }
         using var host = builder.Build();
         await host.StartAsync();
+        Console.WriteLine("E2_PLACEMENT_STRATEGY:" +
+            host.Services.GetRequiredService<Orleans.Runtime.PlacementStrategy>().GetType().FullName);
         Console.WriteLine("E2_SILO_READY:" + role + ":" + Environment.ProcessId);
         Console.Out.Flush();
         await host.WaitForShutdownAsync();

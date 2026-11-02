@@ -1,0 +1,1546 @@
+{
+  "status": "PASS",
+  "protocol": "C01_TEST_ONLY_PLACEMENT_HINT_NEGATIVE_POSITIVE_V1",
+  "sourceHeadSha": "47ed0a087717ec6c02f64a173a63ee597a919f75",
+  "cohort": "3",
+  "runnerName": "GitHub Actions 1000006961",
+  "runnerHost": "runnervm48cm3",
+  "startUtc": "2026-11-02T20:51:54.394139+00:00",
+  "cases": [
+    {
+      "kind": "negative",
+      "status": "PASS",
+      "startUtc": "2026-11-02T20:51:54.395135+00:00",
+      "startup": {
+        "experiment": "E2-F10-C01-Disposable-PostgreSQL-Readiness",
+        "status": "READY",
+        "timestampUtc": "2026-11-02T20:52:03.329007+00:00",
+        "requiredConsecutiveIndependentHostSqlSessions": 2,
+        "observedAttempts": 4,
+        "elapsedSeconds": 2.125,
+        "observations": [
+          {
+            "timestampUtc": "2026-11-02T20:52:01.315349+00:00",
+            "pgIsReady": "/var/run/postgresql:5432 - no response",
+            "hostSql": "NOT_ATTEMPTED"
+          },
+          {
+            "timestampUtc": "2026-11-02T20:52:01.904064+00:00",
+            "pgIsReady": "/var/run/postgresql:5432 - accepting connections",
+            "hostSql": "CONNECT_FAILED",
+            "error": "OperationalError('connection failed: connection to server at \"127.0.0.1\", port 55435 failed: server closed the connection unexpectedly\\n\\tThis probably means the server terminated abnormally\\n\\tbefore or while processing the request.')"
+          },
+          {
+            "timestampUtc": "2026-11-02T20:52:02.723568+00:00",
+            "pgIsReady": "/var/run/postgresql:5432 - accepting connections",
+            "hostSql": "SELECT_1_OK"
+          },
+          {
+            "timestampUtc": "2026-11-02T20:52:03.319017+00:00",
+            "pgIsReady": "/var/run/postgresql:5432 - accepting connections",
+            "hostSql": "SELECT_1_OK"
+          }
+        ],
+        "limits": "Preflight proves only disposable local SQL connectivity at two sampled instants; not PostgreSQL high availability or elimination of intermittent startup failure."
+      },
+      "siloStartupLogs": {
+        "e2f10-primary": "E2_PLACEMENT_STRATEGY:Orleans.Runtime.ResourceOptimizedPlacement\nE2_SILO_READY:primary:1",
+        "e2f10-secondary": "E2_PLACEMENT_STRATEGY:Orleans.Runtime.ResourceOptimizedPlacement\nE2_SILO_READY:secondary:1"
+      },
+      "namespaces": {
+        "e2f10-pg": "net:[4026532219]",
+        "e2f10-primary": "net:[4026532397]",
+        "e2f10-secondary": "net:[4026532462]",
+        "e2f10-client": "net:[4026532527]"
+      },
+      "containerIds": {
+        "e2f10-pg": "f1feae7be26e3e428b4d5fd9d63554ba068de8eebc8081ca5d4e6d2a07c88319",
+        "e2f10-primary": "d321c8379efd4d8dfc8b1feb2586396d92b27cb5eb8eb05db993a4dbafb31564",
+        "e2f10-secondary": "7a90f97dcaaf4de6f2ffd3108010357e4aaeb0b69ca4809029ffb45973950ee4",
+        "e2f10-client": "2eba06696b5f446011118d432cb9711a616b22c2d0890fbec5a5174b1854c46d"
+      },
+      "hostProcessIds": {
+        "e2f10-pg": 2876,
+        "e2f10-primary": 3187,
+        "e2f10-secondary": 3330,
+        "e2f10-client": 3490
+      },
+      "images": [
+        {
+          "Id": "f7ebf09eb01b02bb9904972705248217baeaed03e2a0a7ed24a77740b0aee98c",
+          "Digest": "sha256:5d143123fdf80462d1778cd4f24b9f7ca13c87174bca19141fb194c5a1ebca59",
+          "RepoTags": [
+            "docker.io/library/postgres:16.13"
+          ],
+          "RepoDigests": [
+            "docker.io/library/postgres@sha256:3102b2114b39383b61fa194e5929734c72a56ce366dbb391509b1f07aef10f9f",
+            "docker.io/library/postgres@sha256:5d143123fdf80462d1778cd4f24b9f7ca13c87174bca19141fb194c5a1ebca59"
+          ],
+          "Parent": "",
+          "Comment": "debuerreotype 0.17",
+          "Created": "2026-05-08T19:34:01.552877682Z",
+          "Config": {
+            "ExposedPorts": {
+              "5432/tcp": {}
+            },
+            "Env": [
+              "PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/lib/postgresql/16/bin",
+              "GOSU_VERSION=1.19",
+              "LANG=en_US.utf8",
+              "PG_MAJOR=16",
+              "PG_VERSION=16.13-1.pgdg13+1",
+              "PGDATA=/var/lib/postgresql/data"
+            ],
+            "Entrypoint": [
+              "docker-entrypoint.sh"
+            ],
+            "Cmd": [
+              "postgres"
+            ],
+            "Volumes": {
+              "/var/lib/postgresql/data": {}
+            },
+            "StopSignal": "SIGINT"
+          },
+          "Version": "",
+          "Author": "",
+          "Architecture": "amd64",
+          "Os": "linux",
+          "Size": 458074091,
+          "VirtualSize": 458074091,
+          "GraphDriver": {
+            "Name": "overlay",
+            "Data": {
+              "LowerDir": "/home/runner/.local/share/containers/storage/overlay/e95744c02216a4ea8e3308a4f3f4cd8fb3fb385315bd7f10c45b2645c1d0e99d/diff:/home/runner/.local/share/containers/storage/overlay/5ebfcac08acf19132072d7094dd0ad5df1b7ff5171ee2534079d6b54a9b235be/diff:/home/runner/.local/share/containers/storage/overlay/df32b0349f8f4dd2134abae4bb30ab9168240dbeadd24b3b9d46ceed45413113/diff:/home/runner/.local/share/containers/storage/overlay/7eefa81f770d724bf06e807b4993742ad5e79cf77d32dfd52023d7f931ec63a3/diff:/home/runner/.local/share/containers/storage/overlay/398fbc2843f44e396009212320a5f9c96e90f093b180ad4ec85ed3ac865c89f2/diff:/home/runner/.local/share/containers/storage/overlay/64f3a264b678bd64a40cb2456c429ea71db36c89955643174c3e0cf60084d816/diff:/home/runner/.local/share/containers/storage/overlay/517537107ae71245c7ba886d0616b8a625acfe9931b48e821a9928aa10fab9ff/diff:/home/runner/.local/share/containers/storage/overlay/a22a0efc44c34e7f73e60685bec4d775a146357991ca6579def54083769af019/diff:/home/runner/.local/share/containers/storage/overlay/4f935a91c3f57a20445507acaa0c94f1eb5331b52e3ac899569ac32a3eab8ef4/diff:/home/runner/.local/share/containers/storage/overlay/75865f24a3d37fbc19542ef455f2d43d7feae3e3ea021e64545794be21772cc5/diff:/home/runner/.local/share/containers/storage/overlay/0d5db1a3d4c51a4cf1eed284bb9d91a775223a081dcee3339044d45fb44feaec/diff:/home/runner/.local/share/containers/storage/overlay/9f948a369ac02baaa61c28dc3bc816fd383924099496449916d84aec9ac2ddc5/diff:/home/runner/.local/share/containers/storage/overlay/79dd1f4c855cd061f687a994426634cf5f84c8ecdbc66c7a7d118e828dd93c99/diff",
+              "UpperDir": "/home/runner/.local/share/containers/storage/overlay/c48ebe49779360b856fea660ab723da9812715193e40b9fd186ca018e43542c8/diff",
+              "WorkDir": "/home/runner/.local/share/containers/storage/overlay/c48ebe49779360b856fea660ab723da9812715193e40b9fd186ca018e43542c8/work"
+            }
+          },
+          "RootFS": {
+            "Type": "layers",
+            "Layers": [
+              "sha256:79dd1f4c855cd061f687a994426634cf5f84c8ecdbc66c7a7d118e828dd93c99",
+              "sha256:89e03e169e79be7bf64a4c21f7fc25be1ab7d38cc19b2210e6d58a49457bcf32",
+              "sha256:4c4d74459b88a7029283b554a103555322eb0829289203e5c9c74c4965694e9f",
+              "sha256:bba7945e4d674052569e2af1d6856a3838687c1932df2f865a558ca9a50387d0",
+              "sha256:95c53cac7abfb2b16744741e85bd70c1ede1b22b1887c1b6a5d4cc8ed1bbb940",
+              "sha256:b3cc8a7e1384e87706f85a79cf3bc365dc762f25cc2297e8b55bead86710ab9e",
+              "sha256:cccef29a84914b625197fafadc769f408019fe3eef63e8e1db9052b2a261047f",
+              "sha256:45a0cd533aa95bd949252b3e41c8a5f2c7d49df1bfbccb575b68a78edb5a635c",
+              "sha256:293637c04abf6a0a70c7bd6b1edf75e968fd91549f7f9cc456d07258a4e0c3db",
+              "sha256:48c24b5449b50f964fef8a4b9cc3703d142c6578690a2818085dd25e53e76980",
+              "sha256:2d07009d969b684e2c10b120f01a3e4d3dc1b086c4ecd285c976ceaccc367ec9",
+              "sha256:e490ae5c4914636f6a229f9d80ef5ae5f57c0eb8fe83e22b286c5dac2bc16692",
+              "sha256:32b752f03b974147f9b5730baa07fb0eb0537032b84466fd3f06875c7cee2046",
+              "sha256:5bc153679b363f5c509ae960a9a6c4d56909bdc732ee7d608f438dcbf5de99d8"
+            ]
+          },
+          "Labels": null,
+          "Annotations": {
+            "com.docker.official-images.bashbrew.arch": "amd64",
+            "org.opencontainers.image.base.digest": "sha256:486b1c3d3a6a836d2518d5ac1a7b522050a034ae83b47c063fd45d550b2b9dbf",
+            "org.opencontainers.image.base.name": "debian:trixie-slim",
+            "org.opencontainers.image.created": "2026-05-08T19:33:16Z",
+            "org.opencontainers.image.revision": "3b6b5fca9ca40c84b77540fc605ea8e8353b13b2",
+            "org.opencontainers.image.source": "https://github.com/docker-library/postgres.git#3b6b5fca9ca40c84b77540fc605ea8e8353b13b2:16/trixie",
+            "org.opencontainers.image.url": "https://hub.docker.com/_/postgres",
+            "org.opencontainers.image.version": "16.13"
+          },
+          "ManifestType": "application/vnd.oci.image.manifest.v1+json",
+          "User": "",
+          "History": [
+            {
+              "created": "2026-05-05T00:00:00Z",
+              "created_by": "# debian.sh --arch 'amd64' out/ 'trixie' '@1777939200'",
+              "comment": "debuerreotype 0.17"
+            },
+            {
+              "created": "2026-05-08T19:33:26.795726556Z",
+              "created_by": "RUN /bin/sh -c set -eux; \tgroupadd -r postgres --gid=999; \tuseradd -r -g postgres --uid=999 --home-dir=/var/lib/postgresql --shell=/bin/bash postgres; \tinstall --verbose --directory --owner postgres --group postgres --mode 1777 /var/lib/postgresql # buildkit",
+              "comment": "buildkit.dockerfile.v0"
+            },
+            {
+              "created": "2026-05-08T19:33:32.479186023Z",
+              "created_by": "RUN /bin/sh -c set -ex; \tapt-get update; \tapt-get install -y --no-install-recommends \t\tgnupg \t\tless \t; \trm -rf /var/lib/apt/lists/* # buildkit",
+              "comment": "buildkit.dockerfile.v0"
+            },
+            {
+              "created": "2026-05-08T19:33:39.635651149Z",
+              "created_by": "ENV GOSU_VERSION=1.19",
+              "comment": "buildkit.dockerfile.v0",
+              "empty_layer": true
+            },
+            {
+              "created": "2026-05-08T19:33:39.635651149Z",
+              "created_by": "RUN /bin/sh -c set -eux; \tsavedAptMark=\"$(apt-mark showmanual)\"; \tapt-get update; \tapt-get install -y --no-install-recommends ca-certificates wget; \trm -rf /var/lib/apt/lists/*; \tdpkgArch=\"$(dpkg --print-architecture | awk -F- '{ print $NF }')\"; \twget -O /usr/local/bin/gosu \"https://github.com/tianon/gosu/releases/download/$GOSU_VERSION/gosu-$dpkgArch\"; \twget -O /usr/local/bin/gosu.asc \"https://github.com/tianon/gosu/releases/download/$GOSU_VERSION/gosu-$dpkgArch.asc\"; \texport GNUPGHOME=\"$(mktemp -d)\"; \tgpg --batch --keyserver hkps://keys.openpgp.org --recv-keys B42F6819007F00F88E364FD4036A9C25BF357DD4; \tgpg --batch --verify /usr/local/bin/gosu.asc /usr/local/bin/gosu; \tgpgconf --kill all; \trm -rf \"$GNUPGHOME\" /usr/local/bin/gosu.asc; \tapt-mark auto '.*' > /dev/null; \t[ -z \"$savedAptMark\" ] || apt-mark manual $savedAptMark > /dev/null; \tapt-get purge -y --auto-remove -o APT::AutoRemove::RecommendsImportant=false; \tchmod +x /usr/local/bin/gosu; \tgosu --version; \tgosu nobody true # buildkit",
+              "comment": "buildkit.dockerfile.v0"
+            },
+            {
+              "created": "2026-05-08T19:33:44.55590106Z",
+              "created_by": "RUN /bin/sh -c set -eux; \tif [ -f /etc/dpkg/dpkg.cfg.d/docker ]; then \t\tgrep -q '/usr/share/locale' /etc/dpkg/dpkg.cfg.d/docker; \t\tsed -ri '/\\/usr\\/share\\/locale/d' /etc/dpkg/dpkg.cfg.d/docker; \t\t! grep -q '/usr/share/locale' /etc/dpkg/dpkg.cfg.d/docker; \tfi; \tapt-get update; apt-get install -y --no-install-recommends locales; rm -rf /var/lib/apt/lists/*; \techo 'en_US.UTF-8 UTF-8' >> /etc/locale.gen; \tlocale-gen; \tlocale -a | grep 'en_US.utf8' # buildkit",
+              "comment": "buildkit.dockerfile.v0"
+            },
+            {
+              "created": "2026-05-08T19:33:44.55590106Z",
+              "created_by": "ENV LANG=en_US.utf8",
+              "comment": "buildkit.dockerfile.v0",
+              "empty_layer": true
+            },
+            {
+              "created": "2026-05-08T19:33:47.823290501Z",
+              "created_by": "RUN /bin/sh -c set -eux; \tapt-get update; \tapt-get install -y --no-install-recommends \t\tlibnss-wrapper \t\txz-utils \t\tzstd \t; \trm -rf /var/lib/apt/lists/* # buildkit",
+              "comment": "buildkit.dockerfile.v0"
+            },
+            {
+              "created": "2026-05-08T19:33:47.92911377Z",
+              "created_by": "RUN /bin/sh -c mkdir /docker-entrypoint-initdb.d # buildkit",
+              "comment": "buildkit.dockerfile.v0"
+            },
+            {
+              "created": "2026-05-08T19:33:48.595564705Z",
+              "created_by": "RUN /bin/sh -c set -ex; \tkey='B97B0AFCAA1A47F044F244A07FCC7D46ACCC4CF8'; \texport GNUPGHOME=\"$(mktemp -d)\"; \tmkdir -p /usr/local/share/keyrings/; \tgpg --batch --keyserver keyserver.ubuntu.com --recv-keys \"$key\"; \tgpg --batch --export --armor \"$key\" > /usr/local/share/keyrings/postgres.gpg.asc; \tgpgconf --kill all; \trm -rf \"$GNUPGHOME\" # buildkit",
+              "comment": "buildkit.dockerfile.v0"
+            },
+            {
+              "created": "2026-05-08T19:33:48.595564705Z",
+              "created_by": "ENV PG_MAJOR=16",
+              "comment": "buildkit.dockerfile.v0",
+              "empty_layer": true
+            },
+            {
+              "created": "2026-05-08T19:33:48.595564705Z",
+              "created_by": "ENV PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/lib/postgresql/16/bin",
+              "comment": "buildkit.dockerfile.v0",
+              "empty_layer": true
+            },
+            {
+              "created": "2026-05-08T19:33:48.595564705Z",
+              "created_by": "ENV PG_VERSION=16.13-1.pgdg13+1",
+              "comment": "buildkit.dockerfile.v0",
+              "empty_layer": true
+            },
+            {
+              "created": "2026-05-08T19:34:01.063794782Z",
+              "created_by": "RUN /bin/sh -c set -ex; \t\texport PYTHONDONTWRITEBYTECODE=1; \t\tdpkgArch=\"$(dpkg --print-architecture)\"; \taptRepo=\"[ signed-by=/usr/local/share/keyrings/postgres.gpg.asc ] http://apt.postgresql.org/pub/repos/apt trixie-pgdg main $PG_MAJOR\"; \tcase \"$dpkgArch\" in \t\tamd64 | arm64 | ppc64el) \t\t\techo \"deb $aptRepo\" > /etc/apt/sources.list.d/pgdg.list; \t\t\tapt-get update; \t\t\t;; \t\t*) \t\t\techo \"deb-src $aptRepo\" > /etc/apt/sources.list.d/pgdg.list; \t\t\t\t\t\tsavedAptMark=\"$(apt-mark showmanual)\"; \t\t\t\t\t\ttempDir=\"$(mktemp -d)\"; \t\t\tcd \"$tempDir\"; \t\t\t\t\t\tapt-get update; \t\t\tapt-get install -y --no-install-recommends dpkg-dev; \t\t\techo \"deb [ trusted=yes ] file://$tempDir ./\" > /etc/apt/sources.list.d/temp.list; \t\t\t_update_repo() { \t\t\t\tdpkg-scanpackages . > Packages; \t\t\t\tapt-get -o Acquire::GzipIndexes=false update; \t\t\t}; \t\t\t_update_repo; \t\t\t\t\t\tnproc=\"$(nproc)\"; \t\t\texport DEB_BUILD_OPTIONS=\"nocheck parallel=$nproc\"; \t\t\tapt-get build-dep -y postgresql-common-dev; \t\t\tapt-get source --compile postgresql-common-dev; \t\t\t_update_repo; \t\t\tapt-get build-dep -y \"postgresql-$PG_MAJOR=$PG_VERSION\"; \t\t\tapt-get source --compile \"postgresql-$PG_MAJOR=$PG_VERSION\"; \t\t\t\t\t\t\t\t\tapt-mark showmanual | xargs apt-mark auto > /dev/null; \t\t\tapt-mark manual $savedAptMark; \t\t\t\t\t\tls -lAFh; \t\t\t_update_repo; \t\t\tgrep '^Package: ' Packages; \t\t\tcd /; \t\t\t;; \tesac; \t\tapt-get install -y --no-install-recommends postgresql-common; \tsed -ri 's/#(create_main_cluster) .*$/\\1 = false/' /etc/postgresql-common/createcluster.conf; \tapt-get install -y --no-install-recommends \t\t\"postgresql-$PG_MAJOR=$PG_VERSION\" \t; \t\trm -rf /var/lib/apt/lists/*; \t\tif [ -n \"$tempDir\" ]; then \t\tapt-get purge -y --auto-remove; \t\trm -rf \"$tempDir\" /etc/apt/sources.list.d/temp.list; \tfi; \t\tfind /usr -name '*.pyc' -type f -exec bash -c 'for pyc; do dpkg -S \"$pyc\" &> /dev/null || rm -vf \"$pyc\"; done' -- '{}' +; \t\tpostgres --version # buildkit",
+              "comment": "buildkit.dockerfile.v0"
+            },
+            {
+              "created": "2026-05-08T19:34:01.197357395Z",
+              "created_by": "RUN /bin/sh -c set -eux; \tdpkg-divert --add --rename --divert \"/usr/share/postgresql/postgresql.conf.sample.dpkg\" \"/usr/share/postgresql/$PG_MAJOR/postgresql.conf.sample\"; \tcp -v /usr/share/postgresql/postgresql.conf.sample.dpkg /usr/share/postgresql/postgresql.conf.sample; \tln -sv ../postgresql.conf.sample \"/usr/share/postgresql/$PG_MAJOR/\"; \tsed -ri \"s!^#?(listen_addresses)\\s*=\\s*\\S+.*!\\1 = '*'!\" /usr/share/postgresql/postgresql.conf.sample; \tgrep -F \"listen_addresses = '*'\" /usr/share/postgresql/postgresql.conf.sample # buildkit",
+              "comment": "buildkit.dockerfile.v0"
+            },
+            {
+              "created": "2026-05-08T19:34:01.289176414Z",
+              "created_by": "RUN /bin/sh -c install --verbose --directory --owner postgres --group postgres --mode 3777 /var/run/postgresql # buildkit",
+              "comment": "buildkit.dockerfile.v0"
+            },
+            {
+              "created": "2026-05-08T19:34:01.289176414Z",
+              "created_by": "ENV PGDATA=/var/lib/postgresql/data",
+              "comment": "buildkit.dockerfile.v0",
+              "empty_layer": true
+            },
+            {
+              "created": "2026-05-08T19:34:01.393988403Z",
+              "created_by": "RUN /bin/sh -c install --verbose --directory --owner postgres --group postgres --mode 1777 \"$PGDATA\" # buildkit",
+              "comment": "buildkit.dockerfile.v0"
+            },
+            {
+              "created": "2026-05-08T19:34:01.393988403Z",
+              "created_by": "VOLUME [/var/lib/postgresql/data]",
+              "comment": "buildkit.dockerfile.v0",
+              "empty_layer": true
+            },
+            {
+              "created": "2026-05-08T19:34:01.440462535Z",
+              "created_by": "COPY docker-entrypoint.sh docker-ensure-initdb.sh /usr/local/bin/ # buildkit",
+              "comment": "buildkit.dockerfile.v0"
+            },
+            {
+              "created": "2026-05-08T19:34:01.552877682Z",
+              "created_by": "RUN /bin/sh -c ln -sT docker-ensure-initdb.sh /usr/local/bin/docker-enforce-initdb.sh # buildkit",
+              "comment": "buildkit.dockerfile.v0"
+            },
+            {
+              "created": "2026-05-08T19:34:01.552877682Z",
+              "created_by": "ENTRYPOINT [\"docker-entrypoint.sh\"]",
+              "comment": "buildkit.dockerfile.v0",
+              "empty_layer": true
+            },
+            {
+              "created": "2026-05-08T19:34:01.552877682Z",
+              "created_by": "STOPSIGNAL SIGINT",
+              "comment": "buildkit.dockerfile.v0",
+              "empty_layer": true
+            },
+            {
+              "created": "2026-05-08T19:34:01.552877682Z",
+              "created_by": "EXPOSE map[5432/tcp:{}]",
+              "comment": "buildkit.dockerfile.v0",
+              "empty_layer": true
+            },
+            {
+              "created": "2026-05-08T19:34:01.552877682Z",
+              "created_by": "CMD [\"postgres\"]",
+              "comment": "buildkit.dockerfile.v0",
+              "empty_layer": true
+            }
+          ],
+          "NamesHistory": [
+            "docker.io/library/postgres:16.13"
+          ]
+        },
+        {
+          "Id": "cfeca9a55d0f8353620d75e8ccb882f000d314e8ce43290014d4467827de8747",
+          "Digest": "sha256:de0ee358cdd672f7017a003bed21e9ac9ed48a27c922a59b18175b6e82fa7fee",
+          "RepoTags": [
+            "mcr.microsoft.com/dotnet/aspnet:10.0"
+          ],
+          "RepoDigests": [
+            "mcr.microsoft.com/dotnet/aspnet@sha256:43cbcf11fd6f88c0375c9c0f7fe59af619abeb323befe5f57dc1502b5a05d8c3",
+            "mcr.microsoft.com/dotnet/aspnet@sha256:de0ee358cdd672f7017a003bed21e9ac9ed48a27c922a59b18175b6e82fa7fee"
+          ],
+          "Parent": "",
+          "Comment": "",
+          "Created": "2026-10-26T00:29:18.960447072Z",
+          "Config": {
+            "Env": [
+              "PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin",
+              "APP_UID=1654",
+              "ASPNETCORE_HTTP_PORTS=8080",
+              "DOTNET_RUNNING_IN_CONTAINER=true",
+              "DOTNET_VERSION=10.0.14",
+              "ASPNET_VERSION=10.0.14"
+            ],
+            "Cmd": [
+              "/bin/bash"
+            ],
+            "Labels": {
+              "org.opencontainers.image.version": "24.04"
+            }
+          },
+          "Version": "",
+          "Author": "",
+          "Architecture": "amd64",
+          "Os": "linux",
+          "Size": 234035400,
+          "VirtualSize": 234035400,
+          "GraphDriver": {
+            "Name": "overlay",
+            "Data": {
+              "LowerDir": "/home/runner/.local/share/containers/storage/overlay/e04d2a433094c5b18d7b7e0c3d7cf5cb0ab5a59bd9d895c22146dbb55079fcd6/diff:/home/runner/.local/share/containers/storage/overlay/1fb712514e965c30b136b929c14b674b890a4cc36472def855d4e82ca46eee72/diff:/home/runner/.local/share/containers/storage/overlay/29d0b33abb8e79962fc5b939e89bcedf94d4c1ff15efd8fa9d93571647037de2/diff:/home/runner/.local/share/containers/storage/overlay/8ed7c1514ef29330d0a7353e4975aa866451248950be611e224dbd17f9b1b0a7/diff:/home/runner/.local/share/containers/storage/overlay/bec87777bc2fb2edcdf9af11df1531469e7df911309c1413082b18fcb8610278/diff",
+              "UpperDir": "/home/runner/.local/share/containers/storage/overlay/c22f3b05c1d0ab58b78fe8e9e963a0f31ed655ca82d18b75b627ccc633cbc81e/diff",
+              "WorkDir": "/home/runner/.local/share/containers/storage/overlay/c22f3b05c1d0ab58b78fe8e9e963a0f31ed655ca82d18b75b627ccc633cbc81e/work"
+            }
+          },
+          "RootFS": {
+            "Type": "layers",
+            "Layers": [
+              "sha256:bec87777bc2fb2edcdf9af11df1531469e7df911309c1413082b18fcb8610278",
+              "sha256:fa09e76fa81be98b74d710f954aa4a7cf274e5b969857dd2f12b0a8253c053bb",
+              "sha256:7be251a39e9c7e7dac1b4ad1d9801fab59e0890cda8cfa055d168e00cfb22186",
+              "sha256:2c16277b36ff173925e5ffc125edeecb5912a6356f069a7ae02d5abcd771cfcb",
+              "sha256:361fe91f35cc8f036a9638f929b4842a38f1a3f5e1c4d4d6479becbca19fbad1",
+              "sha256:eaa51743b39d235e5d05870b93b60e442a567d79c05df1bf7abca7047ea12355"
+            ]
+          },
+          "Labels": {
+            "org.opencontainers.image.version": "24.04"
+          },
+          "Annotations": {},
+          "ManifestType": "application/vnd.docker.distribution.manifest.v2+json",
+          "User": "",
+          "History": [
+            {
+              "created": "2026-10-25T14:17:45.134994061Z",
+              "created_by": "/bin/sh -c #(nop)  ARG RELEASE",
+              "empty_layer": true
+            },
+            {
+              "created": "2026-10-25T14:17:45.174235109Z",
+              "created_by": "/bin/sh -c #(nop)  ARG LAUNCHPAD_BUILD_ARCH",
+              "empty_layer": true
+            },
+            {
+              "created": "2026-10-25T14:17:45.213100118Z",
+              "created_by": "/bin/sh -c #(nop)  LABEL org.opencontainers.image.version=24.04",
+              "empty_layer": true
+            },
+            {
+              "created": "2026-10-25T14:17:47.432058459Z",
+              "created_by": "/bin/sh -c #(nop) ADD file:eed88e94d6aa7c9da62836e137f889e03988c1a6b237b0cedb6ca666dfaa98ea in / "
+            },
+            {
+              "created": "2026-10-25T14:17:47.841356155Z",
+              "created_by": "/bin/sh -c #(nop)  CMD [\"/bin/bash\"]",
+              "empty_layer": true
+            },
+            {
+              "created": "2026-10-26T00:29:02.608833857Z",
+              "created_by": "ENV APP_UID=1654 ASPNETCORE_HTTP_PORTS=8080 DOTNET_RUNNING_IN_CONTAINER=true",
+              "comment": "buildkit.dockerfile.v0",
+              "empty_layer": true
+            },
+            {
+              "created": "2026-10-26T00:29:02.608833857Z",
+              "created_by": "RUN /bin/sh -c apt-get update     && apt-get install -y --no-install-recommends         ca-certificates                 libc6         libgcc-s1         libicu74         libssl3t64         libstdc++6         tzdata         tzdata-legacy     && rm -rf /var/lib/apt/lists/* # buildkit",
+              "comment": "buildkit.dockerfile.v0"
+            },
+            {
+              "created": "2026-10-26T00:29:04.357142295Z",
+              "created_by": "RUN /bin/sh -c groupadd         --gid=$APP_UID         app     && useradd --no-log-init         --uid=$APP_UID         --gid=$APP_UID         --create-home         app # buildkit",
+              "comment": "buildkit.dockerfile.v0"
+            },
+            {
+              "created": "2026-10-26T00:29:11.003432483Z",
+              "created_by": "ENV DOTNET_VERSION=10.0.14",
+              "comment": "buildkit.dockerfile.v0",
+              "empty_layer": true
+            },
+            {
+              "created": "2026-10-26T00:29:11.003432483Z",
+              "created_by": "COPY /dotnet /usr/share/dotnet # buildkit",
+              "comment": "buildkit.dockerfile.v0"
+            },
+            {
+              "created": "2026-10-26T00:29:12.094268109Z",
+              "created_by": "RUN /bin/sh -c ln -s /usr/share/dotnet/dotnet /usr/bin/dotnet # buildkit",
+              "comment": "buildkit.dockerfile.v0"
+            },
+            {
+              "created": "2026-10-26T00:29:18.960447072Z",
+              "created_by": "ENV ASPNET_VERSION=10.0.14",
+              "comment": "buildkit.dockerfile.v0",
+              "empty_layer": true
+            },
+            {
+              "created": "2026-10-26T00:29:18.960447072Z",
+              "created_by": "COPY /dotnet /usr/share/dotnet # buildkit",
+              "comment": "buildkit.dockerfile.v0"
+            }
+          ],
+          "NamesHistory": [
+            "mcr.microsoft.com/dotnet/aspnet:10.0"
+          ]
+        }
+      ],
+      "membershipBefore": {
+        "rows": [
+          [
+            "e2-f10-podman-bridge",
+            "10.78.30.11",
+            11150,
+            3,
+            30050
+          ],
+          [
+            "e2-f10-podman-bridge",
+            "10.78.30.12",
+            11151,
+            3,
+            30051
+          ]
+        ],
+        "version": 4
+      },
+      "generationsBefore": [
+        [
+          "10.78.30.11",
+          11150,
+          152657527,
+          3
+        ],
+        [
+          "10.78.30.12",
+          11151,
+          152657528,
+          3
+        ]
+      ],
+      "initialSql": {
+        "effects": {
+          "committedOperations": 0,
+          "postings": 0,
+          "outboxEvents": 0
+        },
+        "oracle": {
+          "nonnegative": true,
+          "conserved": true,
+          "balancedPostings": true,
+          "twoPostingsPerCommit": true,
+          "noPostingsForRejection": true,
+          "outboxAtomic": true,
+          "projectionAgrees": true
+        }
+      },
+      "firstControlledProbe": {
+        "status": "CONTROLLED_PROBED",
+        "mode": "secondary-only",
+        "accountHostNodes": {
+          "1": "e2f10-secondary:1",
+          "2": "e2f10-secondary:1",
+          "3": "e2f10-secondary:1",
+          "4": "e2f10-secondary:1",
+          "5": "e2f10-secondary:1",
+          "6": "e2f10-secondary:1",
+          "7": "e2f10-secondary:1",
+          "8": "e2f10-secondary:1",
+          "9": "e2f10-secondary:1",
+          "10": "e2f10-secondary:1",
+          "11": "e2f10-secondary:1",
+          "12": "e2f10-secondary:1",
+          "13": "e2f10-secondary:1",
+          "14": "e2f10-secondary:1",
+          "15": "e2f10-secondary:1",
+          "16": "e2f10-secondary:1"
+        },
+        "accountHostPids": {
+          "1": 1,
+          "2": 1,
+          "3": 1,
+          "4": 1,
+          "5": 1,
+          "6": 1,
+          "7": 1,
+          "8": 1,
+          "9": 1,
+          "10": 1,
+          "11": 1,
+          "12": 1,
+          "13": 1,
+          "14": 1,
+          "15": 1,
+          "16": 1
+        },
+        "requestedNodeNames": {
+          "1": "e2f10-secondary",
+          "2": "e2f10-secondary",
+          "3": "e2f10-secondary",
+          "4": "e2f10-secondary",
+          "5": "e2f10-secondary",
+          "6": "e2f10-secondary",
+          "7": "e2f10-secondary",
+          "8": "e2f10-secondary",
+          "9": "e2f10-secondary",
+          "10": "e2f10-secondary",
+          "11": "e2f10-secondary",
+          "12": "e2f10-secondary",
+          "13": "e2f10-secondary",
+          "14": "e2f10-secondary",
+          "15": "e2f10-secondary",
+          "16": "e2f10-secondary"
+        },
+        "requestedSiloAddresses": {
+          "1": "S10.78.30.12:11151:152657528",
+          "2": "S10.78.30.12:11151:152657528",
+          "3": "S10.78.30.12:11151:152657528",
+          "4": "S10.78.30.12:11151:152657528",
+          "5": "S10.78.30.12:11151:152657528",
+          "6": "S10.78.30.12:11151:152657528",
+          "7": "S10.78.30.12:11151:152657528",
+          "8": "S10.78.30.12:11151:152657528",
+          "9": "S10.78.30.12:11151:152657528",
+          "10": "S10.78.30.12:11151:152657528",
+          "11": "S10.78.30.12:11151:152657528",
+          "12": "S10.78.30.12:11151:152657528",
+          "13": "S10.78.30.12:11151:152657528",
+          "14": "S10.78.30.12:11151:152657528",
+          "15": "S10.78.30.12:11151:152657528",
+          "16": "S10.78.30.12:11151:152657528"
+        },
+        "activeHosts": [
+          "S10.78.30.11:11150:152657527",
+          "S10.78.30.12:11151:152657528"
+        ],
+        "financialCommandsDispatched": 0,
+        "placementHintRetained": false,
+        "mechanism": "C01_TEST_ONLY_COMPATIBLE_SILO_PLACEMENT_HINT",
+        "limitation": "Hints select new activations only; they do not relocate existing grains or authorize SQL COMMIT"
+      },
+      "classification": {
+        "classification": "PLACEMENT_PRECONDITION_NOT_SATISFIED",
+        "financialTransferTestPerformed": false,
+        "bankLedgerEffectClaim": false,
+        "placementSatisfiesPrecondition": false,
+        "membershipStatuses": {
+          "11150": 3,
+          "11151": 3
+        },
+        "accountsSampled": 16,
+        "siloCounts": {
+          "e2f10-primary": 0,
+          "e2f10-secondary": 16
+        },
+        "accountsBySilo": {
+          "e2f10-primary": [],
+          "e2f10-secondary": [
+            1,
+            2,
+            3,
+            4,
+            5,
+            6,
+            7,
+            8,
+            9,
+            10,
+            11,
+            12,
+            13,
+            14,
+            15,
+            16
+          ]
+        },
+        "reason": "Sampled grain activations on each expected silo required; network reachability does not prove placement. Fresh-key identity probes are diagnostic only; they do NOT replace the original financial-account 1..16 precondition."
+      },
+      "repeatWithAlternatingHints": {
+        "status": "CONTROLLED_PROBED",
+        "mode": "alternating",
+        "accountHostNodes": {
+          "1": "e2f10-secondary:1",
+          "2": "e2f10-secondary:1",
+          "3": "e2f10-secondary:1",
+          "4": "e2f10-secondary:1",
+          "5": "e2f10-secondary:1",
+          "6": "e2f10-secondary:1",
+          "7": "e2f10-secondary:1",
+          "8": "e2f10-secondary:1",
+          "9": "e2f10-secondary:1",
+          "10": "e2f10-secondary:1",
+          "11": "e2f10-secondary:1",
+          "12": "e2f10-secondary:1",
+          "13": "e2f10-secondary:1",
+          "14": "e2f10-secondary:1",
+          "15": "e2f10-secondary:1",
+          "16": "e2f10-secondary:1"
+        },
+        "accountHostPids": {
+          "1": 1,
+          "2": 1,
+          "3": 1,
+          "4": 1,
+          "5": 1,
+          "6": 1,
+          "7": 1,
+          "8": 1,
+          "9": 1,
+          "10": 1,
+          "11": 1,
+          "12": 1,
+          "13": 1,
+          "14": 1,
+          "15": 1,
+          "16": 1
+        },
+        "requestedNodeNames": {
+          "1": "e2f10-primary",
+          "2": "e2f10-secondary",
+          "3": "e2f10-primary",
+          "4": "e2f10-secondary",
+          "5": "e2f10-primary",
+          "6": "e2f10-secondary",
+          "7": "e2f10-primary",
+          "8": "e2f10-secondary",
+          "9": "e2f10-primary",
+          "10": "e2f10-secondary",
+          "11": "e2f10-primary",
+          "12": "e2f10-secondary",
+          "13": "e2f10-primary",
+          "14": "e2f10-secondary",
+          "15": "e2f10-primary",
+          "16": "e2f10-secondary"
+        },
+        "requestedSiloAddresses": {
+          "1": "S10.78.30.11:11150:152657527",
+          "2": "S10.78.30.12:11151:152657528",
+          "3": "S10.78.30.11:11150:152657527",
+          "4": "S10.78.30.12:11151:152657528",
+          "5": "S10.78.30.11:11150:152657527",
+          "6": "S10.78.30.12:11151:152657528",
+          "7": "S10.78.30.11:11150:152657527",
+          "8": "S10.78.30.12:11151:152657528",
+          "9": "S10.78.30.11:11150:152657527",
+          "10": "S10.78.30.12:11151:152657528",
+          "11": "S10.78.30.11:11150:152657527",
+          "12": "S10.78.30.12:11151:152657528",
+          "13": "S10.78.30.11:11150:152657527",
+          "14": "S10.78.30.12:11151:152657528",
+          "15": "S10.78.30.11:11150:152657527",
+          "16": "S10.78.30.12:11151:152657528"
+        },
+        "activeHosts": [
+          "S10.78.30.11:11150:152657527",
+          "S10.78.30.12:11151:152657528"
+        ],
+        "financialCommandsDispatched": 0,
+        "placementHintRetained": false,
+        "mechanism": "C01_TEST_ONLY_COMPATIBLE_SILO_PLACEMENT_HINT",
+        "limitation": "Hints select new activations only; they do not relocate existing grains or authorize SQL COMMIT"
+      },
+      "finalSql": {
+        "effects": {
+          "committedOperations": 0,
+          "postings": 0,
+          "outboxEvents": 0
+        },
+        "oracle": {
+          "nonnegative": true,
+          "conserved": true,
+          "balancedPostings": true,
+          "twoPostingsPerCommit": true,
+          "noPostingsForRejection": true,
+          "outboxAtomic": true,
+          "projectionAgrees": true
+        }
+      },
+      "result": "EXPECTED_DUAL_PLACEMENT_REJECTION_NO_FINANCIAL_TEST",
+      "endUtc": "2026-11-02T20:52:18.328752+00:00"
+    },
+    {
+      "kind": "positive",
+      "status": "PASS",
+      "startUtc": "2026-11-02T20:52:29.200419+00:00",
+      "startup": {
+        "experiment": "E2-F10-C01-Disposable-PostgreSQL-Readiness",
+        "status": "READY",
+        "timestampUtc": "2026-11-02T20:52:30.969398+00:00",
+        "requiredConsecutiveIndependentHostSqlSessions": 2,
+        "observedAttempts": 3,
+        "elapsedSeconds": 1.549,
+        "observations": [
+          {
+            "timestampUtc": "2026-11-02T20:52:29.561743+00:00",
+            "pgIsReady": "/var/run/postgresql:5432 - no response",
+            "hostSql": "NOT_ATTEMPTED"
+          },
+          {
+            "timestampUtc": "2026-11-02T20:52:30.210070+00:00",
+            "pgIsReady": "/var/run/postgresql:5432 - accepting connections",
+            "hostSql": "SELECT_1_OK"
+          },
+          {
+            "timestampUtc": "2026-11-02T20:52:30.960237+00:00",
+            "pgIsReady": "/var/run/postgresql:5432 - accepting connections",
+            "hostSql": "SELECT_1_OK"
+          }
+        ],
+        "limits": "Preflight proves only disposable local SQL connectivity at two sampled instants; not PostgreSQL high availability or elimination of intermittent startup failure."
+      },
+      "siloStartupLogs": {
+        "e2f10-primary": "E2_PLACEMENT_STRATEGY:Orleans.Runtime.ResourceOptimizedPlacement\nE2_SILO_READY:primary:1",
+        "e2f10-secondary": "E2_PLACEMENT_STRATEGY:Orleans.Runtime.ResourceOptimizedPlacement\nE2_SILO_READY:secondary:1"
+      },
+      "namespaces": {
+        "e2f10-pg": "net:[4026532219]",
+        "e2f10-primary": "net:[4026532398]",
+        "e2f10-secondary": "net:[4026532464]",
+        "e2f10-client": "net:[4026532530]"
+      },
+      "containerIds": {
+        "e2f10-pg": "2626303a4359272dfc83895743347677cff003422f85792407f67ed63990a2b7",
+        "e2f10-primary": "433ea1f7498bda36bd81d179544fafa72e8eb4873172e81edd8b098b135d4978",
+        "e2f10-secondary": "0755a9cd51527968a3f98e52a0632531562183281812c88ed40d1e54bf50eac4",
+        "e2f10-client": "82ac53f775f4779b89b38213e671e1c3bd57c063aa8ce6a867695f1f2ce2b8cf"
+      },
+      "hostProcessIds": {
+        "e2f10-pg": 4051,
+        "e2f10-primary": 4288,
+        "e2f10-secondary": 4448,
+        "e2f10-client": 4610
+      },
+      "images": [
+        {
+          "Id": "f7ebf09eb01b02bb9904972705248217baeaed03e2a0a7ed24a77740b0aee98c",
+          "Digest": "sha256:5d143123fdf80462d1778cd4f24b9f7ca13c87174bca19141fb194c5a1ebca59",
+          "RepoTags": [
+            "docker.io/library/postgres:16.13"
+          ],
+          "RepoDigests": [
+            "docker.io/library/postgres@sha256:3102b2114b39383b61fa194e5929734c72a56ce366dbb391509b1f07aef10f9f",
+            "docker.io/library/postgres@sha256:5d143123fdf80462d1778cd4f24b9f7ca13c87174bca19141fb194c5a1ebca59"
+          ],
+          "Parent": "",
+          "Comment": "debuerreotype 0.17",
+          "Created": "2026-05-08T19:34:01.552877682Z",
+          "Config": {
+            "ExposedPorts": {
+              "5432/tcp": {}
+            },
+            "Env": [
+              "PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/lib/postgresql/16/bin",
+              "GOSU_VERSION=1.19",
+              "LANG=en_US.utf8",
+              "PG_MAJOR=16",
+              "PG_VERSION=16.13-1.pgdg13+1",
+              "PGDATA=/var/lib/postgresql/data"
+            ],
+            "Entrypoint": [
+              "docker-entrypoint.sh"
+            ],
+            "Cmd": [
+              "postgres"
+            ],
+            "Volumes": {
+              "/var/lib/postgresql/data": {}
+            },
+            "StopSignal": "SIGINT"
+          },
+          "Version": "",
+          "Author": "",
+          "Architecture": "amd64",
+          "Os": "linux",
+          "Size": 458074091,
+          "VirtualSize": 458074091,
+          "GraphDriver": {
+            "Name": "overlay",
+            "Data": {
+              "LowerDir": "/home/runner/.local/share/containers/storage/overlay/e95744c02216a4ea8e3308a4f3f4cd8fb3fb385315bd7f10c45b2645c1d0e99d/diff:/home/runner/.local/share/containers/storage/overlay/5ebfcac08acf19132072d7094dd0ad5df1b7ff5171ee2534079d6b54a9b235be/diff:/home/runner/.local/share/containers/storage/overlay/df32b0349f8f4dd2134abae4bb30ab9168240dbeadd24b3b9d46ceed45413113/diff:/home/runner/.local/share/containers/storage/overlay/7eefa81f770d724bf06e807b4993742ad5e79cf77d32dfd52023d7f931ec63a3/diff:/home/runner/.local/share/containers/storage/overlay/398fbc2843f44e396009212320a5f9c96e90f093b180ad4ec85ed3ac865c89f2/diff:/home/runner/.local/share/containers/storage/overlay/64f3a264b678bd64a40cb2456c429ea71db36c89955643174c3e0cf60084d816/diff:/home/runner/.local/share/containers/storage/overlay/517537107ae71245c7ba886d0616b8a625acfe9931b48e821a9928aa10fab9ff/diff:/home/runner/.local/share/containers/storage/overlay/a22a0efc44c34e7f73e60685bec4d775a146357991ca6579def54083769af019/diff:/home/runner/.local/share/containers/storage/overlay/4f935a91c3f57a20445507acaa0c94f1eb5331b52e3ac899569ac32a3eab8ef4/diff:/home/runner/.local/share/containers/storage/overlay/75865f24a3d37fbc19542ef455f2d43d7feae3e3ea021e64545794be21772cc5/diff:/home/runner/.local/share/containers/storage/overlay/0d5db1a3d4c51a4cf1eed284bb9d91a775223a081dcee3339044d45fb44feaec/diff:/home/runner/.local/share/containers/storage/overlay/9f948a369ac02baaa61c28dc3bc816fd383924099496449916d84aec9ac2ddc5/diff:/home/runner/.local/share/containers/storage/overlay/79dd1f4c855cd061f687a994426634cf5f84c8ecdbc66c7a7d118e828dd93c99/diff",
+              "UpperDir": "/home/runner/.local/share/containers/storage/overlay/c48ebe49779360b856fea660ab723da9812715193e40b9fd186ca018e43542c8/diff",
+              "WorkDir": "/home/runner/.local/share/containers/storage/overlay/c48ebe49779360b856fea660ab723da9812715193e40b9fd186ca018e43542c8/work"
+            }
+          },
+          "RootFS": {
+            "Type": "layers",
+            "Layers": [
+              "sha256:79dd1f4c855cd061f687a994426634cf5f84c8ecdbc66c7a7d118e828dd93c99",
+              "sha256:89e03e169e79be7bf64a4c21f7fc25be1ab7d38cc19b2210e6d58a49457bcf32",
+              "sha256:4c4d74459b88a7029283b554a103555322eb0829289203e5c9c74c4965694e9f",
+              "sha256:bba7945e4d674052569e2af1d6856a3838687c1932df2f865a558ca9a50387d0",
+              "sha256:95c53cac7abfb2b16744741e85bd70c1ede1b22b1887c1b6a5d4cc8ed1bbb940",
+              "sha256:b3cc8a7e1384e87706f85a79cf3bc365dc762f25cc2297e8b55bead86710ab9e",
+              "sha256:cccef29a84914b625197fafadc769f408019fe3eef63e8e1db9052b2a261047f",
+              "sha256:45a0cd533aa95bd949252b3e41c8a5f2c7d49df1bfbccb575b68a78edb5a635c",
+              "sha256:293637c04abf6a0a70c7bd6b1edf75e968fd91549f7f9cc456d07258a4e0c3db",
+              "sha256:48c24b5449b50f964fef8a4b9cc3703d142c6578690a2818085dd25e53e76980",
+              "sha256:2d07009d969b684e2c10b120f01a3e4d3dc1b086c4ecd285c976ceaccc367ec9",
+              "sha256:e490ae5c4914636f6a229f9d80ef5ae5f57c0eb8fe83e22b286c5dac2bc16692",
+              "sha256:32b752f03b974147f9b5730baa07fb0eb0537032b84466fd3f06875c7cee2046",
+              "sha256:5bc153679b363f5c509ae960a9a6c4d56909bdc732ee7d608f438dcbf5de99d8"
+            ]
+          },
+          "Labels": null,
+          "Annotations": {
+            "com.docker.official-images.bashbrew.arch": "amd64",
+            "org.opencontainers.image.base.digest": "sha256:486b1c3d3a6a836d2518d5ac1a7b522050a034ae83b47c063fd45d550b2b9dbf",
+            "org.opencontainers.image.base.name": "debian:trixie-slim",
+            "org.opencontainers.image.created": "2026-05-08T19:33:16Z",
+            "org.opencontainers.image.revision": "3b6b5fca9ca40c84b77540fc605ea8e8353b13b2",
+            "org.opencontainers.image.source": "https://github.com/docker-library/postgres.git#3b6b5fca9ca40c84b77540fc605ea8e8353b13b2:16/trixie",
+            "org.opencontainers.image.url": "https://hub.docker.com/_/postgres",
+            "org.opencontainers.image.version": "16.13"
+          },
+          "ManifestType": "application/vnd.oci.image.manifest.v1+json",
+          "User": "",
+          "History": [
+            {
+              "created": "2026-05-05T00:00:00Z",
+              "created_by": "# debian.sh --arch 'amd64' out/ 'trixie' '@1777939200'",
+              "comment": "debuerreotype 0.17"
+            },
+            {
+              "created": "2026-05-08T19:33:26.795726556Z",
+              "created_by": "RUN /bin/sh -c set -eux; \tgroupadd -r postgres --gid=999; \tuseradd -r -g postgres --uid=999 --home-dir=/var/lib/postgresql --shell=/bin/bash postgres; \tinstall --verbose --directory --owner postgres --group postgres --mode 1777 /var/lib/postgresql # buildkit",
+              "comment": "buildkit.dockerfile.v0"
+            },
+            {
+              "created": "2026-05-08T19:33:32.479186023Z",
+              "created_by": "RUN /bin/sh -c set -ex; \tapt-get update; \tapt-get install -y --no-install-recommends \t\tgnupg \t\tless \t; \trm -rf /var/lib/apt/lists/* # buildkit",
+              "comment": "buildkit.dockerfile.v0"
+            },
+            {
+              "created": "2026-05-08T19:33:39.635651149Z",
+              "created_by": "ENV GOSU_VERSION=1.19",
+              "comment": "buildkit.dockerfile.v0",
+              "empty_layer": true
+            },
+            {
+              "created": "2026-05-08T19:33:39.635651149Z",
+              "created_by": "RUN /bin/sh -c set -eux; \tsavedAptMark=\"$(apt-mark showmanual)\"; \tapt-get update; \tapt-get install -y --no-install-recommends ca-certificates wget; \trm -rf /var/lib/apt/lists/*; \tdpkgArch=\"$(dpkg --print-architecture | awk -F- '{ print $NF }')\"; \twget -O /usr/local/bin/gosu \"https://github.com/tianon/gosu/releases/download/$GOSU_VERSION/gosu-$dpkgArch\"; \twget -O /usr/local/bin/gosu.asc \"https://github.com/tianon/gosu/releases/download/$GOSU_VERSION/gosu-$dpkgArch.asc\"; \texport GNUPGHOME=\"$(mktemp -d)\"; \tgpg --batch --keyserver hkps://keys.openpgp.org --recv-keys B42F6819007F00F88E364FD4036A9C25BF357DD4; \tgpg --batch --verify /usr/local/bin/gosu.asc /usr/local/bin/gosu; \tgpgconf --kill all; \trm -rf \"$GNUPGHOME\" /usr/local/bin/gosu.asc; \tapt-mark auto '.*' > /dev/null; \t[ -z \"$savedAptMark\" ] || apt-mark manual $savedAptMark > /dev/null; \tapt-get purge -y --auto-remove -o APT::AutoRemove::RecommendsImportant=false; \tchmod +x /usr/local/bin/gosu; \tgosu --version; \tgosu nobody true # buildkit",
+              "comment": "buildkit.dockerfile.v0"
+            },
+            {
+              "created": "2026-05-08T19:33:44.55590106Z",
+              "created_by": "RUN /bin/sh -c set -eux; \tif [ -f /etc/dpkg/dpkg.cfg.d/docker ]; then \t\tgrep -q '/usr/share/locale' /etc/dpkg/dpkg.cfg.d/docker; \t\tsed -ri '/\\/usr\\/share\\/locale/d' /etc/dpkg/dpkg.cfg.d/docker; \t\t! grep -q '/usr/share/locale' /etc/dpkg/dpkg.cfg.d/docker; \tfi; \tapt-get update; apt-get install -y --no-install-recommends locales; rm -rf /var/lib/apt/lists/*; \techo 'en_US.UTF-8 UTF-8' >> /etc/locale.gen; \tlocale-gen; \tlocale -a | grep 'en_US.utf8' # buildkit",
+              "comment": "buildkit.dockerfile.v0"
+            },
+            {
+              "created": "2026-05-08T19:33:44.55590106Z",
+              "created_by": "ENV LANG=en_US.utf8",
+              "comment": "buildkit.dockerfile.v0",
+              "empty_layer": true
+            },
+            {
+              "created": "2026-05-08T19:33:47.823290501Z",
+              "created_by": "RUN /bin/sh -c set -eux; \tapt-get update; \tapt-get install -y --no-install-recommends \t\tlibnss-wrapper \t\txz-utils \t\tzstd \t; \trm -rf /var/lib/apt/lists/* # buildkit",
+              "comment": "buildkit.dockerfile.v0"
+            },
+            {
+              "created": "2026-05-08T19:33:47.92911377Z",
+              "created_by": "RUN /bin/sh -c mkdir /docker-entrypoint-initdb.d # buildkit",
+              "comment": "buildkit.dockerfile.v0"
+            },
+            {
+              "created": "2026-05-08T19:33:48.595564705Z",
+              "created_by": "RUN /bin/sh -c set -ex; \tkey='B97B0AFCAA1A47F044F244A07FCC7D46ACCC4CF8'; \texport GNUPGHOME=\"$(mktemp -d)\"; \tmkdir -p /usr/local/share/keyrings/; \tgpg --batch --keyserver keyserver.ubuntu.com --recv-keys \"$key\"; \tgpg --batch --export --armor \"$key\" > /usr/local/share/keyrings/postgres.gpg.asc; \tgpgconf --kill all; \trm -rf \"$GNUPGHOME\" # buildkit",
+              "comment": "buildkit.dockerfile.v0"
+            },
+            {
+              "created": "2026-05-08T19:33:48.595564705Z",
+              "created_by": "ENV PG_MAJOR=16",
+              "comment": "buildkit.dockerfile.v0",
+              "empty_layer": true
+            },
+            {
+              "created": "2026-05-08T19:33:48.595564705Z",
+              "created_by": "ENV PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/lib/postgresql/16/bin",
+              "comment": "buildkit.dockerfile.v0",
+              "empty_layer": true
+            },
+            {
+              "created": "2026-05-08T19:33:48.595564705Z",
+              "created_by": "ENV PG_VERSION=16.13-1.pgdg13+1",
+              "comment": "buildkit.dockerfile.v0",
+              "empty_layer": true
+            },
+            {
+              "created": "2026-05-08T19:34:01.063794782Z",
+              "created_by": "RUN /bin/sh -c set -ex; \t\texport PYTHONDONTWRITEBYTECODE=1; \t\tdpkgArch=\"$(dpkg --print-architecture)\"; \taptRepo=\"[ signed-by=/usr/local/share/keyrings/postgres.gpg.asc ] http://apt.postgresql.org/pub/repos/apt trixie-pgdg main $PG_MAJOR\"; \tcase \"$dpkgArch\" in \t\tamd64 | arm64 | ppc64el) \t\t\techo \"deb $aptRepo\" > /etc/apt/sources.list.d/pgdg.list; \t\t\tapt-get update; \t\t\t;; \t\t*) \t\t\techo \"deb-src $aptRepo\" > /etc/apt/sources.list.d/pgdg.list; \t\t\t\t\t\tsavedAptMark=\"$(apt-mark showmanual)\"; \t\t\t\t\t\ttempDir=\"$(mktemp -d)\"; \t\t\tcd \"$tempDir\"; \t\t\t\t\t\tapt-get update; \t\t\tapt-get install -y --no-install-recommends dpkg-dev; \t\t\techo \"deb [ trusted=yes ] file://$tempDir ./\" > /etc/apt/sources.list.d/temp.list; \t\t\t_update_repo() { \t\t\t\tdpkg-scanpackages . > Packages; \t\t\t\tapt-get -o Acquire::GzipIndexes=false update; \t\t\t}; \t\t\t_update_repo; \t\t\t\t\t\tnproc=\"$(nproc)\"; \t\t\texport DEB_BUILD_OPTIONS=\"nocheck parallel=$nproc\"; \t\t\tapt-get build-dep -y postgresql-common-dev; \t\t\tapt-get source --compile postgresql-common-dev; \t\t\t_update_repo; \t\t\tapt-get build-dep -y \"postgresql-$PG_MAJOR=$PG_VERSION\"; \t\t\tapt-get source --compile \"postgresql-$PG_MAJOR=$PG_VERSION\"; \t\t\t\t\t\t\t\t\tapt-mark showmanual | xargs apt-mark auto > /dev/null; \t\t\tapt-mark manual $savedAptMark; \t\t\t\t\t\tls -lAFh; \t\t\t_update_repo; \t\t\tgrep '^Package: ' Packages; \t\t\tcd /; \t\t\t;; \tesac; \t\tapt-get install -y --no-install-recommends postgresql-common; \tsed -ri 's/#(create_main_cluster) .*$/\\1 = false/' /etc/postgresql-common/createcluster.conf; \tapt-get install -y --no-install-recommends \t\t\"postgresql-$PG_MAJOR=$PG_VERSION\" \t; \t\trm -rf /var/lib/apt/lists/*; \t\tif [ -n \"$tempDir\" ]; then \t\tapt-get purge -y --auto-remove; \t\trm -rf \"$tempDir\" /etc/apt/sources.list.d/temp.list; \tfi; \t\tfind /usr -name '*.pyc' -type f -exec bash -c 'for pyc; do dpkg -S \"$pyc\" &> /dev/null || rm -vf \"$pyc\"; done' -- '{}' +; \t\tpostgres --version # buildkit",
+              "comment": "buildkit.dockerfile.v0"
+            },
+            {
+              "created": "2026-05-08T19:34:01.197357395Z",
+              "created_by": "RUN /bin/sh -c set -eux; \tdpkg-divert --add --rename --divert \"/usr/share/postgresql/postgresql.conf.sample.dpkg\" \"/usr/share/postgresql/$PG_MAJOR/postgresql.conf.sample\"; \tcp -v /usr/share/postgresql/postgresql.conf.sample.dpkg /usr/share/postgresql/postgresql.conf.sample; \tln -sv ../postgresql.conf.sample \"/usr/share/postgresql/$PG_MAJOR/\"; \tsed -ri \"s!^#?(listen_addresses)\\s*=\\s*\\S+.*!\\1 = '*'!\" /usr/share/postgresql/postgresql.conf.sample; \tgrep -F \"listen_addresses = '*'\" /usr/share/postgresql/postgresql.conf.sample # buildkit",
+              "comment": "buildkit.dockerfile.v0"
+            },
+            {
+              "created": "2026-05-08T19:34:01.289176414Z",
+              "created_by": "RUN /bin/sh -c install --verbose --directory --owner postgres --group postgres --mode 3777 /var/run/postgresql # buildkit",
+              "comment": "buildkit.dockerfile.v0"
+            },
+            {
+              "created": "2026-05-08T19:34:01.289176414Z",
+              "created_by": "ENV PGDATA=/var/lib/postgresql/data",
+              "comment": "buildkit.dockerfile.v0",
+              "empty_layer": true
+            },
+            {
+              "created": "2026-05-08T19:34:01.393988403Z",
+              "created_by": "RUN /bin/sh -c install --verbose --directory --owner postgres --group postgres --mode 1777 \"$PGDATA\" # buildkit",
+              "comment": "buildkit.dockerfile.v0"
+            },
+            {
+              "created": "2026-05-08T19:34:01.393988403Z",
+              "created_by": "VOLUME [/var/lib/postgresql/data]",
+              "comment": "buildkit.dockerfile.v0",
+              "empty_layer": true
+            },
+            {
+              "created": "2026-05-08T19:34:01.440462535Z",
+              "created_by": "COPY docker-entrypoint.sh docker-ensure-initdb.sh /usr/local/bin/ # buildkit",
+              "comment": "buildkit.dockerfile.v0"
+            },
+            {
+              "created": "2026-05-08T19:34:01.552877682Z",
+              "created_by": "RUN /bin/sh -c ln -sT docker-ensure-initdb.sh /usr/local/bin/docker-enforce-initdb.sh # buildkit",
+              "comment": "buildkit.dockerfile.v0"
+            },
+            {
+              "created": "2026-05-08T19:34:01.552877682Z",
+              "created_by": "ENTRYPOINT [\"docker-entrypoint.sh\"]",
+              "comment": "buildkit.dockerfile.v0",
+              "empty_layer": true
+            },
+            {
+              "created": "2026-05-08T19:34:01.552877682Z",
+              "created_by": "STOPSIGNAL SIGINT",
+              "comment": "buildkit.dockerfile.v0",
+              "empty_layer": true
+            },
+            {
+              "created": "2026-05-08T19:34:01.552877682Z",
+              "created_by": "EXPOSE map[5432/tcp:{}]",
+              "comment": "buildkit.dockerfile.v0",
+              "empty_layer": true
+            },
+            {
+              "created": "2026-05-08T19:34:01.552877682Z",
+              "created_by": "CMD [\"postgres\"]",
+              "comment": "buildkit.dockerfile.v0",
+              "empty_layer": true
+            }
+          ],
+          "NamesHistory": [
+            "docker.io/library/postgres:16.13"
+          ]
+        },
+        {
+          "Id": "cfeca9a55d0f8353620d75e8ccb882f000d314e8ce43290014d4467827de8747",
+          "Digest": "sha256:de0ee358cdd672f7017a003bed21e9ac9ed48a27c922a59b18175b6e82fa7fee",
+          "RepoTags": [
+            "mcr.microsoft.com/dotnet/aspnet:10.0"
+          ],
+          "RepoDigests": [
+            "mcr.microsoft.com/dotnet/aspnet@sha256:43cbcf11fd6f88c0375c9c0f7fe59af619abeb323befe5f57dc1502b5a05d8c3",
+            "mcr.microsoft.com/dotnet/aspnet@sha256:de0ee358cdd672f7017a003bed21e9ac9ed48a27c922a59b18175b6e82fa7fee"
+          ],
+          "Parent": "",
+          "Comment": "",
+          "Created": "2026-10-26T00:29:18.960447072Z",
+          "Config": {
+            "Env": [
+              "PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin",
+              "APP_UID=1654",
+              "ASPNETCORE_HTTP_PORTS=8080",
+              "DOTNET_RUNNING_IN_CONTAINER=true",
+              "DOTNET_VERSION=10.0.14",
+              "ASPNET_VERSION=10.0.14"
+            ],
+            "Cmd": [
+              "/bin/bash"
+            ],
+            "Labels": {
+              "org.opencontainers.image.version": "24.04"
+            }
+          },
+          "Version": "",
+          "Author": "",
+          "Architecture": "amd64",
+          "Os": "linux",
+          "Size": 234035400,
+          "VirtualSize": 234035400,
+          "GraphDriver": {
+            "Name": "overlay",
+            "Data": {
+              "LowerDir": "/home/runner/.local/share/containers/storage/overlay/e04d2a433094c5b18d7b7e0c3d7cf5cb0ab5a59bd9d895c22146dbb55079fcd6/diff:/home/runner/.local/share/containers/storage/overlay/1fb712514e965c30b136b929c14b674b890a4cc36472def855d4e82ca46eee72/diff:/home/runner/.local/share/containers/storage/overlay/29d0b33abb8e79962fc5b939e89bcedf94d4c1ff15efd8fa9d93571647037de2/diff:/home/runner/.local/share/containers/storage/overlay/8ed7c1514ef29330d0a7353e4975aa866451248950be611e224dbd17f9b1b0a7/diff:/home/runner/.local/share/containers/storage/overlay/bec87777bc2fb2edcdf9af11df1531469e7df911309c1413082b18fcb8610278/diff",
+              "UpperDir": "/home/runner/.local/share/containers/storage/overlay/c22f3b05c1d0ab58b78fe8e9e963a0f31ed655ca82d18b75b627ccc633cbc81e/diff",
+              "WorkDir": "/home/runner/.local/share/containers/storage/overlay/c22f3b05c1d0ab58b78fe8e9e963a0f31ed655ca82d18b75b627ccc633cbc81e/work"
+            }
+          },
+          "RootFS": {
+            "Type": "layers",
+            "Layers": [
+              "sha256:bec87777bc2fb2edcdf9af11df1531469e7df911309c1413082b18fcb8610278",
+              "sha256:fa09e76fa81be98b74d710f954aa4a7cf274e5b969857dd2f12b0a8253c053bb",
+              "sha256:7be251a39e9c7e7dac1b4ad1d9801fab59e0890cda8cfa055d168e00cfb22186",
+              "sha256:2c16277b36ff173925e5ffc125edeecb5912a6356f069a7ae02d5abcd771cfcb",
+              "sha256:361fe91f35cc8f036a9638f929b4842a38f1a3f5e1c4d4d6479becbca19fbad1",
+              "sha256:eaa51743b39d235e5d05870b93b60e442a567d79c05df1bf7abca7047ea12355"
+            ]
+          },
+          "Labels": {
+            "org.opencontainers.image.version": "24.04"
+          },
+          "Annotations": {},
+          "ManifestType": "application/vnd.docker.distribution.manifest.v2+json",
+          "User": "",
+          "History": [
+            {
+              "created": "2026-10-25T14:17:45.134994061Z",
+              "created_by": "/bin/sh -c #(nop)  ARG RELEASE",
+              "empty_layer": true
+            },
+            {
+              "created": "2026-10-25T14:17:45.174235109Z",
+              "created_by": "/bin/sh -c #(nop)  ARG LAUNCHPAD_BUILD_ARCH",
+              "empty_layer": true
+            },
+            {
+              "created": "2026-10-25T14:17:45.213100118Z",
+              "created_by": "/bin/sh -c #(nop)  LABEL org.opencontainers.image.version=24.04",
+              "empty_layer": true
+            },
+            {
+              "created": "2026-10-25T14:17:47.432058459Z",
+              "created_by": "/bin/sh -c #(nop) ADD file:eed88e94d6aa7c9da62836e137f889e03988c1a6b237b0cedb6ca666dfaa98ea in / "
+            },
+            {
+              "created": "2026-10-25T14:17:47.841356155Z",
+              "created_by": "/bin/sh -c #(nop)  CMD [\"/bin/bash\"]",
+              "empty_layer": true
+            },
+            {
+              "created": "2026-10-26T00:29:02.608833857Z",
+              "created_by": "ENV APP_UID=1654 ASPNETCORE_HTTP_PORTS=8080 DOTNET_RUNNING_IN_CONTAINER=true",
+              "comment": "buildkit.dockerfile.v0",
+              "empty_layer": true
+            },
+            {
+              "created": "2026-10-26T00:29:02.608833857Z",
+              "created_by": "RUN /bin/sh -c apt-get update     && apt-get install -y --no-install-recommends         ca-certificates                 libc6         libgcc-s1         libicu74         libssl3t64         libstdc++6         tzdata         tzdata-legacy     && rm -rf /var/lib/apt/lists/* # buildkit",
+              "comment": "buildkit.dockerfile.v0"
+            },
+            {
+              "created": "2026-10-26T00:29:04.357142295Z",
+              "created_by": "RUN /bin/sh -c groupadd         --gid=$APP_UID         app     && useradd --no-log-init         --uid=$APP_UID         --gid=$APP_UID         --create-home         app # buildkit",
+              "comment": "buildkit.dockerfile.v0"
+            },
+            {
+              "created": "2026-10-26T00:29:11.003432483Z",
+              "created_by": "ENV DOTNET_VERSION=10.0.14",
+              "comment": "buildkit.dockerfile.v0",
+              "empty_layer": true
+            },
+            {
+              "created": "2026-10-26T00:29:11.003432483Z",
+              "created_by": "COPY /dotnet /usr/share/dotnet # buildkit",
+              "comment": "buildkit.dockerfile.v0"
+            },
+            {
+              "created": "2026-10-26T00:29:12.094268109Z",
+              "created_by": "RUN /bin/sh -c ln -s /usr/share/dotnet/dotnet /usr/bin/dotnet # buildkit",
+              "comment": "buildkit.dockerfile.v0"
+            },
+            {
+              "created": "2026-10-26T00:29:18.960447072Z",
+              "created_by": "ENV ASPNET_VERSION=10.0.14",
+              "comment": "buildkit.dockerfile.v0",
+              "empty_layer": true
+            },
+            {
+              "created": "2026-10-26T00:29:18.960447072Z",
+              "created_by": "COPY /dotnet /usr/share/dotnet # buildkit",
+              "comment": "buildkit.dockerfile.v0"
+            }
+          ],
+          "NamesHistory": [
+            "mcr.microsoft.com/dotnet/aspnet:10.0"
+          ]
+        }
+      ],
+      "membershipBefore": {
+        "rows": [
+          [
+            "e2-f10-podman-bridge",
+            "10.78.30.11",
+            11150,
+            3,
+            30050
+          ],
+          [
+            "e2-f10-podman-bridge",
+            "10.78.30.12",
+            11151,
+            3,
+            30051
+          ]
+        ],
+        "version": 4
+      },
+      "generationsBefore": [
+        [
+          "10.78.30.11",
+          11150,
+          152657552,
+          3
+        ],
+        [
+          "10.78.30.12",
+          11151,
+          152657554,
+          3
+        ]
+      ],
+      "initialSql": {
+        "effects": {
+          "committedOperations": 0,
+          "postings": 0,
+          "outboxEvents": 0
+        },
+        "oracle": {
+          "nonnegative": true,
+          "conserved": true,
+          "balancedPostings": true,
+          "twoPostingsPerCommit": true,
+          "noPostingsForRejection": true,
+          "outboxAtomic": true,
+          "projectionAgrees": true
+        }
+      },
+      "firstControlledProbe": {
+        "status": "CONTROLLED_PROBED",
+        "mode": "alternating",
+        "accountHostNodes": {
+          "1": "e2f10-primary:1",
+          "2": "e2f10-secondary:1",
+          "3": "e2f10-primary:1",
+          "4": "e2f10-secondary:1",
+          "5": "e2f10-primary:1",
+          "6": "e2f10-secondary:1",
+          "7": "e2f10-primary:1",
+          "8": "e2f10-secondary:1",
+          "9": "e2f10-primary:1",
+          "10": "e2f10-secondary:1",
+          "11": "e2f10-primary:1",
+          "12": "e2f10-secondary:1",
+          "13": "e2f10-primary:1",
+          "14": "e2f10-secondary:1",
+          "15": "e2f10-primary:1",
+          "16": "e2f10-secondary:1"
+        },
+        "accountHostPids": {
+          "1": 1,
+          "2": 1,
+          "3": 1,
+          "4": 1,
+          "5": 1,
+          "6": 1,
+          "7": 1,
+          "8": 1,
+          "9": 1,
+          "10": 1,
+          "11": 1,
+          "12": 1,
+          "13": 1,
+          "14": 1,
+          "15": 1,
+          "16": 1
+        },
+        "requestedNodeNames": {
+          "1": "e2f10-primary",
+          "2": "e2f10-secondary",
+          "3": "e2f10-primary",
+          "4": "e2f10-secondary",
+          "5": "e2f10-primary",
+          "6": "e2f10-secondary",
+          "7": "e2f10-primary",
+          "8": "e2f10-secondary",
+          "9": "e2f10-primary",
+          "10": "e2f10-secondary",
+          "11": "e2f10-primary",
+          "12": "e2f10-secondary",
+          "13": "e2f10-primary",
+          "14": "e2f10-secondary",
+          "15": "e2f10-primary",
+          "16": "e2f10-secondary"
+        },
+        "requestedSiloAddresses": {
+          "1": "S10.78.30.11:11150:152657552",
+          "2": "S10.78.30.12:11151:152657554",
+          "3": "S10.78.30.11:11150:152657552",
+          "4": "S10.78.30.12:11151:152657554",
+          "5": "S10.78.30.11:11150:152657552",
+          "6": "S10.78.30.12:11151:152657554",
+          "7": "S10.78.30.11:11150:152657552",
+          "8": "S10.78.30.12:11151:152657554",
+          "9": "S10.78.30.11:11150:152657552",
+          "10": "S10.78.30.12:11151:152657554",
+          "11": "S10.78.30.11:11150:152657552",
+          "12": "S10.78.30.12:11151:152657554",
+          "13": "S10.78.30.11:11150:152657552",
+          "14": "S10.78.30.12:11151:152657554",
+          "15": "S10.78.30.11:11150:152657552",
+          "16": "S10.78.30.12:11151:152657554"
+        },
+        "activeHosts": [
+          "S10.78.30.11:11150:152657552",
+          "S10.78.30.12:11151:152657554"
+        ],
+        "financialCommandsDispatched": 0,
+        "placementHintRetained": false,
+        "mechanism": "C01_TEST_ONLY_COMPATIBLE_SILO_PLACEMENT_HINT",
+        "limitation": "Hints select new activations only; they do not relocate existing grains or authorize SQL COMMIT"
+      },
+      "classification": {
+        "classification": "PLACEMENT_PRECONDITION_SATISFIED",
+        "financialTransferTestPerformed": false,
+        "bankLedgerEffectClaim": false,
+        "placementSatisfiesPrecondition": true,
+        "membershipStatuses": {
+          "11150": 3,
+          "11151": 3
+        },
+        "accountsSampled": 16,
+        "siloCounts": {
+          "e2f10-primary": 8,
+          "e2f10-secondary": 8
+        },
+        "accountsBySilo": {
+          "e2f10-primary": [
+            1,
+            3,
+            5,
+            7,
+            9,
+            11,
+            13,
+            15
+          ],
+          "e2f10-secondary": [
+            2,
+            4,
+            6,
+            8,
+            10,
+            12,
+            14,
+            16
+          ]
+        },
+        "reason": "Sampled grain activations on each expected silo required; network reachability does not prove placement. Fresh-key identity probes are diagnostic only; they do NOT replace the original financial-account 1..16 precondition."
+      },
+      "ordinaryClientProbeAfterSeeding": {
+        "experiment": "E2-Two-Independent-OS-Silos",
+        "status": "PROBED",
+        "diagnosticOnly": false,
+        "probeStart": 1,
+        "probeCount": 16,
+        "clientPid": 20,
+        "accountHostPids": {
+          "1": 1,
+          "2": 1,
+          "3": 1,
+          "4": 1,
+          "5": 1,
+          "6": 1,
+          "7": 1,
+          "8": 1,
+          "9": 1,
+          "10": 1,
+          "11": 1,
+          "12": 1,
+          "13": 1,
+          "14": 1,
+          "15": 1,
+          "16": 1
+        },
+        "accountHostNodes": {
+          "1": "e2f10-primary:1",
+          "2": "e2f10-secondary:1",
+          "3": "e2f10-primary:1",
+          "4": "e2f10-secondary:1",
+          "5": "e2f10-primary:1",
+          "6": "e2f10-secondary:1",
+          "7": "e2f10-primary:1",
+          "8": "e2f10-secondary:1",
+          "9": "e2f10-primary:1",
+          "10": "e2f10-secondary:1",
+          "11": "e2f10-primary:1",
+          "12": "e2f10-secondary:1",
+          "13": "e2f10-primary:1",
+          "14": "e2f10-secondary:1",
+          "15": "e2f10-primary:1",
+          "16": "e2f10-secondary:1"
+        },
+        "clientNodeIdentity": "e2f10-client:20"
+      },
+      "beforeKillResults": {
+        "experiment": "E2-Two-Independent-OS-Silos",
+        "status": "EXECUTED",
+        "clientPid": 37,
+        "results": [
+          {
+            "command": "c01-controlled-before-secondary",
+            "status": "COMMITTED",
+            "retries": 0,
+            "retrySqlStates": [],
+            "handledBy": "grain-2",
+            "actualSiloProcessId": 1,
+            "actualSiloNodeIdentity": "e2f10-secondary:1"
+          },
+          {
+            "command": "c01-controlled-before-primary",
+            "status": "COMMITTED",
+            "retries": 0,
+            "retrySqlStates": [],
+            "handledBy": "grain-1",
+            "actualSiloProcessId": 1,
+            "actualSiloNodeIdentity": "e2f10-primary:1"
+          }
+        ]
+      },
+      "beforeKillSql": {
+        "effects": {
+          "committedOperations": 2,
+          "postings": 4,
+          "outboxEvents": 2
+        },
+        "oracle": {
+          "nonnegative": true,
+          "conserved": true,
+          "balancedPostings": true,
+          "twoPostingsPerCommit": true,
+          "noPostingsForRejection": true,
+          "outboxAtomic": true,
+          "projectionAgrees": true
+        }
+      },
+      "killUtc": "2026-11-02T20:52:43.069250+00:00",
+      "secondaryExitCode": 137,
+      "survivorProbe": {
+        "experiment": "E2-Two-Independent-OS-Silos",
+        "status": "PROBED",
+        "diagnosticOnly": false,
+        "probeStart": 1,
+        "probeCount": 16,
+        "clientPid": 54,
+        "accountHostPids": {
+          "1": 1,
+          "2": 1,
+          "3": 1,
+          "4": 1,
+          "5": 1,
+          "6": 1,
+          "7": 1,
+          "8": 1,
+          "9": 1,
+          "10": 1,
+          "11": 1,
+          "12": 1,
+          "13": 1,
+          "14": 1,
+          "15": 1,
+          "16": 1
+        },
+        "accountHostNodes": {
+          "1": "e2f10-primary:1",
+          "2": "e2f10-primary:1",
+          "3": "e2f10-primary:1",
+          "4": "e2f10-primary:1",
+          "5": "e2f10-primary:1",
+          "6": "e2f10-primary:1",
+          "7": "e2f10-primary:1",
+          "8": "e2f10-primary:1",
+          "9": "e2f10-primary:1",
+          "10": "e2f10-primary:1",
+          "11": "e2f10-primary:1",
+          "12": "e2f10-primary:1",
+          "13": "e2f10-primary:1",
+          "14": "e2f10-primary:1",
+          "15": "e2f10-primary:1",
+          "16": "e2f10-primary:1"
+        },
+        "clientNodeIdentity": "e2f10-client:54"
+      },
+      "membershipAfterKill": {
+        "rows": [
+          [
+            "e2-f10-podman-bridge",
+            "10.78.30.11",
+            11150,
+            3,
+            30050
+          ],
+          [
+            "e2-f10-podman-bridge",
+            "10.78.30.12",
+            11151,
+            6,
+            30051
+          ]
+        ],
+        "version": 5
+      },
+      "generationsAfterKill": [
+        [
+          "10.78.30.11",
+          11150,
+          152657552,
+          3
+        ],
+        [
+          "10.78.30.12",
+          11151,
+          152657554,
+          6
+        ]
+      ],
+      "replayResults": {
+        "experiment": "E2-Two-Independent-OS-Silos",
+        "status": "EXECUTED",
+        "clientPid": 71,
+        "results": [
+          {
+            "command": "c01-controlled-before-secondary",
+            "status": "DUPLICATE_COMMITTED",
+            "retries": 0,
+            "retrySqlStates": [],
+            "handledBy": "grain-2",
+            "actualSiloProcessId": 1,
+            "actualSiloNodeIdentity": "e2f10-primary:1"
+          },
+          {
+            "command": "c01-controlled-after-kill",
+            "status": "COMMITTED",
+            "retries": 0,
+            "retrySqlStates": [],
+            "handledBy": "grain-2",
+            "actualSiloProcessId": 1,
+            "actualSiloNodeIdentity": "e2f10-primary:1"
+          }
+        ]
+      },
+      "afterKillSql": {
+        "effects": {
+          "committedOperations": 3,
+          "postings": 6,
+          "outboxEvents": 3
+        },
+        "oracle": {
+          "nonnegative": true,
+          "conserved": true,
+          "balancedPostings": true,
+          "twoPostingsPerCommit": true,
+          "noPostingsForRejection": true,
+          "outboxAtomic": true,
+          "projectionAgrees": true
+        }
+      },
+      "generationsAfterRestart": [
+        [
+          "10.78.30.11",
+          11150,
+          152657552,
+          3
+        ],
+        [
+          "10.78.30.12",
+          11151,
+          152657554,
+          6
+        ],
+        [
+          "10.78.30.12",
+          11151,
+          152657581,
+          3
+        ]
+      ],
+      "restartedSecondaryContainerId": "afce0620f291b71d11c187fa587673dc7b1bc41218ac6ff8866e901cc5a51cfc",
+      "restartedSecondaryHostPid": 5127,
+      "restartObservedUtc": "2026-11-02T20:53:03.195929+00:00",
+      "finalSql": {
+        "effects": {
+          "committedOperations": 3,
+          "postings": 6,
+          "outboxEvents": 3
+        },
+        "oracle": {
+          "nonnegative": true,
+          "conserved": true,
+          "balancedPostings": true,
+          "twoPostingsPerCommit": true,
+          "noPostingsForRejection": true,
+          "outboxAtomic": true,
+          "projectionAgrees": true
+        }
+      },
+      "result": "CONTROLLED_DUAL_PLACEMENT_SIGKILL_REPLAY_AND_FRESH_SECONDARY_REJOIN",
+      "endUtc": "2026-11-02T20:53:03.222645+00:00"
+    }
+  ],
+  "physicalHostsPerCase": 1,
+  "sourceSha256": {
+    "lab/e2_orleans/test_controlled_placement.py": "379a4eb698cc2fe563b7374eb98308201b3e2433446b84e2b8abece8323f784e",
+    "lab/e2_orleans/test_podman_network.py": "42563e883ecb5f0613828b6aa833f618351ea6a55038c2959cfb91d23060ce26",
+    "lab/e2_orleans/placement_contract.py": "c99a677e2f82ff0112f52135adc007e720b6297a00b3e5c37f36c13673834669",
+    "lab/e2_orleans/OrleansLab/ControlledPlacementProbe.cs": "a4b791df825799e41d4b1f1528d40248e77aaa8d5477fb7459799c8c58d10319",
+    "lab/e2_orleans/OrleansLab/ClusterModes.cs": "443f416cd7e0c057625feb71724e81842cbde13d3b8f9bf980a90a18165c00ef",
+    "lab/e2_orleans/OrleansLab/Contracts.cs": "f3afb0096a594e8ec18a29f8775de21ab0df40ebc55c89ad3486ef2f4cc943e0",
+    "lab/e2_orleans/OrleansLab/PgDurableLedger.cs": "50f4a26e74ee28f754dd39854098bd4333f8cef2faf2d39d269e38a8db4581ff",
+    ".github/workflows/e2-c01-controlled.yml": "099ec0859339a9352a6fd132f4ba3ceab8d1bd872c3f177a8f421b860bb21716"
+  },
+  "historicalCauseExplained": false,
+  "limitations": "Test-only placement seeding; does not explain original default-policy concentration, change accepted grain/ledger, prove physical HA, in-flight COMMIT failure, partitions, RTO SLA, sustained capacity or overall E2 acceptance.",
+  "endUtc": "2026-11-02T20:53:14.002169+00:00"
+}

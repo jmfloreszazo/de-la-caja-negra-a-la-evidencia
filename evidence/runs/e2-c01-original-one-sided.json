@@ -1,0 +1,47 @@
+{
+  "experiment": "E2-F10-C01-Podman-Startup-Diagnostic",
+  "status": "FAIL",
+  "classification": "ORIGINAL_FAILED_RUN_NOT_ACCEPTED",
+  "stage": "adonet-membership-setup",
+  "timestampUtc": "2026-10-31T14:32:29.143455+00:00",
+  "error": "AssertionError(\"Grain placement not achieved: {1: 'e2f10-secondary', 2: 'e2f10-secondary', 3: 'e2f10-secondary', 4: 'e2f10-secondary', 5: 'e2f10-secondary', 6: 'e2f10-secondary', 7: 'e2f10-secondary', 8: 'e2f10-secondary', 9: 'e2f10-secondary', 10: 'e2f10-secondary', 11: 'e2f10-secondary', 12: 'e2f10-secondary', 13: 'e2f10-secondary', 14: 'e2f10-secondary', 15: 'e2f10-secondary', 16: 'e2f10-secondary'}\")",
+  "disposableSqlHostPort": "127.0.0.1:55435",
+  "containers": {
+    "e2f10-pg": {
+      "status": "running",
+      "exitCode": 0,
+      "id": "09663e334c93136ee94e4f142b658028ca454c7928394dd75c0122b166291ef6",
+      "networkAddresses": {
+        "e2f10-net": "10.78.30.10"
+      },
+      "logsTail": "The files belonging to this database system will be owned by user \"postgres\".\nThis user must also own the server process.\n\nThe database cluster will be initialized with locale \"en_US.utf8\".\nThe default database encoding has accordingly been set to \"UTF8\".\nThe default text search configuration will be set to \"english\".\n\nData page checksums are disabled.\n\nfixing permissions on existing directory /var/lib/postgresql/data ... ok\ncreating subdirectories ... ok\nselecting dynamic shared memory implementation ... posix\nselecting default max_connections ... 100\nselecting default shared_buffers ... 128MB\nselecting default time zone ... Etc/UTC\ncreating configuration files ... ok\nrunning bootstrap script ... ok\nperforming post-bootstrap initialization ... ok\nsyncing data to disk ... ok\n\n\nSuccess. You can now start the database server using:\n\n    pg_ctl -D /var/lib/postgresql/data -l logfile start\n\nwaiting for server to start....2026-10-31 14:29:41.817 UTC [45] LOG:  starting PostgreSQL 16.13 (Debian 16.13-1.pgdg13+1) on x86_64-pc-linux-gnu, compiled by gcc (Debian 14.2.0-19) 14.2.0, 64-bit\n2026-10-31 14:29:41.818 UTC [45] LOG:  listening on Unix socket \"/var/run/postgresql/.s.PGSQL.5432\"\n2026-10-31 14:29:41.826 UTC [48] LOG:  database system was shut down at 2026-10-31 14:29:41 UTC\n2026-10-31 14:29:41.831 UTC [45] LOG:  database system is ready to accept connections\n done\nserver started\nCREATE DATABASE\n\n\n/usr/local/bin/docker-entrypoint.sh: ignoring /docker-entrypoint-initdb.d/*\n\nwaiting for server to shut down...2026-10-31 14:29:41.999 UTC [45] LOG:  received fast shutdown request\n.2026-10-31 14:29:41.999 UTC [45] LOG:  aborting any active transactions\n2026-10-31 14:29:42.001 UTC [45] LOG:  background worker \"logical replication launcher\" (PID 51) exited with exit code 1\n2026-10-31 14:29:42.002 UTC [46] LOG:  shutting down\n2026-10-31 14:29:42.019 UTC [46] LOG:  checkpoint starting: shutdown immediate\n2026-10-31 14:29:42.171 UTC [46] LOG:  checkpoint complete: wrote 926 buffers (5.7%); 0 WAL file(s) added, 0 removed, 0 recycled; write=0.068 s, sync=0.082 s, total=0.169 s; sync files=301, longest=0.065 s, average=0.001 s; distance=4273 kB, estimate=4273 kB; lsn=0/191F0E8, redo lsn=0/191F0E8\n2026-10-31 14:29:42.178 UTC [45] LOG:  database system is shut down\n done\nserver stopped\n\nPostgreSQL init process complete; ready for start up."
+    },
+    "e2f10-primary": {
+      "status": "running",
+      "exitCode": 0,
+      "id": "949e42e8e8beff9769fac37a8656ee4065b47495dfc8a8505ba0d0249057f1e3",
+      "networkAddresses": {
+        "e2f10-net": "10.78.30.11"
+      },
+      "logsTail": "E2_SILO_READY:primary:1"
+    },
+    "e2f10-secondary": {
+      "status": "running",
+      "exitCode": 0,
+      "id": "d0ae44ed57dc6946d67c2cf8dd140821f2529132a354313802f9cc8cd8e60872",
+      "networkAddresses": {
+        "e2f10-net": "10.78.30.12"
+      },
+      "logsTail": "E2_SILO_READY:secondary:1"
+    },
+    "e2f10-client": {
+      "status": "running",
+      "exitCode": 0,
+      "id": "569e8e61d74db849e38b1c36af3960beab273d052fa748eab17bb8801bec414b",
+      "networkAddresses": {
+        "e2f10-net": "10.78.30.13"
+      },
+      "logsTail": ""
+    }
+  }
+}

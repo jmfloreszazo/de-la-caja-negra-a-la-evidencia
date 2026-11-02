@@ -125,6 +125,34 @@ The table teaches one true thing and nothing more: when we add processes that co
 
 > **The service can answer OK and leave something else behind. The oracle looks at what remains.**
 
+## C01 · Control placement to make recovery testable
+
+The [original failure and three controlled cohorts](../../../evidence/runs/E2-C01-CONTROLLED.md)
+separate an experimental precondition from an accounting defect. The historical
+case observed all 16 accounts on secondary and correctly rejected its dual-host
+requirement. Repeating the same queries was not a new placement sample:
+existing activations could remain where they were.
+
+The test client uses placement hints only to activate and observe account keys
+1..16. In the negative control, all 16 were on secondary, the dual gate rejected
+them and no financial operations occurred. Alternating hints from another
+client did not redistribute them. A fresh fixture had observed 8/8 placement;
+subsequent financial clients used no hints and the same accepted AccountGrain
+and SQL ledger.
+
+All three cohorts verified actual secondary SIGKILL, reactivation on primary,
+idempotent replay, three operations/six postings/three outbox events and seven
+invariants. A fresh secondary container then rejoined with a new Active
+generation while the previous one remained Dead, without changing the ledger.
+Assigned runner IDs differed; hostnames repeat and each case still uses one
+machine. No physical HA is established.
+
+This is the controlled-fixture alternative preregistered for C01. **The
+historical concentration's cause remains unexplained**, the old test retains
+its rejection and the runtime default policy is unchanged. Placement hints
+also confer no financial authority: PostgreSQL still owns the effects. E2
+remains partially verified.
+
 ## C04 · The client loses its gateways, the ledger retains authority
 
 The [original C04 test](../../../evidence/runs/E2-C04-GATEWAY.md) cuts only

@@ -2176,6 +2176,34 @@ La tabla enseña una cosa verdadera y nada más: al añadir procesos que compite
 
 > **El servicio puede contestar OK y dejar otra cosa detrás. El oráculo mira lo que queda.**
 
+#### C01 · Controlar la colocación para poder probar la recuperación
+
+El [fallo original y las tres cohortes controladas](../evidence/runs/E2-C01-CONTROLLED.es.md)
+separan una precondición del ensayo de un defecto contable. El primer caso
+histórico observó las 16 cuentas en el secundario y rechazó correctamente la
+exigencia de dos hosts. Repetir las mismas consultas no era una nueva muestra
+de colocación: las activaciones existentes podían seguir donde estaban.
+
+El cliente de prueba usa indicaciones de colocación solo para activar y
+observar las cuentas 1..16. En el control negativo, las 16 se ubicaron en el
+secundario, el criterio dual falló y no hubo operaciones financieras. Pedir
+hints alternos desde otro cliente no las redistribuyó. En un fixture nuevo,
+el reparto observado fue 8/8; los clientes financieros posteriores funcionaron
+sin hints y con el mismo AccountGrain y ledger SQL aceptados.
+
+Las tres cohortes confirmaron el SIGKILL real del secundario, reactivación en
+primario, replay idempotente, tres operaciones/seis apuntes/tres outbox y siete
+invariantes. Después se reincorporó un contenedor secundario nuevo, con otra
+generación Active mientras la anterior seguía Dead, sin alterar el ledger.
+Los runner IDs asignados fueron distintos; repiten hostname y cada caso
+sigue usando una sola máquina. No se demuestra HA física.
+
+Esta es la alternativa de fixture controlado prevista para C01. **La causa
+de la concentración histórica no queda explicada**, la prueba antigua conserva
+su rechazo y no cambia la política predeterminada del runtime. Las indicaciones
+de colocación tampoco conceden autoridad financiera: los efectos siguen
+siendo responsabilidad de PostgreSQL. E2 permanece parcialmente verificado.
+
 #### C04 · El cliente pierde sus gateways, el ledger conserva la autoridad
 
 La [prueba original C04](../evidence/runs/E2-C04-GATEWAY.es.md) corta

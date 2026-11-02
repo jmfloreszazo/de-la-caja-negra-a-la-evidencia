@@ -441,12 +441,26 @@
       "protocol": null
     },
     {
+      "id": "E2-CONTROLLED-PLACEMENT",
+      "status": "ci_verified",
+      "es": "C01: rechazo unilateral y recuperación con activación controlada en tres cohortes",
+      "en": "C01: one-sided rejection and controlled-activation recovery across three cohorts",
+      "scope_es": "Tres jobs asignados distintos; cada caso en un host. Negativo unilateral sin efectos, positivo 8/8, SIGKILL/137, replay 3/6/3, oráculos 7/7 y secundario con generación nueva. No explica la causa histórica, no cambia el grain/ledger/política predeterminada ni demuestra HA física o capacidad sostenida.",
+      "scope_en": "Three distinct assigned jobs; each case on one host. One-sided negative without effects, 8/8 positive, SIGKILL/137, replay 3/6/3, 7/7 oracles and new-generation secondary rejoin. No historical cause explanation, accepted grain/ledger/default-policy change, physical HA or sustained capacity.",
+      "evidence": {
+        "kind": "github_actions",
+        "run_id": 41523019075,
+        "head_sha": "47ed0a087717ec6c02f64a173a63ee597a919f75"
+      },
+      "protocol": null
+    },
+    {
       "id": "E2",
       "status": "partially_verified",
       "es": "Orleans y ledger frente a distintas distribuciones de carga",
       "en": "Orleans and ledger under different load distributions",
-      "scope_es": "Subconjuntos originales de CI cubren coordinación, controles negativos, deadlock, reentrancia, recuperación entre silos, membresía SQL y fallos de proceso/red en un host. C04 añade fallback y corte de arranque del cliente; siguen pendientes C01, particiones asimétricas, recuperación completa, capacidad sostenida comparable y dominios físicos independientes; no hay PASS global ni equivalencia mainframe.",
-      "scope_en": "Original CI slices cover coordination, negative controls, deadlock, reentrancy, inter-silo recovery, SQL membership and process/network faults on one host. C04 adds client fallback and startup outage; C01, asymmetric partitions, complete recovery, comparable sustained capacity and independent physical fault domains remain; no overall PASS or mainframe equivalence.",
+      "scope_es": "Subconjuntos originales de CI cubren coordinación, deadlock, reentrancia, recuperación y fallos de proceso/red en un host; C04 verifica clientes nuevos y C01 dispone de alternativa controlada repetida en tres jobs. La causa histórica de la colocación unilateral sigue sin demostrarse. Faltan particiones asimétricas, recuperación completa, capacidad sostenida comparable y dominios físicos; no hay PASS global ni equivalencia mainframe.",
+      "scope_en": "Original CI slices cover coordination, deadlock, reentrancy, recovery and process/network faults on one host; C04 verifies fresh clients and C01 has a controlled alternative repeated in three jobs. The historical one-sided placement cause remains unproven. Asymmetric partitions, complete recovery, comparable sustained capacity and physical domains remain; no overall PASS or mainframe equivalence.",
       "evidence": null,
       "protocol": "lab/e2_orleans/EXPERIMENT_PROTOCOL.md"
     },
