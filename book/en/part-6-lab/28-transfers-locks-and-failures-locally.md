@@ -174,6 +174,40 @@ Four namespaces share one runner; the result neither explains the historical
 C01 placement failure nor establishes physical domains, sustained capacity or
 a production RTO. E2 remains partially verified.
 
+## C05/C06 · Packet direction does not decide what committed
+
+The [directional partition test](../../../evidence/runs/E2-C05-C06-DIRECTIONAL.md)
+starts from observed 8/8 placement and blocks inter-silo TCP egress in one
+direction at a time. SQL and gateways remain reachable. The 45-second captures
+confirm identical packets at both endpoints in the allowed direction and
+none received in the blocked direction. Failed TCP connections initiated from
+both sides do not make the cut symmetric: they also need return traffic.
+
+Two clients using different gateways send the same ID with amounts 31 and 37.
+In both orientations, the first times out after dispatch and the second gets
+COMMITTED; SQL identifies amount 37 as the winner. Management catalogs do not
+respond during the cut: **an unavailable view is not an empty list** and does
+not establish exclusive activation.
+
+| Egress blocked | Observed fault | First acknowledged attempts through both gateways after restoration |
+|---|---|---|
+| Primary to secondary | 46.0143 s | 1.6926 s |
+| Secondary to primary | 45.7963 s | 1.1831 s |
+
+After the original rules are restored, neither silo restarts and their
+containers, PIDs and generations remain unchanged. Identical replay returns
+DUPLICATE_COMMITTED, the different amount ID_CONFLICT and a new command
+COMMITTED. Each case ends with three operations, six postings and three outbox
+events, with seven passing SQL invariants. Four earlier failures remain
+preserved: two setup failures and two capture-shutdown failures; they are not
+retrospectively converted into successes.
+
+These are observed first acknowledged attempts, **not an RTO or sustained
+stable service**. One host per case, two short cuts and catalog samples do not
+establish absence of split brain, fencing or long-partition recovery. Those
+gates, sustained capacity and physical domains remain open. E2 remains
+partially verified.
+
 ## From atomic debit to authority transfer across two stores
 
 The next challenge is not making a PostgreSQL transfer work. It is

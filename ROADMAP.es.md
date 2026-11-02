@@ -10,7 +10,7 @@ Esta es la hoja de ruta **del repositorio**, no una declaración de que una migr
 | --- | --- | --- |
 | Libro, diagramas y CI bilingüe | **Integrado**: 37 capítulos numerados más dos complementarios, 41 diagramas por idioma, capítulo 28 ampliado con convivencia y PDF de vista previa reproducibles | Revisión editorial y técnica, listados ilustrativos, reproducción multiplataforma; la vista previa no es una release |
 | E1 PostgreSQL y SQL Server | **Parcialmente verificado**: CI sobre SQL real y desechable, oráculos independientes, subconjuntos de paridad .NET 10, concurrencia y controles negativos | Alcance funcional E1 completo, fallo eléctrico/HA, contrato del cliente y carga productiva |
-| E2 Orleans | **Parcialmente verificado y ejecutado**: pruebas de varios procesos/silos con Podman en una máquina, membership PostgreSQL, ledger durable, fallos y carga limitada; [#8](https://github.com/jmfloreszazo/de-la-caja-negra-a-la-evidencia/issues/8) | particiones asimétricas, hosts físicos/HA y capacidad sostenida [#25](https://github.com/jmfloreszazo/de-la-caja-negra-a-la-evidencia/issues/25) |
+| E2 Orleans | **Parcialmente verificado y ejecutado**: pruebas de varios procesos/silos con Podman en una máquina, membership PostgreSQL, ledger durable, fallos y carga limitada; [#8](https://github.com/jmfloreszazo/de-la-caja-negra-a-la-evidencia/issues/8) | activación exclusiva/recuperación tras particiones largas, hosts físicos/HA y capacidad sostenida [#25](https://github.com/jmfloreszazo/de-la-caja-negra-a-la-evidencia/issues/25) |
 | Brownfield CAP-007/005 | **Subconjuntos sintéticos verificados en CI y fusionados**: época de escritor SQL, transacciones .NET 10, adaptador legado de caja negra, dos almacenes PostgreSQL distintos, shadow, conciliación y veto al rollback; [#58](https://github.com/jmfloreszazo/de-la-caja-negra-a-la-evidencia/issues/58) | Particiones del journal persistente durante operaciones y recuperación restante [#64](https://github.com/jmfloreszazo/de-la-caja-negra-a-la-evidencia/issues/64), fencing real en el origen, políticas/mandatos/Golden Master del cliente y aprobación TODM G2/G6 |
 | Descomposición funcional | **Inventario sintético**: 30 hipótesis de capacidades y 12 dominios, reescritura functional-first; [#32](https://github.com/jmfloreszazo/de-la-caja-negra-a-la-evidencia/issues/32) | Trazas autorizadas, reglas aprobadas, límites de dominio y aceptación independiente; sin parser COBOL obligatorio y sin conversión 1:1 |
 | E3 Azure/local/híbrido | **Diseñado, sin capacidad verificada**: M1/M2, precios de referencia fechados y modelo WAN son entradas, no un PASS de E3; [#9](https://github.com/jmfloreszazo/de-la-caja-negra-a-la-evidencia/issues/9), [#12](https://github.com/jmfloreszazo/de-la-caja-negra-a-la-evidencia/issues/12) | Contrato de carga aprobado, saturación abierta y commits/p99, dominios de fallo, WAN, gRPC/REST con TLS comparable y TCO integral fechado |
@@ -35,7 +35,7 @@ Todo ello es **ingeniería sintética**. No hemos observado ningún sistema banc
 1. Consolidar libro y documentación ES/EN con las evidencias; mantener los SHA y resultados históricos.
 2. Completar C2 #64: particiones en operaciones en curso, pérdida de bloqueos y ventanas de respuesta; aprobación funcional y fencing real pendientes en #58/#32.
 3. Actualizar el capítulo 28 con contrato, implementación, fallo, corrección, evidencia y límites.
-4. Completar los gates acotados de E2 #8/#24/#25: particiones asimétricas, repeticiones de carga, diagnóstico y dominios físicos.
+4. Completar los gates acotados de E2 #8/#24/#25: activación exclusiva/recuperación tras particiones largas, repeticiones de carga, diagnóstico y dominios físicos.
 5. Preparar una vista previa de la siguiente edición: revisión inglesa, citas, solapes, listados y QA visual ES/EN; publicar solo tras el corte editorial autorizado.
 6. Ejecutar E3 #9/#12 con carga, infraestructura, WAN y TCO comparables; después E4 #10.
 
@@ -50,3 +50,7 @@ La edición estable publicada es [`v2026.10.29`](https://github.com/jmfloreszazo
 C04 ya tiene [evidencia original acotada](evidence/runs/E2-C04-GATEWAY.es.md): fallback de cliente nuevo, corte doble y conciliación 7/7. No cierra E2 globalmente ni explica el fallo histórico C01.
 
 C01 dispone de una [alternativa controlada verificada en tres jobs](evidence/runs/E2-C01-CONTROLLED.es.md). El fallo original conserva su clasificación y su causa no queda demostrada; no se declara una corrección de la política de colocación.
+
+C05/C06 disponen de [dos observaciones direccionales acotadas](evidence/runs/E2-C05-C06-DIRECTIONAL.es.md), con PCAP originales, conciliación SQL y primeros intentos con respuesta medidos sin reinicios. Siguen pendientes activación exclusiva, particiones largas y recuperación estable sostenida.
+
+La colocación dual ADO.NET en loopback falló por separado en la validación amplia; [#74](https://github.com/jmfloreszazo/de-la-caja-negra-a-la-evidencia/issues/74) sigue esa precondición sin resolver. Su ZIP/log original se conserva junto a las evidencias C05/C06.

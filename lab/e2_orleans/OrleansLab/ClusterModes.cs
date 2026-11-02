@@ -96,6 +96,9 @@ public static class ClusterModes
         if (ContainerFixture && args.Length == 3 && args[0] == "client" &&
             args[1] == "controlled-probe" && args[2] is "secondary-only" or "alternating")
             return await ControlledPlacementProbe.Run(MembershipConnection(), Service, Cluster, args[2]);
+        if (ContainerFixture && args.Length == 4 && args[0] == "client" &&
+            args[1] == "partition-probe" && args[2] is "primary" or "secondary")
+            return await PartitionProbeClient.Run(conn, Service, Cluster, args[2], args[3]);
         if (args.Length == 2 && args[0] == "client" && args[1] == "probe")
             return await RunClient(null);
         // Diagnostic-only fresh grain activation probe: no ledger writes.

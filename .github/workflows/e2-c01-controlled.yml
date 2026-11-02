@@ -10,6 +10,8 @@ on:
       - 'lab/e2_orleans/test_podman_network.py'
       - 'lab/e2_orleans/placement_contract.py'
       - '.github/workflows/e2-c01-controlled.yml'
+      - '.github/workflows/e2-f10-podman.yml'
+      - 'lab/e1_pg/**'
   push:
     branches: [main]
     paths:
@@ -21,6 +23,8 @@ on:
       - 'lab/e2_orleans/test_podman_network.py'
       - 'lab/e2_orleans/placement_contract.py'
       - '.github/workflows/e2-c01-controlled.yml'
+      - '.github/workflows/e2-f10-podman.yml'
+      - 'lab/e1_pg/**'
   workflow_dispatch:
 permissions:
   contents: read

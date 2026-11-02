@@ -1,0 +1,17 @@
+{
+  "status": "FAIL",
+  "protocol": "C05_C06_DIRECTIONAL_PACKET_LEDGER_RECOVERY_V1",
+  "sourceHeadSha": "5a260594c159c109cccf49f2f9f8287a37d18e10",
+  "startUtc": "2026-11-02T21:22:13.935791+00:00",
+  "blockedRole": "primary",
+  "runnerName": "GitHub Actions 1000007024",
+  "runnerHost": "runnervm48cm3",
+  "physicalHosts": 1,
+  "events": [],
+  "activationExclusivityEstablished": false,
+  "limitations": "Two packet directions are distinct from bidirectional TCP availability. Management catalogs are non-atomic and may be unavailable: absence of duplicate activations is not proven. SQL owns effects. Recovery may need explicitly recorded process recreation. No physical HA, production RTO, sustained capacity or overall E2 acceptance.",
+  "error": "AssertionError('c05')",
+  "lastStage": "setup",
+  "endUtc": "2026-11-02T21:22:25.729025+00:00",
+  "siloLogs": {}
+}

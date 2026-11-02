@@ -458,3 +458,13 @@ positive baseline, real SIGKILL recovery and a generation-checked secondary
 rejoin. Three original runner cohorts passed and their ZIPs/source hashes were [independently audited](../../evidence/runs/E2-C01-CONTROLLED.md). No
 change to accepted AccountGrain, ledger or historical C01 assertion; no
 root-cause claim or overall E2 promotion. This accepts a bounded fixture alternative, not the historical root cause or overall E2.
+
+## C05/C06 directional packet fault and measured recovery
+
+[The preregistered protocol](F10_C05_C06_PROTOCOL.md) now has two original
+passing cases with independently parsed PCAPs, rule counters, conflicting
+stable-ID requests, SQL reconciliation and measured first acknowledgements
+after restoration. Both cases retained the same silo containers/PIDs/generations.
+See the [audited evidence and preserved failures](../../evidence/runs/E2-C05-C06-DIRECTIONAL.md).
+Management catalogs were unavailable during the cut; exclusive activation,
+long-partition recovery, physical HA and sustained stable service remain open.
