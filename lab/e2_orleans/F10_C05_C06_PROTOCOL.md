@@ -78,3 +78,19 @@ Accepted `AccountGrain`, its non-reentrancy, `Contracts.cs` and the authoritativ
 `PgDurableLedger.cs` remain unchanged. Unsafe actor-local patterns are excluded
 from these financial routes. Publish paired ES/EN book interpretation only after
 actual original CI and independent artifact/source audit.
+
+## First original execution — setup rejection, not a partition result
+
+Run #41527647221 on source `5a260594c159c109cccf49f2f9f8287a37d18e10`
+failed in both jobs at the shared SQL readiness helper's case-name allowlist:
+`AssertionError('c05')`. Orleans and the network fault were not reached.
+The corrected helper only adds `c05` to that existing allowlist; it preserves
+the two independent successful SQL sessions and all older fault semantics.
+
+Original failure ZIPs and byte-identical JSON extractions are retained under
+`evidence/runs/e2-c05-first-preflight-{primary,secondary}.*`. Artifact
+13181050437 (primary), SHA-256
+`bba4c3af2b15b3b7d50ba88fb351c34ede8953c9d148fca406078ba48d61b13e`;
+artifact 13180157790 (secondary), SHA-256
+`8eabe4d141b8430f5d426bfbcf53bce87886b307c6b2a393f7c299d5430d7f17`.
+Neither negative is a passing readiness or partition observation.
