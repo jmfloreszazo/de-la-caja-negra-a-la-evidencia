@@ -244,6 +244,32 @@ In-flight network partitions, real incumbent revocation, external payment
 effects and approved business policy remain separate acceptance gates.
 G2=INCONCLUSIVE and G6=BLOCK.
 
+### C2 · Losing the controller after a financial operation has started
+
+The [new TCP-cut protocol](../../../lab/brownfield/journal/README.md) targets
+a different window from an unreachable controller before execution. A test
+trigger holds the financial operation before COMMIT; an independent SQL
+session must observe the real lock wait. A relay closes controller TCP
+connections and refuses reconnects; an external process then kills the gateway
+while leaving its adapter in flight. This is neither a silent nor asymmetric
+partition; all three PostgreSQL containers still share one runner.
+
+The contract requires UNKNOWN and a writer-switch veto until a durable
+decision is observed. After releasing the barrier, the cooperative model can
+commit its financial transaction even after losing the controller session.
+SQL reconciliation must precede replay: one decision, two postings and one
+outbox event. Losing a lock in another database does not atomically cancel
+financial COMMIT. CI must fail if observations contradict the contract.
+
+[Original run #41511782428](../../../evidence/runs/BROWNFIELD-CONTROLLER-LOSS.md)
+passed both cases: Python legacy and .NET candidate. SQL confirmed session
+loss; UNKNOWN vetoed the switch and later reconciliation found one decision,
+two postings and one outbox event per case, with both SQL oracles 10/10.
+The original ZIP preserves source/checkout and ten source hashes. This bounded
+evidence does not close #64 or establish bank fencing, RTO/RPO or production
+migration.
+G2=INCONCLUSIVE and G6=BLOCK.
+
 ### What would be needed for a real cutover
 
 A simulated black-box contract cannot take away a bank's incumbent writer

@@ -115,3 +115,32 @@ first failed concurrency run. Later source SHAs still require their own CI. The 
 admissions and one raw-SQL bypass; the test passes only if these are detected.
 No in-flight controller-partition proof, independent physical hosts, external
 payment effects, WAN, RTO/RPO, capacity benchmark or owner approval is claimed.
+
+
+## In-flight controller TCP session-loss candidate
+
+`test_controller_loss.py` resets the same disposable legacy/candidate fixtures
+and uses a replacement controller container published on loopback port 55441.
+`controller_link.py` transparently forwards canonical port 55440 to it; fixture
+address validation remains enforced. This test-only relay closes real active
+TCP sockets and refuses new connections until restored. It does not model
+silent packet loss or asymmetric partitions.
+
+For each writer, an injected SQL BEFORE INSERT trigger stops a financial
+transaction after its account updates but before COMMIT. An independent
+session observes the actual PostgreSQL lock wait. The test cuts the controller
+link, verifies controller sessions have disappeared, and independently kills
+the waiting gateway while leaving its adapter in flight. After reconnect,
+an operation with no observed durable decision must remain UNKNOWN and block the writer switch. On
+releasing the barrier, this cooperative fixture is expected to permit one
+financial COMMIT even though the controller session was lost; the journal
+must reconcile that effect before replay, with exactly one decision, two
+postings and one outbox event. This is NOT immediate cancellation or atomic
+cross-database fencing. The test fails if those preregistered results differ.
+
+The existing CI workflow runs the original 20-control matrix first, then this
+separate two-writer experiment and archives `c2-controller-loss.json`, including
+failure results. Source hashes, actual backend waits, socket cuts, gateway
+SIGKILL, reconciliation, accounting oracles and counts remain inspectable.
+**Original exact-SHA CI passed both cases:** see the [archived report](../../../evidence/runs/BROWNFIELD-CONTROLLER-LOSS.md). Later source heads require their own CI. No E2,
+physical-domain, production capacity, RTO/RPO, real-bank fence or G2/G6 claim.

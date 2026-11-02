@@ -47,6 +47,12 @@
 | `CROSS-PLATFORM` | Independent reproduction on macOS/Windows | **Reproduction pending** | Only Linux CI execution has been verified | [Protocol, not a result](../ROADMAP.md) |
 | `ILLUSTRATIVE` | Compilation of all Illustrative examples | **Reproduction pending** | No exhaustive verification of these listings exists | [Protocol, not a result](../ROADMAP.md) |
 
+## Additional brownfield evidence
+
+| ID | Claim | Status | Limit | Provenance |
+| --- | --- | --- | --- | --- |
+| `BROWNFIELD-C2-LINK` | Controller TCP cut with an in-flight transfer | **Executed in CI, bounded scope** | Two synthetic writers on one runner: controller sessions lost, gateway SIGKILL, UNKNOWN and cutover BLOCK, then 1 decision/2 postings/1 outbox and both oracles 10/10 per case. No silent/asymmetric partition or actual incumbent fence. | [Original and audited ZIP](../evidence/runs/BROWNFIELD-CONTROLLER-LOSS.md) |
+
 ## Supplemental experiment observations in draft PR #5
 
 - **M1 (29 October 2026):** [raw transport-only evidence and measured results](../evidence/runs/M1.md), .NET 10 HTTP/2 loopback, without SQL durability, TLS or WAN. This is **not** evidence of committed banking TPS.

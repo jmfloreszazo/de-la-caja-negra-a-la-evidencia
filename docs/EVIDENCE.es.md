@@ -47,6 +47,12 @@
 | `CROSS-PLATFORM` | Reproducción independiente en macOS/Windows | **Pendiente de reproducción** | Solo se ha verificado ejecución CI Linux | [Protocolo, no resultado](../ROADMAP.md) |
 | `ILLUSTRATIVE` | Compilación de todos los ejemplos Ilustrativos | **Pendiente de reproducción** | No existe una verificación exhaustiva de esos listados | [Protocolo, no resultado](../ROADMAP.md) |
 
+## Evidencia brownfield adicional
+
+| ID | Afirmación | Estado | Límite | Procedencia |
+| --- | --- | --- | --- | --- |
+| `BROWNFIELD-C2-LINK` | Corte TCP del controlador con transferencia en curso | **Ejecutado en CI, alcance acotado** | Dos escritores sintéticos en un runner: sesiones de control perdidas, gateway SIGKILL, UNKNOWN y cutover BLOCK, después 1 decisión/2 apuntes/1 outbox y ambos oráculos 10/10 por caso. No partición silenciosa/asimétrica ni fencing real. | [Original y ZIP auditado](../evidence/runs/BROWNFIELD-CONTROLLER-LOSS.es.md) |
+
 ## Observaciones experimentales complementarias en la PR #5
 
 - **M1 (29 de octubre de 2026):** [datos originales y resultados de transporte](../evidence/runs/M1.es.md) sobre HTTP/2 local en .NET 10, sin durabilidad SQL, TLS ni WAN. **No** acredita TPS bancarias confirmadas.

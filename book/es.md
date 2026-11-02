@@ -2297,6 +2297,32 @@ curso, la retirada de autoridad al incumbente real, los efectos de pago
 externos y la política aprobada siguen siendo puertas de aceptación separadas.
 G2=INCONCLUSIVE y G6=BLOCK.
 
+##### C2 · Perder el controlador con una operación ya iniciada
+
+El [nuevo protocolo de corte TCP](../lab/brownfield/journal/README.md)
+parte de una ventana distinta de «controlador inaccesible antes de empezar».
+Un trigger de prueba mantiene la operación financiera sin COMMIT; una sesión
+SQL independiente debe observar la espera real. Un relay cierra las conexiones
+TCP del controlador y rechaza reconexiones; después se mata el gateway desde
+otro proceso, dejando al adaptador en curso. No es una partición silenciosa ni
+asimétrica, y los tres PostgreSQL siguen en un único runner.
+
+El contrato exige UNKNOWN y veto al cambio de escritor mientras no se observe
+una decisión duradera. Al liberar la barrera, el modelo cooperativo puede
+confirmar su transacción financiera aunque haya perdido la sesión de control.
+Eso debe conciliarse por SQL antes de permitir el replay: una decisión, dos
+apuntes y un outbox. Perder un bloqueo de otra base no cancela atómicamente el
+COMMIT financiero. Si la observación contradice el contrato, la CI debe fallar.
+
+La [ejecución original #41511782428](../evidence/runs/BROWNFIELD-CONTROLLER-LOSS.es.md)
+superó ambos casos: legado Python y candidato .NET. El servidor confirmó
+la pérdida de sesiones; UNKNOWN bloqueó el cambio y la conciliación posterior
+obtuvo una decisión, dos apuntes y un outbox en cada caso, con ambos oráculos
+SQL 10/10. El ZIP original conserva source/checkout y diez hashes de origen.
+Esta evidencia acotada no cierra #64 ni acredita fencing bancario, RTO/RPO o
+una migración productiva.
+G2=INCONCLUSIVE y G6=BLOCK.
+
 ##### Qué falta antes de permitir un cutover real
 
 Un contrato de caja negra simulado no concede al proveedor acceso a los
