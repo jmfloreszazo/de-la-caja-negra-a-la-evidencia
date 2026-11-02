@@ -448,3 +448,13 @@ rules. A fresh-client fallback is not recovery of an established session;
 a dual-cut startup exception is not in-flight COMMIT/ACK loss. The original
 1..16 dual-silo placement precondition remains mandatory, including negative
 diagnostics. No physical HA, production SLA, capacity or mainframe claim.
+
+## C01 separately controlled placement candidate
+
+The [controlled protocol](C01_CONTROLLED_PROTOCOL.md) seeds new activations
+with compatible-silo hints in an identity-only disposable client. It tests
+legitimate one-sided rejection, existing-activation stickiness, a fresh 8/8
+positive baseline, real SIGKILL recovery and a generation-checked secondary
+rejoin. Three original runner cohorts are required before acceptance. No
+change to accepted AccountGrain, ledger or historical C01 assertion; no
+root-cause claim or overall E2 promotion. **Source candidate, not evidence yet.**

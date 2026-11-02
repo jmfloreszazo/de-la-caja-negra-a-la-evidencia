@@ -1,0 +1,90 @@
+name: E2 C01 controlled placement negative and recovery cohorts
+on:
+  pull_request:
+    paths:
+      - 'lab/e2_orleans/OrleansLab/ControlledPlacementProbe.cs'
+      - 'lab/e2_orleans/OrleansLab/ClusterModes.cs'
+      - 'lab/e2_orleans/OrleansLab/Contracts.cs'
+      - 'lab/e2_orleans/OrleansLab/PgDurableLedger.cs'
+      - 'lab/e2_orleans/test_controlled_placement.py'
+      - 'lab/e2_orleans/test_podman_network.py'
+      - 'lab/e2_orleans/placement_contract.py'
+      - '.github/workflows/e2-c01-controlled.yml'
+  push:
+    branches: [main]
+    paths:
+      - 'lab/e2_orleans/OrleansLab/ControlledPlacementProbe.cs'
+      - 'lab/e2_orleans/OrleansLab/ClusterModes.cs'
+      - 'lab/e2_orleans/OrleansLab/Contracts.cs'
+      - 'lab/e2_orleans/OrleansLab/PgDurableLedger.cs'
+      - 'lab/e2_orleans/test_controlled_placement.py'
+      - 'lab/e2_orleans/test_podman_network.py'
+      - 'lab/e2_orleans/placement_contract.py'
+      - '.github/workflows/e2-c01-controlled.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  controlled-placement:
+    name: C01 controlled placement cohort ${{ matrix.cohort }}
+    runs-on: ubuntu-24.04
+    timeout-minutes: 35
+    strategy:
+      fail-fast: false
+      max-parallel: 3
+      matrix:
+        cohort: [1, 2, 3]
+    env:
+      E2_NETWORK_TEST: '1'
+      E1_PG_DSN: 'host=127.0.0.1 port=55435 dbname=e2lab user=postgres password=e2local'
+      C01_COHORT: '${{ matrix.cohort }}'
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+      - uses: actions/setup-python@v6
+        with:
+          python-version: '3.12'
+      - uses: actions/setup-dotnet@v5
+        with:
+          dotnet-version: '10.0.x'
+      - name: Install independent PostgreSQL observer
+        run: python3 -m pip install -r lab/e1_pg/requirements.txt
+      - name: Keep all historical dual-placement negative controls
+        run: |
+          python3 -m py_compile lab/e2_orleans/test_controlled_placement.py
+          python3 -m unittest discover -s lab/e2_orleans -p test_c01_placement_contract.py -v
+      - name: Publish accepted grain with separate test-only activation client
+        run: |
+          mkdir -p lab/results/e2f10/c01-controlled
+          dotnet publish lab/e2_orleans/OrleansLab/OrleansLab.csproj -c Release -m:1 --disable-build-servers -o lab/results/e2f10/app
+      - name: Capture exact source and allocated runner provenance
+        env:
+          SOURCE_HEAD_SHA: ${{ github.event.pull_request.head.sha || github.sha }}
+        run: |
+          echo "source_head_sha=$SOURCE_HEAD_SHA" > lab/results/e2f10/c01-controlled/provenance.txt
+          echo "checkout_sha=$(git rev-parse HEAD)" >> lab/results/e2f10/c01-controlled/provenance.txt
+          test "$SOURCE_HEAD_SHA" = "$(git rev-parse HEAD)"
+          echo "cohort=$C01_COHORT runner=$RUNNER_NAME" >> lab/results/e2f10/c01-controlled/provenance.txt
+          uname -a >> lab/results/e2f10/c01-controlled/provenance.txt
+          dotnet --info >> lab/results/e2f10/c01-controlled/provenance.txt
+          podman version >> lab/results/e2f10/c01-controlled/provenance.txt
+          git ls-files lab/e2_orleans lab/e1_pg .github/workflows/e2-c01-controlled.yml | xargs sha256sum >> lab/results/e2f10/c01-controlled/provenance.txt
+      - name: Reject one-sided placement then prove seeded SIGKILL recovery and rejoin
+        run: python3 lab/e2_orleans/test_controlled_placement.py
+      - name: Preserve every original PASS or FAIL cohort
+        if: always()
+        uses: actions/upload-artifact@v6
+        with:
+          name: e2-c01-controlled-original-${{ matrix.cohort }}
+          path: |
+            lab/results/e2f10/c01-controlled/
+            lab/results/e2f10/e2-f10-c01-failure-diagnostic.json
+          if-no-files-found: warn
+      - name: Dispose of isolated fixtures
+        if: always()
+        run: |
+          for name in e2f10-client e2f10-secondary e2f10-primary e2f10-pg; do
+            podman rm -f "$name" 2>/dev/null || true
+          done
+          podman network rm e2f10-net 2>/dev/null || true

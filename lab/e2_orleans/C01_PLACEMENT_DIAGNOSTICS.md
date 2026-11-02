@@ -22,6 +22,10 @@ Orleans grain placement is not guaranteed to distribute any fixed small set of I
 
 This instrumentation alone **does not fix Orleans placement or prove C01 repeatability**. Require new original CI with the source SHA, source artifact and negative-case provenance. Diagnose why fixed 1..16 keys concentrate on secondary before claiming a stable dual-placement baseline. Keep issue #44 open until controlled negative/positive experiments and a bounded repeated fresh-runner cohort document the cause or an explicit test-only placement mechanism is proven.
 
-F10-C04 client-gateway isolation PR #34 remains **DRAFT and UNVERIFIED**, not part of this diagnostic. A separate physical-host HA test, symmetric/asymmetric partition, client gateway isolation, and C05/C06 recovery gates remain outstanding under issue #24. B05 load-to-saturation remains outstanding under #25; neither a C01 success nor multiple Podman namespaces prove a production mainframe MIPS/SLA equivalence.
+F10-C04 client-gateway isolation PR #34 is now separately verified and integrated; see [its evidence](../../evidence/runs/E2-C04-GATEWAY.md). It is not part of this placement diagnostic. A separate physical-host HA test, symmetric/asymmetric partition, client gateway isolation, and C05/C06 recovery gates remain outstanding under issue #24. B05 load-to-saturation remains outstanding under #25; neither a C01 success nor multiple Podman namespaces prove a production mainframe MIPS/SLA equivalence.
 
 All lab code and documentation English. Book results must be published in Spanish and English. Published release `v2026.10.29` untouched.
+
+A separate [controlled fixture protocol](C01_CONTROLLED_PROTOCOL.md) now
+implements the test-only alternative proposed in #44. Its source candidate
+does not convert this diagnostic or the original failed run into PASS.
