@@ -105,6 +105,9 @@ public static class ClusterModes
         if (args.Length == 3 && args[0] == "client" && args[1] == "execute" &&
             File.Exists(args[2]))
             return await RunClient(args[2]);
+        if (ContainerFixture && AdoNet && args.Length == 3 &&
+            args[0] == "client" && args[1] == "execute-c04-bounded" && File.Exists(args[2]))
+            return await RunClient(args[2], boundedStartup: true);
 
         Console.Error.WriteLine("Usage: cluster silo <primary|secondary> | cluster client probe | cluster client execute <scenario.json>");
         return 4;
@@ -241,7 +244,8 @@ public static class ClusterModes
     }
 
     private static async Task<int> RunClient(
-        string? scenarioPath, int probeStart = 1, int probeCount = 16)
+        string? scenarioPath, int probeStart = 1, int probeCount = 16,
+        bool boundedStartup = false)
     {
         var builder = Host.CreateApplicationBuilder();
         builder.Logging.ClearProviders();
@@ -273,7 +277,32 @@ public static class ClusterModes
                 }));
         }
         using var host = builder.Build();
-        await host.StartAsync();
+        if (boundedStartup)
+        {
+            // C04-only observability: a parent process timeout has no reliable
+            // application phase. No financial command can run before startup.
+            // Exit the process so a late connection cannot dispatch it later.
+            try
+            {
+                await host.StartAsync().WaitAsync(TimeSpan.FromSeconds(20));
+            }
+            catch (TimeoutException)
+            {
+                Console.Error.WriteLine(JsonSerializer.Serialize(new
+                {
+                    status = "CLIENT_STARTUP_DEADLINE",
+                    phase = "BEFORE_FINANCIAL_DISPATCH",
+                    deadlineSeconds = 20,
+                    financialCommandsDispatched = 0
+                }));
+                Environment.Exit(74);
+                return 74;
+            }
+        }
+        else
+        {
+            await host.StartAsync();
+        }
         try
         {
             var cluster = host.Services.GetRequiredService<IClusterClient>();

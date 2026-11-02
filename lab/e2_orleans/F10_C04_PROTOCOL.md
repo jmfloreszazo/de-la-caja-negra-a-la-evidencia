@@ -36,3 +36,23 @@ The dedicated workflow is now a **code candidate**, not passing evidence. Preser
 ## Previous C01 baseline regression
 
 Draft PR #34's original C01 workflow attempt failed during the disposable PostgreSQL first SQL connection, before Orleans startup. The bounded retry of the failed job passed. Preserve both outcomes; the cause is not established. Track root-cause investigation and diagnostic readiness hardening in [issue #35](https://github.com/jmfloreszazo/de-la-caja-negra-a-la-evidencia/issues/35), separately from this C04 slice. C01 rerun success must never be counted as an executed C04 test.
+
+## First original execution and bounded-startup correction — 2 November 2026
+
+Original C04 run #41512514429 on source `934d6e226c300850a88c070eb633af3fe31bc562`
+failed at the dual-cut diagnostic classifier: the generic parent process
+reached 70 seconds without an application-phase diagnostic. The fallback
+transfer had already succeeded, but this is NOT a C04 PASS. The unchanged
+original failure ZIP/JSON is archived under `evidence/runs/e2-c04-first-failure-original*`.
+Its SHA-256 is `b549005b14e72bd10a1a6a795f366756a3a85ea34b9b3fe1162bbeb3501019f7`.
+
+The corrected C04-only client mode has a 20-second in-process startup deadline
+and exits 74 with structured `CLIENT_STARTUP_DEADLINE`, phase
+`BEFORE_FINANCIAL_DISPATCH` and zero financial commands. It exits the process
+so a late connection cannot dispatch work after restoring gateways. Only the
+dual-cut call opts in; normal probe/fallback behavior is unchanged. Require
+the exact exit, fields, observed elapsed time and independently verified
+client-only network outage/healthy SQL. Generic outer timeouts, unrelated
+crashes, JSON with a wrong phase or post-dispatch counts must fail. This is
+bounded startup unavailability, NOT an in-flight financial transaction test.
+A new exact-source original run is mandatory; retain the first failure.

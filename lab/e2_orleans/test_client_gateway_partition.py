@@ -16,12 +16,14 @@ import os
 from pathlib import Path
 import re
 import subprocess
+import tempfile
 import time
 
 import test_podman_network as fx
 import test_podman_disconnect as c02
 from test_e2 import command
 from oracle import verify
+from gateway_failure_contract import classify_startup_deadline
 
 P = fx.podman
 OUT = fx.LAB / "results" / "e2f10" / "c04"
@@ -121,6 +123,28 @@ def assert_operation(op_id, expected):
     actual = count_operation(op_id)
     assert actual == expected, (op_id, expected, actual)
     return actual
+
+
+def bounded_startup_attempt(request):
+    with tempfile.NamedTemporaryFile("w", encoding="utf-8", dir=fx.OUT,
+                                     prefix="c04-", suffix=".json", delete=False) as stream:
+        json.dump({"route": "orleans", "concurrent": False, "commands": [request]}, stream)
+        path = Path(stream.name)
+    started = time.monotonic()
+    try:
+        # Only this C04 invocation opts into the in-process startup deadline.
+        # Generic parent timeouts and unrelated exit codes remain failures.
+        result = subprocess.run([
+            "podman", "exec", "e2f10-client", "dotnet", "/app/OrleansLab.dll",
+            "cluster", "client", "execute-c04-bounded", "/fixtures/" + path.name
+        ], capture_output=True, text=True, timeout=35)
+        observed = classify_startup_deadline(result.returncode, result.stderr)
+        observed.update({"stdout": result.stdout, "stderr": result.stderr,
+                         "elapsedSeconds": time.monotonic() - started})
+        assert 19 <= observed["elapsedSeconds"] < 35, observed
+        return observed
+    finally:
+        path.unlink(missing_ok=True)
 
 
 def accounting():
@@ -306,44 +330,8 @@ def main():
         both_cut_at = stamp()
         during_before = accounting()
         request = command(BLOCKED_OPERATION, source, target, 19)
-        failure_observation = None
-        try:
-            reply = fx.client("execute", [request], timeout=70)
-            failure_observation = {
-                "kind": "client_response",
-                "result": reply,
-                "acknowledgedCommitted": any(
-                    x["status"] in ("COMMITTED", "DUPLICATE_COMMITTED")
-                    for x in reply.get("results", [])
-                )
-            }
-        except (RuntimeError, subprocess.TimeoutExpired) as error:
-            failure_observation = {
-                "kind": "client_failure_or_timeout",
-                "exceptionType": type(error).__name__,
-                "cause": repr(error.__cause__)[-7000:],
-                "acknowledgedCommitted": False,
-                "semantics": "REQUEST_NOT_ACKNOWLEDGED_NO_ROLLBACK_INFERRED"
-            }
+        failure_observation = bounded_startup_attempt(request)
         assert not failure_observation["acknowledgedCommitted"], failure_observation
-        assert failure_observation["kind"] == "client_failure_or_timeout", (
-            "A non-COMMITTED response is insufficient proof of gateway loss",
-            failure_observation
-        )
-        cause = failure_observation["cause"].casefold()
-        # "OrleansLab.dll" appears in every client command, including
-        # unrelated crashes, so matching the project name is NOT evidence.
-        expected_transport_diagnostics = (
-            "no gateways", "gateway connection", "gateway",
-            "system.timeoutexception", "orleansexception",
-            "could not connect", "unable to connect"
-        )
-        assert any(
-            marker in cause for marker in expected_transport_diagnostics
-        ), (
-            "An unrelated client exception must never pass as gateway isolation",
-            failure_observation
-        )
         during_after = accounting()
         assert during_after == during_before, (
             "No durable effect is permitted during complete client gateway cut",
@@ -465,6 +453,7 @@ def main():
                 ).hexdigest()
                 for path in (
                     fx.HERE / "test_client_gateway_partition.py",
+                    fx.HERE / "gateway_failure_contract.py",
                     fx.HERE / "test_podman_network.py",
                     fx.HERE / "test_podman_disconnect.py",
                     fx.HERE / "OrleansLab/ClusterModes.cs"

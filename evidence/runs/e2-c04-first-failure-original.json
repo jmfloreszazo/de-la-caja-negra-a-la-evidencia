@@ -1,0 +1,107 @@
+{
+  "experiment": "E2-F10-C04-External-Client-Gateway-Loss",
+  "status": "FAIL",
+  "stage": "both-client-gateways-blocked",
+  "error": "AssertionError(('An unrelated client exception must never pass as gateway isolation', {'kind': 'client_failure_or_timeout', 'exceptionType': 'RuntimeError', 'cause': \"TimeoutExpired(['podman', 'exec', 'e2f10-client', 'dotnet', '/app/OrleansLab.dll', 'cluster', 'client', 'execute', '/fixtures/f10-8h8j7ek3.json'], 70)\", 'acknowledgedCommitted': False, 'semantics': 'REQUEST_NOT_ACKNOWLEDGED_NO_ROLLBACK_INFERRED'}))",
+  "timestampUtc": "2026-11-02T19:45:47.803667+00:00",
+  "installedGatewayDropIndices": [
+    0,
+    1
+  ],
+  "containers": {
+    "e2f10-pg": {
+      "inspection": {
+        "id": "21d20be6b556da8cf1d907f8d1602f6f057a8e3e53ff66d8014db3c5838f6ade",
+        "pidOnHost": 2827,
+        "status": "running",
+        "exitCode": 0,
+        "networks": {
+          "e2f10-net": "10.78.30.10",
+          "e2f10-sql": "10.78.31.10"
+        }
+      },
+      "logsTail": "The files belonging to this database system will be owned by user \"postgres\".\nThis user must also own the server process.\n\nThe database cluster will be initialized with locale \"en_US.utf8\".\nThe default database encoding has accordingly been set to \"UTF8\".\nThe default text search configuration will be set to \"english\".\n\nData page checksums are disabled.\n\nfixing permissions on existing directory /var/lib/postgresql/data ... ok\ncreating subdirectories ... ok\nselecting dynamic shared memory implementation ... posix\nselecting default max_connections ... 100\nselecting default shared_buffers ... 128MB\nselecting default time zone ... Etc/UTC\ncreating configuration files ... ok\nrunning bootstrap script ... ok\nperforming post-bootstrap initialization ... ok\nsyncing data to disk ... ok\n\n\nSuccess. You can now start the database server using:\n\n    pg_ctl -D /var/lib/postgresql/data -l logfile start\n\nwaiting for server to start....2026-11-02 19:43:39.941 UTC [44] LOG:  starting PostgreSQL 16.13 (Debian 16.13-1.pgdg13+1) on x86_64-pc-linux-gnu, compiled by gcc (Debian 14.2.0-19) 14.2.0, 64-bit\n2026-11-02 19:43:39.942 UTC [44] LOG:  listening on Unix socket \"/var/run/postgresql/.s.PGSQL.5432\"\n2026-11-02 19:43:39.944 UTC [47] LOG:  database system was shut down at 2026-11-02 19:43:39 UTC\n2026-11-02 19:43:39.947 UTC [44] LOG:  database system is ready to accept connections\n done\nserver started\n2026-11-02 19:43:40.028 UTC [54] FATAL:  database \"e2lab\" does not exist\nCREATE DATABASE\n\n\n/usr/local/bin/docker-entrypoint.sh: ignoring /docker-entrypoint-initdb.d/*\n\nwaiting for server to shut down...2026-11-02 19:43:40.165 UTC [44] LOG:  received fast shutdown request\n.2026-11-02 19:43:40.165 UTC [44] LOG:  aborting any active transactions\n2026-11-02 19:43:40.167 UTC [44] LOG:  background worker \"logical replication launcher\" (PID 50) exited with exit code 1\n2026-11-02 19:43:40.167 UTC [45] LOG:  shutting down\n2026-11-02 19:43:40.168 UTC [45] LOG:  checkpoint starting: shutdown immediate\n2026-11-02 19:43:40.253 UTC [45] LOG:  checkpoint complete: wrote 926 buffers (5.7%); 0 WAL file(s) added, 0 removed, 0 recycled; write=0.075 s, sync=0.011 s, total=0.087 s; sync files=301, longest=0.007 s, average=0.001 s; distance=4273 kB, estimate=4273 kB; lsn=0/191F0E8, redo lsn=0/191F0E8\n2026-11-02 19:43:40.260 UTC [44] LOG:  database system is shut down\n done\nserver stopped\n\nPostgreSQL init process complete; ready for start up."
+    },
+    "e2f10-primary": {
+      "inspection": {
+        "id": "50811201281afc558c2c3524518472616c66aea1ee8e1573e9f2d27433366b63",
+        "pidOnHost": 3206,
+        "status": "running",
+        "exitCode": 0,
+        "networks": {
+          "e2f10-net": "10.78.30.11",
+          "e2f10-sql": "10.78.31.11"
+        }
+      },
+      "logsTail": "E2_SILO_READY:primary:1"
+    },
+    "e2f10-secondary": {
+      "inspection": {
+        "id": "b1b49d5461461c56cda3d03ff2d27c0266197255822e8bd5719c8588afc613fc",
+        "pidOnHost": 3921,
+        "status": "running",
+        "exitCode": 0,
+        "networks": {
+          "e2f10-net": "10.78.30.12",
+          "e2f10-sql": "10.78.31.12"
+        }
+      },
+      "logsTail": "E2_SILO_READY:secondary:1"
+    },
+    "e2f10-client": {
+      "inspection": {
+        "id": "ad3e011c5298b829d8e08d8323c36fe13b63583a14b83c5db8f4cc44e329ac49",
+        "pidOnHost": 4638,
+        "status": "running",
+        "exitCode": 0,
+        "networks": {
+          "e2f10-net": "10.78.30.13",
+          "e2f10-sql": "10.78.31.13"
+        }
+      },
+      "logsTail": ""
+    }
+  },
+  "classification": "NEGATIVE_OR_INCOMPLETE_NOT_VERIFIED",
+  "accounting": {
+    "effects": {
+      "committedOperations": 2,
+      "postings": 4,
+      "outboxEvents": 2
+    },
+    "blockedOperation": {
+      "operationRows": 0,
+      "postingRows": 0,
+      "outboxRows": 0
+    },
+    "independentSqlOracles": {
+      "nonnegative": true,
+      "conserved": true,
+      "balancedPostings": true,
+      "twoPostingsPerCommit": true,
+      "noPostingsForRejection": true,
+      "outboxAtomic": true,
+      "projectionAgrees": true
+    }
+  },
+  "membership": {
+    "rows": [
+      [
+        "e2-f10-podman-bridge",
+        "10.78.30.11",
+        11150,
+        3,
+        30050
+      ],
+      [
+        "e2-f10-podman-bridge",
+        "10.78.30.12",
+        11151,
+        3,
+        30051
+      ]
+    ],
+    "version": 4
+  },
+  "iptablesOutput": "-P OUTPUT ACCEPT\n-A OUTPUT -d 10.78.30.12/32 -p tcp -m tcp --dport 30051 -j DROP\n-A OUTPUT -d 10.78.30.11/32 -p tcp -m tcp --dport 30050 -j DROP"
+}

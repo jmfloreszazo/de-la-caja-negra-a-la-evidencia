@@ -41,6 +41,8 @@ jobs:
             lab/e2_orleans/test_client_gateway_partition.py \
             lab/e2_orleans/test_podman_disconnect.py \
             lab/e2_orleans/test_podman_network.py
+      - name: Reject unrelated client failures before network execution
+        run: python3 -m unittest discover -s lab/e2_orleans -p test_gateway_failure_contract.py -v
       - name: Build Orleans 10.4.0 and capture environment provenance
         run: |
           mkdir -p lab/results/e2f10/c04
