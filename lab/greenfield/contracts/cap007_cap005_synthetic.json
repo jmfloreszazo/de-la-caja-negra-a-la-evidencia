@@ -1,0 +1,188 @@
+{
+  "schemaVersion": 1,
+  "classification": "SYNTHETIC_UNAPPROVED_CAPABILITY_CONTRACT",
+  "initialBalances": {
+    "A": 10000,
+    "B": 5000
+  },
+  "steps": [
+    {
+      "type": "transfer",
+      "operationId": "TX-1",
+      "source": "A",
+      "target": "B",
+      "amount": 2000,
+      "authorized": true,
+      "reply": "received"
+    },
+    {
+      "type": "balance",
+      "account": "A",
+      "source": "authoritative",
+      "minimumVersion": 1
+    },
+    {
+      "type": "transfer",
+      "operationId": "TX-1",
+      "source": "A",
+      "target": "B",
+      "amount": 2000,
+      "authorized": true,
+      "reply": "received"
+    },
+    {
+      "type": "transfer",
+      "operationId": "TX-1",
+      "source": "A",
+      "target": "B",
+      "amount": 1000,
+      "authorized": true,
+      "reply": "received"
+    },
+    {
+      "type": "transfer",
+      "operationId": "TX-2",
+      "source": "A",
+      "target": "B",
+      "amount": 9000,
+      "authorized": true,
+      "reply": "received"
+    },
+    {
+      "type": "transfer",
+      "operationId": "TX-3",
+      "source": "A",
+      "target": "B",
+      "amount": 500,
+      "authorized": false,
+      "reply": "received"
+    },
+    {
+      "type": "transfer",
+      "operationId": "TX-4",
+      "source": "A",
+      "target": "B",
+      "amount": 1000,
+      "authorized": true,
+      "reply": "lost-after-apply"
+    },
+    {
+      "type": "transfer",
+      "operationId": "TX-4",
+      "source": "A",
+      "target": "B",
+      "amount": 1000,
+      "authorized": true,
+      "reply": "received"
+    },
+    {
+      "type": "balance",
+      "account": "A",
+      "source": "projection",
+      "minimumVersion": 2
+    },
+    {
+      "type": "project"
+    },
+    {
+      "type": "balance",
+      "account": "A",
+      "source": "projection",
+      "minimumVersion": 2
+    },
+    {
+      "type": "balance",
+      "account": "A",
+      "source": "authoritative",
+      "minimumVersion": 2
+    }
+  ],
+  "expected": {
+    "status": "SYNTHETIC_IN_MEMORY_ONLY",
+    "results": [
+      {
+        "status": "APPLIED",
+        "version": 1
+      },
+      {
+        "status": "BOOKED",
+        "balance": 8000,
+        "version": 1
+      },
+      {
+        "status": "DUPLICATE_APPLIED",
+        "version": 1
+      },
+      {
+        "status": "ID_CONFLICT",
+        "version": 1
+      },
+      {
+        "status": "REJECTED_INSUFFICIENT",
+        "version": 1
+      },
+      {
+        "status": "REJECTED_UNAUTHORIZED",
+        "version": 1
+      },
+      {
+        "status": "UNKNOWN_AFTER_APPLY",
+        "version": 2
+      },
+      {
+        "status": "DUPLICATE_APPLIED",
+        "version": 2
+      },
+      {
+        "status": "STALE_PROJECTION",
+        "version": 0
+      },
+      {
+        "status": "PROJECTED",
+        "version": 2
+      },
+      {
+        "status": "PROJECTED_BALANCE",
+        "balance": 7000,
+        "version": 2
+      },
+      {
+        "status": "BOOKED",
+        "balance": 7000,
+        "version": 2
+      }
+    ],
+    "balances": {
+      "A": 7000,
+      "B": 8000
+    },
+    "version": 2,
+    "projectionVersion": 2,
+    "postings": [
+      {
+        "operationId": "TX-1",
+        "account": "A",
+        "delta": -2000
+      },
+      {
+        "operationId": "TX-1",
+        "account": "B",
+        "delta": 2000
+      },
+      {
+        "operationId": "TX-4",
+        "account": "A",
+        "delta": -1000
+      },
+      {
+        "operationId": "TX-4",
+        "account": "B",
+        "delta": 1000
+      }
+    ],
+    "outbox": [
+      "TX-1",
+      "TX-4"
+    ]
+  }
+}

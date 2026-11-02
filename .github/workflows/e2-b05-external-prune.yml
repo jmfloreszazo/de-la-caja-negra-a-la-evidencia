@@ -1,0 +1,57 @@
+name: Safe cleanup of merged E2-B05 external smoke branch
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/e2-b05-external-prune.yml'
+
+permissions:
+  contents: write
+
+concurrency:
+  group: once-e2-b05-external-smoke-prune
+  cancel-in-progress: false
+
+jobs:
+  prune-only-after-verified-merge:
+    name: Remove exact merged PR 38 branch, preserving unmerged work
+    if: >-
+      ${{ github.ref == 'refs/heads/main' && startsWith(github.event.head_commit.message, 'merge: E2 B05 external smoke') }}
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          fetch-depth: 0
+      - name: Verify merged PR 38, branch SHA and ancestry before pruning
+        env:
+          GH_TOKEN: ${{ github.token }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          test "$GITHUB_REF" = "refs/heads/main"
+          test "$GITHUB_REPOSITORY" = "jmfloreszazo/de-la-caja-negra-a-la-evidencia"
+          git fetch --no-tags origin main
+          test "$(git rev-parse HEAD)" = "$(git rev-parse origin/main)"
+          branch="experiment/e2-b05-external-openloop-smoke"
+          test "$(gh api "repos/$GITHUB_REPOSITORY/pulls/38" --jq '.merged')" = "true"
+          expected="$(gh api "repos/$GITHUB_REPOSITORY/pulls/38" --jq '.head.sha')"
+          test -n "$expected"
+          current="$(gh api "repos/$GITHUB_REPOSITORY/git/ref/heads/$branch" --jq '.object.sha')"
+          test "$current" = "$expected" || {
+            echo "::error::Branch moved; refusing cleanup"
+            exit 1
+          }
+          git fetch --no-tags origin "refs/heads/$branch:refs/remotes/origin/$branch"
+          git merge-base --is-ancestor "$expected" HEAD || {
+            echo "::error::Some changes are not merged; refusing cleanup"
+            exit 1
+          }
+          current="$(gh api "repos/$GITHUB_REPOSITORY/git/ref/heads/$branch" --jq '.object.sha')"
+          test "$current" = "$expected" || {
+            echo "::error::Concurrent branch change; refusing cleanup"
+            exit 1
+          }
+          gh api --method DELETE "repos/$GITHUB_REPOSITORY/git/refs/heads/$branch"
+          echo "Removed only merged PR 38 branch at exact head $expected"

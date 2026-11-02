@@ -1,0 +1,71 @@
+{
+  "schemaVersion": 1,
+  "experiment": "E2-B05-External-Repeatability-Pilot",
+  "status": "CI_VERIFIED_BOUNDED_REPEATABILITY_NOT_CAPACITY",
+  "capacityEvidence": false,
+  "source": {
+    "originalCiRunId": 41204905763,
+    "sourceHeadSha": "6b546c99f31fdd42f96da9960408df5716dd36c6",
+    "sourcePr": 39,
+    "mergedMainSha": "8de1e89f27dd7e269e9cccdb1b0d586ab7c0f1ce",
+    "originalCiUrl": "https://github.com/jmfloreszazo/de-la-caja-negra-a-la-evidencia/actions/runs/41204905763",
+    "originalRawArtifactId": 13044531582,
+    "originalRawArtifactUrl": "https://github.com/jmfloreszazo/de-la-caja-negra-a-la-evidencia/actions/runs/41204905763/artifacts/13044531582",
+    "originalZipSha256": "93a7be851b9cd17f4e848cf1ca773c770e2ebc74bfcd651f7bba66f9b0cb4510",
+    "independentAudit": "Downloaded original GitHub Actions ZIP; byte-level SHA256 verified against original job upload digest. All ZIP entries were decompressed/validated, 24 separate source observations matched raw client JSON and all 12 input vectors; each vector SHA256 recomputed; 24 SQL oracle sets, timing monotonicity, per-operation IDs and route/state parity independently inspected."
+  },
+  "setup": {
+    "testProfiles": [
+      "uniform",
+      "five_percent_hot"
+    ],
+    "sourceAccounts": 1000,
+    "eligibleHotAccounts": 50,
+    "offeredArrivalRatesPerSecond": [
+      20,
+      40
+    ],
+    "repetitionsPerProfileRate": 3,
+    "routes": [
+      "direct",
+      "orleans"
+    ],
+    "warmupSeconds": 1,
+    "measurementSeconds": 8,
+    "cooldownSeconds": 1,
+    "physicalLinuxRunners": 1,
+    "podmanNetworkNamespaces": 4,
+    "independentExternalClientProcess": true,
+    "authoritativeLedger": "PostgreSQL",
+    "maximumInFlightRequests": 32
+  },
+  "auditResults": {
+    "originalCiChecksPassed": 12,
+    "originalCiChecksTotal": 12,
+    "originalZipEntries": 65,
+    "independentMatchedTrialRecords": 24,
+    "matchedSourceVectors": 12,
+    "originalScheduledOffers": 7200,
+    "independentSqlCommittedOperations": 7200,
+    "durablePostings": 14400,
+    "durableOutboxEvents": 7200,
+    "sevenSqlOraclesPassedForAllTrials": 168,
+    "sevenSqlOraclesTotalForAllTrials": 168,
+    "individualClientTimingSamplesAudited": 7200,
+    "missedOffers": 0,
+    "ambiguousClientOutcomes": 0,
+    "directDurableOperations": 3600,
+    "orleansDurableOperations": 3600,
+    "routeIdenticalInputAndFinalFourTableStateShaPairs": 12,
+    "scheduledMeasurementPhaseOperationsDurableByEndOfTrial": 5760,
+    "independentlyObservedInWindowCommitRatePerSecond": null,
+    "sustainedCapacityThresholdMeasured": false,
+    "steadyStateP99Established": false,
+    "mainframeMipsEquivalenceMeasured": false
+  },
+  "interpretation": {
+    "es": "Se verificaron veinticuatro ensayos reales y acotados, con 7.200 transferencias confirmadas en PostgreSQL, 14.400 asientos, 7.200 eventos outbox y 168 verificaciones SQL correctas. Doce pares de rutas compartieron entradas idénticas y terminaron con igual estado contable. Las tasas de 20 y 40 solicitudes por segundo corresponden a llegadas programadas, no a una tasa de COMMIT medida durante la ventana. Ocho segundos de medición por ensayo y un único host físico no prueban capacidad sostenida ni equivalencia con un mainframe.",
+    "en": "Twenty-four bounded real trials were verified, with 7,200 PostgreSQL committed transfers, 14,400 postings, 7,200 outbox events and 168 successful independent SQL checks. Twelve direct/Orleans route pairs used identical inputs and had identical durable final state. The 20 and 40 requests/s figures are scheduled arrivals, not independently measured SQL COMMIT rates in the time window. Eight measurement seconds per trial and one physical host do not establish sustained capacity or mainframe equivalence."
+  },
+  "limitations": "Single physical GitHub Linux runner, four Podman namespaces, 24 ten-second trials with only eight measured seconds, two offered rates and three fixed seeded repetitions. No independent physical load host, steady-state saturation or service-level p99, measured SQL COMMIT interval timing, 1/2/4/8/16 physically separate topology, cloud provider TCO or mainframe hardware/reference workload. No claim that Orleans outperforms direct; sequential route order and warm-up effects confound timing. Overall E2 partially_verified, issue #25 OPEN, published v2026.10.29 unchanged."
+}

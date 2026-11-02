@@ -1,0 +1,71 @@
+name: One-time SHA-and-ancestry verified E2 C01 and B05 merge-branch cleanup
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/e2-closure-branch-prune.yml'
+
+permissions:
+  contents: write
+
+concurrency:
+  group: once-e2-c01-b05-original-evidence-branch-prune
+  cancel-in-progress: false
+
+jobs:
+  prune-exact-merged-heads:
+    name: Delete only exact merged PR47 PR48 PR49 branch heads
+    if: >-
+      ${{ github.ref == 'refs/heads/main' && startsWith(github.event.head_commit.message, 'merge: E2 B05 160 320 evidence') }}
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          fetch-depth: 0
+      - name: Verify merge, SHA, ancestry and unchanged branch before cleanup
+        shell: bash
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          test "$GITHUB_REF" = "refs/heads/main"
+          test "$GITHUB_REPOSITORY" = "jmfloreszazo/de-la-caja-negra-a-la-evidencia"
+          git fetch --no-tags origin main
+          test "$(git rev-parse HEAD)" = "$(git rev-parse origin/main)"
+          verify() {
+            local pr="$1" branch="$2" expected current
+            test "$(gh api "repos/$GITHUB_REPOSITORY/pulls/$pr" --jq '.merged')" = "true"
+            expected="$(gh api "repos/$GITHUB_REPOSITORY/pulls/$pr" --jq '.head.sha')"
+            test -n "$expected"
+            current="$(gh api "repos/$GITHUB_REPOSITORY/git/ref/heads/$branch" --jq '.object.sha')"
+            test "$current" = "$expected" || {
+              echo "::error::Unexpected changed ref; no deletion"
+              exit 1
+            }
+            git fetch --no-tags origin "refs/heads/$branch:refs/remotes/origin/$branch"
+            git merge-base --is-ancestor "$expected" HEAD || {
+              echo "::error::Ref is not an ancestor of main"
+              exit 1
+            }
+          }
+          verify 47 fix/e2-c01-placement-diagnostics
+          verify 48 experiment/e2-b05-160-320-overload
+          verify 49 docs/e2-b05-160-320-original-evidence
+          for branch in fix/e2-c01-placement-diagnostics experiment/e2-b05-160-320-overload docs/e2-b05-160-320-original-evidence; do
+            case "$branch" in
+              fix/e2-c01-placement-diagnostics) pr=47 ;;
+              experiment/e2-b05-160-320-overload) pr=48 ;;
+              docs/e2-b05-160-320-original-evidence) pr=49 ;;
+              *) echo "::error::Unexpected branch"; exit 1 ;;
+            esac
+            current="$(gh api "repos/$GITHUB_REPOSITORY/git/ref/heads/$branch" --jq '.object.sha')"
+            expected="$(gh api "repos/$GITHUB_REPOSITORY/pulls/$pr" --jq '.head.sha')"
+            test "$current" = "$expected" || {
+              echo "::error::Concurrent mutation detected; keep branch"
+              exit 1
+            }
+            gh api --method DELETE "repos/$GITHUB_REPOSITORY/git/refs/heads/$branch"
+          done
+          echo "Only merged E2 C01/B05 branch heads removed; C04 and parallel PRs untouched"

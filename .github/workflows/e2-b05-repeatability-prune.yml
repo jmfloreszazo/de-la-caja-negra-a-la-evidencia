@@ -1,0 +1,69 @@
+name: One-time safe prune of merged E2 B05 repeatability and evidence branches
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/e2-b05-repeatability-prune.yml'
+
+permissions:
+  contents: write
+
+concurrency:
+  group: once-e2-b05-repeatability-evidence-prune
+  cancel-in-progress: false
+
+jobs:
+  exact-merged-branch-cleanup:
+    name: Verify exact merged PR 39/40 heads and delete only those branches
+    if: >-
+      ${{ github.ref == 'refs/heads/main' && startsWith(github.event.head_commit.message, 'merge: E2 B05 pilot evidence') }}
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          fetch-depth: 0
+      - name: Verify both merged PRs, head SHAs and git ancestry before any deletion
+        env:
+          GH_TOKEN: ${{ github.token }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          test "$GITHUB_REF" = "refs/heads/main"
+          test "$GITHUB_REPOSITORY" = "jmfloreszazo/de-la-caja-negra-a-la-evidencia"
+          git fetch --no-tags origin main
+          test "$(git rev-parse HEAD)" = "$(git rev-parse origin/main)"
+          check() {
+            local pr="$1" branch="$2" expected current
+            test "$(gh api "repos/$GITHUB_REPOSITORY/pulls/$pr" --jq '.merged')" = "true"
+            expected="$(gh api "repos/$GITHUB_REPOSITORY/pulls/$pr" --jq '.head.sha')"
+            test -n "$expected"
+            current="$(gh api "repos/$GITHUB_REPOSITORY/git/ref/heads/$branch" --jq '.object.sha')"
+            test "$current" = "$expected" || {
+              echo "::error::Branch $branch moved: no deletion"
+              exit 1
+            }
+            git fetch --no-tags origin "refs/heads/$branch:refs/remotes/origin/$branch"
+            git merge-base --is-ancestor "$expected" HEAD || {
+              echo "::error::Branch $branch is NOT merged in main"
+              exit 1
+            }
+          }
+          check 39 experiment/e2-b05-repeated-openloop-pilot
+          check 40 docs/e2-b05-pilot-evidence
+          for branch in experiment/e2-b05-repeated-openloop-pilot docs/e2-b05-pilot-evidence; do
+            current="$(gh api "repos/$GITHUB_REPOSITORY/git/ref/heads/$branch" --jq '.object.sha')"
+            case "$branch" in
+              experiment/e2-b05-repeated-openloop-pilot) pr=39 ;;
+              docs/e2-b05-pilot-evidence) pr=40 ;;
+              *) echo "::error::Unexpected ref"; exit 1 ;;
+            esac
+            expected="$(gh api "repos/$GITHUB_REPOSITORY/pulls/$pr" --jq '.head.sha')"
+            test "$current" = "$expected" || {
+              echo "::error::Concurrent branch movement; refusing deletion"
+              exit 1
+            }
+            gh api --method DELETE "repos/$GITHUB_REPOSITORY/git/refs/heads/$branch"
+            echo "Deleted only merged PR $pr branch at exact $expected"
+          done

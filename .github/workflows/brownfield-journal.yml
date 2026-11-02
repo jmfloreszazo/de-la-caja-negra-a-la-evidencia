@@ -1,0 +1,84 @@
+name: Brownfield C2 admission journal
+on:
+  pull_request:
+    paths:
+      - 'lab/brownfield/journal/**'
+      - 'lab/brownfield/coexistence/**'
+      - 'lab/brownfield/durable/**'
+      - '.github/workflows/brownfield-journal.yml'
+  push:
+    branches: [main]
+    paths:
+      - 'lab/brownfield/journal/**'
+      - '.github/workflows/brownfield-journal.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  journal-crash-oracle:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+      - uses: actions/setup-dotnet@v5
+        with:
+          dotnet-version: '10.0.x'
+      - uses: actions/setup-python@v6
+        with:
+          python-version: '3.12'
+      - name: Install independent database observer
+        run: python3 -m pip install -r lab/e1_pg/requirements.txt
+      - name: Start three independently addressed disposable SQL containers
+        run: |
+          podman run -d --name bf-legacy-pg -e POSTGRES_DB=bf_legacy -e POSTGRES_PASSWORD=bflocal -p 127.0.0.1:55438:5432 docker.io/library/postgres:16.13
+          podman run -d --name bf-candidate-pg -e POSTGRES_DB=bf_lab -e POSTGRES_PASSWORD=bflocal -p 127.0.0.1:55439:5432 docker.io/library/postgres:16.13
+          podman run -d --name bf-control-pg -e POSTGRES_DB=bf_control -e POSTGRES_PASSWORD=bflocal -p 127.0.0.1:55440:5432 docker.io/library/postgres:16.13
+          ready=0
+          for i in $(seq 1 60); do
+            if python3 -c 'import psycopg; pairs=[("bf_legacy",55438),("bf_lab",55439),("bf_control",55440)]; [psycopg.connect(f"host=127.0.0.1 port={p} dbname={n} user=postgres password=bflocal").close() for n,p in pairs]' >/dev/null 2>&1; then
+              ready=1
+              break
+            fi
+            sleep 2
+          done
+          test "$ready" -eq 1
+      - name: Record exact original SHA and environment
+        env:
+          SOURCE_HEAD_SHA: ${{ github.event.pull_request.head.sha || github.sha }}
+        run: |
+          mkdir -p lab/results/brownfield/journal
+          echo "source_head_sha=$SOURCE_HEAD_SHA" > lab/results/brownfield/journal/provenance.txt
+          echo "checkout_sha=$(git rev-parse HEAD)" >> lab/results/brownfield/journal/provenance.txt
+          test "$SOURCE_HEAD_SHA" = "$(git rev-parse HEAD)"
+          uname -a >> lab/results/brownfield/journal/provenance.txt
+          dotnet --info >> lab/results/brownfield/journal/provenance.txt
+          python3 --version >> lab/results/brownfield/journal/provenance.txt
+          podman version >> lab/results/brownfield/journal/provenance.txt
+          podman inspect bf-legacy-pg bf-candidate-pg bf-control-pg --format '{{.Name}} {{.Id}} {{.NetworkSettings.Ports}}' >> lab/results/brownfield/journal/provenance.txt
+          podman image inspect docker.io/library/postgres:16.13 --format '{{.Id}} {{json .RepoDigests}}' >> lab/results/brownfield/journal/provenance.txt
+      - name: Execute persistent journal failure matrix and negative SQL oracle
+        env:
+          BROWNFIELD_DISPOSABLE: 'YES'
+          BROWNFIELD_LEGACY_DSN: 'host=127.0.0.1 port=55438 dbname=bf_legacy user=postgres password=bflocal'
+          BROWNFIELD_PG_DSN: 'host=127.0.0.1 port=55439 dbname=bf_lab user=postgres password=bflocal'
+          BROWNFIELD_CONTROL_DSN: 'host=127.0.0.1 port=55440 dbname=bf_control user=postgres password=bflocal'
+          BROWNFIELD_REQUIRE_CONTROLLER: 'YES'
+          BROWNFIELD_CONTROL_NPGSQL: 'Host=127.0.0.1;Port=55440;Database=bf_control;Username=postgres;Password=bflocal;Pooling=false'
+          BROWNFIELD_PG_NPGSQL: 'Host=127.0.0.1;Port=55439;Database=bf_lab;Username=postgres;Password=bflocal;Pooling=false'
+        run: python3 lab/brownfield/journal/test_journal.py
+      - name: Preserve original evidence even when failing
+        if: always()
+        uses: actions/upload-artifact@v6
+        with:
+          name: brownfield-c2-journal-synthetic-g6-block
+          path: lab/results/brownfield/journal/
+          if-no-files-found: warn
+      - name: Dispose of fixture DBs
+        if: always()
+        run: |
+          podman logs --tail 50 bf-legacy-pg || true
+          podman logs --tail 50 bf-candidate-pg || true
+          podman logs --tail 50 bf-control-pg || true
+          podman rm -f bf-legacy-pg bf-candidate-pg bf-control-pg || true

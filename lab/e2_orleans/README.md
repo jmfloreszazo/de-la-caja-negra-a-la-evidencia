@@ -1,9 +1,21 @@
 # E2 · Orleans-led account coordination (partially verified experiment)
 
-**SINGLE-SILO FUNCTIONAL AND FIXED-WORKLOAD SLICES VERIFIED IN CI; OVERALL E2 NOT ACCEPTED.** The .NET 10/Orleans 10.4.0 co-hosted silo shares one authoritative PostgreSQL ledger across the direct and grain-routed paths. [Functional smoke #41053628769](https://github.com/jmfloreszazo/de-la-caja-negra-a-la-evidencia/actions/runs/41053628769) passed five controls. [Seeded workload #41055928136](https://github.com/jmfloreszazo/de-la-caja-negra-a-la-evidencia/actions/runs/41055928136) passed six route/profile runs with 600 committed transfers. No sustained capacity ceiling, multiple-silo or production proof exists. Its detailed executable acceptance
+**SINGLE-SILO FUNCTIONAL AND FIXED-WORKLOAD SLICES VERIFIED IN CI; OVERALL E2 NOT ACCEPTED.** The .NET 10/Orleans 10.4.0 co-hosted silo shares one authoritative PostgreSQL ledger across the direct and grain-routed paths. [Functional smoke #41053628769](https://github.com/jmfloreszazo/de-la-caja-negra-a-la-evidencia/actions/runs/41053628769) passed five controls. [Seeded workload #41055928136](https://github.com/jmfloreszazo/de-la-caja-negra-a-la-evidencia/actions/runs/41055928136) passed six route/profile runs with 600 committed transfers. No sustained capacity ceiling, independently hosted physical-node scaling or production proof exists. Its detailed executable acceptance
 contract is in [EXPERIMENT_PROTOCOL.md](EXPERIMENT_PROTOCOL.md). This
 engineering laboratory and all future source, fixtures and READMEs are
 **English only**.
+
+## E2-B05 measured PostgreSQL COMMIT rate — first 60-second slice only
+
+Original [GitHub Actions #41207978844](https://github.com/jmfloreszazo/de-la-caja-negra-a-la-evidencia/actions/runs/41207978844) verified four first 60-second windows on **one physical Linux runner**, each at **20 scheduled intents/s**, split across uniform and eligible-5%-hot source profiles and the same durable direct/Orleans routes. The disposable PostgreSQL 16.13 server was started with `track_commit_timestamp=on`, and the independent oracle recorded `pg_xact_commit_timestamp(operations.xmin)` for **all 4,960 operations**. Its original ZIP [#13044689170](https://github.com/jmfloreszazo/de-la-caja-negra-a-la-evidencia/actions/runs/41207978844/artifacts/13044689170) SHA-256 `4b2d444fedd8da5e064c117ebe5f7e7fc75727bb24d931649f5c4702860c88ac` was independently audited.
+
+PostgreSQL recorded exactly **1,200 certain COMMIT timestamps within each 60-second measurement window**, i.e. **20.0 measured SQL COMMIT/s** at this offered load, with 20 within each server-UTC second bucket. All 4,960 transfers durably committed by run end with 9,920 postings, 4,960 outbox entries, 28/28 SQL oracles and identical persisted final state in each direct/Orleans pair. **This is a real measured rate at one chosen load level, NOT the saturation limit.** A single rate, one repetition per route/profile, one shared host, PostgreSQL timestamp tracking and conservative client/SQL clock alignment cannot prove production p99, physical high availability, horizontal throughput scaling or mainframe MIPS equivalence. See the [scientific protocol](B05_COMMIT_WINDOW_PROTOCOL.md) and [original-evidence record](../../evidence/runs/e2-b05-sql-commit-window-60s.json). E2 remains `partially_verified` and B05 issue #25 remains OPEN.
+
+## E2-B05 real external client — bounded repeatability verified, not capacity
+
+[Original CI #41204905763](https://github.com/jmfloreszazo/de-la-caja-negra-a-la-evidencia/actions/runs/41204905763) verified a pre-registered **24-run pilot** with two fixed-clock *offered* rates (20/40 operations per second), three seeded repetitions, uniform and eligible-5%-hot source profiles, and the same operations routed directly through the durable ledger or through Orleans grains. This involved four separate Podman network namespaces on **one physical GitHub Linux host**. An independent audit of [the original raw ZIP #13044531582](https://github.com/jmfloreszazo/de-la-caja-negra-a-la-evidencia/actions/runs/41204905763/artifacts/13044531582) checked SHA-256 `93a7be851b9cd17f4e848cf1ca773c770e2ebc74bfcd651f7bba66f9b0cb4510`, all 24 client/SQL traces and all 12 matched-route input/state hashes.
+
+The ledger has **7,200 durably COMMITTED operations, 14,400 postings, 7,200 outbox events, zero missed/ambiguous client outcomes, and 168/168 independent SQL oracle results**. These numbers prove this synthetic workload's **bounded ledger correctness**. The clock schedule is an **offered arrival rate**, not the independently observed in-window PostgreSQL COMMIT rate. Each trial has only 8 measurement seconds. No sustained saturation, steady-state p99, mainframe MIPS equivalence, cross-physical-host scaling or Azure cost comparison was established. Review the [narrowly scoped archived report](../../evidence/runs/e2-b05-repeatability-pilot.json) and [test protocol](B05_REPEATABILITY_PROTOCOL.md); overall E2 remains `partially_verified` and [B05 issue #25](https://github.com/jmfloreszazo/de-la-caja-negra-a-la-evidencia/issues/25) remains open.
 
 ## Why this experiment exists
 
@@ -79,13 +91,13 @@ This test is **not** evidence of a cross-grain transaction, a real
 deadlock or persistence failure. The accepted `AccountGrain` is never
 marked reentrant. [CI #41060526872](https://github.com/jmfloreszazo/de-la-caja-negra-a-la-evidencia/actions/runs/41060526872) verified this negative result. The [archived observation](../../evidence/runs/e2-orleans-reentrancy.json) links to its [original, unmodified CI artifact](https://github.com/jmfloreszazo/de-la-caja-negra-a-la-evidencia/actions/runs/41060526872/artifacts/12978961633).
 
-## E2-F10-C04 · External-client gateway isolation — NOT VERIFIED
+## E2-B05 · Real external open-loop functional smoke (NOT sustained capacity)
 
-**Draft PR [#34](https://github.com/jmfloreszazo/de-la-caja-negra-a-la-evidencia/pull/34), not merged and NOT executed as a C04 experiment.** The dedicated C04 GitHub Actions workflow could not be created due to a connected tool safety block; existing C01/C02/C03 regression CI does not substitute for C04 original evidence. There is no C04 `ci_verified` claim, raw C04 artifact or result in the book.
+**Original GitHub-hosted [CI #41196070831](https://github.com/jmfloreszazo/de-la-caja-negra-a-la-evidencia/actions/runs/41196070831) passed**, source SHA `e545b861045d3a6f6bee9262028fd05fb5bb9c63`, raw [artifact #13040601633](https://github.com/jmfloreszazo/de-la-caja-negra-a-la-evidencia/actions/runs/41196070831/artifacts/13040601633) with independently verified ZIP SHA-256 `6b2ba79ed6379118a20b890050d198862443d248aaf2cf7fc5d271bc84afa4c0`. See [registered evidence](../../evidence/runs/e2-b05-external-smoke.json), [strict validator](../../scripts/check_e2_b05_external_smoke.py) and [preregistered experiment](B05_EXTERNAL_SMOKE_PROTOCOL.md). The original [negative timing run #41195913857](https://github.com/jmfloreszazo/de-la-caja-negra-a-la-evidencia/actions/runs/41195913857) is retained, not counted as a pass.
 
-The [predeclared C04 protocol](F10_C04_PROTOCOL.md) and [candidate script](test_client_gateway_partition.py) model a client-only connection cut: first block the external client's primary gateway while preserving the secondary, then block both client gateways while both silos and the authoritative PostgreSQL ledger remain reachable. Acceptance requires independent SQL invariant checks, no durable changes during complete gateway unreachability, exact per-operation cardinality on stable-ID replay, unchanged silo processes and restored client firewall rules. It distinguishes **fresh-client fallback** from automatic recovery of an already connected Orleans client. A client timeout alone is **not** evidence of rollback.
+A persistent **external client process in its own Podman network namespace** replayed the same prescheduled requests through the direct PostgreSQL and Orleans routes while two silos remained alive. Across two profiles and two routes, **320/320 requests dispatched and independently committed**, with **640 postings and 320 outbox rows**, **7/7 independent SQL Oracle Gates per run** and identical persisted-state hashes between routes for each profile. The scheduling clock was corrected to prevent early dispatch, and all original per-request offset vectors are retained.
 
-These would be **single-host Podman network namespace** observations, not proof of cross-node high availability, fencing, PostgreSQL HA, production RTO, sustained TPS or mainframe MIPS equivalence. The merged PostgreSQL startup hardening [PR #36](https://github.com/jmfloreszazo/de-la-caja-negra-a-la-evidencia/pull/36) is a separate reliability improvement, **not** a C04 result. E2 remains `partially_verified`.
+**Strict scope:** only 4 seconds/80 offers per route/profile and one trial per point, all on **one physical Linux host**. This is not evidence of sustained throughput, a representative p99, saturated hot-account capacity, separate-host HA, production failover, dated Azure TCO or mainframe MIPS equivalence. Do not rank Orleans versus direct by these short latency samples. Issue #25 remains OPEN, overall E2 remains `partially_verified`.
 
 ## E2-F10-C03 · Actual SQL-only packet loss on a live Orleans silo
 
@@ -422,3 +434,20 @@ or open the repository without the maintainer's authorization.
 
 See [issue #8](https://github.com/jmfloreszazo/de-la-caja-negra-a-la-evidencia/issues/8)
 and the [global experiment roadmap](../../docs/EXPERIMENT_ROADMAP.md).
+
+## E2-F10-C04 candidate: client-only gateway isolation
+
+Draft PR #34 remains unverified until its dedicated original C04 workflow
+passes. Its earlier workflow-write rejection produced no C04 result. The
+current continuation adds a bounded CI path; unrelated C01/C02/C03 checks
+must never be represented as C04 execution.
+
+The [preregistered protocol](F10_C04_PROTOCOL.md) and
+[test](test_client_gateway_partition.py) first cut only the external client's
+primary gateway, then both gateways, while preserving silo and PostgreSQL
+reachability. Require independent SQL oracles, exact operation/posting/outbox
+counts, stable-ID replay, unchanged silo processes and restored firewall
+rules. A fresh-client fallback is not recovery of an established session;
+a dual-cut startup exception is not in-flight COMMIT/ACK loss. The original
+1..16 dual-silo placement precondition remains mandatory, including negative
+diagnostics. No physical HA, production SLA, capacity or mainframe claim.

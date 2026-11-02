@@ -1,0 +1,121 @@
+{
+  "schemaVersion": 1,
+  "experiment": "E2-B05-Independent-SQL-Commit-Window",
+  "status": "CI_VERIFIED_FIRST_60_SECOND_SERVER_COMMIT_WINDOW_NOT_CAPACITY_CEILING",
+  "capacityCeilingEstablished": false,
+  "capacityEvidence": false,
+  "source": {
+    "sourcePr": 41,
+    "sourceHeadSha": "545fa75bda1efa8659c5370f1a030fe64ded646b",
+    "mergedMainSha": "c310b805e35e6afafd8df7c3a8196cd8e68c8f1c",
+    "originalCiRunId": 41207978844,
+    "originalCiUrl": "https://github.com/jmfloreszazo/de-la-caja-negra-a-la-evidencia/actions/runs/41207978844",
+    "originalArtifactId": 13044689170,
+    "originalArtifactUrl": "https://github.com/jmfloreszazo/de-la-caja-negra-a-la-evidencia/actions/runs/41207978844/artifacts/13044689170",
+    "originalZipSha256": "4b2d444fedd8da5e064c117ebe5f7e7fc75727bb24d931649f5c4702860c88ac",
+    "independentAudit": "Downloaded original source-run ZIP, recomputed byte-level SHA256 matching original GitHub Actions upload log, verified every ZIP entry, original route-neutral input hashes, 4 full client/SQL case observations, 4960 per-operation independent PostgreSQL COMMIT timestamps, the conservative UTC bracket and exact per-second commit counts, independent SQL accounting oracles and matched route/state hashes."
+  },
+  "setup": {
+    "postgresVersion": "16.13",
+    "postgresConfig": "track_commit_timestamp=on",
+    "timestampSource": "pg_xact_commit_timestamp(operations.xmin)",
+    "profiles": [
+      "uniform",
+      "five_percent_hot"
+    ],
+    "accountCount": 1000,
+    "hotEligibleAccounts": 50,
+    "offeredRatesPerSecond": [
+      20
+    ],
+    "repetitionsPerProfileRoute": 1,
+    "routes": [
+      "direct",
+      "orleans"
+    ],
+    "warmupSeconds": 1,
+    "measurementSeconds": 60,
+    "cooldownSeconds": 1,
+    "physicalHostCount": 1,
+    "podmanNetworkNamespaces": 4,
+    "clientProcessIsExternalToSilos": true,
+    "sourceOfTruth": "PostgreSQL"
+  },
+  "audit": {
+    "originalCiChecksPassing": 13,
+    "originalCiChecksTotal": 13,
+    "originalZipMembers": 15,
+    "distinctMatchedTrials": 4,
+    "originalInputVectors": 2,
+    "committedOperationsByTrialEnd": 4960,
+    "postings": 9920,
+    "outboxEvents": 4960,
+    "independentSqlOracleChecksPassing": 28,
+    "independentSqlOracleChecksTotal": 28,
+    "perOperationPostgresCommitTimestampsAudited": 4960,
+    "missedOffers": 0,
+    "ambiguousOutcomes": 0,
+    "measurementPhaseRequests": 4800,
+    "postgresqlCommitsCertainlyWithinAllMeasurementWindows": 4800,
+    "postgresqlCommitsPossiblyWithinAllMeasurementWindows": 4800,
+    "independentMeasuredCommitRatePerSecondPerTrial": 20,
+    "serverCommitTimestampsPerSecondPerTrial": 20,
+    "secondBucketsPerTrial": 60,
+    "distinctRouteMatchedInputAndSqlStatePairs": 2,
+    "worstClientOriginCaptureUncertaintyMs": 0.004,
+    "serverHostClockCheckPerformed": true,
+    "observedSaturation": false,
+    "mainframeParityDemonstrated": false
+  },
+  "cases": [
+    {
+      "profile": "uniform",
+      "route": "direct",
+      "committedByRunEnd": 1240,
+      "commitsCertainlyInWindow": 1200,
+      "commitsPossiblyInWindow": 1200,
+      "measuredServerCommitTps": 20,
+      "perSecondBucketMin": 20,
+      "perSecondBucketMax": 20,
+      "stateSha256": "651f9b236f81ee31f1a93c1023d7237a31cec981ef188996b6d5a41ad7644967"
+    },
+    {
+      "profile": "uniform",
+      "route": "orleans",
+      "committedByRunEnd": 1240,
+      "commitsCertainlyInWindow": 1200,
+      "commitsPossiblyInWindow": 1200,
+      "measuredServerCommitTps": 20,
+      "perSecondBucketMin": 20,
+      "perSecondBucketMax": 20,
+      "stateSha256": "651f9b236f81ee31f1a93c1023d7237a31cec981ef188996b6d5a41ad7644967"
+    },
+    {
+      "profile": "five_percent_hot",
+      "route": "direct",
+      "committedByRunEnd": 1240,
+      "commitsCertainlyInWindow": 1200,
+      "commitsPossiblyInWindow": 1200,
+      "measuredServerCommitTps": 20,
+      "perSecondBucketMin": 20,
+      "perSecondBucketMax": 20,
+      "stateSha256": "73d37ad1a605bfcb9bc9cfbed03e4d08bf7ed6eb56b23012f8383da5326c1a1c"
+    },
+    {
+      "profile": "five_percent_hot",
+      "route": "orleans",
+      "committedByRunEnd": 1240,
+      "commitsCertainlyInWindow": 1200,
+      "commitsPossiblyInWindow": 1200,
+      "measuredServerCommitTps": 20,
+      "perSecondBucketMin": 20,
+      "perSecondBucketMax": 20,
+      "stateSha256": "73d37ad1a605bfcb9bc9cfbed03e4d08bf7ed6eb56b23012f8383da5326c1a1c"
+    }
+  ],
+  "interpretation": {
+    "es": "Primera medición independiente de COMMIT reales en PostgreSQL durante sesenta segundos por ensayo. Cuatro ensayos, dos perfiles y dos rutas: 1.200 COMMIT dentro de cada ventana, 20,0 COMMIT/s medidos por el servidor y 20 por cada intervalo de un segundo. Se verificaron además 4.960 transferencias persistidas al finalizar, 9.920 asientos, 4.960 eventos outbox y 28/28 oráculos SQL. Las rutas directa y Orleans coinciden en el estado persistido para cada perfil. Es una medición válida para este punto de carga y este host, NO demuestra el límite de capacidad, un p99 de producción, equivalencia MIPS ni ventaja de rendimiento de Orleans.",
+    "en": "First independently server-recorded PostgreSQL COMMIT rate for a sixty-second measurement window. Four trials over two source profiles and two routes: 1,200 commits inside each window, 20.0 real PostgreSQL COMMIT/s, with 20 in every one-second bucket. Across trial ends, 4,960 durable transfers, 9,920 postings, 4,960 outbox events and 28/28 independent SQL oracle checks were verified. Direct and Orleans route pairs yielded identical persisted state for each profile. This is evidence of the measured rate at this one load point and host, NOT a saturation capacity ceiling, production p99, MIPS equivalence or Orleans speed advantage."
+  },
+  "limitations": "Four 62-second trials including 60-second measurement, ONE offered target of 20 requests/second, ONE repetition per profile/route, ONE physical GitHub Linux host with four isolated Podman namespaces. Conservative UTC capture brackets on same machine are NOT a distributed clock synchronization guarantee. track_commit_timestamp must be explicitly enabled and commit timestamps are subject to PostgreSQL transaction-ID history retention. No 3+ independent runner cohorts, upper-rate sweep, steady-state SLA p99, CPU/lock/pool/GC telemetries, independent physical hosts, dated Azure TCO or real mainframe reference capacity. E2 remains partially_verified and issue #25 remains OPEN. Release v2026.10.29 unchanged."
+}

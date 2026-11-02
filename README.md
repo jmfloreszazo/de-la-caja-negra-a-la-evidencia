@@ -18,16 +18,18 @@ José María Flores Zazo · [jmfloreszazo.com](https://jmfloreszazo.com) · Edit
 
 An open book and a runnable lab on how to modernize COBOL systems without betting the business on an equivalence we cannot demonstrate: what to preserve, which pattern replaces each mainframe guarantee, how to use AI agents without handing them authority and how to approach mainframe capacity on Azure or on your own infrastructure. It is open because a book that argues for evidence cannot ask to be believed on faith.
 
+**Source checkpoint: 2 November 2026.** `main` includes brownfield work newer than the research pre-release. Published PDFs freeze their respective tags; they do not automatically represent the current manuscript.
+
 ## Read
 
-[Download Spanish and English PDFs](https://github.com/jmfloreszazo/de-la-caja-negra-a-la-evidencia/releases/tag/v2026.10.29) · [Fast reading path: seven chapters](docs/READING_PATH.md) · [PDF editions and release process](docs/PDF.md).
+[Research preview v2026.10.31-rc1 — historical prototype + TODM, experimental](docs/releases/v2026.10.31-rc1.md) · [Download Spanish and English PDFs](https://github.com/jmfloreszazo/de-la-caja-negra-a-la-evidencia/releases/tag/v2026.10.29) · [Fast reading path: seven chapters](docs/READING_PATH.md) · [PDF editions and release process](docs/PDF.md).
 
 | | Chapter by chapter | Whole book on one page |
 |---|---|---|
 | English | [book/en](book/en/README.md) | [book/en.md](book/en.md) |
 | Español (original) | [book/es](book/es/README.md) | [book/es.md](book/es.md) |
 
-38 chapters (including chapter 25 bis) in seven parts, an epilogue, seven annexes and 41 diagrams per language (C4, UML sequence, state and class, ER, gitGraph), drawn in Mermaid and published as images in the book's visual style. Both editions have exactly the same structure, and CI fails if they drift apart.
+37 numbered chapters plus chapter 25 bis and the decomposition companion chapter in seven parts, an epilogue, seven annexes and 41 diagrams per language (C4, UML sequence, state and class, ER, gitGraph), drawn in Mermaid and published as images in the book's visual style. Both editions have exactly the same structure, and CI fails if they drift apart.
 
 ## Languages: book versus code
 
@@ -86,7 +88,7 @@ Start with [CONTRIBUTING.md](CONTRIBUTING.md): paths by profile, a first contrib
 
 [**Chapter 25 bis: on-premises, Azure and banking-branch WAN latency**](book/en/part-5-capacity/25a-mainframe-on-prem-azure-and-banking-network-infrastructure.md) · [E1a/E1b CI evidence JSON](evidence/runs/README.md) · [E3 WAN protocol](docs/NETWORK_PROTOCOL.md).
 
-[**Verifiable evidence matrix**](docs/EVIDENCE.md): real CI, verified E1a/E1b and partially verified overall E1 versus E2–E4 remaining open.
+[**Verifiable evidence matrix**](docs/EVIDENCE.md): real CI, partially verified E1/E2, executed brownfield slices and E3/E4 remaining unexecuted as complete experiments.
 
 **Verified in GitHub Actions:** [Book](https://github.com/jmfloreszazo/de-la-caja-negra-a-la-evidencia/actions/runs/40900252122), [Lab (offline, native, Podman)](https://github.com/jmfloreszazo/de-la-caja-negra-a-la-evidencia/actions/runs/40900252152), and [bilingual PDFs](https://github.com/jmfloreszazo/de-la-caja-negra-a-la-evidencia/actions/runs/40900252098).
 

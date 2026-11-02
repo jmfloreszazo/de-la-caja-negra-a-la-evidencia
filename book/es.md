@@ -23,6 +23,7 @@ José María Flores Zazo · v2026.10.29 · **Español** · [English](en.md)
 - [Parte II · Arqueología, conocimiento y autoridad](#parte-ii--arqueología-conocimiento-y-autoridad)
   - [Capítulo 6 · REA y la arqueología que deja rastro](#capítulo-6--rea-y-la-arqueología-que-deja-rastro)
   - [Capítulo 7 · Legacy Archaeology asistida por agentes](#capítulo-7--legacy-archaeology-asistida-por-agentes)
+  - [Capítulo complementario · Descomponer el mainframe con evidencia](#capítulo-complementario--descomponer-el-mainframe-con-evidencia)
   - [Capítulo 8 · El conocimiento del agente y el expediente del sistema](#capítulo-8--el-conocimiento-del-agente-y-el-expediente-del-sistema)
   - [Capítulo 9 · De la autoridad del agente a la autoridad de la regla](#capítulo-9--de-la-autoridad-del-agente-a-la-autoridad-de-la-regla)
 - [Parte III · Oráculos: el derecho a aceptar](#parte-iii--oráculos-el-derecho-a-aceptar)
@@ -382,7 +383,7 @@ Cómo recuperar lo que el sistema sabe sin confundir una hipótesis bien redacta
 
 La pérdida de documentación y la acumulación de reglas son problemas reales. Pero conviene añadir una precisión de ingeniería: el código fuente no es la única evidencia. Hay copybooks compartidos, definiciones de datasets, control de versiones, despliegues históricos, JCL, configuraciones CICS, DDL, catálogos, estadísticas de carga, incidencias, tickets y, sobre todo, comportamientos que el sistema todavía ejecuta. Algunas reglas están en una tabla de parametrización. Otras viven en una rutina no llamada desde hace años. Algunas son errores históricos de los que dependen sistemas consumidores.
 
-Por eso no empezaría pidiendo «conviérteme estos dos millones de líneas». Empezaría por un **mapa de evidencias**. Cada artefacto recibe identidad, versión, hash, origen, propietario y restricciones. Un parser específico construye dependencias entre programas y copybooks; analizadores de JCL reconstruyen cadenas batch; un extractor de SQL localiza tablas y transacciones; un sistema de observación captura entradas, salidas y efectos de ejecución. Los agentes correlacionan esa información, pero no la convierten automáticamente en verdad.
+Por eso no empezaría pidiendo «conviérteme estos dos millones de líneas». Empezaría por un **mapa de capacidades y comportamiento de negocio**: responsables, reglas aprobadas, excepciones y resultados observables. Después construiría un **mapa de evidencias** con procedencia, versión, hash y autorización de uso. Sólo cuando una hipótesis técnica concreta lo requiera recurriría a parsers COBOL, analizadores JCL o SQL para encontrar dependencias. La observación de caja negra captura entradas, salidas y efectos; ningún analizador es requisito para programar de cero ni convierte una inferencia en política aprobada.
 
 #### Qué aporta Reverse Engineer Anything
 
@@ -422,7 +423,7 @@ Propongo un componente que denomino COBOL Evidence Adapter. No es una capacidad 
 
 Cada hallazgo debería identificar el artefacto, su hash, el localizador de origen, la herramienta y su versión, el método de obtención y los límites conocidos. Una relación deducida por el agente se registraría como hipótesis. Una ejecución observada conservaría entrada, estado relevante, salida y condiciones. Una regla aprobada tendría una autoridad y una versión distintas.
 
-Imaginemos una regla de comisión hallada en un párrafo COBOL. El parser localiza la expresión. Una ejecución confirma un resultado en el límite de redondeo. El responsable de negocio confirma que esa es la política que debe mantenerse. Son tres piezas relacionadas, pero ninguna sustituye a las demás.
+Imaginemos una comisión observada en un contrato y en una ejecución de caja negra. El responsable de negocio determina la regla y sus excepciones. Si queda una duda sobre la implementación heredada, un análisis **opcional** del COBOL puede localizar el redondeo. La observación, la investigación técnica y la aprobación son evidencias distintas: ninguna sustituye a las demás.
 
 El grafo de conocimiento puede facilitar la navegación entre ellas. Su valor no está en usar una base de datos de grafos por principio, sino en permitir reconstruir el camino desde una conclusión hasta la evidencia que la sostiene. Una tabla bien diseñada puede ser suficiente al empezar.
 
@@ -463,13 +464,13 @@ Fíjate en los dos últimos campos. `approval` está vacío porque observar un c
 ### Capítulo 7 · Legacy Archaeology asistida por agentes
 
 > [!IMPORTANT]
-> **Tesis del capítulo.** Una migración con IA empieza mejor con preguntas que con prompts de generación. Los agentes especializados reciben entradas tipadas, producen artefactos comprobables y operan con permisos limitados.
+> **Tesis del capítulo.** Una migración con IA empieza mejor preguntando **qué funcionalidades necesita el negocio y qué garantías debe conservar**. ¿Quién autoriza una transferencia? ¿Qué ocurre si se pierde la respuesta? ¿Cuáles son las excepciones y los cierres diarios? Entrevistas, políticas, contratos y pruebas de caja negra autorizadas construyen primero el mapa de capacidades. El análisis sintáctico puede resolver dudas técnicas después, pero no es obligatorio ni determina los dominios de la nueva aplicación.
 
-Una migración con IA empieza mejor con preguntas que con prompts de generación. ¿Qué programas modifican esta cuenta? ¿Dónde se decide el interés? ¿Cuántos dialectos, versiones y copybooks hay? ¿Qué ocurre cuando falla la escritura final? ¿Qué cambios llegan por jobs nocturnos? ¿Quién mantiene las tablas de códigos? Responder exige combinar análisis sintáctico, metadatos y observación dinámica.
+Empezamos por las capacidades y resultados observables que deben sobrevivir a la modernización brownfield. ¿Qué proceso autoriza una transferencia, quién gobierna el estado de una cuenta y qué fallos dejan el resultado incierto? Primero entrevistas autorizadas, políticas, contratos y observación de caja negra. El análisis del código y los metadatos es opcional para resolver dudas técnicas explícitas, nunca la unidad de migración.
 
-Propongo una cadena de agentes especializados, bajo un controlador común: **inventario y procedencia**, **parser y grafo de dependencias**, **descubrimiento de reglas**, **observador de ejecución**, **redactor de especificaciones**, **diseñador de arquitectura**, **constructor**, **verificador** y **auditor de drift**. No son nueve chatbots opinando sobre el mismo fichero. Cada uno recibe entradas tipadas, produce artefactos comprobables y opera con permisos limitados.
+Propongo agentes especializados bajo un controlador común: **descubrimiento funcional y procedencia**, **investigación técnica opcional**, **descubrimiento de reglas**, **observador de ejecución**, **redactor de especificaciones**, **diseñador de arquitectura**, **constructor**, **verificador** y **auditor de drift**. No son nueve chatbots opinando sobre el mismo fichero. El negocio determina las capacidades; el legado ofrece observaciones y, cuando sea útil, pistas técnicas. Cada agente tiene entradas, artefactos y permisos limitados.
 
-El analizador de COBOL genera un AST del dialecto real, resuelve copybooks y localiza referencias a datos, CALL, SQL embebido y estructuras de control. No le pediría a un LLM que reemplace al parser. El agente toma el resultado y produce hipótesis sobre intenciones: por ejemplo, «una retirada sobre cuentas bloqueadas retorna un código específico sin modificar estado». Esa hipótesis debe ir acompañada de rutas, posiciones, ejemplos observados y limitaciones. Si la ejecución de producción no puede observarse, documentamos el riesgo y diseñamos pruebas en una copia autorizada.
+El descubrimiento funcional produce primero escenarios positivos y negativos, decisiones y responsables. Por ejemplo: «una retirada sobre cuentas bloqueadas retorna un código específico sin modificar estado». La hipótesis requiere política aprobada y observaciones contrastables. **Si una incógnita exige inspección del legado**, se puede utilizar un parser del dialecto COBOL para estudiar AST, CALL, COPY o SQL; esa rama es opcional y no define la arquitectura objetivo. Las incertidumbres quedan abiertas, nunca aprobadas por el agente.
 
 REA representa una referencia metodológica útil en la parte de investigación con herramientas y evidencia [35, 3]. Para mainframe, su soporte concreto debe evaluarse antes de afirmarlo; no confundiría «inspirado por REA» con «REA analiza nativamente CICS». La arquitectura de integración podría utilizar un contrato neutral como `EvidenceItem`, con hashes, procedencia, cobertura y estado `observed / inferred / unknown`. Eso permite intercambiar hallazgos entre analizadores y agentes sin perder su origen.
 
@@ -483,9 +484,9 @@ Cada eslabón de la cadena tiene una entrada, un artefacto de salida y algo que 
 
 | Agente | Recibe | Produce | No puede |
 |---|---|---|---|
-| Inventario y procedencia | Repositorios, datasets, catálogos | Inventario con hashes y propietarios | Modificar fuentes |
-| Parser y grafo | Fuentes con copybooks resueltos | AST, grafo de CALL, COPY y SQL | Inferir intención de negocio |
-| Descubrimiento de reglas | Grafo y ejecuciones observadas | Hipótesis con localizadores | Aprobar reglas |
+| Descubrimiento funcional y procedencia | Responsables, políticas, canales y observaciones autorizadas | Capacidades y dudas con fuentes | Aprobar reglas |
+| Investigación técnica opcional | Fuentes autorizadas, copybooks y metadatos pertinentes | Dependencias con cobertura y procedencia | Elegir límites de negocio |
+| Descubrimiento de reglas | Capacidades y resultados observados | Hipótesis y excepciones con fuentes | Aprobar reglas |
 | Observador de ejecución | Entorno autorizado | Entrada, estado, salida y efectos | Ejecutar fuera del mandato |
 | Redactor de especificaciones | Hipótesis aprobadas | Especificación, DMN, escenarios | Cambiar la baseline |
 | Diseñador de arquitectura | Especificación y restricciones | ADR y opciones comparables | Elegir sin evidencia de capacidad |
@@ -495,7 +496,7 @@ Cada eslabón de la cadena tiene una entrada, un artefacto de salida y algo que 
 
 ![Figura 7.1 · La cadena de agentes: cada eslabón produce un artefacto y ninguno escribe la baseline.](figures/es/agent_chain.png)
 
-*Figura 7.1 · La cadena de agentes: cada eslabón produce un artefacto y ninguno escribe la baseline.*
+*Figura 7.1 · Modernización brownfield: capacidades y contratos, oráculos TODM independientes, coexistencia y autorización humana G6. Golden Master conserva las observaciones del legado por separado; analizar COBOL/JCL es opcional. Ningún agente modifica la baseline aprobada.*
 
 #### La especificación viva
 
@@ -504,6 +505,42 @@ El resultado de esta arqueología no es un PDF congelado. Es un conjunto version
 No todo el código heredado merece convertirse. El análisis debe identificar rutas muertas, duplicaciones, funciones caducadas y comportamientos que el negocio quiere retirar. Pero la decisión de eliminarlos es una decisión funcional con impacto, no un efecto lateral de una refactorización generada.
 
 > **La responsabilidad de un agente investigador acaba donde comienza la autoridad de la especificación.**
+
+### Capítulo complementario · Descomponer el mainframe con evidencia
+
+> **Borrador para revisión editorial.** No forma parte de la edición publicada v2026.10.29. Investigación vinculada al issue #32.
+
+#### La frontera no está en el programa
+
+La modernización de un núcleo bancario no empieza distribuyendo párrafos COBOL entre contenedores. Debemos reconstruir la **unidad de responsabilidad empresarial**, su autoridad sobre los datos, sus dependencias temporales y el contrato transaccional realmente exigido. Un `CALL` identifica una relación técnica, no necesariamente un bounded context. Una tabla compartida no demuestra por sí sola que debamos conservarla: puede ocultar una lectura histórica, una función contable o un control de autorización.
+
+#### Método de descubrimiento
+
+**Event Storming** facilita reconstruir qué ocurrió, quién tomó decisiones y qué excepciones importan, desde una retirada en cajero hasta una reversión al cierre del día. No equivale a **Event Sourcing**: descubrir eventos no obliga a almacenar cada cambio de estado mediante un registro de eventos.
+
+El **DDD estratégico** identifica subdominios y contextos delimitados. Su hipótesis debe confrontarse con evidencia estática (COBOL, CICS LINK/XCTL, copybooks, SQL, JCL, Db2, VSAM y MQ), trazas de ejecución autorizadas y prácticas operativas (cierre contable, proceso nocturno, conciliación y picos). No conocemos una dependencia sólo porque un analizador no la observe.
+
+#### El ejemplo de una transferencia
+
+Imaginemos una operación cuyo identificador gobierna dos apuntes compensados, un registro de operación y un mensaje de outbox en una única transacción duradera. Si extraemos la escritura de la cuenta a un servicio y mantenemos el segundo apunte en el mainframe sin un nuevo contrato verificable, hemos cambiado la semántica del negocio. Un actor virtual o una saga no reproduce automáticamente el mismo COMMIT.
+
+En cambio, una proyección de movimientos puede ser una primera candidata si dispone de límites explícitos: idempotencia, marca de actualización, reconstrucción, tolerancia al retraso, seguridad y lectura alternativa consistente. El dato de un extracto eventualmente consistente nunca debe confundirse con el saldo autorizado para dispensar efectivo.
+
+#### El gate que puede decir que no
+
+En el laboratorio sintético `lab/decomposition/`, el analizador conserva la procedencia de cada dependencia: fuente estática, traza de ejecución o afirmación del experto. Si dos fuentes discrepan sobre el carácter atómico de una relación, no se elige la versión conveniente: el corte se rechaza. Los miembros de una misma transacción se tratan como un grupo indivisible, aunque no estén unidos por una sola arista del grafo. También se rechazan cortes que cruzan dependencias desconocidas o inferidas.
+
+El resultado `CANDIDATE_ONLY` **no autoriza una migración**. Sólo indica que esa propuesta no contradice las restricciones conocidas en el pequeño modelo sintético. Para convertirlo en decisión real faltan observaciones representativas, responsables del dominio, pruebas negativas y recuperación, rendimiento, costes con fecha y planes de reversión.
+
+#### Cinco decisiones posibles
+
+Conservar el núcleo es una decisión legítima si todavía concentra invariantes que no sabemos reproducir. Encapsular mediante API y Anti-Corruption Layer permite mover la frontera sin mover la autoridad. Extraer consultas facilita medir la consistencia. Extraer comandos exige demostrar ownership, atomicidad o una nueva semántica de compensación expresamente autorizada. Retirar un activo requiere probar que nadie lo ejecuta, incluidos jobs estacionales, terminales remotos y recuperación operativa.
+
+**La regla central:** primero demostrar la frontera de responsabilidad; después escoger la topología. La propuesta se invalida cuando una evidencia nueva contradice la hipótesis, no cuando el diagrama ya está dibujado.
+
+#### Contrato de evidencia
+
+Este capítulo es una explicación de método apoyada por un **modelo sintético**, no por trazas de un banco, mediciones IBM Z ni aceptación productiva. Las pruebas del laboratorio sólo examinan decisiones estructurales. Véase [investigación detallada](../docs/research/mainframe-decomposition.es.md) y [laboratorio](../lab/decomposition/README.md).
 
 ### Capítulo 8 · El conocimiento del agente y el expediente del sistema
 
@@ -700,7 +737,7 @@ Organizaría la solución alrededor de cuatro responsabilidades: descubrir evide
 
 *Figura 11.1 · Contexto de una modernización verificable: personas, sistemas y responsabilidades.*
 
-La capa de descubrimiento accede a fuentes, binarios, configuraciones y capturas autorizadas. Los agentes de comprensión trabajan sobre ese material. Sus conclusiones conservan referencias y dudas. El COBOL Evidence Adapter propuesto sirve de frontera para normalizar los hallazgos sin borrar su procedencia.
+El descubrimiento funcional parte de responsables de negocio, políticas aprobadas, contratos externos, resultados excepcionales y observaciones autorizadas. El legado forma parte del contexto **brownfield**, con coexistencia y conciliación controladas. La investigación técnica de fuentes, binarios, configuraciones o dependencias COBOL es opcional cuando una duda concreta lo justifica; un Evidence Adapter puede normalizar hallazgos, pero nunca aprobar reglas.
 
 La factoría de oráculos convierte las decisiones de negocio en contratos ejecutables. Un experto puede revisar una tabla de decisiones con más facilidad que una colección de aserciones dispersas. Pero la tabla necesita una interpretación ejecutable conocida y probada. Dibujar un proceso BPMN no convierte su imagen en un motor que comprueba trazas.
 
@@ -710,7 +747,7 @@ El verificador ejecuta o consume observaciones obtenidas de forma controlada, co
 
 ![Figura 11.2 · Responsabilidades y evidencia vinculada. El constructor no modifica unilateralmente la baseline; separar carpetas en la demo no impone permisos de producción.](figures/es/c4_containers.png)
 
-*Figura 11.2 · Responsabilidades y evidencia vinculada. El constructor no modifica unilateralmente la baseline; separar carpetas en la demo no impone permisos de producción.*
+*Figura 11.2 · Descubrimiento funcional brownfield, Golden Master separado, arqueología técnica opcional, oráculos TODM y coexistencia/corte controlado. G6 exige autoridad independiente; el constructor no modifica la baseline.*
 
 #### Las fronteras que importan
 
@@ -2137,6 +2174,147 @@ La tabla enseña una cosa verdadera y nada más: al añadir procesos que compite
 
 > **El servicio puede contestar OK y dejar otra cosa detrás. El oráculo mira lo que queda.**
 
+#### Del débito atómico al traspaso de autoridad entre dos almacenes
+
+La siguiente dificultad no consiste en hacer funcionar una transferencia con
+PostgreSQL. Consiste en **trasladar la autoridad contable de un sistema heredado
+a otro nuevo**, sin que los dos escriban al mismo tiempo ni que una caída de
+red convierta una respuesta desconocida en un débito duplicado.
+
+La [prueba brownfield de convivencia](../lab/brownfield/coexistence/README.md)
+añade dos instancias PostgreSQL 16.13, cada una en un contenedor Podman
+distinto, pero **ambas dentro de un único runner Linux**. Una representa un
+legado sintético, expuesto mediante un ejecutable de caja negra y tablas con
+nombres y estructuras diferentes. La otra contiene el candidato .NET 10.
+Ninguna depende de un parser COBOL. Las reglas de negocio reales siguen
+siendo una incógnita: escribir código nuevo desde cero no convierte una
+migración brownfield en greenfield.
+
+El control de escritor se representa mediante una fila de autoridad y una
+época. Ambos adaptadores cooperan: mantienen un bloqueo compartido mientras
+confirman sus respectivas transacciones. El cambio de escritor adquiere el
+bloqueo exclusivo, espera a los comandos que ya estaban dentro y aumenta
+la época. Así podemos demostrar que un comando tardío con una época antigua
+es rechazado. **No hemos demostrado que un programa CICS o una transacción
+Db2 fuera de este controlador respeten ese bloqueo**; el ensayo adversarial
+de escritura directa prueba que el desvío se detecta, pero no se impide.
+
+El protocolo está organizado en cuatro decisiones separadas:
+
+1. **Observar sin escribir dos veces.** El shadow calcula respuestas a partir
+   de lecturas; no publica ni un segundo asiento ni otro evento outbox.
+   Si la réplica está desfasada, se declara la discrepancia.
+2. **Preparar sin declarar autoridad nueva.** Bajo el bloqueo de transición
+   se copia un snapshot consistente del legado al destino, incluidas las
+   operaciones rechazadas, los identificadores, huellas, apuntes,
+   eventos, versiones y contador de decisiones.
+3. **Conciliar independientemente.** El oráculo normaliza ambos modelos
+   de datos y compara cinco familias: cuentas, operaciones, apuntes,
+   outbox y watermark. Comprueba, además, la conservación monetaria,
+   la pareja de asientos y la ausencia de efectos de operaciones rechazadas.
+4. **Cambiar o bloquear.** Solo si el estado completo coincide se
+   aumenta la época y se acepta el cambio sintético de escritor.
+   Un apunte o evento ausente, o una decisión nueva después del snapshot,
+   debe bloquear la transición. No basta con que el saldo total coincida.
+
+La [ejecución original sobre SHA exacto](../evidence/runs/BROWNFIELD-TWO-STORE.es.md)
+del 1 de noviembre de 2026 superó los controles sintéticos. El legado terminó
+con ocho decisiones y el candidato con diez, dos de ellas posteriores al
+cutover. Los diez invariantes de cada almacén fueron verdaderos, pero las
+dos bases dejaron de ser idénticas; por eso el rollback quedó **bloqueado
+con `FORWARD_FIX_REQUIRED`**. La conclusión no es «ya podemos volver atrás»,
+sino la contraria: una vez que el nuevo escritor ha confirmado operaciones,
+el antiguo estado deja de ser automáticamente válido.
+
+##### C2 · Una respuesta desconocida necesita un journal duradero
+
+La convivencia anterior resuelve cómo comparar dos almacenes, pero deja un
+problema abierto: **el COMMIT puede ser correcto aunque el ACK no llegue**.
+Tratar un timeout como un rechazo y reintentar contra el otro escritor podría
+producir dos efectos contables. Por eso C2 incorpora un tercer PostgreSQL
+desechable, `bf_control`, con un journal de admisión independiente de los
+dos ledgers. Cada petición CAP-007 registra identificador estable, huella,
+escritor, época y estado antes de ejecutar el comando remoto.
+
+El estado avanza de `ADMITTED` a `DISPATCHING` y, si la respuesta
+desaparece, a `UNKNOWN`. Solo la inspección SQL independiente de la
+operación persistida, sus dos apuntes y el outbox puede concluir
+`COMMITTED` o `REJECTED`. La ausencia de fila en ambos almacenes
+**no demuestra un rechazo**: mantiene UNKNOWN y bloquea el cutover.
+
+El ensayo de tres contenedores mata procesos reales después de la admisión,
+antes del envío y después de un COMMIT cuyo resultado no llegó al gateway.
+También falsifica una decisión terminal del journal y verifica que el
+oráculo rechaza el cambio de escritor. Los adaptadores cooperativos del
+legado en Python y del nuevo servicio .NET 10 pueden exigir el controlador
+C2 y mantener un bloqueo compartido hasta confirmar la operación. Las
+[pruebas originales de C2](https://github.com/jmfloreszazo/de-la-caja-negra-a-la-evidencia/actions/runs/41341644829)
+se ejecutaron con un SHA concreto en CI. No sustituyen una homologación
+bancaria.
+
+**En aquel SHA original de C2:** en modo C2 estricto,
+ambos adaptadores exigen una admisión `DISPATCHING` previa y rechazan
+llamadas directas sin ella. Si se desactiva deliberadamente esa opción,
+el acceso directo puede escribir sin journal: el oráculo detecta el efecto,
+pero no evita ese bypass de configuración. Las épocas del controlador
+y del candidato tampoco cambian atómicamente entre dos PostgreSQL.
+Un bloqueo cooperativo no retira la autoridad a un CICS/Db2 real. Faltan
+fencing externo, reparación ante crash entre cambios de autoridad,
+conciliación de terceros, pruebas entre nodos físicos y política de
+negocio aprobada. TODM G2=INCONCLUSIVE y G6=BLOCK.
+
+##### Continuación de C2 · Persistir el control y congelar cambios interrumpidos
+
+La [continuación del journal](../lab/brownfield/journal/README.md)
+cambia dos supuestos técnicos sin modificar la autoridad del negocio. La
+inscripción queda guardada en SQL: quitar una variable de proceso ya no
+permite desactivar la admisión en ninguno de los dos adaptadores cooperativos.
+Las fixtures históricas nuevas permanecen sin inscribir; el SQL directo con
+privilegios sigue fuera de este control.
+
+Antes de cambiar ninguna época, el coordinador confirma una intención
+`PREPARED` y `mode=SWITCHING` duraderas. Los dos adaptadores y el gateway
+rechazan nuevos comandos financieros hasta que la conciliación independiente
+del ledger y del journal permita completar exactamente esa transición.
+
+| Frontera duradera | Controlador | Autoridad del candidato | Nueva admisión |
+|---|---|---|---|
+| Intención preparada | legacy / e / SWITCHING | legacy / e | Bloqueada |
+| Autoridad del candidato confirmada | legacy / e / SWITCHING | candidate / e+1 | Bloqueada |
+| Conciliación completada | candidate / e+1 / ACTIVE | candidate / e+1 | Permitida con admisión coincidente |
+
+El protocolo envía `SIGKILL` desde un proceso independiente después de las
+dos primeras fronteras y reinicia la recuperación. Una época inesperada o un
+outbox ausente deben mantener el tráfico congelado; una respuesta perdida
+no decide quién escribe. Las decisiones originadas por el candidato siguen
+vetando la vuelta atrás. Esto cubre ventanas concretas del modelo cooperativo
+mediante intención duradera y recuperación hacia adelante,
+**no mediante COMMIT atómico entre bases de datos**. La [CI original de esta continuación](../evidence/runs/BROWNFIELD-C2-RECOVERY.es.md)
+superó 19 controles, conservando el ZIP original y el primer fallo concurrente. La ejecución posterior [#41353221630](https://github.com/jmfloreszazo/de-la-caja-negra-a-la-evidencia/actions/runs/41353221630), sobre el main `279ca566`, superó 20 controles y ambos oráculos SQL 10/10; es otra observación, no una ampliación retrospectiva de aquel ZIP.
+Cada cambio posterior necesita CI con su SHA exacto: la observación histórica
+no valida otro checkout. Las particiones de red durante operaciones en
+curso, la retirada de autoridad al incumbente real, los efectos de pago
+externos y la política aprobada siguen siendo puertas de aceptación separadas.
+G2=INCONCLUSIVE y G6=BLOCK.
+
+##### Qué falta antes de permitir un cutover real
+
+Un contrato de caja negra simulado no concede al proveedor acceso a los
+bloqueos del banco. Necesitamos un mecanismo verificable que retire al
+incumbente su autoridad de escritura, más un registro persistente de
+admisiones y resultados inciertos, conciliación ante interrupciones entre
+almacenes, detección de efectos en sistemas terceros y protocolos de
+reanudación o reparación hacia adelante. También hacen falta políticas
+aprobadas por el propietario del negocio: un Golden Master observado no
+basta para aprobar una política.
+
+En TODM, este ensayo aporta evidencia técnica para G4/G5; **G2 permanece
+inconcluso y G6 sigue bloqueado**. Tampoco prueba dominios físicos de fallo,
+RTO/RPO productivos, equivalencia CICS/Db2, capacidad MIPS ni viabilidad
+económica de Azure. Ese es precisamente el propósito del laboratorio:
+convertir los supuestos de arquitectura en afirmaciones que podamos
+refutar antes de prometer una migración.
+
 ### Capítulo 29 · Incorporar agentes sin permitir que escriban el aprobado
 
 > [!IMPORTANT]
@@ -2154,7 +2332,7 @@ El agente puede consultar fuentes y el contrato público, ejecutar sus tests y c
 
 Si cambiamos modelos, presupuestos, prompts o herramientas, lo registramos como una condición experimental distinta. Decir que «lo hizo la IA» no permite explicar qué combinación produjo el resultado ni repetir el proceso.
 
-Un agente de comprensión podría proponer reglas a partir del COBOL. Esa propuesta todavía necesita contraste. El agente de construcción podría traducirlas a C#. El gate comprueba el comportamiento observado. La aprobación humana establece qué regla se acepta y cuándo una diferencia respecto del legado es intencional.
+Un agente investigador puede proponer reglas desde políticas, entrevistas y observaciones autorizadas; el COBOL es una fuente auxiliar cuando sea necesario. El constructor puede **programar desde cero** la capacidad en C# sin copiar la estructura del legado. TODM compara el resultado con oráculos independientes y reglas aprobadas; Golden Master conserva por separado el comportamiento observado. La autoridad del negocio decide qué mantener, corregir o retirar.
 
 #### REA entra cuando el problema lo necesita
 
@@ -2162,7 +2340,7 @@ Para el fuente pequeño del laboratorio no necesitamos un decompilador. Incluir 
 
 Una extensión coherente consistiría en tomar un ejecutable autorizado, fijar su hash y pedir a un agente que investigue una función concreta mediante REA. Los hallazgos alimentarían hipótesis y pruebas. La reconstrucción se evaluaría después contra un oráculo adecuado. El resultado documentaría qué se observó directamente y qué se dedujo.
 
-Para fuentes COBOL de mayor tamaño, evaluaría primero el parser y el dialecto. Un MCP puede exponer el inventario, las relaciones y las ejecuciones de un adaptador especializado. El protocolo facilita el acceso a herramientas; no garantiza su corrección ni concede autoridad para usarlas.
+Para sistemas COBOL de mayor tamaño, empezaría por las **capacidades, contratos externos, excepciones y garantías operativas**. Sólo ante una duda técnica concreta evaluaría parsers de dialecto o herramientas de dependencias. MCP puede exponer los hallazgos, pero el análisis sintáctico no es un requisito para reprogramar el sistema ni autoriza una regla de negocio.
 
 #### Los errores correlacionados siguen siendo posibles
 
@@ -2587,13 +2765,13 @@ Los códigos de salida del gate son parte del contrato: 0 para el permiso sinté
 
 #### Lo que no acredita
 
-No hay integración de REA, ni agente autónomo, ni cluster de actores, ni motor SQL de producción, ni bloqueo por fila, ni deadlock SQL, ni commit en dos fases, ni failover, ni prueba de pérdida eléctrica, ni despliegue en Azure, ni publicador real de la outbox. No existe una baseline medida de un mainframe. No se demuestra eficacia industrial ni independencia entre personas: los componentes son procesos distintos, pero se construyeron en el mismo trabajo.
+En este recorrido de referencia original, no hay integración de REA, ni agente autónomo, ni cluster de actores, ni motor SQL de producción, ni bloqueo por fila, ni deadlock SQL, ni commit en dos fases, ni failover, ni prueba de pérdida eléctrica, ni despliegue en Azure, ni publicador real de la outbox. No existe una baseline medida de un mainframe. No se demuestra eficacia industrial ni independencia entre personas: los componentes son procesos distintos, pero se construyeron en el mismo trabajo.
 
 El hash de la baseline y su ancla viven en el mismo paquete escribible. En producción deben quedar fuera del alcance del constructor y vincularse a una aprobación real. El mandato es sintético.
 
 #### Hacia dónde crece
 
-El fichero `docs/EXPERIMENT_PROTOCOL.md` describe cuatro experimentos diseñados y no ejecutados. E1 porta el módulo bancario a un motor con bloqueo por fila y añade víctimas de deadlock, write skew y agotamiento del pool. E2 implementa el mismo contrato con actores de Orleans que coordinan y un ledger que confirma, bajo distribuciones uniformes, sesgadas y con una cuenta que recibe la mitad del tráfico. E3 compara Azure, un servidor local con su segunda unidad y una configuración híbrida con el mismo contrato de rendimiento. E4 pone a un agente a construir el candidato con escritura limitada a `Candidate/` y compara pruebas escritas por el agente, oráculo independiente y oráculo cualificado por mutaciones.
+En la referencia local del 29 de octubre de 2026, el fichero `docs/EXPERIMENT_PROTOCOL.md` planteaba cuatro experimentos todavía no ejecutados. En el repositorio actual, E1 PostgreSQL/SQL Server y E2 Orleans cuentan con subconjuntos ejecutados en CI y siguen parcialmente verificados; E3/E4 permanecen sin ejecución completa. La [matriz de evidencia](../docs/EVIDENCE.es.md) y el [roadmap](../ROADMAP.es.md) mantienen el estado actual. El diseño original se resume así: E1 porta el módulo bancario a un motor con bloqueo por fila y añade víctimas de deadlock, write skew y agotamiento del pool. E2 implementa el mismo contrato con actores de Orleans que coordinan y un ledger que confirma, bajo distribuciones uniformes, sesgadas y con una cuenta que recibe la mitad del tráfico. E3 compara Azure, un servidor local con su segunda unidad y una configuración híbrida con el mismo contrato de rendimiento. E4 pone a un agente a construir el candidato con escritura limitada a `Candidate/` y compara pruebas escritas por el agente, oráculo independiente y oráculo cualificado por mutaciones.
 
 ### Anexo B · Contrato del laboratorio
 

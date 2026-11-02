@@ -23,6 +23,7 @@ José María Flores Zazo · v2026.10.29 · **English** · [Español](es.md)
 - [Part II · Archaeology, knowledge and authority](#part-ii--archaeology-knowledge-and-authority)
   - [Chapter 6 · REA and archaeology that leaves a trail](#chapter-6--rea-and-archaeology-that-leaves-a-trail)
   - [Chapter 7 · Legacy Archaeology assisted by agents](#chapter-7--legacy-archaeology-assisted-by-agents)
+  - [Companion chapter · Decomposing a mainframe with evidence](#companion-chapter--decomposing-a-mainframe-with-evidence)
   - [Chapter 8 · The agent's knowledge and the system's record](#chapter-8--the-agents-knowledge-and-the-systems-record)
   - [Chapter 9 · From the agent's authority to the rule's authority](#chapter-9--from-the-agents-authority-to-the-rules-authority)
 - [Part III · Oracles: the right to accept](#part-iii--oracles-the-right-to-accept)
@@ -382,7 +383,7 @@ How to recover what the system knows without mistaking a well-written hypothesis
 
 Lost documentation and accumulated rules are real problems. But an engineering clarification is worth adding: source code is not the only evidence. There are shared copybooks, dataset definitions, version control, historical deployments, JCL, CICS configurations, DDL, catalogs, load statistics, incidents, tickets and, above all, behaviours the system still executes. Some rules live in a parameter table. Others live in a routine nobody has called for years. Some are historical bugs that consuming systems depend on.
 
-That is why I would not start by asking "convert these two million lines for me". I would start with an **evidence map**. Each artifact gets an identity, version, hash, origin, owner and constraints. A specific parser builds dependencies between programs and copybooks; JCL analysers reconstruct batch chains; an SQL extractor locates tables and transactions; an observation system captures inputs, outputs and execution effects. Agents correlate that information, but they do not automatically turn it into truth.
+That is why I would not start by asking "convert these two million lines for me". I would start with a **business capability and behavior map**: accountable owners, approved rules, exceptions and observable outcomes. Then I would build an **evidence map** with provenance, versions, hashes and permissions. Only when a specific technical hypothesis needs corroboration would I use COBOL parsers, JCL or SQL analysers to find dependencies. Black-box observation captures inputs, outputs and effects; no parser is required to build from scratch, and no inference automatically becomes approved policy.
 
 #### What Reverse Engineer Anything brings
 
@@ -422,7 +423,7 @@ I propose a component I call the COBOL Evidence Adapter. It is not a capability 
 
 Each finding should identify the artifact, its hash, the source locator, the tool and its version, the method used and the known limits. A relationship inferred by the agent would be recorded as a hypothesis. An observed execution would keep input, relevant state, output and conditions. An approved rule would have a different authority and version.
 
-Imagine a fee rule found in a COBOL paragraph. The parser locates the expression. An execution confirms a result at the rounding boundary. The business owner confirms that this is the policy to be kept. They are three related pieces, but none replaces the others.
+Imagine a fee observed in a business contract and black-box execution. The business owner determines the correct rule and exceptions. If a question remains about the incumbent implementation, **optional** COBOL analysis may locate its rounding logic. Observation, technical investigation and approval are separate evidence types: none replaces the others.
 
 A knowledge graph can make navigating between them easier. Its value is not in using a graph database on principle, but in letting us reconstruct the path from a conclusion back to the evidence that supports it. A well-designed table may be enough to begin with.
 
@@ -463,13 +464,13 @@ Look at the last two fields. `approval` is empty because observing a behaviour d
 ### Chapter 7 · Legacy Archaeology assisted by agents
 
 > [!IMPORTANT]
-> **Chapter thesis.** An AI-assisted migration starts better with questions than with generation prompts. Specialized agents receive typed inputs, produce verifiable artifacts and operate with limited permissions.
+> **Chapter thesis.** AI-assisted modernization should start by asking **which business capabilities are needed and which guarantees must survive**. Who authorizes transfers? What happens when a reply is lost? Which exceptions and end-of-day rules apply? Interviews, approved policies, external contracts and authorized black-box tests establish the capability map first. Syntactic analysis may resolve later technical questions, but is neither mandatory nor a way to derive the new domain boundaries.
 
-An AI-assisted migration starts better with questions than with generation prompts. Which programs modify this account? Where is the interest decided? How many dialects, versions and copybooks are there? What happens when the final write fails? What changes arrive through nightly jobs? Who maintains the code tables? Answering requires combining syntactic analysis, metadata and dynamic observation.
+Start with the business capabilities and observable outcomes that have to survive a brownfield migration. Which customer journey authorizes a transfer, who owns account state, and which failures leave the result uncertain? Authorized interviews, policy, interfaces and black-box observations come first. Source and metadata inspection are optional ways to resolve named technical uncertainties, never the migration unit.
 
-I propose a chain of specialized agents under a common controller: **inventory and provenance**, **parser and dependency graph**, **rule discovery**, **execution observer**, **specification writer**, **architecture designer**, **builder**, **verifier** and **drift auditor**. They are not nine chatbots giving opinions on the same file. Each receives typed inputs, produces verifiable artifacts and operates with limited permissions.
+I propose specialized agents under one controller: **functional discovery and provenance**, **optional technical investigation**, **rule discovery**, **execution observer**, **specification writer**, **architecture designer**, **builder**, **verifier** and **drift auditor**. These are not nine chatbots giving opinions on the same file. Business authority defines the capabilities; the incumbent offers observations and sometimes technical clues. Each agent has typed inputs, artifacts and limited permissions.
 
-The COBOL analyser generates an AST of the real dialect, resolves copybooks and locates data references, CALLs, embedded SQL and control structures. I would not ask an LLM to replace the parser. The agent takes the result and produces hypotheses about intent: for example, "a withdrawal on blocked accounts returns a specific code without modifying state". That hypothesis must come with paths, positions, observed examples and limitations. If production execution cannot be observed, we document the risk and design tests on an authorized copy.
+Functional discovery first produces positive and negative scenarios, decisions and accountable owners. For example: "a withdrawal on blocked accounts returns a particular code without changing state". The hypothesis needs approved policy and corroborating observations. **If an unresolved question calls for legacy source inspection**, a COBOL dialect parser may examine AST, CALL, COPY or SQL; that branch is optional and does not dictate the target architecture. Unknowns remain open rather than being approved by an agent.
 
 REA is a useful methodological reference for investigation with tools and evidence [35, 3]. For the mainframe, its concrete support must be evaluated before it is claimed; I would not confuse "inspired by REA" with "REA natively analyses CICS". The integration architecture could use a neutral contract such as `EvidenceItem`, with hashes, provenance, coverage and an `observed / inferred / unknown` status. That lets findings flow between analysers and agents without losing their origin.
 
@@ -483,9 +484,9 @@ Each link in the chain has an input, an output artifact and something it is expr
 
 | Agent | Receives | Produces | Cannot |
 |---|---|---|---|
-| Inventory and provenance | Repositories, datasets, catalogs | Inventory with hashes and owners | Modify sources |
-| Parser and graph | Sources with resolved copybooks | AST, graph of CALL, COPY and SQL | Infer business intent |
-| Rule discovery | Graph and observed executions | Hypotheses with locators | Approve rules |
+| Functional discovery and provenance | Owners, policy, channels and authorized observations | Capabilities and uncertainties with sources | Approve rules |
+| Optional technical investigation | Authorized source, copybooks and relevant metadata | Dependencies with coverage and provenance | Choose business boundaries |
+| Rule discovery | Capabilities and observed outcomes | Hypotheses and exceptions with sources | Approve rules |
 | Execution observer | Authorized environment | Input, state, output and effects | Run outside the mandate |
 | Specification writer | Approved hypotheses | Specification, DMN, scenarios | Change the baseline |
 | Architecture designer | Specification and constraints | ADRs and comparable options | Choose without capacity evidence |
@@ -495,7 +496,7 @@ Each link in the chain has an input, an output artifact and something it is expr
 
 ![Figure 7.1 · The agent chain: each link produces an artifact and none writes the baseline.](figures/en/agent_chain.png)
 
-*Figure 7.1 · The agent chain: each link produces an artifact and none writes the baseline.*
+*Figure 7.1 · Brownfield modernization: business capabilities and contracts, independent TODM oracles, coexistence and G6 human authorization. Golden Master keeps legacy observations separate; COBOL/JCL investigation is optional. No agent modifies the approved baseline.*
 
 #### The living specification
 
@@ -504,6 +505,42 @@ The result of this archaeology is not a frozen PDF. It is a versioned set of int
 Not all legacy code deserves to be converted. The analysis must identify dead paths, duplicates, expired functions and behaviours the business wants to retire. But the decision to remove them is a functional decision with impact, not a side effect of a generated refactoring.
 
 > **The responsibility of an investigating agent ends where the authority of the specification begins.**
+
+### Companion chapter · Decomposing a mainframe with evidence
+
+> **Editorial review draft.** Not part of published v2026.10.29. Tracks issue #32.
+
+#### The boundary is not the program
+
+Modernizing a banking core does not begin by distributing COBOL paragraphs across containers. Reconstruct the business responsibility, data authority, temporal dependencies and actual transactional contract first. A `CALL` is a technical dependency, not necessarily a bounded context. A shared table may support historical queries, accounting postings or authorization controls.
+
+#### Discover before dividing
+
+**Event Storming** reconstructs what happened, who made decisions and which exceptions matter, from ATM cash withdrawal to end-of-day reversals. Event Storming is not **Event Sourcing**: discovery does not require an append-only event store.
+
+**Strategic DDD** suggests bounded contexts and ownership. Validate those hypotheses against static COBOL/CICS LINK/XCTL/copybook/SQL/JCL/Db2/VSAM/MQ evidence, authorized runtime traces and operational constraints such as closing, reconciliation and peak periods. Absence from a sampled trace is never proof of nonexistence.
+
+#### A banking transfer example
+
+Consider a stable operation identifier whose transfer atomically commits two balanced postings, an operation record and an outbox message. Moving one posting to a new service while leaving the other on the mainframe can alter business semantics. An actor or saga does not automatically replace the original ACID boundary.
+
+A statement projection, however, may be a first extraction candidate if it provides explicit idempotency, watermark, rebuild, lag tolerance, authorization and a consistent-read fallback. An eventually consistent statement must never masquerade as the authoritative balance for dispensing cash.
+
+#### An oracle that can refuse
+
+The synthetic `lab/decomposition/` design oracle preserves the source of every dependency: static, runtime or domain-expert. Disagreement about atomicity is not resolved by choosing the more convenient answer: it rejects the cut. Atomic transaction members form one indivisible group even if they are not directly linked by a single graph edge. Cuts crossing unknown or inferred dependencies are also rejected.
+
+`CANDIDATE_ONLY` **does not authorize a migration**. It means the proposal does not contradict currently encoded constraints in a small synthetic graph. A real decision requires representative observations, business owners, negative and recovery tests, workload performance, dated cost evidence and rollback proof.
+
+#### Five possible decisions
+
+Retain the legacy core if critical invariants cannot yet be reproduced. Wrap it with an API and Anti-Corruption Layer to move the boundary without moving state authority. Extract queries to evaluate consistency explicitly. Extract commands only after proving ownership, atomicity or an approved new compensation contract. Retire an asset only after demonstrating no remaining seasonal job, remote terminal, consumer or recovery dependency.
+
+**The governing rule:** prove the responsibility boundary before picking deployment topology. When new evidence falsifies the proposed boundary, revise the design, not the evidence.
+
+#### Evidence contract
+
+This is methodological reasoning backed by a **synthetic graph**, not live bank traces, IBM Z measurements or production acceptance. Laboratory checks evaluate structural decisions only. See [research protocol](../docs/research/mainframe-decomposition.en.md) and [laboratory](../lab/decomposition/README.md).
 
 ### Chapter 8 · The agent's knowledge and the system's record
 
@@ -700,7 +737,7 @@ I would organize the solution around four responsibilities: discovering evidence
 
 *Figure 11.1 · Context of a verifiable modernization: people, systems and responsibilities.*
 
-The discovery layer accesses sources, binaries, configurations and authorized captures. Comprehension agents work on that material. Their conclusions keep references and doubts. The proposed COBOL Evidence Adapter acts as a boundary to normalize findings without erasing their provenance.
+Capability discovery starts from business owners, approved policies, interface contracts, exceptional outcomes and authorized observations. The incumbent is part of the **brownfield** context, with controlled coexistence and reconciliation. Technical investigation of sources, binaries, configurations or COBOL dependencies is optional when a specific unknown requires evidence; an Evidence Adapter can normalize such findings but cannot approve business rules.
 
 The oracle factory turns business decisions into executable contracts. An expert can review a decision table more easily than a collection of scattered assertions. But the table needs a known, tested executable interpretation. Drawing a BPMN process does not turn its image into an engine that checks traces.
 
@@ -710,7 +747,7 @@ The verifier executes or consumes observations obtained in a controlled way, che
 
 ![Figure 11.2 · Separate responsibilities and bound evidence. The builder reads the public contract; it does not write the baseline. Separating folders in the demo does not impose production permissions.](figures/en/c4_containers.png)
 
-*Figure 11.2 · Separate responsibilities and bound evidence. The builder reads the public contract; it does not write the baseline. Separating folders in the demo does not impose production permissions.*
+*Figure 11.2 · Brownfield capability discovery, separate Golden Master, optional source archaeology, TODM oracles and controlled coexistence/cutover. G6 requires independent release authority; the builder cannot write the baseline.*
 
 #### The boundaries that matter
 
@@ -2139,6 +2176,141 @@ The table teaches one true thing and nothing more: when we add processes that co
 
 > **The service can answer OK and leave something else behind. The oracle looks at what remains.**
 
+#### From atomic debit to authority transfer across two stores
+
+The next challenge is not making a PostgreSQL transfer work. It is
+**moving accounting authority from an incumbent system to a replacement**
+without two simultaneous writers or a lost acknowledgement becoming a
+second financial posting.
+
+The [brownfield coexistence lab](../lab/brownfield/coexistence/README.md)
+adds two PostgreSQL 16.13 instances, each in a separate Podman container,
+but **both hosted by one Linux CI runner**. One models a synthetic legacy
+black-box executable with deliberately different tables and column names;
+the other hosts the .NET 10 candidate. Neither parses COBOL. Actual
+customer business rules remain unknown: writing a component from scratch
+does not make an existing-system modernization greenfield.
+
+A common authority row and an epoch model the writer fence. Both adapters
+cooperate: they hold a shared row lock through their respective database
+commit. The transition takes the exclusive lock, waits for admitted work
+to finish and increments the epoch. This can establish rejection of an
+old-epoch command in the synthetic model. **It cannot establish that an
+uncontrolled CICS or Db2 writer will respect that lock.** The deliberately
+rogue direct-SQL control shows that such bypasses are detected by the
+oracle, but not prevented by this design.
+
+The protocol separates four decisions:
+
+1. **Observe without double posting.** Shadow execution predicts responses
+   using read-only snapshots. It publishes no second posting or outbox event.
+   Stale candidate state yields a visible disagreement.
+2. **Stage without declaring new authority.** While the transition gate is
+   locked, copy a consistent source snapshot into the non-authoritative
+   destination, including rejected decisions, operation IDs, fingerprints,
+   postings, events, versions and decision watermark.
+3. **Reconcile independently.** Normalize both storage models and compare
+   accounts, operations, postings, outbox and watermark. Require monetary
+   conservation, paired postings and zero effects for rejected operations.
+4. **Promote or block.** Increment the writer epoch only if every dimension
+   matches. A missing event or source decision after staging must reject
+   cutover, even if aggregate balances still look reasonable.
+
+The [original exact-source-SHA evidence](../evidence/runs/BROWNFIELD-TWO-STORE.md),
+executed on 1 November 2026, passed these synthetic controls. The
+legacy store ended with eight decisions and the candidate with ten,
+including two posted after authority transfer. All ten accounting checks
+on each store were true, but the stores no longer agreed: rollback was
+**rejected with `FORWARD_FIX_REQUIRED`**. That is the lesson. Once the
+new writer posts new decisions, the old balances cannot simply be
+reactivated.
+
+##### C2 · An unknown reply requires a durable admission journal
+
+The earlier coexistence experiment can compare two stores, but it leaves
+a separate failure mode: **COMMIT may be durable even when no ACK arrives**.
+Treating a timeout as rejection and retrying on a second writer can duplicate
+the financial effect. C2 therefore adds a third disposable PostgreSQL
+database, `bf_control`, with an admission journal independent of both
+ledgers. Each CAP-007 request records its stable ID, request hash, writer,
+epoch and state before remote execution.
+
+A request moves from `ADMITTED` to `DISPATCHING` and, when its reply
+disappears, to `UNKNOWN`. Only an independent SQL inspection of the
+persisted operation, paired postings and outbox may finalize
+`COMMITTED` or `REJECTED`. Missing SQL rows in both stores **do not
+prove rejection**: the journal remains UNKNOWN and cutover is blocked.
+
+The three-container experiment kills real processes after admission,
+before remote dispatch and after COMMIT but before the gateway receives
+the result. It also forges a terminal journal state and verifies that the
+independent oracle rejects promotion. The cooperating Python legacy
+adapter and .NET 10 candidate can require the C2 controller and hold a
+shared authority row lock through financial COMMIT. The
+[original C2 CI run](https://github.com/jmfloreszazo/de-la-caja-negra-a-la-evidencia/actions/runs/41341644829)
+is tied to one exact source SHA. It is not bank acceptance.
+
+**At that original C2 source SHA:** strict C2 mode
+requires a matching `DISPATCHING` journal admission at both adapters and
+rejects direct unadmitted commands. Deliberately disabling this opt-in
+allows direct unjournaled posts: the oracle detects that configuration
+bypass but cannot prevent it. Nor do the
+controller and candidate authority epochs change atomically across two
+PostgreSQL servers. A cooperative lock cannot revoke a real CICS/Db2
+writer's authority. External fencing, split-authority crash repair,
+third-party side-effect reconciliation, cross-host tests and approved
+business policy remain missing. TODM G2=INCONCLUSIVE and G6=BLOCK.
+
+##### C2 follow-up · Persist the fence and freeze interrupted transitions
+
+The [journal follow-up](../lab/brownfield/journal/README.md) changes
+two engineering assumptions without changing business authority. Enrollment
+is stored in SQL: removing a process variable can no longer disable admission
+checks in either cooperating adapter. Fresh historical fixtures remain
+unenrolled, and privileged direct SQL remains outside that enforcement.
+
+Before changing either writer epoch, the coordinator commits a durable
+`PREPARED` intent and `mode=SWITCHING`. Both adapters and the gateway refuse
+new financial commands until independent ledger and journal reconciliation
+allows the controller to complete that exact transition.
+
+| Durable boundary | Controller | Candidate authority | New admission |
+|---|---|---|---|
+| Intent prepared | legacy / e / SWITCHING | legacy / e | Blocked |
+| Candidate authority committed | legacy / e / SWITCHING | candidate / e+1 | Blocked |
+| Reconciliation completed | candidate / e+1 / ACTIVE | candidate / e+1 | Allowed with matching admission |
+
+The protocol independently sends `SIGKILL` after each of the first two
+boundaries and restarts recovery. An unexpected epoch or missing outbox must
+leave traffic frozen; a missing response cannot choose the next writer.
+Candidate-origin decisions still veto rollback. This closes specific
+cooperative crash windows through durable intent and forward recovery,
+**not atomic COMMIT across databases**. The [original follow-up CI](../evidence/runs/BROWNFIELD-C2-RECOVERY.md)
+passed 19 controls, preserving its raw ZIP and the initial failed concurrency
+run. The later [run #41353221630](https://github.com/jmfloreszazo/de-la-caja-negra-a-la-evidencia/actions/runs/41353221630),
+on main `279ca566`, passed 20 controls and both SQL oracles 10/10; this is a
+separate observation, not retrospective coverage attributed to that ZIP. Later code still requires its own exact-source CI evidence; historical
+observations cannot validate a different checkout.
+In-flight network partitions, real incumbent revocation, external payment
+effects and approved business policy remain separate acceptance gates.
+G2=INCONCLUSIVE and G6=BLOCK.
+
+##### What would be needed for a real cutover
+
+A simulated black-box contract cannot take away a bank's incumbent writer
+privileges. We need a verifiable source-side fence, durable admission and
+unknown-outcome journals, recovery across interrupted copies, external
+side-effect reconciliation, and explicit resume/forward-repair protocols.
+Approved business rules and mandates also remain necessary: an observed
+Golden Master is not automatically an approved policy.
+
+In TODM terms, this synthetic run supplies bounded engineering evidence
+for G4/G5; **G2 remains inconclusive and G6 stays blocked**. It is not
+evidence of physically independent failure domains, production RTO/RPO,
+CICS/Db2 semantics, mainframe MIPS parity or Azure cost acceptance.
+The laboratory is useful because it makes these missing guarantees
+falsifiable before they become migration promises.
+
 ### Chapter 29 · Bringing in agents without letting them write the approval
 
 > [!IMPORTANT]
@@ -2156,7 +2328,7 @@ The agent can consult sources and the public contract, run its own tests and fix
 
 If we change models, budgets, prompts or tools, we record it as a different experimental condition. Saying "AI did it" does not let us explain which combination produced the result or repeat the process.
 
-A comprehension agent could propose rules from the COBOL. That proposal still needs contrast. The builder agent could translate them into C#. The gate checks the observed behaviour. Human approval establishes which rule is accepted and when a difference from the legacy is intentional.
+A discovery agent may propose rules from policies, interviews and authorized observations; COBOL is supplementary evidence when needed. The builder can **implement the capability from scratch** in C# without copying legacy structure. TODM verifies outcomes against independent oracles and approved rules; Golden Master separately preserves observed incumbent behavior. Business authority decides what to preserve, correct or retire.
 
 #### REA comes in when the problem needs it
 
@@ -2164,7 +2336,7 @@ For the lab's small source we do not need a decompiler. Including REA for the sa
 
 A coherent extension would be to take an authorized executable, pin its hash and ask an agent to investigate a specific function through REA. The findings would feed hypotheses and tests. The reconstruction would then be evaluated against a suitable oracle. The result would document what was observed directly and what was inferred.
 
-For larger COBOL sources, I would first evaluate the parser and the dialect. An MCP server can expose the inventory, relationships and executions of a specialized adapter. The protocol makes access to tools easier; it does not guarantee their correctness or grant authority to use them.
+For larger COBOL estates, I would begin with **capabilities, external contracts, exceptions and operational guarantees**. Only when a specific technical uncertainty remains would I evaluate dialect parsers or dependency tools. MCP can expose findings, but syntactic analysis is not required to reimplement a system and does not approve business rules.
 
 #### Correlated errors are still possible
 
@@ -2589,13 +2761,13 @@ The gate's exit codes are part of the contract: 0 for the synthetic permission, 
 
 #### What it does not prove
 
-There is no REA integration, no autonomous agent, no actor cluster, no production SQL engine, no row locking, no SQL deadlock, no two-phase commit, no failover, no power-loss test, no Azure deployment and no real outbox publisher. There is no measured mainframe baseline. It does not demonstrate industrial effectiveness or independence between people: the components are separate processes, but they were built in the same piece of work.
+In this original reference walkthrough, there is no REA integration, no autonomous agent, no actor cluster, no production SQL engine, no row locking, no SQL deadlock, no two-phase commit, no failover, no power-loss test, no Azure deployment and no real outbox publisher. There is no measured mainframe baseline. It does not demonstrate industrial effectiveness or independence between people: the components are separate processes, but they were built in the same piece of work.
 
 The baseline hash and its anchor live in the same writable package. In production they must sit outside the builder's reach and be bound to a real approval. The mandate is synthetic.
 
 #### Where it grows
 
-The file `docs/EXPERIMENT_PROTOCOL.md` describes four experiments that are designed and not executed. E1 ports the banking module to an engine with row locking and adds deadlock victims, write skew and pool exhaustion. E2 implements the same contract with Orleans actors that coordinate and a ledger that commits, under uniform and skewed distributions and with one account receiving half the traffic. E3 compares Azure, a local server with its second unit and a hybrid configuration with the same performance contract. E4 has an agent build the candidate with writes limited to `Candidate/` and compares tests written by the agent, an independent oracle and an oracle qualified by mutations.
+In the local reference of 29 October 2026, `docs/EXPERIMENT_PROTOCOL.md` proposed four experiments that had not yet been executed. In the current repository, E1 PostgreSQL/SQL Server and E2 Orleans have executed CI slices and remain partially verified; E3/E4 remain unexecuted as complete experiments. The [evidence matrix](../docs/EVIDENCE.md) and [roadmap](../ROADMAP.md) maintain the current status. The original design is summarized as follows: E1 ports the banking module to an engine with row locking and adds deadlock victims, write skew and pool exhaustion. E2 implements the same contract with Orleans actors that coordinate and a ledger that commits, under uniform and skewed distributions and with one account receiving half the traffic. E3 compares Azure, a local server with its second unit and a hybrid configuration with the same performance contract. E4 has an agent build the candidate with writes limited to `Candidate/` and compares tests written by the agent, an independent oracle and an oracle qualified by mutations.
 
 ### Annex B · Lab contract
 

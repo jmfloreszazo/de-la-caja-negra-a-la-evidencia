@@ -1,0 +1,99 @@
+{
+  "schemaVersion": 1,
+  "nodes": [
+    {
+      "id": "CICS_TRANSFER",
+      "kind": "transaction",
+      "owner": "Payments"
+    },
+    {
+      "id": "COBOL_POST",
+      "kind": "program",
+      "owner": "Payments"
+    },
+    {
+      "id": "DB2_LEDGER",
+      "kind": "table",
+      "owner": "Ledger"
+    },
+    {
+      "id": "OUTBOX",
+      "kind": "table",
+      "owner": "Ledger"
+    },
+    {
+      "id": "STATEMENT_QUERY",
+      "kind": "program",
+      "owner": "Statements"
+    },
+    {
+      "id": "STATEMENT_VIEW",
+      "kind": "projection",
+      "owner": "Statements"
+    }
+  ],
+  "edges": [
+    {
+      "source": "CICS_TRANSFER",
+      "target": "COBOL_POST",
+      "relation": "calls",
+      "evidence": "static",
+      "observedAt": "synthetic-fixture-v1",
+      "confidence": "confirmed",
+      "atomicGroup": null
+    },
+    {
+      "source": "COBOL_POST",
+      "target": "DB2_LEDGER",
+      "relation": "updates",
+      "evidence": "domain-expert",
+      "observedAt": "synthetic-fixture-v1",
+      "confidence": "confirmed",
+      "atomicGroup": "transfer-commit"
+    },
+    {
+      "source": "COBOL_POST",
+      "target": "OUTBOX",
+      "relation": "updates",
+      "evidence": "domain-expert",
+      "observedAt": "synthetic-fixture-v1",
+      "confidence": "confirmed",
+      "atomicGroup": "transfer-commit"
+    },
+    {
+      "source": "STATEMENT_QUERY",
+      "target": "STATEMENT_VIEW",
+      "relation": "queries",
+      "evidence": "static",
+      "observedAt": "synthetic-fixture-v1",
+      "confidence": "confirmed",
+      "atomicGroup": null
+    },
+    {
+      "source": "OUTBOX",
+      "target": "STATEMENT_VIEW",
+      "relation": "publishes",
+      "evidence": "runtime",
+      "observedAt": "synthetic-fixture-v1",
+      "confidence": "confirmed",
+      "atomicGroup": null
+    }
+  ],
+  "proposals": [
+    {
+      "id": "extract-statement-read-model",
+      "extracted": [
+        "STATEMENT_QUERY",
+        "STATEMENT_VIEW"
+      ],
+      "approvedAtomicGroups": []
+    },
+    {
+      "id": "unsafe-extract-ledger-only",
+      "extracted": [
+        "DB2_LEDGER"
+      ],
+      "approvedAtomicGroups": []
+    }
+  ]
+}

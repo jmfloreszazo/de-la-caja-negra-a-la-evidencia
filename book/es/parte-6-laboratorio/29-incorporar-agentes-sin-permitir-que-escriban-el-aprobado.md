@@ -19,7 +19,7 @@ El agente puede consultar fuentes y el contrato público, ejecutar sus tests y c
 
 Si cambiamos modelos, presupuestos, prompts o herramientas, lo registramos como una condición experimental distinta. Decir que «lo hizo la IA» no permite explicar qué combinación produjo el resultado ni repetir el proceso.
 
-Un agente de comprensión podría proponer reglas a partir del COBOL. Esa propuesta todavía necesita contraste. El agente de construcción podría traducirlas a C#. El gate comprueba el comportamiento observado. La aprobación humana establece qué regla se acepta y cuándo una diferencia respecto del legado es intencional.
+Un agente investigador puede proponer reglas desde políticas, entrevistas y observaciones autorizadas; el COBOL es una fuente auxiliar cuando sea necesario. El constructor puede **programar desde cero** la capacidad en C# sin copiar la estructura del legado. TODM compara el resultado con oráculos independientes y reglas aprobadas; Golden Master conserva por separado el comportamiento observado. La autoridad del negocio decide qué mantener, corregir o retirar.
 
 ## REA entra cuando el problema lo necesita
 
@@ -27,7 +27,7 @@ Para el fuente pequeño del laboratorio no necesitamos un decompilador. Incluir 
 
 Una extensión coherente consistiría en tomar un ejecutable autorizado, fijar su hash y pedir a un agente que investigue una función concreta mediante REA. Los hallazgos alimentarían hipótesis y pruebas. La reconstrucción se evaluaría después contra un oráculo adecuado. El resultado documentaría qué se observó directamente y qué se dedujo.
 
-Para fuentes COBOL de mayor tamaño, evaluaría primero el parser y el dialecto. Un MCP puede exponer el inventario, las relaciones y las ejecuciones de un adaptador especializado. El protocolo facilita el acceso a herramientas; no garantiza su corrección ni concede autoridad para usarlas.
+Para sistemas COBOL de mayor tamaño, empezaría por las **capacidades, contratos externos, excepciones y garantías operativas**. Sólo ante una duda técnica concreta evaluaría parsers de dialecto o herramientas de dependencias. MCP puede exponer los hallazgos, pero el análisis sintáctico no es un requisito para reprogramar el sistema ni autoriza una regla de negocio.
 
 ## Los errores correlacionados siguen siendo posibles
 

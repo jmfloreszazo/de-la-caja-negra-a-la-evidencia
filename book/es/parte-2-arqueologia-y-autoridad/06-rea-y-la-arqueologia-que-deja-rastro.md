@@ -9,7 +9,7 @@
 
 La pérdida de documentación y la acumulación de reglas son problemas reales. Pero conviene añadir una precisión de ingeniería: el código fuente no es la única evidencia. Hay copybooks compartidos, definiciones de datasets, control de versiones, despliegues históricos, JCL, configuraciones CICS, DDL, catálogos, estadísticas de carga, incidencias, tickets y, sobre todo, comportamientos que el sistema todavía ejecuta. Algunas reglas están en una tabla de parametrización. Otras viven en una rutina no llamada desde hace años. Algunas son errores históricos de los que dependen sistemas consumidores.
 
-Por eso no empezaría pidiendo «conviérteme estos dos millones de líneas». Empezaría por un **mapa de evidencias**. Cada artefacto recibe identidad, versión, hash, origen, propietario y restricciones. Un parser específico construye dependencias entre programas y copybooks; analizadores de JCL reconstruyen cadenas batch; un extractor de SQL localiza tablas y transacciones; un sistema de observación captura entradas, salidas y efectos de ejecución. Los agentes correlacionan esa información, pero no la convierten automáticamente en verdad.
+Por eso no empezaría pidiendo «conviérteme estos dos millones de líneas». Empezaría por un **mapa de capacidades y comportamiento de negocio**: responsables, reglas aprobadas, excepciones y resultados observables. Después construiría un **mapa de evidencias** con procedencia, versión, hash y autorización de uso. Sólo cuando una hipótesis técnica concreta lo requiera recurriría a parsers COBOL, analizadores JCL o SQL para encontrar dependencias. La observación de caja negra captura entradas, salidas y efectos; ningún analizador es requisito para programar de cero ni convierte una inferencia en política aprobada.
 
 ## Qué aporta Reverse Engineer Anything
 
@@ -49,7 +49,7 @@ Propongo un componente que denomino COBOL Evidence Adapter. No es una capacidad 
 
 Cada hallazgo debería identificar el artefacto, su hash, el localizador de origen, la herramienta y su versión, el método de obtención y los límites conocidos. Una relación deducida por el agente se registraría como hipótesis. Una ejecución observada conservaría entrada, estado relevante, salida y condiciones. Una regla aprobada tendría una autoridad y una versión distintas.
 
-Imaginemos una regla de comisión hallada en un párrafo COBOL. El parser localiza la expresión. Una ejecución confirma un resultado en el límite de redondeo. El responsable de negocio confirma que esa es la política que debe mantenerse. Son tres piezas relacionadas, pero ninguna sustituye a las demás.
+Imaginemos una comisión observada en un contrato y en una ejecución de caja negra. El responsable de negocio determina la regla y sus excepciones. Si queda una duda sobre la implementación heredada, un análisis **opcional** del COBOL puede localizar el redondeo. La observación, la investigación técnica y la aprobación son evidencias distintas: ninguna sustituye a las demás.
 
 El grafo de conocimiento puede facilitar la navegación entre ellas. Su valor no está en usar una base de datos de grafos por principio, sino en permitir reconstruir el camino desde una conclusión hasta la evidencia que la sostiene. Una tabla bien diseñada puede ser suficiente al empezar.
 

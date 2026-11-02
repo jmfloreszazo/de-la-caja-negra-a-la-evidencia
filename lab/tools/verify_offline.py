@@ -116,6 +116,43 @@ for db in sorted((REF / 'bank').glob('*.db')):
     if not ok:
         failures.append(f'ledger oracle unexpected on {db.name}')
 
+
+# 5. Independent synthetic mainframe decomposition contract tests.
+# This runs on the existing mandatory Lab/offline CI job, without creating
+# an additional GitHub Actions workflow or altering the protected baselines.
+import subprocess
+print("[5] decomposition boundary .... Python unittest discovery")
+decomposition = ROOT / "decomposition"
+test_run = subprocess.run(
+    [sys.executable, "-m", "unittest", "discover", "-s", str(decomposition),
+     "-p", "test_*.py", "-v"],
+    cwd=decomposition, check=False,
+)
+if test_run.returncode != 0:
+    failures.append("synthetic mainframe decomposition tests failed")
+
+# 6. Synthetic greenfield reference oracle and adversarial mutations; no .NET needed.
+print("[6] greenfield contract ...... Python negative controls")
+greenfield = ROOT / "greenfield"
+reference_run = subprocess.run(
+    [sys.executable, "-m", "unittest", "discover", "-s", str(greenfield),
+     "-p", "test_*.py", "-v"],
+    cwd=greenfield, check=False,
+)
+if reference_run.returncode != 0:
+    failures.append("greenfield independent oracle tests failed")
+
+# 7. Brownfield claim/evidence gap: technical experiments never imply G6 approval.
+print("[7] brownfield capability ...... classification and negative controls")
+brownfield = ROOT / "brownfield"
+brownfield_run = subprocess.run(
+    [sys.executable, "-m", "unittest", "discover", "-s", str(brownfield),
+     "-p", "test_*.py", "-v"],
+    cwd=brownfield, check=False,
+)
+if brownfield_run.returncode != 0:
+    failures.append("brownfield functional-evidence coverage checks failed")
+
 print()
 if failures:
     print('VERIFY: FAIL')

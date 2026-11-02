@@ -1,0 +1,30 @@
+name: Premerge
+on:
+  pull_request:
+  push:
+    branches: [main]
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency:
+  group: premerge-${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+jobs:
+  premerge-gate:
+    name: premerge-gate
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-python@v6
+        with:
+          python-version: '3.12'
+      - name: Validate language and structural source policy
+        run: |
+          python3 scripts/check_language_policy.py --self-test
+          python3 scripts/check_language_policy.py
+          python3 scripts/check.py
+      - name: Validate evidence statuses without claiming online runs
+        run: python3 scripts/check_evidence.py
+      - name: Independently validate protected lab baseline and negative controls
+        run: python3 lab/tools/verify_offline.py

@@ -1,0 +1,54 @@
+{
+  "status": "PASS",
+  "classification": "EXECUTED_SYNTHETIC_DISPOSABLE_ONLY",
+  "startedUtc": "2026-11-01T15:52:27.528013+00:00",
+  "endedUtc": "2026-11-01T15:52:39.422842+00:00",
+  "sourceSha256": {
+    "schema.sql": "52ebd0ea8104dcbd0bd3d4d6a8332150a31514ce6745c44400b745a7044eeea0",
+    "oracle.py": "9db9f868c383e645952322a11bcddfe3efb68efef15030e8a6274dfa9e1c0b49",
+    "DurableBank/Program.cs": "cff7d56de30a24c0259c03c1d9ec42779944b4439f5067cb5fe1b935b71ff856",
+    "DurableBank/DurableBank.csproj": "2ba00aa88740c8903fad8d3cddc3f72f06709b5a7c4ab5abed71b5c40a60f43e",
+    "test_durable.py": "68f62eb3255cb1a8bb7f93f201c49c1ccee83168df6fee3c2d327718bb8faf51"
+  },
+  "oracle": {
+    "classification": "DISPOSABLE_SYNTHETIC_SQL_ORACLE_NOT_BUSINESS_APPROVAL",
+    "checks": {
+      "exactAccountFixture": true,
+      "nonnegativeBalances": true,
+      "conservedMoney": true,
+      "balancesMatchPostings": true,
+      "pairedCommittedPostings": true,
+      "rejectedHaveNoEffects": true,
+      "exactOutbox": true,
+      "uniqueOperationIdsAndFingerprints": true,
+      "watermarkEqualsRecordedDecisions": true,
+      "accountVersionBounded": true,
+      "writerEpochWellFormed": true
+    },
+    "passed": true,
+    "accountCount": 16,
+    "operationCount": 15,
+    "committedCount": 11,
+    "rejectedCount": 4,
+    "postingCount": 22,
+    "outboxCount": 11,
+    "watermark": 15,
+    "writer": "legacy",
+    "epoch": 3,
+    "todmG6": "BLOCK"
+  },
+  "controls": [
+    "idempotency",
+    "fingerprintConflict",
+    "insufficientFunds",
+    "commitLostAckRestartReplay",
+    "processExitPrecommit",
+    "realSigkillPrecommit",
+    "concurrentHotAccount",
+    "sqlAuthorityEpochCutover",
+    "rollbackFencing",
+    "authoritativeVersionRead",
+    "corruptionRejected"
+  ],
+  "limitations": "No real COBOL, cross-store reconciliation, approved mandate, G6 release, distributed HA, measured bank SLO or MIPS equivalence."
+}

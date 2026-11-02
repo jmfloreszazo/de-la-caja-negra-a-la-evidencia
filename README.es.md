@@ -18,16 +18,18 @@ José María Flores Zazo · [jmfloreszazo.com](https://jmfloreszazo.com) · Edic
 
 Un libro abierto y un laboratorio ejecutable sobre cómo modernizar sistemas COBOL sin apostar el negocio a una equivalencia que no sabemos demostrar: qué conservar, qué patrón sustituye cada garantía del mainframe, cómo usar agentes de IA sin regalarles autoridad y cómo acercarse a la capacidad de un mainframe en Azure o en infraestructura propia. Está en abierto porque un libro que defiende la evidencia no puede pedir que se le crea por fe.
 
+**Corte de fuentes: 2 de noviembre de 2026.** `main` incluye avances brownfield posteriores a la prepublicación. Los PDF publicados congelan sus respectivos tags; no representan automáticamente el manuscrito actual.
+
 ## Leer
 
-[Descargar PDF en español e inglés](https://github.com/jmfloreszazo/de-la-caja-negra-a-la-evidencia/releases/tag/v2026.10.29) · [Ruta rápida: siete capítulos](docs/READING_PATH.es.md) · [Ediciones PDF y proceso de publicación](docs/PDF.md).
+[Prepublicación de investigación v2026.10.31-rc1 — prototipo histórico + TODM, experimental](docs/releases/v2026.10.31-rc1.md) · [Descargar PDF en español e inglés](https://github.com/jmfloreszazo/de-la-caja-negra-a-la-evidencia/releases/tag/v2026.10.29) · [Ruta rápida: siete capítulos](docs/READING_PATH.es.md) · [Ediciones PDF y proceso de publicación](docs/PDF.md).
 
 | | Capítulo a capítulo | El libro entero en una página |
 |---|---|---|
 | Español (original) | [book/es](book/es/README.md) | [book/es.md](book/es.md) |
 | English | [book/en](book/en/README.md) | [book/en.md](book/en.md) |
 
-38 capítulos (incluido el capítulo 25 bis) en siete partes, epílogo, siete anexos y 41 diagramas por idioma (C4, UML de secuencia, estados y clases, ER, gitGraph), escritos en Mermaid y publicados como imágenes con el estilo visual del libro. Las dos ediciones tienen exactamente la misma estructura y la CI falla si se separan.
+37 capítulos numerados más el capítulo 25 bis y el complementario de descomposición en siete partes, epílogo, siete anexos y 41 diagramas por idioma (C4, UML de secuencia, estados y clases, ER, gitGraph), escritos en Mermaid y publicados como imágenes con el estilo visual del libro. Las dos ediciones tienen exactamente la misma estructura y la CI falla si se separan.
 
 ## Idiomas: libro frente a código
 
@@ -37,11 +39,11 @@ Un libro abierto y un laboratorio ejecutable sobre cómo modernizar sistemas COB
 
 [**Capítulo 25 bis: infraestructura local, Azure y latencia de oficinas bancarias**](book/es/parte-5-capacidad/25a-infraestructura-mainframe-local-azure-y-redes-bancarias.md) · [Evidencia E1a/E1b con JSON de CI](evidence/runs/README.es.md) · [Protocolo WAN E3](docs/NETWORK_PROTOCOL.es.md).
 
-[**Matriz de evidencia verificable**](docs/EVIDENCE.es.md): CI real, E1a/E1b ejecutados y E1 global parcialmente verificado frente a E2–E4 pendientes.
+[**Matriz de evidencia verificable**](docs/EVIDENCE.es.md): CI real, E1 y E2 parcialmente verificados, incrementos brownfield ejecutados y E3/E4 pendientes.
 
-¿Quieres recorrer el argumento sin leer los 38 capítulos de forma lineal? Sigue la [ruta de siete capítulos](docs/READING_PATH.es.md). El [registro editorial y de evidencias](docs/EDITORIAL_REVIEW.es.md) distingue lo comprobado de lo todavía hipotético.
+¿Quieres recorrer el argumento sin leer todos los capítulos de forma lineal? Sigue la [ruta de siete capítulos](docs/READING_PATH.es.md). El [registro editorial y de evidencias](docs/EDITORIAL_REVIEW.es.md) distingue lo comprobado de lo todavía hipotético.
 
-La [CI del laboratorio](https://github.com/jmfloreszazo/de-la-caja-negra-a-la-evidencia/actions/runs/40900252152) ya ha ejecutado las pruebas offline, nativas y Podman en runners Linux. Esto no acredita todas las plataformas ni la aceptación global de E1–E4. Las pruebas E1a/E1b y M1/M2 están documentadas en esta rama de la [PR #5](https://github.com/jmfloreszazo/de-la-caja-negra-a-la-evidencia/pull/5), con alcance limitado; E2–E4 siguen sin ejecutarse.
+La [CI del laboratorio](https://github.com/jmfloreszazo/de-la-caja-negra-a-la-evidencia/actions/runs/40900252152) ya ha ejecutado las pruebas offline, nativas y Podman en runners Linux. Esto no acredita todas las plataformas ni la aceptación global de E1–E4. La PR #5 ya está fusionada. E1 PostgreSQL/SQL Server y E2 Orleans tienen evidencias sintéticas parciales; E3/E4 siguen sin ejecución completa. El [roadmap actual](ROADMAP.es.md) y la [matriz de evidencia](docs/EVIDENCE.es.md) separan los resultados históricos, los incrementos brownfield y los gates pendientes.
 
 ## Ejecutar el laboratorio
 

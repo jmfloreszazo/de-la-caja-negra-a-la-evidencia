@@ -1,6 +1,6 @@
 # E2-F10-C04 — External-client gateway isolation
 
-Status: **implementation candidate, NOT verified evidence**. This protocol records the proposed experiment; no GitHub-hosted C04 run has passed. The attempted creation of the dedicated C04 Actions workflow was blocked by the connected tool's safety controls. Do not work around the block or report it as CI execution.
+Status: **implementation candidate, NOT verified evidence**. This protocol records the proposed experiment; no GitHub-hosted C04 run has passed. The earlier dedicated workflow request was rejected and produced no C04 execution. A dedicated candidate workflow is now supplied in the maintainer-directed continuation; only its actual original run can establish a result.
 
 ## Hypothesis and narrow scope
 
@@ -31,7 +31,7 @@ The test targets a disposable, single physical Ubuntu runner with four isolated 
 
 Candidate source: lab/e2_orleans/test_client_gateway_partition.py. The previously merged shared PostgreSQL readiness helper in test_podman_network.py is now explicitly enabled for C04, without modifying C01/C02/C03 fault semantics. This is a **preflight**, not a C04 runtime PASS.
 
-The dedicated workflow is **not committed** due to the safety block reported above. CI must not be claimed as passing. Source code and technical documentation remain English; editorial book content will be Spanish and English.
+The dedicated workflow is now a **code candidate**, not passing evidence. Preserve the earlier blocked request as historical context; CI must not be claimed as passing before original execution. Source code and technical documentation remain English; editorial book content will be Spanish and English.
 
 ## Previous C01 baseline regression
 

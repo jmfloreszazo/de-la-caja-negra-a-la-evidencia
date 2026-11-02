@@ -1,0 +1,135 @@
+{
+  "schemaVersion": "brownfield-gap-1",
+  "title": "CAP-007 / CAP-005 existing synthetic evidence versus replacement acceptance gates",
+  "classification": "RESEARCH_INVENTORY_NOT_PRODUCTION_APPROVAL",
+  "context": "BROWNFIELD_MODERNIZATION",
+  "immutableBaselines": [
+    "lab/e1_pg/PgBank/Program.cs",
+    "lab/e1_pg/schema.sql",
+    "lab/greenfield/spec.md",
+    "lab/greenfield/contract_oracle.py",
+    "lab/greenfield/todm_assurance.py"
+  ],
+  "g6Authorization": "BLOCK",
+  "capabilities": [
+    {
+      "id": "BF-001",
+      "cap": "CAP-007",
+      "requirement": "Real PostgreSQL ACID transfer with paired postings and outbox",
+      "status": "EXISTING_SYNTHETIC_EVIDENCE",
+      "sources": [
+        "lab/e1_pg/PgBank/Program.cs",
+        "lab/e1_pg/schema.sql",
+        "lab/e1_pg/oracle.py"
+      ],
+      "nextGate": "Confirm actual business rules, observer-approved SQL oracle and multi-process cutover"
+    },
+    {
+      "id": "BF-002",
+      "cap": "CAP-007",
+      "requirement": "Stable operation ID replay and ID conflict",
+      "status": "EXISTING_SYNTHETIC_EVIDENCE",
+      "sources": [
+        "lab/e1_pg/PgBank/Program.cs",
+        "lab/e1_pg/test_dotnet.py"
+      ],
+      "nextGate": "Specify idempotency policy including actor, policy version, rejected commands and expiration"
+    },
+    {
+      "id": "BF-003",
+      "cap": "CAP-007",
+      "requirement": "Process loss before SQL COMMIT and lost acknowledgment after COMMIT",
+      "status": "EXISTING_SYNTHETIC_EVIDENCE",
+      "sources": [
+        "lab/e1_pg/PgBank/Program.cs",
+        "lab/e1_pg/test_dotnet.py"
+      ],
+      "nextGate": "Reproduce distinct SIGKILL/ack failures with independent state observations on release candidate"
+    },
+    {
+      "id": "BF-004",
+      "cap": "CAP-007",
+      "requirement": "Independent SQL accounting conservation and failure evidence",
+      "status": "EXISTING_SYNTHETIC_EVIDENCE",
+      "sources": [
+        "lab/e1_pg/oracle.py",
+        "lab/e1_pg/test_e1.py"
+      ],
+      "nextGate": "Qualify independent TODM G3/G5 baseline and archive original negative control"
+    },
+    {
+      "id": "BF-005",
+      "cap": "CAP-007",
+      "requirement": "Approved real customer transaction mandates, limits and policy exceptions",
+      "status": "NOT_DEMONSTRATED",
+      "sources": [],
+      "nextGate": "Acquire business-owner policy evidence and formal approval; no fake authorization flag"
+    },
+    {
+      "id": "BF-006",
+      "cap": "CAP-007",
+      "requirement": "Legacy/API compatibility, strangler routing and source of truth",
+      "status": "NOT_DEMONSTRATED",
+      "sources": [],
+      "nextGate": "Define capability routing, only-one-writer authority, read-only shadow and reconciliation"
+    },
+    {
+      "id": "BF-007",
+      "cap": "CAP-007",
+      "requirement": "Cutover, safe rollback and in-flight unknown command reconciliation",
+      "status": "NOT_DEMONSTRATED",
+      "sources": [],
+      "nextGate": "Demonstrate synthetic migration cutover with independent debit/outbox invariants"
+    },
+    {
+      "id": "BF-008",
+      "cap": "CAP-005",
+      "requirement": "Authoritative booked-balance read with externally exposed contract",
+      "status": "NOT_DEMONSTRATED",
+      "sources": [],
+      "nextGate": "Add .NET 10 persisted balance query bound to authoritative SQL and an approved account contract"
+    },
+    {
+      "id": "BF-009",
+      "cap": "CAP-005",
+      "requirement": "Monotonic ledger version / stale-projection rejection",
+      "status": "DESIGN_HYPOTHESIS_ONLY",
+      "sources": [
+        "lab/greenfield/spec.md",
+        "lab/greenfield/Program.cs"
+      ],
+      "nextGate": "Persist version and consumer watermark; instrument lag and reject stale requests against actual SQL"
+    },
+    {
+      "id": "BF-010",
+      "cap": "CAP-005",
+      "requirement": "Available balance with holds, reservations, effective dates and limits",
+      "status": "NOT_DEMONSTRATED",
+      "sources": [],
+      "nextGate": "Obtain business-owner definitions; booked balance is not available funds"
+    },
+    {
+      "id": "BF-011",
+      "cap": "CAP-007",
+      "requirement": "TODM independently approved baseline, G2 signature and human G6 authorization",
+      "status": "NOT_DEMONSTRATED",
+      "sources": [],
+      "nextGate": "Independent business mandate + exact source/runtime hashes; keep G6 BLOCK until granted"
+    },
+    {
+      "id": "BF-012",
+      "cap": "CAP-007",
+      "requirement": "Mainframe-equivalent throughput, operational SLA and disaster recovery",
+      "status": "NOT_DEMONSTRATED",
+      "sources": [],
+      "nextGate": "Measure representative load/latency and establish actual operator-approved targets; no MIPS=vCPU shortcut"
+    }
+  ],
+  "assumptions": [
+    "Existing E1a/E1b results prove only bounded synthetic, controlled database behavior under their documented workloads.",
+    "A newly written .NET 10 component does not make an existing-bank system a greenfield migration.",
+    "Golden Master characterization records incumbent behavior, not independently approved truth.",
+    "TODM G5 candidate matching a synthetic oracle never implies G6 business acceptance.",
+    "No parser is required; optional code archaeology must be justified by a named unknown."
+  ]
+}

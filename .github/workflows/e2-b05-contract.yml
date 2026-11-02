@@ -1,0 +1,53 @@
+name: E2 B05 deterministic open-loop workload contract (offline only)
+
+on:
+  pull_request:
+    paths:
+      - 'lab/e2_orleans/b05_arrival_contract.py'
+      - 'lab/e2_orleans/test_b05_arrival_contract.py'
+      - 'lab/e2_orleans/B05_CONTRACT.md'
+      - '.github/workflows/e2-b05-contract.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  workload-contract:
+    name: E2-B05 offline deterministic arrival vectors and distribution controls
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-python@v6
+        with:
+          python-version: '3.12'
+      - name: Test generator without containers, database or network fault injection
+        run: |
+          python3 -m py_compile lab/e2_orleans/b05_arrival_contract.py lab/e2_orleans/test_b05_arrival_contract.py
+          python3 -m unittest discover -s lab/e2_orleans -p 'test_b05_arrival_contract.py' -v
+      - name: Produce reproducible original FIXED-OFFER artifacts; never report measured throughput
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p lab/results/e2b05/contract
+          python3 --version > lab/results/e2b05/contract/python-version.txt
+          for profile in uniform five_percent_hot one_account_half_intents crossed; do
+            for repetition in 0 1 2; do
+              python3 lab/e2_orleans/b05_arrival_contract.py \
+                --profile "$profile" --offered-tps 20 \
+                --warmup-seconds 1 --measurement-seconds 2 \
+                --cooldown-seconds 1 --seed 20261031 \
+                --repetition "$repetition" \
+                --output "lab/results/e2b05/contract/$profile-r$repetition.json"
+            done
+          done
+          sha256sum lab/results/e2b05/contract/*.json \
+            > lab/results/e2b05/contract/original-vectors-sha256.txt
+      - name: Preserve raw source-independent generated fixed-clock vector evidence
+        if: always()
+        uses: actions/upload-artifact@v6
+        with:
+          name: e2-b05-original-offline-offer-contract-not-capacity
+          path: lab/results/e2b05/contract/
+          if-no-files-found: warn

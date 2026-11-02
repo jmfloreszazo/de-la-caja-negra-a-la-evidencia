@@ -1,0 +1,23 @@
+{
+  "classification": "SYNTHETIC_GOLDEN_MASTER_NOT_REAL_OBSERVATION",
+  "sourceId": "simulated-legacy-black-box-behavior-v1",
+  "recordedAt": "2026-10-31 (illustrative, NOT an observed legacy run)",
+  "provenance": "Synthetic counterexample: characterize an incumbent behavior without endorsing it as business policy.",
+  "observations": [
+    {
+      "stepIndex": 2,
+      "observed": {
+        "status": "DUPLICATE_APPLIED",
+        "version": 1
+      }
+    },
+    {
+      "stepIndex": 8,
+      "observed": {
+        "status": "BOOKED",
+        "balance": 7000,
+        "version": 2
+      }
+    }
+  ]
+}

@@ -1,0 +1,65 @@
+name: E2 B05 repeated external open-loop pilot (NOT sustained capacity)
+
+on:
+  pull_request:
+    paths:
+      - 'lab/e2_orleans/**'
+      - '.github/workflows/e2-b05-repeatability.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  repeated-offers-and-sql:
+    name: E2-B05 two rates x three seeds x two routes x two profiles with independent SQL
+    runs-on: ubuntu-24.04
+    timeout-minutes: 35
+    env:
+      E2_NETWORK_TEST: '1'
+      E1_PG_DSN: 'host=127.0.0.1 port=55435 dbname=e2lab user=postgres password=e2local'
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-python@v6
+        with:
+          python-version: '3.12'
+      - uses: actions/setup-dotnet@v5
+        with:
+          dotnet-version: '10.0.x'
+      - name: Install independent SQL oracle
+        run: python3 -m pip install -r lab/e1_pg/requirements.txt
+      - name: Verify Python contracts before creating containers
+        run: |
+          python3 -m py_compile lab/e2_orleans/test_b05_repeatability.py
+          python3 -m py_compile lab/e2_orleans/test_b05_external_smoke.py lab/e2_orleans/b05_arrival_contract.py
+          python3 -m unittest discover -s lab/e2_orleans -p 'test_b05_arrival_contract.py' -v
+      - name: Publish exact .NET 10 Orleans binaries for disposable Podman
+        run: |
+          mkdir -p lab/results/e2f10/b05-repeatability
+          dotnet publish lab/e2_orleans/OrleansLab/OrleansLab.csproj \
+            --disable-build-servers -c Release -m:1 \
+            -o lab/results/e2f10/app
+          dotnet --version > lab/results/e2f10/b05-repeatability/dotnet-version.txt
+          podman --version > lab/results/e2f10/b05-repeatability/podman-version.txt
+          podman info --format '{{.Host.NetworkBackend}}' \
+            > lab/results/e2f10/b05-repeatability/podman-network-backend.txt
+      - name: Exercise predeclared bounded repeatability pilot and independent ledger
+        run: python3 lab/e2_orleans/test_b05_repeatability.py
+      - name: Archive every original positive or negative sample, not a capacity result
+        if: always()
+        uses: actions/upload-artifact@v6
+        with:
+          name: e2-b05-repeatability-original-single-host-not-capacity
+          path: |
+            lab/results/e2f10/b05-repeatability/*.json
+            lab/results/e2f10/b05-repeatability/*.txt
+          if-no-files-found: warn
+      - name: Remove all test-local Podman resources on failure or success
+        if: always()
+        run: |
+          for name in e2f10-client e2f10-secondary e2f10-primary e2f10-pg; do
+            podman rm -f "$name" 2>/dev/null || true
+          done
+          for name in e2f10-sql e2f10-net; do
+            podman network rm "$name" 2>/dev/null || true
+          done

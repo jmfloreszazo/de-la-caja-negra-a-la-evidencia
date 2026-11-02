@@ -1,0 +1,90 @@
+# Brownfield coexistence: moving authority, not translating COBOL
+
+**Status: synthetic two-store experiment executed in CI.** The [original
+evidence](../evidence/runs/BROWNFIELD-TWO-STORE.md) establishes the tested SHA
+and limits, not a bank migration. The separate [C2 journal](BROWNFIELD_JOURNAL.md)
+continuation adds durable admission and bounded interrupted-transition recovery.
+
+## Architecture and scope
+
+The **synthetic legacy** is a separate process speaking a small black-box
+transfer/balance contract and persisting to its own PostgreSQL database with
+different table and column names. The **new capability** is the existing
+.NET 10/Npgsql candidate in a *different* PostgreSQL database and container.
+These are independent logical ledgers but not separate physical failure
+domains, real CICS/Db2 semantics or customer-approved rules.
+
+A shared database authority in the candidate environment admits just one
+writer/epoch. Both modeled writers honor the shared lock while committing to
+their *own* database. This is cooperative fencing, not 2PC: if an actual legacy
+processor can bypass the controller, it may still post after cutover.
+
+## Before the writer moves
+
+1. Discover the capability behavior; capture both observed responses and
+   separately approved business rules. This fixture has no customer Golden
+   Master and no mandate.
+2. Run read-only shadow predictions without publishing a second debit or
+   outbox event. A stale read-only mirror can disagree: that is a reason to
+   stop, not to normalize away the difference.
+3. Stage a consistent source SQL snapshot into the non-authoritative target
+   with the writer-switch lock held. Include all account versions, accepted
+   and rejected operation IDs, fingerprints, postings, outbox and watermark.
+4. Independently compare all five state dimensions and both ledger oracles.
+   Reject the cutover on any mismatch or new source decision after staging.
+5. Increment the shared authority epoch. Old-epoch commands from a
+   *cooperating* legacy adapter must be rejected.
+
+## Rollback is not a harmless switch
+
+If the candidate has already posted new decisions, the old ledger is
+outdated. Switching traffic back would resurrect obsolete balances and
+potentially double-post a replay. This experiment therefore blocks rollback
+with `FORWARD_FIX_REQUIRED` when the complete two-store state no longer
+matches. A real bank needs a signed forward remediation or a separately
+verified reverse-migration procedure, including external side effects and
+settlement state; those are not implemented.
+
+| Counterexample | Required result |
+| --- | --- |
+| Legacy writes after staging | CUTOVER BLOCKED |
+| Missing target outbox event | CUTOVER BLOCKED |
+| Late legacy operation after epoch change | FENCED |
+| Replay after lost response | Durable duplicate, no second posting |
+| Candidate-origin write followed by rollback | FORWARD FIX REQUIRED |
+| Rogue direct legacy SQL write bypassing ACL | Detected by oracle; **not** prevented |
+
+## TODM and remaining engineering gates
+
+G0/G1 scope and provenance are synthetic. G2 business baseline is
+`INCONCLUSIVE`. G4 construction and G5 technical negative oracles are
+supported by original synthetic source-head CI, not bank acceptance. G6 remains **BLOCK**.
+Complete in-flight cross-database interruption and journal partition coverage,
+external IBM Z fencing, capture/change streams, true fault isolation,
+recovery-point evidence, operational SLAs and human business approval
+remain open in [#58](https://github.com/jmfloreszazo/de-la-caja-negra-a-la-evidencia/issues/58).
+
+Source, tests and [reproduction README](../lab/brownfield/coexistence/README.md)
+are English only; this engineering narrative is paired with its Spanish
+version. No release/tag change.
+
+## Capability gateway follow-up (synthetic)
+
+The [external capability gateway](../lab/brownfield/coexistence/gateway.py)
+selects the cooperative SQL writer epoch and invokes either the separate
+legacy-process CLI or the existing .NET 10 candidate. The router never parses
+COBOL or executes a second transfer while shadowing. The SQL-backed lab
+explicitly tests initial legacy routing, candidate routing after promotion and
+legacy routing after reversible cutover.
+
+One intentionally incomplete legacy API contract is now **fail-closed**:
+a minimum balance version above zero is rejected at the gateway because the
+legacy CLI has no supported minimum-version input. Ignoring the caller's
+requested consistency would be an undetected functional regression.
+The destructive test harness and legacy adapter now require the exact
+loopback fixtures `127.0.0.1:55438/bf_legacy` and
+`127.0.0.1:55439/bf_lab`; the test verifies distinct PostgreSQL cluster IDs.
+
+**Important:** A real legacy system with direct database privileges can bypass
+this cooperative gateway and transaction fence. Nothing in this additional
+lab closes that production hazard. G2 remains INCONCLUSIVE and G6 BLOCK.

@@ -1,0 +1,164 @@
+{
+  "schemaVersion": 1,
+  "experiment": "E2-B05-160-320-Offer-Rate-Overload",
+  "status": "SOURCE_CI_AND_INDEPENDENT_ORIGINAL_ZIP_VERIFIED_BOUNDED_OVERLOAD_NOT_CAPACITY",
+  "capacityEvidence": false,
+  "sustainedCapacityCeilingEstablished": false,
+  "mainframeMipsEquivalence": false,
+  "source": {
+    "sourcePullRequest": 48,
+    "sourceHeadSha": "d21af6e595ed790834280787ff53a41bb301e65c",
+    "mergedMainSha": "fa125a2ab6b17f9cf764f6b3e25732037341b8cc",
+    "originalCiRunId": 41213914581,
+    "originalCiUrl": "https://github.com/jmfloreszazo/de-la-caja-negra-a-la-evidencia/actions/runs/41213914581",
+    "originalArtifactId": 13047313472,
+    "originalArtifactUrl": "https://github.com/jmfloreszazo/de-la-caja-negra-a-la-evidencia/actions/runs/41213914581/artifacts/13047313472",
+    "originalZipSha256": "376f8053d3f70012a6ca2ad4088aa0f05ae71a57542ceb5fe027f6ce282837ce",
+    "sourceCiChecksPassing": 15,
+    "sourceCiChecksTotal": 15,
+    "originalZipEntries": 15,
+    "independentAudit": "Recomputed original ZIP byte SHA256 against Actions upload hash, verified all 15 entries and all four source-vectors, original client samples, every independently recorded PostgreSQL transaction COMMIT timestamp, 60-bin histograms, source hot-skew distributions by phase, per-transfer ledger effects (2 postings + 1 outbox), 28/28 SQL oracle outputs, and the exact 12 warmup-only missed offers in 320/direct. All original trial observations match their per-trial JSON. State SHA parity required only when both routes durably executed identical offers."
+  },
+  "setup": {
+    "postgresVersion": "16.13",
+    "serverCommitTimestampSource": "pg_xact_commit_timestamp(operations.xmin)",
+    "trackCommitTimestamp": "on",
+    "accountCount": 1000,
+    "eligibleHotSourceAccounts": 50,
+    "hotSourceIntentFraction": 0.8,
+    "profile": "five_percent_hot",
+    "routes": [
+      "direct",
+      "orleans"
+    ],
+    "offeredRatesPerSecond": [
+      160,
+      320
+    ],
+    "repetitionsPerRateRoute": 1,
+    "warmupSeconds": 1,
+    "measurementSeconds": 60,
+    "cooldownSeconds": 1,
+    "physicalLinuxHostCount": 1,
+    "podmanNamespaceCount": 4,
+    "maximumInflight": 32
+  },
+  "audit": {
+    "trials": 4,
+    "totalScheduled": 59520,
+    "totalDispatched": 59508,
+    "totalMissedInWarmup": 12,
+    "totalMissedInMeasurement": 0,
+    "totalAmbiguous": 0,
+    "totalAcknowledged": 59508,
+    "authoritativeSqlCommittedByRunEnd": 59508,
+    "postings": 119016,
+    "outboxEvents": 59508,
+    "independentSqlOraclesPassed": 28,
+    "independentSqlOraclesTotal": 28,
+    "allServerCommitsCertainlyWithinAllMeasurementWindows": 57600,
+    "allServerCommitsPossiblyWithinAllMeasurementWindows": 57600,
+    "perOperationServerCommitTimestampsAudited": 59508,
+    "sourceInputShaMatchingPairs": 2,
+    "identicalPersistedStatePairsWhenAllOffersCommitted": 1,
+    "nonIdenticalPersistedStatePairsWithKnownUndispatchedOffers": 1
+  },
+  "cases": [
+    {
+      "offeredPerSecond": 160,
+      "route": "direct",
+      "scheduled": 9920,
+      "dispatched": 9920,
+      "missedWarmup": 0,
+      "ambiguous": 0,
+      "durableByRunEnd": 9920,
+      "measurePhaseOffered": 9600,
+      "certainSqlCommitInside60s": 9600,
+      "possibleSqlCommitInside60s": 9600,
+      "measuredSqlCommitPerSecond": 160,
+      "oneSecondCommitHistogramFrequency": {
+        "160": 60
+      },
+      "sourceVectorSha256": "0dd65b5e0ee03b41d92076aaae9926826917d1c6915727e4def43f6009335b50",
+      "finalSqlStateSha256": "28fd2a92849d554ec39403a4aa76b477fa57f2f1fab27d657703510472ffb5fd",
+      "ackOnlyP99Ms": 35.195,
+      "ackedSamplesCensored": 0
+    },
+    {
+      "offeredPerSecond": 160,
+      "route": "orleans",
+      "scheduled": 9920,
+      "dispatched": 9920,
+      "missedWarmup": 0,
+      "ambiguous": 0,
+      "durableByRunEnd": 9920,
+      "measurePhaseOffered": 9600,
+      "certainSqlCommitInside60s": 9600,
+      "possibleSqlCommitInside60s": 9600,
+      "measuredSqlCommitPerSecond": 160,
+      "oneSecondCommitHistogramFrequency": {
+        "160": 60
+      },
+      "sourceVectorSha256": "0dd65b5e0ee03b41d92076aaae9926826917d1c6915727e4def43f6009335b50",
+      "finalSqlStateSha256": "28fd2a92849d554ec39403a4aa76b477fa57f2f1fab27d657703510472ffb5fd",
+      "ackOnlyP99Ms": 15.578,
+      "ackedSamplesCensored": 0
+    },
+    {
+      "offeredPerSecond": 320,
+      "route": "direct",
+      "scheduled": 19840,
+      "dispatched": 19828,
+      "missedWarmup": 12,
+      "missedOperationScheduledSecondsRange": [
+        0.1,
+        0.134
+      ],
+      "ambiguous": 0,
+      "durableByRunEnd": 19828,
+      "measurePhaseOffered": 19200,
+      "certainSqlCommitInside60s": 19200,
+      "possibleSqlCommitInside60s": 19200,
+      "measuredSqlCommitPerSecond": 320,
+      "oneSecondCommitHistogramFrequency": {
+        "320": 60
+      },
+      "sourceVectorSha256": "e31755f6b0636272b65e60b9122229f8fec58db792d251fa5d3beb7fb1953b3a",
+      "finalSqlStateSha256": "1df50591118f8ae9a0d77e370ef9ae6bb92d0df36b69ca2e2c22074751d480cb",
+      "ackOnlyP99Ms": 3.18,
+      "ackedSamplesCensored": 12
+    },
+    {
+      "offeredPerSecond": 320,
+      "route": "orleans",
+      "scheduled": 19840,
+      "dispatched": 19840,
+      "missedWarmup": 0,
+      "ambiguous": 0,
+      "durableByRunEnd": 19840,
+      "measurePhaseOffered": 19200,
+      "certainSqlCommitInside60s": 19200,
+      "possibleSqlCommitInside60s": 19200,
+      "measuredSqlCommitPerSecond": 320,
+      "oneSecondCommitHistogramFrequency": {
+        "319": 1,
+        "320": 58,
+        "321": 1
+      },
+      "sourceVectorSha256": "e31755f6b0636272b65e60b9122229f8fec58db792d251fa5d3beb7fb1953b3a",
+      "finalSqlStateSha256": "e0f2aed69121b2f23ef7381513f2f67c4593cd83bba34cbea1fca8bf8a34a262",
+      "ackOnlyP99Ms": 12.571,
+      "ackedSamplesCensored": 0
+    }
+  ],
+  "historicalC01": {
+    "issueUrl": "https://github.com/jmfloreszazo/de-la-caja-negra-a-la-evidencia/issues/44",
+    "originalNegativeRunUrl": "https://github.com/jmfloreszazo/de-la-caja-negra-a-la-evidencia/actions/runs/41210325811",
+    "description": "The earlier all-secondary C01 grain-placement precondition failure remains unexplained, though separate PR #47 added fail-closed diagnostics and a later C01 case passed."
+  },
+  "interpretation": {
+    "es": "Se ofrecieron 59.520 transferencias sintéticas en cuatro ensayos de 62 segundos, con 60 segundos de medición por ensayo. PostgreSQL confirma 59.508 COMMIT persistidos, 119.016 asientos y 59.508 eventos outbox, con 28/28 oráculos SQL correctos. Las tasas observadas dentro de las ventanas fueron 160,0 y 320,0 COMMIT/s tanto para el acceso directo como para Orleans. Las 12 solicitudes no admitidas aparecieron exclusivamente al inicio del calentamiento de la ruta directa a 320/s (entre los segundos 0,100 y 0,134) por el límite de 32 operaciones simultáneas; ninguna pertenecía a la ventana de medición y ninguna tuvo efecto contable. A 320/s el estado SQL final difiere entre rutas porque una ruta no ejecutó esas 12 solicitudes iniciales; no es una discrepancia inexplicada de PostgreSQL. A 320/s en Orleans el recuento de COMMIT por segundo varía entre 319 y 321. Una repetición y un host físico NO demuestran saturación, p99 de producción ni equivalencia con un mainframe. Los percentiles calculados solo sobre confirmaciones están sesgados cuando se excluyen solicitudes perdidas.",
+    "en": "Four 62-second trials offered 59,520 synthetic transfer intents, each with a 60-second measurement window. PostgreSQL independently confirms 59,508 durable COMMIT operations, 119,016 postings, 59,508 outbox events and 28/28 passing independent SQL Oracle Gates. Measured in-window server COMMIT rates were 160.0 and 320.0 per second for both direct and Orleans routes. Exactly 12 offered intents were not admitted during the beginning of the 320/s direct-route warmup (at 0.100-0.134s) because of the 32 in-flight client limit; none belonged to the measurement window and none created ledger effects. The different final SQL state for 320/s direct and Orleans is fully explained by the 12 undispached warmup intents. At 320/s the Orleans per-second SQL COMMIT bins vary from 319 to 321. One repetition on one physical host does NOT prove a saturation knee, production p99 or mainframe MIPS equivalence. ACK-only latency percentiles are survivor-biased when missed offers are excluded."
+  },
+  "limitations": "One physical GitHub Linux runner with four disposable Podman namespaces, 1s warmup + 60s measurement + 1s cooldown, only one hot-source profile and one trial per rate/route. 32 in-flight admission cap can cause client-side loss distinct from SQL saturation. No 3+ independent runner cohorts, no physical multi-host HA, no isolated generator host, no comprehensive SQL pool/wait/CPU/GC/network sampling or fixed production SLO. SQL transfer COMMIT timestamps from PostgreSQL do not measure mainframe IBM Z MIPS. At 320/s one route's final SQL SHA differs due to 12 recorded never-dispatched warmup offers; this is not a hidden ledger inconsistency. E2 remains partially_verified, issues #8/#24/#25/#44 OPEN, C04 #34 UNVERIFIED, release v2026.10.29 unchanged."
+}

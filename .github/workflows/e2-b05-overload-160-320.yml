@@ -1,0 +1,65 @@
+name: E2 B05 bounded 160/320 offered-rate overload with original SQL COMMIT audit
+
+on:
+  pull_request:
+    paths:
+      - 'lab/e2_orleans/**'
+      - '.github/workflows/e2-b05-overload-160-320.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  bounded-overload:
+    name: E2-B05 160/320 offers/s, PostgreSQL COMMITs and classified overload
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    env:
+      E2_NETWORK_TEST: '1'
+      E1_PG_DSN: 'host=127.0.0.1 port=55435 dbname=e2lab user=postgres password=e2local'
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-python@v6
+        with:
+          python-version: '3.12'
+      - uses: actions/setup-dotnet@v5
+        with:
+          dotnet-version: '10.0.x'
+      - name: Install independent SQL ledger oracle
+        run: python3 -m pip install -r lab/e1_pg/requirements.txt
+      - name: Fail-closed offline tests of vector input and ambiguous durable effects
+        run: |
+          python3 -m py_compile lab/e2_orleans/test_b05_overload_sweep.py lab/e2_orleans/b05_sweep_analysis.py
+          python3 -m unittest discover -s lab/e2_orleans -p 'test_b05_sweep_analysis.py' -v
+          python3 -m unittest discover -s lab/e2_orleans -p 'test_b05_arrival_contract.py' -v
+      - name: Publish exact .NET 10 host and B05 client source
+        run: |
+          mkdir -p lab/results/e2f10/b05-overload-160-320
+          dotnet publish lab/e2_orleans/OrleansLab/OrleansLab.csproj \
+            --disable-build-servers -c Release -m:1 \
+            -o lab/results/e2f10/app
+          dotnet --version > lab/results/e2f10/b05-overload-160-320/dotnet-version.txt
+          podman --version > lab/results/e2f10/b05-overload-160-320/podman-version.txt
+          podman info --format '{{.Host.NetworkBackend}}' \
+            > lab/results/e2f10/b05-overload-160-320/podman-network-backend.txt
+      - name: Run EXACT bounded 160 and 320 offered-rate 60-second trials
+        run: python3 lab/e2_orleans/test_b05_overload_sweep.py
+      - name: Preserve raw original positive or negative evidence
+        if: always()
+        uses: actions/upload-artifact@v6
+        with:
+          name: e2-b05-160-320-original-sql-negative-or-positive-not-capacity
+          path: |
+            lab/results/e2f10/b05-overload-160-320/*.json
+            lab/results/e2f10/b05-overload-160-320/*.txt
+          if-no-files-found: warn
+      - name: Clean disposable Podman resources
+        if: always()
+        run: |
+          for name in e2f10-client e2f10-secondary e2f10-primary e2f10-pg; do
+            podman rm -f "$name" 2>/dev/null || true
+          done
+          for name in e2f10-sql e2f10-net; do
+            podman network rm "$name" 2>/dev/null || true
+          done

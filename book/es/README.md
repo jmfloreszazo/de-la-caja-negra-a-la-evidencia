@@ -22,6 +22,7 @@ José María Flores Zazo · Edición v2026.10.29 · [El libro entero en una pág
 - **[Parte II · Arqueología, conocimiento y autoridad](parte-2-arqueologia-y-autoridad/README.md)**
   - [Capítulo 6 · REA y la arqueología que deja rastro](parte-2-arqueologia-y-autoridad/06-rea-y-la-arqueologia-que-deja-rastro.md)
   - [Capítulo 7 · Legacy Archaeology asistida por agentes](parte-2-arqueologia-y-autoridad/07-legacy-archaeology-asistida-por-agentes.md)
+  - [Capítulo complementario 7 bis · Descomponer el mainframe con evidencia](parte-2-arqueologia-y-autoridad/07a-descomponer-el-mainframe-con-evidencia.md)
   - [Capítulo 8 · El conocimiento del agente y el expediente del sistema](parte-2-arqueologia-y-autoridad/08-el-conocimiento-del-agente-y-el-expediente-del-sistema.md)
   - [Capítulo 9 · De la autoridad del agente a la autoridad de la regla](parte-2-arqueologia-y-autoridad/09-de-la-autoridad-del-agente-a-la-autoridad-de-la-regla.md)
 - **[Parte III · Oráculos: el derecho a aceptar](parte-3-oraculos/README.md)**
