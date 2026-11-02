@@ -9,6 +9,7 @@ import subprocess
 from urllib.parse import urlparse, unquote
 from pypdf import PdfReader
 from weasyprint import HTML, default_url_fetcher
+from pdf_markdown import normalize_alerts
 
 ROOT=Path(__file__).resolve().parents[1]
 BOOK=ROOT/"book"
@@ -87,6 +88,7 @@ def build(lang):
     nxt=re.search(r"^## [^\n]+",md[start+len(marker):],flags=re.M)
     if nxt is None:raise ValueError(f"{lang}: first section following TOC missing")
     md=md[:start]+md[start+len(marker)+nxt.start():]
+    md=normalize_alerts(md)
     html_doc=subprocess.run(
         ["pandoc","--from=gfm+raw_html","--to=html5","--standalone","--toc",
          "--toc-depth=3","--wrap=none"],
