@@ -71,3 +71,5 @@ python3 scripts/check_e1_observations.py
 El script comprueba los controles, recalcula los SHA-256 de las observaciones del código vigente y valida el manifiesto histórico fijado de E1b sin confundirlo con el código posterior. El JSON guarda `runId`, `jobId`, commit, límites y resultados. La prueba *no* aporta métricas de capacidad mainframe; el tiempo transcurrido es el de **este ensayo sintético**, no una latencia comercial.
 
 La clasificación global del experimento sigue siendo **E1 parcialmente verificado**: E1c y la paridad completa de contratos permanecen pendientes.
+
+[C2: pérdida TCP del controlador con operación en curso](BROWNFIELD-CONTROLLER-LOSS.es.md): dos casos originales, ZIP y JSON sin modificar; no aceptación bancaria.

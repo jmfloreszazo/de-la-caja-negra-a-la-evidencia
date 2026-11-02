@@ -142,5 +142,5 @@ The existing CI workflow runs the original 20-control matrix first, then this
 separate two-writer experiment and archives `c2-controller-loss.json`, including
 failure results. Source hashes, actual backend waits, socket cuts, gateway
 SIGKILL, reconciliation, accounting oracles and counts remain inspectable.
-**SOURCE CANDIDATE until successful original CI on its exact SHA.** No E2,
+**Original exact-SHA CI passed both cases:** see the [archived report](../../../evidence/runs/BROWNFIELD-CONTROLLER-LOSS.md). Later source heads require their own CI. No E2,
 physical-domain, production capacity, RTO/RPO, real-bank fence or G2/G6 claim.

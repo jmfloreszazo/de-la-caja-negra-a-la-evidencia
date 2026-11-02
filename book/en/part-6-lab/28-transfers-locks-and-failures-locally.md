@@ -261,9 +261,13 @@ SQL reconciliation must precede replay: one decision, two postings and one
 outbox event. Losing a lock in another database does not atomically cancel
 financial COMMIT. CI must fail if observations contradict the contract.
 
-**Source candidate, with no accepted original execution evidence for this
-protocol yet.** Results will be archived per SHA, including failures. This
-does not close #64 or establish bank fencing, RTO/RPO or production migration.
+[Original run #41511782428](../../../evidence/runs/BROWNFIELD-CONTROLLER-LOSS.md)
+passed both cases: Python legacy and .NET candidate. SQL confirmed session
+loss; UNKNOWN vetoed the switch and later reconciliation found one decision,
+two postings and one outbox event per case, with both SQL oracles 10/10.
+The original ZIP preserves source/checkout and ten source hashes. This bounded
+evidence does not close #64 or establish bank fencing, RTO/RPO or production
+migration.
 G2=INCONCLUSIVE and G6=BLOCK.
 
 ### What would be needed for a real cutover

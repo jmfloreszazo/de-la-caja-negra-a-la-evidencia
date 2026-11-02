@@ -265,9 +265,13 @@ Eso debe conciliarse por SQL antes de permitir el replay: una decisión, dos
 apuntes y un outbox. Perder un bloqueo de otra base no cancela atómicamente el
 COMMIT financiero. Si la observación contradice el contrato, la CI debe fallar.
 
-**Candidato de código, todavía sin evidencia original aceptada para este
-protocolo.** Sus resultados se archivarán por SHA, incluidos los fallos. No
-cierra #64 ni acredita fencing bancario, RTO/RPO o una migración productiva.
+La [ejecución original #41511782428](../../../evidence/runs/BROWNFIELD-CONTROLLER-LOSS.es.md)
+superó ambos casos: legado Python y candidato .NET. El servidor confirmó
+la pérdida de sesiones; UNKNOWN bloqueó el cambio y la conciliación posterior
+obtuvo una decisión, dos apuntes y un outbox en cada caso, con ambos oráculos
+SQL 10/10. El ZIP original conserva source/checkout y diez hashes de origen.
+Esta evidencia acotada no cierra #64 ni acredita fencing bancario, RTO/RPO o
+una migración productiva.
 G2=INCONCLUSIVE y G6=BLOCK.
 
 ### Qué falta antes de permitir un cutover real

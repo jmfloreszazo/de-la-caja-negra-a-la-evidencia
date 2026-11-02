@@ -71,3 +71,5 @@ python3 scripts/check_e1_observations.py
 The checker validates recorded controls, current source SHA-256 values for current-code observations, and the pinned commit/source manifest of the historical E1b observation; it does not byte-match historical sources against updated code. Each JSON preserves `runId`, `jobId`, source commit, limitations and observations. The elapsed time reflects only **this synthetic test**, not production transactional latency.
 
 The overall experiment remains **E1 partially verified**: E1c and comprehensive reference-contract parity are outstanding.
+
+[C2: in-flight controller TCP loss](BROWNFIELD-CONTROLLER-LOSS.md): two original cases, unchanged ZIP and JSON; no bank acceptance.
