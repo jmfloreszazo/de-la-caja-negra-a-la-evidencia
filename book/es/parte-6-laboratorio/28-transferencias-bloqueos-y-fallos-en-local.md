@@ -241,7 +241,7 @@ no decide quién escribe. Las decisiones originadas por el candidato siguen
 vetando la vuelta atrás. Esto cubre ventanas concretas del modelo cooperativo
 mediante intención duradera y recuperación hacia adelante,
 **no mediante COMMIT atómico entre bases de datos**. La [CI original de esta continuación](../../../evidence/runs/BROWNFIELD-C2-RECOVERY.es.md)
-superó 19 controles, conservando el ZIP original y el primer fallo concurrente.
+superó 19 controles, conservando el ZIP original y el primer fallo concurrente. La ejecución posterior [#41353221630](https://github.com/jmfloreszazo/de-la-caja-negra-a-la-evidencia/actions/runs/41353221630), sobre el main `279ca566`, superó 20 controles y ambos oráculos SQL 10/10; es otra observación, no una ampliación retrospectiva de aquel ZIP.
 Cada cambio posterior necesita CI con su SHA exacto: la observación histórica
 no valida otro checkout. Las particiones de red durante operaciones en
 curso, la retirada de autoridad al incumbente real, los efectos de pago

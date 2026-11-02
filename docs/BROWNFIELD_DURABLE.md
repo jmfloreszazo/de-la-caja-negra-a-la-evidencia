@@ -1,6 +1,6 @@
 # Durable brownfield slice: one SQL authority is not yet a bank cutover
 
-**State: proposed executable implementation; no original PostgreSQL CI result yet.**
+**State: bounded synthetic SQL slice executed in CI; no bank acceptance.** See [original evidence](../evidence/runs/BROWNFIELD-DURABLE.md). The single-store scope below is distinct from the later [two-store](BROWNFIELD_TWO_STORE.md) and [C2 journal](BROWNFIELD_JOURNAL.md) experiments.
 
 CAP-007 (internal transfer) and CAP-005 (booked balance) are being rewritten
 from a **legacy-defined capability contract**, not from COBOL syntax. This
@@ -49,8 +49,9 @@ The synthetic G6 field is always `BLOCK`.
 5. **TODM G6**: real accountable human signoff for an exact build/environment,
    never inferred from technical CI success.
 
-Until steps 2–5 exist, classify the work as **SOURCE IMPLEMENTED /
-EVIDENCE INCONCLUSIVE / BUSINESS APPROVAL BLOCKED**. E2 remains separately
+Step 2 now has original synthetic SQL evidence. The later two-store slice
+provides cooperative simulated coexistence; real customer policy, source-side
+fencing and G6 acceptance remain **BUSINESS APPROVAL BLOCKED**. E2 remains separately
 `partially_verified`, and no published release is changed.
 
 Tracked by [#58](https://github.com/jmfloreszazo/de-la-caja-negra-a-la-evidencia/issues/58).

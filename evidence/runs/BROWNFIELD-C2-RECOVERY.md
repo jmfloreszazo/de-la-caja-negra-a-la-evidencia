@@ -1,5 +1,13 @@
 # C2 follow-up · SQL enrollment and interrupted authority recovery
 
+**Later checkpoint, not a rewrite of the original:** on merged main
+`279ca5662dd870c0f1bb7dab7d1474f346904df3`, [run #41353221630](https://github.com/jmfloreszazo/de-la-caja-negra-a-la-evidencia/actions/runs/41353221630)
+passed **20 controls**, both SQL oracles 10/10. Original artifact `13101509051`
+has 4346 bytes and SHA-256
+`5ec09a4eb0759243f093fa8fa006a20a677405d04eb75953bb4964d402688f67`,
+recorded in #64. The 19 controls below belong to the earlier SHA; their ZIP,
+JSON and first failure remain unchanged.
+
 **Bounded engineering evidence, 1 November 2026; not complete #64 acceptance.**
 Original [CI #41352470918](https://github.com/jmfloreszazo/de-la-caja-negra-a-la-evidencia/actions/runs/41352470918),
 job `124985443092`, passed **19 controls** on exact checkout/source SHA

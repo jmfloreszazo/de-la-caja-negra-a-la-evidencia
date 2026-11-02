@@ -2287,7 +2287,9 @@ Candidate-origin decisions still veto rollback. This closes specific
 cooperative crash windows through durable intent and forward recovery,
 **not atomic COMMIT across databases**. The [original follow-up CI](../evidence/runs/BROWNFIELD-C2-RECOVERY.md)
 passed 19 controls, preserving its raw ZIP and the initial failed concurrency
-run. Later code still requires its own exact-source CI evidence; historical
+run. The later [run #41353221630](https://github.com/jmfloreszazo/de-la-caja-negra-a-la-evidencia/actions/runs/41353221630),
+on main `279ca566`, passed 20 controls and both SQL oracles 10/10; this is a
+separate observation, not retrospective coverage attributed to that ZIP. Later code still requires its own exact-source CI evidence; historical
 observations cannot validate a different checkout.
 In-flight network partitions, real incumbent revocation, external payment
 effects and approved business policy remain separate acceptance gates.
@@ -2759,13 +2761,13 @@ The gate's exit codes are part of the contract: 0 for the synthetic permission, 
 
 #### What it does not prove
 
-There is no REA integration, no autonomous agent, no actor cluster, no production SQL engine, no row locking, no SQL deadlock, no two-phase commit, no failover, no power-loss test, no Azure deployment and no real outbox publisher. There is no measured mainframe baseline. It does not demonstrate industrial effectiveness or independence between people: the components are separate processes, but they were built in the same piece of work.
+In this original reference walkthrough, there is no REA integration, no autonomous agent, no actor cluster, no production SQL engine, no row locking, no SQL deadlock, no two-phase commit, no failover, no power-loss test, no Azure deployment and no real outbox publisher. There is no measured mainframe baseline. It does not demonstrate industrial effectiveness or independence between people: the components are separate processes, but they were built in the same piece of work.
 
 The baseline hash and its anchor live in the same writable package. In production they must sit outside the builder's reach and be bound to a real approval. The mandate is synthetic.
 
 #### Where it grows
 
-The file `docs/EXPERIMENT_PROTOCOL.md` describes four experiments that are designed and not executed. E1 ports the banking module to an engine with row locking and adds deadlock victims, write skew and pool exhaustion. E2 implements the same contract with Orleans actors that coordinate and a ledger that commits, under uniform and skewed distributions and with one account receiving half the traffic. E3 compares Azure, a local server with its second unit and a hybrid configuration with the same performance contract. E4 has an agent build the candidate with writes limited to `Candidate/` and compares tests written by the agent, an independent oracle and an oracle qualified by mutations.
+In the local reference of 29 October 2026, `docs/EXPERIMENT_PROTOCOL.md` proposed four experiments that had not yet been executed. In the current repository, E1 PostgreSQL/SQL Server and E2 Orleans have executed CI slices and remain partially verified; E3/E4 remain unexecuted as complete experiments. The [evidence matrix](../docs/EVIDENCE.md) and [roadmap](../ROADMAP.md) maintain the current status. The original design is summarized as follows: E1 ports the banking module to an engine with row locking and adds deadlock victims, write skew and pool exhaustion. E2 implements the same contract with Orleans actors that coordinate and a ledger that commits, under uniform and skewed distributions and with one account receiving half the traffic. E3 compares Azure, a local server with its second unit and a hybrid configuration with the same performance contract. E4 has an agent build the candidate with writes limited to `Candidate/` and compares tests written by the agent, an independent oracle and an oracle qualified by mutations.
 
 ### Annex B · Lab contract
 

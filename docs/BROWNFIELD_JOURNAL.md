@@ -27,33 +27,23 @@ observed, it keeps UNKNOWN; it never invents REJECTED.
   after candidate-origin decisions is vetoed.
 - Controller/candidate epoch disagreement must deny new gateway admissions.
 
-## Critical missing assurance
+## Integrated status and remaining assurance
 
-The existing legacy Python CLI and .NET candidate CLI can be called without
-the gateway, so **their SQL writes are not yet fenced by the third controller**.
-The existing candidate-store `FOR SHARE` epoch fence remains cooperative.
-The controller and candidate authority epochs are changed in separate
-transactions: there is no distributed atomic update or split-authority
-crash-repair proof. A direct rogue writer can bypass admission, and external
-payment processors are unmodeled. This is a bounded engineering step, not
-2PC, a production switch or a real IBM Z fence.
+PR #69 adds persisted SQL enrollment in both adapters. After enrollment,
+removing the environment flag cannot permit unadmitted writes; the standalone
+authority-switch CLI must also refuse a bypass. Before changing epochs, the
+coordinator commits a PREPARED intent and SWITCHING traffic freeze. External
+SIGKILL controls exercise forward recovery between authority COMMITs. This
+is not distributed atomic COMMIT.
 
-The three disposable databases run in containers **on one runner**, not three
-physical failure domains. The journal contains synthetic fixture identity
-strings, not bank authorization. TODM G2 remains INCONCLUSIVE and G6 BLOCK.
+[Main CI #41353221630](https://github.com/jmfloreszazo/de-la-caja-negra-a-la-evidencia/actions/runs/41353221630)
+passed 20 controls on `279ca566`; both SQL oracles 10/10. The
+[earlier 19-control evidence](../evidence/runs/BROWNFIELD-C2-RECOVERY.md)
+remains an observation of its own SHA, including the first failure.
 
-**Evidence status:** SOURCE CANDIDATE until the original CI at an exact head
-SHA passes and retains raw logs/artifact digests. See issue #64; #58 remains
-open. No change to published book release or to frozen #53.
-
-### C2 adapter enforcement experiment
-
-With `BROWNFIELD_REQUIRE_CONTROLLER=YES`, both the Python legacy adapter and
-.NET candidate require reachable `bf_control` and retain a shared authority
-row lock until the financial database transaction completes. The original
-legacy two-store experiment is unaffected when this opt-in flag is absent.
-In strict mode, both adapters additionally require a matching persisted
-`DISPATCHING` journal row; direct unadmitted commands are rejected. If the
-opt-in requirement is deliberately disabled, unjournaled posting is still
-possible; the independent oracle detects, but cannot prevent, this
-configuration bypass. This is not a genuine IBM Z fence.
+In-flight controller partitions, lock loss, remaining process/reply windows
+and external-side-effect reconciliation are still open. Privileged raw SQL
+and a noncooperating mainframe remain outside application fencing. Three
+containers share one runner; no physical HA, RTO/RPO or actual bank authority
+is established. G2=INCONCLUSIVE, G6=BLOCK; #64/#58 open, #53 frozen. No release
+has changed.

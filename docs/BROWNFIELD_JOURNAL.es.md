@@ -28,34 +28,23 @@ nunca inventa REJECTED.
 - Rollback vetado después de operaciones originadas en el candidato.
 - Divergencia de épocas entre controlador y candidato: nuevas admisiones bloqueadas.
 
-## Garantías todavía ausentes
+## Estado integrado y límites pendientes
 
-Los CLI existentes del legado sintético (Python) y del candidato (.NET 10)
-pueden invocarse directamente, evitando el gateway: **todavía no obedecen
-obligatoriamente al tercer controlador**. El bloqueo `FOR SHARE` de la base
-del candidato sigue siendo cooperativo. Las dos épocas de autoridad cambian
-en transacciones distintas: faltan una actualización atómica distribuida
-y un protocolo validado de reparación del estado intermedio. Un escritor
-externo no cooperativo y los procesadores de pagos quedan fuera.
+La PR #69 añade inscripción SQL persistida en ambos adaptadores. Después de
+inscribirse, quitar la variable de entorno no permite escribir sin admisión;
+el CLI independiente de cambio de autoridad también debe rechazar el bypass.
+Antes de cambiar épocas se confirma una intención PREPARED y un estado
+SWITCHING que congela el tráfico. SIGKILL externos ensayan la recuperación
+hacia adelante entre los dos COMMIT de autoridad. No es COMMIT distribuido.
 
-Los tres PostgreSQL ejecutan contenedores **en un único runner**; no existe
-prueba entre dominios físicos independientes. Las referencias de autorización
-son ficticias. No se demuestra una migración CICS/Db2, 2PC, capacidad bancaria,
-RTO/RPO ni aprobación de negocio. TODM G2=INCONCLUSIVE y G6=BLOCK.
+La [CI sobre main #41353221630](https://github.com/jmfloreszazo/de-la-caja-negra-a-la-evidencia/actions/runs/41353221630)
+superó 20 controles en `279ca566`; ambos oráculos SQL 10/10. La
+[evidencia anterior de 19 controles](../evidence/runs/BROWNFIELD-C2-RECOVERY.es.md)
+se conserva como observación de su propio SHA, incluido el primer fallo.
 
-**Estado de evidencia:** CANDIDATO DE CÓDIGO, no evidencia CI aceptada
-hasta obtener una ejecución original ligada al SHA exacto con artefactos.
-Continúan abiertas las issues #64 y #58. No se modifica la release ni
-se reactiva #53.
-
-### Experimento de fencing en los adaptadores C2
-
-Con `BROWNFIELD_REQUIRE_CONTROLLER=YES`, tanto el adaptador legado en Python
-como el candidato .NET exigen `bf_control` accesible y mantienen un bloqueo
-compartido sobre la fila de autoridad hasta terminar la transacción financiera.
-Las pruebas históricas de dos almacenes conservan su funcionamiento al no
-activar esta opción. Además, en modo estricto ambos adaptadores exigen una admisión
-`DISPATCHING` persistida y rechazan las llamadas directas no admitidas.
-Si se desactiva deliberadamente el control opt-in, todavía se puede escribir
-sin journal: el oráculo detecta el bypass, pero no lo impide. No es un fence
-real de IBM Z.
+Quedan pendientes particiones durante operaciones en curso, pérdida de
+bloqueos, otras ventanas de proceso/respuesta y conciliación de efectos
+externos. El SQL directo con privilegios y un mainframe no cooperativo siguen
+fuera del fence de aplicación. Los tres contenedores comparten un runner;
+no se acredita HA física, RTO/RPO ni autoridad bancaria real. G2=INCONCLUSIVE,
+G6=BLOCK; #64/#58 abiertas y #53 congelada. No cambia ninguna release.

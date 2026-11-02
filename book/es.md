@@ -2290,7 +2290,7 @@ no decide quién escribe. Las decisiones originadas por el candidato siguen
 vetando la vuelta atrás. Esto cubre ventanas concretas del modelo cooperativo
 mediante intención duradera y recuperación hacia adelante,
 **no mediante COMMIT atómico entre bases de datos**. La [CI original de esta continuación](../evidence/runs/BROWNFIELD-C2-RECOVERY.es.md)
-superó 19 controles, conservando el ZIP original y el primer fallo concurrente.
+superó 19 controles, conservando el ZIP original y el primer fallo concurrente. La ejecución posterior [#41353221630](https://github.com/jmfloreszazo/de-la-caja-negra-a-la-evidencia/actions/runs/41353221630), sobre el main `279ca566`, superó 20 controles y ambos oráculos SQL 10/10; es otra observación, no una ampliación retrospectiva de aquel ZIP.
 Cada cambio posterior necesita CI con su SHA exacto: la observación histórica
 no valida otro checkout. Las particiones de red durante operaciones en
 curso, la retirada de autoridad al incumbente real, los efectos de pago
@@ -2765,13 +2765,13 @@ Los códigos de salida del gate son parte del contrato: 0 para el permiso sinté
 
 #### Lo que no acredita
 
-No hay integración de REA, ni agente autónomo, ni cluster de actores, ni motor SQL de producción, ni bloqueo por fila, ni deadlock SQL, ni commit en dos fases, ni failover, ni prueba de pérdida eléctrica, ni despliegue en Azure, ni publicador real de la outbox. No existe una baseline medida de un mainframe. No se demuestra eficacia industrial ni independencia entre personas: los componentes son procesos distintos, pero se construyeron en el mismo trabajo.
+En este recorrido de referencia original, no hay integración de REA, ni agente autónomo, ni cluster de actores, ni motor SQL de producción, ni bloqueo por fila, ni deadlock SQL, ni commit en dos fases, ni failover, ni prueba de pérdida eléctrica, ni despliegue en Azure, ni publicador real de la outbox. No existe una baseline medida de un mainframe. No se demuestra eficacia industrial ni independencia entre personas: los componentes son procesos distintos, pero se construyeron en el mismo trabajo.
 
 El hash de la baseline y su ancla viven en el mismo paquete escribible. En producción deben quedar fuera del alcance del constructor y vincularse a una aprobación real. El mandato es sintético.
 
 #### Hacia dónde crece
 
-El fichero `docs/EXPERIMENT_PROTOCOL.md` describe cuatro experimentos diseñados y no ejecutados. E1 porta el módulo bancario a un motor con bloqueo por fila y añade víctimas de deadlock, write skew y agotamiento del pool. E2 implementa el mismo contrato con actores de Orleans que coordinan y un ledger que confirma, bajo distribuciones uniformes, sesgadas y con una cuenta que recibe la mitad del tráfico. E3 compara Azure, un servidor local con su segunda unidad y una configuración híbrida con el mismo contrato de rendimiento. E4 pone a un agente a construir el candidato con escritura limitada a `Candidate/` y compara pruebas escritas por el agente, oráculo independiente y oráculo cualificado por mutaciones.
+En la referencia local del 29 de octubre de 2026, el fichero `docs/EXPERIMENT_PROTOCOL.md` planteaba cuatro experimentos todavía no ejecutados. En el repositorio actual, E1 PostgreSQL/SQL Server y E2 Orleans cuentan con subconjuntos ejecutados en CI y siguen parcialmente verificados; E3/E4 permanecen sin ejecución completa. La [matriz de evidencia](../docs/EVIDENCE.es.md) y el [roadmap](../ROADMAP.es.md) mantienen el estado actual. El diseño original se resume así: E1 porta el módulo bancario a un motor con bloqueo por fila y añade víctimas de deadlock, write skew y agotamiento del pool. E2 implementa el mismo contrato con actores de Orleans que coordinan y un ledger que confirma, bajo distribuciones uniformes, sesgadas y con una cuenta que recibe la mitad del tráfico. E3 compara Azure, un servidor local con su segunda unidad y una configuración híbrida con el mismo contrato de rendimiento. E4 pone a un agente a construir el candidato con escritura limitada a `Candidate/` y compara pruebas escritas por el agente, oráculo independiente y oráculo cualificado por mutaciones.
 
 ### Anexo B · Contrato del laboratorio
 

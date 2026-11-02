@@ -236,7 +236,9 @@ Candidate-origin decisions still veto rollback. This closes specific
 cooperative crash windows through durable intent and forward recovery,
 **not atomic COMMIT across databases**. The [original follow-up CI](../../../evidence/runs/BROWNFIELD-C2-RECOVERY.md)
 passed 19 controls, preserving its raw ZIP and the initial failed concurrency
-run. Later code still requires its own exact-source CI evidence; historical
+run. The later [run #41353221630](https://github.com/jmfloreszazo/de-la-caja-negra-a-la-evidencia/actions/runs/41353221630),
+on main `279ca566`, passed 20 controls and both SQL oracles 10/10; this is a
+separate observation, not retrospective coverage attributed to that ZIP. Later code still requires its own exact-source CI evidence; historical
 observations cannot validate a different checkout.
 In-flight network partitions, real incumbent revocation, external payment
 effects and approved business policy remain separate acceptance gates.

@@ -1,5 +1,13 @@
 # Continuación de C2 · Inscripción SQL y recuperación del cambio de autoridad
 
+**Seguimiento posterior, no reescritura del original:** en el main fusionado
+`279ca5662dd870c0f1bb7dab7d1474f346904df3`, [ejecución #41353221630](https://github.com/jmfloreszazo/de-la-caja-negra-a-la-evidencia/actions/runs/41353221630)
+superó **20 controles** y ambos oráculos SQL 10/10. El artefacto original
+`13101509051` tiene 4346 bytes y SHA-256
+`5ec09a4eb0759243f093fa8fa006a20a677405d04eb75953bb4964d402688f67`,
+registrado en #64. Los 19 controles descritos abajo pertenecen al SHA anterior;
+no se modifican ni su ZIP, ni su JSON, ni el primer fallo.
+
 **Evidencia técnica acotada, 1 de noviembre de 2026; no cierra toda la issue #64.**
 La [CI original #41352470918](https://github.com/jmfloreszazo/de-la-caja-negra-a-la-evidencia/actions/runs/41352470918),
 job `124985443092`, superó **19 controles** sobre el SHA exacto de origen/checkout

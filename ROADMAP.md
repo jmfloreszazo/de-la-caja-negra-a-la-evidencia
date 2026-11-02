@@ -1,69 +1,48 @@
-# Open roadmap
+# Open roadmap — evidence-based checkpoint (2 November 2026)
 
 **English** · [Español](ROADMAP.es.md)
 
-Work the book leaves open and the community can move forward. Each line shows its label. Issues [#6–#12](https://github.com/jmfloreszazo/de-la-caja-negra-a-la-evidencia/issues) remain open and have no milestone assigned. Preparing a future public edition requires the author's explicit review and authorization; this document does not set a publication date.
+This is the **repository development roadmap**, not a declaration of production bank readiness. The canonical claim statuses live in [evidence/claims.json](evidence/claims.json), and the engineering acceptance protocol is in [docs/EXPERIMENT_ROADMAP.md](docs/EXPERIMENT_ROADMAP.md). Observed, simulated, proposed and business-approved results must remain distinguishable. All code, source and lab READMEs are English-only; the book is maintained in ES/EN.
 
-## Validate what could not be validated
+## Position now
 
-| Task | Why it matters | Label |
-|---|---|---|
-| Build the Podman image on Linux, macOS and Windows and share the report | CI validates the recipe; real machines are what counts | `reproduction`, `good first issue` |
-| Reproduce the full lab beyond hosted Linux CI and publish conditions/report | [Offline/native/Podman CI](https://github.com/jmfloreszazo/de-la-caja-negra-a-la-evidencia/actions/runs/40900252152) already passed; independent cross-platform reproductions remain | `reproduction` |
-| Compile the *Illustrative* listings in a sample project and promote those that pass to *Verified* | Today they are reasoning fragments; some deserve to be code | `lab`, `good first issue` |
+| Workstream | Observed status | What still blocks completion |
+| --- | --- | --- |
+| Book, bilingual diagrams and CI | **Integrated**: 37 numbered chapters plus two companion chapters, 41 diagrams per language, bilingual chapter 28 coexistence discussion, reproducible PDF preview; latest premerge checks PASS | Editorial/source review, full illustrative listing coverage, cross-platform reproducibility; a preview is not a release |
+| E1 PostgreSQL and SQL Server | **Partially verified**: real disposable SQL CI and independent oracles, .NET 10 parity slices, concurrency and negative cases | Full E1 business scope, power-loss/HA, customer-specific contract, production load |
+| E2 Orleans | **Partially verified, actually executed**: one-host Podman multi-process/multi-silo slices, PostgreSQL membership, durable ledger checks and selected failures and load; see [#8](https://github.com/jmfloreszazo/de-la-caja-negra-a-la-evidencia/issues/8) | [C01 placement anomaly #44](https://github.com/jmfloreszazo/de-la-caja-negra-a-la-evidencia/issues/44), [F10-C04 draft PR #34](https://github.com/jmfloreszazo/de-la-caja-negra-a-la-evidencia/pull/34), asymmetric partition/recovery, physical hosts/HA and sustained capacity [#25](https://github.com/jmfloreszazo/de-la-caja-negra-a-la-evidencia/issues/25) |
+| CAP-007/005 brownfield replacement | **Synthetic slices CI-verified and merged**: SQL writer epoch, .NET 10 durable transactions, black-box legacy adapter, two distinct PostgreSQL containers/stores, shadow, reconciliation and rollback veto. [#58](https://github.com/jmfloreszazo/de-la-caja-negra-a-la-evidencia/issues/58) | In-flight controller partitions and remaining journal recovery [#64](https://github.com/jmfloreszazo/de-la-caja-negra-a-la-evidencia/issues/64), true incumbent-side writer fence, customer policy/mandates/Golden Master, TODM G2/G6 approval |
+| Business-capability decomposition | **Synthetic inventory**: 30 capability hypotheses in 12 domains, functional-first rewrite; [#32](https://github.com/jmfloreszazo/de-la-caja-negra-a-la-evidencia/issues/32) | Real authorized traces, owner-approved policies, target domains and independent acceptance; no mandatory COBOL parser and no 1:1 rewrite |
+| E3 on-prem/Azure/hybrid | **Designed, not capacity-verified**: M1/M2 transport smoke, dated Azure price references and WAN model are inputs, not E3 PASS; [#9](https://github.com/jmfloreszazo/de-la-caja-negra-a-la-evidencia/issues/9), [#12](https://github.com/jmfloreszazo/de-la-caja-negra-a-la-evidencia/issues/12) | Approved workload, open-loop saturation/commits/p99, failure domains, WAN, fair TLS gRPC/REST and dated comparable end-to-end TCO |
+| E4 agent-based modernization | **Designed, not executed/accepted as E4**; [#10](https://github.com/jmfloreszazo/de-la-caja-negra-a-la-evidencia/issues/10) | Bounded agent write authority, reproducible proposal/evaluation, mutation-qualified Oracle Gates, independent review and approval |
+| Mainframe OS, channels and architecture research | **In progress**: [#17](https://github.com/jmfloreszazo/de-la-caja-negra-a-la-evidencia/issues/17), [#18](https://github.com/jmfloreszazo/de-la-caja-negra-a-la-evidencia/issues/18), [#28](https://github.com/jmfloreszazo/de-la-caja-negra-a-la-evidencia/issues/28), [#29](https://github.com/jmfloreszazo/de-la-caja-negra-a-la-evidencia/issues/29), [#30](https://github.com/jmfloreszazo/de-la-caja-negra-a-la-evidencia/issues/30) | Vendor-backed claim comparison, OS/I-O and Db2/CICS/IMS semantics, ATM/mobile/web/branch, batch, offline queues and decomissioning patterns |
+| Platform maintenance | **Open**: lab refactor [#15](https://github.com/jmfloreszazo/de-la-caja-negra-a-la-evidencia/issues/15), main ruleset [#16](https://github.com/jmfloreszazo/de-la-caja-negra-a-la-evidencia/issues/16) (explicitly deferred), OS reproduction [#11](https://github.com/jmfloreszazo/de-la-caja-negra-a-la-evidencia/issues/11) | Preserve checks, links, raw evidence and original source identity before changing layout/protection |
 
-## Experiments: observed evidence and outstanding gates
+## Completed incremental sequence
 
-The overall protocol is in [`lab/docs/EXPERIMENT_PROTOCOL.md`](lab/docs/EXPERIMENT_PROTOCOL.md), with detailed gates in [`docs/EXPERIMENT_ROADMAP.md`](docs/EXPERIMENT_ROADMAP.md). [PR #5](https://github.com/jmfloreszazo/de-la-caja-negra-a-la-evidencia/pull/5) is merged. Later evidence must cite its exact original run and source SHA; merging a PR does not retroactively change the published `v2026.10.29` edition.
+- [PR #59](https://github.com/jmfloreszazo/de-la-caja-negra-a-la-evidencia/pull/59): twelve-scenario brownfield evidence gap inventory; synthetic tests and business approval remain separate.
+- [PR #60](https://github.com/jmfloreszazo/de-la-caja-negra-a-la-evidencia/pull/60): in-memory fail-closed cutover rehearsal. **Not** a durable transaction or external legacy fence.
+- [PR #61](https://github.com/jmfloreszazo/de-la-caja-negra-a-la-evidencia/pull/61) and [#62](https://github.com/jmfloreszazo/de-la-caja-negra-a-la-evidencia/pull/62): SQL-persistent .NET 10/Npgsql CAP-007/005, actual process kill and lost response; checked original merged-main source identity.
+- [PR #63](https://github.com/jmfloreszazo/de-la-caja-negra-a-la-evidencia/pull/63): black-box simulated legacy in a distinct PostgreSQL container, independently reconciled with the candidate; read-only shadow and failed rollback after candidate-origin decisions; chapter 28 updated in both languages. The **exact integrated main SHA** is `d04623e8c276bedda9918e87a09fa0c3f9da1f6a`; original [two-store main CI #41340310748](https://github.com/jmfloreszazo/de-la-caja-negra-a-la-evidencia/actions/runs/41340310748) PASS. Both ledger oracles returned 10/10; the legacy and candidate ended with 8 and 10 recorded decisions respectively. That divergence appropriately **blocked** rollback.
+- The original [ES/EN evidence pair](evidence/runs/BROWNFIELD-TWO-STORE.md) / [Spanish](evidence/runs/BROWNFIELD-TWO-STORE.es.md) records the first PR check-out provenance mismatch and the corrected exact-SHA rerun; keep the negative history.
 
-| Phase | Verified state and limits | Tracking |
-|---|---|---|
-| E1a · PostgreSQL 16 under Podman | Executed in CI: deadlocks, isolation and persisted oracle; not a banking-capacity or complete-E1 claim. | [Evidence](evidence/runs/README.md) |
-| E1b · .NET 10/Npgsql | Initial 7-control and extended [10-control E1b CI run](https://github.com/jmfloreszazo/de-la-caja-negra-a-la-evidencia/actions/runs/41024101879) passed; [16-case direct SQLite/PostgreSQL parity + lock release](https://github.com/jmfloreszazo/de-la-caja-negra-a-la-evidencia/actions/runs/41031578923) also passed. The [960-transfer 1/2/4/8 uniform/hot reference matrix](https://github.com/jmfloreszazo/de-la-caja-negra-a-la-evidencia/actions/runs/41034420329) passed for PostgreSQL; SQL Server E1c subsequently passed its own [960-transfer synthetic matrix](https://github.com/jmfloreszazo/de-la-caja-negra-a-la-evidencia/actions/runs/41042317263) and stronger [persistent-worker matrix](https://github.com/jmfloreszazo/de-la-caja-negra-a-la-evidencia/actions/runs/41043087791). Both remain synthetic, not cross-engine throughput/mainframe benchmarks. | [#6](https://github.com/jmfloreszazo/de-la-caja-negra-a-la-evidencia/issues/6) |
-| E1c · SQL Server | [Executed SQL Server 2022 CI](https://github.com/jmfloreszazo/de-la-caja-negra-a-la-evidencia/actions/runs/41040632819): 16 reference cases, real 1205 deadlock retry, bounded 1222 timeouts, SNAPSHOT negative and SERIALIZABLE defense, independent oracle. Also passed the [960-transfer eight-case SQL Server functional matrix](https://github.com/jmfloreszazo/de-la-caja-negra-a-la-evidencia/actions/runs/41042317263) with all four persisted tables matching and seven independent invariants passing.  The [persistent .NET worker follow-up CI #41043087791](https://github.com/jmfloreszazo/de-la-caja-negra-a-la-evidencia/actions/runs/41043087791) independently repeated all eight cases with 960 committed operations and oracle PASS. Production failures, failover and cross-engine throughput remain untested. | [#7](https://github.com/jmfloreszazo/de-la-caja-negra-a-la-evidencia/issues/7) |
-| M1 · non-durable gRPC/REST | Executed localhost microbenchmark; neither banking transaction nor WAN benchmark. | [Report](evidence/runs/M1.md) · [#12](https://github.com/jmfloreszazo/de-la-caja-negra-a-la-evidencia/issues/12) |
-| M2 · PostgreSQL-backed gRPC/REST | Twenty durable cases executed on one runner with one shared database; no distributed-scale claim. | [Report](evidence/runs/M2.md) · [#12](https://github.com/jmfloreszazo/de-la-caja-negra-a-la-evidencia/issues/12) |
-| E2 · Orleans with durable ledger | **Partially executed in original CI**: PostgreSQL membership, SIGKILL, network partitions and bounded synthetic open-loop pilots. Comparable sustained capacity, remaining F10 cases, independent physical hosts and full E2 acceptance are missing. C04 remains draft without its own CI. | [#8](https://github.com/jmfloreszazo/de-la-caja-negra-a-la-evidencia/issues/8) · [#24](https://github.com/jmfloreszazo/de-la-caja-negra-a-la-evidencia/issues/24) · [#25](https://github.com/jmfloreszazo/de-la-caja-negra-a-la-evidencia/issues/25) |
-| E3 · Azure, on-premises and hybrid | Designed, not executed. Dated reference prices and illustrative models exist, but no approved comparative benchmark. | [#9](https://github.com/jmfloreszazo/de-la-caja-negra-a-la-evidencia/issues/9) · [#12](https://github.com/jmfloreszazo/de-la-caja-negra-a-la-evidencia/issues/12) |
-| E4 · Agents behind Oracle Gates | Designed, not executed. | [#10](https://github.com/jmfloreszazo/de-la-caja-negra-a-la-evidencia/issues/10) |
+All of these are **synthetic engineering results**; no real bank behavior was observed and TODM G2 remains INCONCLUSIVE and G6 BLOCK. Physical host separation is not established by two Podman containers on one runner.
 
-**Completion rule:** E1 becomes verified only after full functional parity and outstanding gates; E2–E4 require independent oracles, negative controls and reproducible evidence. Green CI checks do not authorize a release.
+- PR #66/#68/#69: durable journal, capability gateway and persisted enrollment. On `279ca566`, [C2 main #41353221630](https://github.com/jmfloreszazo/de-la-caja-negra-a-la-evidencia/actions/runs/41353221630) passed 20 controls and both SQL oracles 10/10. The [original 19-control run](evidence/runs/BROWNFIELD-C2-RECOVERY.md) retains its original coverage. Seven applicable workflows passed on that main; Release skipped.
 
-## Priority: CAP-007/CAP-005 brownfield modernization
+## Next execution order (not dates or percentage-complete estimates)
 
-This starts from an existing COBOL estate and business contracts. It is neither
-greenfield nor a 1:1 syntax translation. PRs #59–#63 delivered a persistent
-.NET 10/PostgreSQL candidate, two-store SQL reconciliation, non-posting shadow
-and synthetic cutover/rollback. [Issue #58](https://github.com/jmfloreszazo/de-la-caja-negra-a-la-evidencia/issues/58)
-remains open: no real mainframe-side writer fence has been demonstrated.
+1. Reconcile the ES/EN book and documentation against evidence; preserve original SHAs and outcomes.
+2. Complete C2 #64: in-flight partitions, lock loss and response windows; business acceptance and real source fence remain under #58/#32.
+3. Update chapter 28 with contract, implementation, failure, correction, evidence and limits.
+4. Complete bounded E2 #8/#24/#25 gates: C01/C04, partitions, load repetitions, bottleneck diagnosis and physical fault domains.
+5. Prepare the next-edition preview: English review, citations, overlap, listings and ES/EN visual QA; publish only after the authorized editorial cut.
+6. Execute E3 #9/#12 with comparable workload, infrastructure, WAN and TCO; then E4 #10.
 
-[PR #66, C2](https://github.com/jmfloreszazo/de-la-caja-negra-a-la-evidencia/pull/66)
-adds a third disposable PostgreSQL admission/UNKNOWN journal, real process
-crashes, independent SQL recovery and an opt-in cooperative adapter fence.
-Its original opt-in bypass and non-atomic authority updates remain historical
-limitations of that exact source SHA. The [C2 follow-up](lab/brownfield/journal/README.md)
-adds SQL-persisted adapter enrollment, a durable traffic freeze and exact-intent
-forward recovery with external SIGKILL controls. Its [original 19-control CI evidence](evidence/runs/BROWNFIELD-C2-RECOVERY.md)
-is archived with the failed first run; later source SHAs require new checks.
-It is not atomic cross-database COMMIT or real incumbent fencing.
-TODM G2=INCONCLUSIVE and G6=BLOCK; this does not create another release.
+**Frozen:** [#53](https://github.com/jmfloreszazo/de-la-caja-negra-a-la-evidencia/issues/53) confidential computing/clean-room research is postponed by explicit decision. Do not include it in the active execution sequence without renewed instruction. Branch protection [#16](https://github.com/jmfloreszazo/de-la-caja-negra-a-la-evidencia/issues/16) is also deferred but remains open.
 
-Next: complete controller-partition and real source-fence acceptance under
-[#64](https://github.com/jmfloreszazo/de-la-caja-negra-a-la-evidencia/issues/64),
-finish E2, benchmark E3 across Azure/on-premises/hybrid using horizontal-first
-scale, internal gRPC and dated TCO, then E4 with agents behind Oracle Gates.
-Clean-room/confidential-computing [#53](https://github.com/jmfloreszazo/de-la-caja-negra-a-la-evidencia/issues/53)
-remains **frozen for a future version**.
+## Publication boundary
 
-## Lab: next katas
+The published first edition is [`v2026.10.29`](https://github.com/jmfloreszazo/de-la-caja-negra-a-la-evidencia/releases/tag/v2026.10.29); the [`v2026.10.31-rc1` research pre-release](https://github.com/jmfloreszazo/de-la-caja-negra-a-la-evidencia/releases/tag/v2026.10.31-rc1) is a separate **published pre-release**, not the latest stable edition. Subsequent main merges and green PDF preview jobs do **not** publish another release automatically. Release only by an explicitly authorized release action and its controlled workflow.
 
-- Turn the COMP-3 codec of chapter 15 into a module with its test vectors.
-- Add an EBCDIC adapter with an explicit CCSID and ordering cases.
-- Extend the contract with negative amounts and a matrix of compiler options.
-- Port the accounting oracle to .NET to have two independent verifiers.
-
-## Book
-
-- Keep the Spanish and English editions in sync (`scripts/check.py` enforces it), and welcome other languages with the same structure.
-- Expand the glossary and the risk catalog (R101 onwards) with real evidence.
-- Real anonymized cases, with explicit permission and no identifiable customer figures.
+**Evidence rule:** do not promote an entire phase from a successful subset. Preserve exact source/checkout SHA, run ID, container digest, negative original observations and provenance for every supported claim. No production or bank approval is inferred from CI.

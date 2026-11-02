@@ -1,7 +1,9 @@
 # Brownfield coexistence: moving authority, not translating COBOL
 
-**Status: proposed two-store experiment.** The source code is implemented;
-only a successful original GitHub Actions run can establish its test results.
+**Status: synthetic two-store experiment executed in CI.** The [original
+evidence](../evidence/runs/BROWNFIELD-TWO-STORE.md) establishes the tested SHA
+and limits, not a bank migration. The separate [C2 journal](BROWNFIELD_JOURNAL.md)
+continuation adds durable admission and bounded interrupted-transition recovery.
 
 ## Architecture and scope
 
@@ -56,8 +58,8 @@ settlement state; those are not implemented.
 
 G0/G1 scope and provenance are synthetic. G2 business baseline is
 `INCONCLUSIVE`. G4 construction and G5 technical negative oracles are
-eligible only after source-head CI execution. G6 remains **BLOCK**.
-Cross-database transaction interruption, journaled unknown outcomes,
+supported by original synthetic source-head CI, not bank acceptance. G6 remains **BLOCK**.
+Complete in-flight cross-database interruption and journal partition coverage,
 external IBM Z fencing, capture/change streams, true fault isolation,
 recovery-point evidence, operational SLAs and human business approval
 remain open in [#58](https://github.com/jmfloreszazo/de-la-caja-negra-a-la-evidencia/issues/58).

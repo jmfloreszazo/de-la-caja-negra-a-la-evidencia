@@ -2,6 +2,11 @@
 
 **Classification:** design and synthetic rehearsal, **not** a PostgreSQL-backed acceptance experiment. [Español](BROWNFIELD_CUTOVER.es.md) · [Tracking #58](https://github.com/jmfloreszazo/de-la-caja-negra-a-la-evidencia/issues/58)
 
+The simulation below retains its original in-memory scope. The separate
+[durable follow-up](BROWNFIELD_DURABLE.md), [two-store](BROWNFIELD_TWO_STORE.md)
+and [C2 journal](BROWNFIELD_JOURNAL.md) slices now have technical evidence;
+those results must not be attributed to this simulation.
+
 ## The architectural boundary is financial authority
 
 A replacement written from scratch in .NET 10 is not a greenfield banking project. The existing core already owns customer-visible transactions, business calendars, history, interfaces and audit. The migration boundary is **a business capability and its authoritative data**, never one translated COBOL program per microservice.

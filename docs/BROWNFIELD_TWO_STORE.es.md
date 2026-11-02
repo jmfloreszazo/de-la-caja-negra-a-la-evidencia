@@ -1,8 +1,9 @@
 # Convivencia brownfield: trasladar la autoridad, no traducir COBOL
 
-**Estado: experimento propuesto con dos almacenes.** El código está
-implementado; solo la ejecución original satisfactoria de GitHub Actions
-permite acreditar sus resultados.
+**Estado: experimento sintético de dos almacenes ejecutado en CI.** La
+[evidencia original](../evidence/runs/BROWNFIELD-TWO-STORE.es.md) acredita su
+SHA concreto; no una migración bancaria. El [journal C2](BROWNFIELD_JOURNAL.es.md)
+añade admisión duradera y recuperación acotada en una continuación separada.
 
 ## Arquitectura y alcance
 
@@ -60,10 +61,10 @@ consecuencias en terceros y procesos de liquidación.
 ## TODM y garantías todavía pendientes
 
 G0/G1 describen un alcance y procedencia sintéticos. G2 de negocio permanece
-`INCONCLUSIVE`. G4 de construcción y G5 de oráculos técnicos solo podrán
-acreditarse tras una CI original sobre el SHA exacto. G6 continúa en
+`INCONCLUSIVE`. G4 de construcción y G5 de oráculos técnicos cuentan con
+evidencia sintética del SHA original; no son aceptación bancaria. G6 continúa en
 **BLOCK**. Quedan pendientes la interrupción entre bases independientes,
-journal persistente de resultados inciertos, bloqueo real del lado IBM Z,
+cobertura completa del journal ante particiones en curso, bloqueo real del lado IBM Z,
 CDC y orden de eventos, dominios de fallo separados, evidencias de RPO/RTO,
 SLA operativos y aprobación humana en la [issue #58](https://github.com/jmfloreszazo/de-la-caja-negra-a-la-evidencia/issues/58).
 

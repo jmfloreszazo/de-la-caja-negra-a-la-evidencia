@@ -2,6 +2,11 @@
 
 **Clasificación:** diseño y simulación contractual, **no** un experimento aceptado sobre PostgreSQL. [English](BROWNFIELD_CUTOVER.md) · [Seguimiento #58](https://github.com/jmfloreszazo/de-la-caja-negra-a-la-evidencia/issues/58)
 
+La simulación descrita aquí conserva su alcance original en memoria. La
+[continuación persistente](BROWNFIELD_DURABLE.es.md), los [dos almacenes](BROWNFIELD_TWO_STORE.es.md)
+y el [journal C2](BROWNFIELD_JOURNAL.es.md) ya tienen evidencia técnica separada;
+no deben confundirse con resultados de esta simulación.
+
 ## La frontera arquitectónica es la autoridad financiera
 
 Que escribamos desde cero un reemplazo en .NET 10 no convierte la modernización bancaria en un proyecto greenfield. El core existente ya gobierna transacciones visibles al cliente, calendarios de negocio, histórico, interfaces y auditoría. La unidad de migración es **una capacidad de negocio y sus datos autoritativos**, no un microservicio por programa COBOL traducido.
