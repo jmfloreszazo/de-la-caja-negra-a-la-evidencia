@@ -96,6 +96,7 @@ def validate_live_provenance():
                 errors.append('CI run '+str(run_id)+' has mismatched source commit')
             jobs=github_resource('actions/runs/'+str(run_id)+'/jobs?per_page=100',token)['jobs']
             expected={
+                41523019075:{'C01 controlled placement cohort 1','C01 controlled placement cohort 2','C01 controlled placement cohort 3'},
                 41513498050:{'E2-F10 C04 client gateway cuts and 7/7 independent SQL oracle'},
                 40901043531:{'markdown','diagrams','links, es/en sync, generated files'},
                 40901043412:{'offline','native','podman'},

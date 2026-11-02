@@ -1,6 +1,6 @@
 # C01 controlled activation fixture — issue #44
 
-**SOURCE CANDIDATE: no accepted controlled-fixture execution yet.** This is a
+**Original controlled-fixture CI verified:** three cohorts in run #41523019075 on source `47ed0a087717ec6c02f64a173a63ee597a919f75`; see [audited evidence](../../evidence/runs/E2-C01-CONTROLLED.md). This is a
 separately preregistered experiment, not a weakened historical C01 assertion.
 It addresses the controlled-alternative exit in #44; it does not identify why
 the original default-policy run concentrated sixteen keys on secondary.
