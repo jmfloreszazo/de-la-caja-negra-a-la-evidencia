@@ -1605,9 +1605,9 @@ closed-loop (1 client)       9500    950.0     1.0     1.0      1.0    501.0    
 open-loop (500/s)            5000    500.1     1.0   251.0    451.0    501.0     401
 ```
 
-![Figure 24.1 · Maximum latency per 100 ms interval in the simulation. In red, the open loop: the queue takes half a second to drain. In blue, the closed loop: a single spike and nothing else.](figures/en/omission_chart.png)
+![Figure 24.1 · Maximum latency per 100 ms interval in the simulation. Red: open loop, with queued requests draining after the stall. Gray: closed loop, which records a single spike.](figures/en/omission_chart.png)
 
-*Figure 24.1 · Maximum latency per 100 ms interval in the simulation. In red, the open loop: the queue takes half a second to drain. In blue, the closed loop: a single spike and nothing else.*
+*Figure 24.1 · Maximum latency per 100 ms interval in the simulation. Red: open loop, with queued requests draining after the stall. Gray: closed loop, which records a single spike.*
 
 The closed loop reports a p99 of one millisecond and almost twice the throughput. It does not lie about the requests it measured; it lies by omission, because its only client was waiting while the server was stopped and stopped offering load. The open loop reveals that 401 requests exceeded 100 ms. That is the congestion a real customer would see at month-end close.
 
@@ -2172,9 +2172,9 @@ Preserving the total is necessary and not sufficient: a movement charged to the 
 | hot | 4 | 128 | 495.6 | 0.81 | 2.04 | 42.08 | 0 |
 | hot | 8 | 256 | 624.4 | 0.85 | 28.40 | 109.78 | 5 |
 
-![Figure 28.3 · Reference run with uniform accounts: red bars for p99 and a blue line for p50, in milliseconds. The median drops and the tail explodes.](figures/en/measures_chart.png)
+![Figure 28.3 · Reference run with uniform accounts: red bars show p99 and the gray line shows p50, in milliseconds. The median falls while the tail rises.](figures/en/measures_chart.png)
 
-*Figure 28.3 · Reference run with uniform accounts: red bars for p99 and a blue line for p50, in milliseconds. The median drops and the tail explodes.*
+*Figure 28.3 · Reference run with uniform accounts: red bars show p99 and the gray line shows p50, in milliseconds. The median falls while the tail rises.*
 
 The table teaches one true thing and nothing more: when we add processes that compete for a serialized resource, the median improves and the tail explodes. It is the same phenomenon that will appear with a hot account or a saturated log. But these are 32 operations per process, in a closed loop, including the start-up of each .NET process, on an engine that serializes writes, on a single machine. There is no warm-up or sufficient duration, no mainframe baseline and no Azure. This table cannot approve capacity, and the code writes that down in the results summary itself.
 

@@ -1605,9 +1605,9 @@ closed-loop (1 client)       9500    950.0     1.0     1.0      1.0    501.0    
 open-loop (500/s)            5000    500.1     1.0   251.0    451.0    501.0     401
 ```
 
-![Figura 24.1 · El mismo servidor y la misma parada. El circuito cerrado registra el atasco una vez; el circuito abierto cuenta cada petición que esperó detrás de él.](figures/es/omission_chart.png)
+![Figura 24.1 · Latencia máxima por intervalo de 100 ms en la simulación. Rojo: circuito abierto, con solicitudes en cola que se drenan tras la parada. Gris: circuito cerrado, que registra un único pico.](figures/es/omission_chart.png)
 
-*Figura 24.1 · El mismo servidor y la misma parada. El circuito cerrado registra el atasco una vez; el circuito abierto cuenta cada petición que esperó detrás de él.*
+*Figura 24.1 · Latencia máxima por intervalo de 100 ms en la simulación. Rojo: circuito abierto, con solicitudes en cola que se drenan tras la parada. Gris: circuito cerrado, que registra un único pico.*
 
 El circuito cerrado informa de un p99 de un milisegundo y de casi el doble de throughput. No miente sobre las peticiones que midió; miente por omisión, porque su único cliente estaba esperando mientras el servidor estaba parado y dejó de ofrecer carga. El circuito abierto revela que 401 peticiones superaron los 100 ms. Ese es el atasco que vería un cliente real en el cierre de mes.
 
@@ -2170,9 +2170,9 @@ Conservar el total es necesario y no suficiente: un movimiento cargado a la cuen
 | caliente | 4 | 128 | 495,6 | 0,81 | 2,04 | 42,08 | 0 |
 | caliente | 8 | 256 | 624,4 | 0,85 | 28,40 | 109,78 | 5 |
 
-![Figura 28.3 · Ejecución de referencia: la mediana baja y la cola se dispara al añadir procesos que compiten por un único escritor.](figures/es/measures_chart.png)
+![Figura 28.3 · Ejecución de referencia con cuentas uniformes: las barras rojas muestran p99 y la línea gris p50, en milisegundos. La mediana baja mientras crece la cola.](figures/es/measures_chart.png)
 
-*Figura 28.3 · Ejecución de referencia: la mediana baja y la cola se dispara al añadir procesos que compiten por un único escritor.*
+*Figura 28.3 · Ejecución de referencia con cuentas uniformes: las barras rojas muestran p99 y la línea gris p50, en milisegundos. La mediana baja mientras crece la cola.*
 
 La tabla enseña una cosa verdadera y nada más: al añadir procesos que compiten por un recurso serializado, la mediana mejora y la cola se dispara. Es el mismo fenómeno que aparecerá con una cuenta caliente o con un log saturado. Pero son 32 operaciones por proceso, en circuito cerrado, incluyendo el arranque de cada proceso .NET, sobre un motor que serializa escrituras, en una sola máquina. No hay calentamiento ni duración suficiente, no hay baseline del mainframe y no hay Azure. Esta tabla no puede aprobar capacidad, y el código lo deja escrito en el propio resumen de resultados.
 

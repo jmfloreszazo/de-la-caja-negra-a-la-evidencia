@@ -37,3 +37,5 @@ El resultado original y su ZIP auditado están registrados en el [inventario](BO
 La primera vista previa corregida todavía divide bloques cortos al pie de página: la simulación del capítulo 24 empieza con solo dos líneas de salida. Se ajusta el estilo para conservar entero un listado cuando cabe en una página. Falta regenerar e inspeccionar ese cambio de impresión antes de aceptarlo.
 
 La primera maquetación de bloques completos redujo los fragmentos de código de EN 48 / ES 45 a 32 por edición, pero dejó una etiqueta sola al pie de la página del capítulo 24. Se añade una vinculación de impresión entre cada una de las 32 etiquetas y su bloque inmediato; debe verificarse visualmente. No se elimina código ni prosa.
+
+La revisión visual detectó además dos pies ingleses que aún describían una serie azul. El tema común usa `#9AA0A6` (gris) para la segunda serie y sustituye las paletas locales. Se alinean pies/textos alternativos de las figuras 24.1 y 28.3 e índices de diagramas en ES/EN. No cambian imágenes, datos de simulación ni código financiero protegido.

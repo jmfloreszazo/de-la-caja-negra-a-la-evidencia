@@ -44,3 +44,5 @@ Original native run [41680741456](https://github.com/jmfloreszazo/de-la-caja-neg
 The first corrected PDF sample still splits short code blocks at the page foot (for example the chapter 24 simulation begins with only two output lines). The print stylesheet now requests keeping a listing together when it fits on one page. A new render and visual check are pending before accepting that print change.
 
 The first keep-block render reduced code background fragments from EN 48 / ES 45 to 32 per edition (32 logical listings), but exposed a detached caption at the chapter 24 page foot. The print-only caption binding now keeps all 32 immediate captions with their blocks; new visual review is required. No code or surrounding prose is removed.
+
+Visual review also found two English chart captions still describing a blue series. The shared render theme uses `#9AA0A6` (gray) for the second series and explicitly overrides local palette directives. Figure 24.1 and 28.3 captions/alt text and both diagram indexes now match that palette in ES/EN. No chart pixels, simulation data or protected financial code are changed.

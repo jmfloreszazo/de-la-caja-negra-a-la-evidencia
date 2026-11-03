@@ -41,9 +41,9 @@ closed-loop (1 client)       9500    950.0     1.0     1.0      1.0    501.0    
 open-loop (500/s)            5000    500.1     1.0   251.0    451.0    501.0     401
 ```
 
-![Figure 24.1 · Maximum latency per 100 ms interval in the simulation. In red, the open loop: the queue takes half a second to drain. In blue, the closed loop: a single spike and nothing else.](../../figures/en/omission_chart.png)
+![Figure 24.1 · Maximum latency per 100 ms interval in the simulation. Red: open loop, with queued requests draining after the stall. Gray: closed loop, which records a single spike.](../../figures/en/omission_chart.png)
 
-*Figure 24.1 · Maximum latency per 100 ms interval in the simulation. In red, the open loop: the queue takes half a second to drain. In blue, the closed loop: a single spike and nothing else.*
+*Figure 24.1 · Maximum latency per 100 ms interval in the simulation. Red: open loop, with queued requests draining after the stall. Gray: closed loop, which records a single spike.*
 
 The closed loop reports a p99 of one millisecond and almost twice the throughput. It does not lie about the requests it measured; it lies by omission, because its only client was waiting while the server was stopped and stopped offering load. The open loop reveals that 401 requests exceeded 100 ms. That is the congestion a real customer would see at month-end close.
 
