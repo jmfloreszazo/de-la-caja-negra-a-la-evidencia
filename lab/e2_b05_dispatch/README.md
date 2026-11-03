@@ -56,3 +56,5 @@ is accepted. Keep #25 and E2 partial until the remaining gates are exercised.
 ```bash
 python3 -m unittest discover -s lab/e2_b05_dispatch -p test_analysis.py -v
 ```
+
+The first three-cohort campaign is frozen in [the evidence report](../../evidence/runs/B05-DISPATCH-DIAGNOSTIC.md). Run `python3 scripts/check_b05_dispatch.py` from the repository root to audit its originals. PR checks compile the client and run adversarial slot controls; the live matrix now requires manual workflow dispatch. Archive audits never count skipped live trials as PASS.

@@ -1,4 +1,4 @@
-name: E2 B05 direct dispatch-slot diagnostic
+name: E2 B05 dispatch source and manual diagnostic
 on:
   pull_request:
     paths:
@@ -8,7 +8,24 @@ on:
 permissions:
   contents: read
 jobs:
+  source:
+    name: Dispatch source and adversarial slot checks
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-dotnet@v5
+        with:
+          dotnet-version: '10.0.x'
+      - uses: actions/setup-python@v6
+        with:
+          python-version: '3.12'
+      - run: python3 scripts/check_language_policy.py
+      - run: python3 scripts/check.py
+      - run: python3 -m unittest discover -s lab/e2_b05_dispatch -p test_analysis.py -v
+      - run: python3 -m py_compile lab/e2_b05_dispatch/run.py
+      - run: dotnet publish lab/e2_b05_dispatch/DispatchProbe.csproj -c Release -m:1 --disable-build-servers -o /tmp/b05-dispatch-source
   diagnostic:
+    if: github.event_name == 'workflow_dispatch'
     name: Direct dispatch cohort ${{ matrix.cohort }}
     runs-on: ubuntu-24.04
     timeout-minutes: 20

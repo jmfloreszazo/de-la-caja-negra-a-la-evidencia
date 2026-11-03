@@ -450,3 +450,12 @@ falsifiable before they become migration promises.
 ---
 
 [← Chapter 27 · Making the error visible](27-making-the-error-visible.md) · [Contents](../README.md) · [Chapter 29 · Bringing in agents without letting them write the approval →](29-bringing-in-agents-without-letting-them-write-the-approval.md)
+
+
+### B05: distinguish admission limits from backend capacity
+
+The [direct admission diagnostic](../../../evidence/runs/B05-DISPATCH-DIAGNOSTIC.md) adds three runner cohorts at 320 offered/s with 60-second measurement phases. Each paired trial keeps the PostgreSQL connection pool at 32 and changes client admission from 32 to 128 slots, reversing the order in one cohort. Exact admission/completion/release events and independent SQL commit timestamps replace retrospective occupancy estimates.
+
+Across six trials, 119,040 offers yielded 118,887 durable commits and 153 admission misses: 129 during warmup and 24 during measurement. All misses occurred at exactly 32 active slots. The three 128-slot trials admitted every offer. All seven financial invariants held in each trial. One 32-slot trial recorded 319.6 certain SQL commits/s; the others recorded 320.0000–320.0167/s in the independent SQL window, whose boundaries differ from offer phases.
+
+This is evidence of an admission-policy effect in this instrumented direct-client setup, not a backend capacity ceiling or an explanation of the older 12 misses. Pool-acquisition waits remain unmeasured; runner noise and instrumentation affect timing. Orleans routing, sustained scaling and bottleneck attribution under #25 remain open. The frozen archive audit is distinct from a new live campaign; a skipped live matrix proves nothing about capacity.

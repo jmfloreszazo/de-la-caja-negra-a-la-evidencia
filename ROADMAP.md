@@ -74,3 +74,5 @@ Loopback ADO.NET dual-host placement failed separately in broad validation; [#74
 Issue #74 observation persistence now has [two real induced controls](evidence/runs/E2-PLACEMENT-OBSERVATION.md): provider-specific failed attempts retain their own maps/logs without borrowing earlier PASS results. Natural placement concentration remains unresolved.
 
 The [audited long experiment](evidence/runs/E2-LONG-PARTITION.md) retains two initial failures and two corrected cases: 120s schedule, earlier secondary exit, assisted recovery and 14 pairs across about 66s. It does not establish continuous service or physical HA.
+
+B05 #25 now has a [three-cohort direct admission diagnostic](evidence/runs/B05-DISPATCH-DIAGNOSTIC.md): 119,040 offers, 118,887 SQL commits, 153 exact cap-32 admission misses and no misses at cap 128, with 42 financial invariant checks. This does not establish backend saturation, Orleans scaling or the historical warmup cause; sustained capacity and bottleneck attribution remain open.

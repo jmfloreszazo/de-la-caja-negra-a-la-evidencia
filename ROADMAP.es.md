@@ -74,3 +74,5 @@ La colocación dual ADO.NET en loopback falló por separado en la validación am
 La persistencia de observaciones de #74 dispone de [dos controles reales inducidos](evidence/runs/E2-PLACEMENT-OBSERVATION.es.md): cada intento fallido conserva su mapa/logs sin atribuirse un PASS anterior. Sigue sin resolverse la concentración natural.
 
 El [ensayo largo auditado](evidence/runs/E2-LONG-PARTITION.es.md) conserva dos fallos iniciales y dos casos corregidos: corte programado 120 s, secundario terminado antes, recuperación asistida y 14 parejas durante unos 66 s. No demuestra servicio continuo ni HA física.
+
+B05 #25 incorpora un [diagnóstico directo con tres cohortes](evidence/runs/B05-DISPATCH-DIAGNOSTIC.md): 119.040 ofertas, 118.887 commits SQL, 153 rechazos observados exactamente en el límite de 32 plazas y ninguno con 128, con 42 comprobaciones de invariantes financieras. No demuestra saturación del servidor, escalado Orleans ni la causa del calentamiento histórico; siguen abiertas la capacidad sostenida y la atribución del cuello de botella.

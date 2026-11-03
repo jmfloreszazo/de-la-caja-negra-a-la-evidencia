@@ -2505,6 +2505,16 @@ económica de Azure. Ese es precisamente el propósito del laboratorio:
 convertir los supuestos de arquitectura en afirmaciones que podamos
 refutar antes de prometer una migración.
 
+---
+
+##### B05: distinguir límites de admisión y capacidad del servidor
+
+El [diagnóstico de admisión directa](../evidence/runs/B05-DISPATCH-DIAGNOSTIC.md) añade tres cohortes en runners a 320 ofertas/s, con fases de medición de 60 segundos. Cada pareja mantiene el pool PostgreSQL en 32 conexiones y cambia la admisión del cliente de 32 a 128 plazas; una cohorte invierte el orden. Los eventos exactos de admisión, finalización y liberación, junto con las marcas independientes de commit SQL, sustituyen las estimaciones retrospectivas de ocupación.
+
+Las seis pruebas ofrecieron 119.040 operaciones: 118.887 commits durables y 153 rechazos por admisión, 129 durante el calentamiento y 24 durante la medición. Todos los rechazos ocurrieron exactamente con 32 plazas activas. Las tres pruebas de 128 plazas admitieron todas las ofertas. Las siete invariantes financieras se cumplieron en cada prueba. Una prueba con 32 plazas registró 319,6 commits SQL ciertos/s; las demás, 320,0000–320,0167/s dentro de la ventana SQL independiente, cuyas fronteras difieren de las fases de las ofertas.
+
+Es evidencia de un efecto de la política de admisión en este cliente directo instrumentado; no establece un techo de capacidad ni explica los 12 rechazos antiguos. Falta medir la espera por conexión; el runner y la instrumentación afectan los tiempos. Siguen abiertos la ruta Orleans, el escalado sostenido y la atribución del cuello de botella de #25. Auditar el archivo congelado es distinto de ejecutar una campaña nueva; omitir la matriz viva no demuestra capacidad.
+
 ### Capítulo 29 · Incorporar agentes sin permitir que escriban el aprobado
 
 > [!IMPORTANT]
