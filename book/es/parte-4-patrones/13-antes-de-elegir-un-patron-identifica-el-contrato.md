@@ -34,6 +34,35 @@ Para leer la matriz conviene hacerse siempre las mismas tres preguntas, en este 
 
 > **No existe un patrón que sustituya «el mainframe» entero. Hay que reconstituir garantías distintas en capas distintas.**
 
+## Tres correspondencias de plataforma, con contratos de fallo distintos
+
+El [catálogo inicial legible por máquina](../../../research/platform-contracts/catalog.json) y su [guía de alcance](../../../research/platform-contracts/README.md) concretan la matriz anterior. Abarca IBM Z/z/OS, Unisys MCP e integración OS 2200; son tres contextos de plataforma, no implementaciones intercambiables. Lo siguiente propone reemplazos y pruebas de aceptación. Ninguno se ejecutó contra un runtime original del fabricante en este incremento de investigación.
+
+**IBM / CICS y Db2.** Inventariar recursos recuperables y límites reales de unidad de trabajo antes de extraer una API [49][56]. Una transacción SQL candidata puede cubrir recursos dentro de su límite. Si el origen coordina además una cola u otro gestor, introducir outbox puede requerir cambiar con aprobación los estados intermedios observables. Inyectar un fallo entre participantes e inspeccionar ambas historias; los saldos finales por sí solos no prueban que sobreviva la coordinación original.
+
+**Unisys MCP / Enterprise Database Server.** La documentación MCP 21 condiciona SINGLEABORT a `INDEPENDENTTRANS` y asigna la rectificación de la transacción abortada a aplicación/usuario [58]. Obtener, por tanto, opciones DASDL/auditoría antes de diseñar reintentos. El candidato debe repetir la instrucción completa adecuada y conciliar su resultado; repetir solo la sentencia fallida puede omitir efectos previos.
+
+**OS 2200 TIP / ePortal.** El conector ePortal 10 puede reenviar tras reconectar; su guía distingue las sesiones con estado [59]. Recuperar por separado contexto de sesión e identidad financiera. Una conexión nueva no prueba que fallase la instrucción anterior ni autoriza repetir su efecto. Esta fuente documenta un conector, no todo el modelo de recuperación de bases de datos OS 2200.
+
+| Correspondencia | Capas candidatas | Contraejemplo y oráculo necesario |
+|---|---|---|
+| MF006: límite de recursos CICS | UOW de aplicación; transacción de datos; integración recuperable | Commits separados tras extracción: caer entre efectos y conciliar cada participante |
+| MF009: configuración de recuperación MCP | Reintento de aplicación; recuperación del motor; procedimiento operativo | Repetir solo una sentencia pierde trabajo previo: comparar instrucción completa esperada y trabajo no afectado |
+| MF010: reconexión/sesión TIP | Adaptador semántico; recuperación de sesión; identidad duradera | Repetir en otra sesión duplica o enruta mal: comparar efecto aceptado, identidad y contexto |
+
+El esquema exige fuente/versión fechada, contrato original, capas candidatas, brecha semántica, fallo de control, oráculo, medidas del cliente e IDs de riesgos. El validador rechaza equivalencias inventadas, fuentes sin documentar y estados de evidencia injustificados. Seis mutaciones del catálogo ejercitan esas comprobaciones. **Son verificaciones de metadatos, no seis pruebas de comportamiento del fabricante.** Los oráculos SQL/ATM existentes pueden orientar el diseño candidato; su éxito no verifica una instalación MCP, OS 2200 o IBM.
+
+## Secuencia de decisión para trabajo síncrono, asíncrono y batch
+
+Comenzar por el plazo de negocio y el propietario duradero. Si el solicitante necesita la decisión final ahora, mantener síncrono el comando autoritativo mínimo y proporcionar recuperación de estado ante respuesta perdida. Si se permite completar después, confirmar aceptación duradera con un estado distinto y correlacionar el resultado final posterior. Una cola cambia entrega y buffering; no concede permiso para aprobar trabajo offline.
+
+Después, identificar atomicidad. Conservar efectos inmediatamente inseparables dentro de un límite transaccional compatible. Utilizar saga solo cuando se permiten cada estado intermedio y su compensación. Un workflow aporta progreso duradero entre pasos; un DAG batch necesita además identidad inmutable de entrada, dependencias, checkpoints y publicación controlada. Ni un scheduler ni un worker por registro acreditan un cierre diario correcto.
+
+Finalmente, elegir ubicación según demanda medida y dominios de fallo. Una proyección puede descargar consultas si explicita su frescura. CDC puede alimentarla, pero no transfiere autoridad de escritura. Los workers horizontales siguen compartiendo límites de base de datos/log/cuentas calientes. Conservar o integrar el motor original cuando se desconoce su contrato, falta un reemplazo demostrado de una recuperación necesaria o una modernización más estrecha ya aporta el valor buscado.
+
+Fujitsu GS21, NEC ACOS, Hitachi VOS y Bull GCOS siguen como descubrimiento sin correspondencias de funciones verificadas en este incremento. NonStop, OpenVMS, IBM i y HP 3000 se marcan aparte como plataformas adyacentes por investigar. Desconocido significa investigación pendiente; no ausente, sin soporte o equivalente. El inventario completo de #28 y sus ejemplos batch/offline/CDC/internacionales siguen pendientes. Esta primera base aporta un formato verificable sin presentar una lista larga sin revisar como investigación terminada.
+
+
 ---
 
 [← Parte IV · Patrones que sustituyen responsabilidades, no sintaxis](README.md) · [Índice](../README.md) · [Capítulo 14 · Strangler Fig: cambiar el borde antes que el corazón →](14-strangler-fig-cambiar-el-borde-antes-que-el-corazon.md)

@@ -104,6 +104,24 @@
 
 [50] CSF International. *EZswitch — Online ATM/Debit Middleware System*. Ejemplo comercial de autorización host y stand-in; no es una política bancaria aprobada para este laboratorio. Consultado el 3 de noviembre de 2026. <https://www.csfi.com/ezswitch-2/>
 
+[51] IBM. *Channel subsystem (CSS)*. IBM Z basic-skills documentation. Documentación primaria indexada. Consultada el 3 de noviembre de 2026; fecha de publicación no proporcionada. <https://www.ibm.com/docs/en/zos-basic-skills?topic=mainframe-channel-subsystem-css>
+
+[52] IBM. *PR/SM Concepts*. z/VM 7.3.0 documentation. Documentación primaria indexada. Consultada el 3 de noviembre de 2026; fecha de publicación no proporcionada. <https://www.ibm.com/docs/en/zvm/7.3.0?topic=hiperdispatch-prsm-concepts>
+
+[53] IBM. *Virtual storage overview*. z/OS 3.1.0 documentation. Documentación primaria indexada. Consultada el 3 de noviembre de 2026; fecha de publicación no proporcionada. <https://www.ibm.com/docs/en/zos/3.1.0?topic=overview-virtual-storage>
+
+[54] IBM. *Defining service classes and performance goals*. z/OS 3.2.0 documentation. Documentación primaria indexada; el lector directo devolvió HTTP 403. Consultada el 3 de noviembre de 2026; fecha de publicación no proporcionada. <https://www.ibm.com/docs/SSLTBW_3.2.0/com.ibm.zos.v3r2.ieaw100/sclg.htm>
+
+[55] IBM. *Processing units*. z/OS 3.1.0 documentation. Documentación primaria indexada. Consultada el 3 de noviembre de 2026; fecha de publicación no proporcionada. <https://www.ibm.com/docs/en/zos/3.1.0?topic=basics-processing-units>
+
+[56] IBM. *Improved performance through concurrency control*. Db2 for z/OS 13 documentation. Documentación primaria indexada. Consultada el 3 de noviembre de 2026; fecha de publicación no proporcionada. <https://www.ibm.com/docs/en/db2-for-zos/13.0.0?topic=users-improved-performance-through-concurrency-control>
+
+[57] IBM. *Db2 data sharing*. Db2 for z/OS 13 documentation. Documentación primaria indexada. Consultada el 3 de noviembre de 2026; fecha de publicación no proporcionada. <https://www.ibm.com/docs/en/db2-for-zos/13.0.0?topic=concepts-db2-data-sharing>
+
+[58] Unisys. *Automatic Single Transaction Abort Recovery*. ClearPath MCP 21.0; document 38508198-005. Documentación primaria leída directamente. Consultada el 3 de noviembre de 2026; fecha de publicación no proporcionada. <https://www.support.unisys.com/aseries/docs/ClearPath-MCP-21.0/38508198-005/section-000082014.html>
+
+[59] Unisys. *OS 2200 TIP Application Configuration Properties*. ClearPath ePortal 10.0; document 82073594. Documentación primaria leída directamente. Consultada el 3 de noviembre de 2026; fecha de publicación no proporcionada. <https://www.support.unisys.com/ePortalIC-10.0/topic/82073594_clearpath_eportal_developerhelp/html/section-000039378.htm>
+
 ---
 
 [← Anexo F · Glosario operativo](anexo-f-glosario-operativo.md) · [Índice](../README.md)

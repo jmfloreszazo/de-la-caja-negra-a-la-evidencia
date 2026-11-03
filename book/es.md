@@ -158,6 +158,55 @@ Traducido a una reunión de seguimiento: cuando alguien diga «ya es equivalente
 
 > **Medir un mainframe por sus MIPS es como medir un aeropuerto contando el empuje de sus motores.**
 
+#### Identificar la capa propietaria de cada garantía
+
+Un assessment necesita una dirección de plataforma, no solo el nombre de una aplicación: máquina/modelo, partición, sistema operativo/versión, runtime/monitor, gestor de recursos y configuración. Una partición Linux sobre IBM Z no adquiere semántica z/OS, CICS o Db2 for z/OS por utilizar ese procesador. Tampoco un contenedor constituye el límite de recuperación de todo lo que invoca. Hay que registrar la topología instalada antes de elegir qué conservar, trasladar o rediseñar.
+
+El [catálogo de fuentes](../research/platform-contracts/catalog.json) registra diez contratos acotados, su versión y una prueba propuesta para refutarlos. Distingue comportamiento documentado, ejecución en la plataforma original y verificación del reemplazo. Aquí solo hay evidencia del primero. Las familias sin revisar siguen visibles como desconocidas; un campo vacío no significa ausencia de una función.
+
+| Capa / contrato | Alcance documentado | Qué investigar en el reemplazo |
+|---|---|---|
+| Partición y despacho | El entitlement de CPU compartida de PR/SM depende de pesos de particiones y del conjunto compartido [52] | CPU asignada frente a consumida, competencia, topología y latencia de cola; un límite CPU de contenedor no es equivalente semántico |
+| I/O por canales | IBM describe CSS ejecutando I/O asíncronamente respecto al trabajo del procesador central [51] | Espera/servicio de toda la ruta de almacenamiento; async del lenguaje no reproduce por sí solo un subsistema de canales |
+| Memoria virtual y real | z/OS puede paginar o posponer trabajo cuando falta memoria real [53] | Conjunto residente, buffers, paginación y presión de asignación; direccionamiento y capacidad RAM son medidas distintas |
+| Política de cargas | WLM utiliza objetivos de servicio e importancia [54] | Presupuestos y esperas de tráfico interactivo frente a batch; una cola prioritaria aislada no aporta evidencia suficiente |
+| Funciones de procesador | zIIP ejecuta trabajo elegible [55] | Elegibilidad, consumo real e inventario de licencias; contar trabajo útil en lugar de convertir motores a vCPU |
+| Monitor transaccional | Una tarea CICS puede abarcar varias unidades de trabajo [49] | Syncpoints, participantes y efectos externos reales; sesión/tarea/transacción requieren inventarios separados |
+| Gestor de datos | Aislamiento/bloqueos y data sharing de Db2 for z/OS dependen de opciones y topología [56][57] | Historias concurrentes, planes, seguridad del predicado y recuperación; nombres conocidos de aislamiento o réplicas escribibles no demuestran equivalencia |
+
+Las fuentes describen productos y versiones documentales concretos, no todas las instalaciones. El catálogo registra consulta por índice cuando no se pudo acceder directamente a documentación IBM; las fechas de publicación quedan desconocidas cuando no se proporcionan. La versión documental no declara soporte o disponibilidad actuales. Estas filas no permiten deducir frecuencia CPU, conversión MIPS, capacidad de hardware ni resultados de una carga bancaria.
+
+#### Seguir una instrucción por sus límites de recuperación
+
+Consideremos una **traza propuesta para el assessment**, sin duraciones medidas: sucursal/navegador → adaptador de canal → servicio transaccional → base de datos autoritativa → decisión duradera → respuesta. Registrar la identidad de operación y distinguirla de sesión, tarea, unidad de trabajo y span de traza. El [capítulo de canales](#capítulo-complementario--canales-efectivo-atm-y-core) desarrolla el límite ATM/dispositivo; la siguiente traza trata una actualización recuperable de cuentas.
+
+| Punto de observación | Captura con acceso aprobado | Fallo o ambigüedad que investigar |
+|---|---|---|
+| Sucursal y adaptador | Envío/recepción del cliente, presupuesto de red, identidad de entrada y mapping | Timeout antes de aceptación frente a respuesta perdida tras commit; conservar la identidad original |
+| Despacho y ejecución | Espera por clase de servicio, límites tarea/UOW y consumo CPU | Que haya CPU disponible no demuestra que una petición en cola cumpliese su plazo |
+| Lectura y bloqueo | Plan de acceso, lecturas lógicas/físicas, acierto de buffers, espera de locks y predicado afectado | Una lectura en caché puede ser rápida mientras otra actualización viola la regla; examinar historias concurrentes |
+| Actualización y durabilidad | Filas/registros cambiados, participantes recuperables, confirmación de log/syncpoint y publicación | Caer antes/después del límite; determinar qué efectos están confirmados, deshechos o sin resolver |
+| Respuesta y recuperación | Decisión autoritativa, resultado del cliente, identidad de reintento y conciliación | Un ACK perdido conserva incertidumbre para el cliente; una conexión nueva no debe crear silenciosamente otro cargo |
+
+Los intervalos necesitan extremos definidos. Usar duraciones monotónicas dentro de cada observador y conservar desfase/incertidumbre de relojes antes de comparar timestamps entre máquinas. Una medida de respuesta transaccional del host no incluye automáticamente pantalla, WAN o dispositivo. El [capítulo de infraestructura](#capítulo-25-bis--infraestructura-frente-a-un-mainframe-actual-local-azure-y-la-red-de-oficinas) desarrolla la comparación de red/capacidad; no sumar duraciones solapadas como si fueran independientes.
+
+Dos **diseños de assessment**, no benchmarks, concretan las preguntas. Para el candidato de lectura, preregistrar 32 clientes concurrentes consultando un fixture inmutable de 1.000.000 de cuentas; comparar conjuntos de trabajo calientes/fríos, planes, lecturas reales y colas de respuesta. Informar el comportamiento de caché conseguido; reiniciar un proceso no prueba que la caché de almacenamiento esté fría. Para el candidato de escritura, preregistrar 16 clientes emitiendo 1.000 transferencias únicas de 100 unidades menores entre 100 cuentas con 10.000 cada una; después, otra ejecución concentrada en dos cuentas calientes. Conciliar aceptadas/denegadas/inciertas, asientos, deduplicación y durabilidad ante fallo antes/después del commit. Las cifras definen entradas hipotéticas, no throughput observado. Ambos escenarios necesitan objetivos aprobados, pruebas de restauración y persistencia/seguridad comparables.
+
+#### Pedir al operador y DBA evidencia capaz de cambiar el diseño
+
+Solicitar únicamente extractos autorizados y minimizados. El resultado útil es un manifiesto con intervalo de captura, versión/configuración, unidades, responsable, sensibilidad y motivo de datos ausentes; dumps productivos, credenciales y registros de clientes no pertenecen a este repositorio público.
+
+| Pregunta | Evidencia que solicitar | Decisión que puede cambiar |
+|---|---|---|
+| ¿Qué entornos ejecutan esta capacidad? | Inventario máquina/partición/SO, versiones de monitores/motores y definiciones activas | Conservar motor, sustituir adaptador o redibujar el límite funcional |
+| ¿Qué trabajo compite en el pico? | SMF/RMF y registros de clases cuando correspondan; CP/zIIP, esperas y plazos batch | Admisión, aislamiento, planificación y ubicación de capacidad |
+| ¿Qué ruta de datos domina? | Accounting/estadísticas Db2, planes, buffers, locks/deadlocks y tiempos de log/almacenamiento | Consultas/índices, tamaño transaccional, concurrencia o almacenamiento |
+| ¿Qué más confirma o cambia estado? | Inventario datasets/colas/recursos, syncpoints, grafo de jobs, generaciones y efectos externos | Transacción local frente a coordinación o conciliación explícita |
+| ¿Qué debe preservar la recuperación? | Historia de efectos confirmados, ensayo backup/restauración, topología de réplica y RPO/RTO | Dominios de fallo, fencing del propietario y procedimiento operativo |
+| ¿Quién aprueba comportamiento y excepciones? | Política versionada, responsable y resultados esperados independientes | Aceptación de negocio; observar el origen no basta |
+
+En un assessment real, los campos sin responder siguen como `NEEDS_CUSTOMER_DATA`. Un ensayo SQL Linux puede validar una invariante candidata; no mide canales IBM, acredita una opción de recuperación MCP ni certifica la instalación antigua. El [capítulo de patrones](#capítulo-13--antes-de-elegir-un-patrón-identifica-el-contrato) utiliza tres ejemplos de plataforma para mostrar por qué importa atribuir cada garantía.
+
 ### Capítulo 2 · El sistema que estamos intentando conservar
 
 > [!IMPORTANT]
@@ -876,6 +925,34 @@ La matriz es deliberadamente condicional. No existe un patrón que sustituya «e
 Para leer la matriz conviene hacerse siempre las mismas tres preguntas, en este orden. ¿Qué garantizaba el sistema antiguo, aunque nadie lo hubiera escrito? ¿Qué problema nuevo aparece al sacarlo de su plataforma: red, varias instancias, otro motor, otra codificación? ¿Cuál es el mecanismo más simple que resuelve las dos cosas y que podemos probar? Si una propuesta no sabe contestar la tercera, todavía es una preferencia, no un diseño.
 
 > **No existe un patrón que sustituya «el mainframe» entero. Hay que reconstituir garantías distintas en capas distintas.**
+
+#### Tres correspondencias de plataforma, con contratos de fallo distintos
+
+El [catálogo inicial legible por máquina](../research/platform-contracts/catalog.json) y su [guía de alcance](../research/platform-contracts/README.md) concretan la matriz anterior. Abarca IBM Z/z/OS, Unisys MCP e integración OS 2200; son tres contextos de plataforma, no implementaciones intercambiables. Lo siguiente propone reemplazos y pruebas de aceptación. Ninguno se ejecutó contra un runtime original del fabricante en este incremento de investigación.
+
+**IBM / CICS y Db2.** Inventariar recursos recuperables y límites reales de unidad de trabajo antes de extraer una API [49][56]. Una transacción SQL candidata puede cubrir recursos dentro de su límite. Si el origen coordina además una cola u otro gestor, introducir outbox puede requerir cambiar con aprobación los estados intermedios observables. Inyectar un fallo entre participantes e inspeccionar ambas historias; los saldos finales por sí solos no prueban que sobreviva la coordinación original.
+
+**Unisys MCP / Enterprise Database Server.** La documentación MCP 21 condiciona SINGLEABORT a `INDEPENDENTTRANS` y asigna la rectificación de la transacción abortada a aplicación/usuario [58]. Obtener, por tanto, opciones DASDL/auditoría antes de diseñar reintentos. El candidato debe repetir la instrucción completa adecuada y conciliar su resultado; repetir solo la sentencia fallida puede omitir efectos previos.
+
+**OS 2200 TIP / ePortal.** El conector ePortal 10 puede reenviar tras reconectar; su guía distingue las sesiones con estado [59]. Recuperar por separado contexto de sesión e identidad financiera. Una conexión nueva no prueba que fallase la instrucción anterior ni autoriza repetir su efecto. Esta fuente documenta un conector, no todo el modelo de recuperación de bases de datos OS 2200.
+
+| Correspondencia | Capas candidatas | Contraejemplo y oráculo necesario |
+|---|---|---|
+| MF006: límite de recursos CICS | UOW de aplicación; transacción de datos; integración recuperable | Commits separados tras extracción: caer entre efectos y conciliar cada participante |
+| MF009: configuración de recuperación MCP | Reintento de aplicación; recuperación del motor; procedimiento operativo | Repetir solo una sentencia pierde trabajo previo: comparar instrucción completa esperada y trabajo no afectado |
+| MF010: reconexión/sesión TIP | Adaptador semántico; recuperación de sesión; identidad duradera | Repetir en otra sesión duplica o enruta mal: comparar efecto aceptado, identidad y contexto |
+
+El esquema exige fuente/versión fechada, contrato original, capas candidatas, brecha semántica, fallo de control, oráculo, medidas del cliente e IDs de riesgos. El validador rechaza equivalencias inventadas, fuentes sin documentar y estados de evidencia injustificados. Seis mutaciones del catálogo ejercitan esas comprobaciones. **Son verificaciones de metadatos, no seis pruebas de comportamiento del fabricante.** Los oráculos SQL/ATM existentes pueden orientar el diseño candidato; su éxito no verifica una instalación MCP, OS 2200 o IBM.
+
+#### Secuencia de decisión para trabajo síncrono, asíncrono y batch
+
+Comenzar por el plazo de negocio y el propietario duradero. Si el solicitante necesita la decisión final ahora, mantener síncrono el comando autoritativo mínimo y proporcionar recuperación de estado ante respuesta perdida. Si se permite completar después, confirmar aceptación duradera con un estado distinto y correlacionar el resultado final posterior. Una cola cambia entrega y buffering; no concede permiso para aprobar trabajo offline.
+
+Después, identificar atomicidad. Conservar efectos inmediatamente inseparables dentro de un límite transaccional compatible. Utilizar saga solo cuando se permiten cada estado intermedio y su compensación. Un workflow aporta progreso duradero entre pasos; un DAG batch necesita además identidad inmutable de entrada, dependencias, checkpoints y publicación controlada. Ni un scheduler ni un worker por registro acreditan un cierre diario correcto.
+
+Finalmente, elegir ubicación según demanda medida y dominios de fallo. Una proyección puede descargar consultas si explicita su frescura. CDC puede alimentarla, pero no transfiere autoridad de escritura. Los workers horizontales siguen compartiendo límites de base de datos/log/cuentas calientes. Conservar o integrar el motor original cuando se desconoce su contrato, falta un reemplazo demostrado de una recuperación necesaria o una modernización más estrecha ya aporta el valor buscado.
+
+Fujitsu GS21, NEC ACOS, Hitachi VOS y Bull GCOS siguen como descubrimiento sin correspondencias de funciones verificadas en este incremento. NonStop, OpenVMS, IBM i y HP 3000 se marcan aparte como plataformas adyacentes por investigar. Desconocido significa investigación pendiente; no ausente, sin soporte o equivalente. El inventario completo de #28 y sus ejemplos batch/offline/CDC/internacionales siguen pendientes. Esta primera base aporta un formato verificable sin presentar una lista larga sin revisar como investigación terminada.
 
 ### Capítulo 14 · Strangler Fig: cambiar el borde antes que el corazón
 
@@ -3519,3 +3596,21 @@ La numeración identifica cada riesgo; no expresa frecuencia, gravedad ni priori
 [49] IBM. *How CICS runs transactions, tasks, and programs*. Documentación CICS TS 6.x; fuente indexada consultada el 3 de noviembre de 2026 (el lector directo devolvió HTTP 403). <https://www.ibm.com/docs/en/cics-ts/6.x?topic=development-transactions-in-cics>
 
 [50] CSF International. *EZswitch — Online ATM/Debit Middleware System*. Ejemplo comercial de autorización host y stand-in; no es una política bancaria aprobada para este laboratorio. Consultado el 3 de noviembre de 2026. <https://www.csfi.com/ezswitch-2/>
+
+[51] IBM. *Channel subsystem (CSS)*. IBM Z basic-skills documentation. Documentación primaria indexada. Consultada el 3 de noviembre de 2026; fecha de publicación no proporcionada. <https://www.ibm.com/docs/en/zos-basic-skills?topic=mainframe-channel-subsystem-css>
+
+[52] IBM. *PR/SM Concepts*. z/VM 7.3.0 documentation. Documentación primaria indexada. Consultada el 3 de noviembre de 2026; fecha de publicación no proporcionada. <https://www.ibm.com/docs/en/zvm/7.3.0?topic=hiperdispatch-prsm-concepts>
+
+[53] IBM. *Virtual storage overview*. z/OS 3.1.0 documentation. Documentación primaria indexada. Consultada el 3 de noviembre de 2026; fecha de publicación no proporcionada. <https://www.ibm.com/docs/en/zos/3.1.0?topic=overview-virtual-storage>
+
+[54] IBM. *Defining service classes and performance goals*. z/OS 3.2.0 documentation. Documentación primaria indexada; el lector directo devolvió HTTP 403. Consultada el 3 de noviembre de 2026; fecha de publicación no proporcionada. <https://www.ibm.com/docs/SSLTBW_3.2.0/com.ibm.zos.v3r2.ieaw100/sclg.htm>
+
+[55] IBM. *Processing units*. z/OS 3.1.0 documentation. Documentación primaria indexada. Consultada el 3 de noviembre de 2026; fecha de publicación no proporcionada. <https://www.ibm.com/docs/en/zos/3.1.0?topic=basics-processing-units>
+
+[56] IBM. *Improved performance through concurrency control*. Db2 for z/OS 13 documentation. Documentación primaria indexada. Consultada el 3 de noviembre de 2026; fecha de publicación no proporcionada. <https://www.ibm.com/docs/en/db2-for-zos/13.0.0?topic=users-improved-performance-through-concurrency-control>
+
+[57] IBM. *Db2 data sharing*. Db2 for z/OS 13 documentation. Documentación primaria indexada. Consultada el 3 de noviembre de 2026; fecha de publicación no proporcionada. <https://www.ibm.com/docs/en/db2-for-zos/13.0.0?topic=concepts-db2-data-sharing>
+
+[58] Unisys. *Automatic Single Transaction Abort Recovery*. ClearPath MCP 21.0; document 38508198-005. Documentación primaria leída directamente. Consultada el 3 de noviembre de 2026; fecha de publicación no proporcionada. <https://www.support.unisys.com/aseries/docs/ClearPath-MCP-21.0/38508198-005/section-000082014.html>
+
+[59] Unisys. *OS 2200 TIP Application Configuration Properties*. ClearPath ePortal 10.0; document 82073594. Documentación primaria leída directamente. Consultada el 3 de noviembre de 2026; fecha de publicación no proporcionada. <https://www.support.unisys.com/ePortalIC-10.0/topic/82073594_clearpath_eportal_developerhelp/html/section-000039378.htm>
