@@ -28,14 +28,29 @@ No se propone un recorte porcentual ni se afirma haber revisado cada frase. Sigu
 
 Se verificó por SHA256 el artefacto original 13240919909 de la ejecución 41660337335, código `7a74a9f1cdc781b348d681fb7795202c064b68ad`: ES, 144 páginas; EN, 141. El código del libro no cambió entre esa ejecución y la base main revisada. La inspección visual muestreada comprende índice EN página 2, continuación de tabla EN 106, benchmark ES 78 y tabla de validación externa ES 108. En esas muestras no se observa recorte ni texto ilegible y la tabla conserva su cabecera al continuar. No acredita todas las páginas.
 
-El registro inglés conserva los hashes y la procedencia exacta. Hay que generar y revisar muestras de los PDF corregidos antes de dar por revisado visualmente este corte. Los PDF anteriores no se presentan como salida corregida. El [inventario de listados](BOOK_LISTINGS.es.md) detalla las pruebas y sus dependencias pendientes.
+El registro inglés conserva los hashes y la procedencia exacta. La revisión de los PDF corregidos se registra abajo; los PDF de referencia no se usan para aprobar esa salida nueva. El [inventario de listados](BOOK_LISTINGS.es.md) detalla las pruebas y sus dependencias pendientes.
 
 ## Ejecución nativa y ajuste de impresión
 
 El resultado original y su ZIP auditado están registrados en el [inventario](BOOK_LISTINGS.es.md): 58 casos COBOL, cuatro expresiones de redondeo y nueve valores/seis negativos COMP-3, sin promover la integración completa.
 
-La primera vista previa corregida todavía divide bloques cortos al pie de página: la simulación del capítulo 24 empieza con solo dos líneas de salida. Se ajusta el estilo para conservar entero un listado cuando cabe en una página. Falta regenerar e inspeccionar ese cambio de impresión antes de aceptarlo.
+La primera vista previa corregida todavía divide bloques cortos al pie de página: la simulación del capítulo 24 empieza con solo dos líneas de salida. Se ajusta el estilo para conservar entero un listado cuando cabe en una página. La regeneración y la inspección aceptadas se registran abajo.
 
-La primera maquetación de bloques completos redujo los fragmentos de código de EN 48 / ES 45 a 32 por edición, pero dejó una etiqueta sola al pie de la página del capítulo 24. Se añade una vinculación de impresión entre cada una de las 32 etiquetas y su bloque inmediato; debe verificarse visualmente. No se elimina código ni prosa.
+La primera maquetación de bloques completos redujo los fragmentos de código de EN 48 / ES 45 a 32 por edición, pero dejó una etiqueta sola al pie de la página del capítulo 24. Se añade una vinculación de impresión entre cada una de las 32 etiquetas y su bloque inmediato; la inspección completada se registra abajo. No se elimina código ni prosa.
 
 La revisión visual detectó además dos pies ingleses que aún describían una serie azul. El tema común usa `#9AA0A6` (gris) para la segunda serie y sustituye las paletas locales. Se alinean pies/textos alternativos de las figuras 24.1 y 28.3 e índices de diagramas en ES/EN. No cambian imágenes, datos de simulación ni código financiero protegido.
+
+## Corte de impresión corregido
+
+Se descargó y verificó el original de la ejecución [41683984327](https://github.com/jmfloreszazo/de-la-caja-negra-a-la-evidencia/actions/runs/41683984327), código `e5275e93a03a3c9e0cc74e29b847fa63cec9e588`, artefacto 13255081028. SHA256 del ZIP: `dfa5ed7791a5e9acddbfbfd89363e051c1916899c086670927e2485729c45329`. El [registro verificable](../evidence/editorial/pdf-layout-review.json) conserva hashes de PDF/entradas, posiciones de código/títulos y páginas muestreadas.
+
+| Edición | Páginas | Fragmentos de código antes/después | Títulos con su código | Páginas inspeccionadas visualmente |
+| --- | --- | --- | --- | --- |
+| ES | 146 | 45 / 32 | 32 / 32 | 4, 40, 48, 79, 80 |
+| EN | 142 | 48 / 32 | 32 / 32 | 4, 38, 46, 77, 78 |
+
+Cada edición tiene 32 bloques lógicos. Tras el ajuste, cada uno ocupa una caja completa dentro de los márgenes y conserva el título en la misma página. Las diez páginas inspeccionadas permiten comprobar legibilidad de código/tablas/figuras, alcance corregido del benchmark, código inglés en la edición española y pies que describen la serie gris real. No se observa recorte ni texto ilegible en esas muestras. No acredita cada párrafo, referencia ni la calidad idiomática integral.
+
+Se conservan capturas: [decodificador ES](../evidence/editorial/pdf-layout-es-code.png), [decodificador EN](../evidence/editorial/pdf-layout-en-code.png), [simulación ES](../evidence/editorial/pdf-layout-es-simulation.png), [simulación EN](../evidence/editorial/pdf-layout-en-simulation.png). El artefacto PDF completo tiene retención limitada de CI; permanecen registrados su SHA y las identidades exactas de código/entradas. Los commits posteriores solo documentales no cambian las entradas de render revisadas.
+
+Siguen pendientes revisión especializada de inglés, fuentes [1]/[41] no revalidadas, solapes de todo el libro y pulido de la portada interna para impresión (el PDF aún hereda la nota de lectura del fichero fuente). Este corte no los declara terminados. La checklist de plataformas/EBCDIC/integración contextual de #11 permanece abierta. No cambia versión, release ni código financiero protegido.

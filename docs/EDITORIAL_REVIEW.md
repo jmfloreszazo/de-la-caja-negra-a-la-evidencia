@@ -10,7 +10,7 @@ This document is for the **next editorial iteration**. It does not modify the al
 |---|---|---|
 | Repository and publications | Public | Stable v2026.10.29 and research pre-release v2026.10.31-rc1; PDFs freeze their tags, not current main. |
 | Book and lab on main | CI executed | Integrated main `3e0a949976391e0711795e8302afb63cb65bc045`: source/book/evidence/cleanup checks succeeded; Release deliberately skipped. See the [closeout](PROJECT_CLOSEOUT.md). |
-| Published PDFs | Generated for their tags | Tag assets remain unchanged. Later preview 41660337335 was sampled visually; corrected editorial PDFs require a new build/sample. See the [checkpoint](EDITORIAL_CHECKPOINT_2026-11-03.md). |
+| Published PDFs | Generated for their tags | Tag assets remain unchanged. Corrected preview 41683984327: ES 146 / EN 142 pages, ten-page visual sample and all 32 code/caption pairs checked; full-book visual/style approval remains pending. See the [checkpoint](EDITORIAL_CHECKPOINT_2026-11-03.md). |
 | E1 PostgreSQL/SQL Server | Partially verified | Synthetic parity, concurrency, deadlocks and negative controls executed; no production capacity, HA or mainframe equivalence. |
 | E2 Orleans | Partially verified | Bounded long-schedule assisted recovery, two directed witnesses/four INCONCLUSIVE and a three-cohort admission diagnostic are audited. Natural/unassisted recovery, sustained capacity and physical HA remain in #8; non-blocking for editorial work. |
 | Brownfield C2/C3 | Executed slices | [C2 main #41353221630](https://github.com/jmfloreszazo/de-la-caja-negra-a-la-evidencia/actions/runs/41353221630): 20 controls and both SQL oracles 10/10. No real incumbent fence or G2/G6 acceptance. |

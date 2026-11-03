@@ -35,14 +35,29 @@ This matrix reviews the named passages, not every sentence in the manuscript. Sp
 
 The pre-edit PDFs are originals from run [41660337335](https://github.com/jmfloreszazo/de-la-caja-negra-a-la-evidencia/actions/runs/41660337335), source `7a74a9f1cdc781b348d681fb7795202c064b68ad`. Book sources are unchanged between that source and the baseline main above. Artifact 13240919909 ZIP SHA256 `07cacdf66bb48d41767bdae86ae42cec747c049091bfbcb2d62c9619ba331d16` was independently downloaded and checked. ES: 144 pages, SHA256 `8fece6d9297fbbd97a9399032540138921cb44f78b7fb9e427baeb85d36df77e`; EN: 141 pages, SHA256 `7fc0477abdc4b63b6770552643500621433f81d4b7ba05e71e94e5607597d04c`.
 
-Sample visual inspection covers EN contents page 2 and external-validation table continuation page 106, ES benchmark page 78 and external-validation table page 108. The inspected samples have legible text, repeated table headers and no observed clipping; they do not certify every page. ES page 78 makes the now-corrected runtime-only sentence visibly traceable. New PDFs must be built and sampled after the source corrections before this editorial cut can be considered visually reviewed. No baseline PDF is presented as the corrected output.
+Sample visual inspection covers EN contents page 2 and external-validation table continuation page 106, ES benchmark page 78 and external-validation table page 108. The inspected samples have legible text, repeated table headers and no observed clipping; they do not certify every page. ES page 78 makes the now-corrected runtime-only sentence visibly traceable. This baseline was not used to approve the corrected output; the completed corrected-render sample is recorded below.
 
 ## Native execution and print adjustment
 
 Original native run [41680741456](https://github.com/jmfloreszazo/de-la-caja-negra-a-la-evidencia/actions/runs/41680741456), exact source `e8785e0a5c565e3b006c3d23feebc888130dce3b`, passed. The byte-identical ZIP and summary are committed under `evidence/editorial/`; ZIP SHA256 `9bff18d5ae6f44bcef890277d3afaa04bf98356f1eec04cb79b2e55b669f8cfa`. The independent `scripts/check_book_listing_observations.py` audit verifies all 43 original source hashes, 58 individual COBOL outputs and raw C# outcome. Tools: .NET SDK 10.0.403, GnuCOBOL 3.1.2.0 and Python 3.12.16 on hosted Linux.
 
-The first corrected PDF sample still splits short code blocks at the page foot (for example the chapter 24 simulation begins with only two output lines). The print stylesheet now requests keeping a listing together when it fits on one page. A new render and visual check are pending before accepting that print change.
+The first corrected PDF sample still splits short code blocks at the page foot (for example the chapter 24 simulation begins with only two output lines). The print stylesheet now requests keeping a listing together when it fits on one page. The accepted follow-up render and its sampled visual result are recorded below.
 
-The first keep-block render reduced code background fragments from EN 48 / ES 45 to 32 per edition (32 logical listings), but exposed a detached caption at the chapter 24 page foot. The print-only caption binding now keeps all 32 immediate captions with their blocks; new visual review is required. No code or surrounding prose is removed.
+The first keep-block render reduced code background fragments from EN 48 / ES 45 to 32 per edition (32 logical listings), but exposed a detached caption at the chapter 24 page foot. The print-only caption binding now keeps all 32 immediate captions with their blocks; the completed follow-up visual sample is recorded below. No code or surrounding prose is removed.
 
 Visual review also found two English chart captions still describing a blue series. The shared render theme uses `#9AA0A6` (gray) for the second series and explicitly overrides local palette directives. Figure 24.1 and 28.3 captions/alt text and both diagram indexes now match that palette in ES/EN. No chart pixels, simulation data or protected financial code are changed.
+
+## Corrected print checkpoint
+
+Original [PDF run 41683984327](https://github.com/jmfloreszazo/de-la-caja-negra-a-la-evidencia/actions/runs/41683984327), source `e5275e93a03a3c9e0cc74e29b847fa63cec9e588`, artifact 13255081028. ZIP SHA256 `dfa5ed7791a5e9acddbfbfd89363e051c1916899c086670927e2485729c45329` independently downloaded and checked. The [review record](../evidence/editorial/pdf-layout-review.json) preserves PDF and render-input hashes, every code/caption position and the sampled page list.
+
+| Edition | Pages | Code fragments before/after | Captions paired with code | Pages visually inspected |
+| --- | --- | --- | --- | --- |
+| ES | 146 | 45 / 32 | 32 / 32 | 4, 40, 48, 79, 80 |
+| EN | 142 | 48 / 32 | 32 / 32 | 4, 38, 46, 77, 78 |
+
+There are 32 logical fenced blocks in each edition. After the print correction each renders as one code box, inside the content margins, with its caption on the same page. The ten-page visual sample confirms readable code/tables/figures, the corrected benchmark limitation, English code in the Spanish edition and the actual gray-series captions. No clipping or illegibility was observed in that sample. These checks do not certify every paragraph, bibliography entry or native-level idiom.
+
+Permanent page samples: [ES decoder](../evidence/editorial/pdf-layout-es-code.png), [EN decoder](../evidence/editorial/pdf-layout-en-code.png), [ES simulation](../evidence/editorial/pdf-layout-es-simulation.png), [EN simulation](../evidence/editorial/pdf-layout-en-simulation.png). The full preview artifact has limited CI retention; its exact SHA and source/input identities remain recorded. Later documentation-only commits do not change the reviewed render inputs.
+
+Remaining broader editorial work includes specialist English review, unavailable primary sources [1]/[41], a book-wide overlap pass and print-specific frontmatter polish (the source-file reading note is still inherited by the PDF). None is represented as completed by this scoped checkpoint. The issue #11 platform/EBCDIC/context-integration checklist remains open. No version, release or protected financial snapshot changed.
