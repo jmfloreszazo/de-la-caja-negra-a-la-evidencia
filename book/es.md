@@ -539,6 +539,27 @@ Conservar el núcleo es una decisión legítima si todavía concentra invariante
 
 **La regla central:** primero demostrar la frontera de responsabilidad; después escoger la topología. La propuesta se invalida cuando una evidencia nueva contradice la hipótesis, no cuando el diagrama ya está dibujado.
 
+#### Entrevista y assessment de la plataforma de origen
+
+La arqueología comienza con una entrevista estructurada y continúa contrastando cada respuesta con evidencia. La plataforma puede ser IBM Z con z/OS, IBM i sobre Power, Fujitsu BS2000 u otra; el lenguaje COBOL no identifica por sí solo ni el sistema operativo ni el gestor de datos. Registrar fabricante, modelo, versión, partición y productos realmente instalados evita inferencias prematuras.
+
+La entrevista reúne a negocio, desarrollo, operaciones, datos, seguridad e infraestructura. Identifica capacidades y propietarios; lenguajes y fuentes; gestores de datos y archivos; transacciones y bloqueos; trabajos y ventanas batch; interfaces, transferencias, sucursales, continuidad, métricas y costes. Para cada respuesta se registra responsable, fecha, fuente, alcance y limitaciones. Una afirmación del experto es una hipótesis hasta contrastarla con código, configuración, observación y pruebas representativas; una traza que no muestra una dependencia no demuestra su inexistencia.
+
+| Entorno o tecnología | Pregunta inicial |
+|---|---|
+| IBM Z y z/OS | ¿Se utilizan CICS, IMS DB o TM, Db2 for z/OS, VSAM y JCL? |
+| IBM i | ¿Qué programas RPG, COBOL y CL acceden a Db2 for i y a archivos físicos y lógicos? |
+| Fujitsu BS2000 | ¿Qué versiones de COBOL2000, openUTM, UDS/SQL, SESAM/SQL u openFT están instaladas? |
+| Otros productos | ¿Existen Natural, Adabas, IDMS, Datacom o una plataforma Unisys y qué versiones e interfaces se usan? |
+
+La presencia de cada producto debe comprobarse: son ejemplos, no componentes obligatorios de una arquitectura. IMS DB e IMS TM cumplen funciones diferentes. VSAM organiza y proporciona acceso a conjuntos de datos; sus claves, orden y codificación deben investigarse antes de seleccionar una estructura de destino.
+
+##### De la entrevista a una decisión verificable
+
+Para cada capacidad se identifican reglas, datos, autoridad de escritura, límites de transacción, consumidores y criterios de aceptación. El equipo registra las incógnitas y decide qué puede mantenerse, encapsularse, sustituirse progresivamente o retirarse, con una justificación y una prueba para cada decisión. Una saga o un actor no sustituyen automáticamente una transacción atómica.
+
+La comparación de alternativas local, cloud e híbrida usa cargas y periodos equivalentes, volúmenes, latencias, ventana batch, recuperación, seguridad, costes fechados y restricciones. MIPS, MSU y CPW no son unidades intercambiables ni se convierten directamente en núcleos. Las pruebas diferenciales utilizan entradas controladas, casos límite y resultados de referencia; las diferencias se investigan y aprueban. No se presume que un experimento sintético o un runner compartido represente una medición del mainframe o una prueba productiva.
+
 #### Contrato de evidencia
 
 Este capítulo es una explicación de método apoyada por un **modelo sintético**, no por trazas de un banco, mediciones IBM Z ni aceptación productiva. Las pruebas del laboratorio sólo examinan decisiones estructurales. Véase [investigación detallada](../docs/research/mainframe-decomposition.es.md) y [laboratorio](../lab/decomposition/README.md).
