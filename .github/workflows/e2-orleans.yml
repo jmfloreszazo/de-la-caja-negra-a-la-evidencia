@@ -21,6 +21,8 @@ jobs:
       E2_PG_NPGSQL: "Host=127.0.0.1;Port=55434;Database=e2lab;Username=postgres;Password=e2local;Pooling=true;Maximum Pool Size=32"
     steps:
       - uses: actions/checkout@v5
+        with:
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
       - uses: actions/setup-python@v6
         with:
           python-version: '3.12'
@@ -29,6 +31,10 @@ jobs:
           dotnet-version: '10.0.x'
       - name: Install exact E1 PostgreSQL test oracle dependencies
         run: python3 -m pip install -r lab/e1_pg/requirements.txt
+      - name: Verify provider-specific failed observation persistence
+        run: |
+          python3 -m unittest discover -s lab/e2_orleans -p test_placement_observation.py -v
+          python3 -m py_compile lab/e2_orleans/test_multiprocess.py lab/e2_orleans/placement_observation.py
       - name: Compile protected reference, E1 PostgreSQL and new E2 Orleans host
         run: |
           dotnet build lab/Bank/Bank.csproj -c Release -m:1 --disable-build-servers

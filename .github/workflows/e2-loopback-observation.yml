@@ -1,0 +1,99 @@
+name: E2 loopback provider-specific failure observation controls
+on:
+  pull_request:
+    paths:
+      - 'lab/e2_orleans/test_multiprocess.py'
+      - 'lab/e2_orleans/placement_observation.py'
+      - 'lab/e2_orleans/test_placement_observation.py'
+      - 'lab/e2_orleans/test_loopback_observation_negative.py'
+      - 'lab/e2_orleans/OrleansLab/**'
+      - 'lab/e1_pg/**'
+      - '.github/workflows/e2-loopback-observation.yml'
+  push:
+    branches: [main]
+    paths:
+      - 'lab/e2_orleans/test_multiprocess.py'
+      - 'lab/e2_orleans/placement_observation.py'
+      - 'lab/e2_orleans/test_loopback_observation_negative.py'
+      - '.github/workflows/e2-loopback-observation.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  observe-induced-rejection:
+    name: Loopback observation negative control (${{ matrix.provider }})
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    strategy:
+      fail-fast: false
+      matrix:
+        provider: [development, adonet]
+    env:
+      E2_CLUSTER_PROVIDER: '${{ matrix.provider }}'
+      E1_PG_DSN: 'host=127.0.0.1 port=55434 dbname=e2lab user=postgres password=e2local'
+      E2_PG_NPGSQL: 'Host=127.0.0.1;Port=55434;Database=e2lab;Username=postgres;Password=e2local;Pooling=true;Maximum Pool Size=32'
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+      - uses: actions/setup-python@v6
+        with:
+          python-version: '3.12'
+      - uses: actions/setup-dotnet@v5
+        with:
+          dotnet-version: '10.0.x'
+      - name: Install independent SQL observer and test evidence persistence
+        run: |
+          python3 -m pip install -r lab/e1_pg/requirements.txt
+          python3 -m unittest discover -s lab/e2_orleans -p test_placement_observation.py -v
+          python3 -m py_compile lab/e2_orleans/test_loopback_observation_negative.py lab/e2_orleans/test_multiprocess.py
+      - name: Build unchanged accepted grain and ledger
+        run: dotnet build lab/e2_orleans/OrleansLab/OrleansLab.csproj -c Release -m:1 --disable-build-servers
+      - name: Start disposable PostgreSQL and require two real SQL sessions
+        run: |
+          podman run -d --name e2-postgres -e POSTGRES_PASSWORD=e2local -e POSTGRES_DB=e2lab -p 127.0.0.1:55434:5432 docker.io/library/postgres:16.13
+          python3 - <<'PY'
+          import os, time, psycopg
+          consecutive = 0
+          for attempt in range(60):
+              try:
+                  with psycopg.connect(os.environ['E1_PG_DSN'], autocommit=True, connect_timeout=2) as db:
+                      assert db.execute('SELECT 1, current_database()').fetchone() == (1, 'e2lab')
+                  consecutive += 1
+                  if consecutive == 2:
+                      break
+              except psycopg.OperationalError:
+                  consecutive = 0
+              time.sleep(1)
+          else:
+              raise AssertionError('Disposable SQL did not provide two independent successful sessions')
+          PY
+      - name: Install unchanged official membership catalog for the ADO.NET case
+        if: matrix.provider == 'adonet'
+        run: python3 lab/e2_orleans/setup_adonet_membership.py
+      - name: Record exact source and runner provenance before induced rejection
+        env:
+          SOURCE_HEAD_SHA: ${{ github.event.pull_request.head.sha || github.sha }}
+        run: |
+          mkdir -p lab/results/e2
+          test "$SOURCE_HEAD_SHA" = "$(git rev-parse HEAD)"
+          echo "source_head_sha=$SOURCE_HEAD_SHA" > lab/results/e2/observation-provenance.txt
+          echo "checkout_sha=$(git rev-parse HEAD)" >> lab/results/e2/observation-provenance.txt
+          echo "provider=$E2_CLUSTER_PROVIDER runner=$RUNNER_NAME" >> lab/results/e2/observation-provenance.txt
+          uname -a >> lab/results/e2/observation-provenance.txt
+          dotnet --info >> lab/results/e2/observation-provenance.txt
+          podman version >> lab/results/e2/observation-provenance.txt
+          podman image inspect docker.io/library/postgres:16.13 > lab/results/e2/observation-postgres-image.json
+          git ls-files lab/e2_orleans lab/e1_pg .github/workflows/e2-loopback-observation.yml evidence/runs/e2-c05-loopback-placement-failure-original.zip | xargs sha256sum >> lab/results/e2/observation-provenance.txt
+      - name: Require real first-probe failure to remain FAIL with zero financial effects
+        run: python3 lab/e2_orleans/test_loopback_observation_negative.py
+      - name: Archive every observation and original failed child outcome
+        if: always()
+        uses: actions/upload-artifact@v6
+        with:
+          name: e2-loopback-observation-negative-${{ matrix.provider }}
+          path: lab/results/e2/
+          if-no-files-found: warn
+      - name: Remove only disposable PostgreSQL
+        if: always()
+        run: podman rm -f e2-postgres || true
