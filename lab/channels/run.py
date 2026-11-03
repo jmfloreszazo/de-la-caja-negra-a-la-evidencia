@@ -3,7 +3,7 @@
 import concurrent.futures
 import copy
 import hashlib
-import http.client
+from http.client import HTTPException
 import json
 import os
 from pathlib import Path
@@ -48,7 +48,7 @@ def wait_until(predicate, seconds=20):
         try:
             if predicate():
                 return
-        except (OSError, http.client.HTTPException):
+        except (OSError, HTTPException):
             pass
         time.sleep(.05)
     raise TimeoutError('Expected observation did not arrive')
@@ -64,7 +64,7 @@ def http(route, payload=None, expect_loss=False):
             observation.update(code=response.status, response=json.load(response))
     except urllib.error.HTTPError as error:
         observation.update(code=error.code, response=json.load(error))
-    except (OSError, http.client.HTTPException) as error:
+    except (OSError, HTTPException) as error:
         observation.update(code=None, error=repr(error), client_status='UNKNOWN')
         if not expect_loss:
             raise
