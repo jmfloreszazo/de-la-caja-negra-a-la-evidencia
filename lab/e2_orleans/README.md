@@ -477,3 +477,13 @@ FAIL, provider-specific logs/journal/manifest and zero SQL effects. The older
 PASS used as input is not misattributed. See the
 [audited evidence](../../evidence/runs/E2-PLACEMENT-OBSERVATION.md). This does
 not explain natural placement concentration or close #74/E2 acceptance.
+
+## Long schedules and sampled assisted recovery
+
+The [long protocol](LONG_PARTITION_PROTOCOL.md) and [original audit](../../evidence/runs/E2-LONG-PARTITION.md)
+retain both initial failures and two corrected cases. Both 120s schedules
+include earlier secondary exit, then explicit recreation of both silos and
+14 paired replay samples across about 66s with SQL 3/6/3 and seven invariants.
+This is assisted, sampled recovery on one host per case, not continuous
+availability, exclusive activation, automatic recovery, capacity or physical HA.
+Run `python3 scripts/check_e2_long_partition_observations.py` from the repository root.

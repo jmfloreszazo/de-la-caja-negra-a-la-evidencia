@@ -2279,6 +2279,24 @@ establish absence of split brain, fencing or long-partition recovery. Those
 gates, sustained capacity and physical domains remain open. E2 remains
 partially verified.
 
+#### Long fault · Assisted recovery with bounded observations
+
+The [original evidence](../evidence/runs/E2-LONG-PARTITION.md) adds two
+120-second directional fault schedules. In both, the secondary silo exited
+before the deadline: retaining a rule in a pinned namespace does not mean both
+silos stayed alive. Two paired attempts did not restore the secondary gateway;
+the protocol chose explicit recreation of both silos, preserving the ledger
+and recording new generations. The first paired ACK arrived 58.484 and 59.211
+seconds after rule removal.
+
+Then 14 replay pairs across about 66 seconds retained the same containers/PIDs,
+two Active members, SQL 3/6/3 and seven invariants. Identical replay returned
+DUPLICATE_COMMITTED; changed payload returned ID_CONFLICT. This is sampled
+stability after assisted recovery, not continuous availability, restart
+necessity, production RTO, exclusive activation or physical HA. Both initial
+instrumentation failures remain archived as FAIL; the correction separated
+diagnostic lifetimes without weakening financial acceptance criteria.
+
 #### From atomic debit to authority transfer across two stores
 
 The next challenge is not making a PostgreSQL transfer work. It is

@@ -1,6 +1,8 @@
 # E2 — 120-second directional fault schedule and sampled recovery
 
-Status: **preregistered source candidate; NOT executed or verified**. Issue #24.
+Status: **bounded original CI verified; assisted recovery and sampled stability only**. Issue #24.
+Original source `ee1e883e5e23d651e3408a90f8ec12fd9f7a2d58`, run #41607407356.
+See [audited original outcomes](../../evidence/runs/E2-LONG-PARTITION.md).
 No historical evidence is rewritten. E2 stays partially_verified; #53 remains
 frozen and release/tag identifiers stay unchanged.
 
@@ -51,7 +53,8 @@ not independent physical fault domains.
    the cut. Management catalogs are recorded but can be unavailable/non-atomic;
    they never prove exclusive or simultaneous activation.
 5. Restore the exact old OUTPUT baseline if the target namespace is still live.
-   If the target exited, record that the old namespace was NOT observed restored.
+   If the target exited, distinguish restoring the pinned original namespace
+   from application recovery; retain the exact observed rule baseline.
    Allow at most two paired bounded fresh-client attempts without operator
    recreation. If paired ACKs, two Active members and both running processes
    are not observed, explicitly recreate **both** silos, preserving the ledger
