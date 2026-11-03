@@ -1,6 +1,8 @@
 # Loopback placement observation — issue #74
 
-Status: **source candidate; no original runtime proof yet**. This implements
+Status: **original observation controls verified**, run #41601478234 on
+`c547c3f34badda0cb57ab0b496917dadb1485b04`; see
+[the audited paired report](../../evidence/runs/E2-PLACEMENT-OBSERVATION.md). This implements
 failure-specific observability, not a default-placement fix. E2 remains
 partially_verified, G2 INCONCLUSIVE/G6 BLOCK, #53 frozen, no release/tag change.
 

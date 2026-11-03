@@ -2204,6 +2204,25 @@ su rechazo y no cambia la política predeterminada del runtime. Las indicaciones
 de colocación tampoco conceden autoridad financiera: los efectos siguen
 siendo responsabilidad de PostgreSQL. E2 permanece parcialmente verificado.
 
+##### Registrar el fallo sin atribuirse un PASS anterior
+
+Un archivo aprobado de `development` no demuestra que el intento posterior
+ADO.NET haya terminado bien. La [continuación de observabilidad](../evidence/runs/E2-PLACEMENT-OBSERVATION.es.md)
+crea un diario por proveedor y ejecución, conserva cada mapa, la membresía y
+los logs antes de limpiar los procesos, y registra la fase exacta del fallo.
+Una consulta inaccesible sigue siendo un error; no se convierte en lista vacía.
+
+Dos controles originales abortaron deliberadamente tras el primer probe real
+de identidad 1..16. Los mapas primario/secundario fueron 7/9 y 10/6: **no
+reprodujeron la concentración unilateral histórica**. Ambos hijos mantuvieron
+FAIL/salida 1, sin órdenes financieras ni SIGKILL, con cero efectos y siete
+oráculos SQL correctos. El padre verificó la conservación del fallo y mantuvo
+el PASS anterior como entrada de control.
+
+Esto acredita el registrador, no la política de colocación ni la recuperación.
+Los fallos naturales futuros tendrán evidencia propia; la causa del histórico
+sigue sin demostrarse y E2 permanece parcialmente verificado.
+
 #### C04 · El cliente pierde sus gateways, el ledger conserva la autoridad
 
 La [prueba original C04](../evidence/runs/E2-C04-GATEWAY.es.md) corta

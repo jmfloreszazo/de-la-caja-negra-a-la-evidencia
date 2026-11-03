@@ -1,4 +1,4 @@
-# Hoja de ruta abierta — estado basado en evidencias (2 de noviembre de 2026)
+# Hoja de ruta abierta — estado basado en evidencias (3 de noviembre de 2026)
 
 [English](ROADMAP.md) · **Español**
 
@@ -54,3 +54,5 @@ C01 dispone de una [alternativa controlada verificada en tres jobs](evidence/run
 C05/C06 disponen de [dos observaciones direccionales acotadas](evidence/runs/E2-C05-C06-DIRECTIONAL.es.md), con PCAP originales, conciliación SQL y primeros intentos con respuesta medidos sin reinicios. Siguen pendientes activación exclusiva, particiones largas y recuperación estable sostenida.
 
 La colocación dual ADO.NET en loopback falló por separado en la validación amplia; [#74](https://github.com/jmfloreszazo/de-la-caja-negra-a-la-evidencia/issues/74) sigue esa precondición sin resolver. Su ZIP/log original se conserva junto a las evidencias C05/C06.
+
+La persistencia de observaciones de #74 dispone de [dos controles reales inducidos](evidence/runs/E2-PLACEMENT-OBSERVATION.es.md): cada intento fallido conserva su mapa/logs sin atribuirse un PASS anterior. Sigue sin resolverse la concentración natural.

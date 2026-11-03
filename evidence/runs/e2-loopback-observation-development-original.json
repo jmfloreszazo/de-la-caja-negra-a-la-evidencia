@@ -1,0 +1,27 @@
+{
+  "status": "NEGATIVE_CONTROL_VERIFIED",
+  "membershipProvider": "development",
+  "sourceHeadSha": "c547c3f34badda0cb57ab0b496917dadb1485b04",
+  "executionId": "a56e1a2e95a54a76bd198f5672cc8c82",
+  "failureFile": "e2-loopback-development-a56e1a2e95a54a76bd198f5672cc8c82-failure.json",
+  "manifestFile": "e2-loopback-development-a56e1a2e95a54a76bd198f5672cc8c82-manifest.json",
+  "historicalSuccessInputSha256": "a5c3e12d6307101a5d14ebe81cabed4e19882b2932db2288a24cb14277f9ba4d",
+  "historicalArchiveSha256": "55bed14ebac7f582b3d29a9dc13e97c6c75f11a48c64bfdf12a7b18db9fe5332",
+  "financialCommandsAttempted": 0,
+  "effects": [
+    0,
+    0,
+    0
+  ],
+  "oracle": {
+    "nonnegative": true,
+    "conserved": true,
+    "balancedPostings": true,
+    "twoPostingsPerCommit": true,
+    "noPostingsForRejection": true,
+    "outboxAtomic": true,
+    "projectionAgrees": true
+  },
+  "actualChildExitCode": 1,
+  "limitations": "Induced observation failure after a real identity probe. Not a natural one-sided-placement reproduction, root-cause explanation, failover or overall E2 acceptance."
+}

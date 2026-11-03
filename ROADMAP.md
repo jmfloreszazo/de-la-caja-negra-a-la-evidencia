@@ -1,4 +1,4 @@
-# Open roadmap — evidence-based checkpoint (2 November 2026)
+# Open roadmap — evidence-based checkpoint (3 November 2026)
 
 **English** · [Español](ROADMAP.es.md)
 
@@ -54,3 +54,5 @@ C01 has a [controlled alternative verified in three jobs](evidence/runs/E2-C01-C
 C05/C06 now have [two bounded directional packet-loss observations](evidence/runs/E2-C05-C06-DIRECTIONAL.md), including original PCAPs, SQL reconciliation and measured first acknowledgements without restarts. Exclusive activation, long partitions and sustained stable recovery remain open.
 
 Loopback ADO.NET dual-host placement failed separately in broad validation; [#74](https://github.com/jmfloreszazo/de-la-caja-negra-a-la-evidencia/issues/74) tracks that unresolved precondition. Its original ZIP/log remain preserved alongside C05/C06 evidence.
+
+Issue #74 observation persistence now has [two real induced controls](evidence/runs/E2-PLACEMENT-OBSERVATION.md): provider-specific failed attempts retain their own maps/logs without borrowing earlier PASS results. Natural placement concentration remains unresolved.
