@@ -13,12 +13,12 @@ This is the **repository development roadmap**, not a declaration of production 
 | C01: controlled fixture | Integrated, PR #72; #44 closed on that alternative | Historical cause is not claimed resolved |
 | C05/C06: short cuts | Integrated, PR #73; PCAP/SQL audited | Do not extrapolate to long partitions or physical HA |
 | Provider-specific diagnostics | Integrated, PR #76; real controls retain FAIL and zero effects | #74 remains open for natural placement investigation |
-| Scheduled 120s cut and sampled recovery >=60s | **In progress, [PR #77](https://github.com/jmfloreszazo/de-la-caja-negra-a-la-evidencia/pull/77)** | Two original cases PASS and audited; assisted recovery, secondary exited before 120s; final review before merge |
+| Scheduled 120s cut and sampled recovery >=60s | **Bounded verification, [PR #77](https://github.com/jmfloreszazo/de-la-caja-negra-a-la-evidencia/pull/77)** | Two original cases PASS and audited; next: concurrent activations; not continuous recovery |
 | Concurrent-activation behavior | Pending | Explicit observations and SQL oracle; do not assume global actor exclusivity |
 | Sustained capacity and bottleneck | Pending, #25 | Comparable saturation and COMMIT/p99; existing pilots do not close this gate |
 | Physical domains and HA | Pending | Execution/evidence on independent hosts and fault domains |
 
-E2 remains **partially verified**. The long experiment has bounded audited evidence in PR #77, not yet merged; it does not establish automatic or continuous recovery. No percentage-complete estimates or completion dates are invented.
+E2 remains **partially verified**. The long experiment has bounded audited evidence in PR #77; it does not establish automatic or continuous recovery. No percentage-complete estimates or completion dates are invented.
 
 ## Position now
 
@@ -67,7 +67,7 @@ C04 now has [bounded original evidence](evidence/runs/E2-C04-GATEWAY.md): fresh-
 
 C01 has a [controlled alternative verified in three jobs](evidence/runs/E2-C01-CONTROLLED.md). The original failure retains its classification and its cause remains unproven; no placement-policy fix is claimed.
 
-C05/C06 now have [two bounded directional packet-loss observations](evidence/runs/E2-C05-C06-DIRECTIONAL.md), including original PCAPs, SQL reconciliation and measured first acknowledgements without restarts. Exclusive activation, long partitions and sustained stable recovery remain open.
+C05/C06 now have [two bounded directional packet-loss observations](evidence/runs/E2-C05-C06-DIRECTIONAL.md), including original PCAPs, SQL reconciliation and measured first acknowledgements without restarts. The later long-schedule evidence is documented separately; these short cuts do not retrospectively extend their scope.
 
 Loopback ADO.NET dual-host placement failed separately in broad validation; [#74](https://github.com/jmfloreszazo/de-la-caja-negra-a-la-evidencia/issues/74) tracks that unresolved precondition. Its original ZIP/log remain preserved alongside C05/C06 evidence.
 

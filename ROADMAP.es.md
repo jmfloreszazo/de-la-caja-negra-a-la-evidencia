@@ -13,12 +13,12 @@ Esta es la hoja de ruta **del repositorio**, no una declaración de que una migr
 | C01: fixture controlado | Integrado, PR #72; #44 cerrado por esa alternativa | La causa histórica no se declara resuelta |
 | C05/C06: cortes breves | Integrado, PR #73; PCAP y SQL auditados | No extrapolar a particiones largas o HA física |
 | Diagnóstico por proveedor | Integrado, PR #76; controles reales con FAIL conservado y efectos cero | #74 sigue abierto para investigar colocación natural |
-| Corte programado 120 s y recuperación muestreada >=60 s | **En curso, [PR #77](https://github.com/jmfloreszazo/de-la-caja-negra-a-la-evidencia/pull/77)** | Dos casos originales PASS y auditados; recuperación asistida, secundario terminado antes de 120 s; revisión final antes de integrar |
+| Corte programado 120 s y recuperación muestreada >=60 s | **Verificado con alcance acotado, [PR #77](https://github.com/jmfloreszazo/de-la-caja-negra-a-la-evidencia/pull/77)** | Dos casos originales PASS y auditados; siguiente: activaciones concurrentes; no equivale a recuperación continua |
 | Comportamiento de activaciones concurrentes | Pendiente | Observación explícita y oráculo SQL; no asumir exclusividad global del actor |
 | Capacidad sostenida y cuello de botella | Pendiente, #25 | Saturación y COMMIT/p99 comparables; los pilotos existentes no cierran el gate |
 | Dominios físicos y HA | Pendiente | Ejecución y evidencia sobre hosts/fallos independientes |
 
-E2 permanece **parcialmente verificado**. El ensayo largo tiene evidencia acotada auditada en la PR #77, todavía sin integrar; no acredita recuperación automática ni continua. No se inventan porcentajes ni fechas de cierre.
+E2 permanece **parcialmente verificado**. El ensayo largo tiene evidencia acotada auditada en la PR #77; no acredita recuperación automática ni continua. No se inventan porcentajes ni fechas de cierre.
 
 ## Situación actual
 
