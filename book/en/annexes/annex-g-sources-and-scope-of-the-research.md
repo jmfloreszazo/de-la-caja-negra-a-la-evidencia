@@ -100,6 +100,12 @@
 
 The author's articles are cited by their original Spanish titles, with an English gloss.
 
+[48] IBM. *Bank of Z — Application Components*. Educational sample, not a universal bank architecture. Consulted 3 November 2026. <https://ibm.github.io/Bank-of-Z/docs/architecture/application-components.html>
+
+[49] IBM. *How CICS runs transactions, tasks, and programs*. CICS TS 6.x documentation; indexed source consulted 3 November 2026 (direct reader returned HTTP 403). <https://www.ibm.com/docs/en/cics-ts/6.x?topic=development-transactions-in-cics>
+
+[50] CSF International. *EZswitch — Online ATM/Debit Middleware System*. Commercial example of host authorization and stand-in; not a bank-approved policy for this lab. Consulted 3 November 2026. <https://www.csfi.com/ezswitch-2/>
+
 ---
 
 [← Annex F · Operational glossary](annex-f-operational-glossary.md) · [Contents](../README.md)

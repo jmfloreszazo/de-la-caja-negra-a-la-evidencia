@@ -17,6 +17,7 @@ Every guarantee the mainframe provided without the application asking for it nee
 - [Chapter 19 · Actors: a great tool, a poor universal substitute](19-actors-a-great-tool-a-poor-universal-substitute.md)
 - [Chapter 20 · Batch and parallelism: speeding up without changing the result](20-batch-and-parallelism-speeding-up-without-changing-the.md)
 - [Chapter 21 · Event sourcing, CQRS and sagas: when they help and when they get in the way](21-event-sourcing-cqrs-and-sagas-when-they-help-and-when-they.md)
+- [Companion chapter · Channels, ATM cash and the core](21a-channels-atm-and-the-core.md)
 
 ---
 

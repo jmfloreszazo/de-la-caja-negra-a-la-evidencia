@@ -40,6 +40,7 @@ José María Flores Zazo · v2026.10.29 · **English** · [Español](es.md)
   - [Chapter 19 · Actors: a great tool, a poor universal substitute](#chapter-19--actors-a-great-tool-a-poor-universal-substitute)
   - [Chapter 20 · Batch and parallelism: speeding up without changing the result](#chapter-20--batch-and-parallelism-speeding-up-without-changing-the-result)
   - [Chapter 21 · Event sourcing, CQRS and sagas: when they help and when they get in the way](#chapter-21--event-sourcing-cqrs-and-sagas-when-they-help-and-when-they-get-in-the-way)
+  - [Companion chapter · Channels, ATM cash and the core](#companion-chapter--channels-atm-cash-and-the-core)
 - [Part V · Capacity: MIPS, concurrency and platform](#part-v--capacity-mips-concurrency-and-platform)
   - [Chapter 22 · MIPS do not fit in a vCPU conversion](#chapter-22--mips-do-not-fit-in-a-vcpu-conversion)
   - [Chapter 23 · Concurrency that makes use of the machine](#chapter-23--concurrency-that-makes-use-of-the-machine)
@@ -1436,6 +1437,120 @@ Sagas are suitable for long processes that cross systems with legitimate compens
 The rule is demanding and simple: **the chosen pattern must preserve the level of consistency the business needs, not the level that is most convenient for us to implement**.
 
 > **A projection is for looking. It is not for deciding about money.**
+
+### Companion chapter · Channels, ATM cash and the core
+
+> [!IMPORTANT]
+> **Chapter thesis.** A banking channel initiates an instruction; an authoritative service decides what funds it may use; a device may produce an irreversible physical effect. Migration must preserve the contracts between those responsibilities. A successful SQL COMMIT does not prove that banknotes reached the customer.
+
+#### 1. Locate the authority before drawing the replacement
+
+A physical ATM reads customer input and controls devices. An ATM controller or switch connects terminals and routes messages. A card processor may supply issuer or acquirer services; the issuer authorizes use of its customer's account, while the acquirer serves the acceptance side. Those roles can belong to different organizations and machines. The account ledger, authorization holds, fraud decision, card lifecycle and network settlement need named owners; calling all of them “the core” hides the integration work.
+
+IBM's educational Bank of Z demonstrates a browser UI, REST APIs through z/OS Connect, CICS/IMS processing, Db2/IMS data and MQ integration [48]. It illustrates separation of responsibilities, not the topology of every bank. CICS requests can originate at terminals, browsers, APIs or messages; its default transaction scope is one unit of work, but SYNCPOINT can divide a task into several [49]. A browser session, CICS task, unit of work, network authorization and physical withdrawal therefore require separate identifiers and recovery rules.
+
+![Figure C.1 · Illustrative starting topology: channels and switch reach host services; deployment and authority must be verified per installation.](figures/en/channels_as_is.png)
+
+The diagram deliberately omits certified device/network protocols. Do not infer that every ATM speaks ISO 8583 directly, that CICS/IMS always share Db2, or that the host owns the switch. NDC/DDC variants, ISO 8583 network profiles, ISO 20022 integration and proprietary host contracts require the actual provider specifications and certification scope. A synthetic operation UUID is not a STAN, RRN, network authorization identifier or physical journal identifier.
+
+| Architecture variant | What stays authoritative | Migration question and required evidence |
+|---|---|---|
+| Host core; external web/mobile and ATM switch | Identified host capability and its recoverable resources | Preserve the real adapter, authorization and posting boundaries; compare outcomes and source recovery evidence |
+| Modern channels call z/OS Connect REST | Existing CICS/IMS service, according to the installed route | Version JSON/service mappings and business errors; measure the extra hops without claiming a new core |
+| Outsourced issuer processing with delegated stand-in | Issuer-approved delegated authority within a bounded exposure | Reconcile replicated limits, age and concurrent consumption; obtain contractual approval before offline decisions |
+| 3270 branch or modern teller API | Transaction/business service, not the screen | Recover pseudoconversational context, teller permissions and cash custody; a lost screen is not permission to repeat |
+| Accounts, cards, loans, fraud and payments on different hosts | One owner per capability and financial effect | Trace instructions across domains; define compensation and reconciliation for effects outside one unit of work |
+| New account core with residual host batch/history/products | New write owner plus explicitly retained host responsibilities | Retire adapters, credentials, schedules, reports and licenses only after their last dependencies and retention duties are resolved |
+
+These are design alternatives. This repository has not surveyed installations or executed all six architectures.
+
+#### 2. State the withdrawal contract before choosing a pattern
+
+The [synthetic lab contract](../lab/channels/CONTRACT.md) uses integer cents and invented policies. Its customer account starts at 10,000. Authorizing a 6,000 withdrawal reserves 6,000 without posting it; available funds become 4,000. Preparation durably binds one operation to one device command. Only a final device outcome permits the candidate to post the actual positive amount, or cancel a final zero. Posting debits the customer and credits a synthetic cash-control account; this closed-world teaching ledger is not a bank's general-ledger policy.
+
+![Figure C.2 · Proposed synthetic target: core and dispenser have separate SQL stores; the independent oracle reads both.](figures/en/channels_to_be.png)
+
+Both databases run on one CI host. Their separation proves only that a core transaction cannot roll back the emulator's committed device record. The device emulator puts its stock decrement and final journal row in a single local SQL transaction. Real banknotes, sensors, retract bins and customer collection do not acquire that atomicity from a database.
+
+| Recorded situation | Candidate financial action | Required evidence / customer result |
+|---|---|---|
+| Authorization accepted, no command prepared | Keep the hold until preparation or expiry | No claim that cash was delivered |
+| Command prepared, no final device row | Keep the hold; do not issue a new command ID | UNKNOWN, with investigation/reconciliation |
+| Final device amount equals requested amount | Post actual amount once; release hold | One financial decision and its paired entries/outbox |
+| Requested 6,000; final device amount 4,000 | Post 4,000 once; release the remaining reservation | Separate requested and delivered values; synthetic partial-cash policy |
+| Final device amount zero | Cancel and release; no financial posting | A final zero is evidence; a missing record is not |
+| Undispatched authorization expires | Mark EXPIRED and release | No late preparation under that authorization |
+| Prepared command reaches expiry | Keep UNKNOWN and its hold | Expiry does not prove absence of physical delivery |
+| Financial COMMIT succeeded; HTTP response lost | Query or retry the same operation ID | Client UNKNOWN until the durable decision is read |
+
+A real issuer must approve partial delivery, hold lifetime, reversals, late advice, disputes and operator repair. The demonstration's POSTED state means its local accounting decision; it does not mean card-network clearing, presentment or interbank settlement. Those are additional contracts.
+
+#### 3. Follow the effect through success and uncertainty
+
+![Figure C.3 · Happy path under the declared synthetic policy: authorize, prepare one command, record device outcome, then post actual cash.](figures/en/channels_cash_happy.png)
+
+Preparation and financial settlement are separate core transactions. The device acts between them. A C# exception or core rollback after delivery cannot put money back into the ATM. A compensation is a new authorized business action with its own audit trail; it cannot erase customer receipt of cash.
+
+![Figure C.4 · Lost device response: keep UNKNOWN and the hold, recover the original journal outcome and reconcile once.](figures/en/channels_cash_unknown.png)
+
+A stable command ID is useful only if the device/provider contract actually deduplicates it and preserves an authoritative journal across failures. The synthetic adapter provides that property in SQL. For a real terminal, obtain proof of delivered, partial, rejected and retracted notes and the meaning of a final journal result. Conflicting or unavailable evidence requires an operator procedure, a reconciliation deadline and an exposure record. The current fixture does not automate that repair.
+
+![Figure C.5 · Core unavailable: this lab denies new cash; issuer-approved stand-in is a separate, unimplemented policy branch.](figures/en/channels_standin.png)
+
+Stand-in is a delegated decision, not a successful retry to a dead core. As a commercial example, CSFi describes EZswitch authorizing with a positive balance file and/or card limits when its host is unavailable [50]. That product description establishes that the alternative exists; it does not authorize our fixture or specify any bank's safe exposure. The lab has no delegated budget and must not dispense without a prepared online authorization. Replicated positive balances cannot by themselves prevent concurrent spending elsewhere.
+
+![Figure C.6 · Digital transfer with a lost response after COMMIT: the status query resolves the original instruction without another debit.](figures/en/channels_web_unknown.png)
+
+A web/mobile BFF may adapt presentation and aggregate informational reads. Business authorization still uses the authoritative account and active holds; an eventual balance projection cannot approve spending. An outbox records a financial event atomically with the decision, but a push notification, SMS or receipt alone is not proof of posting. Reopening the app should recover the original operation ID and decision rather than invent a second instruction.
+
+#### 4. Choose patterns against the channel contract
+
+| Problem | Candidate and benefit | Cost, failure boundary and control |
+|---|---|---|
+| Evolving UI while retaining host behavior | Gateway/BFF plus semantic adapter | Extra hops and mapping drift; preserve source errors, identity and business approval |
+| Cash delivered outside the ledger transaction | Durable state machine, holds and independent journal reconciliation | UNKNOWN can persist; immutable evidence, operator ownership and dispute deadlines are required |
+| Concurrent mobile and ATM spending | One authoritative ledger with availability checks under locks | Hot-account contention; test both channels against the same reservation rule |
+| Lost HTTP response | Durable identity and a status endpoint | Identity retention is a contract; conflicting reuse must fail and retries must not extend expiry |
+| Slow informational reads | CQRS with freshness/watermark | Stale data; separate display from financial approval and define read-your-writes behavior |
+| Processor, fraud and ledger have independent commits | Durable orchestration with explicit compensations | No global rollback; identify each irreversible effect and reconciliation owner |
+| Host unavailable | Deny, or separately approved bounded stand-in | Availability versus credit/fraud exposure; test budget exhaustion, stale limits and recovery |
+| Changing a channel or core route | Strangler with one write owner per financial domain | Coexistence and certification cost; read-only shadow, source-side fencing and in-flight tracking |
+
+**Decision for this increment.** Use an explicit durable state machine, one SQL ledger and a separate device journal. Avoid adding actors, a broker or a fake protocol stack before this contract is falsifiable. The alternative of immediate debit on authorization is rejected for this example because it would need a separately approved reversal policy for zero/partial cash. The choice remains a teaching ADR, not a recommendation for an unidentified bank.
+
+#### 5. Make the laboratory capable of disproving itself
+
+The [English reproduction guide](../lab/channels/README.md) specifies .NET 10, Podman, two PostgreSQL instances, fixed disposable identities and original evidence retention. Its initial matrix includes full/partial/zero cash, missing device evidence, lost replies, external process kills, duplicate/conflicting requests, expiry and concurrent mobile/ATM spending. A native API is required for an HTTP-loss claim; an exception printed to a console would not exercise that boundary.
+
+| Independent oracle group | Evidence examined | Contradiction to reject |
+|---|---|---|
+| Projection | Initial funds, all postings and resulting balances | Negative or unexplained account balance |
+| Conservation | Both customer accounts and synthetic cash-control account | Closed-world total changes |
+| Identity and finality | Original offered instruction, stored intent and decision | Changed intent under the same ID or invalid finality |
+| Paired postings | Each financial decision and both ledger entries | Missing, extra or wrong-amount debit/credit |
+| Financial outbox | Decision and event in the core snapshot | Missing, duplicate or wrong financial event |
+| Holds and availability | Authorization state, reservations and account balance | Released pending hold or overspend across channels |
+| Device reconciliation | Separate journal, command, actual amount and inventory | Posting unsupported cash or losing the device effect after core rollback |
+
+Conservation alone is insufficient: an excessive debit with an equal credit still balances. Negative controls therefore alter copies of SQL observations to introduce conserved extra cash postings and a false final decision without its entries/outbox. The independent oracle must reject them while preserving the unmodified original observations. Neither candidate/oracle agreement nor synthetic golden fixtures supply business approval: the production authorization gate remains blocked until the source contract and accountable approvers exist.
+
+Execution status and exact CI provenance belong in the lab's evidence checkpoint. This chapter describes the declared design; it does not turn an unexecuted scenario into a passed test. The remaining issue #30 matrix includes network partitions at each hop, real protocol correlation, delegated stand-in, route cutover and measured latency/capacity.
+
+#### 6. Migrate the owner, then retire the route
+
+Channel-first migration can replace web/mobile presentation while leaving the account host authoritative. Capability-first migration can replace the account service while preserving the channel adapter. Product or branch cohorts narrow exposure but still need consistent ownership when a customer uses another channel. Issuer-processing-first and ATM-switch-first change certified external boundaries; façade-first preserves them temporarily. CDC-first can populate read models but does not transfer write authority. A big bang shortens coexistence at the cost of a wider cutover and recovery problem.
+
+A cutover needs a cohort manifest, a write-owner epoch enforced at the old source, drainage of in-flight authorizations, a reconciliation watermark and handling of late device/network messages. Read-only shadow must never send a second authorization or dispense. A feature flag alone does not fence the old writer. Returning traffic to the old route after new cash deliveries requires reconciled data and ownership transfer; switching the flag back cannot reverse delivery. These mechanisms are required follow-up work, not exercised by the first channel fixture. The [coexistence chapter](#chapter-30--from-the-lab-to-a-system-that-keeps-running) develops the ownership problem.
+
+| Channel / boundary | Rule and data authority | Pattern, risk and oracle | Retirement evidence |
+|---|---|---|---|
+| ATM to device/switch | Delivered cash plus issuer-approved authorization; protocol contract pending | Stable command and journal; irreversible cash; actual amount comparison | No unresolved cash outcomes; certified routes and terminal dependencies retired |
+| Web/mobile to account API | Authoritative availability and durable operation ID | BFF/adapter, SQL/outbox; lost reply; status/ledger/hold checks | Clients recover decisions; old write endpoint fenced and unused |
+| Teller/3270 or API | Teller authority, cash custody and source UOW | Semantic session recovery; repeat risk; receipt and cash reconciliation | Sessions drained, devices/operators migrated, teller controls accepted |
+| Card issuer/network | Authorization, clearing and settlement each have an owner | Bounded delegation; delayed/duplicate messages; network reconciliation | Scheme/provider approval, late-message window and batch/report dependencies closed |
+| Partner/open-banking API | Consent/identity plus account business authority | Gateway and versioned contract; revoked consent/stale reads; authorization audit | Certificates/routes/consumers retired under approved retention rules |
+
+Outstanding UNKNOWN cash, inconsistent journal/ledger amounts, unprocessed late messages, an unfenced second writer or missing required certification are reasons to withhold a real cutover. External equipment and issuer approval are not merge blockers for this clearly scoped example: they are explicit follow-up validation. To make that validation realistic, replace the emulator's atomic stock assumption with instrumented device outcomes, approved rules, real transport failures and reconciliation procedures; preserve failures and raw evidence before drawing a conclusion.
 
 ## Part V · Capacity: MIPS, concurrency and platform
 
@@ -3383,3 +3498,9 @@ Main scope of this family: Engineering and operations. Infrastructure measures r
 [47] José María Flores Zazo. *Después de Frontier Week: de la expectativa al impacto* (After Frontier Week: from expectation to impact). jmfloreszazo.com, 20 September 2026. <https://jmfloreszazo.com/despues-de-frontier-week-de-la-expectativa-al-impacto/>
 
 The author's articles are cited by their original Spanish titles, with an English gloss.
+
+[48] IBM. *Bank of Z — Application Components*. Educational sample, not a universal bank architecture. Consulted 3 November 2026. <https://ibm.github.io/Bank-of-Z/docs/architecture/application-components.html>
+
+[49] IBM. *How CICS runs transactions, tasks, and programs*. CICS TS 6.x documentation; indexed source consulted 3 November 2026 (direct reader returned HTTP 403). <https://www.ibm.com/docs/en/cics-ts/6.x?topic=development-transactions-in-cics>
+
+[50] CSF International. *EZswitch — Online ATM/Debit Middleware System*. Commercial example of host authorization and stand-in; not a bank-approved policy for this lab. Consulted 3 November 2026. <https://www.csfi.com/ezswitch-2/>

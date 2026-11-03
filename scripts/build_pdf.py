@@ -73,8 +73,8 @@ def build(lang):
     if len(headings)!=38:
         raise ValueError(f"{lang}: expected 38 numbered/special chapters; found {len(headings)}")
     images=re.findall(rf"!\[[^]]*\]\((figures/{lang}/[^)]+\.png)\)",original)
-    if len(images)!=41:
-        raise ValueError(f"{lang}: expected 41 diagrams; found {len(images)}")
+    if len(images)!=47:
+        raise ValueError(f"{lang}: expected 47 diagrams; found {len(images)}")
     for p in images:
         if not (BOOK/p).is_file():
             raise FileNotFoundError(BOOK/p)

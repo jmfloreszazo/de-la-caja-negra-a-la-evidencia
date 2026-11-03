@@ -39,6 +39,7 @@ José María Flores Zazo · Edición v2026.10.29 · [El libro entero en una pág
   - [Capítulo 19 · Actores: una gran herramienta, un mal sustituto universal](parte-4-patrones/19-actores-una-gran-herramienta-un-mal-sustituto-universal.md)
   - [Capítulo 20 · Batch y paralelismo: acelerar sin cambiar el resultado](parte-4-patrones/20-batch-y-paralelismo-acelerar-sin-cambiar-el-resultado.md)
   - [Capítulo 21 · Event sourcing, CQRS y sagas: cuándo ayudan y cuándo estorban](parte-4-patrones/21-event-sourcing-cqrs-y-sagas-cuando-ayudan-y-cuando-estorban.md)
+  - [Capítulo complementario · Canales, efectivo ATM y core](parte-4-patrones/21a-canales-atm-y-core.md)
 - **[Parte V · Capacidad: MIPS, concurrencia y plataforma](parte-5-capacidad/README.md)**
   - [Capítulo 22 · Los MIPS no caben en una conversión de vCPU](parte-5-capacidad/22-los-mips-no-caben-en-una-conversion-de-vcpu.md)
   - [Capítulo 23 · Concurrencia que aprovecha la máquina](parte-5-capacidad/23-concurrencia-que-aprovecha-la-maquina.md)
