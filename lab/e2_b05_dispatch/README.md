@@ -1,6 +1,6 @@
 # B05 direct-client slot diagnostic
 
-Status: preregistered source until original CI, raw artifact and independent audit.
+Status: executed three-cohort diagnostic; originals independently audited.
 Tracks #25. The accepted ledger, historical client, workload generator and
 oracles remain unchanged. This is a separate instrumented executable.
 
@@ -58,3 +58,5 @@ python3 -m unittest discover -s lab/e2_b05_dispatch -p test_analysis.py -v
 ```
 
 The first three-cohort campaign is frozen in [the evidence report](../../evidence/runs/B05-DISPATCH-DIAGNOSTIC.md). Run `python3 scripts/check_b05_dispatch.py` from the repository root to audit its originals. PR checks compile the client and run adversarial slot controls; the live matrix now requires manual workflow dispatch. Archive audits never count skipped live trials as PASS.
+
+External capacity validation is a [documented follow-up](../../docs/EXTERNAL_VALIDATION.md), not an integration blocker. Keep this loopback fixture frozen; a distributed campaign needs a new endpoint-safe driver and per-host telemetry. Its scientific claims remain partial.

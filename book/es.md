@@ -2515,6 +2515,26 @@ Las seis pruebas ofrecieron 119.040 operaciones: 118.887 commits durables y 153 
 
 Es evidencia de un efecto de la política de admisión en este cliente directo instrumentado; no establece un techo de capacidad ni explica los 12 rechazos antiguos. Falta medir la espera por conexión; el runner y la instrumentación afectan los tiempos. Siguen abiertos la ruta Orleans, el escalado sostenido y la atribución del cuello de botella de #25. Auditar el archivo congelado es distinto de ejecutar una campaña nueva; omitir la matriz viva no demuestra capacidad.
 
+##### Integrar evidencia acotada y aplazar explícitamente la validación externa
+
+El 3 de noviembre de 2026, el autor autorizó integrar las observaciones E2 y el diagnóstico B05 sin exigir que CI demuestre antes todas las afirmaciones de producción. El [protocolo de validación externa](../docs/EXTERNAL_VALIDATION.md) concreta el trabajo pendiente. La ausencia de mediciones externas deja de bloquear la integración del libro/laboratorio y el avance editorial. E2 sigue parcialmente verificado; esta decisión no convierte un resultado INCONCLUSIVE en PASS ni autoriza un despliegue bancario.
+
+Un único runner permite probar SQL real, procesos distintos, particiones lógicas y conciliación independiente. No convierte esos contenedores en máquinas físicamente independientes. La capacidad y las observaciones naturales de activación no son intrínsecamente imposibles en Actions; estas campañas simplemente no las demuestran. Actions puede orquestar infraestructura dedicada o runners propios. Lo determinante es la topología y la evidencia, no el producto que ejecuta la automatización.
+
+| Afirmación pendiente | Experimento más realista | Cambio necesario en el laboratorio |
+| --- | --- | --- |
+| Capacidad sostenida y cuello de botella (#25) | Hosts separados para carga, silos y SQL; mismos vectores directo/Orleans; 1/2/4/8/16 silos, durabilidad fija y barridos repetidos de tasas | Nuevo generador para endpoints externos con lista de fixtures permitidos; medir planificación, colas, adquisición de conexión, esperas SQL/WAL/almacenamiento y recursos por host |
+| Activación natural y recuperación continua (#24) | Grains ordinarios sin demora artificial antes de la invocación; fallos direccionales en interfaces reales; recuperación sin intervención | Sustituir supuestos de contenedor local por identidades remotas explícitas; conservar ciclo de vida, ambas salidas de logs y PCAP; acotar la incertidumbre de reloj |
+| HA física y durabilidad (#8/#9) | Dominios de fallo independientes identificados; separar pérdida de host, partición y failover SQL | Registrar política de replicación/confirmación y resolver IDs ambiguos; hardware desechable dedicado para pérdida eléctrica del almacenamiento |
+| WAN, transporte y economía (#9/#12) | Rutas reales sucursal/servidor con TLS y autenticación equivalentes para gRPC y REST; coste total fechado por transferencia durable correcta | Separar degradación controlada y medición de campo; capturar DNS, gateways, canales reutilizados, plazos y costes de operación/DR |
+| Cutover bancario (#32/#58/#64) | Contrato aprobado por el responsable, trazas autorizadas y fencing real del escritor en origen | Adaptador autorizado, conciliación de efectos externos y repetición de controles en curso/UNKNOWN/rollback; mantener aprobación TODM G2/G6 |
+
+El diagnóstico B05 comprueba deliberadamente un DSN exacto en loopback: cambiar una variable no lo transforma en benchmark distribuido. Se conserva ese fixture y se añade un generador identificado por separado. Los relojes monotónicos remotos no se comparan directamente: hay que registrar desfase e incertidumbre, exigir solapamiento positivo después de aplicar sus límites y mantener INCONCLUSIVE si no puede demostrarse.
+
+El estudio externo propuesto empieza reproduciendo 320 ofertas/s; después utiliza al menos tres repeticiones por configuración, perfiles uniformes/calientes/cruzados con semillas fijas y tasas prerregistradas alrededor de la degradación. Como diseño inicial se sugieren 5 minutos de calentamiento, 15 minutos de medición estable y drenaje acotado; son duraciones propuestas, no resultados ni umbrales de aceptación de producción. Primero se demuestra capacidad sobrante del generador, se incluyen ofertas rechazadas/tardías/ambiguas en los resultados del servicio y se conserva el calentamiento. Pool, reintentos, plazos y durabilidad permanecen fijos mientras cambia un factor. Antes de declarar un límite se miden crecimiento de colas y recursos atribuibles.
+
+Cada intento original debe conservar código exacto, mapa de hosts/dominios, incertidumbre temporal, entorno, carga, logs y oráculos SQL independientes. Se mantienen las siete invariantes y los controles de corrupción. Las regresiones de código y archivos siguen siendo comprobaciones de integración; las campañas vivas conservan su invocación manual y sus códigos de salida. Una campaña omitida no demuestra capacidad. Las afirmaciones más amplias conservan su aceptación propia mientras continúa el desarrollo. Publicar sigue requiriendo autorización separada.
+
 ### Capítulo 29 · Incorporar agentes sin permitir que escriban el aprobado
 
 > [!IMPORTANT]
