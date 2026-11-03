@@ -244,6 +244,23 @@ necessity, production RTO, exclusive activation or physical HA. Both initial
 instrumentation failures remain archived as FAIL; the correction separated
 diagnostic lifetimes without weakening financial acceptance criteria.
 
+## Activations · Observe calls without confusing them with exclusivity
+
+The [separate observer](../../../evidence/runs/E2-ACTIVATION-OBSERVATION.md)
+added an incoming-call filter to the test host, retaining the unchanged
+financial grain and ledger. Two original cases recorded 38 and 39 complete
+Transfer envelopes with activation IDs, process sessions and monotonic clocks.
+Logs were retained before silo recreation. Every acknowledged result reconciled
+with SQL: three operations, six postings, three outbox events and seven
+invariants in each case.
+
+No incomplete envelopes or overlaps across distinct activations of the same
+grain were observed. This does not establish global exclusivity: the filter
+measures request envelopes, not entire activation lifetimes or simultaneous
+SQL transactions. A targeted positive concurrent-activation scenario with
+independent SQL acceptance remains pending. Each case used one physical host
+and assisted recovery; E2 remains partially verified.
+
 ## From atomic debit to authority transfer across two stores
 
 The next challenge is not making a PostgreSQL transfer work. It is

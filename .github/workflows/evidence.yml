@@ -20,6 +20,9 @@ on:
       - 'scripts/check_e2_controlled_placement_observations.py'
       - 'scripts/check_e2_placement_observation.py'
       - 'scripts/check_e2_long_partition_observations.py'
+      - 'scripts/check_e2_activation_observations.py'
+      - 'scripts/audit_e2_activation_artifact.py'
+      - 'lab/e2_activation_observer/observation.py'
       - 'scripts/check_e2_directional_partition_observations.py'
       - 'scripts/check_e2_b05_external_smoke.py'
       - 'scripts/check_e2_b05_repeatability_observations.py'
@@ -48,6 +51,9 @@ on:
       - 'scripts/check_e2_controlled_placement_observations.py'
       - 'scripts/check_e2_placement_observation.py'
       - 'scripts/check_e2_long_partition_observations.py'
+      - 'scripts/check_e2_activation_observations.py'
+      - 'scripts/audit_e2_activation_artifact.py'
+      - 'lab/e2_activation_observer/observation.py'
       - 'scripts/check_e2_directional_partition_observations.py'
       - 'scripts/check_e2_b05_external_smoke.py'
       - 'scripts/check_e2_b05_repeatability_observations.py'
@@ -82,6 +88,9 @@ jobs:
       - run: python3 scripts/check_e2_controlled_placement_observations.py
       - run: python3 scripts/check_e2_placement_observation.py
       - run: python3 scripts/check_e2_long_partition_observations.py
+      - name: Retrieve exact original observer source for offline hash audit
+        run: git fetch --no-tags --depth=1 origin 362ee5a7537e1523caad2bd7033ec7a99977ac2d
+      - run: python3 scripts/check_e2_activation_observations.py
       - run: python3 scripts/check_e2_directional_partition_observations.py
       - run: python3 scripts/check_e2_b05_external_smoke.py
       - run: python3 scripts/check_e2_b05_repeatability_observations.py

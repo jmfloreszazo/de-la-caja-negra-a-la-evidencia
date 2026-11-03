@@ -245,6 +245,23 @@ reinicio necesario, RTO productivo, activación exclusiva o HA física. Los dos
 fallos iniciales de instrumentación siguen archivados como FAIL; la corrección
 separó la vida de los diagnósticos sin rebajar los criterios financieros.
 
+## Activaciones · Observar llamadas sin confundirlas con exclusividad
+
+El [observador separado](../../../evidence/runs/E2-ACTIVATION-OBSERVATION.es.md)
+añadió un filtro de llamadas entrantes al host de prueba, conservando el grain
+financiero y ledger sin cambios. Dos ensayos originales registraron 38 y 39
+intervalos completos de Transfer, con IDs de activación, sesión de proceso y
+reloj monótono. Los logs se conservaron antes de recrear los silos. Todos los
+resultados reconocidos coincidieron con SQL: tres operaciones, seis asientos,
+tres eventos outbox y siete invariantes en cada caso.
+
+No se observaron intervalos incompletos ni solapamientos entre activaciones
+distintas del mismo grain. Eso no demuestra exclusividad global: el filtro
+mide intervalos de llamadas, no toda la vida de una activación ni transacciones
+SQL simultáneas. Sigue pendiente provocar y observar un caso positivo de
+activaciones concurrentes con aceptación SQL independiente. Cada ensayo usó
+un host físico y recuperación asistida; E2 permanece parcialmente verificado.
+
 ## Del débito atómico al traspaso de autoridad entre dos almacenes
 
 La siguiente dificultad no consiste en hacer funcionar una transferencia con
