@@ -6,6 +6,8 @@ placement, a real secondary process SIGKILL, and ledger recovery by replay.
 It does NOT prove production multi-node failover or an in-flight SQL crash.
 """
 import hashlib
+import base64
+from contextlib import nullcontext
 import json
 import os
 from pathlib import Path
@@ -16,6 +18,8 @@ import time
 
 from test_e2 import APP, HERE, LAB, OUT, command, oracle, postgres_snapshot, reset
 from ledger import connect
+from oracle import verify
+from placement_observation import PlacementJournal, capture
 
 PROVIDER = os.environ.get("E2_CLUSTER_PROVIDER", "development")
 assert PROVIDER in ("development", "adonet"), "Unknown cluster provider"
@@ -23,6 +27,7 @@ MAX_JOIN_SECONDS = 100
 MAX_RECOVERY_SECONDS = 150
 SOURCE_FILES = [
     HERE / "test_multiprocess.py",
+    HERE / "placement_observation.py",
     HERE / "setup_adonet_membership.py",
     HERE / "OrleansLab/ClusterModes.cs",
     HERE / "OrleansLab/Contracts.cs",
@@ -30,7 +35,7 @@ SOURCE_FILES = [
 ]
 
 
-def call_client(mode, commands=None, timeout=45):
+def call_client(mode, commands=None, timeout=45, *, observe=None):
     assert mode in ("probe", "execute")
     args = ["dotnet", str(APP), "cluster", "client", mode]
     path = None
@@ -44,10 +49,23 @@ def call_client(mode, commands=None, timeout=45):
             path = Path(output.name)
         args.append(str(path))
     try:
-        result = subprocess.run(
-            args, stdout=subprocess.PIPE, stderr=subprocess.PIPE,
-            text=True, timeout=timeout, env=os.environ
-        )
+        started = time.monotonic()
+        try:
+            result = subprocess.run(
+                args, stdout=subprocess.PIPE, stderr=subprocess.PIPE,
+                text=True, timeout=timeout, env=os.environ
+            )
+        except subprocess.TimeoutExpired as exc:
+            if observe is not None:
+                observe({"mode": mode, "status": "PARENT_TIMEOUT", "timeoutSeconds": timeout,
+                         "elapsedSeconds": time.monotonic() - started,
+                         "stdoutBytesBase64": base64.b64encode(exc.stdout or b'').decode(),
+                         "stderrBytesBase64": base64.b64encode(exc.stderr or b'').decode()})
+            raise
+        if observe is not None:
+            observe({"mode": mode, "status": "PROCESS_RETURNED", "exitCode": result.returncode,
+                     "timeoutSeconds": timeout, "elapsedSeconds": time.monotonic() - started,
+                     "stdout": result.stdout, "stderr": result.stderr})
         if result.returncode != 0:
             raise RuntimeError(
                 "External Orleans client exited " + str(result.returncode) +
@@ -121,54 +139,113 @@ def main():
     assert os.environ.get("E2_CLUSTER_TEST") != "1", (
         "Parent runner should not globally enable this fixture"
     )
-    reset()
-    initial = postgres_snapshot()
-    if PROVIDER == "adonet":
-        installed = read_membership()
-        assert installed["providerQueryCount"] >= 3, installed
-        assert not installed["membershipRows"], (
-            "ADO.NET membership must start from a fresh disposable catalog",
-            installed
-        )
     original_env = os.environ.copy()
-    os.environ["E2_CLUSTER_TEST"] = "1"
-    if PROVIDER == "adonet":
-        os.environ["E2_MEMBERSHIP_NPGSQL"] = os.environ["E2_PG_NPGSQL"]
-    fixture_env = os.environ.copy()
+    negative_control = os.environ.get("E2_PLACEMENT_OBSERVATION_NEGATIVE") == "1"
+    if negative_control:
+        assert os.environ.get("E1_PG_DSN") == "host=127.0.0.1 port=55434 dbname=e2lab user=postgres password=e2local"
+    source_head = subprocess.check_output(["git", "rev-parse", "HEAD"], text=True).strip()
+    observer = PlacementJournal(OUT, PROVIDER, metadata={
+        "sourceHeadSha": source_head, "negativeControlRequested": negative_control,
+        "worktreeDirty": bool(subprocess.check_output(["git", "status", "--porcelain"], text=True)),
+        "sqlMembershipApplicable": PROVIDER == "adonet",
+        "preexistingSuccessFiles": {name: hashlib.sha256((OUT / name).read_bytes()).hexdigest()
+                                    for name in ("e2-multiprocess.json", "e2-adonet-recovery.json")
+                                    if (OUT / name).is_file()},
+        "sourceSha256": {str(p.relative_to(LAB)): hashlib.sha256(p.read_bytes()).hexdigest()
+                         for p in SOURCE_FILES},
+        "limitations": "Loopback observation only; no historical root cause, placement-policy fix, "
+        "physical HA or overall E2 acceptance. A negative control is deliberately induced, not failover proof."})
+    phase = "preflight"
+    financial_commands_attempted = 0
+    financial_client_invocations = 0
+    financial_fault_injected = False
+    secondary_kill_requested = False
     primary = secondary = None
+    first_log = second_log = None
+    last_probe = None
+    attempt = 0
+    # Keep temporary logs alive until after the outer failure recorder and
+    # process shutdown. Existing success filenames and strict assertions stay.
+    temporary = tempfile.TemporaryDirectory(prefix="e2-two-silos-")
+
+    def observe_client(result):
+        observer.append("client-process", phase=phase, attempt=attempt, observation=result)
+
+    def process_state():
+        return {role: None if proc is None else {"pid": proc.pid, "returnCode": proc.poll()}
+                for role, proc in (("primary", primary), ("secondary", secondary))}
+
+    def log_state():
+        return {role: path.read_text(encoding="utf-8", errors="replace")[-6000:]
+                for role, path in (("primary", first_log), ("secondary", second_log))
+                if path is not None and path.exists()}
+
     try:
-        with tempfile.TemporaryDirectory(prefix="e2-two-silos-") as td:
+        reset()
+        initial = postgres_snapshot()
+        if PROVIDER == "adonet":
+            installed = read_membership()
+            assert installed["providerQueryCount"] >= 3, installed
+            assert not installed["membershipRows"], (
+                "ADO.NET membership must start from a fresh disposable catalog", installed)
+        observer.append("preflight", phase=phase, sql=capture(inspect_db),
+                        sqlMembership=capture(read_membership), oracle=capture(verify))
+        os.environ["E2_CLUSTER_TEST"] = "1"
+        if PROVIDER == "adonet":
+            os.environ["E2_MEMBERSHIP_NPGSQL"] = os.environ["E2_PG_NPGSQL"]
+        fixture_env = os.environ.copy()
+        with nullcontext(temporary.name) as td:
             root = Path(td)
             first_log = root / "primary.log"
             second_log = root / "secondary.log"
             with first_log.open("w+", encoding="utf-8") as a, second_log.open(
                 "w+", encoding="utf-8"
             ) as b:
+                phase = "primary-startup"
                 primary = subprocess.Popen(
                     ["dotnet", str(APP), "cluster", "silo", "primary"],
                     stdout=a, stderr=subprocess.STDOUT, text=True,
                     env=fixture_env
                 )
                 wait_ready(primary, first_log, "primary")
+                phase = "secondary-startup"
                 secondary = subprocess.Popen(
                     ["dotnet", str(APP), "cluster", "silo", "secondary"],
                     stdout=b, stderr=subprocess.STDOUT, text=True,
                     env=fixture_env
                 )
                 wait_ready(secondary, second_log, "secondary")
-                # Use newly activated keys after cluster membership converges.
+                phase = "placement-convergence"
+                observer.append("silos-ready", phase=phase, processes=process_state(),
+                                siloLogsTail=log_state(), sqlMembership=capture(read_membership))
+                # Allow convergence before the first activation. Later probes
+                # observe the SAME 1..16 keys; retries do not redistribute them.
                 time.sleep(8)
                 started = time.monotonic()
                 observed = None
                 while time.monotonic() - started < MAX_JOIN_SECONDS:
+                    attempt += 1
                     try:
-                        probe = call_client("probe", timeout=35)
+                        probe = call_client("probe", timeout=35, observe=observe_client)
+                        last_probe = probe
                         ids = {int(k): int(v) for k, v in probe["accountHostPids"].items()}
+                        observer.append("placement-probe", phase=phase, attempt=attempt,
+                                        elapsedSeconds=time.monotonic() - started,
+                                        accountHostPids=ids, clientProbe=probe,
+                                        expectedSiloPids=[primary.pid, secondary.pid],
+                                        sqlMembership=capture(read_membership), processes=process_state(),
+                                        siloLogsTail=log_state())
+                        if negative_control:
+                            raise AssertionError("OBSERVATION_NEGATIVE_CONTROL_AFTER_FIRST_PROBE")
                         if {primary.pid, secondary.pid}.issubset(set(ids.values())):
                             observed = (probe, ids)
                             break
-                    except (RuntimeError, subprocess.TimeoutExpired):
-                        pass
+                    except (RuntimeError, subprocess.TimeoutExpired) as exc:
+                        observer.append("placement-probe-error", phase=phase, attempt=attempt,
+                                        exceptionType=type(exc).__name__, error=str(exc),
+                                        elapsedSeconds=time.monotonic() - started,
+                                        sqlMembership=capture(read_membership), processes=process_state(),
+                                        siloLogsTail=log_state())
                     time.sleep(2)
                 if observed is None:
                     raise AssertionError(
@@ -177,6 +254,7 @@ def main():
                         second_log.read_text(encoding="utf-8")[-1500:]
                     )
                 probe, ids = observed
+                phase = "initial-membership-validation"
                 sql_membership_before = read_membership()
                 if PROVIDER == "adonet":
                     members = sql_membership_before["membershipRows"]
@@ -197,7 +275,10 @@ def main():
                     command("e2-multi-before-secondary", source_secondary, source_primary, 10),
                     command("e2-multi-before-primary", source_primary, source_secondary, 20),
                 ]
-                pre = call_client("execute", workload, timeout=70)
+                phase = "baseline-financial-call"
+                financial_client_invocations += 1
+                financial_commands_attempted += len(workload)
+                pre = call_client("execute", workload, timeout=70, observe=observe_client)
                 assert [x["status"] for x in pre["results"]] == [
                     "COMMITTED", "COMMITTED"
                 ], pre
@@ -211,15 +292,21 @@ def main():
 
                 # This is an actual SIGKILL of a SEPARATE Orleans server OS
                 # process. There is deliberately no in-flight SQL transaction.
+                phase = "secondary-sigkill"
+                secondary_kill_requested = True
                 secondary.kill()
                 assert secondary.wait(timeout=15) == -signal.SIGKILL
+                financial_fault_injected = True
+                observer.append("secondary-killed", phase=phase, processes=process_state(),
+                                sqlMembership=capture(read_membership), sql=capture(inspect_db))
                 assert primary.poll() is None
+                phase = "recovery-placement"
                 started_recovery = time.monotonic()
                 reassigned = None
                 failures = []
                 while time.monotonic() - started_recovery < MAX_RECOVERY_SECONDS:
                     try:
-                        later = call_client("probe", timeout=40)
+                        later = call_client("probe", timeout=40, observe=observe_client)
                         found = {int(k): int(v)
                                  for k, v in later["accountHostPids"].items()}
                         if found[source_secondary] == primary.pid:
@@ -234,10 +321,14 @@ def main():
                         "no functional failover evidence. Recent errors: " +
                         repr(failures[-5:])
                     )
+                phase = "replay-financial-call"
+                financial_client_invocations += 1
+                financial_commands_attempted += 2
                 follow_up = call_client("execute", [
                     command("e2-multi-before-secondary", source_secondary, source_primary, 10),
                     command("e2-multi-after-kill", source_secondary, source_primary, 5)
-                ], timeout=70)
+                ], timeout=70, observe=observe_client)
+                phase = "final-sql-reconciliation"
                 assert [x["status"] for x in follow_up["results"]] == [
                     "DUPLICATE_COMMITTED", "COMMITTED"
                 ], follow_up
@@ -334,11 +425,29 @@ def main():
                 (OUT / output_name).write_text(
                     json.dumps(outcome, indent=2) + "\n", encoding="utf-8")
                 print(json.dumps(outcome, indent=2))
+                phase = "completed"
+                observer.succeed(OUT / output_name)
+    except Exception as exc:
+        try:
+            observer.fail(exc, phase=phase, state={
+                "financialCommandsAttempted": financial_commands_attempted,
+                "financialClientInvocations": financial_client_invocations,
+                "financialFaultInjected": financial_fault_injected,
+                "secondaryKillRequested": secondary_kill_requested,
+                "placementAttempts": attempt, "lastClientProbe": last_probe,
+                "processes": process_state(), "siloLogsTail": log_state(),
+                "sqlMembership": capture(read_membership), "sql": capture(inspect_db),
+                "oracle": capture(verify)}, logs={"primary": first_log, "secondary": second_log})
+        except Exception as observation_error:
+            exc.add_note("Observation persistence also failed: " + repr(observation_error))
+        raise
     finally:
         if secondary is not None:
             stop(secondary)
         if primary is not None:
             stop(primary)
+        observer.close()
+        temporary.cleanup()
         os.environ.clear()
         os.environ.update(original_env)
 

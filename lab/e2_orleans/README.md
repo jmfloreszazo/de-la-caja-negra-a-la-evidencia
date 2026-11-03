@@ -468,3 +468,12 @@ after restoration. Both cases retained the same silo containers/PIDs/generations
 See the [audited evidence and preserved failures](../../evidence/runs/E2-C05-C06-DIRECTIONAL.md).
 Management catalogs were unavailable during the cut; exclusive activation,
 long-partition recovery, physical HA and sustained stable service remain open.
+
+## Loopback provider-specific observation
+
+[Failure observation](LOOPBACK_OBSERVATION_PROTOCOL.md) now has original
+development/ADO.NET negative controls: an induced first-probe abort retains
+FAIL, provider-specific logs/journal/manifest and zero SQL effects. The older
+PASS used as input is not misattributed. See the
+[audited evidence](../../evidence/runs/E2-PLACEMENT-OBSERVATION.md). This does
+not explain natural placement concentration or close #74/E2 acceptance.

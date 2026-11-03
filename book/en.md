@@ -2206,6 +2206,24 @@ its rejection and the runtime default policy is unchanged. Placement hints
 also confer no financial authority: PostgreSQL still owns the effects. E2
 remains partially verified.
 
+##### Record failure without borrowing an earlier PASS
+
+A successful `development` file does not prove that the later ADO.NET attempt
+completed. The [observation follow-up](../evidence/runs/E2-PLACEMENT-OBSERVATION.md)
+creates a journal per provider and execution, retains each map, membership and
+logs before process cleanup, and records the exact failure phase. An
+unavailable query remains an error; it is not converted into an empty list.
+
+Two original controls deliberately aborted after the first real 1..16 identity
+probe. Primary/secondary maps were 7/9 and 10/6: **they did not reproduce the
+historical one-sided concentration**. Both children kept FAIL/exit 1, without
+financial commands or SIGKILL, with zero effects and seven SQL oracles. The
+parent verified failure preservation and kept the older PASS as control input.
+
+This verifies the recorder, not placement policy or recovery. Future natural
+failures will have their own evidence; the historical cause remains unproven
+and E2 remains partially verified.
+
 #### C04 · The client loses its gateways, the ledger retains authority
 
 The [original C04 test](../evidence/runs/E2-C04-GATEWAY.md) cuts only

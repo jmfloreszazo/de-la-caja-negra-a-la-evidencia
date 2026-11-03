@@ -1,7 +1,7 @@
 {
   "schema_version": 1,
   "edition": "v2026.10.29",
-  "as_of": "2026-11-02",
+  "as_of": "2026-11-03",
   "repository": "jmfloreszazo/de-la-caja-negra-a-la-evidencia",
   "principle": "A designed protocol is not execution evidence; CI does not establish production capacity.",
   "claims": [
@@ -465,6 +465,20 @@
         "kind": "github_actions",
         "run_id": 41528812921,
         "head_sha": "958961906de0ca5d3945d410c64d465ba7d34a3e"
+      },
+      "protocol": null
+    },
+    {
+      "id": "E2-PLACEMENT-OBSERVATION",
+      "status": "ci_verified",
+      "es": "Diarios por proveedor y controles reales de conservación del fallo de colocación",
+      "en": "Provider-specific journals and real placement-failure persistence controls",
+      "scope_es": "Dos controles inducidos tras primer probe real: hijo FAIL/salida 1, mapas 7/9 y 10/6, cero órdenes/efectos y oráculos 7/7; diario, fase, membresía y logs propios. Un PASS histórico permanece entrada antigua. Verifica el registrador, no reproduce concentración unilateral natural ni explica su causa, failover, HA o aceptación E2.",
+      "scope_en": "Two induced controls after a real first probe: child FAIL/exit 1, maps 7/9 and 10/6, zero commands/effects and 7/7 oracles; own journal, phase, membership and logs. A historical PASS remains old input. Verifies the recorder, not natural one-sided concentration, its cause, failover, HA or E2 acceptance.",
+      "evidence": {
+        "kind": "github_actions",
+        "run_id": 41601478234,
+        "head_sha": "c547c3f34badda0cb57ab0b496917dadb1485b04"
       },
       "protocol": null
     },
