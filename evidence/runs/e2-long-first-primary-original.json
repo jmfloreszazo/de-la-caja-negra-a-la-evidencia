@@ -1,0 +1,3490 @@
+{
+  "status": "FAIL",
+  "protocol": "E2_LONG_DIRECTIONAL_120_SAMPLED_RECOVERY_60_V1",
+  "sourceHeadSha": "62d78fbddc206babbe3cbd28630f33464271d619",
+  "blockedRole": "primary",
+  "startUtc": "2026-11-03T08:46:28.294336+00:00",
+  "physicalHosts": 1,
+  "requestedFaultScheduleSeconds": 120,
+  "samples": [
+    {
+      "utc": "2026-11-03T08:47:13.323648+00:00",
+      "phase": "scheduled-long-fault",
+      "elapsedSeconds": 15.245142265000027,
+      "sql": {
+        "utc": "2026-11-03T08:47:13.350974+00:00",
+        "operations": [
+          [
+            "c05-baseline",
+            1,
+            2,
+            11,
+            "COMMITTED"
+          ],
+          [
+            "c05-contested-id",
+            2,
+            1,
+            37,
+            "COMMITTED"
+          ]
+        ],
+        "effects": {
+          "committedOperations": 2,
+          "postings": 4,
+          "outboxEvents": 2
+        },
+        "oracle": {
+          "nonnegative": true,
+          "conserved": true,
+          "balancedPostings": true,
+          "twoPostingsPerCommit": true,
+          "noPostingsForRejection": true,
+          "outboxAtomic": true,
+          "projectionAgrees": true
+        },
+        "membershipGenerations": [
+          [
+            "10.78.30.11",
+            11150,
+            152700408,
+            3
+          ],
+          [
+            "10.78.30.12",
+            11151,
+            152700410,
+            3
+          ]
+        ]
+      },
+      "processes": {
+        "primary": {
+          "id": "a6e4a74a5cb4ff8806d09967dbc0308972dd82626ab59c6dec428e0e07ca411a",
+          "pidOnHost": 3618,
+          "status": "running",
+          "exitCode": 0,
+          "networks": {
+            "e2f10-net": "10.78.30.11"
+          }
+        },
+        "secondary": {
+          "id": "d4e68342448bc03cea86535ed7577ce12cd2be0804b8b1f27d5c346abc474d64",
+          "pidOnHost": 3768,
+          "status": "running",
+          "exitCode": 0,
+          "networks": {
+            "e2f10-net": "10.78.30.12"
+          }
+        }
+      },
+      "outputRule": {
+        "observationSucceeded": true,
+        "value": "-P OUTPUT ACCEPT\n-A OUTPUT -d 10.78.30.12/32 -p tcp -m multiport --ports 11150,11151 -j DROP"
+      }
+    },
+    {
+      "utc": "2026-11-03T08:47:44.051244+00:00",
+      "phase": "scheduled-long-fault",
+      "elapsedSeconds": 45.97273560900004,
+      "sql": {
+        "utc": "2026-11-03T08:47:44.079660+00:00",
+        "operations": [
+          [
+            "c05-baseline",
+            1,
+            2,
+            11,
+            "COMMITTED"
+          ],
+          [
+            "c05-contested-id",
+            2,
+            1,
+            37,
+            "COMMITTED"
+          ]
+        ],
+        "effects": {
+          "committedOperations": 2,
+          "postings": 4,
+          "outboxEvents": 2
+        },
+        "oracle": {
+          "nonnegative": true,
+          "conserved": true,
+          "balancedPostings": true,
+          "twoPostingsPerCommit": true,
+          "noPostingsForRejection": true,
+          "outboxAtomic": true,
+          "projectionAgrees": true
+        },
+        "membershipGenerations": [
+          [
+            "10.78.30.11",
+            11150,
+            152700408,
+            3
+          ],
+          [
+            "10.78.30.12",
+            11151,
+            152700410,
+            3
+          ]
+        ]
+      },
+      "processes": {
+        "primary": {
+          "id": "a6e4a74a5cb4ff8806d09967dbc0308972dd82626ab59c6dec428e0e07ca411a",
+          "pidOnHost": 3618,
+          "status": "running",
+          "exitCode": 0,
+          "networks": {
+            "e2f10-net": "10.78.30.11"
+          }
+        },
+        "secondary": {
+          "id": "d4e68342448bc03cea86535ed7577ce12cd2be0804b8b1f27d5c346abc474d64",
+          "pidOnHost": 3768,
+          "status": "running",
+          "exitCode": 0,
+          "networks": {
+            "e2f10-net": "10.78.30.12"
+          }
+        }
+      },
+      "outputRule": {
+        "observationSucceeded": true,
+        "value": "-P OUTPUT ACCEPT\n-A OUTPUT -d 10.78.30.12/32 -p tcp -m multiport --ports 11150,11151 -j DROP"
+      }
+    },
+    {
+      "utc": "2026-11-03T08:47:46.309596+00:00",
+      "phase": "scheduled-long-fault",
+      "elapsedSeconds": 48.23109784500002,
+      "sql": {
+        "utc": "2026-11-03T08:47:46.338418+00:00",
+        "operations": [
+          [
+            "c05-baseline",
+            1,
+            2,
+            11,
+            "COMMITTED"
+          ],
+          [
+            "c05-contested-id",
+            2,
+            1,
+            37,
+            "COMMITTED"
+          ]
+        ],
+        "effects": {
+          "committedOperations": 2,
+          "postings": 4,
+          "outboxEvents": 2
+        },
+        "oracle": {
+          "nonnegative": true,
+          "conserved": true,
+          "balancedPostings": true,
+          "twoPostingsPerCommit": true,
+          "noPostingsForRejection": true,
+          "outboxAtomic": true,
+          "projectionAgrees": true
+        },
+        "membershipGenerations": [
+          [
+            "10.78.30.11",
+            11150,
+            152700408,
+            3
+          ],
+          [
+            "10.78.30.12",
+            11151,
+            152700410,
+            3
+          ]
+        ]
+      },
+      "processes": {
+        "primary": {
+          "id": "a6e4a74a5cb4ff8806d09967dbc0308972dd82626ab59c6dec428e0e07ca411a",
+          "pidOnHost": 3618,
+          "status": "running",
+          "exitCode": 0,
+          "networks": {
+            "e2f10-net": "10.78.30.11"
+          }
+        },
+        "secondary": {
+          "id": "d4e68342448bc03cea86535ed7577ce12cd2be0804b8b1f27d5c346abc474d64",
+          "pidOnHost": 3768,
+          "status": "running",
+          "exitCode": 0,
+          "networks": {
+            "e2f10-net": "10.78.30.12"
+          }
+        }
+      },
+      "outputRule": {
+        "observationSucceeded": true,
+        "value": "-P OUTPUT ACCEPT\n-A OUTPUT -d 10.78.30.12/32 -p tcp -m multiport --ports 11150,11151 -j DROP"
+      }
+    },
+    {
+      "utc": "2026-11-03T08:47:48.586895+00:00",
+      "phase": "scheduled-long-fault",
+      "elapsedSeconds": 50.508398193000005,
+      "sql": {
+        "utc": "2026-11-03T08:47:48.614195+00:00",
+        "operations": [
+          [
+            "c05-baseline",
+            1,
+            2,
+            11,
+            "COMMITTED"
+          ],
+          [
+            "c05-contested-id",
+            2,
+            1,
+            37,
+            "COMMITTED"
+          ]
+        ],
+        "effects": {
+          "committedOperations": 2,
+          "postings": 4,
+          "outboxEvents": 2
+        },
+        "oracle": {
+          "nonnegative": true,
+          "conserved": true,
+          "balancedPostings": true,
+          "twoPostingsPerCommit": true,
+          "noPostingsForRejection": true,
+          "outboxAtomic": true,
+          "projectionAgrees": true
+        },
+        "membershipGenerations": [
+          [
+            "10.78.30.11",
+            11150,
+            152700408,
+            3
+          ],
+          [
+            "10.78.30.12",
+            11151,
+            152700410,
+            3
+          ]
+        ]
+      },
+      "processes": {
+        "primary": {
+          "id": "a6e4a74a5cb4ff8806d09967dbc0308972dd82626ab59c6dec428e0e07ca411a",
+          "pidOnHost": 3618,
+          "status": "running",
+          "exitCode": 0,
+          "networks": {
+            "e2f10-net": "10.78.30.11"
+          }
+        },
+        "secondary": {
+          "id": "d4e68342448bc03cea86535ed7577ce12cd2be0804b8b1f27d5c346abc474d64",
+          "pidOnHost": 3768,
+          "status": "running",
+          "exitCode": 0,
+          "networks": {
+            "e2f10-net": "10.78.30.12"
+          }
+        }
+      },
+      "outputRule": {
+        "observationSucceeded": true,
+        "value": "-P OUTPUT ACCEPT\n-A OUTPUT -d 10.78.30.12/32 -p tcp -m multiport --ports 11150,11151 -j DROP"
+      }
+    },
+    {
+      "utc": "2026-11-03T08:47:50.852452+00:00",
+      "phase": "scheduled-long-fault",
+      "elapsedSeconds": 52.77395414800003,
+      "sql": {
+        "utc": "2026-11-03T08:47:50.882945+00:00",
+        "operations": [
+          [
+            "c05-baseline",
+            1,
+            2,
+            11,
+            "COMMITTED"
+          ],
+          [
+            "c05-contested-id",
+            2,
+            1,
+            37,
+            "COMMITTED"
+          ]
+        ],
+        "effects": {
+          "committedOperations": 2,
+          "postings": 4,
+          "outboxEvents": 2
+        },
+        "oracle": {
+          "nonnegative": true,
+          "conserved": true,
+          "balancedPostings": true,
+          "twoPostingsPerCommit": true,
+          "noPostingsForRejection": true,
+          "outboxAtomic": true,
+          "projectionAgrees": true
+        },
+        "membershipGenerations": [
+          [
+            "10.78.30.11",
+            11150,
+            152700408,
+            3
+          ],
+          [
+            "10.78.30.12",
+            11151,
+            152700410,
+            3
+          ]
+        ]
+      },
+      "processes": {
+        "primary": {
+          "id": "a6e4a74a5cb4ff8806d09967dbc0308972dd82626ab59c6dec428e0e07ca411a",
+          "pidOnHost": 3618,
+          "status": "running",
+          "exitCode": 0,
+          "networks": {
+            "e2f10-net": "10.78.30.11"
+          }
+        },
+        "secondary": {
+          "id": "d4e68342448bc03cea86535ed7577ce12cd2be0804b8b1f27d5c346abc474d64",
+          "pidOnHost": 3768,
+          "status": "running",
+          "exitCode": 0,
+          "networks": {
+            "e2f10-net": "10.78.30.12"
+          }
+        }
+      },
+      "outputRule": {
+        "observationSucceeded": true,
+        "value": "-P OUTPUT ACCEPT\n-A OUTPUT -d 10.78.30.12/32 -p tcp -m multiport --ports 11150,11151 -j DROP"
+      }
+    },
+    {
+      "utc": "2026-11-03T08:47:53.114927+00:00",
+      "phase": "scheduled-long-fault",
+      "elapsedSeconds": 55.03642984500004,
+      "sql": {
+        "utc": "2026-11-03T08:47:53.142386+00:00",
+        "operations": [
+          [
+            "c05-baseline",
+            1,
+            2,
+            11,
+            "COMMITTED"
+          ],
+          [
+            "c05-contested-id",
+            2,
+            1,
+            37,
+            "COMMITTED"
+          ]
+        ],
+        "effects": {
+          "committedOperations": 2,
+          "postings": 4,
+          "outboxEvents": 2
+        },
+        "oracle": {
+          "nonnegative": true,
+          "conserved": true,
+          "balancedPostings": true,
+          "twoPostingsPerCommit": true,
+          "noPostingsForRejection": true,
+          "outboxAtomic": true,
+          "projectionAgrees": true
+        },
+        "membershipGenerations": [
+          [
+            "10.78.30.11",
+            11150,
+            152700408,
+            3
+          ],
+          [
+            "10.78.30.12",
+            11151,
+            152700410,
+            3
+          ]
+        ]
+      },
+      "processes": {
+        "primary": {
+          "id": "a6e4a74a5cb4ff8806d09967dbc0308972dd82626ab59c6dec428e0e07ca411a",
+          "pidOnHost": 3618,
+          "status": "running",
+          "exitCode": 0,
+          "networks": {
+            "e2f10-net": "10.78.30.11"
+          }
+        },
+        "secondary": {
+          "id": "d4e68342448bc03cea86535ed7577ce12cd2be0804b8b1f27d5c346abc474d64",
+          "pidOnHost": 3768,
+          "status": "running",
+          "exitCode": 0,
+          "networks": {
+            "e2f10-net": "10.78.30.12"
+          }
+        }
+      },
+      "outputRule": {
+        "observationSucceeded": true,
+        "value": "-P OUTPUT ACCEPT\n-A OUTPUT -d 10.78.30.12/32 -p tcp -m multiport --ports 11150,11151 -j DROP"
+      }
+    },
+    {
+      "utc": "2026-11-03T08:47:55.370083+00:00",
+      "phase": "scheduled-long-fault",
+      "elapsedSeconds": 57.29158414300002,
+      "sql": {
+        "utc": "2026-11-03T08:47:55.399315+00:00",
+        "operations": [
+          [
+            "c05-baseline",
+            1,
+            2,
+            11,
+            "COMMITTED"
+          ],
+          [
+            "c05-contested-id",
+            2,
+            1,
+            37,
+            "COMMITTED"
+          ]
+        ],
+        "effects": {
+          "committedOperations": 2,
+          "postings": 4,
+          "outboxEvents": 2
+        },
+        "oracle": {
+          "nonnegative": true,
+          "conserved": true,
+          "balancedPostings": true,
+          "twoPostingsPerCommit": true,
+          "noPostingsForRejection": true,
+          "outboxAtomic": true,
+          "projectionAgrees": true
+        },
+        "membershipGenerations": [
+          [
+            "10.78.30.11",
+            11150,
+            152700408,
+            3
+          ],
+          [
+            "10.78.30.12",
+            11151,
+            152700410,
+            3
+          ]
+        ]
+      },
+      "processes": {
+        "primary": {
+          "id": "a6e4a74a5cb4ff8806d09967dbc0308972dd82626ab59c6dec428e0e07ca411a",
+          "pidOnHost": 3618,
+          "status": "running",
+          "exitCode": 0,
+          "networks": {
+            "e2f10-net": "10.78.30.11"
+          }
+        },
+        "secondary": {
+          "id": "d4e68342448bc03cea86535ed7577ce12cd2be0804b8b1f27d5c346abc474d64",
+          "pidOnHost": 3768,
+          "status": "running",
+          "exitCode": 0,
+          "networks": {
+            "e2f10-net": "10.78.30.12"
+          }
+        }
+      },
+      "outputRule": {
+        "observationSucceeded": true,
+        "value": "-P OUTPUT ACCEPT\n-A OUTPUT -d 10.78.30.12/32 -p tcp -m multiport --ports 11150,11151 -j DROP"
+      }
+    },
+    {
+      "utc": "2026-11-03T08:47:57.631540+00:00",
+      "phase": "scheduled-long-fault",
+      "elapsedSeconds": 59.55304322400002,
+      "sql": {
+        "utc": "2026-11-03T08:47:57.658312+00:00",
+        "operations": [
+          [
+            "c05-baseline",
+            1,
+            2,
+            11,
+            "COMMITTED"
+          ],
+          [
+            "c05-contested-id",
+            2,
+            1,
+            37,
+            "COMMITTED"
+          ]
+        ],
+        "effects": {
+          "committedOperations": 2,
+          "postings": 4,
+          "outboxEvents": 2
+        },
+        "oracle": {
+          "nonnegative": true,
+          "conserved": true,
+          "balancedPostings": true,
+          "twoPostingsPerCommit": true,
+          "noPostingsForRejection": true,
+          "outboxAtomic": true,
+          "projectionAgrees": true
+        },
+        "membershipGenerations": [
+          [
+            "10.78.30.11",
+            11150,
+            152700408,
+            3
+          ],
+          [
+            "10.78.30.12",
+            11151,
+            152700410,
+            3
+          ]
+        ]
+      },
+      "processes": {
+        "primary": {
+          "id": "a6e4a74a5cb4ff8806d09967dbc0308972dd82626ab59c6dec428e0e07ca411a",
+          "pidOnHost": 3618,
+          "status": "running",
+          "exitCode": 0,
+          "networks": {
+            "e2f10-net": "10.78.30.11"
+          }
+        },
+        "secondary": {
+          "id": "d4e68342448bc03cea86535ed7577ce12cd2be0804b8b1f27d5c346abc474d64",
+          "pidOnHost": 3768,
+          "status": "running",
+          "exitCode": 0,
+          "networks": {
+            "e2f10-net": "10.78.30.12"
+          }
+        }
+      },
+      "outputRule": {
+        "observationSucceeded": true,
+        "value": "-P OUTPUT ACCEPT\n-A OUTPUT -d 10.78.30.12/32 -p tcp -m multiport --ports 11150,11151 -j DROP"
+      }
+    },
+    {
+      "utc": "2026-11-03T08:47:59.891627+00:00",
+      "phase": "scheduled-long-fault",
+      "elapsedSeconds": 61.813137960999995,
+      "sql": {
+        "utc": "2026-11-03T08:47:59.927151+00:00",
+        "operations": [
+          [
+            "c05-baseline",
+            1,
+            2,
+            11,
+            "COMMITTED"
+          ],
+          [
+            "c05-contested-id",
+            2,
+            1,
+            37,
+            "COMMITTED"
+          ]
+        ],
+        "effects": {
+          "committedOperations": 2,
+          "postings": 4,
+          "outboxEvents": 2
+        },
+        "oracle": {
+          "nonnegative": true,
+          "conserved": true,
+          "balancedPostings": true,
+          "twoPostingsPerCommit": true,
+          "noPostingsForRejection": true,
+          "outboxAtomic": true,
+          "projectionAgrees": true
+        },
+        "membershipGenerations": [
+          [
+            "10.78.30.11",
+            11150,
+            152700408,
+            3
+          ],
+          [
+            "10.78.30.12",
+            11151,
+            152700410,
+            6
+          ]
+        ]
+      },
+      "processes": {
+        "primary": {
+          "id": "a6e4a74a5cb4ff8806d09967dbc0308972dd82626ab59c6dec428e0e07ca411a",
+          "pidOnHost": 3618,
+          "status": "running",
+          "exitCode": 0,
+          "networks": {
+            "e2f10-net": "10.78.30.11"
+          }
+        },
+        "secondary": {
+          "id": "d4e68342448bc03cea86535ed7577ce12cd2be0804b8b1f27d5c346abc474d64",
+          "pidOnHost": 3768,
+          "status": "running",
+          "exitCode": 0,
+          "networks": {
+            "e2f10-net": "10.78.30.12"
+          }
+        }
+      },
+      "outputRule": {
+        "observationSucceeded": true,
+        "value": "-P OUTPUT ACCEPT\n-A OUTPUT -d 10.78.30.12/32 -p tcp -m multiport --ports 11150,11151 -j DROP"
+      }
+    },
+    {
+      "utc": "2026-11-03T08:48:11.538265+00:00",
+      "phase": "scheduled-long-fault",
+      "elapsedSeconds": 73.45976659900003,
+      "sql": {
+        "utc": "2026-11-03T08:48:11.565805+00:00",
+        "operations": [
+          [
+            "c05-baseline",
+            1,
+            2,
+            11,
+            "COMMITTED"
+          ],
+          [
+            "c05-contested-id",
+            2,
+            1,
+            37,
+            "COMMITTED"
+          ]
+        ],
+        "effects": {
+          "committedOperations": 2,
+          "postings": 4,
+          "outboxEvents": 2
+        },
+        "oracle": {
+          "nonnegative": true,
+          "conserved": true,
+          "balancedPostings": true,
+          "twoPostingsPerCommit": true,
+          "noPostingsForRejection": true,
+          "outboxAtomic": true,
+          "projectionAgrees": true
+        },
+        "membershipGenerations": [
+          [
+            "10.78.30.11",
+            11150,
+            152700408,
+            3
+          ],
+          [
+            "10.78.30.12",
+            11151,
+            152700410,
+            6
+          ]
+        ]
+      },
+      "processes": {
+        "primary": {
+          "id": "a6e4a74a5cb4ff8806d09967dbc0308972dd82626ab59c6dec428e0e07ca411a",
+          "pidOnHost": 3618,
+          "status": "running",
+          "exitCode": 0,
+          "networks": {
+            "e2f10-net": "10.78.30.11"
+          }
+        },
+        "secondary": {
+          "id": "d4e68342448bc03cea86535ed7577ce12cd2be0804b8b1f27d5c346abc474d64",
+          "pidOnHost": 0,
+          "status": "exited",
+          "exitCode": 139,
+          "networks": {
+            "e2f10-net": ""
+          }
+        }
+      },
+      "outputRule": {
+        "observationSucceeded": true,
+        "value": "-P OUTPUT ACCEPT\n-A OUTPUT -d 10.78.30.12/32 -p tcp -m multiport --ports 11150,11151 -j DROP"
+      }
+    },
+    {
+      "utc": "2026-11-03T08:48:13.797544+00:00",
+      "phase": "scheduled-long-fault",
+      "elapsedSeconds": 75.71904533000003,
+      "sql": {
+        "utc": "2026-11-03T08:48:13.826649+00:00",
+        "operations": [
+          [
+            "c05-baseline",
+            1,
+            2,
+            11,
+            "COMMITTED"
+          ],
+          [
+            "c05-contested-id",
+            2,
+            1,
+            37,
+            "COMMITTED"
+          ]
+        ],
+        "effects": {
+          "committedOperations": 2,
+          "postings": 4,
+          "outboxEvents": 2
+        },
+        "oracle": {
+          "nonnegative": true,
+          "conserved": true,
+          "balancedPostings": true,
+          "twoPostingsPerCommit": true,
+          "noPostingsForRejection": true,
+          "outboxAtomic": true,
+          "projectionAgrees": true
+        },
+        "membershipGenerations": [
+          [
+            "10.78.30.11",
+            11150,
+            152700408,
+            3
+          ],
+          [
+            "10.78.30.12",
+            11151,
+            152700410,
+            6
+          ]
+        ]
+      },
+      "processes": {
+        "primary": {
+          "id": "a6e4a74a5cb4ff8806d09967dbc0308972dd82626ab59c6dec428e0e07ca411a",
+          "pidOnHost": 3618,
+          "status": "running",
+          "exitCode": 0,
+          "networks": {
+            "e2f10-net": "10.78.30.11"
+          }
+        },
+        "secondary": {
+          "id": "d4e68342448bc03cea86535ed7577ce12cd2be0804b8b1f27d5c346abc474d64",
+          "pidOnHost": 0,
+          "status": "exited",
+          "exitCode": 139,
+          "networks": {
+            "e2f10-net": ""
+          }
+        }
+      },
+      "outputRule": {
+        "observationSucceeded": true,
+        "value": "-P OUTPUT ACCEPT\n-A OUTPUT -d 10.78.30.12/32 -p tcp -m multiport --ports 11150,11151 -j DROP"
+      }
+    },
+    {
+      "utc": "2026-11-03T08:48:16.074788+00:00",
+      "phase": "scheduled-long-fault",
+      "elapsedSeconds": 77.99629063900005,
+      "sql": {
+        "utc": "2026-11-03T08:48:16.102882+00:00",
+        "operations": [
+          [
+            "c05-baseline",
+            1,
+            2,
+            11,
+            "COMMITTED"
+          ],
+          [
+            "c05-contested-id",
+            2,
+            1,
+            37,
+            "COMMITTED"
+          ]
+        ],
+        "effects": {
+          "committedOperations": 2,
+          "postings": 4,
+          "outboxEvents": 2
+        },
+        "oracle": {
+          "nonnegative": true,
+          "conserved": true,
+          "balancedPostings": true,
+          "twoPostingsPerCommit": true,
+          "noPostingsForRejection": true,
+          "outboxAtomic": true,
+          "projectionAgrees": true
+        },
+        "membershipGenerations": [
+          [
+            "10.78.30.11",
+            11150,
+            152700408,
+            3
+          ],
+          [
+            "10.78.30.12",
+            11151,
+            152700410,
+            6
+          ]
+        ]
+      },
+      "processes": {
+        "primary": {
+          "id": "a6e4a74a5cb4ff8806d09967dbc0308972dd82626ab59c6dec428e0e07ca411a",
+          "pidOnHost": 3618,
+          "status": "running",
+          "exitCode": 0,
+          "networks": {
+            "e2f10-net": "10.78.30.11"
+          }
+        },
+        "secondary": {
+          "id": "d4e68342448bc03cea86535ed7577ce12cd2be0804b8b1f27d5c346abc474d64",
+          "pidOnHost": 0,
+          "status": "exited",
+          "exitCode": 139,
+          "networks": {
+            "e2f10-net": ""
+          }
+        }
+      },
+      "outputRule": {
+        "observationSucceeded": true,
+        "value": "-P OUTPUT ACCEPT\n-A OUTPUT -d 10.78.30.12/32 -p tcp -m multiport --ports 11150,11151 -j DROP"
+      }
+    },
+    {
+      "utc": "2026-11-03T08:48:18.336400+00:00",
+      "phase": "scheduled-long-fault",
+      "elapsedSeconds": 80.25790001299998,
+      "sql": {
+        "utc": "2026-11-03T08:48:18.363194+00:00",
+        "operations": [
+          [
+            "c05-baseline",
+            1,
+            2,
+            11,
+            "COMMITTED"
+          ],
+          [
+            "c05-contested-id",
+            2,
+            1,
+            37,
+            "COMMITTED"
+          ]
+        ],
+        "effects": {
+          "committedOperations": 2,
+          "postings": 4,
+          "outboxEvents": 2
+        },
+        "oracle": {
+          "nonnegative": true,
+          "conserved": true,
+          "balancedPostings": true,
+          "twoPostingsPerCommit": true,
+          "noPostingsForRejection": true,
+          "outboxAtomic": true,
+          "projectionAgrees": true
+        },
+        "membershipGenerations": [
+          [
+            "10.78.30.11",
+            11150,
+            152700408,
+            3
+          ],
+          [
+            "10.78.30.12",
+            11151,
+            152700410,
+            6
+          ]
+        ]
+      },
+      "processes": {
+        "primary": {
+          "id": "a6e4a74a5cb4ff8806d09967dbc0308972dd82626ab59c6dec428e0e07ca411a",
+          "pidOnHost": 3618,
+          "status": "running",
+          "exitCode": 0,
+          "networks": {
+            "e2f10-net": "10.78.30.11"
+          }
+        },
+        "secondary": {
+          "id": "d4e68342448bc03cea86535ed7577ce12cd2be0804b8b1f27d5c346abc474d64",
+          "pidOnHost": 0,
+          "status": "exited",
+          "exitCode": 139,
+          "networks": {
+            "e2f10-net": ""
+          }
+        }
+      },
+      "outputRule": {
+        "observationSucceeded": true,
+        "value": "-P OUTPUT ACCEPT\n-A OUTPUT -d 10.78.30.12/32 -p tcp -m multiport --ports 11150,11151 -j DROP"
+      }
+    },
+    {
+      "utc": "2026-11-03T08:48:20.592753+00:00",
+      "phase": "scheduled-long-fault",
+      "elapsedSeconds": 82.51425768600001,
+      "sql": {
+        "utc": "2026-11-03T08:48:20.623220+00:00",
+        "operations": [
+          [
+            "c05-baseline",
+            1,
+            2,
+            11,
+            "COMMITTED"
+          ],
+          [
+            "c05-contested-id",
+            2,
+            1,
+            37,
+            "COMMITTED"
+          ]
+        ],
+        "effects": {
+          "committedOperations": 2,
+          "postings": 4,
+          "outboxEvents": 2
+        },
+        "oracle": {
+          "nonnegative": true,
+          "conserved": true,
+          "balancedPostings": true,
+          "twoPostingsPerCommit": true,
+          "noPostingsForRejection": true,
+          "outboxAtomic": true,
+          "projectionAgrees": true
+        },
+        "membershipGenerations": [
+          [
+            "10.78.30.11",
+            11150,
+            152700408,
+            3
+          ],
+          [
+            "10.78.30.12",
+            11151,
+            152700410,
+            6
+          ]
+        ]
+      },
+      "processes": {
+        "primary": {
+          "id": "a6e4a74a5cb4ff8806d09967dbc0308972dd82626ab59c6dec428e0e07ca411a",
+          "pidOnHost": 3618,
+          "status": "running",
+          "exitCode": 0,
+          "networks": {
+            "e2f10-net": "10.78.30.11"
+          }
+        },
+        "secondary": {
+          "id": "d4e68342448bc03cea86535ed7577ce12cd2be0804b8b1f27d5c346abc474d64",
+          "pidOnHost": 0,
+          "status": "exited",
+          "exitCode": 139,
+          "networks": {
+            "e2f10-net": ""
+          }
+        }
+      },
+      "outputRule": {
+        "observationSucceeded": true,
+        "value": "-P OUTPUT ACCEPT\n-A OUTPUT -d 10.78.30.12/32 -p tcp -m multiport --ports 11150,11151 -j DROP"
+      }
+    },
+    {
+      "utc": "2026-11-03T08:48:22.866265+00:00",
+      "phase": "scheduled-long-fault",
+      "elapsedSeconds": 84.78776475500007,
+      "sql": {
+        "utc": "2026-11-03T08:48:22.894282+00:00",
+        "operations": [
+          [
+            "c05-baseline",
+            1,
+            2,
+            11,
+            "COMMITTED"
+          ],
+          [
+            "c05-contested-id",
+            2,
+            1,
+            37,
+            "COMMITTED"
+          ]
+        ],
+        "effects": {
+          "committedOperations": 2,
+          "postings": 4,
+          "outboxEvents": 2
+        },
+        "oracle": {
+          "nonnegative": true,
+          "conserved": true,
+          "balancedPostings": true,
+          "twoPostingsPerCommit": true,
+          "noPostingsForRejection": true,
+          "outboxAtomic": true,
+          "projectionAgrees": true
+        },
+        "membershipGenerations": [
+          [
+            "10.78.30.11",
+            11150,
+            152700408,
+            3
+          ],
+          [
+            "10.78.30.12",
+            11151,
+            152700410,
+            6
+          ]
+        ]
+      },
+      "processes": {
+        "primary": {
+          "id": "a6e4a74a5cb4ff8806d09967dbc0308972dd82626ab59c6dec428e0e07ca411a",
+          "pidOnHost": 3618,
+          "status": "running",
+          "exitCode": 0,
+          "networks": {
+            "e2f10-net": "10.78.30.11"
+          }
+        },
+        "secondary": {
+          "id": "d4e68342448bc03cea86535ed7577ce12cd2be0804b8b1f27d5c346abc474d64",
+          "pidOnHost": 0,
+          "status": "exited",
+          "exitCode": 139,
+          "networks": {
+            "e2f10-net": ""
+          }
+        }
+      },
+      "outputRule": {
+        "observationSucceeded": true,
+        "value": "-P OUTPUT ACCEPT\n-A OUTPUT -d 10.78.30.12/32 -p tcp -m multiport --ports 11150,11151 -j DROP"
+      }
+    },
+    {
+      "utc": "2026-11-03T08:48:25.126734+00:00",
+      "phase": "scheduled-long-fault",
+      "elapsedSeconds": 87.04823742900004,
+      "sql": {
+        "utc": "2026-11-03T08:48:25.154658+00:00",
+        "operations": [
+          [
+            "c05-baseline",
+            1,
+            2,
+            11,
+            "COMMITTED"
+          ],
+          [
+            "c05-contested-id",
+            2,
+            1,
+            37,
+            "COMMITTED"
+          ]
+        ],
+        "effects": {
+          "committedOperations": 2,
+          "postings": 4,
+          "outboxEvents": 2
+        },
+        "oracle": {
+          "nonnegative": true,
+          "conserved": true,
+          "balancedPostings": true,
+          "twoPostingsPerCommit": true,
+          "noPostingsForRejection": true,
+          "outboxAtomic": true,
+          "projectionAgrees": true
+        },
+        "membershipGenerations": [
+          [
+            "10.78.30.11",
+            11150,
+            152700408,
+            3
+          ],
+          [
+            "10.78.30.12",
+            11151,
+            152700410,
+            6
+          ]
+        ]
+      },
+      "processes": {
+        "primary": {
+          "id": "a6e4a74a5cb4ff8806d09967dbc0308972dd82626ab59c6dec428e0e07ca411a",
+          "pidOnHost": 3618,
+          "status": "running",
+          "exitCode": 0,
+          "networks": {
+            "e2f10-net": "10.78.30.11"
+          }
+        },
+        "secondary": {
+          "id": "d4e68342448bc03cea86535ed7577ce12cd2be0804b8b1f27d5c346abc474d64",
+          "pidOnHost": 0,
+          "status": "exited",
+          "exitCode": 139,
+          "networks": {
+            "e2f10-net": ""
+          }
+        }
+      },
+      "outputRule": {
+        "observationSucceeded": true,
+        "value": "-P OUTPUT ACCEPT\n-A OUTPUT -d 10.78.30.12/32 -p tcp -m multiport --ports 11150,11151 -j DROP"
+      }
+    },
+    {
+      "utc": "2026-11-03T08:48:27.396133+00:00",
+      "phase": "scheduled-long-fault",
+      "elapsedSeconds": 89.31763557599999,
+      "sql": {
+        "utc": "2026-11-03T08:48:27.423486+00:00",
+        "operations": [
+          [
+            "c05-baseline",
+            1,
+            2,
+            11,
+            "COMMITTED"
+          ],
+          [
+            "c05-contested-id",
+            2,
+            1,
+            37,
+            "COMMITTED"
+          ]
+        ],
+        "effects": {
+          "committedOperations": 2,
+          "postings": 4,
+          "outboxEvents": 2
+        },
+        "oracle": {
+          "nonnegative": true,
+          "conserved": true,
+          "balancedPostings": true,
+          "twoPostingsPerCommit": true,
+          "noPostingsForRejection": true,
+          "outboxAtomic": true,
+          "projectionAgrees": true
+        },
+        "membershipGenerations": [
+          [
+            "10.78.30.11",
+            11150,
+            152700408,
+            3
+          ],
+          [
+            "10.78.30.12",
+            11151,
+            152700410,
+            6
+          ]
+        ]
+      },
+      "processes": {
+        "primary": {
+          "id": "a6e4a74a5cb4ff8806d09967dbc0308972dd82626ab59c6dec428e0e07ca411a",
+          "pidOnHost": 3618,
+          "status": "running",
+          "exitCode": 0,
+          "networks": {
+            "e2f10-net": "10.78.30.11"
+          }
+        },
+        "secondary": {
+          "id": "d4e68342448bc03cea86535ed7577ce12cd2be0804b8b1f27d5c346abc474d64",
+          "pidOnHost": 0,
+          "status": "exited",
+          "exitCode": 139,
+          "networks": {
+            "e2f10-net": ""
+          }
+        }
+      },
+      "outputRule": {
+        "observationSucceeded": true,
+        "value": "-P OUTPUT ACCEPT\n-A OUTPUT -d 10.78.30.12/32 -p tcp -m multiport --ports 11150,11151 -j DROP"
+      }
+    },
+    {
+      "utc": "2026-11-03T08:48:29.663302+00:00",
+      "phase": "scheduled-long-fault",
+      "elapsedSeconds": 91.584802765,
+      "sql": {
+        "utc": "2026-11-03T08:48:29.692145+00:00",
+        "operations": [
+          [
+            "c05-baseline",
+            1,
+            2,
+            11,
+            "COMMITTED"
+          ],
+          [
+            "c05-contested-id",
+            2,
+            1,
+            37,
+            "COMMITTED"
+          ]
+        ],
+        "effects": {
+          "committedOperations": 2,
+          "postings": 4,
+          "outboxEvents": 2
+        },
+        "oracle": {
+          "nonnegative": true,
+          "conserved": true,
+          "balancedPostings": true,
+          "twoPostingsPerCommit": true,
+          "noPostingsForRejection": true,
+          "outboxAtomic": true,
+          "projectionAgrees": true
+        },
+        "membershipGenerations": [
+          [
+            "10.78.30.11",
+            11150,
+            152700408,
+            3
+          ],
+          [
+            "10.78.30.12",
+            11151,
+            152700410,
+            6
+          ]
+        ]
+      },
+      "processes": {
+        "primary": {
+          "id": "a6e4a74a5cb4ff8806d09967dbc0308972dd82626ab59c6dec428e0e07ca411a",
+          "pidOnHost": 3618,
+          "status": "running",
+          "exitCode": 0,
+          "networks": {
+            "e2f10-net": "10.78.30.11"
+          }
+        },
+        "secondary": {
+          "id": "d4e68342448bc03cea86535ed7577ce12cd2be0804b8b1f27d5c346abc474d64",
+          "pidOnHost": 0,
+          "status": "exited",
+          "exitCode": 139,
+          "networks": {
+            "e2f10-net": ""
+          }
+        }
+      },
+      "outputRule": {
+        "observationSucceeded": true,
+        "value": "-P OUTPUT ACCEPT\n-A OUTPUT -d 10.78.30.12/32 -p tcp -m multiport --ports 11150,11151 -j DROP"
+      }
+    },
+    {
+      "utc": "2026-11-03T08:48:31.939829+00:00",
+      "phase": "scheduled-long-fault",
+      "elapsedSeconds": 93.86133054700002,
+      "sql": {
+        "utc": "2026-11-03T08:48:31.967665+00:00",
+        "operations": [
+          [
+            "c05-baseline",
+            1,
+            2,
+            11,
+            "COMMITTED"
+          ],
+          [
+            "c05-contested-id",
+            2,
+            1,
+            37,
+            "COMMITTED"
+          ]
+        ],
+        "effects": {
+          "committedOperations": 2,
+          "postings": 4,
+          "outboxEvents": 2
+        },
+        "oracle": {
+          "nonnegative": true,
+          "conserved": true,
+          "balancedPostings": true,
+          "twoPostingsPerCommit": true,
+          "noPostingsForRejection": true,
+          "outboxAtomic": true,
+          "projectionAgrees": true
+        },
+        "membershipGenerations": [
+          [
+            "10.78.30.11",
+            11150,
+            152700408,
+            3
+          ],
+          [
+            "10.78.30.12",
+            11151,
+            152700410,
+            6
+          ]
+        ]
+      },
+      "processes": {
+        "primary": {
+          "id": "a6e4a74a5cb4ff8806d09967dbc0308972dd82626ab59c6dec428e0e07ca411a",
+          "pidOnHost": 3618,
+          "status": "running",
+          "exitCode": 0,
+          "networks": {
+            "e2f10-net": "10.78.30.11"
+          }
+        },
+        "secondary": {
+          "id": "d4e68342448bc03cea86535ed7577ce12cd2be0804b8b1f27d5c346abc474d64",
+          "pidOnHost": 0,
+          "status": "exited",
+          "exitCode": 139,
+          "networks": {
+            "e2f10-net": ""
+          }
+        }
+      },
+      "outputRule": {
+        "observationSucceeded": true,
+        "value": "-P OUTPUT ACCEPT\n-A OUTPUT -d 10.78.30.12/32 -p tcp -m multiport --ports 11150,11151 -j DROP"
+      }
+    },
+    {
+      "utc": "2026-11-03T08:48:34.209495+00:00",
+      "phase": "scheduled-long-fault",
+      "elapsedSeconds": 96.13099788799997,
+      "sql": {
+        "utc": "2026-11-03T08:48:34.239213+00:00",
+        "operations": [
+          [
+            "c05-baseline",
+            1,
+            2,
+            11,
+            "COMMITTED"
+          ],
+          [
+            "c05-contested-id",
+            2,
+            1,
+            37,
+            "COMMITTED"
+          ]
+        ],
+        "effects": {
+          "committedOperations": 2,
+          "postings": 4,
+          "outboxEvents": 2
+        },
+        "oracle": {
+          "nonnegative": true,
+          "conserved": true,
+          "balancedPostings": true,
+          "twoPostingsPerCommit": true,
+          "noPostingsForRejection": true,
+          "outboxAtomic": true,
+          "projectionAgrees": true
+        },
+        "membershipGenerations": [
+          [
+            "10.78.30.11",
+            11150,
+            152700408,
+            3
+          ],
+          [
+            "10.78.30.12",
+            11151,
+            152700410,
+            6
+          ]
+        ]
+      },
+      "processes": {
+        "primary": {
+          "id": "a6e4a74a5cb4ff8806d09967dbc0308972dd82626ab59c6dec428e0e07ca411a",
+          "pidOnHost": 3618,
+          "status": "running",
+          "exitCode": 0,
+          "networks": {
+            "e2f10-net": "10.78.30.11"
+          }
+        },
+        "secondary": {
+          "id": "d4e68342448bc03cea86535ed7577ce12cd2be0804b8b1f27d5c346abc474d64",
+          "pidOnHost": 0,
+          "status": "exited",
+          "exitCode": 139,
+          "networks": {
+            "e2f10-net": ""
+          }
+        }
+      },
+      "outputRule": {
+        "observationSucceeded": true,
+        "value": "-P OUTPUT ACCEPT\n-A OUTPUT -d 10.78.30.12/32 -p tcp -m multiport --ports 11150,11151 -j DROP"
+      }
+    },
+    {
+      "utc": "2026-11-03T08:48:36.483208+00:00",
+      "phase": "scheduled-long-fault",
+      "elapsedSeconds": 98.40470941300003,
+      "sql": {
+        "utc": "2026-11-03T08:48:36.511964+00:00",
+        "operations": [
+          [
+            "c05-baseline",
+            1,
+            2,
+            11,
+            "COMMITTED"
+          ],
+          [
+            "c05-contested-id",
+            2,
+            1,
+            37,
+            "COMMITTED"
+          ]
+        ],
+        "effects": {
+          "committedOperations": 2,
+          "postings": 4,
+          "outboxEvents": 2
+        },
+        "oracle": {
+          "nonnegative": true,
+          "conserved": true,
+          "balancedPostings": true,
+          "twoPostingsPerCommit": true,
+          "noPostingsForRejection": true,
+          "outboxAtomic": true,
+          "projectionAgrees": true
+        },
+        "membershipGenerations": [
+          [
+            "10.78.30.11",
+            11150,
+            152700408,
+            3
+          ],
+          [
+            "10.78.30.12",
+            11151,
+            152700410,
+            6
+          ]
+        ]
+      },
+      "processes": {
+        "primary": {
+          "id": "a6e4a74a5cb4ff8806d09967dbc0308972dd82626ab59c6dec428e0e07ca411a",
+          "pidOnHost": 3618,
+          "status": "running",
+          "exitCode": 0,
+          "networks": {
+            "e2f10-net": "10.78.30.11"
+          }
+        },
+        "secondary": {
+          "id": "d4e68342448bc03cea86535ed7577ce12cd2be0804b8b1f27d5c346abc474d64",
+          "pidOnHost": 0,
+          "status": "exited",
+          "exitCode": 139,
+          "networks": {
+            "e2f10-net": ""
+          }
+        }
+      },
+      "outputRule": {
+        "observationSucceeded": true,
+        "value": "-P OUTPUT ACCEPT\n-A OUTPUT -d 10.78.30.12/32 -p tcp -m multiport --ports 11150,11151 -j DROP"
+      }
+    },
+    {
+      "utc": "2026-11-03T08:48:38.738964+00:00",
+      "phase": "scheduled-long-fault",
+      "elapsedSeconds": 100.66046606900005,
+      "sql": {
+        "utc": "2026-11-03T08:48:38.766818+00:00",
+        "operations": [
+          [
+            "c05-baseline",
+            1,
+            2,
+            11,
+            "COMMITTED"
+          ],
+          [
+            "c05-contested-id",
+            2,
+            1,
+            37,
+            "COMMITTED"
+          ]
+        ],
+        "effects": {
+          "committedOperations": 2,
+          "postings": 4,
+          "outboxEvents": 2
+        },
+        "oracle": {
+          "nonnegative": true,
+          "conserved": true,
+          "balancedPostings": true,
+          "twoPostingsPerCommit": true,
+          "noPostingsForRejection": true,
+          "outboxAtomic": true,
+          "projectionAgrees": true
+        },
+        "membershipGenerations": [
+          [
+            "10.78.30.11",
+            11150,
+            152700408,
+            3
+          ],
+          [
+            "10.78.30.12",
+            11151,
+            152700410,
+            6
+          ]
+        ]
+      },
+      "processes": {
+        "primary": {
+          "id": "a6e4a74a5cb4ff8806d09967dbc0308972dd82626ab59c6dec428e0e07ca411a",
+          "pidOnHost": 3618,
+          "status": "running",
+          "exitCode": 0,
+          "networks": {
+            "e2f10-net": "10.78.30.11"
+          }
+        },
+        "secondary": {
+          "id": "d4e68342448bc03cea86535ed7577ce12cd2be0804b8b1f27d5c346abc474d64",
+          "pidOnHost": 0,
+          "status": "exited",
+          "exitCode": 139,
+          "networks": {
+            "e2f10-net": ""
+          }
+        }
+      },
+      "outputRule": {
+        "observationSucceeded": true,
+        "value": "-P OUTPUT ACCEPT\n-A OUTPUT -d 10.78.30.12/32 -p tcp -m multiport --ports 11150,11151 -j DROP"
+      }
+    },
+    {
+      "utc": "2026-11-03T08:48:40.999995+00:00",
+      "phase": "scheduled-long-fault",
+      "elapsedSeconds": 102.92149556300006,
+      "sql": {
+        "utc": "2026-11-03T08:48:41.028200+00:00",
+        "operations": [
+          [
+            "c05-baseline",
+            1,
+            2,
+            11,
+            "COMMITTED"
+          ],
+          [
+            "c05-contested-id",
+            2,
+            1,
+            37,
+            "COMMITTED"
+          ]
+        ],
+        "effects": {
+          "committedOperations": 2,
+          "postings": 4,
+          "outboxEvents": 2
+        },
+        "oracle": {
+          "nonnegative": true,
+          "conserved": true,
+          "balancedPostings": true,
+          "twoPostingsPerCommit": true,
+          "noPostingsForRejection": true,
+          "outboxAtomic": true,
+          "projectionAgrees": true
+        },
+        "membershipGenerations": [
+          [
+            "10.78.30.11",
+            11150,
+            152700408,
+            3
+          ],
+          [
+            "10.78.30.12",
+            11151,
+            152700410,
+            6
+          ]
+        ]
+      },
+      "processes": {
+        "primary": {
+          "id": "a6e4a74a5cb4ff8806d09967dbc0308972dd82626ab59c6dec428e0e07ca411a",
+          "pidOnHost": 3618,
+          "status": "running",
+          "exitCode": 0,
+          "networks": {
+            "e2f10-net": "10.78.30.11"
+          }
+        },
+        "secondary": {
+          "id": "d4e68342448bc03cea86535ed7577ce12cd2be0804b8b1f27d5c346abc474d64",
+          "pidOnHost": 0,
+          "status": "exited",
+          "exitCode": 139,
+          "networks": {
+            "e2f10-net": ""
+          }
+        }
+      },
+      "outputRule": {
+        "observationSucceeded": true,
+        "value": "-P OUTPUT ACCEPT\n-A OUTPUT -d 10.78.30.12/32 -p tcp -m multiport --ports 11150,11151 -j DROP"
+      }
+    },
+    {
+      "utc": "2026-11-03T08:48:43.266216+00:00",
+      "phase": "scheduled-long-fault",
+      "elapsedSeconds": 105.18771580900005,
+      "sql": {
+        "utc": "2026-11-03T08:48:43.294056+00:00",
+        "operations": [
+          [
+            "c05-baseline",
+            1,
+            2,
+            11,
+            "COMMITTED"
+          ],
+          [
+            "c05-contested-id",
+            2,
+            1,
+            37,
+            "COMMITTED"
+          ]
+        ],
+        "effects": {
+          "committedOperations": 2,
+          "postings": 4,
+          "outboxEvents": 2
+        },
+        "oracle": {
+          "nonnegative": true,
+          "conserved": true,
+          "balancedPostings": true,
+          "twoPostingsPerCommit": true,
+          "noPostingsForRejection": true,
+          "outboxAtomic": true,
+          "projectionAgrees": true
+        },
+        "membershipGenerations": [
+          [
+            "10.78.30.11",
+            11150,
+            152700408,
+            3
+          ],
+          [
+            "10.78.30.12",
+            11151,
+            152700410,
+            6
+          ]
+        ]
+      },
+      "processes": {
+        "primary": {
+          "id": "a6e4a74a5cb4ff8806d09967dbc0308972dd82626ab59c6dec428e0e07ca411a",
+          "pidOnHost": 3618,
+          "status": "running",
+          "exitCode": 0,
+          "networks": {
+            "e2f10-net": "10.78.30.11"
+          }
+        },
+        "secondary": {
+          "id": "d4e68342448bc03cea86535ed7577ce12cd2be0804b8b1f27d5c346abc474d64",
+          "pidOnHost": 0,
+          "status": "exited",
+          "exitCode": 139,
+          "networks": {
+            "e2f10-net": ""
+          }
+        }
+      },
+      "outputRule": {
+        "observationSucceeded": true,
+        "value": "-P OUTPUT ACCEPT\n-A OUTPUT -d 10.78.30.12/32 -p tcp -m multiport --ports 11150,11151 -j DROP"
+      }
+    },
+    {
+      "utc": "2026-11-03T08:48:45.534855+00:00",
+      "phase": "scheduled-long-fault",
+      "elapsedSeconds": 107.45635641999996,
+      "sql": {
+        "utc": "2026-11-03T08:48:45.562208+00:00",
+        "operations": [
+          [
+            "c05-baseline",
+            1,
+            2,
+            11,
+            "COMMITTED"
+          ],
+          [
+            "c05-contested-id",
+            2,
+            1,
+            37,
+            "COMMITTED"
+          ]
+        ],
+        "effects": {
+          "committedOperations": 2,
+          "postings": 4,
+          "outboxEvents": 2
+        },
+        "oracle": {
+          "nonnegative": true,
+          "conserved": true,
+          "balancedPostings": true,
+          "twoPostingsPerCommit": true,
+          "noPostingsForRejection": true,
+          "outboxAtomic": true,
+          "projectionAgrees": true
+        },
+        "membershipGenerations": [
+          [
+            "10.78.30.11",
+            11150,
+            152700408,
+            3
+          ],
+          [
+            "10.78.30.12",
+            11151,
+            152700410,
+            6
+          ]
+        ]
+      },
+      "processes": {
+        "primary": {
+          "id": "a6e4a74a5cb4ff8806d09967dbc0308972dd82626ab59c6dec428e0e07ca411a",
+          "pidOnHost": 3618,
+          "status": "running",
+          "exitCode": 0,
+          "networks": {
+            "e2f10-net": "10.78.30.11"
+          }
+        },
+        "secondary": {
+          "id": "d4e68342448bc03cea86535ed7577ce12cd2be0804b8b1f27d5c346abc474d64",
+          "pidOnHost": 0,
+          "status": "exited",
+          "exitCode": 139,
+          "networks": {
+            "e2f10-net": ""
+          }
+        }
+      },
+      "outputRule": {
+        "observationSucceeded": true,
+        "value": "-P OUTPUT ACCEPT\n-A OUTPUT -d 10.78.30.12/32 -p tcp -m multiport --ports 11150,11151 -j DROP"
+      }
+    },
+    {
+      "utc": "2026-11-03T08:48:47.787395+00:00",
+      "phase": "scheduled-long-fault",
+      "elapsedSeconds": 109.70889668000001,
+      "sql": {
+        "utc": "2026-11-03T08:48:47.815212+00:00",
+        "operations": [
+          [
+            "c05-baseline",
+            1,
+            2,
+            11,
+            "COMMITTED"
+          ],
+          [
+            "c05-contested-id",
+            2,
+            1,
+            37,
+            "COMMITTED"
+          ]
+        ],
+        "effects": {
+          "committedOperations": 2,
+          "postings": 4,
+          "outboxEvents": 2
+        },
+        "oracle": {
+          "nonnegative": true,
+          "conserved": true,
+          "balancedPostings": true,
+          "twoPostingsPerCommit": true,
+          "noPostingsForRejection": true,
+          "outboxAtomic": true,
+          "projectionAgrees": true
+        },
+        "membershipGenerations": [
+          [
+            "10.78.30.11",
+            11150,
+            152700408,
+            3
+          ],
+          [
+            "10.78.30.12",
+            11151,
+            152700410,
+            6
+          ]
+        ]
+      },
+      "processes": {
+        "primary": {
+          "id": "a6e4a74a5cb4ff8806d09967dbc0308972dd82626ab59c6dec428e0e07ca411a",
+          "pidOnHost": 3618,
+          "status": "running",
+          "exitCode": 0,
+          "networks": {
+            "e2f10-net": "10.78.30.11"
+          }
+        },
+        "secondary": {
+          "id": "d4e68342448bc03cea86535ed7577ce12cd2be0804b8b1f27d5c346abc474d64",
+          "pidOnHost": 0,
+          "status": "exited",
+          "exitCode": 139,
+          "networks": {
+            "e2f10-net": ""
+          }
+        }
+      },
+      "outputRule": {
+        "observationSucceeded": true,
+        "value": "-P OUTPUT ACCEPT\n-A OUTPUT -d 10.78.30.12/32 -p tcp -m multiport --ports 11150,11151 -j DROP"
+      }
+    },
+    {
+      "utc": "2026-11-03T08:48:50.040718+00:00",
+      "phase": "scheduled-long-fault",
+      "elapsedSeconds": 111.96222081600007,
+      "sql": {
+        "utc": "2026-11-03T08:48:50.068025+00:00",
+        "operations": [
+          [
+            "c05-baseline",
+            1,
+            2,
+            11,
+            "COMMITTED"
+          ],
+          [
+            "c05-contested-id",
+            2,
+            1,
+            37,
+            "COMMITTED"
+          ]
+        ],
+        "effects": {
+          "committedOperations": 2,
+          "postings": 4,
+          "outboxEvents": 2
+        },
+        "oracle": {
+          "nonnegative": true,
+          "conserved": true,
+          "balancedPostings": true,
+          "twoPostingsPerCommit": true,
+          "noPostingsForRejection": true,
+          "outboxAtomic": true,
+          "projectionAgrees": true
+        },
+        "membershipGenerations": [
+          [
+            "10.78.30.11",
+            11150,
+            152700408,
+            3
+          ],
+          [
+            "10.78.30.12",
+            11151,
+            152700410,
+            6
+          ]
+        ]
+      },
+      "processes": {
+        "primary": {
+          "id": "a6e4a74a5cb4ff8806d09967dbc0308972dd82626ab59c6dec428e0e07ca411a",
+          "pidOnHost": 3618,
+          "status": "running",
+          "exitCode": 0,
+          "networks": {
+            "e2f10-net": "10.78.30.11"
+          }
+        },
+        "secondary": {
+          "id": "d4e68342448bc03cea86535ed7577ce12cd2be0804b8b1f27d5c346abc474d64",
+          "pidOnHost": 0,
+          "status": "exited",
+          "exitCode": 139,
+          "networks": {
+            "e2f10-net": ""
+          }
+        }
+      },
+      "outputRule": {
+        "observationSucceeded": true,
+        "value": "-P OUTPUT ACCEPT\n-A OUTPUT -d 10.78.30.12/32 -p tcp -m multiport --ports 11150,11151 -j DROP"
+      }
+    },
+    {
+      "utc": "2026-11-03T08:48:52.299226+00:00",
+      "phase": "scheduled-long-fault",
+      "elapsedSeconds": 114.22072971799997,
+      "sql": {
+        "utc": "2026-11-03T08:48:52.328035+00:00",
+        "operations": [
+          [
+            "c05-baseline",
+            1,
+            2,
+            11,
+            "COMMITTED"
+          ],
+          [
+            "c05-contested-id",
+            2,
+            1,
+            37,
+            "COMMITTED"
+          ]
+        ],
+        "effects": {
+          "committedOperations": 2,
+          "postings": 4,
+          "outboxEvents": 2
+        },
+        "oracle": {
+          "nonnegative": true,
+          "conserved": true,
+          "balancedPostings": true,
+          "twoPostingsPerCommit": true,
+          "noPostingsForRejection": true,
+          "outboxAtomic": true,
+          "projectionAgrees": true
+        },
+        "membershipGenerations": [
+          [
+            "10.78.30.11",
+            11150,
+            152700408,
+            3
+          ],
+          [
+            "10.78.30.12",
+            11151,
+            152700410,
+            6
+          ]
+        ]
+      },
+      "processes": {
+        "primary": {
+          "id": "a6e4a74a5cb4ff8806d09967dbc0308972dd82626ab59c6dec428e0e07ca411a",
+          "pidOnHost": 3618,
+          "status": "running",
+          "exitCode": 0,
+          "networks": {
+            "e2f10-net": "10.78.30.11"
+          }
+        },
+        "secondary": {
+          "id": "d4e68342448bc03cea86535ed7577ce12cd2be0804b8b1f27d5c346abc474d64",
+          "pidOnHost": 0,
+          "status": "exited",
+          "exitCode": 139,
+          "networks": {
+            "e2f10-net": ""
+          }
+        }
+      },
+      "outputRule": {
+        "observationSucceeded": true,
+        "value": "-P OUTPUT ACCEPT\n-A OUTPUT -d 10.78.30.12/32 -p tcp -m multiport --ports 11150,11151 -j DROP"
+      }
+    },
+    {
+      "utc": "2026-11-03T08:48:54.562923+00:00",
+      "phase": "scheduled-long-fault",
+      "elapsedSeconds": 116.48442492300006,
+      "sql": {
+        "utc": "2026-11-03T08:48:54.589842+00:00",
+        "operations": [
+          [
+            "c05-baseline",
+            1,
+            2,
+            11,
+            "COMMITTED"
+          ],
+          [
+            "c05-contested-id",
+            2,
+            1,
+            37,
+            "COMMITTED"
+          ]
+        ],
+        "effects": {
+          "committedOperations": 2,
+          "postings": 4,
+          "outboxEvents": 2
+        },
+        "oracle": {
+          "nonnegative": true,
+          "conserved": true,
+          "balancedPostings": true,
+          "twoPostingsPerCommit": true,
+          "noPostingsForRejection": true,
+          "outboxAtomic": true,
+          "projectionAgrees": true
+        },
+        "membershipGenerations": [
+          [
+            "10.78.30.11",
+            11150,
+            152700408,
+            3
+          ],
+          [
+            "10.78.30.12",
+            11151,
+            152700410,
+            6
+          ]
+        ]
+      },
+      "processes": {
+        "primary": {
+          "id": "a6e4a74a5cb4ff8806d09967dbc0308972dd82626ab59c6dec428e0e07ca411a",
+          "pidOnHost": 3618,
+          "status": "running",
+          "exitCode": 0,
+          "networks": {
+            "e2f10-net": "10.78.30.11"
+          }
+        },
+        "secondary": {
+          "id": "d4e68342448bc03cea86535ed7577ce12cd2be0804b8b1f27d5c346abc474d64",
+          "pidOnHost": 0,
+          "status": "exited",
+          "exitCode": 139,
+          "networks": {
+            "e2f10-net": ""
+          }
+        }
+      },
+      "outputRule": {
+        "observationSucceeded": true,
+        "value": "-P OUTPUT ACCEPT\n-A OUTPUT -d 10.78.30.12/32 -p tcp -m multiport --ports 11150,11151 -j DROP"
+      }
+    },
+    {
+      "utc": "2026-11-03T08:48:56.823996+00:00",
+      "phase": "scheduled-long-fault",
+      "elapsedSeconds": 118.74549807500006,
+      "sql": {
+        "utc": "2026-11-03T08:48:56.851319+00:00",
+        "operations": [
+          [
+            "c05-baseline",
+            1,
+            2,
+            11,
+            "COMMITTED"
+          ],
+          [
+            "c05-contested-id",
+            2,
+            1,
+            37,
+            "COMMITTED"
+          ]
+        ],
+        "effects": {
+          "committedOperations": 2,
+          "postings": 4,
+          "outboxEvents": 2
+        },
+        "oracle": {
+          "nonnegative": true,
+          "conserved": true,
+          "balancedPostings": true,
+          "twoPostingsPerCommit": true,
+          "noPostingsForRejection": true,
+          "outboxAtomic": true,
+          "projectionAgrees": true
+        },
+        "membershipGenerations": [
+          [
+            "10.78.30.11",
+            11150,
+            152700408,
+            3
+          ],
+          [
+            "10.78.30.12",
+            11151,
+            152700410,
+            6
+          ]
+        ]
+      },
+      "processes": {
+        "primary": {
+          "id": "a6e4a74a5cb4ff8806d09967dbc0308972dd82626ab59c6dec428e0e07ca411a",
+          "pidOnHost": 3618,
+          "status": "running",
+          "exitCode": 0,
+          "networks": {
+            "e2f10-net": "10.78.30.11"
+          }
+        },
+        "secondary": {
+          "id": "d4e68342448bc03cea86535ed7577ce12cd2be0804b8b1f27d5c346abc474d64",
+          "pidOnHost": 0,
+          "status": "exited",
+          "exitCode": 139,
+          "networks": {
+            "e2f10-net": ""
+          }
+        }
+      },
+      "outputRule": {
+        "observationSucceeded": true,
+        "value": "-P OUTPUT ACCEPT\n-A OUTPUT -d 10.78.30.12/32 -p tcp -m multiport --ports 11150,11151 -j DROP"
+      }
+    },
+    {
+      "utc": "2026-11-03T08:48:58.078679+00:00",
+      "phase": "scheduled-long-fault",
+      "elapsedSeconds": 120.00018675400003,
+      "sql": {
+        "utc": "2026-11-03T08:48:58.106070+00:00",
+        "operations": [
+          [
+            "c05-baseline",
+            1,
+            2,
+            11,
+            "COMMITTED"
+          ],
+          [
+            "c05-contested-id",
+            2,
+            1,
+            37,
+            "COMMITTED"
+          ]
+        ],
+        "effects": {
+          "committedOperations": 2,
+          "postings": 4,
+          "outboxEvents": 2
+        },
+        "oracle": {
+          "nonnegative": true,
+          "conserved": true,
+          "balancedPostings": true,
+          "twoPostingsPerCommit": true,
+          "noPostingsForRejection": true,
+          "outboxAtomic": true,
+          "projectionAgrees": true
+        },
+        "membershipGenerations": [
+          [
+            "10.78.30.11",
+            11150,
+            152700408,
+            3
+          ],
+          [
+            "10.78.30.12",
+            11151,
+            152700410,
+            6
+          ]
+        ]
+      },
+      "processes": {
+        "primary": {
+          "id": "a6e4a74a5cb4ff8806d09967dbc0308972dd82626ab59c6dec428e0e07ca411a",
+          "pidOnHost": 3618,
+          "status": "running",
+          "exitCode": 0,
+          "networks": {
+            "e2f10-net": "10.78.30.11"
+          }
+        },
+        "secondary": {
+          "id": "d4e68342448bc03cea86535ed7577ce12cd2be0804b8b1f27d5c346abc474d64",
+          "pidOnHost": 0,
+          "status": "exited",
+          "exitCode": 139,
+          "networks": {
+            "e2f10-net": ""
+          }
+        }
+      },
+      "outputRule": {
+        "observationSucceeded": true,
+        "value": "-P OUTPUT ACCEPT\n-A OUTPUT -d 10.78.30.12/32 -p tcp -m multiport --ports 11150,11151 -j DROP"
+      }
+    }
+  ],
+  "catalogObservations": [
+    {
+      "elapsedSeconds": 15.518042010000045,
+      "outcomes": [
+        {
+          "gateway": "primary",
+          "status": "OBSERVATION_UNAVAILABLE",
+          "financialCommandsDispatched": 0,
+          "clientPid": 82,
+          "startUtc": "2026-11-03T08:47:13.7130203+00:00",
+          "placementHintsUsed": false,
+          "exceptionType": "System.TimeoutException",
+          "error": "The operation has timed out.",
+          "phase": "CATALOG_OBSERVATION",
+          "elapsedSeconds": 8.9892154,
+          "endUtc": "2026-11-03T08:47:22.7021835+00:00",
+          "stderr": ""
+        },
+        {
+          "gateway": "secondary",
+          "status": "OBSERVATION_UNAVAILABLE",
+          "financialCommandsDispatched": 0,
+          "clientPid": 98,
+          "startUtc": "2026-11-03T08:47:22.8857599+00:00",
+          "placementHintsUsed": false,
+          "membershipView": [
+            {
+              "address": "S10.78.30.12:11151:152700410",
+              "status": "Active"
+            },
+            {
+              "address": "S10.78.30.11:11150:152700408",
+              "status": "Active"
+            }
+          ],
+          "exceptionType": "System.TimeoutException",
+          "error": "The operation has timed out.",
+          "phase": "CATALOG_OBSERVATION",
+          "elapsedSeconds": 9.0010042,
+          "endUtc": "2026-11-03T08:47:31.8866899+00:00",
+          "stderr": ""
+        }
+      ]
+    }
+  ],
+  "activationExclusivityEstablished": false,
+  "limitations": "A 120s scheduled fault can include silo exit and namespace loss; actual liveness/rule samples determine scope. Catalogs are non-atomic and may fail. Assisted restart is an operator choice after bounded attempts, not proof of necessity. Recovery sampling is not continuous availability, an RTO/SLA, physical HA, capacity or overall E2 acceptance.",
+  "startup": {
+    "experiment": "E2-F10-C05-Disposable-PostgreSQL-Readiness",
+    "status": "READY",
+    "timestampUtc": "2026-11-03T08:46:44.556679+00:00",
+    "requiredConsecutiveIndependentHostSqlSessions": 2,
+    "observedAttempts": 4,
+    "elapsedSeconds": 2.093,
+    "observations": [
+      {
+        "timestampUtc": "2026-11-03T08:46:42.557482+00:00",
+        "pgIsReady": "/var/run/postgresql:5432 - no response",
+        "hostSql": "NOT_ATTEMPTED"
+      },
+      {
+        "timestampUtc": "2026-11-03T08:46:43.172914+00:00",
+        "pgIsReady": "/var/run/postgresql:5432 - accepting connections",
+        "hostSql": "CONNECT_FAILED",
+        "error": "OperationalError('connection failed: connection to server at \"127.0.0.1\", port 55435 failed: server closed the connection unexpectedly\\n\\tThis probably means the server terminated abnormally\\n\\tbefore or while processing the request.')"
+      },
+      {
+        "timestampUtc": "2026-11-03T08:46:43.949319+00:00",
+        "pgIsReady": "/var/run/postgresql:5432 - accepting connections",
+        "hostSql": "SELECT_1_OK"
+      },
+      {
+        "timestampUtc": "2026-11-03T08:46:44.548502+00:00",
+        "pgIsReady": "/var/run/postgresql:5432 - accepting connections",
+        "hostSql": "SELECT_1_OK"
+      }
+    ],
+    "limits": "Preflight proves only disposable local SQL connectivity at two sampled instants; not PostgreSQL high availability or elimination of intermittent startup failure."
+  },
+  "containersBefore": {
+    "e2f10-pg": {
+      "id": "bc231098a667a7ebe8fdbc1f98e94fbaead7f1010213036755eea4920072c020",
+      "pidOnHost": 3307,
+      "status": "running",
+      "exitCode": 0,
+      "networks": {
+        "e2f10-net": "10.78.30.10"
+      }
+    },
+    "e2f10-primary": {
+      "id": "a6e4a74a5cb4ff8806d09967dbc0308972dd82626ab59c6dec428e0e07ca411a",
+      "pidOnHost": 3618,
+      "status": "running",
+      "exitCode": 0,
+      "networks": {
+        "e2f10-net": "10.78.30.11"
+      }
+    },
+    "e2f10-secondary": {
+      "id": "d4e68342448bc03cea86535ed7577ce12cd2be0804b8b1f27d5c346abc474d64",
+      "pidOnHost": 3768,
+      "status": "running",
+      "exitCode": 0,
+      "networks": {
+        "e2f10-net": "10.78.30.12"
+      }
+    },
+    "e2f10-client": {
+      "id": "4c61122a596a46fde7e5164082db2a1a4c7475d6119549474e1f1e94a9339a6f",
+      "pidOnHost": 3919,
+      "status": "running",
+      "exitCode": 0,
+      "networks": {
+        "e2f10-net": "10.78.30.13"
+      }
+    }
+  },
+  "namespaces": {
+    "e2f10-pg": "net:[4026532270]",
+    "e2f10-primary": "net:[4026532397]",
+    "e2f10-secondary": "net:[4026532462]",
+    "e2f10-client": "net:[4026532527]"
+  },
+  "images": [
+    {
+      "Id": "cfeca9a55d0f8353620d75e8ccb882f000d314e8ce43290014d4467827de8747",
+      "Digest": "sha256:de0ee358cdd672f7017a003bed21e9ac9ed48a27c922a59b18175b6e82fa7fee",
+      "RepoTags": [
+        "mcr.microsoft.com/dotnet/aspnet:10.0"
+      ],
+      "RepoDigests": [
+        "mcr.microsoft.com/dotnet/aspnet@sha256:43cbcf11fd6f88c0375c9c0f7fe59af619abeb323befe5f57dc1502b5a05d8c3",
+        "mcr.microsoft.com/dotnet/aspnet@sha256:de0ee358cdd672f7017a003bed21e9ac9ed48a27c922a59b18175b6e82fa7fee"
+      ],
+      "Parent": "",
+      "Comment": "",
+      "Created": "2026-10-26T00:29:18.960447072Z",
+      "Config": {
+        "Env": [
+          "PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin",
+          "APP_UID=1654",
+          "ASPNETCORE_HTTP_PORTS=8080",
+          "DOTNET_RUNNING_IN_CONTAINER=true",
+          "DOTNET_VERSION=10.0.14",
+          "ASPNET_VERSION=10.0.14"
+        ],
+        "Cmd": [
+          "/bin/bash"
+        ],
+        "Labels": {
+          "org.opencontainers.image.version": "24.04"
+        }
+      },
+      "Version": "",
+      "Author": "",
+      "Architecture": "amd64",
+      "Os": "linux",
+      "Size": 234035400,
+      "VirtualSize": 234035400,
+      "GraphDriver": {
+        "Name": "overlay",
+        "Data": {
+          "LowerDir": "/home/runner/.local/share/containers/storage/overlay/e04d2a433094c5b18d7b7e0c3d7cf5cb0ab5a59bd9d895c22146dbb55079fcd6/diff:/home/runner/.local/share/containers/storage/overlay/1fb712514e965c30b136b929c14b674b890a4cc36472def855d4e82ca46eee72/diff:/home/runner/.local/share/containers/storage/overlay/29d0b33abb8e79962fc5b939e89bcedf94d4c1ff15efd8fa9d93571647037de2/diff:/home/runner/.local/share/containers/storage/overlay/8ed7c1514ef29330d0a7353e4975aa866451248950be611e224dbd17f9b1b0a7/diff:/home/runner/.local/share/containers/storage/overlay/bec87777bc2fb2edcdf9af11df1531469e7df911309c1413082b18fcb8610278/diff",
+          "UpperDir": "/home/runner/.local/share/containers/storage/overlay/c22f3b05c1d0ab58b78fe8e9e963a0f31ed655ca82d18b75b627ccc633cbc81e/diff",
+          "WorkDir": "/home/runner/.local/share/containers/storage/overlay/c22f3b05c1d0ab58b78fe8e9e963a0f31ed655ca82d18b75b627ccc633cbc81e/work"
+        }
+      },
+      "RootFS": {
+        "Type": "layers",
+        "Layers": [
+          "sha256:bec87777bc2fb2edcdf9af11df1531469e7df911309c1413082b18fcb8610278",
+          "sha256:fa09e76fa81be98b74d710f954aa4a7cf274e5b969857dd2f12b0a8253c053bb",
+          "sha256:7be251a39e9c7e7dac1b4ad1d9801fab59e0890cda8cfa055d168e00cfb22186",
+          "sha256:2c16277b36ff173925e5ffc125edeecb5912a6356f069a7ae02d5abcd771cfcb",
+          "sha256:361fe91f35cc8f036a9638f929b4842a38f1a3f5e1c4d4d6479becbca19fbad1",
+          "sha256:eaa51743b39d235e5d05870b93b60e442a567d79c05df1bf7abca7047ea12355"
+        ]
+      },
+      "Labels": {
+        "org.opencontainers.image.version": "24.04"
+      },
+      "Annotations": {},
+      "ManifestType": "application/vnd.docker.distribution.manifest.v2+json",
+      "User": "",
+      "History": [
+        {
+          "created": "2026-10-25T14:17:45.134994061Z",
+          "created_by": "/bin/sh -c #(nop)  ARG RELEASE",
+          "empty_layer": true
+        },
+        {
+          "created": "2026-10-25T14:17:45.174235109Z",
+          "created_by": "/bin/sh -c #(nop)  ARG LAUNCHPAD_BUILD_ARCH",
+          "empty_layer": true
+        },
+        {
+          "created": "2026-10-25T14:17:45.213100118Z",
+          "created_by": "/bin/sh -c #(nop)  LABEL org.opencontainers.image.version=24.04",
+          "empty_layer": true
+        },
+        {
+          "created": "2026-10-25T14:17:47.432058459Z",
+          "created_by": "/bin/sh -c #(nop) ADD file:eed88e94d6aa7c9da62836e137f889e03988c1a6b237b0cedb6ca666dfaa98ea in / "
+        },
+        {
+          "created": "2026-10-25T14:17:47.841356155Z",
+          "created_by": "/bin/sh -c #(nop)  CMD [\"/bin/bash\"]",
+          "empty_layer": true
+        },
+        {
+          "created": "2026-10-26T00:29:02.608833857Z",
+          "created_by": "ENV APP_UID=1654 ASPNETCORE_HTTP_PORTS=8080 DOTNET_RUNNING_IN_CONTAINER=true",
+          "comment": "buildkit.dockerfile.v0",
+          "empty_layer": true
+        },
+        {
+          "created": "2026-10-26T00:29:02.608833857Z",
+          "created_by": "RUN /bin/sh -c apt-get update     && apt-get install -y --no-install-recommends         ca-certificates                 libc6         libgcc-s1         libicu74         libssl3t64         libstdc++6         tzdata         tzdata-legacy     && rm -rf /var/lib/apt/lists/* # buildkit",
+          "comment": "buildkit.dockerfile.v0"
+        },
+        {
+          "created": "2026-10-26T00:29:04.357142295Z",
+          "created_by": "RUN /bin/sh -c groupadd         --gid=$APP_UID         app     && useradd --no-log-init         --uid=$APP_UID         --gid=$APP_UID         --create-home         app # buildkit",
+          "comment": "buildkit.dockerfile.v0"
+        },
+        {
+          "created": "2026-10-26T00:29:11.003432483Z",
+          "created_by": "ENV DOTNET_VERSION=10.0.14",
+          "comment": "buildkit.dockerfile.v0",
+          "empty_layer": true
+        },
+        {
+          "created": "2026-10-26T00:29:11.003432483Z",
+          "created_by": "COPY /dotnet /usr/share/dotnet # buildkit",
+          "comment": "buildkit.dockerfile.v0"
+        },
+        {
+          "created": "2026-10-26T00:29:12.094268109Z",
+          "created_by": "RUN /bin/sh -c ln -s /usr/share/dotnet/dotnet /usr/bin/dotnet # buildkit",
+          "comment": "buildkit.dockerfile.v0"
+        },
+        {
+          "created": "2026-10-26T00:29:18.960447072Z",
+          "created_by": "ENV ASPNET_VERSION=10.0.14",
+          "comment": "buildkit.dockerfile.v0",
+          "empty_layer": true
+        },
+        {
+          "created": "2026-10-26T00:29:18.960447072Z",
+          "created_by": "COPY /dotnet /usr/share/dotnet # buildkit",
+          "comment": "buildkit.dockerfile.v0"
+        }
+      ],
+      "NamesHistory": [
+        "mcr.microsoft.com/dotnet/aspnet:10.0"
+      ]
+    },
+    {
+      "Id": "f7ebf09eb01b02bb9904972705248217baeaed03e2a0a7ed24a77740b0aee98c",
+      "Digest": "sha256:5d143123fdf80462d1778cd4f24b9f7ca13c87174bca19141fb194c5a1ebca59",
+      "RepoTags": [
+        "docker.io/library/postgres:16.13"
+      ],
+      "RepoDigests": [
+        "docker.io/library/postgres@sha256:3102b2114b39383b61fa194e5929734c72a56ce366dbb391509b1f07aef10f9f",
+        "docker.io/library/postgres@sha256:5d143123fdf80462d1778cd4f24b9f7ca13c87174bca19141fb194c5a1ebca59"
+      ],
+      "Parent": "",
+      "Comment": "debuerreotype 0.17",
+      "Created": "2026-05-08T19:34:01.552877682Z",
+      "Config": {
+        "ExposedPorts": {
+          "5432/tcp": {}
+        },
+        "Env": [
+          "PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/lib/postgresql/16/bin",
+          "GOSU_VERSION=1.19",
+          "LANG=en_US.utf8",
+          "PG_MAJOR=16",
+          "PG_VERSION=16.13-1.pgdg13+1",
+          "PGDATA=/var/lib/postgresql/data"
+        ],
+        "Entrypoint": [
+          "docker-entrypoint.sh"
+        ],
+        "Cmd": [
+          "postgres"
+        ],
+        "Volumes": {
+          "/var/lib/postgresql/data": {}
+        },
+        "StopSignal": "SIGINT"
+      },
+      "Version": "",
+      "Author": "",
+      "Architecture": "amd64",
+      "Os": "linux",
+      "Size": 458074091,
+      "VirtualSize": 458074091,
+      "GraphDriver": {
+        "Name": "overlay",
+        "Data": {
+          "LowerDir": "/home/runner/.local/share/containers/storage/overlay/e95744c02216a4ea8e3308a4f3f4cd8fb3fb385315bd7f10c45b2645c1d0e99d/diff:/home/runner/.local/share/containers/storage/overlay/5ebfcac08acf19132072d7094dd0ad5df1b7ff5171ee2534079d6b54a9b235be/diff:/home/runner/.local/share/containers/storage/overlay/df32b0349f8f4dd2134abae4bb30ab9168240dbeadd24b3b9d46ceed45413113/diff:/home/runner/.local/share/containers/storage/overlay/7eefa81f770d724bf06e807b4993742ad5e79cf77d32dfd52023d7f931ec63a3/diff:/home/runner/.local/share/containers/storage/overlay/398fbc2843f44e396009212320a5f9c96e90f093b180ad4ec85ed3ac865c89f2/diff:/home/runner/.local/share/containers/storage/overlay/64f3a264b678bd64a40cb2456c429ea71db36c89955643174c3e0cf60084d816/diff:/home/runner/.local/share/containers/storage/overlay/517537107ae71245c7ba886d0616b8a625acfe9931b48e821a9928aa10fab9ff/diff:/home/runner/.local/share/containers/storage/overlay/a22a0efc44c34e7f73e60685bec4d775a146357991ca6579def54083769af019/diff:/home/runner/.local/share/containers/storage/overlay/4f935a91c3f57a20445507acaa0c94f1eb5331b52e3ac899569ac32a3eab8ef4/diff:/home/runner/.local/share/containers/storage/overlay/75865f24a3d37fbc19542ef455f2d43d7feae3e3ea021e64545794be21772cc5/diff:/home/runner/.local/share/containers/storage/overlay/0d5db1a3d4c51a4cf1eed284bb9d91a775223a081dcee3339044d45fb44feaec/diff:/home/runner/.local/share/containers/storage/overlay/9f948a369ac02baaa61c28dc3bc816fd383924099496449916d84aec9ac2ddc5/diff:/home/runner/.local/share/containers/storage/overlay/79dd1f4c855cd061f687a994426634cf5f84c8ecdbc66c7a7d118e828dd93c99/diff",
+          "UpperDir": "/home/runner/.local/share/containers/storage/overlay/c48ebe49779360b856fea660ab723da9812715193e40b9fd186ca018e43542c8/diff",
+          "WorkDir": "/home/runner/.local/share/containers/storage/overlay/c48ebe49779360b856fea660ab723da9812715193e40b9fd186ca018e43542c8/work"
+        }
+      },
+      "RootFS": {
+        "Type": "layers",
+        "Layers": [
+          "sha256:79dd1f4c855cd061f687a994426634cf5f84c8ecdbc66c7a7d118e828dd93c99",
+          "sha256:89e03e169e79be7bf64a4c21f7fc25be1ab7d38cc19b2210e6d58a49457bcf32",
+          "sha256:4c4d74459b88a7029283b554a103555322eb0829289203e5c9c74c4965694e9f",
+          "sha256:bba7945e4d674052569e2af1d6856a3838687c1932df2f865a558ca9a50387d0",
+          "sha256:95c53cac7abfb2b16744741e85bd70c1ede1b22b1887c1b6a5d4cc8ed1bbb940",
+          "sha256:b3cc8a7e1384e87706f85a79cf3bc365dc762f25cc2297e8b55bead86710ab9e",
+          "sha256:cccef29a84914b625197fafadc769f408019fe3eef63e8e1db9052b2a261047f",
+          "sha256:45a0cd533aa95bd949252b3e41c8a5f2c7d49df1bfbccb575b68a78edb5a635c",
+          "sha256:293637c04abf6a0a70c7bd6b1edf75e968fd91549f7f9cc456d07258a4e0c3db",
+          "sha256:48c24b5449b50f964fef8a4b9cc3703d142c6578690a2818085dd25e53e76980",
+          "sha256:2d07009d969b684e2c10b120f01a3e4d3dc1b086c4ecd285c976ceaccc367ec9",
+          "sha256:e490ae5c4914636f6a229f9d80ef5ae5f57c0eb8fe83e22b286c5dac2bc16692",
+          "sha256:32b752f03b974147f9b5730baa07fb0eb0537032b84466fd3f06875c7cee2046",
+          "sha256:5bc153679b363f5c509ae960a9a6c4d56909bdc732ee7d608f438dcbf5de99d8"
+        ]
+      },
+      "Labels": null,
+      "Annotations": {
+        "com.docker.official-images.bashbrew.arch": "amd64",
+        "org.opencontainers.image.base.digest": "sha256:486b1c3d3a6a836d2518d5ac1a7b522050a034ae83b47c063fd45d550b2b9dbf",
+        "org.opencontainers.image.base.name": "debian:trixie-slim",
+        "org.opencontainers.image.created": "2026-05-08T19:33:16Z",
+        "org.opencontainers.image.revision": "3b6b5fca9ca40c84b77540fc605ea8e8353b13b2",
+        "org.opencontainers.image.source": "https://github.com/docker-library/postgres.git#3b6b5fca9ca40c84b77540fc605ea8e8353b13b2:16/trixie",
+        "org.opencontainers.image.url": "https://hub.docker.com/_/postgres",
+        "org.opencontainers.image.version": "16.13"
+      },
+      "ManifestType": "application/vnd.oci.image.manifest.v1+json",
+      "User": "",
+      "History": [
+        {
+          "created": "2026-05-05T00:00:00Z",
+          "created_by": "# debian.sh --arch 'amd64' out/ 'trixie' '@1777939200'",
+          "comment": "debuerreotype 0.17"
+        },
+        {
+          "created": "2026-05-08T19:33:26.795726556Z",
+          "created_by": "RUN /bin/sh -c set -eux; \tgroupadd -r postgres --gid=999; \tuseradd -r -g postgres --uid=999 --home-dir=/var/lib/postgresql --shell=/bin/bash postgres; \tinstall --verbose --directory --owner postgres --group postgres --mode 1777 /var/lib/postgresql # buildkit",
+          "comment": "buildkit.dockerfile.v0"
+        },
+        {
+          "created": "2026-05-08T19:33:32.479186023Z",
+          "created_by": "RUN /bin/sh -c set -ex; \tapt-get update; \tapt-get install -y --no-install-recommends \t\tgnupg \t\tless \t; \trm -rf /var/lib/apt/lists/* # buildkit",
+          "comment": "buildkit.dockerfile.v0"
+        },
+        {
+          "created": "2026-05-08T19:33:39.635651149Z",
+          "created_by": "ENV GOSU_VERSION=1.19",
+          "comment": "buildkit.dockerfile.v0",
+          "empty_layer": true
+        },
+        {
+          "created": "2026-05-08T19:33:39.635651149Z",
+          "created_by": "RUN /bin/sh -c set -eux; \tsavedAptMark=\"$(apt-mark showmanual)\"; \tapt-get update; \tapt-get install -y --no-install-recommends ca-certificates wget; \trm -rf /var/lib/apt/lists/*; \tdpkgArch=\"$(dpkg --print-architecture | awk -F- '{ print $NF }')\"; \twget -O /usr/local/bin/gosu \"https://github.com/tianon/gosu/releases/download/$GOSU_VERSION/gosu-$dpkgArch\"; \twget -O /usr/local/bin/gosu.asc \"https://github.com/tianon/gosu/releases/download/$GOSU_VERSION/gosu-$dpkgArch.asc\"; \texport GNUPGHOME=\"$(mktemp -d)\"; \tgpg --batch --keyserver hkps://keys.openpgp.org --recv-keys B42F6819007F00F88E364FD4036A9C25BF357DD4; \tgpg --batch --verify /usr/local/bin/gosu.asc /usr/local/bin/gosu; \tgpgconf --kill all; \trm -rf \"$GNUPGHOME\" /usr/local/bin/gosu.asc; \tapt-mark auto '.*' > /dev/null; \t[ -z \"$savedAptMark\" ] || apt-mark manual $savedAptMark > /dev/null; \tapt-get purge -y --auto-remove -o APT::AutoRemove::RecommendsImportant=false; \tchmod +x /usr/local/bin/gosu; \tgosu --version; \tgosu nobody true # buildkit",
+          "comment": "buildkit.dockerfile.v0"
+        },
+        {
+          "created": "2026-05-08T19:33:44.55590106Z",
+          "created_by": "RUN /bin/sh -c set -eux; \tif [ -f /etc/dpkg/dpkg.cfg.d/docker ]; then \t\tgrep -q '/usr/share/locale' /etc/dpkg/dpkg.cfg.d/docker; \t\tsed -ri '/\\/usr\\/share\\/locale/d' /etc/dpkg/dpkg.cfg.d/docker; \t\t! grep -q '/usr/share/locale' /etc/dpkg/dpkg.cfg.d/docker; \tfi; \tapt-get update; apt-get install -y --no-install-recommends locales; rm -rf /var/lib/apt/lists/*; \techo 'en_US.UTF-8 UTF-8' >> /etc/locale.gen; \tlocale-gen; \tlocale -a | grep 'en_US.utf8' # buildkit",
+          "comment": "buildkit.dockerfile.v0"
+        },
+        {
+          "created": "2026-05-08T19:33:44.55590106Z",
+          "created_by": "ENV LANG=en_US.utf8",
+          "comment": "buildkit.dockerfile.v0",
+          "empty_layer": true
+        },
+        {
+          "created": "2026-05-08T19:33:47.823290501Z",
+          "created_by": "RUN /bin/sh -c set -eux; \tapt-get update; \tapt-get install -y --no-install-recommends \t\tlibnss-wrapper \t\txz-utils \t\tzstd \t; \trm -rf /var/lib/apt/lists/* # buildkit",
+          "comment": "buildkit.dockerfile.v0"
+        },
+        {
+          "created": "2026-05-08T19:33:47.92911377Z",
+          "created_by": "RUN /bin/sh -c mkdir /docker-entrypoint-initdb.d # buildkit",
+          "comment": "buildkit.dockerfile.v0"
+        },
+        {
+          "created": "2026-05-08T19:33:48.595564705Z",
+          "created_by": "RUN /bin/sh -c set -ex; \tkey='B97B0AFCAA1A47F044F244A07FCC7D46ACCC4CF8'; \texport GNUPGHOME=\"$(mktemp -d)\"; \tmkdir -p /usr/local/share/keyrings/; \tgpg --batch --keyserver keyserver.ubuntu.com --recv-keys \"$key\"; \tgpg --batch --export --armor \"$key\" > /usr/local/share/keyrings/postgres.gpg.asc; \tgpgconf --kill all; \trm -rf \"$GNUPGHOME\" # buildkit",
+          "comment": "buildkit.dockerfile.v0"
+        },
+        {
+          "created": "2026-05-08T19:33:48.595564705Z",
+          "created_by": "ENV PG_MAJOR=16",
+          "comment": "buildkit.dockerfile.v0",
+          "empty_layer": true
+        },
+        {
+          "created": "2026-05-08T19:33:48.595564705Z",
+          "created_by": "ENV PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/lib/postgresql/16/bin",
+          "comment": "buildkit.dockerfile.v0",
+          "empty_layer": true
+        },
+        {
+          "created": "2026-05-08T19:33:48.595564705Z",
+          "created_by": "ENV PG_VERSION=16.13-1.pgdg13+1",
+          "comment": "buildkit.dockerfile.v0",
+          "empty_layer": true
+        },
+        {
+          "created": "2026-05-08T19:34:01.063794782Z",
+          "created_by": "RUN /bin/sh -c set -ex; \t\texport PYTHONDONTWRITEBYTECODE=1; \t\tdpkgArch=\"$(dpkg --print-architecture)\"; \taptRepo=\"[ signed-by=/usr/local/share/keyrings/postgres.gpg.asc ] http://apt.postgresql.org/pub/repos/apt trixie-pgdg main $PG_MAJOR\"; \tcase \"$dpkgArch\" in \t\tamd64 | arm64 | ppc64el) \t\t\techo \"deb $aptRepo\" > /etc/apt/sources.list.d/pgdg.list; \t\t\tapt-get update; \t\t\t;; \t\t*) \t\t\techo \"deb-src $aptRepo\" > /etc/apt/sources.list.d/pgdg.list; \t\t\t\t\t\tsavedAptMark=\"$(apt-mark showmanual)\"; \t\t\t\t\t\ttempDir=\"$(mktemp -d)\"; \t\t\tcd \"$tempDir\"; \t\t\t\t\t\tapt-get update; \t\t\tapt-get install -y --no-install-recommends dpkg-dev; \t\t\techo \"deb [ trusted=yes ] file://$tempDir ./\" > /etc/apt/sources.list.d/temp.list; \t\t\t_update_repo() { \t\t\t\tdpkg-scanpackages . > Packages; \t\t\t\tapt-get -o Acquire::GzipIndexes=false update; \t\t\t}; \t\t\t_update_repo; \t\t\t\t\t\tnproc=\"$(nproc)\"; \t\t\texport DEB_BUILD_OPTIONS=\"nocheck parallel=$nproc\"; \t\t\tapt-get build-dep -y postgresql-common-dev; \t\t\tapt-get source --compile postgresql-common-dev; \t\t\t_update_repo; \t\t\tapt-get build-dep -y \"postgresql-$PG_MAJOR=$PG_VERSION\"; \t\t\tapt-get source --compile \"postgresql-$PG_MAJOR=$PG_VERSION\"; \t\t\t\t\t\t\t\t\tapt-mark showmanual | xargs apt-mark auto > /dev/null; \t\t\tapt-mark manual $savedAptMark; \t\t\t\t\t\tls -lAFh; \t\t\t_update_repo; \t\t\tgrep '^Package: ' Packages; \t\t\tcd /; \t\t\t;; \tesac; \t\tapt-get install -y --no-install-recommends postgresql-common; \tsed -ri 's/#(create_main_cluster) .*$/\\1 = false/' /etc/postgresql-common/createcluster.conf; \tapt-get install -y --no-install-recommends \t\t\"postgresql-$PG_MAJOR=$PG_VERSION\" \t; \t\trm -rf /var/lib/apt/lists/*; \t\tif [ -n \"$tempDir\" ]; then \t\tapt-get purge -y --auto-remove; \t\trm -rf \"$tempDir\" /etc/apt/sources.list.d/temp.list; \tfi; \t\tfind /usr -name '*.pyc' -type f -exec bash -c 'for pyc; do dpkg -S \"$pyc\" &> /dev/null || rm -vf \"$pyc\"; done' -- '{}' +; \t\tpostgres --version # buildkit",
+          "comment": "buildkit.dockerfile.v0"
+        },
+        {
+          "created": "2026-05-08T19:34:01.197357395Z",
+          "created_by": "RUN /bin/sh -c set -eux; \tdpkg-divert --add --rename --divert \"/usr/share/postgresql/postgresql.conf.sample.dpkg\" \"/usr/share/postgresql/$PG_MAJOR/postgresql.conf.sample\"; \tcp -v /usr/share/postgresql/postgresql.conf.sample.dpkg /usr/share/postgresql/postgresql.conf.sample; \tln -sv ../postgresql.conf.sample \"/usr/share/postgresql/$PG_MAJOR/\"; \tsed -ri \"s!^#?(listen_addresses)\\s*=\\s*\\S+.*!\\1 = '*'!\" /usr/share/postgresql/postgresql.conf.sample; \tgrep -F \"listen_addresses = '*'\" /usr/share/postgresql/postgresql.conf.sample # buildkit",
+          "comment": "buildkit.dockerfile.v0"
+        },
+        {
+          "created": "2026-05-08T19:34:01.289176414Z",
+          "created_by": "RUN /bin/sh -c install --verbose --directory --owner postgres --group postgres --mode 3777 /var/run/postgresql # buildkit",
+          "comment": "buildkit.dockerfile.v0"
+        },
+        {
+          "created": "2026-05-08T19:34:01.289176414Z",
+          "created_by": "ENV PGDATA=/var/lib/postgresql/data",
+          "comment": "buildkit.dockerfile.v0",
+          "empty_layer": true
+        },
+        {
+          "created": "2026-05-08T19:34:01.393988403Z",
+          "created_by": "RUN /bin/sh -c install --verbose --directory --owner postgres --group postgres --mode 1777 \"$PGDATA\" # buildkit",
+          "comment": "buildkit.dockerfile.v0"
+        },
+        {
+          "created": "2026-05-08T19:34:01.393988403Z",
+          "created_by": "VOLUME [/var/lib/postgresql/data]",
+          "comment": "buildkit.dockerfile.v0",
+          "empty_layer": true
+        },
+        {
+          "created": "2026-05-08T19:34:01.440462535Z",
+          "created_by": "COPY docker-entrypoint.sh docker-ensure-initdb.sh /usr/local/bin/ # buildkit",
+          "comment": "buildkit.dockerfile.v0"
+        },
+        {
+          "created": "2026-05-08T19:34:01.552877682Z",
+          "created_by": "RUN /bin/sh -c ln -sT docker-ensure-initdb.sh /usr/local/bin/docker-enforce-initdb.sh # buildkit",
+          "comment": "buildkit.dockerfile.v0"
+        },
+        {
+          "created": "2026-05-08T19:34:01.552877682Z",
+          "created_by": "ENTRYPOINT [\"docker-entrypoint.sh\"]",
+          "comment": "buildkit.dockerfile.v0",
+          "empty_layer": true
+        },
+        {
+          "created": "2026-05-08T19:34:01.552877682Z",
+          "created_by": "STOPSIGNAL SIGINT",
+          "comment": "buildkit.dockerfile.v0",
+          "empty_layer": true
+        },
+        {
+          "created": "2026-05-08T19:34:01.552877682Z",
+          "created_by": "EXPOSE map[5432/tcp:{}]",
+          "comment": "buildkit.dockerfile.v0",
+          "empty_layer": true
+        },
+        {
+          "created": "2026-05-08T19:34:01.552877682Z",
+          "created_by": "CMD [\"postgres\"]",
+          "comment": "buildkit.dockerfile.v0",
+          "empty_layer": true
+        }
+      ],
+      "NamesHistory": [
+        "docker.io/library/postgres:16.13"
+      ]
+    },
+    {
+      "Id": "27b858cdcd8ac94fb049ca1bcce5b04ad26cca31558baee0f3c5fab684d42601",
+      "Digest": "sha256:a20c2531bf35436ed3766cd6cfe89d352b050ccc4d7005ce6400adf97503da1b",
+      "RepoTags": [
+        "docker.io/nicolaka/netshoot:v0.13"
+      ],
+      "RepoDigests": [
+        "docker.io/nicolaka/netshoot@sha256:5a21d467fed653554bdc483ca5e7e866805c5b4c8f7ecb195a43f778c8d02fb8",
+        "docker.io/nicolaka/netshoot@sha256:a20c2531bf35436ed3766cd6cfe89d352b050ccc4d7005ce6400adf97503da1b"
+      ],
+      "Parent": "",
+      "Comment": "",
+      "Created": "2024-05-15T20:18:49.094021082Z",
+      "Config": {
+        "User": "root",
+        "Env": [
+          "PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin",
+          "HOSTNAME=netshoot"
+        ],
+        "Cmd": [
+          "zsh"
+        ],
+        "WorkingDir": "/root",
+        "ArgsEscaped": true
+      },
+      "Version": "",
+      "Author": "",
+      "Architecture": "amd64",
+      "Os": "linux",
+      "Size": 556154396,
+      "VirtualSize": 556154396,
+      "GraphDriver": {
+        "Name": "overlay",
+        "Data": {
+          "LowerDir": "/home/runner/.local/share/containers/storage/overlay/47985945d49cf1daa18007b4bc17889a0aaaa87d482b9e702d746b0fcbee484e/diff:/home/runner/.local/share/containers/storage/overlay/4cb47260c879045f77f00279e812e238146613ba0a1e5ae848d09f8bcda781dc/diff:/home/runner/.local/share/containers/storage/overlay/f0140ba6d8931e8c1c1b833f6dec420fa4a1eda083f0f95e3b96c79f119a0916/diff:/home/runner/.local/share/containers/storage/overlay/fbb12f58d5718bd74633d9f050cf571a0424304268c8407b1aeb81b70b4b9394/diff:/home/runner/.local/share/containers/storage/overlay/a7cd8e56f632e121fcf00baa1962abf9b69553cfcb5ee73c7d757b2d38eb753f/diff:/home/runner/.local/share/containers/storage/overlay/2735fe59ef73518fb0506799da9a65b532298284b0ad6189b781921cc06ac038/diff:/home/runner/.local/share/containers/storage/overlay/a254fc2d3a8d751c10c6f387c182525f1e9cd589657f4f9e9367982a65c2fd6f/diff:/home/runner/.local/share/containers/storage/overlay/8f5daf392bb2b449da3997365fe7b347487cc264f1d7b0e5f2ba89d293303179/diff:/home/runner/.local/share/containers/storage/overlay/a71e8f06ba3a78fb857e86d4c7c9f28703e58bd3ea593d727f6b558ec26255d6/diff:/home/runner/.local/share/containers/storage/overlay/bc8064517d47e85751f7a794c0a7c5cf9d3af5e1c0f25b91f797eddc4c327be5/diff:/home/runner/.local/share/containers/storage/overlay/c6cee0f91b2742a3e3471f2c760e904f3f83ca0410615f41d264a3a4bc7f82a5/diff:/home/runner/.local/share/containers/storage/overlay/03516aa377dc4c33c1384d4ddb64e1ae751f0310d3ee233e4a9c8517bfccf5ee/diff:/home/runner/.local/share/containers/storage/overlay/815f9832ba7fd42b7923b531ee4f37a23e04f2e4d2c1008d3d99230a8d9a0c4e/diff:/home/runner/.local/share/containers/storage/overlay/d4fc045c9e3a848011de66f34b81f052d4f2c15a17bb196d637e526349601820/diff",
+          "UpperDir": "/home/runner/.local/share/containers/storage/overlay/fc0745836eba5703f690a1d1be81862fe919fbd97dd45aa669b12b597efdb7ef/diff",
+          "WorkDir": "/home/runner/.local/share/containers/storage/overlay/fc0745836eba5703f690a1d1be81862fe919fbd97dd45aa669b12b597efdb7ef/work"
+        }
+      },
+      "RootFS": {
+        "Type": "layers",
+        "Layers": [
+          "sha256:d4fc045c9e3a848011de66f34b81f052d4f2c15a17bb196d637e526349601820",
+          "sha256:8ddf26e34d15cf1a1b12ccc54d5f7ba05e7421894914e59590342b0d77770548",
+          "sha256:cbf668f23cf3b5c59e197ab309b379c06463924734169a664ffa319ca28bde25",
+          "sha256:6d7ff69a927e25023783ade18f180a4f6000078d2a8397a1bc62b1709627aaf6",
+          "sha256:b7dabe1f82bc712d1fb2801179fe1ca1cb3f6626e4986949a7baedb320a4b5e8",
+          "sha256:817f5c60e4e0e466a403160333c2b76002eaa95f249db88de8cd56db2a4d492b",
+          "sha256:f839030a94836849a36550a36590d4796a892971149499c150fdfbabf7366d70",
+          "sha256:5f70bf18a086007016e948b04aed3b82103a36bea41755b6cddfaf10ace3c6ef",
+          "sha256:fbfce61ec7c76e05a54ee7f42c98488f045448a286e64aa578c7703c5a2bc789",
+          "sha256:e7c85341ab3be0abef94cfabfc722e7035f0a37b1b9356175a844e4fb4bda826",
+          "sha256:f578e01fe8a67bd80d74a166c24b84b652cb1884e9e3b170b2088825566f4a67",
+          "sha256:1792ad6958a12fcae3ebc5757223b2041e2033eafb8b8dd454eb79891dbe5121",
+          "sha256:f12d9bc5288c3c09c9b9dc3001efefa4ccc2166b2cd57f8afeca808cdb7538a4",
+          "sha256:b28d28e624885fe340f92895118ddd2852cfaf673b276798611ee82937333643",
+          "sha256:e06145485286707ae6fe43119fb9aff794037db7dc729a4b01f082b5ba6b90a9"
+        ]
+      },
+      "Labels": null,
+      "Annotations": {},
+      "ManifestType": "application/vnd.oci.image.manifest.v1+json",
+      "User": "root",
+      "History": [
+        {
+          "created": "2024-01-27T00:30:48.624602109Z",
+          "created_by": "/bin/sh -c #(nop) ADD file:37a76ec18f9887751cd8473744917d08b7431fc4085097bb6a09d81b41775473 in / "
+        },
+        {
+          "created": "2024-01-27T00:30:48.743965523Z",
+          "created_by": "/bin/sh -c #(nop)  CMD [\"/bin/sh\"]",
+          "empty_layer": true
+        },
+        {
+          "created": "2024-05-15T20:18:45.539393122Z",
+          "created_by": "RUN /bin/sh -c set -ex     && echo \"http://dl-cdn.alpinelinux.org/alpine/edge/main\" >> /etc/apk/repositories     && echo \"http://dl-cdn.alpinelinux.org/alpine/edge/testing\" >> /etc/apk/repositories     && echo \"http://dl-cdn.alpinelinux.org/alpine/edge/community\" >> /etc/apk/repositories     && apk update     && apk upgrade     && apk add --no-cache     apache2-utils     bash     bind-tools     bird     bridge-utils     busybox-extras     conntrack-tools     curl     dhcping     drill     ethtool     file    fping     iftop     iperf     iperf3     iproute2     ipset     iptables     iptraf-ng     iputils     ipvsadm     httpie     jq     libc6-compat     liboping     ltrace     mtr     net-snmp-tools     netcat-openbsd     nftables     ngrep     nmap     nmap-nping     nmap-scripts     openssl     py3-pip     py3-setuptools     scapy     socat     speedtest-cli     openssh     oh-my-zsh     strace     tcpdump     tcptraceroute     tshark     util-linux     vim     git     zsh     websocat     swaks     perl-crypt-ssleay     perl-net-ssleay # buildkit",
+          "comment": "buildkit.dockerfile.v0"
+        },
+        {
+          "created": "2024-05-15T20:18:45.969255724Z",
+          "created_by": "COPY /tmp/ctop /usr/local/bin/ctop # buildkit",
+          "comment": "buildkit.dockerfile.v0"
+        },
+        {
+          "created": "2024-05-15T20:18:46.093936765Z",
+          "created_by": "COPY /tmp/calicoctl /usr/local/bin/calicoctl # buildkit",
+          "comment": "buildkit.dockerfile.v0"
+        },
+        {
+          "created": "2024-05-15T20:18:46.14536241Z",
+          "created_by": "COPY /tmp/termshark /usr/local/bin/termshark # buildkit",
+          "comment": "buildkit.dockerfile.v0"
+        },
+        {
+          "created": "2024-05-15T20:18:46.219674597Z",
+          "created_by": "COPY /tmp/grpcurl /usr/local/bin/grpcurl # buildkit",
+          "comment": "buildkit.dockerfile.v0"
+        },
+        {
+          "created": "2024-05-15T20:18:46.25891626Z",
+          "created_by": "COPY /tmp/fortio /usr/local/bin/fortio # buildkit",
+          "comment": "buildkit.dockerfile.v0"
+        },
+        {
+          "created": "2024-05-15T20:18:46.267332107Z",
+          "created_by": "USER root",
+          "comment": "buildkit.dockerfile.v0",
+          "empty_layer": true
+        },
+        {
+          "created": "2024-05-15T20:18:46.267332107Z",
+          "created_by": "WORKDIR /root",
+          "comment": "buildkit.dockerfile.v0"
+        },
+        {
+          "created": "2024-05-15T20:18:46.267332107Z",
+          "created_by": "ENV HOSTNAME=netshoot",
+          "comment": "buildkit.dockerfile.v0",
+          "empty_layer": true
+        },
+        {
+          "created": "2024-05-15T20:18:47.007483825Z",
+          "created_by": "RUN /bin/sh -c curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh | sh # buildkit",
+          "comment": "buildkit.dockerfile.v0"
+        },
+        {
+          "created": "2024-05-15T20:18:47.404003491Z",
+          "created_by": "RUN /bin/sh -c git clone https://github.com/zsh-users/zsh-autosuggestions ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-autosuggestions # buildkit",
+          "comment": "buildkit.dockerfile.v0"
+        },
+        {
+          "created": "2024-05-15T20:18:47.705799669Z",
+          "created_by": "RUN /bin/sh -c git clone --depth=1 https://github.com/romkatv/powerlevel10k.git ${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}/themes/powerlevel10k # buildkit",
+          "comment": "buildkit.dockerfile.v0"
+        },
+        {
+          "created": "2024-05-15T20:18:47.720622278Z",
+          "created_by": "COPY zshrc .zshrc # buildkit",
+          "comment": "buildkit.dockerfile.v0"
+        },
+        {
+          "created": "2024-05-15T20:18:47.759622659Z",
+          "created_by": "COPY motd motd # buildkit",
+          "comment": "buildkit.dockerfile.v0"
+        },
+        {
+          "created": "2024-05-15T20:18:48.987338739Z",
+          "created_by": "RUN /bin/sh -c chmod -R g=u /root # buildkit",
+          "comment": "buildkit.dockerfile.v0"
+        },
+        {
+          "created": "2024-05-15T20:18:49.094021082Z",
+          "created_by": "RUN /bin/sh -c chown root:root /usr/bin/dumpcap # buildkit",
+          "comment": "buildkit.dockerfile.v0"
+        },
+        {
+          "created": "2024-05-15T20:18:49.094021082Z",
+          "created_by": "CMD [\"zsh\"]",
+          "comment": "buildkit.dockerfile.v0",
+          "empty_layer": true
+        }
+      ],
+      "NamesHistory": [
+        "docker.io/nicolaka/netshoot:v0.13"
+      ]
+    }
+  ],
+  "seeding": {
+    "status": "CONTROLLED_PROBED",
+    "mode": "alternating",
+    "accountHostNodes": {
+      "1": "e2f10-primary:1",
+      "2": "e2f10-secondary:1",
+      "3": "e2f10-primary:1",
+      "4": "e2f10-secondary:1",
+      "5": "e2f10-primary:1",
+      "6": "e2f10-secondary:1",
+      "7": "e2f10-primary:1",
+      "8": "e2f10-secondary:1",
+      "9": "e2f10-primary:1",
+      "10": "e2f10-secondary:1",
+      "11": "e2f10-primary:1",
+      "12": "e2f10-secondary:1",
+      "13": "e2f10-primary:1",
+      "14": "e2f10-secondary:1",
+      "15": "e2f10-primary:1",
+      "16": "e2f10-secondary:1"
+    },
+    "accountHostPids": {
+      "1": 1,
+      "2": 1,
+      "3": 1,
+      "4": 1,
+      "5": 1,
+      "6": 1,
+      "7": 1,
+      "8": 1,
+      "9": 1,
+      "10": 1,
+      "11": 1,
+      "12": 1,
+      "13": 1,
+      "14": 1,
+      "15": 1,
+      "16": 1
+    },
+    "requestedNodeNames": {
+      "1": "e2f10-primary",
+      "2": "e2f10-secondary",
+      "3": "e2f10-primary",
+      "4": "e2f10-secondary",
+      "5": "e2f10-primary",
+      "6": "e2f10-secondary",
+      "7": "e2f10-primary",
+      "8": "e2f10-secondary",
+      "9": "e2f10-primary",
+      "10": "e2f10-secondary",
+      "11": "e2f10-primary",
+      "12": "e2f10-secondary",
+      "13": "e2f10-primary",
+      "14": "e2f10-secondary",
+      "15": "e2f10-primary",
+      "16": "e2f10-secondary"
+    },
+    "requestedSiloAddresses": {
+      "1": "S10.78.30.11:11150:152700408",
+      "2": "S10.78.30.12:11151:152700410",
+      "3": "S10.78.30.11:11150:152700408",
+      "4": "S10.78.30.12:11151:152700410",
+      "5": "S10.78.30.11:11150:152700408",
+      "6": "S10.78.30.12:11151:152700410",
+      "7": "S10.78.30.11:11150:152700408",
+      "8": "S10.78.30.12:11151:152700410",
+      "9": "S10.78.30.11:11150:152700408",
+      "10": "S10.78.30.12:11151:152700410",
+      "11": "S10.78.30.11:11150:152700408",
+      "12": "S10.78.30.12:11151:152700410",
+      "13": "S10.78.30.11:11150:152700408",
+      "14": "S10.78.30.12:11151:152700410",
+      "15": "S10.78.30.11:11150:152700408",
+      "16": "S10.78.30.12:11151:152700410"
+    },
+    "activeHosts": [
+      "S10.78.30.11:11150:152700408",
+      "S10.78.30.12:11151:152700410"
+    ],
+    "financialCommandsDispatched": 0,
+    "placementHintRetained": false,
+    "mechanism": "C01_TEST_ONLY_COMPATIBLE_SILO_PLACEMENT_HINT",
+    "limitation": "Hints select new activations only; they do not relocate existing grains or authorize SQL COMMIT"
+  },
+  "initialSql": {
+    "utc": "2026-11-03T08:46:56.488910+00:00",
+    "operations": [],
+    "effects": {
+      "committedOperations": 0,
+      "postings": 0,
+      "outboxEvents": 0
+    },
+    "oracle": {
+      "nonnegative": true,
+      "conserved": true,
+      "balancedPostings": true,
+      "twoPostingsPerCommit": true,
+      "noPostingsForRejection": true,
+      "outboxAtomic": true,
+      "projectionAgrees": true
+    },
+    "membershipGenerations": [
+      [
+        "10.78.30.11",
+        11150,
+        152700408,
+        3
+      ],
+      [
+        "10.78.30.12",
+        11151,
+        152700410,
+        3
+      ]
+    ]
+  },
+  "baselineAck": {
+    "gateway": "primary",
+    "status": "ACKNOWLEDGED",
+    "financialCommandsDispatched": 1,
+    "clientPid": 20,
+    "startUtc": "2026-11-03T08:46:56.6143347+00:00",
+    "placementHintsUsed": false,
+    "command": {
+      "operationId": "c05-baseline",
+      "sourceAccountId": 1,
+      "targetAccountId": 2,
+      "amountCents": 11,
+      "fault": "none",
+      "arrivalOffsetMs": 0
+    },
+    "result": {
+      "status": "COMMITTED",
+      "retries": 0,
+      "retrySqlStates": [],
+      "handledBy": "grain-1"
+    },
+    "phase": "FINANCIAL_DISPATCH",
+    "elapsedSeconds": 1.0800716,
+    "endUtc": "2026-11-03T08:46:57.6943583+00:00",
+    "stderr": ""
+  },
+  "baselineSql": {
+    "utc": "2026-11-03T08:46:57.778053+00:00",
+    "operations": [
+      [
+        "c05-baseline",
+        1,
+        2,
+        11,
+        "COMMITTED"
+      ]
+    ],
+    "effects": {
+      "committedOperations": 1,
+      "postings": 2,
+      "outboxEvents": 1
+    },
+    "oracle": {
+      "nonnegative": true,
+      "conserved": true,
+      "balancedPostings": true,
+      "twoPostingsPerCommit": true,
+      "noPostingsForRejection": true,
+      "outboxAtomic": true,
+      "projectionAgrees": true
+    },
+    "membershipGenerations": [
+      [
+        "10.78.30.11",
+        11150,
+        152700408,
+        3
+      ],
+      [
+        "10.78.30.12",
+        11151,
+        152700410,
+        3
+      ]
+    ]
+  },
+  "rulesBefore": {
+    "primary": "-P OUTPUT ACCEPT",
+    "secondary": "-P OUTPUT ACCEPT"
+  },
+  "faultUtc": "2026-11-03T08:46:58.078506+00:00",
+  "tcpProbes": {
+    "e2f10-secondary": "CONNECT_EXIT:1",
+    "e2f10-primary": "CONNECT_EXIT:1"
+  },
+  "initialNetworkChecks": {
+    "e2f10-primary": {
+      "experiment": "E2-F10-C02-Transport-Partition-Probe",
+      "status": "PROBED",
+      "hostIdentity": "e2f10-primary",
+      "databaseHealthy": true,
+      "primaryGatewayReachable": true,
+      "secondaryGatewayReachable": true
+    },
+    "e2f10-secondary": {
+      "experiment": "E2-F10-C02-Transport-Partition-Probe",
+      "status": "PROBED",
+      "hostIdentity": "e2f10-secondary",
+      "databaseHealthy": true,
+      "primaryGatewayReachable": true,
+      "secondaryGatewayReachable": true
+    },
+    "e2f10-client": {
+      "experiment": "E2-F10-C02-Transport-Partition-Probe",
+      "status": "PROBED",
+      "hostIdentity": "e2f10-client",
+      "databaseHealthy": true,
+      "primaryGatewayReachable": true,
+      "secondaryGatewayReachable": true
+    }
+  },
+  "firstContendingOutcomes": [
+    {
+      "gateway": "primary",
+      "status": "DISPATCH_AMBIGUOUS",
+      "financialCommandsDispatched": 1,
+      "clientPid": 50,
+      "startUtc": "2026-11-03T08:47:04.0771763+00:00",
+      "placementHintsUsed": false,
+      "command": {
+        "operationId": "c05-contested-id",
+        "sourceAccountId": 2,
+        "targetAccountId": 1,
+        "amountCents": 31,
+        "fault": "none",
+        "arrivalOffsetMs": 0
+      },
+      "exceptionType": "System.TimeoutException",
+      "error": "The operation has timed out.",
+      "phase": "FINANCIAL_DISPATCH",
+      "elapsedSeconds": 9.1067195,
+      "endUtc": "2026-11-03T08:47:13.1838469+00:00",
+      "stderr": ""
+    },
+    {
+      "gateway": "secondary",
+      "status": "ACKNOWLEDGED",
+      "financialCommandsDispatched": 1,
+      "clientPid": 57,
+      "startUtc": "2026-11-03T08:47:04.0945151+00:00",
+      "placementHintsUsed": false,
+      "command": {
+        "operationId": "c05-contested-id",
+        "sourceAccountId": 2,
+        "targetAccountId": 1,
+        "amountCents": 37,
+        "fault": "none",
+        "arrivalOffsetMs": 0
+      },
+      "result": {
+        "status": "COMMITTED",
+        "retries": 0,
+        "retrySqlStates": [],
+        "handledBy": "grain-2"
+      },
+      "phase": "FINANCIAL_DISPATCH",
+      "elapsedSeconds": 1.1867895,
+      "endUtc": "2026-11-03T08:47:05.2812567+00:00",
+      "stderr": ""
+    }
+  ],
+  "initialCaptures": {
+    "primary": {
+      "sha256": "a179ede83898ee811548d758eb7e4fa6d6b2459e6047d8e4882427de22a6aa9d",
+      "bytes": 7003,
+      "decoded": "08:46:58.389198 IP 10.78.30.12.33476 > 10.78.30.11.11150: Flags [P.], seq 3722905003:3722905411, ack 1147744235, win 66, options [nop,nop,TS val 2998661505 ecr 2512007697], length 408\n08:46:58.484839 IP 10.78.30.12.33476 > 10.78.30.11.11150: Flags [P.], seq 408:707, ack 1, win 66, options [nop,nop,TS val 2998661601 ecr 2512007697], length 299\n08:46:58.500772 IP 10.78.30.12.33476 > 10.78.30.11.11150: Flags [P.], seq 408:707, ack 1, win 66, options [nop,nop,TS val 2998661617 ecr 2512007697], length 299\n08:46:58.587487 IP 10.78.30.12.41114 > 10.78.30.11.11150: Flags [S], seq 294555816, win 64240, options [mss 1460,sackOK,TS val 615461157 ecr 0,nop,wscale 10], length 0\n08:46:58.709752 IP 10.78.30.12.33476 > 10.78.30.11.11150: Flags [P.], seq 0:707, ack 1, win 66, options [nop,nop,TS val 2998661826 ecr 2512007697], length 707\n08:46:59.125788 IP 10.78.30.12.33476 > 10.78.30.11.11150: Flags [P.], seq 0:707, ack 1, win 66, options [nop,nop,TS val 2998662242 ecr 2512007697], length 707\n08:46:59.613755 IP 10.78.30.12.41114 > 10.78.30.11.11150: Flags [S], seq 294555816, win 64240, options [mss 1460,sackOK,TS val 615462184 ecr 0,nop,wscale 10], length 0\n08:46:59.997797 IP 10.78.30.12.33476 > 10.78.30.11.11150: Flags [P.], seq 0:707, ack 1, win 66, options [nop,nop,TS val 2998663114 ecr 2512007697], length 707\n08:47:01.661745 IP 10.78.30.12.33476 > 10.78.30.11.11150: Flags [P.], seq 0:707, ack 1, win 66, options [nop,nop,TS val 2998664778 ecr 2512007697], length 707\n08:47:04.989763 IP 10.78.30.12.33476 > 10.78.30.11.11150: Flags [P.], seq 0:707, ack 1, win 66, options [nop,nop,TS val 2998668106 ecr 2512007697], length 707\n08:47:11.837758 IP 10.78.30.12.33476 > 10.78.30.11.11150: Flags [P.], seq 0:707, ack 1, win 66, options [nop,nop,TS val 2998674954 ecr 2512007697], length 707\n08:47:25.149796 IP 10.78.30.12.33476 > 10.78.30.11.11150: Flags [P.], seq 0:707, ack 1, win 66, options [nop,nop,TS val 2998688266 ecr 2512007697], length 707"
+    },
+    "secondary": {
+      "sha256": "9aeca314d44f9904aba0c1d89b892304b8ad4c9a92e710b7ec5d2b6092ce58c1",
+      "bytes": 6511,
+      "decoded": "08:46:58.484824 IP 10.78.30.12.33476 > 10.78.30.11.11150: Flags [P.], seq 3722905411:3722905710, ack 1147744235, win 66, options [nop,nop,TS val 2998661601 ecr 2512007697], length 299\n08:46:58.500747 IP 10.78.30.12.33476 > 10.78.30.11.11150: Flags [P.], seq 0:299, ack 1, win 66, options [nop,nop,TS val 2998661617 ecr 2512007697], length 299\n08:46:58.587471 IP 10.78.30.12.41114 > 10.78.30.11.11150: Flags [S], seq 294555816, win 64240, options [mss 1460,sackOK,TS val 615461157 ecr 0,nop,wscale 10], length 0\n08:46:58.709728 IP 10.78.30.12.33476 > 10.78.30.11.11150: Flags [P.], seq 4294966888:299, ack 1, win 66, options [nop,nop,TS val 2998661826 ecr 2512007697], length 707\n08:46:59.125762 IP 10.78.30.12.33476 > 10.78.30.11.11150: Flags [P.], seq 4294966888:299, ack 1, win 66, options [nop,nop,TS val 2998662242 ecr 2512007697], length 707\n08:46:59.613724 IP 10.78.30.12.41114 > 10.78.30.11.11150: Flags [S], seq 294555816, win 64240, options [mss 1460,sackOK,TS val 615462184 ecr 0,nop,wscale 10], length 0\n08:46:59.997756 IP 10.78.30.12.33476 > 10.78.30.11.11150: Flags [P.], seq 4294966888:299, ack 1, win 66, options [nop,nop,TS val 2998663114 ecr 2512007697], length 707\n08:47:01.661730 IP 10.78.30.12.33476 > 10.78.30.11.11150: Flags [P.], seq 4294966888:299, ack 1, win 66, options [nop,nop,TS val 2998664778 ecr 2512007697], length 707\n08:47:04.989742 IP 10.78.30.12.33476 > 10.78.30.11.11150: Flags [P.], seq 4294966888:299, ack 1, win 66, options [nop,nop,TS val 2998668106 ecr 2512007697], length 707\n08:47:11.837738 IP 10.78.30.12.33476 > 10.78.30.11.11150: Flags [P.], seq 4294966888:299, ack 1, win 66, options [nop,nop,TS val 2998674954 ecr 2512007697], length 707\n08:47:25.149771 IP 10.78.30.12.33476 > 10.78.30.11.11150: Flags [P.], seq 4294966888:299, ack 1, win 66, options [nop,nop,TS val 2998688266 ecr 2512007697], length 707"
+    }
+  },
+  "initialDropCounters": {
+    "observationSucceeded": true,
+    "value": "# Generated by iptables-save v1.8.10 (nf_tables) on Tue Nov  3 08:47:44 2026\n*filter\n:INPUT ACCEPT [0:0]\n:FORWARD ACCEPT [0:0]\n:OUTPUT ACCEPT [47:25899]\n[102:427373] -A OUTPUT -d 10.78.30.12/32 -p tcp -m multiport --ports 11150,11151 -j DROP\nCOMMIT\n# Completed on Tue Nov  3 08:47:44 2026"
+  },
+  "lateContendingOutcomes": [
+    {
+      "gateway": "primary",
+      "status": "ACKNOWLEDGED",
+      "financialCommandsDispatched": 1,
+      "clientPid": 114,
+      "startUtc": "2026-11-03T08:48:00.2909923+00:00",
+      "placementHintsUsed": false,
+      "command": {
+        "operationId": "c05-contested-id",
+        "sourceAccountId": 2,
+        "targetAccountId": 1,
+        "amountCents": 31,
+        "fault": "none",
+        "arrivalOffsetMs": 0
+      },
+      "result": {
+        "status": "ID_CONFLICT",
+        "retries": 0,
+        "retrySqlStates": [],
+        "handledBy": "grain-2"
+      },
+      "phase": "FINANCIAL_DISPATCH",
+      "elapsedSeconds": 1.106554,
+      "endUtc": "2026-11-03T08:48:01.3974991+00:00",
+      "stderr": ""
+    },
+    {
+      "gateway": "secondary",
+      "status": "DISPATCH_AMBIGUOUS",
+      "financialCommandsDispatched": 1,
+      "clientPid": 121,
+      "startUtc": "2026-11-03T08:48:00.3023984+00:00",
+      "placementHintsUsed": false,
+      "command": {
+        "operationId": "c05-contested-id",
+        "sourceAccountId": 2,
+        "targetAccountId": 1,
+        "amountCents": 37,
+        "fault": "none",
+        "arrivalOffsetMs": 0
+      },
+      "exceptionType": "System.TimeoutException",
+      "error": "The operation has timed out.",
+      "phase": "FINANCIAL_DISPATCH",
+      "elapsedSeconds": 9.0899512,
+      "endUtc": "2026-11-03T08:48:09.3923036+00:00",
+      "stderr": ""
+    }
+  ],
+  "lateContendingElapsedSeconds": 71.42079317400004,
+  "faultScheduleElapsedSeconds": 120.00014252099999,
+  "finalDropCounters": {
+    "observationSucceeded": true,
+    "value": "# Generated by iptables-save v1.8.10 (nf_tables) on Tue Nov  3 08:48:58 2026\n*filter\n:INPUT ACCEPT [0:0]\n:FORWARD ACCEPT [0:0]\n:OUTPUT ACCEPT [75:40344]\n[125:566081] -A OUTPUT -d 10.78.30.12/32 -p tcp -m multiport --ports 11150,11151 -j DROP\nCOMMIT\n# Completed on Tue Nov  3 08:48:58 2026"
+  },
+  "restoreUtc": "2026-11-03T08:48:58.478164+00:00",
+  "ruleRestoration": "EXACT_LIVE_NAMESPACE_BASELINE",
+  "unassistedAttempts": [
+    {
+      "elapsedSeconds": 16.376139782999985,
+      "outcomes": [
+        {
+          "gateway": "primary",
+          "status": "ACKNOWLEDGED",
+          "financialCommandsDispatched": 1,
+          "clientPid": 146,
+          "startUtc": "2026-11-03T08:48:58.9693821+00:00",
+          "placementHintsUsed": false,
+          "command": {
+            "operationId": "c05-contested-id",
+            "sourceAccountId": 2,
+            "targetAccountId": 1,
+            "amountCents": 31,
+            "fault": "none",
+            "arrivalOffsetMs": 0
+          },
+          "result": {
+            "status": "ID_CONFLICT",
+            "retries": 0,
+            "retrySqlStates": [],
+            "handledBy": "grain-2"
+          },
+          "phase": "FINANCIAL_DISPATCH",
+          "elapsedSeconds": 1.0617108,
+          "endUtc": "2026-11-03T08:49:00.0310116+00:00",
+          "stderr": ""
+        },
+        {
+          "gateway": "secondary",
+          "status": "STARTUP_UNAVAILABLE",
+          "financialCommandsDispatched": 0,
+          "clientPid": 153,
+          "startUtc": "2026-11-03T08:48:58.9835956+00:00",
+          "placementHintsUsed": false,
+          "exceptionType": "System.TimeoutException",
+          "error": "The operation has timed out.",
+          "phase": "STARTUP",
+          "elapsedSeconds": 15.7855685,
+          "endUtc": "2026-11-03T08:49:14.7691187+00:00",
+          "stderr": ""
+        }
+      ]
+    },
+    {
+      "elapsedSeconds": 32.42500192,
+      "outcomes": [
+        {
+          "gateway": "primary",
+          "status": "ACKNOWLEDGED",
+          "financialCommandsDispatched": 1,
+          "clientPid": 178,
+          "startUtc": "2026-11-03T08:49:14.9888567+00:00",
+          "placementHintsUsed": false,
+          "command": {
+            "operationId": "c05-contested-id",
+            "sourceAccountId": 2,
+            "targetAccountId": 1,
+            "amountCents": 31,
+            "fault": "none",
+            "arrivalOffsetMs": 0
+          },
+          "result": {
+            "status": "ID_CONFLICT",
+            "retries": 0,
+            "retrySqlStates": [],
+            "handledBy": "grain-2"
+          },
+          "phase": "FINANCIAL_DISPATCH",
+          "elapsedSeconds": 1.0628111,
+          "endUtc": "2026-11-03T08:49:16.0516173+00:00",
+          "stderr": ""
+        },
+        {
+          "gateway": "secondary",
+          "status": "STARTUP_UNAVAILABLE",
+          "financialCommandsDispatched": 0,
+          "clientPid": 185,
+          "startUtc": "2026-11-03T08:49:15.0044057+00:00",
+          "placementHintsUsed": false,
+          "exceptionType": "System.TimeoutException",
+          "error": "The operation has timed out.",
+          "phase": "STARTUP",
+          "elapsedSeconds": 15.7843164,
+          "endUtc": "2026-11-03T08:49:30.7886768+00:00",
+          "stderr": ""
+        }
+      ]
+    }
+  ],
+  "recoveryMode": "ASSISTED_BOTH_SILOS_RECREATED",
+  "beforeAssistedRecreation": {
+    "primary": {
+      "id": "a6e4a74a5cb4ff8806d09967dbc0308972dd82626ab59c6dec428e0e07ca411a",
+      "pidOnHost": 3618,
+      "status": "running",
+      "exitCode": 0,
+      "networks": {
+        "e2f10-net": "10.78.30.11"
+      }
+    },
+    "secondary": {
+      "id": "d4e68342448bc03cea86535ed7577ce12cd2be0804b8b1f27d5c346abc474d64",
+      "pidOnHost": 0,
+      "status": "exited",
+      "exitCode": 139,
+      "networks": {
+        "e2f10-net": ""
+      }
+    }
+  },
+  "beforeAssistedMembership": [
+    [
+      "10.78.30.11",
+      11150,
+      152700408,
+      3
+    ],
+    [
+      "10.78.30.12",
+      11151,
+      152700410,
+      6
+    ]
+  ],
+  "error": "RuntimeError('podman rm -f e2f10-primary exited 125: \\\\nSTDERR: Error: container a6e4a74a5cb4ff8806d09967dbc0308972dd82626ab59c6dec428e0e07ca411a has dependent containers which must be removed before it: 2b8a016c7d31f24cb80e96d431479050afb2008127125b9588820fe594dbbb55: container already exists\\n\\\\nSTDOUT: ')",
+  "lastPhase": "restore-and-reconcile",
+  "endUtc": "2026-11-03T08:49:31.034028+00:00",
+  "siloLogs": {
+    "e2f10-primary": "E2_PLACEMENT_STRATEGY:Orleans.Runtime.ResourceOptimizedPlacement\nE2_SILO_READY:primary:1",
+    "e2f10-secondary": "E2_PLACEMENT_STRATEGY:Orleans.Runtime.ResourceOptimizedPlacement\nE2_SILO_READY:secondary:1"
+  }
+}

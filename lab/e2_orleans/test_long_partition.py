@@ -20,6 +20,57 @@ fx, net, seed, P, OUT = short.fx, short.net, short.seed, short.P, short.OUT
 HOLD_SECONDS = 120
 STABLE_SAMPLES = 14
 STABLE_INTERVAL = 5
+DIAGNOSTIC_EVENTS = []
+
+
+def diagnostic_name(target):
+    assert target in ('e2f10-primary', 'e2f10-secondary')
+    return 'e2long-net-' + target.removeprefix('e2f10-')
+
+
+def create_diagnostics(containers, report, phase):
+    for role in ('primary', 'secondary'):
+        target = 'e2f10-' + role
+        before = net.inspect(target)
+        assert before['status'] == 'running'
+        name = diagnostic_name(target)
+        P('run', '-d', '--name', name, '--network', 'container:' + target,
+          '--cap-add', 'NET_ADMIN', '--cap-add', 'NET_RAW', '--entrypoint', 'sleep',
+          net.NET_TOOL_IMAGE, '1800')
+        containers.append(name)
+        after = net.inspect(target)
+        assert before == after
+        namespace = fx.namespace_id(name)
+        assert namespace == fx.namespace_id(target)
+        report.setdefault('diagnosticHelpers', []).append({'phase': phase, 'role': role,
+            'namespaceId': namespace, 'inspection': net.inspect(name), 'target': after})
+
+
+def net_helper(target, *args):
+    # Execute only in a pre-existing helper. Do not create/start a dependency
+    # container while diagnosing a target which may have exited.
+    before = net.inspect(target)
+    event = {'utc': seed.utc(), 'target': target, 'command': list(args), 'before': before}
+    DIAGNOSTIC_EVENTS.append(event)
+    try:
+        return P('exec', diagnostic_name(target), *args, timeout=45)
+    finally:
+        after = net.inspect(target)
+        event['after'] = after
+        assert before['id'] == after['id']
+        if before['status'] == after['status'] == 'running':
+            assert before['pidOnHost'] == after['pidOnHost']
+        assert not (before['status'] == 'exited' and after['status'] == 'running'), (
+            'Target restarted during diagnostic exec; do not claim passive observation', event)
+
+
+def rules(target):
+    return net_helper(target, 'iptables', '-w', '3', '-S', 'OUTPUT')
+
+
+def rule(action, blocked, peer):
+    return net_helper(blocked, 'iptables', '-w', '3', action, 'OUTPUT', '-d', fx.NODES[peer],
+                      '-p', 'tcp', '-m', 'multiport', '--ports', '11150,11151', '-j', 'DROP')
 
 
 def pair(requests):
@@ -34,8 +85,8 @@ def same_id_pair(amount):
 
 
 def running_silos():
-    return all(net.inspect('e2f10-' + role)['status'] == 'running'
-               for role in ('primary', 'secondary'))
+    states = [net.inspect('e2f10-' + role) for role in ('primary', 'secondary')]
+    return all(state['status'] == 'running' and state['pidOnHost'] > 0 for state in states)
 
 
 def observe(phase, origin, blocked, peer):
@@ -43,13 +94,12 @@ def observe(phase, origin, blocked, peer):
               'sql': short.snapshot(), 'processes': {}, 'outputRule': None}
     for role in ('primary', 'secondary'):
         result['processes'][role] = net.inspect('e2f10-' + role)
-    if result['processes'][blocked.removeprefix('e2f10-')]['status'] == 'running':
-        result['outputRule'] = capture(lambda: short.rules(blocked))
+    result['targetRunning'] = result['processes'][blocked.removeprefix('e2f10-')]['status'] == 'running'
+    result['outputRule'] = capture(lambda: rules(blocked))
+    if result['targetRunning']:
         if result['outputRule']['observationSucceeded']:
             assert '--ports 11150,11151 -j DROP' in result['outputRule']['value']
-    else:
-        result['outputRule'] = {'observationSucceeded': False,
-                                'reason': 'TARGET_PROCESS_EXITED_NAMESPACE_NOT_ASSUMED_LIVE'}
+    result['observationEndedSeconds'] = time.monotonic() - origin
     return result
 
 
@@ -75,6 +125,7 @@ def main():
               'blockedRole': role, 'startUtc': seed.utc(), 'physicalHosts': 1,
               'requestedFaultScheduleSeconds': HOLD_SECONDS, 'samples': [], 'catalogObservations': [],
               'activationExclusivityEstablished': False,
+              'diagnosticEvents': DIAGNOSTIC_EVENTS,
               'limitations': 'A 120s scheduled fault can include silo exit and namespace loss; '
               'actual liveness/rule samples determine scope. Catalogs are non-atomic and may fail. '
               'Assisted restart is an operator choice after bounded attempts, not proof of necessity. '
@@ -101,6 +152,8 @@ def main():
         fx.start('e2f10-client', '--entrypoint', 'sleep', fx.IMAGE, '1800')
         containers.append('e2f10-client')
         report['containersBefore'] = {n: net.inspect(n) for n in containers}
+        assert len({state['pidOnHost'] for state in report['containersBefore'].values()}) == 4
+        assert all(state['pidOnHost'] > 0 for state in report['containersBefore'].values())
         report['namespaces'] = {n: fx.namespace_id(n) for n in containers}
         assert len(set(report['namespaces'].values())) == 4
         report['images'] = json.loads(P('image', 'inspect', fx.IMAGE, fx.POSTGRES, net.NET_TOOL_IMAGE))
@@ -115,17 +168,19 @@ def main():
         report['baselineAck'] = baseline
         report['baselineSql'] = short.snapshot()
         check_durable(report['baselineSql'], [short.BASE], 1)
-        report['rulesBefore'] = {r: short.rules('e2f10-' + r) for r in ('primary', 'secondary')}
+        create_diagnostics(containers, report, 'before-fault')
+        report['rulesBefore'] = {r: rules('e2f10-' + r) for r in ('primary', 'secondary')}
         phase = 'fault-injection'
         installed = True
         report['faultUtc'] = seed.utc()
         fault_clock = time.monotonic()
-        short.rule('-A', blocked, peer)
+        rule('-A', blocked, peer)
         captures = short.captures_start(containers)
+        report['captureHelpersBefore'] = {n: net.inspect(n) for n in captures}
         report['tcpProbes'] = {}
         for origin, destination, port in ((peer, blocked, '11150' if role == 'primary' else '11151'),
                                           (blocked, peer, '11151' if role == 'primary' else '11150')):
-            result = short.helper(origin, 'sh', '-c', 'nc -z -w 2 ' + fx.NODES[destination] + ' ' + port + '; rc=$?; echo CONNECT_EXIT:$rc')
+            result = net_helper(origin, 'sh', '-c', 'nc -z -w 2 ' + fx.NODES[destination] + ' ' + port + '; rc=$?; echo CONNECT_EXIT:$rc')
             assert result.strip() == 'CONNECT_EXIT:1'
             report['tcpProbes'][origin] = result
         report['initialNetworkChecks'] = {n: net.check(n) for n in ('e2f10-primary', 'e2f10-secondary', 'e2f10-client')}
@@ -142,13 +197,16 @@ def main():
         report['catalogObservations'].append({'elapsedSeconds': time.monotonic() - fault_clock,
             'outcomes': [short.client('primary'), short.client('secondary')]})
         report['initialCaptures'] = short.captures_stop(captures)
+        report['captureHelpersAfter'] = {n: net.inspect(n) for n in captures}
+        for name in captures:
+            P('rm', '-f', name)
         captures = []
         blocked_ip, peer_ip = fx.NODES[blocked], fx.NODES[peer]
         receiver = report['initialCaptures'][peer.removeprefix('e2f10-')]['decoded']
         assert not re.search(re.escape(blocked_ip) + r'\.\d+ > ' + re.escape(peer_ip) + r'\.\d+', receiver)
         assert re.search(re.escape(peer_ip) + r'\.\d+ > ' + re.escape(blocked_ip) + r'\.\d+',
                          report['initialCaptures'][role]['decoded'])
-        report['initialDropCounters'] = capture(lambda: short.helper(blocked, 'iptables-save', '-c'))
+        report['initialDropCounters'] = capture(lambda: net_helper(blocked, 'iptables-save', '-c'))
         assert report['initialDropCounters']['observationSucceeded']
         matched = re.findall(r'\[(\d+):(\d+)\] -A OUTPUT .*--ports 11150,11151 -j DROP',
                              report['initialDropCounters']['value'])
@@ -170,18 +228,22 @@ def main():
         assert 120 <= report['faultScheduleElapsedSeconds'] <= 180
         assert second_sent
         report['samples'].append(observe(phase, fault_clock, blocked, peer))
-        report['finalDropCounters'] = capture(lambda: short.helper(blocked, 'iptables-save', '-c'))
+        report['finalDropCounters'] = capture(lambda: net_helper(blocked, 'iptables-save', '-c'))
         phase = 'restore-and-reconcile'
         restore_clock = time.monotonic()
         report['restoreUtc'] = seed.utc()
-        if net.inspect(blocked)['status'] == 'running':
-            short.rule('-D', blocked, peer)
-            installed = False
-            assert short.rules(blocked) == report['rulesBefore'][role]
-            report['ruleRestoration'] = 'EXACT_LIVE_NAMESPACE_BASELINE'
+        target_running = net.inspect(blocked)['status'] == 'running'
+        before_restore_rules = rules(blocked)
+        report['rulesImmediatelyBeforeRestore'] = before_restore_rules
+        if '--ports 11150,11151 -j DROP' in before_restore_rules:
+            rule('-D', blocked, peer)
+            assert rules(blocked) == report['rulesBefore'][role]
+            report['ruleRestoration'] = ('PINNED_NAMESPACE_BASELINE_TARGET_RUNNING' if target_running
+                                         else 'PINNED_NAMESPACE_BASELINE_TARGET_EXITED')
         else:
-            installed = False
-            report['ruleRestoration'] = 'TARGET_EXITED_OLD_NAMESPACE_NOT_ASSUMED_RESTORED'
+            assert not target_running and before_restore_rules == report['rulesBefore'][role]
+            report['ruleRestoration'] = 'BASELINE_OBSERVED_IN_PINNED_NAMESPACE_TARGET_EXITED'
+        installed = False
         before_restore_sql = short.snapshot()
         check_durable(before_restore_sql, [short.BASE, short.CONTEST])
         report['unassistedAttempts'] = []
@@ -201,6 +263,10 @@ def main():
             report['recoveryMode'] = 'ASSISTED_BOTH_SILOS_RECREATED'
             report['beforeAssistedRecreation'] = {r: net.inspect('e2f10-' + r) for r in ('primary', 'secondary')}
             report['beforeAssistedMembership'] = seed.generations()
+            report['diagnosticsBeforeRecreation'] = {r: net.inspect(diagnostic_name('e2f10-' + r))
+                                                     for r in ('primary', 'secondary')}
+            for r in ('primary', 'secondary'):
+                P('rm', '-f', diagnostic_name('e2f10-' + r))
             for r in ('primary', 'secondary'):
                 P('rm', '-f', 'e2f10-' + r)
             for r in ('primary', 'secondary'):
@@ -209,8 +275,9 @@ def main():
                          'cluster', 'silo', r, silo_ip=fx.NODES[n])
                 fx.wait_silo(n, r, seconds=85)
             seed.wait_for(short.active_pair, 'two Active restored silo generations', timeout=30)
+            create_diagnostics(containers, report, 'after-assisted-recreation')
             for r in ('primary', 'secondary'):
-                assert short.rules('e2f10-' + r) == report['rulesBefore'][r]
+                assert rules('e2f10-' + r) == report['rulesBefore'][r]
             outcomes = same_id_pair(31)
             report['assistedOutcomes'] = outcomes
         assert all(o['status'] == 'ACKNOWLEDGED' for o in outcomes)
@@ -273,7 +340,7 @@ def main():
         report['siloLogs'] = {n: P('logs', n, check=False)[-18000:]
                               for n in containers if n in ('e2f10-primary', 'e2f10-secondary')}
         if installed:
-            report['cleanupRule'] = capture(lambda: short.rule('-D', blocked, peer))
+            report['cleanupRule'] = capture(lambda: rule('-D', blocked, peer))
         for n in captures:
             P('wait', n, check=False, timeout=60)
         (OUT / 'long-partition-summary.json').write_text(json.dumps(report, indent=2) + '\n')

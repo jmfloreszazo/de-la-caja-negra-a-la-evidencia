@@ -14,6 +14,16 @@ accepted C# grain/ledger/default policy. Shared helper output paths are reused
 only inside the fresh job; the result is `long-partition-summary.json`, not a
 short-case result. Record exact source/checkout, file hashes, images and runner.
 
+Two fixed NET_ADMIN/NET_RAW observer sidecars are created while their targets
+are known running. Subsequent queries use `podman exec` in those existing
+sidecars, never a new dependency container against a possibly stopped silo.
+The observers retain the original network namespaces and record target
+identity/liveness before and after each command. They do not make an exited
+silo healthy. Remove completed capture containers and then observer sidecars
+before any explicit target recreation; recreate observers only after the new
+silos are ready. These are test-local observers with unchanged capabilities,
+not independent physical fault domains.
+
 ## Fixed acceptance before any original run
 
 1. Require real disposable SQL readiness, two Active membership generations,
@@ -73,3 +83,29 @@ production RTO/RPO, capacity ceiling, MIPS equivalence or banking acceptance is
 established. The historical default-placement cause remains open under #74.
 The short-case original evidence and its stricter observed-scope claims remain
 unchanged. Publish paired ES/EN interpretation only after actual original CI.
+
+## First original attempt retained — instrumentation failures
+
+Run #41605736830 on `62d78fbddc206babbe3cbd28630f33464271d619`
+failed both cases during restoration. Primary-block case reached the explicit
+recreation branch but Podman refused to remove a silo with dependent capture
+containers. Secondary-block case had already observed secondary exit and Dead
+membership, then a later direct helper/delete path reported a missing rule.
+Do not call that a completed recovery or infer passive healing from it.
+The prototype created transient namespace helpers; their lifecycle was not
+adequately separated from an exited target. Podman documents dependency
+startup in its [run reference](https://docs.podman.io/en/v4.3/markdown/podman-run.1.html).
+That does not by itself prove the precise cause of this particular transition.
+
+Original ZIPs/JSON extractions are retained unchanged under
+`evidence/runs/e2-long-first-{primary,secondary}-original.*`.
+Primary artifact 13217031754, SHA-256
+`eb47f2302c5ddb880de2857e4c8e6d694518b1aeaae3cc8b2aa54572bbfc4439`;
+secondary artifact 13216048812, SHA-256
+`52b51a65c1dd918d9d3c7778bda34fdb77a6032294c5366cb02b2da911a09e4e`.
+All 70 provenance source hashes per original were independently audited.
+The correction uses existing observers and explicit dependency cleanup; it
+does not change the SQL, stability, financial or timing acceptance criteria.
+The original short-case assisted branch was not exercised in its accepted
+source; its dependency cleanup also needs separate validation before any
+broader assisted-recovery claim.

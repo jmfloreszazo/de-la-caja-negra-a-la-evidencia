@@ -77,7 +77,7 @@ jobs:
       - name: Remove only disposable test resources
         if: always()
         run: |
-          for name in c05-capture-primary c05-capture-secondary e2f10-client e2f10-secondary e2f10-primary e2f10-pg; do
+          for name in c05-capture-primary c05-capture-secondary e2long-net-primary e2long-net-secondary e2f10-client e2f10-secondary e2f10-primary e2f10-pg; do
             podman rm -f "$name" 2>/dev/null || true
           done
           podman network rm e2f10-net 2>/dev/null || true
