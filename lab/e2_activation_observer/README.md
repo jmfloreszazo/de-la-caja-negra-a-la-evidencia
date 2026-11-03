@@ -1,6 +1,10 @@
 # E2 incoming Transfer invocation observation
 
-Issue #24. **New experiment; no original execution accepted yet.**
+Issue #24. **Two bounded original observations audited; E2 remains partial.**
+Run #41619587080 on source `362ee5a7537e1523caad2bd7033ec7a99977ac2d`
+recorded 38/39 complete calls with SQL reconciliation and no observed overlap.
+A positive concurrent-activation case remains pending. See the
+[original evidence](../../evidence/runs/E2-ACTIVATION-OBSERVATION.md).
 This project references the unmodified `AccountGrain` and `PgDurableLedger`.
 Its separate host reproduces the fixed ADO.NET private fixture and adds one
 incoming-call filter. The original host and historical auditors remain intact.
