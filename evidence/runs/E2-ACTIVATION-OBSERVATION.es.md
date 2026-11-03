@@ -41,7 +41,7 @@ activación, ausencia de split brain ni de llamadas no observadas. Incluso un
 solapamiento positivo del filtro no mediría ejecución SQL simultánea.
 La siguiente condición de #24 sigue siendo un caso positivo dirigido de
 activaciones concurrentes con aceptación SQL independiente. Siguen pendientes
-#25, capacidad sostenida y dominios físicos independientes.
+la capacidad sostenida (#25) y los dominios físicos independientes.
 
 ## Bytes originales y reproducción
 
