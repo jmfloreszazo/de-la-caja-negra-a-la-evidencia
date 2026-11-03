@@ -1,0 +1,17 @@
+sequenceDiagram
+  participant A as Canal
+  participant S as Switch / política
+  participant C as Core
+  participant B as Autoridad stand-in
+  participant D as Dispositivo
+  A->>S: Petición de autorización
+  S->>C: Solicitar decisión online
+  C--xS: No disponible
+  alt Sin política stand-in aprobada: valor del laboratorio
+    S-->>A: UNAVAILABLE / denegar
+    Note over S,D: No hay comando de dispensación
+  else Política acotada aprobada por emisor: fuera del laboratorio
+    S->>B: Comprobar presupuesto y autoridad delegados
+    B-->>S: Decisión acotada y registro de conciliación
+    Note over S,D: Actuar requiere ese contrato aprobado por separado
+  end

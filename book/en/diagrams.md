@@ -13,9 +13,9 @@ Architecture is described with the C4 model (context, containers and deployment)
 | C4 Deployment | 2 |
 | Chart (xychart) | 2 |
 | ER | 1 |
-| Flowchart | 14 |
+| Flowchart | 16 |
 | UML class | 1 |
-| UML sequence | 12 |
+| UML sequence | 16 |
 | UML state | 5 |
 | gitGraph | 1 |
 
@@ -46,6 +46,12 @@ Architecture is described with the C4 model (context, containers and deployment)
 | Figure 20.1 | Flowchart | Partitioned batch: rules and date fixed before starting, a checkpoint per partition and reconciliation against the input. | [Chapter 20 · Batch and parallelism: speeding up without changing the result](part-4-patterns/20-batch-and-parallelism-speeding-up-without-changing-the.md) | [image](../figures/en/batch_flow.png) · [source](../figures/src/en/batch_flow.mmd) |
 | Figure 20.2 | UML state | States of a partition: a restart skips what was committed and repeats what did not reach the commit. | [Chapter 20 · Batch and parallelism: speeding up without changing the result](part-4-patterns/20-batch-and-parallelism-speeding-up-without-changing-the.md) | [image](../figures/en/batch_states.png) · [source](../figures/src/en/batch_states.mmd) |
 | Figure 21.1 | Flowchart | CQRS without tricks: the projection is for looking; the decision about the balance is made in the write core. | [Chapter 21 · Event sourcing, CQRS and sagas: when they help and when they get in the way](part-4-patterns/21-event-sourcing-cqrs-and-sagas-when-they-help-and-when-they.md) | [image](../figures/en/cqrs.png) · [source](../figures/src/en/cqrs.mmd) |
+| Figure C.1 | Flowchart | Illustrative starting topology: channels and switch reach host services; deployment and authority must be verified per installation. | [Companion chapter · Channels, ATM cash and the core](part-4-patterns/21a-channels-atm-and-the-core.md) | [image](../figures/en/channels_as_is.png) · [source](../figures/src/en/channels_as_is.mmd) |
+| Figure C.2 | Flowchart | Proposed synthetic target: core and dispenser have separate SQL stores; the independent oracle reads both. | [Companion chapter · Channels, ATM cash and the core](part-4-patterns/21a-channels-atm-and-the-core.md) | [image](../figures/en/channels_to_be.png) · [source](../figures/src/en/channels_to_be.mmd) |
+| Figure C.3 | UML sequence | Happy path under the declared synthetic policy: authorize, prepare one command, record device outcome, then post actual cash. | [Companion chapter · Channels, ATM cash and the core](part-4-patterns/21a-channels-atm-and-the-core.md) | [image](../figures/en/channels_cash_happy.png) · [source](../figures/src/en/channels_cash_happy.mmd) |
+| Figure C.4 | UML sequence | Lost device response: keep UNKNOWN and the hold, recover the original journal outcome and reconcile once. | [Companion chapter · Channels, ATM cash and the core](part-4-patterns/21a-channels-atm-and-the-core.md) | [image](../figures/en/channels_cash_unknown.png) · [source](../figures/src/en/channels_cash_unknown.mmd) |
+| Figure C.5 | UML sequence | Core unavailable: this lab denies new cash; issuer-approved stand-in is a separate, unimplemented policy branch. | [Companion chapter · Channels, ATM cash and the core](part-4-patterns/21a-channels-atm-and-the-core.md) | [image](../figures/en/channels_standin.png) · [source](../figures/src/en/channels_standin.mmd) |
+| Figure C.6 | UML sequence | Digital transfer with a lost response after COMMIT: the status query resolves the original instruction without another debit. | [Companion chapter · Channels, ATM cash and the core](part-4-patterns/21a-channels-atm-and-the-core.md) | [image](../figures/en/channels_web_unknown.png) · [source](../figures/src/en/channels_web_unknown.mmd) |
 | Figure 22.1 | Flowchart | From the mainframe to a candidate configuration: the workload footprint feeds a demand model that only a trial can confirm. | [Chapter 22 · MIPS do not fit in a vCPU conversion](part-5-capacity/22-mips-do-not-fit-in-a-vcpu-conversion.md) | [image](../figures/en/capacity_flow.png) · [source](../figures/src/en/capacity_flow.mmd) |
 | Figure 23.1 | Flowchart | Bounded admission: what does not fit is rejected now, instead of timing out later. | [Chapter 23 · Concurrency that makes use of the machine](part-5-capacity/23-concurrency-that-makes-use-of-the-machine.md) | [image](../figures/en/admission.png) · [source](../figures/src/en/admission.mmd) |
 | Figure 24.1 | Chart (xychart) | Maximum latency per 100 ms interval in the simulation. Red: open loop, with queued requests draining after the stall. Gray: closed loop, which records a single spike. | [Chapter 24 · The benchmark that counts: load, contention, failure and cost](part-5-capacity/24-the-benchmark-that-counts-load-contention-failure-and-cost.md) | [image](../figures/en/omission_chart.png) · [source](../figures/src/en/omission_chart.mmd) |

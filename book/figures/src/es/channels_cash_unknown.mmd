@@ -1,0 +1,17 @@
+sequenceDiagram
+  participant A as ATM
+  participant C as API de capacidad
+  participant D as Adaptador de dispositivo
+  participant L as Ledger del core
+  A->>C: Preparar retirada ya autorizada
+  C->>L: Confirmar ID de comando y conservar retención
+  A->>D: Dispensar con ID estable
+  Note over D: El resultado persiste por separado
+  D--xA: Respuesta perdida
+  A->>C: Consultar operación
+  C-->>A: UNKNOWN, se conserva la retención
+  Note over A,D: No emitir otro ID de dispensación
+  A->>C: Conciliar la misma operación
+  C->>D: Leer resultado final del diario
+  C->>L: Contabilizar una vez el importe real y liberar retención
+  C-->>A: Decisión final registrada

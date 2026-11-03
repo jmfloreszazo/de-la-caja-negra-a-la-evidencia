@@ -1,6 +1,6 @@
 **English** · [Español](../../es/parte-4-patrones/21-event-sourcing-cqrs-y-sagas-cuando-ayudan-y-cuando-estorban.md)
 
-[← Chapter 20 · Batch and parallelism: speeding up without changing the result](20-batch-and-parallelism-speeding-up-without-changing-the.md) · [Contents](../README.md) · [Part V · Capacity: MIPS, concurrency and platform →](../part-5-capacity/README.md)
+[← Chapter 20 · Batch and parallelism: speeding up without changing the result](20-batch-and-parallelism-speeding-up-without-changing-the.md) · [Contents](../README.md) · [Companion chapter · Channels, ATM cash and the core →](21a-channels-atm-and-the-core.md)
 
 # Chapter 21 · Event sourcing, CQRS and sagas: when they help and when they get in the way
 
@@ -23,4 +23,4 @@ The rule is demanding and simple: **the chosen pattern must preserve the level o
 
 ---
 
-[← Chapter 20 · Batch and parallelism: speeding up without changing the result](20-batch-and-parallelism-speeding-up-without-changing-the.md) · [Contents](../README.md) · [Part V · Capacity: MIPS, concurrency and platform →](../part-5-capacity/README.md)
+[← Chapter 20 · Batch and parallelism: speeding up without changing the result](20-batch-and-parallelism-speeding-up-without-changing-the.md) · [Contents](../README.md) · [Companion chapter · Channels, ATM cash and the core →](21a-channels-atm-and-the-core.md)

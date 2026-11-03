@@ -1,0 +1,16 @@
+sequenceDiagram
+  participant A as ATM
+  participant C as Capability API
+  participant D as Device adapter
+  participant L as Core ledger
+  A->>C: Authorize stable operation ID
+  C->>L: Commit funds hold
+  A->>C: Prepare stable device command
+  C->>L: Commit DISPENSE_PENDING
+  A->>D: Dispense command ID
+  Note over D: Commit simulated cash outcome in device DB
+  D-->>A: Final dispensed amount
+  A->>C: Reconcile operation ID
+  C->>D: Read immutable device outcome
+  C->>L: Commit actual debit, paired postings and outbox, release hold
+  C-->>A: POSTED or CANCELLED

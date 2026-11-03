@@ -98,6 +98,12 @@
 
 [47] José María Flores Zazo. *Después de Frontier Week: de la expectativa al impacto*. jmfloreszazo.com, 20 de septiembre de 2026. <https://jmfloreszazo.com/despues-de-frontier-week-de-la-expectativa-al-impacto/>
 
+[48] IBM. *Bank of Z — Application Components*. Ejemplo educativo, no arquitectura bancaria universal. Consultado el 3 de noviembre de 2026. <https://ibm.github.io/Bank-of-Z/docs/architecture/application-components.html>
+
+[49] IBM. *How CICS runs transactions, tasks, and programs*. Documentación CICS TS 6.x; fuente indexada consultada el 3 de noviembre de 2026 (el lector directo devolvió HTTP 403). <https://www.ibm.com/docs/en/cics-ts/6.x?topic=development-transactions-in-cics>
+
+[50] CSF International. *EZswitch — Online ATM/Debit Middleware System*. Ejemplo comercial de autorización host y stand-in; no es una política bancaria aprobada para este laboratorio. Consultado el 3 de noviembre de 2026. <https://www.csfi.com/ezswitch-2/>
+
 ---
 
 [← Anexo F · Glosario operativo](anexo-f-glosario-operativo.md) · [Índice](../README.md)

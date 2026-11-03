@@ -17,6 +17,7 @@ Cada garantía que el mainframe daba sin que la aplicación la pidiera necesita 
 - [Capítulo 19 · Actores: una gran herramienta, un mal sustituto universal](19-actores-una-gran-herramienta-un-mal-sustituto-universal.md)
 - [Capítulo 20 · Batch y paralelismo: acelerar sin cambiar el resultado](20-batch-y-paralelismo-acelerar-sin-cambiar-el-resultado.md)
 - [Capítulo 21 · Event sourcing, CQRS y sagas: cuándo ayudan y cuándo estorban](21-event-sourcing-cqrs-y-sagas-cuando-ayudan-y-cuando-estorban.md)
+- [Capítulo complementario · Canales, efectivo ATM y core](21a-canales-atm-y-core.md)
 
 ---
 

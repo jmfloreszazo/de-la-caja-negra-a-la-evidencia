@@ -1,0 +1,13 @@
+sequenceDiagram
+  participant U as Cliente digital
+  participant A as API de capacidad
+  participant L as PostgreSQL del core
+  U->>A: Transferir con ID estable de operación
+  A->>L: Una transacción: saldos, operación, apuntes y outbox
+  L-->>A: COMMIT
+  A--xU: Respuesta HTTP perdida
+  Note over U: Resultado del cliente UNKNOWN
+  U->>A: Consultar el mismo ID de operación
+  A->>L: Leer decisión autoritativa
+  L-->>A: COMMITTED
+  A-->>U: Decisión final, sin segundo débito

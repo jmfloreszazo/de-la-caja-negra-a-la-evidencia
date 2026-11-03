@@ -1,0 +1,43 @@
+name: Synthetic channels native and separate SQL stores
+on:
+  push:
+    branches: [book/channels-30]
+    paths: ['lab/channels/**', 'evidence/channels/**', 'scripts/check_channel_observations.py', '.github/workflows/channels-synthetic.yml']
+  pull_request:
+    paths: ['lab/channels/**', 'evidence/channels/**', 'scripts/check_channel_observations.py', '.github/workflows/channels-synthetic.yml']
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  synthetic:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 25
+    env:
+      SOURCE_HEAD_SHA: ${{ github.event.pull_request.head.sha || github.sha }}
+      CHANNELS_DISPOSABLE: 'YES'
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+      - uses: actions/setup-python@v6
+        with:
+          python-version: '3.12'
+      - uses: actions/setup-dotnet@v5
+        with:
+          dotnet-version: '10.0.x'
+      - run: python3 -m pip install -r lab/e1_pg/requirements.txt
+      - name: Audit frozen originals and historical source identities
+        run: |
+          git fetch --no-tags --depth=1 origin 065b82b3b1b6ac2f8b7a1dab0622afbf08719732 b057a875fc1485ae804222d7035e4d602271bbaf dd6cbb5c455907d6555fd1196f504be73eadc7eb 1b206b137074c3ab175c4234d8f69780217fbb97
+          python3 scripts/check_channel_observations.py
+      - name: Execute actual HTTP, SQL, process kills and independent oracles
+        run: python3 lab/channels/run.py
+      - name: Preserve original observations on every outcome
+        if: always()
+        uses: actions/upload-artifact@v6
+        with:
+          name: channels-synthetic-original
+          path: |
+            lab/results/channels/*.json
+            lab/results/channels/*.log
+          if-no-files-found: warn

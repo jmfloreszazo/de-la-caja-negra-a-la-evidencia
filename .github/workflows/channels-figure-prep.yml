@@ -1,0 +1,36 @@
+name: Channel chapter figure preparation
+on:
+  push:
+    branches: [book/channels-30]
+    paths:
+      - 'book/figures/src/**/channels_*.mmd'
+      - '.github/workflows/channels-figure-prep.yml'
+permissions:
+  contents: read
+jobs:
+  figures:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v5
+        with:
+          node-version: '22'
+          package-manager-cache: false
+      - run: npm install -g @mermaid-js/mermaid-cli@11.12.0
+      - name: Render new paired sources with the existing book theme
+        env:
+          MERMAID_PUPPETEER_CONFIG: .github/puppeteer-config.json
+        run: |
+          git rev-parse HEAD > channel-figure-source.txt
+          python3 scripts/render_figures.py
+      - uses: actions/upload-artifact@v6
+        if: always()
+        with:
+          name: channels-paired-figure-originals
+          path: |
+            channel-figure-source.txt
+            book/figures/en/channels_*.png
+            book/figures/es/channels_*.png
+            book/figures/hashes.json
+          if-no-files-found: warn

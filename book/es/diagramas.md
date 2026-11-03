@@ -12,11 +12,11 @@ La arquitectura se describe con el modelo C4 (contexto, contenedores y despliegu
 | C4 Contexto | 1 |
 | C4 Despliegue | 2 |
 | ER | 1 |
-| Flujo | 14 |
+| Flujo | 16 |
 | Gráfico (xychart) | 2 |
 | UML clases | 1 |
 | UML estados | 5 |
-| UML secuencia | 12 |
+| UML secuencia | 16 |
 | gitGraph | 1 |
 
 | Figura | Tipo | Qué muestra | Dónde | Archivos |
@@ -46,6 +46,12 @@ La arquitectura se describe con el modelo C4 (contexto, contenedores y despliegu
 | Figura 20.1 | Flujo | Lote particionado: reglas y fecha fijadas antes de empezar, checkpoint por partición y reconciliación contra la entrada. | [Capítulo 20 · Batch y paralelismo: acelerar sin cambiar el resultado](parte-4-patrones/20-batch-y-paralelismo-acelerar-sin-cambiar-el-resultado.md) | [imagen](../figures/es/batch_flow.png) · [fuente](../figures/src/es/batch_flow.mmd) |
 | Figura 20.2 | UML estados | Estados de una partición: un reinicio salta lo confirmado y repite lo que no llegó al commit. | [Capítulo 20 · Batch y paralelismo: acelerar sin cambiar el resultado](parte-4-patrones/20-batch-y-paralelismo-acelerar-sin-cambiar-el-resultado.md) | [imagen](../figures/es/batch_states.png) · [fuente](../figures/src/es/batch_states.mmd) |
 | Figura 21.1 | Flujo | CQRS sin trampas: la proyección sirve para mirar; la decisión sobre el saldo se toma en el núcleo de escritura. | [Capítulo 21 · Event sourcing, CQRS y sagas: cuándo ayudan y cuándo estorban](parte-4-patrones/21-event-sourcing-cqrs-y-sagas-cuando-ayudan-y-cuando-estorban.md) | [imagen](../figures/es/cqrs.png) · [fuente](../figures/src/es/cqrs.mmd) |
+| Figura C.1 | Flowchart | Topología inicial ilustrativa: canales y switch acceden a servicios host; el despliegue y la autoridad deben verificarse por instalación. | [Capítulo complementario · Canales, efectivo ATM y core](parte-4-patrones/21a-canales-atm-y-core.md) | [image](../figures/es/channels_as_is.png) · [source](../figures/src/es/channels_as_is.mmd) |
+| Figura C.2 | Flowchart | Destino sintético propuesto: core y dispensador tienen almacenes SQL separados; el oráculo independiente lee ambos. | [Capítulo complementario · Canales, efectivo ATM y core](parte-4-patrones/21a-canales-atm-y-core.md) | [image](../figures/es/channels_to_be.png) · [source](../figures/src/es/channels_to_be.mmd) |
+| Figura C.3 | UML sequence | Camino feliz bajo la política sintética declarada: autorizar, preparar una orden, registrar resultado del dispositivo y contabilizar efectivo real. | [Capítulo complementario · Canales, efectivo ATM y core](parte-4-patrones/21a-canales-atm-y-core.md) | [image](../figures/es/channels_cash_happy.png) · [source](../figures/src/es/channels_cash_happy.mmd) |
+| Figura C.4 | UML sequence | Respuesta del dispositivo perdida: conservar UNKNOWN y la retención, recuperar el resultado del journal original y conciliar una vez. | [Capítulo complementario · Canales, efectivo ATM y core](parte-4-patrones/21a-canales-atm-y-core.md) | [image](../figures/es/channels_cash_unknown.png) · [source](../figures/src/es/channels_cash_unknown.mmd) |
+| Figura C.5 | UML sequence | Core inaccesible: este laboratorio deniega nuevo efectivo; el stand-in aprobado por el emisor es otra política todavía sin implementar. | [Capítulo complementario · Canales, efectivo ATM y core](parte-4-patrones/21a-canales-atm-y-core.md) | [image](../figures/es/channels_standin.png) · [source](../figures/src/es/channels_standin.mmd) |
+| Figura C.6 | UML sequence | Transferencia digital con respuesta perdida tras COMMIT: la consulta de estado resuelve la instrucción original sin otro cargo. | [Capítulo complementario · Canales, efectivo ATM y core](parte-4-patrones/21a-canales-atm-y-core.md) | [image](../figures/es/channels_web_unknown.png) · [source](../figures/src/es/channels_web_unknown.mmd) |
 | Figura 22.1 | Flujo | Del mainframe a una configuración candidata: la huella de carga alimenta un modelo de demanda que solo un ensayo puede confirmar. | [Capítulo 22 · Los MIPS no caben en una conversión de vCPU](parte-5-capacidad/22-los-mips-no-caben-en-una-conversion-de-vcpu.md) | [imagen](../figures/es/capacity_flow.png) · [fuente](../figures/src/es/capacity_flow.mmd) |
 | Figura 23.1 | Flujo | Admisión acotada: lo que no cabe se rechaza ahora, en lugar de agotar el tiempo después. | [Capítulo 23 · Concurrencia que aprovecha la máquina](parte-5-capacidad/23-concurrencia-que-aprovecha-la-maquina.md) | [imagen](../figures/es/admission.png) · [fuente](../figures/src/es/admission.mmd) |
 | Figura 24.1 | Gráfico (xychart) | Latencia máxima por intervalo de 100 ms en la simulación. Rojo: circuito abierto, con solicitudes en cola que se drenan tras la parada. Gris: circuito cerrado, que registra un único pico. | [Capítulo 24 · El benchmark que vale: carga, contención, fallo y coste](parte-5-capacidad/24-el-benchmark-que-vale-carga-contencion-fallo-y-coste.md) | [imagen](../figures/es/omission_chart.png) · [fuente](../figures/src/es/omission_chart.mmd) |

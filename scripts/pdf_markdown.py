@@ -9,6 +9,14 @@ def keep_listing_captions(html: str) -> str:
     return re.sub(pattern,r'<p class="listing-caption">\1',html,flags=re.S)
 
 
+def keep_channel_figures(html: str) -> str:
+    """Keep a channel diagram and its immediate printed caption on one page."""
+    pattern=(r'<p>(<img\b[^>]*src="figures/(?:en|es)/channels_[^"]+\.png"[^>]*>)</p>'
+             r'\s*<p><em>((?:Figure|Figura)\s+C\.\d+\s+·(?:(?!</p>).)*)</em></p>')
+    return re.sub(pattern,r'<figure class="channel-figure">\1<figcaption><em>\2</em></figcaption></figure>',
+                  html,flags=re.S)
+
+
 def normalize_alerts(markdown: str) -> str:
     lines = []
     fence = None

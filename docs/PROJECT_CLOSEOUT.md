@@ -80,3 +80,5 @@ Nine issues were closed; 13 remain open, including two explicitly frozen items. 
 | Frozen | Main branch ruleset; confidential computing/clean rooms | #16/#53; excluded until renewed instruction |
 
 Use one short-lived branch per concrete deliverable and remove it after verified integration. Do not keep merged branches alive merely to preserve experimental provenance: immutable source commits, raw artifacts and the recovery bundle provide that record.
+
+The first #30 increment adds the paired channel chapter and a native separate-store cash/digital fixture. See the [channel checkpoint](CHANNELS_CHECKPOINT_2026-11-03.md) for original successes/failures and the still-open acceptance matrix. This does not close #30.

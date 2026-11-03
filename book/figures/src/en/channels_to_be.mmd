@@ -1,0 +1,9 @@
+flowchart TD
+  atm["ATM test driver"] --> api[".NET 10 capability API"]
+  web["Digital test driver"] --> api
+  api --> ledger["Core PostgreSQL: holds and ledger"]
+  atm --> device["Synthetic device adapter"]
+  device --> journal["Device PostgreSQL: immutable outcomes"]
+  api --> journal
+  oracle["Independent read-only oracle"] --> ledger
+  oracle --> journal
