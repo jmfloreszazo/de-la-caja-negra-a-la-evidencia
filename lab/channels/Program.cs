@@ -6,7 +6,9 @@ using Npgsql;
 
 Guard.Check();
 var builder=WebApplication.CreateBuilder(args);
-builder.WebHost.UseUrls("http://127.0.0.1:55444");
+var port=int.Parse(Environment.GetEnvironmentVariable("CHANNELS_HTTP_PORT")??"55444",CultureInfo.InvariantCulture);
+if(port<55444||port>55463)throw new InvalidOperationException("HTTP fixture port outside the declared loopback pool");
+builder.WebHost.UseUrls($"http://127.0.0.1:{port}");
 var app=builder.Build();
 app.MapGet("/health",async()=> { await Guard.Probe(); return Results.Ok(new {status="READY"}); });
 app.MapGet("/operations/{id:guid}",async(Guid id)=> {

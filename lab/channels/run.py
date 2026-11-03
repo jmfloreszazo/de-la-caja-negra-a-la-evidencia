@@ -8,6 +8,7 @@ import json
 import os
 from pathlib import Path
 import signal
+import socket
 import subprocess
 import sys
 import time
@@ -21,9 +22,22 @@ from oracle import audit
 ROOT = Path(__file__).resolve().parents[2]
 OUT = ROOT / 'lab/results/channels'
 OUT.mkdir(parents=True, exist_ok=True)
+# Choose only from the declared local fixture pool; never stop an unrelated listener.
+PORT = None
+for candidate in range(55444, 55464):
+    with socket.socket() as probe:
+        try:
+            probe.bind(('127.0.0.1', candidate))
+        except OSError:
+            continue
+        PORT = candidate
+        break
+if PORT is None:
+    raise RuntimeError('No free port in the declared HTTP fixture pool')
+os.environ['CHANNELS_HTTP_PORT'] = str(PORT)
 os.chdir(ROOT)
 os.environ['CHANNELS_DISPOSABLE'] = 'YES'
-report = {'status': 'FAIL', 'cases': [], 'negative_controls': [], 'source_sha': os.environ.get('SOURCE_HEAD_SHA'),
+report = {'http_port': PORT, 'status': 'FAIL', 'cases': [], 'negative_controls': [], 'source_sha': os.environ.get('SOURCE_HEAD_SHA'),
           'run_id': os.environ.get('GITHUB_RUN_ID'), 'scope': {'synthetic': True, 'physical_cash': False,
           'bank_policy_approved': False, 'protocol_certified': False, 'capacity_claim': False, 'physical_ha': False}}
 containers = []
@@ -55,7 +69,7 @@ def wait_until(predicate, seconds=20):
 
 
 def http(route, payload=None, expect_loss=False):
-    request = urllib.request.Request('http://127.0.0.1:55444/' + route,
+    request = urllib.request.Request(f'http://127.0.0.1:{PORT}/' + route,
                                     data=json.dumps(payload).encode() if payload else None,
                                     headers={'Content-Type': 'application/json'})
     observation = {'route': route, 'request': payload}
@@ -84,7 +98,11 @@ def start():
     log = (OUT / f'core-{boot}.log').open('w')
     logs.append(log)
     server = subprocess.Popen(['dotnet', 'lab/results/channels/publish/ChannelsLab.dll'], stdout=log, stderr=subprocess.STDOUT)
-    wait_until(lambda: server.poll() is None and http('health')['status'] == 'READY')
+    def ready():
+        if server.poll() is not None:
+            raise RuntimeError('Native host exited during startup; inspect its original log')
+        return http('health')['status'] == 'READY'
+    wait_until(ready)
 
 
 def stop(kill=False):
