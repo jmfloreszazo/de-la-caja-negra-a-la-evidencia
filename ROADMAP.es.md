@@ -4,13 +4,29 @@
 
 Esta es la hoja de ruta **del repositorio**, no una declaración de que una migración bancaria esté lista para producción. Los estados oficiales de afirmaciones están en [evidence/claims.json](evidence/claims.json) y el protocolo de aceptación detallado en [docs/EXPERIMENT_ROADMAP.md](docs/EXPERIMENT_ROADMAP.md). Diferenciamos observado, simulado, propuesto y aprobado por negocio. El código, las pruebas y los README del laboratorio van exclusivamente en inglés; el libro se mantiene en ES/EN.
 
+## Punto exacto del plan activo
+
+**Estamos en el punto 4 del orden de ejecución: E2, particiones largas y recuperación de #24.** Los puntos 1 y 3 se mantienen con cada incremento: evidencias y capítulo 28 ES/EN. C2 conserva sus puertas de aceptación propias; sus pruebas sintéticas no acreditan fencing bancario.
+
+| Subpaso E2 | Estado actual | Condición para avanzar |
+| --- | --- | --- |
+| C01: fixture controlado | Integrado, PR #72; #44 cerrado por esa alternativa | La causa histórica no se declara resuelta |
+| C05/C06: cortes breves | Integrado, PR #73; PCAP y SQL auditados | No extrapolar a particiones largas o HA física |
+| Diagnóstico por proveedor | Integrado, PR #76; controles reales con FAIL conservado y efectos cero | #74 sigue abierto para investigar colocación natural |
+| Corte programado 120 s y recuperación muestreada >=60 s | **Verificado con alcance acotado, [PR #77](https://github.com/jmfloreszazo/de-la-caja-negra-a-la-evidencia/pull/77)** | Dos casos originales PASS y auditados; siguiente: activaciones concurrentes; no equivale a recuperación continua |
+| Comportamiento de activaciones concurrentes | Pendiente | Observación explícita y oráculo SQL; no asumir exclusividad global del actor |
+| Capacidad sostenida y cuello de botella | Pendiente, #25 | Saturación y COMMIT/p99 comparables; los pilotos existentes no cierran el gate |
+| Dominios físicos y HA | Pendiente | Ejecución y evidencia sobre hosts/fallos independientes |
+
+E2 permanece **parcialmente verificado**. El ensayo largo tiene evidencia acotada auditada en la PR #77; no acredita recuperación automática ni continua. No se inventan porcentajes ni fechas de cierre.
+
 ## Situación actual
 
 | Línea de trabajo | Estado contrastado | Qué falta para cerrarla |
 | --- | --- | --- |
 | Libro, diagramas y CI bilingüe | **Integrado**: 37 capítulos numerados más dos complementarios, 41 diagramas por idioma, capítulo 28 ampliado con convivencia y PDF de vista previa reproducibles | Revisión editorial y técnica, listados ilustrativos, reproducción multiplataforma; la vista previa no es una release |
 | E1 PostgreSQL y SQL Server | **Parcialmente verificado**: CI sobre SQL real y desechable, oráculos independientes, subconjuntos de paridad .NET 10, concurrencia y controles negativos | Alcance funcional E1 completo, fallo eléctrico/HA, contrato del cliente y carga productiva |
-| E2 Orleans | **Parcialmente verificado y ejecutado**: pruebas de varios procesos/silos con Podman en una máquina, membership PostgreSQL, ledger durable, fallos y carga limitada; [#8](https://github.com/jmfloreszazo/de-la-caja-negra-a-la-evidencia/issues/8) | activación exclusiva/recuperación tras particiones largas, hosts físicos/HA y capacidad sostenida [#25](https://github.com/jmfloreszazo/de-la-caja-negra-a-la-evidencia/issues/25) |
+| E2 Orleans | **Parcialmente verificado y ejecutado**: pruebas de varios procesos/silos con Podman en una máquina, membership PostgreSQL, ledger durable, fallos y carga limitada; [#8](https://github.com/jmfloreszazo/de-la-caja-negra-a-la-evidencia/issues/8) | observación de activaciones concurrentes/recuperación tras particiones largas, hosts físicos/HA y capacidad sostenida [#25](https://github.com/jmfloreszazo/de-la-caja-negra-a-la-evidencia/issues/25) |
 | Brownfield CAP-007/005 | **Subconjuntos sintéticos verificados en CI y fusionados**: época de escritor SQL, transacciones .NET 10, adaptador legado de caja negra, dos almacenes PostgreSQL distintos, shadow, conciliación y veto al rollback; [#58](https://github.com/jmfloreszazo/de-la-caja-negra-a-la-evidencia/issues/58) | Particiones del journal persistente durante operaciones y recuperación restante [#64](https://github.com/jmfloreszazo/de-la-caja-negra-a-la-evidencia/issues/64), fencing real en el origen, políticas/mandatos/Golden Master del cliente y aprobación TODM G2/G6 |
 | Descomposición funcional | **Inventario sintético**: 30 hipótesis de capacidades y 12 dominios, reescritura functional-first; [#32](https://github.com/jmfloreszazo/de-la-caja-negra-a-la-evidencia/issues/32) | Trazas autorizadas, reglas aprobadas, límites de dominio y aceptación independiente; sin parser COBOL obligatorio y sin conversión 1:1 |
 | E3 Azure/local/híbrido | **Diseñado, sin capacidad verificada**: M1/M2, precios de referencia fechados y modelo WAN son entradas, no un PASS de E3; [#9](https://github.com/jmfloreszazo/de-la-caja-negra-a-la-evidencia/issues/9), [#12](https://github.com/jmfloreszazo/de-la-caja-negra-a-la-evidencia/issues/12) | Contrato de carga aprobado, saturación abierta y commits/p99, dominios de fallo, WAN, gRPC/REST con TLS comparable y TCO integral fechado |
@@ -35,7 +51,7 @@ Todo ello es **ingeniería sintética**. No hemos observado ningún sistema banc
 1. Consolidar libro y documentación ES/EN con las evidencias; mantener los SHA y resultados históricos.
 2. Completar C2 #64: particiones en operaciones en curso, pérdida de bloqueos y ventanas de respuesta; aprobación funcional y fencing real pendientes en #58/#32.
 3. Actualizar el capítulo 28 con contrato, implementación, fallo, corrección, evidencia y límites.
-4. Completar los gates acotados de E2 #8/#24/#25: activación exclusiva/recuperación tras particiones largas, repeticiones de carga, diagnóstico y dominios físicos.
+4. Completar los gates acotados de E2 #8/#24/#25: observación de activaciones concurrentes/recuperación tras particiones largas, repeticiones de carga, diagnóstico y dominios físicos.
 5. Preparar una vista previa de la siguiente edición: revisión inglesa, citas, solapes, listados y QA visual ES/EN; publicar solo tras el corte editorial autorizado.
 6. Ejecutar E3 #9/#12 con carga, infraestructura, WAN y TCO comparables; después E4 #10.
 
@@ -51,8 +67,10 @@ C04 ya tiene [evidencia original acotada](evidence/runs/E2-C04-GATEWAY.es.md): f
 
 C01 dispone de una [alternativa controlada verificada en tres jobs](evidence/runs/E2-C01-CONTROLLED.es.md). El fallo original conserva su clasificación y su causa no queda demostrada; no se declara una corrección de la política de colocación.
 
-C05/C06 disponen de [dos observaciones direccionales acotadas](evidence/runs/E2-C05-C06-DIRECTIONAL.es.md), con PCAP originales, conciliación SQL y primeros intentos con respuesta medidos sin reinicios. Siguen pendientes activación exclusiva, particiones largas y recuperación estable sostenida.
+C05/C06 disponen de [dos observaciones direccionales acotadas](evidence/runs/E2-C05-C06-DIRECTIONAL.es.md), con PCAP originales, conciliación SQL y primeros intentos con respuesta medidos sin reinicios. La evidencia larga posterior se documenta por separado; estos cortes breves no amplían su alcance retrospectivamente.
 
 La colocación dual ADO.NET en loopback falló por separado en la validación amplia; [#74](https://github.com/jmfloreszazo/de-la-caja-negra-a-la-evidencia/issues/74) sigue esa precondición sin resolver. Su ZIP/log original se conserva junto a las evidencias C05/C06.
 
 La persistencia de observaciones de #74 dispone de [dos controles reales inducidos](evidence/runs/E2-PLACEMENT-OBSERVATION.es.md): cada intento fallido conserva su mapa/logs sin atribuirse un PASS anterior. Sigue sin resolverse la concentración natural.
+
+El [ensayo largo auditado](evidence/runs/E2-LONG-PARTITION.es.md) conserva dos fallos iniciales y dos casos corregidos: corte programado 120 s, secundario terminado antes, recuperación asistida y 14 parejas durante unos 66 s. No demuestra servicio continuo ni HA física.

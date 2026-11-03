@@ -19,6 +19,7 @@ on:
       - 'scripts/check_e2_client_gateway_observations.py'
       - 'scripts/check_e2_controlled_placement_observations.py'
       - 'scripts/check_e2_placement_observation.py'
+      - 'scripts/check_e2_long_partition_observations.py'
       - 'scripts/check_e2_directional_partition_observations.py'
       - 'scripts/check_e2_b05_external_smoke.py'
       - 'scripts/check_e2_b05_repeatability_observations.py'
@@ -46,6 +47,7 @@ on:
       - 'scripts/check_e2_client_gateway_observations.py'
       - 'scripts/check_e2_controlled_placement_observations.py'
       - 'scripts/check_e2_placement_observation.py'
+      - 'scripts/check_e2_long_partition_observations.py'
       - 'scripts/check_e2_directional_partition_observations.py'
       - 'scripts/check_e2_b05_external_smoke.py'
       - 'scripts/check_e2_b05_repeatability_observations.py'
@@ -79,6 +81,7 @@ jobs:
       - run: python3 scripts/check_e2_client_gateway_observations.py
       - run: python3 scripts/check_e2_controlled_placement_observations.py
       - run: python3 scripts/check_e2_placement_observation.py
+      - run: python3 scripts/check_e2_long_partition_observations.py
       - run: python3 scripts/check_e2_directional_partition_observations.py
       - run: python3 scripts/check_e2_b05_external_smoke.py
       - run: python3 scripts/check_e2_b05_repeatability_observations.py

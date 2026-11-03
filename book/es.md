@@ -2278,6 +2278,24 @@ muestras de catálogo no acreditan ausencia de split brain, fencing o
 recuperación tras particiones largas. Esas puertas, capacidad sostenida y
 dominios físicos siguen abiertas. E2 permanece parcialmente verificado.
 
+#### Corte largo · Recuperación asistida con observaciones acotadas
+
+La [evidencia original](../evidence/runs/E2-LONG-PARTITION.es.md) añade dos
+cortes direccionales programados de 120 segundos. En ambos, el silo secundario
+terminó antes de acabar el plazo: mantener la regla en un namespace retenido
+no equivale a mantener ambos silos vivos. Dos intentos pareados no recuperaron
+el gateway secundario; el protocolo eligió recrear expresamente ambos silos,
+conservando el ledger y registrando generaciones nuevas. El primer ACK pareado
+llegó a los 58,484 y 59,211 segundos desde la retirada de la regla.
+
+Después, 14 parejas de replay durante unos 66 segundos conservaron los mismos
+contenedores/PID, dos miembros Active, SQL 3/6/3 y siete invariantes. Cada replay
+idéntico devolvió DUPLICATE_COMMITTED; el cambio de payload, ID_CONFLICT. Es
+estabilidad muestreada tras recuperación asistida, no disponibilidad continua,
+reinicio necesario, RTO productivo, activación exclusiva o HA física. Los dos
+fallos iniciales de instrumentación siguen archivados como FAIL; la corrección
+separó la vida de los diagnósticos sin rebajar los criterios financieros.
+
 #### Del débito atómico al traspaso de autoridad entre dos almacenes
 
 La siguiente dificultad no consiste en hacer funcionar una transferencia con

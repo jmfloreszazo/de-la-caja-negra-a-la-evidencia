@@ -483,12 +483,26 @@
       "protocol": null
     },
     {
+      "id": "E2-LONG-PARTITION",
+      "status": "ci_verified",
+      "es": "Corte programado de 120 s y recuperación asistida muestreada en dos orientaciones",
+      "en": "120s scheduled fault and sampled assisted recovery in two orientations",
+      "scope_es": "Dos jobs, un host por caso. Secundario terminado antes de 120 s; namespaces retenidos, PCAP inicial, dos intentos sin recreación y recreación explícita de ambos silos. Catorce parejas durante unos 66 s, SQL 3/6/3 y oráculos 7/7. No son 120 s con ambos silos vivos, disponibilidad continua, reinicio necesario, RTO, exclusividad global, HA física o capacidad sostenida.",
+      "scope_en": "Two jobs, one host per case. Secondary exited before 120s; pinned namespaces, initial PCAP, two unassisted attempts and explicit recreation of both silos. Fourteen pairs across about 66s, SQL 3/6/3 and 7/7 oracles. Not 120s with both silos alive, continuous availability, restart necessity, RTO, global exclusivity, physical HA or sustained capacity.",
+      "evidence": {
+        "kind": "github_actions",
+        "run_id": 41607407356,
+        "head_sha": "ee1e883e5e23d651e3408a90f8ec12fd9f7a2d58"
+      },
+      "protocol": "lab/e2_orleans/LONG_PARTITION_PROTOCOL.md"
+    },
+    {
       "id": "E2",
       "status": "partially_verified",
       "es": "Orleans y ledger frente a distintas distribuciones de carga",
       "en": "Orleans and ledger under different load distributions",
-      "scope_es": "Subconjuntos originales de CI cubren coordinación, deadlock, reentrancia, recuperación y fallos de proceso/red en un host; C04 verifica clientes nuevos y C01 dispone de alternativa controlada repetida en tres jobs. La causa histórica de la colocación unilateral sigue sin demostrarse. C05/C06 verifican dos cortes direccionales breves y primeras respuestas tras restaurar. Faltan activación exclusiva, recuperación estable ante particiones largas, capacidad sostenida comparable y dominios físicos; no hay PASS global ni equivalencia mainframe.",
-      "scope_en": "Original CI slices cover coordination, deadlock, reentrancy, recovery and process/network faults on one host; C04 verifies fresh clients and C01 has a controlled alternative repeated in three jobs. The historical one-sided placement cause remains unproven. C05/C06 verify two short directional cuts and first responses after restoration. Exclusive activation, stable recovery after long partitions, comparable sustained capacity and physical domains remain; no overall PASS or mainframe equivalence.",
+      "scope_es": "Subconjuntos originales de CI cubren coordinación, deadlock, reentrancia, recuperación y fallos de proceso/red en un host; C04 verifica clientes nuevos y C01 dispone de alternativa controlada repetida en tres jobs. La causa histórica de la colocación unilateral sigue sin demostrarse. C05/C06 verifican dos cortes direccionales breves y primeras respuestas tras restaurar. Dos cortes programados de 120 s verifican recuperación asistida y 14 muestras pareadas durante unos 66 s; el secundario termina antes de 120 s. Faltan observación de activaciones concurrentes, recuperación continua sin intervención, capacidad sostenida comparable y dominios físicos; no hay PASS global ni equivalencia mainframe.",
+      "scope_en": "Original CI slices cover coordination, deadlock, reentrancy, recovery and process/network faults on one host; C04 verifies fresh clients and C01 has a controlled alternative repeated in three jobs. The historical one-sided placement cause remains unproven. C05/C06 verify two short directional cuts and first responses after restoration. Two 120s schedules verify assisted recovery and 14 paired samples across about 66s; the secondary exits before 120s. Concurrent-activation observation, continuous unassisted recovery, comparable sustained capacity and physical domains remain; no overall PASS or mainframe equivalence.",
       "evidence": null,
       "protocol": "lab/e2_orleans/EXPERIMENT_PROTOCOL.md"
     },

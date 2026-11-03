@@ -4,13 +4,29 @@
 
 This is the **repository development roadmap**, not a declaration of production bank readiness. The canonical claim statuses live in [evidence/claims.json](evidence/claims.json), and the engineering acceptance protocol is in [docs/EXPERIMENT_ROADMAP.md](docs/EXPERIMENT_ROADMAP.md). Observed, simulated, proposed and business-approved results must remain distinguishable. All code, source and lab READMEs are English-only; the book is maintained in ES/EN.
 
+## Exact position in the active plan
+
+**We are at execution-order step 4: E2, long partitions and recovery under #24.** Steps 1 and 3 continue with every increment: evidence and paired chapter 28. C2 retains its own acceptance gates; its synthetic tests do not establish a real bank writer fence.
+
+| E2 substep | Current status | Gate before advancing |
+| --- | --- | --- |
+| C01: controlled fixture | Integrated, PR #72; #44 closed on that alternative | Historical cause is not claimed resolved |
+| C05/C06: short cuts | Integrated, PR #73; PCAP/SQL audited | Do not extrapolate to long partitions or physical HA |
+| Provider-specific diagnostics | Integrated, PR #76; real controls retain FAIL and zero effects | #74 remains open for natural placement investigation |
+| Scheduled 120s cut and sampled recovery >=60s | **Bounded verification, [PR #77](https://github.com/jmfloreszazo/de-la-caja-negra-a-la-evidencia/pull/77)** | Two original cases PASS and audited; next: concurrent activations; not continuous recovery |
+| Concurrent-activation behavior | Pending | Explicit observations and SQL oracle; do not assume global actor exclusivity |
+| Sustained capacity and bottleneck | Pending, #25 | Comparable saturation and COMMIT/p99; existing pilots do not close this gate |
+| Physical domains and HA | Pending | Execution/evidence on independent hosts and fault domains |
+
+E2 remains **partially verified**. The long experiment has bounded audited evidence in PR #77; it does not establish automatic or continuous recovery. No percentage-complete estimates or completion dates are invented.
+
 ## Position now
 
 | Workstream | Observed status | What still blocks completion |
 | --- | --- | --- |
 | Book, bilingual diagrams and CI | **Integrated**: 37 numbered chapters plus two companion chapters, 41 diagrams per language, bilingual chapter 28 coexistence discussion, reproducible PDF preview; latest premerge checks PASS | Editorial/source review, full illustrative listing coverage, cross-platform reproducibility; a preview is not a release |
 | E1 PostgreSQL and SQL Server | **Partially verified**: real disposable SQL CI and independent oracles, .NET 10 parity slices, concurrency and negative cases | Full E1 business scope, power-loss/HA, customer-specific contract, production load |
-| E2 Orleans | **Partially verified, actually executed**: one-host Podman multi-process/multi-silo slices, PostgreSQL membership, durable ledger checks and selected failures and load; see [#8](https://github.com/jmfloreszazo/de-la-caja-negra-a-la-evidencia/issues/8) | exclusive activation/long-partition recovery, physical hosts/HA and sustained capacity [#25](https://github.com/jmfloreszazo/de-la-caja-negra-a-la-evidencia/issues/25) |
+| E2 Orleans | **Partially verified, actually executed**: one-host Podman multi-process/multi-silo slices, PostgreSQL membership, durable ledger checks and selected failures and load; see [#8](https://github.com/jmfloreszazo/de-la-caja-negra-a-la-evidencia/issues/8) | concurrent-activation observations/long-partition recovery, physical hosts/HA and sustained capacity [#25](https://github.com/jmfloreszazo/de-la-caja-negra-a-la-evidencia/issues/25) |
 | CAP-007/005 brownfield replacement | **Synthetic slices CI-verified and merged**: SQL writer epoch, .NET 10 durable transactions, black-box legacy adapter, two distinct PostgreSQL containers/stores, shadow, reconciliation and rollback veto. [#58](https://github.com/jmfloreszazo/de-la-caja-negra-a-la-evidencia/issues/58) | In-flight controller partitions and remaining journal recovery [#64](https://github.com/jmfloreszazo/de-la-caja-negra-a-la-evidencia/issues/64), true incumbent-side writer fence, customer policy/mandates/Golden Master, TODM G2/G6 approval |
 | Business-capability decomposition | **Synthetic inventory**: 30 capability hypotheses in 12 domains, functional-first rewrite; [#32](https://github.com/jmfloreszazo/de-la-caja-negra-a-la-evidencia/issues/32) | Real authorized traces, owner-approved policies, target domains and independent acceptance; no mandatory COBOL parser and no 1:1 rewrite |
 | E3 on-prem/Azure/hybrid | **Designed, not capacity-verified**: M1/M2 transport smoke, dated Azure price references and WAN model are inputs, not E3 PASS; [#9](https://github.com/jmfloreszazo/de-la-caja-negra-a-la-evidencia/issues/9), [#12](https://github.com/jmfloreszazo/de-la-caja-negra-a-la-evidencia/issues/12) | Approved workload, open-loop saturation/commits/p99, failure domains, WAN, fair TLS gRPC/REST and dated comparable end-to-end TCO |
@@ -35,7 +51,7 @@ All of these are **synthetic engineering results**; no real bank behavior was ob
 1. Reconcile the ES/EN book and documentation against evidence; preserve original SHAs and outcomes.
 2. Complete C2 #64: in-flight partitions, lock loss and response windows; business acceptance and real source fence remain under #58/#32.
 3. Update chapter 28 with contract, implementation, failure, correction, evidence and limits.
-4. Complete bounded E2 #8/#24/#25 gates: exclusive activation/long-partition recovery, load repetitions, bottleneck diagnosis and physical fault domains.
+4. Complete bounded E2 #8/#24/#25 gates: concurrent-activation observations/long-partition recovery, load repetitions, bottleneck diagnosis and physical fault domains.
 5. Prepare the next-edition preview: English review, citations, overlap, listings and ES/EN visual QA; publish only after the authorized editorial cut.
 6. Execute E3 #9/#12 with comparable workload, infrastructure, WAN and TCO; then E4 #10.
 
@@ -51,8 +67,10 @@ C04 now has [bounded original evidence](evidence/runs/E2-C04-GATEWAY.md): fresh-
 
 C01 has a [controlled alternative verified in three jobs](evidence/runs/E2-C01-CONTROLLED.md). The original failure retains its classification and its cause remains unproven; no placement-policy fix is claimed.
 
-C05/C06 now have [two bounded directional packet-loss observations](evidence/runs/E2-C05-C06-DIRECTIONAL.md), including original PCAPs, SQL reconciliation and measured first acknowledgements without restarts. Exclusive activation, long partitions and sustained stable recovery remain open.
+C05/C06 now have [two bounded directional packet-loss observations](evidence/runs/E2-C05-C06-DIRECTIONAL.md), including original PCAPs, SQL reconciliation and measured first acknowledgements without restarts. The later long-schedule evidence is documented separately; these short cuts do not retrospectively extend their scope.
 
 Loopback ADO.NET dual-host placement failed separately in broad validation; [#74](https://github.com/jmfloreszazo/de-la-caja-negra-a-la-evidencia/issues/74) tracks that unresolved precondition. Its original ZIP/log remain preserved alongside C05/C06 evidence.
 
 Issue #74 observation persistence now has [two real induced controls](evidence/runs/E2-PLACEMENT-OBSERVATION.md): provider-specific failed attempts retain their own maps/logs without borrowing earlier PASS results. Natural placement concentration remains unresolved.
+
+The [audited long experiment](evidence/runs/E2-LONG-PARTITION.md) retains two initial failures and two corrected cases: 120s schedule, earlier secondary exit, assisted recovery and 14 pairs across about 66s. It does not establish continuous service or physical HA.
