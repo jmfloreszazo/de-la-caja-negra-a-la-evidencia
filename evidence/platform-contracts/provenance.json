@@ -1,0 +1,14 @@
+{
+  "source_sha": "9f6d20267e137ff8de3c1559e8c2dbdc433215fa",
+  "run_id": 41721242997,
+  "artifact_id": 13272561653,
+  "archive_sha256": "a48ee9aef8d28cb0c66c170d77845d82c76ed257d4a9de59869774b26e0545ab",
+  "source_hashes": {
+    "research/platform-contracts/catalog.json": "3b428fa6c50f407fcd6b315a3ed97de032cb4c5d88531cb55988e2ddca7912c4",
+    "scripts/check_platform_contracts.py": "8031a709d0af9a67cd47aeaba2b48539583cf2d856563700c4eef9053174d69b",
+    "book/en/annexes/annex-e-catalog-of-one-hundred-risks.md": "f07a0bf38ce9106e3b20671df1ef42c409662bc31d9c6f8bd3433a9d6dea3d4c"
+  },
+  "scope": "Catalog metadata integrity only; native vendor execution not performed",
+  "checkout_sha": "32a2956826ffb0ec1c0e4f0629af5f444722570c",
+  "checkout_kind": "GitHub pull-request test merge; original checkout retained separately from source head"
+}

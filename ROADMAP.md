@@ -6,7 +6,7 @@ This is the **repository development roadmap**, not a declaration of production 
 
 ## Exact position in the active plan
 
-**The bounded E2 research checkpoint is integrated; the active plan moves to step 5, editorial/source review and the next-edition preview.** External capacity/HA validation is documented and non-blocking for development, by the author's 3 November decision; scientific claim acceptance remains separate. Steps 1 and 3 continue with every increment: evidence and paired chapter 28. C2 retains its own acceptance gates; its synthetic tests do not establish a real bank writer fence.
+**Editorial checkpoint #83 and channel increment #84 are integrated; the active work now covers platform contracts and vendor-aware patterns (#17/#18/#28).** External E2/E3 capacity and HA validation remains non-blocking for book development. The channel fixture is bounded synthetic evidence; source/approver and production gates remain separate.
 
 | E2 substep | Current status | Remaining claim validation (non-blocking for integration) |
 | --- | --- | --- |
@@ -24,7 +24,7 @@ E2 remains **partially verified**. The long experiment has bounded audited evide
 
 | Workstream | Observed status | Remaining work / claim acceptance |
 | --- | --- | --- |
-| Book, bilingual diagrams and CI | **Integrated**: 37 numbered chapters plus two companion chapters, 41 diagrams per language, bilingual chapter 28 coexistence discussion, reproducible PDF preview; latest premerge checks PASS | Editorial/source review, full illustrative listing coverage, cross-platform reproducibility; a preview is not a release |
+| Book, bilingual diagrams and CI | **Integrated**: 37 numbered chapters, chapter 25 bis and two companion chapters, 47 diagrams per language, bilingual chapter 28 coexistence discussion, reproducible PDF preview; latest premerge checks PASS | Editorial/source review, full illustrative listing coverage, cross-platform reproducibility; a preview is not a release |
 | E1 PostgreSQL and SQL Server | **Partially verified**: real disposable SQL CI and independent oracles, .NET 10 parity slices, concurrency and negative cases | Full E1 business scope, power-loss/HA, customer-specific contract, production load |
 | E2 Orleans | **Partially verified, actually executed**: one-host Podman multi-process/multi-silo slices, PostgreSQL membership, durable ledger checks and selected failures and load; see [#8](https://github.com/jmfloreszazo/de-la-caja-negra-a-la-evidencia/issues/8) | concurrent-activation observations/long-partition recovery, physical hosts/HA and sustained capacity [#25](https://github.com/jmfloreszazo/de-la-caja-negra-a-la-evidencia/issues/25) |
 | CAP-007/005 brownfield replacement | **Synthetic slices CI-verified and merged**: SQL writer epoch, .NET 10 durable transactions, black-box legacy adapter, two distinct PostgreSQL containers/stores, shadow, reconciliation and rollback veto. [#58](https://github.com/jmfloreszazo/de-la-caja-negra-a-la-evidencia/issues/58) | In-flight controller partitions and remaining journal recovery [#64](https://github.com/jmfloreszazo/de-la-caja-negra-a-la-evidencia/issues/64), true incumbent-side writer fence, customer policy/mandates/Golden Master, TODM G2/G6 approval |
@@ -48,12 +48,13 @@ All of these are **synthetic engineering results**; no real bank behavior was ob
 
 ## Next execution order (not dates or percentage-complete estimates)
 
-1. Reconcile the ES/EN book and documentation against evidence; preserve original SHAs and outcomes.
-2. Complete C2 #64: in-flight partitions, lock loss and response windows; business acceptance and real source fence remain under #58/#32.
-3. Update chapter 28 with contract, implementation, failure, correction, evidence and limits.
-4. Integrate the bounded E2 checkpoint (PRs #78–#81); retain #8/#24/#25 as non-blocking external validation with the [dedicated protocol](docs/EXTERNAL_VALIDATION.md).
-5. Prepare the next-edition preview: English review, citations, overlap, listings and ES/EN visual QA; publish only after the authorized editorial cut.
-6. Execute E3 #9/#12 with comparable workload, infrastructure, WAN and TCO; then E4 #10.
+1. Strengthen platform contracts and manufacturer-aware patterns in #17/#18/#28; first bounded source catalog, then remaining category/worked-example coverage.
+2. Extend functional decomposition/coexistence #32/#58 with source-side ownership, extraction waves and approved behavior.
+3. Complete remaining channel #30 scenarios: unavailable core, late messages, per-hop faults, stand-in and route cutover.
+4. Finish editorial/reproduction #11: full idiom/bibliography/overlap review, remaining listings, EBCDIC and real OS reproduction.
+5. Reorganize laboratory entry/layout #15 while preserving protected paths and original evidence.
+6. Execute agent-versus-independent-oracle E4 #10 within a declared write scope.
+7. Keep external E2 #8 and E3 #9 acceptance in their documented backlog; physical HA, WAN and capacity do not block the preceding book increments.
 
 **Frozen:** [#53](https://github.com/jmfloreszazo/de-la-caja-negra-a-la-evidencia/issues/53) confidential computing/clean-room research is postponed by explicit decision. Do not include it in the active execution sequence without renewed instruction. Branch protection [#16](https://github.com/jmfloreszazo/de-la-caja-negra-a-la-evidencia/issues/16) is also deferred but remains open.
 
@@ -86,3 +87,5 @@ See the [branch/issue closeout and ordered remaining work](docs/PROJECT_CLOSEOUT
 Editorial checkpoint PR #83: 17 bilingual code/config drifts corrected; all 32 listings inventoried, 58 printed COBOL cases plus bounded rounding/COMP-3 checks passed with archived original provenance. PDF listing/caption pagination and gray-series captions corrected; 10 pages visually sampled. See the [editorial record](docs/EDITORIAL_CHECKPOINT_2026-11-03.md). #11 remains open for full contextual listing, EBCDIC and platform reproduction; this is not a release or full native-English certification.
 
 Channel increment #30: paired companion chapter, six diagrams per edition, ten native synthetic cases and two rejected oracle mutations. Original failures, physical-device assumptions and remaining network/stand-in/cutover work are recorded in the [channel checkpoint](docs/CHANNELS_CHECKPOINT_2026-11-03.md).
+
+Platform-contract seed: ten documented rows, three platform contexts, four unverified discovery families and six catalog-integrity mutation controls. Native platform execution and migration equivalence remain unverified; see the [scope ADR](docs/PLATFORM_CONTRACTS_ADR.md).

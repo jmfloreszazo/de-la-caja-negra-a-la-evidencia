@@ -6,7 +6,7 @@ Esta es la hoja de ruta **del repositorio**, no una declaración de que una migr
 
 ## Punto exacto del plan activo
 
-**El hito acotado de investigación E2 está integrado; el plan activo pasa al punto 5, revisión editorial y de fuentes y vista previa de la siguiente edición.** Por decisión del autor del 3 de noviembre, las validaciones externas de capacidad y HA quedan documentadas sin bloquear el desarrollo; la aceptación científica de esas afirmaciones sigue separada. Los puntos 1 y 3 se mantienen con cada incremento: evidencias y capítulo 28 ES/EN. C2 conserva sus puertas de aceptación propias; sus pruebas sintéticas no acreditan fencing bancario.
+**El corte editorial #83 y el incremento de canales #84 están integrados; el trabajo activo pasa a contratos de plataforma y patrones por fabricante (#17/#18/#28).** La validación externa E2/E3 de capacidad y HA sigue sin bloquear el libro. El laboratorio de canales aporta evidencia sintética acotada; las puertas de origen/aprobadores y producción siguen separadas.
 
 | Subpaso E2 | Estado actual | Validación de la afirmación pendiente (no bloquea integración) |
 | --- | --- | --- |
@@ -24,7 +24,7 @@ E2 permanece **parcialmente verificado**. El ensayo largo tiene evidencia acotad
 
 | Línea de trabajo | Estado contrastado | Qué falta para cerrarla |
 | --- | --- | --- |
-| Libro, diagramas y CI bilingüe | **Integrado**: 37 capítulos numerados más dos complementarios, 41 diagramas por idioma, capítulo 28 ampliado con convivencia y PDF de vista previa reproducibles | Revisión editorial y técnica, listados ilustrativos, reproducción multiplataforma; la vista previa no es una release |
+| Libro, diagramas y CI bilingüe | **Integrado**: 37 capítulos numerados, capítulo 25 bis y dos complementarios, 47 diagramas por idioma, capítulo 28 ampliado con convivencia y PDF de vista previa reproducibles | Revisión editorial y técnica, listados ilustrativos, reproducción multiplataforma; la vista previa no es una release |
 | E1 PostgreSQL y SQL Server | **Parcialmente verificado**: CI sobre SQL real y desechable, oráculos independientes, subconjuntos de paridad .NET 10, concurrencia y controles negativos | Alcance funcional E1 completo, fallo eléctrico/HA, contrato del cliente y carga productiva |
 | E2 Orleans | **Parcialmente verificado y ejecutado**: pruebas de varios procesos/silos con Podman en una máquina, membership PostgreSQL, ledger durable, fallos y carga limitada; [#8](https://github.com/jmfloreszazo/de-la-caja-negra-a-la-evidencia/issues/8) | observación de activaciones concurrentes/recuperación tras particiones largas, hosts físicos/HA y capacidad sostenida [#25](https://github.com/jmfloreszazo/de-la-caja-negra-a-la-evidencia/issues/25) |
 | Brownfield CAP-007/005 | **Subconjuntos sintéticos verificados en CI y fusionados**: época de escritor SQL, transacciones .NET 10, adaptador legado de caja negra, dos almacenes PostgreSQL distintos, shadow, conciliación y veto al rollback; [#58](https://github.com/jmfloreszazo/de-la-caja-negra-a-la-evidencia/issues/58) | Particiones del journal persistente durante operaciones y recuperación restante [#64](https://github.com/jmfloreszazo/de-la-caja-negra-a-la-evidencia/issues/64), fencing real en el origen, políticas/mandatos/Golden Master del cliente y aprobación TODM G2/G6 |
@@ -48,12 +48,13 @@ Todo ello es **ingeniería sintética**. No hemos observado ningún sistema banc
 
 ## Orden de ejecución a partir de ahora (sin fechas inventadas)
 
-1. Consolidar libro y documentación ES/EN con las evidencias; mantener los SHA y resultados históricos.
-2. Completar C2 #64: particiones en operaciones en curso, pérdida de bloqueos y ventanas de respuesta; aprobación funcional y fencing real pendientes en #58/#32.
-3. Actualizar el capítulo 28 con contrato, implementación, fallo, corrección, evidencia y límites.
-4. Integrar el hito acotado E2 (PR #78–#81); conservar #8/#24/#25 como validación externa no bloqueante con el [protocolo dedicado](docs/EXTERNAL_VALIDATION.md).
-5. Preparar una vista previa de la siguiente edición: revisión inglesa, citas, solapes, listados y QA visual ES/EN; publicar solo tras el corte editorial autorizado.
-6. Ejecutar E3 #9/#12 con carga, infraestructura, WAN y TCO comparables; después E4 #10.
+1. Reforzar contratos de plataforma y patrones por fabricante en #17/#18/#28; primero catálogo de fuentes acotado, después categorías/ejemplos pendientes.
+2. Ampliar descomposición/coexistencia #32/#58 con propiedad en origen, oleadas de extracción y comportamiento aprobado.
+3. Completar escenarios pendientes de canales #30: core inaccesible, mensajes tardíos, fallos por salto, stand-in y corte de rutas.
+4. Terminar revisión/reproducción #11: idioma/bibliografía/solapes completos, listados restantes, EBCDIC y reproducción real por SO.
+5. Reorganizar entrada/estructura del laboratorio #15 preservando rutas protegidas y evidencia original.
+6. Ejecutar E4 #10: agente frente a oráculo independiente con alcance de escritura declarado.
+7. Mantener aceptación externa E2 #8 y E3 #9 en su backlog documentado; HA física, WAN y capacidad no bloquean los incrementos anteriores del libro.
 
 **Congelado:** [#53](https://github.com/jmfloreszazo/de-la-caja-negra-a-la-evidencia/issues/53), clean rooms/confidential computing, queda fuera del plan activo hasta nueva indicación. La protección de rama [#16](https://github.com/jmfloreszazo/de-la-caja-negra-a-la-evidencia/issues/16) también está aplazada, aunque sigue abierta.
 
@@ -86,3 +87,5 @@ Consulta el [cierre de ramas/issues y el trabajo pendiente ordenado](docs/PROJEC
 Corte editorial PR #83: corregidas 17 divergencias de código/configuración, inventariados 32 bloques y superados 58 casos COBOL impresos más pruebas acotadas de redondeo/COMP-3 con originales archivados. Corregidos saltos de listados/títulos y pies de series grises; diez páginas inspeccionadas. Véase el [registro editorial](docs/EDITORIAL_CHECKPOINT_2026-11-03.es.md). #11 sigue abierto para integración contextual, EBCDIC y reproducción por plataforma; no es una release ni certificación idiomática integral.
 
 Incremento de canales #30: capítulo complementario bilingüe, seis diagramas por edición, diez casos nativos sintéticos y dos mutaciones rechazadas por el oráculo. Los fallos originales, supuestos del dispositivo físico y trabajo pendiente de red/stand-in/corte están en el [checkpoint de canales](docs/CHANNELS_CHECKPOINT_2026-11-03.es.md).
+
+Base de contratos de plataforma: diez filas documentadas, tres contextos de plataforma, cuatro familias pendientes y seis controles de mutación de integridad del catálogo. La ejecución nativa y equivalencia de migración siguen sin verificar; véase el [ADR de alcance](docs/PLATFORM_CONTRACTS_ADR.es.md).

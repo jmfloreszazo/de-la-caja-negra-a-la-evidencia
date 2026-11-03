@@ -1,0 +1,13 @@
+# Platform contract seed catalog
+
+Tracks #17/#18/#28. Ten source-backed contracts cover IBM Z/z/OS, Unisys MCP and OS 2200 connector behavior. This is a bounded research seed, not a complete platform inventory or a completed 236-entry pattern catalog. The book explains it in both languages in Chapters 1 and 13.
+
+`catalog.json` is English machine data. Every row names a source/version, original contract, candidate application and infrastructure/data patterns, semantic gap, failure control, oracle, customer measurements and existing risk IDs. Source access dates are explicit. Publication dates are null where not supplied; documentation versions do not establish current support or product availability. `SEARCH_INDEX` and `SEARCH_INDEX_DIRECT_403` retain retrieval limits rather than implying that the complete document was read. Features of the actual installation still require operator/DBA validation.
+
+Run `python3 scripts/check_platform_contracts.py --self-test` from the repository root. Six negative controls reject inflated equivalence/evidence, missing failure/oracle fields, vendor misattribution and false absence. These are catalog integrity tests only; native execution is NOT_EXECUTED, migration evidence NOT_VERIFIED and business approval NOT_OBTAINED. They do not emulate a vendor platform or satisfy the runnable native semantic-gap acceptance item in #18.
+
+The discovery register retains other named families as NOT_VERIFIED. Adjacent enterprise platforms are separate. Missing source/installation data must never be converted into a NO, unsupported, or parity judgment. No new runtime lab duplicates the existing channels, ledger or brownfield fixtures. Future entries should link the relevant original experiment and separately identify whether it tests a target invariant, a synthetic source, or the vendor-native system.
+
+For a real assessment, collect versioned topology/configuration, service-class and database metrics, authorized concurrent histories and restore evidence; preregister useful work, invariant, failure boundary and expected result. Keep customer data and secrets outside the public repository. Full vendor coverage, diagrams, runnable semantic-gap controls, approved source/target comparisons and SME acceptance remain open in the parent issues.
+
+The frozen first CI original is audited with `python3 scripts/check_platform_contract_observations.py`. A shallow clone may first need `git fetch --no-tags --depth=1 origin 9f6d20267e137ff8de3c1559e8c2dbdc433215fa`. The auditor preserves the PR test-merge checkout separately and verifies that its tree matched the source head, without requiring a permanent remote ref to that temporary commit.

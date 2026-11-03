@@ -70,10 +70,10 @@ Nine issues were closed; 13 remain open, including two explicitly frozen items. 
 
 | Order | Work | Tracker / completion boundary |
 | --- | --- | --- |
-| 1 | Editorial/source review of both editions, listings, citations, overlaps and visual PDF QA; cross-platform reproduction | #11; integration previews do not authorize a release |
-| 2 | One complete channel/core treatment and synthetic ATM/digital-channel lab, preserving physical dispense versus financial COMMIT | #30 incorporates #29 |
-| 3 | Mainframe OS/I-O/transaction semantics and vendor-backed capability-to-pattern catalogue | #17/#18/#28; not three competing implementations of the same lab |
-| 4 | Functional decomposition and bounded brownfield coexistence follow-up | #32/#58; real traces, source-side fence and TODM G2/G6 remain external approval |
+| 1 | Mainframe OS/I-O/transaction semantics and vendor-backed capability-to-pattern catalogue | #17/#18/#28; not three competing implementations of the same lab |
+| 2 | Functional decomposition and bounded brownfield coexistence follow-up | #32/#58; real traces, source-side fence and TODM G2/G6 remain external approval |
+| 3 | One complete channel/core treatment and synthetic ATM/digital-channel lab, preserving physical dispense versus financial COMMIT | #30 incorporates #29 |
+| 4 | Editorial/source review of both editions, listings, citations, overlaps and visual PDF QA; cross-platform reproduction | #11; integration previews do not authorize a release |
 | 5 | Dedicated lab organization/entrypoint refactor and consolidated maintenance review | #15; preserve every protected path/hash or provide an explicit compatibility plan |
 | External backlog | Stronger E2 capacity/activation/HA and E3 distributed WAN/TCO campaigns | #8/#9, [external protocol](EXTERNAL_VALIDATION.md); non-blocking for editorial progress |
 | Later experiment | Agent proposal versus independent mutation-qualified Oracle Gate | #10; not yet accepted as E4 |
@@ -82,3 +82,5 @@ Nine issues were closed; 13 remain open, including two explicitly frozen items. 
 Use one short-lived branch per concrete deliverable and remove it after verified integration. Do not keep merged branches alive merely to preserve experimental provenance: immutable source commits, raw artifacts and the recovery bundle provide that record.
 
 The first #30 increment adds the paired channel chapter and a native separate-store cash/digital fixture. See the [channel checkpoint](CHANNELS_CHECKPOINT_2026-11-03.md) for original successes/failures and the still-open acceptance matrix. This does not close #30.
+
+Priority refreshed after #83/#84: platform contracts, decomposition/coexistence, residual channels, full editorial/reproduction, then lab maintenance. See the [active roadmap](../ROADMAP.md) for agent work and external validation.

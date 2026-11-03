@@ -1,0 +1,490 @@
+{
+  "schema_version": 1,
+  "scope": "Bounded documented-source seed; not the complete #17/#18/#28 catalog",
+  "reviewed_on": "2026-11-03",
+  "native_platform_execution": "NOT_EXECUTED",
+  "business_approval": "NOT_OBTAINED",
+  "sources": [
+    {
+      "id": "S51",
+      "book_reference": 51,
+      "vendor": "IBM",
+      "version_scope": "IBM Z basic-skills documentation",
+      "title": "Channel subsystem (CSS)",
+      "url": "https://www.ibm.com/docs/en/zos-basic-skills?topic=mainframe-channel-subsystem-css",
+      "accessed_on": "2026-11-03",
+      "published_on": null,
+      "retrieval": "SEARCH_INDEX"
+    },
+    {
+      "id": "S52",
+      "book_reference": 52,
+      "vendor": "IBM",
+      "version_scope": "z/VM 7.3.0 documentation",
+      "title": "PR/SM Concepts",
+      "url": "https://www.ibm.com/docs/en/zvm/7.3.0?topic=hiperdispatch-prsm-concepts",
+      "accessed_on": "2026-11-03",
+      "published_on": null,
+      "retrieval": "SEARCH_INDEX"
+    },
+    {
+      "id": "S53",
+      "book_reference": 53,
+      "vendor": "IBM",
+      "version_scope": "z/OS 3.1.0 documentation",
+      "title": "Virtual storage overview",
+      "url": "https://www.ibm.com/docs/en/zos/3.1.0?topic=overview-virtual-storage",
+      "accessed_on": "2026-11-03",
+      "published_on": null,
+      "retrieval": "SEARCH_INDEX"
+    },
+    {
+      "id": "S54",
+      "book_reference": 54,
+      "vendor": "IBM",
+      "version_scope": "z/OS 3.2.0 documentation",
+      "title": "Defining service classes and performance goals",
+      "url": "https://www.ibm.com/docs/SSLTBW_3.2.0/com.ibm.zos.v3r2.ieaw100/sclg.htm",
+      "accessed_on": "2026-11-03",
+      "published_on": null,
+      "retrieval": "SEARCH_INDEX_DIRECT_403"
+    },
+    {
+      "id": "S55",
+      "book_reference": 55,
+      "vendor": "IBM",
+      "version_scope": "z/OS 3.1.0 documentation",
+      "title": "Processing units",
+      "url": "https://www.ibm.com/docs/en/zos/3.1.0?topic=basics-processing-units",
+      "accessed_on": "2026-11-03",
+      "published_on": null,
+      "retrieval": "SEARCH_INDEX"
+    },
+    {
+      "id": "S56",
+      "book_reference": 56,
+      "vendor": "IBM",
+      "version_scope": "Db2 for z/OS 13 documentation",
+      "title": "Improved performance through concurrency control",
+      "url": "https://www.ibm.com/docs/en/db2-for-zos/13.0.0?topic=users-improved-performance-through-concurrency-control",
+      "accessed_on": "2026-11-03",
+      "published_on": null,
+      "retrieval": "SEARCH_INDEX"
+    },
+    {
+      "id": "S57",
+      "book_reference": 57,
+      "vendor": "IBM",
+      "version_scope": "Db2 for z/OS 13 documentation",
+      "title": "Db2 data sharing",
+      "url": "https://www.ibm.com/docs/en/db2-for-zos/13.0.0?topic=concepts-db2-data-sharing",
+      "accessed_on": "2026-11-03",
+      "published_on": null,
+      "retrieval": "SEARCH_INDEX"
+    },
+    {
+      "id": "S58",
+      "book_reference": 58,
+      "vendor": "Unisys",
+      "version_scope": "ClearPath MCP 21.0; document 38508198-005",
+      "title": "Automatic Single Transaction Abort Recovery",
+      "url": "https://www.support.unisys.com/aseries/docs/ClearPath-MCP-21.0/38508198-005/section-000082014.html",
+      "accessed_on": "2026-11-03",
+      "published_on": null,
+      "retrieval": "FULL_TEXT"
+    },
+    {
+      "id": "S59",
+      "book_reference": 59,
+      "vendor": "Unisys",
+      "version_scope": "ClearPath ePortal 10.0; document 82073594",
+      "title": "OS 2200 TIP Application Configuration Properties",
+      "url": "https://www.support.unisys.com/ePortalIC-10.0/topic/82073594_clearpath_eportal_developerhelp/html/section-000039378.htm",
+      "accessed_on": "2026-11-03",
+      "published_on": null,
+      "retrieval": "FULL_TEXT"
+    },
+    {
+      "id": "S49",
+      "book_reference": 49,
+      "vendor": "IBM",
+      "version_scope": "CICS TS 6.x documentation",
+      "title": "How CICS runs transactions, tasks, and programs",
+      "url": "https://www.ibm.com/docs/en/cics-ts/6.x?topic=development-transactions-in-cics",
+      "accessed_on": "2026-11-03",
+      "published_on": null,
+      "retrieval": "SEARCH_INDEX_DIRECT_403"
+    }
+  ],
+  "capabilities": [
+    {
+      "id": "MF001",
+      "vendor": "IBM",
+      "platform": "IBM Z / PR/SM",
+      "version_scope": "z/VM 7.3 documentation; exact installed model unknown",
+      "layer": "INFRA",
+      "original_contract": "Shared partition CPU entitlement depends on weights and the shared physical CPU pool.",
+      "source_status": "DOCUMENTED",
+      "native_evidence": "NOT_EXECUTED",
+      "migration_evidence": "NOT_VERIFIED",
+      "availability": "NOT_ASSESSED",
+      "strategy": "RETAIN",
+      "candidate_application": "Capacity isolation and measured admission",
+      "candidate_infrastructure_data": "VM/host placement and resource limits",
+      "semantic_gap": "A container CPU limit is not PR/SM topology or entitlement equivalence.",
+      "failure_control": "Overcommit competing workloads; reject a p99 breach hidden by aggregate throughput.",
+      "test_oracle": "Competing workloads meet separate service goals under constrained CPU.",
+      "customer_measurements": [
+        "LPAR weights/caps",
+        "physical and logical CPU topology",
+        "per-class CPU delay"
+      ],
+      "risk_ids": [
+        "R068",
+        "R081"
+      ],
+      "source_ids": [
+        "S52"
+      ],
+      "equivalence_claim": false
+    },
+    {
+      "id": "MF002",
+      "vendor": "IBM",
+      "platform": "IBM Z channel subsystem",
+      "version_scope": "Basic-skills architectural description; model limits not inferred",
+      "layer": "INFRA",
+      "original_contract": "The channel subsystem performs I/O asynchronously relative to central-processor work.",
+      "source_status": "DOCUMENTED",
+      "native_evidence": "NOT_EXECUTED",
+      "migration_evidence": "NOT_VERIFIED",
+      "availability": "NOT_ASSESSED",
+      "strategy": "REPLATFORM",
+      "candidate_application": "Bounded asynchronous I/O",
+      "candidate_infrastructure_data": "Measured storage paths, queues and durability",
+      "semantic_gap": "Language async does not recreate the channel fabric or storage failure behavior.",
+      "failure_control": "Saturate the log path; reject a CPU-only capacity conclusion.",
+      "test_oracle": "Measure complete request-to-durable-commit latency with slow storage.",
+      "customer_measurements": [
+        "channel/path inventory",
+        "I/O service and queue time",
+        "log flush latency"
+      ],
+      "risk_ids": [
+        "R083",
+        "R086",
+        "R087"
+      ],
+      "source_ids": [
+        "S51"
+      ],
+      "equivalence_claim": false
+    },
+    {
+      "id": "MF003",
+      "vendor": "IBM",
+      "platform": "z/OS virtual storage",
+      "version_scope": "z/OS 3.1.0 documentation",
+      "layer": "INFRA",
+      "original_contract": "Real-storage shortage can cause paging or postponement of work according to importance.",
+      "source_status": "DOCUMENTED",
+      "native_evidence": "NOT_EXECUTED",
+      "migration_evidence": "NOT_VERIFIED",
+      "availability": "NOT_ASSESSED",
+      "strategy": "REPLATFORM",
+      "candidate_application": "Memory budgets and bounded caches",
+      "candidate_infrastructure_data": "Process/host isolation and measured working set",
+      "semantic_gap": "Virtual address range is not resident RAM or a latency guarantee.",
+      "failure_control": "Use a dataset larger than the warm working set; reject warm-cache extrapolation.",
+      "test_oracle": "Observe working set, page activity and latency under memory pressure.",
+      "customer_measurements": [
+        "resident working set",
+        "paging",
+        "buffer pools",
+        "GC allocation"
+      ],
+      "risk_ids": [
+        "R082",
+        "R089"
+      ],
+      "source_ids": [
+        "S53"
+      ],
+      "equivalence_claim": false
+    },
+    {
+      "id": "MF004",
+      "vendor": "IBM",
+      "platform": "z/OS WLM",
+      "version_scope": "z/OS 3.2.0 documentation",
+      "layer": "OPS",
+      "original_contract": "Service-class goals and importance participate in workload resource management.",
+      "source_status": "DOCUMENTED",
+      "native_evidence": "NOT_EXECUTED",
+      "migration_evidence": "NOT_VERIFIED",
+      "availability": "NOT_ASSESSED",
+      "strategy": "REFACTOR",
+      "candidate_application": "Admission control and separate workload budgets",
+      "candidate_infrastructure_data": "Reserved pools and service-level telemetry",
+      "semantic_gap": "A priority queue alone does not implement WLM policy across CPU, storage and subsystems.",
+      "failure_control": "Let batch consume the shared pool; reject an interactive deadline breach.",
+      "test_oracle": "Mixed online/batch workload meets separately declared deadlines and tails.",
+      "customer_measurements": [
+        "service policy",
+        "classification rules",
+        "class delays and goals",
+        "batch windows"
+      ],
+      "risk_ids": [
+        "R065",
+        "R068",
+        "R085"
+      ],
+      "source_ids": [
+        "S54"
+      ],
+      "equivalence_claim": false
+    },
+    {
+      "id": "MF005",
+      "vendor": "IBM",
+      "platform": "IBM Z processing units / z/OS",
+      "version_scope": "z/OS 3.1.0 documentation; model and eligibility unknown",
+      "layer": "INFRA",
+      "original_contract": "zIIPs execute work marked eligible; processing-unit roles must be distinguished.",
+      "source_status": "DOCUMENTED",
+      "native_evidence": "NOT_EXECUTED",
+      "migration_evidence": "NOT_VERIFIED",
+      "availability": "NOT_ASSESSED",
+      "strategy": "RETAIN",
+      "candidate_application": "Workload demand model by operation",
+      "candidate_infrastructure_data": "Measured hardware placement and licensing inventory",
+      "semantic_gap": "Engine count cannot be converted into general-purpose vCPUs by a fixed factor.",
+      "failure_control": "Change eligible workload mix; reject a fixed engine-to-vCPU conversion.",
+      "test_oracle": "Replay the same mix with equivalent persistence and security, measuring useful commits.",
+      "customer_measurements": [
+        "CP/zIIP usage and eligibility",
+        "software contract",
+        "CPU per operation"
+      ],
+      "risk_ids": [
+        "R081",
+        "R084"
+      ],
+      "source_ids": [
+        "S55"
+      ],
+      "equivalence_claim": false
+    },
+    {
+      "id": "MF006",
+      "vendor": "IBM",
+      "platform": "CICS TS",
+      "version_scope": "CICS TS 6.x documentation",
+      "layer": "APP",
+      "original_contract": "A task can contain several units of work separated by SYNCPOINT.",
+      "source_status": "DOCUMENTED",
+      "native_evidence": "NOT_EXECUTED",
+      "migration_evidence": "NOT_VERIFIED",
+      "availability": "NOT_ASSESSED",
+      "strategy": "REFACTOR",
+      "candidate_application": "Explicit transaction boundary and idempotent recovery",
+      "candidate_infrastructure_data": "Compatible recoverable resource coordination or approved redesign",
+      "semantic_gap": "A task, browser session and SQL transaction need not share one recovery boundary.",
+      "failure_control": "Commit one participant then fail another; reject assumed global rollback.",
+      "test_oracle": "Identify each recoverable participant and reconcile failures around every syncpoint.",
+      "customer_measurements": [
+        "transaction definitions",
+        "syncpoints",
+        "recoverable resources",
+        "external effects"
+      ],
+      "risk_ids": [
+        "R041",
+        "R055",
+        "R056"
+      ],
+      "source_ids": [
+        "S49"
+      ],
+      "equivalence_claim": false
+    },
+    {
+      "id": "MF007",
+      "vendor": "IBM",
+      "platform": "Db2 for z/OS",
+      "version_scope": "Db2 13 documentation; package/subsystem options require inventory",
+      "layer": "DATA",
+      "original_contract": "Isolation and locking options affect which concurrent changes a reader can observe.",
+      "source_status": "DOCUMENTED",
+      "native_evidence": "NOT_EXECUTED",
+      "migration_evidence": "NOT_VERIFIED",
+      "availability": "NOT_ASSESSED",
+      "strategy": "REPLATFORM",
+      "candidate_application": "Invariant-specific concurrency control",
+      "candidate_infrastructure_data": "Target-engine isolation and constraints tested with concurrent histories",
+      "semantic_gap": "Matching isolation names does not establish matching predicate, cursor or lock behavior.",
+      "failure_control": "Run competing predicate updates; reject a final-state-only equivalence claim.",
+      "test_oracle": "Concurrent histories preserve the business predicate, including phantom/write-skew cases.",
+      "customer_measurements": [
+        "bind isolation/CURRENTDATA",
+        "access plans",
+        "lock graphs",
+        "predicate invariants"
+      ],
+      "risk_ids": [
+        "R045",
+        "R046",
+        "R048"
+      ],
+      "source_ids": [
+        "S56"
+      ],
+      "equivalence_claim": false
+    },
+    {
+      "id": "MF008",
+      "vendor": "IBM",
+      "platform": "Db2 data sharing / Parallel Sysplex",
+      "version_scope": "Db2 for z/OS 13 documentation; installed topology unknown",
+      "layer": "CROSS_LAYER",
+      "original_contract": "A Db2 data sharing group runs in an IBM Z Parallel Sysplex environment.",
+      "source_status": "DOCUMENTED",
+      "native_evidence": "NOT_EXECUTED",
+      "migration_evidence": "NOT_VERIFIED",
+      "availability": "NOT_ASSESSED",
+      "strategy": "HYBRID_COEXIST",
+      "candidate_application": "One explicit write authority per domain",
+      "candidate_infrastructure_data": "Retain sharing or choose a separately tested target consistency architecture",
+      "semantic_gap": "Independent writable database replicas are not a Db2 data sharing group.",
+      "failure_control": "Allow a stale writer after failover; reject divergent accepted financial effects.",
+      "test_oracle": "Partition/rejoin tests preserve ownership, acknowledged effects and declared RPO/RTO.",
+      "customer_measurements": [
+        "member/CF topology",
+        "locking/caching dependencies",
+        "failure domains",
+        "RPO/RTO"
+      ],
+      "risk_ids": [
+        "R059",
+        "R060",
+        "R094"
+      ],
+      "source_ids": [
+        "S57"
+      ],
+      "equivalence_claim": false
+    },
+    {
+      "id": "MF009",
+      "vendor": "Unisys",
+      "platform": "ClearPath MCP / Enterprise Database Server",
+      "version_scope": "MCP 21.0; document 38508198-005",
+      "layer": "DATA",
+      "original_contract": "SINGLEABORT requires INDEPENDENTTRANS; the application/end user remains responsible for rectifying the aborted transaction.",
+      "source_status": "DOCUMENTED",
+      "native_evidence": "NOT_EXECUTED",
+      "migration_evidence": "NOT_VERIFIED",
+      "availability": "NOT_ASSESSED",
+      "strategy": "REFACTOR",
+      "candidate_application": "Bounded full-transaction retry and durable decision identity",
+      "candidate_infrastructure_data": "Target transaction engine and recovery runbook",
+      "semantic_gap": "Do not import CICS syncpoint semantics or assume every MCP database has this option.",
+      "failure_control": "Retry only the final statement; reject missing earlier transaction effects.",
+      "test_oracle": "Force a deadlock and reconcile one aborted instruction, retry and unaffected work.",
+      "customer_measurements": [
+        "DASDL options",
+        "audit configuration/files",
+        "application retry handling",
+        "operator recovery"
+      ],
+      "risk_ids": [
+        "R048",
+        "R051",
+        "R055"
+      ],
+      "source_ids": [
+        "S58"
+      ],
+      "equivalence_claim": false
+    },
+    {
+      "id": "MF010",
+      "vendor": "Unisys",
+      "platform": "OS 2200 TIP via ClearPath ePortal",
+      "version_scope": "ePortal 10.0; document 82073594",
+      "layer": "APP",
+      "original_contract": "Reconnect-on-send-error can resend on a new connection; stateful sessions require separate consideration.",
+      "source_status": "DOCUMENTED",
+      "native_evidence": "NOT_EXECUTED",
+      "migration_evidence": "NOT_VERIFIED",
+      "availability": "NOT_ASSESSED",
+      "strategy": "HYBRID_COEXIST",
+      "candidate_application": "Session-aware adapter and durable operation identity",
+      "candidate_infrastructure_data": "Retained CITA/TIP route or separately validated replacement",
+      "semantic_gap": "Connector reconnect is not proof of business idempotency or successful rollback.",
+      "failure_control": "Replay a stateful command on a new connection; reject duplicate or wrong-session execution.",
+      "test_oracle": "Lose a reply and reconnect; verify session context and a single accepted effect.",
+      "customer_measurements": [
+        "CITA and TIP routes",
+        "tiptrancode__ mapping",
+        "character set",
+        "reconnect policy",
+        "stateful context"
+      ],
+      "risk_ids": [
+        "R051",
+        "R071",
+        "R079"
+      ],
+      "source_ids": [
+        "S59"
+      ],
+      "equivalence_claim": false
+    }
+  ],
+  "discovery": [
+    {
+      "family": "Fujitsu GS21 / MSP / XSP",
+      "status": "NOT_VERIFIED",
+      "reason": "Dated primary technical sources and installed version/configuration remain to be reviewed."
+    },
+    {
+      "family": "NEC ACOS",
+      "status": "NOT_VERIFIED",
+      "reason": "Dated primary technical sources and installed version/configuration remain to be reviewed."
+    },
+    {
+      "family": "Hitachi VOS",
+      "status": "NOT_VERIFIED",
+      "reason": "Dated primary technical sources and installed version/configuration remain to be reviewed."
+    },
+    {
+      "family": "Bull GCOS",
+      "status": "NOT_VERIFIED",
+      "reason": "Dated primary technical sources and installed version/configuration remain to be reviewed."
+    }
+  ],
+  "adjacent_platforms": [
+    {
+      "family": "NonStop",
+      "status": "NOT_VERIFIED",
+      "reason": "Adjacent enterprise platform; no mainframe feature parity inferred."
+    },
+    {
+      "family": "OpenVMS",
+      "status": "NOT_VERIFIED",
+      "reason": "Adjacent enterprise platform; no mainframe feature parity inferred."
+    },
+    {
+      "family": "IBM i",
+      "status": "NOT_VERIFIED",
+      "reason": "Adjacent enterprise platform; no mainframe feature parity inferred."
+    },
+    {
+      "family": "HP 3000",
+      "status": "NOT_VERIFIED",
+      "reason": "Adjacent enterprise platform; no mainframe feature parity inferred."
+    }
+  ]
+}

@@ -30,10 +30,10 @@ Se cierran nueve issues y quedan trece abiertas, dos de ellas congeladas. Cerrar
 
 | Orden | Trabajo pendiente | Seguimiento y límite |
 | --- | --- | --- |
-| 1 | Revisión editorial y de fuentes ES/EN: listados, citas, solapes y QA visual de PDF; reproducción en otros sistemas | #11; generar una vista previa no autoriza publicar |
-| 2 | Un capítulo completo de canales/core y laboratorio sintético ATM/digital, separando dispensación física y COMMIT | #30 incorpora #29 |
-| 3 | Semántica de SO/I-O/transacciones mainframe y catálogo de capacidades/patrones respaldado por fabricantes | #17/#18/#28; evitar laboratorios duplicados |
-| 4 | Descomposición funcional y siguientes controles de coexistencia brownfield | #32/#58; trazas reales, fencing de origen y TODM G2/G6 requieren aprobación externa |
+| 1 | Semántica de SO/I-O/transacciones mainframe y catálogo de capacidades/patrones respaldado por fabricantes | #17/#18/#28; evitar laboratorios duplicados |
+| 2 | Descomposición funcional y siguientes controles de coexistencia brownfield | #32/#58; trazas reales, fencing de origen y TODM G2/G6 requieren aprobación externa |
+| 3 | Un capítulo completo de canales/core y laboratorio sintético ATM/digital, separando dispensación física y COMMIT | #30 incorpora #29 |
+| 4 | Revisión editorial y de fuentes ES/EN: listados, citas, solapes y QA visual de PDF; reproducción en otros sistemas | #11; generar una vista previa no autoriza publicar |
 | 5 | Refactor dedicado de organización/entrada al laboratorio y revisión de mantenimiento | #15; preservar rutas, hashes y evidencias protegidas |
 | Validación externa | Capacidad/activaciones/HA E2 y comparación distribuida WAN/TCO E3 | #8/#9 y [protocolo](EXTERNAL_VALIDATION.md); no bloquea avanzar el libro |
 | Experimento posterior | Propuesta de agente frente a Oracle Gate independiente y controles de mutación | #10; E4 sigue sin aceptación |
@@ -42,3 +42,5 @@ Se cierran nueve issues y quedan trece abiertas, dos de ellas congeladas. Cerrar
 A partir de este corte, una rama breve por entregable concreto y retirada tras comprobar su integración. La procedencia experimental se conserva mediante commits, originales y archivo recuperable, sin mantener ramas de trabajo integradas como si siguieran activas.
 
 El primer incremento de #30 incorpora el capítulo bilingüe de canales y un laboratorio nativo de efectivo/digital con almacenes separados. El [checkpoint de canales](CHANNELS_CHECKPOINT_2026-11-03.es.md) conserva éxitos/fallos originales y la matriz pendiente. No cierra #30.
+
+Prioridad actualizada tras #83/#84: contratos de plataforma, descomposición/coexistencia, canales pendientes, revisión/reproducción completa y mantenimiento del laboratorio. El [roadmap activo](../ROADMAP.es.md) recoge agentes y validación externa.

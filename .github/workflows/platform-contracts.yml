@@ -1,0 +1,33 @@
+name: Platform contract catalog integrity
+on:
+  push:
+    branches: [main]
+    paths: ['research/platform-contracts/**', 'scripts/check_platform_contracts.py', 'scripts/check_platform_contract_observations.py', 'evidence/platform-contracts/**', '.github/workflows/platform-contracts.yml']
+  pull_request:
+    paths: ['research/platform-contracts/**', 'scripts/check_platform_contracts.py', 'scripts/check_platform_contract_observations.py', 'evidence/platform-contracts/**', 'book/**', '.github/workflows/platform-contracts.yml']
+permissions:
+  contents: read
+jobs:
+  catalog:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+      - name: Verify the frozen original metadata check
+        run: |
+          git fetch --no-tags --depth=1 origin 9f6d20267e137ff8de3c1559e8c2dbdc433215fa
+          python3 scripts/check_platform_contract_observations.py
+      - name: Validate source catalog and reject deliberate metadata mutations
+        run: |
+          git rev-parse HEAD > platform-contracts-source.txt
+          python3 scripts/check_platform_contracts.py --self-test > platform-contracts-original.json
+          cat platform-contracts-original.json
+      - uses: actions/upload-artifact@v6
+        if: always()
+        with:
+          name: platform-contracts-integrity-original
+          path: |
+            platform-contracts-source.txt
+            platform-contracts-original.json
+          if-no-files-found: warn
