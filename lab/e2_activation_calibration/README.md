@@ -1,6 +1,8 @@
 # E2 observer positive calibration
 
-Status: source-only until original CI execution and source/log/SQL audit.
+Status: original run #41630777280 observed the sensitive negative and live positive control.
+See the [paired evidence account](../../evidence/runs/E2-ACTIVATION-CALIBRATION.md).
+This is diagnostic-worker calibration; ordinary-grain partition concurrency remains open.
 Depends on the observer in PR #78. Software and developer documentation are English.
 
 ## Question and fixed acceptance

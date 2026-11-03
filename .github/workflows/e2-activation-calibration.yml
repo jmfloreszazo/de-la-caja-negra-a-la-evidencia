@@ -45,6 +45,10 @@ jobs:
           python3 scripts/check_language_policy.py
           python3 scripts/check.py
           python3 -m unittest discover -s lab/e2_activation_calibration -p test_contract.py -v
+      - name: Audit frozen original summary against its actual source
+        run: |
+          git fetch --no-tags --depth=1 origin 75dfccb8513d38f7fa70386be47c64014a981996
+          python3 scripts/check_e2_activation_calibration.py
       - run: python3 -m pip install -r lab/e1_pg/requirements.txt
       - name: Publish exact separate calibration host
         run: dotnet publish lab/e2_activation_calibration/Calibration.csproj -c Release -m:1 --disable-build-servers -o lab/results/e2-calibration/app

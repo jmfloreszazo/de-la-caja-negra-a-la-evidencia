@@ -79,7 +79,17 @@ def main():
                 assert len(case['sql']['operations']) == 1
                 row = case['sql']['operations'][0]
                 assert row[:3] == ['e2-observer-calibration',1,2] and row[3] in (31,37) and row[4] == 'COMMITTED'
-                reconcile(case['observation'], case['sql'], [])
+                assert type(result['winner']) is int and result['winner'] in (0, 1)
+                pairs = list(zip(result['commands'], result['outcomes']))
+                pairs += [(result['commands'][result['winner']], result['replay']),
+                          (result['commands'][1-result['winner']], result['conflict'])]
+                acks = [dict(status='ACKNOWLEDGED',
+                             command=dict(operationId=c['OperationId'],
+                                          sourceAccountId=c['SourceAccountId'],
+                                          targetAccountId=c['TargetAccountId'],
+                                          amountCents=c['AmountCents']),
+                             result=dict(status=o['Status'])) for c,o in pairs]
+                reconcile(case['observation'], case['sql'], acks)
         report['status'] = 'PASS_CALIBRATION_ONLY'
     except Exception as error:
         report['error'] = repr(error)
