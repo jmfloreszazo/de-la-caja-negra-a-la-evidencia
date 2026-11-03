@@ -95,3 +95,7 @@ B05 #25 now has a [three-cohort direct admission diagnostic](../evidence/runs/B0
 ## Integration decision — 3 November 2026
 
 The author authorized merging the bounded E2 observations, calibration, directed trials and B05 diagnostic (PRs #78–#81). Unmet external claims no longer block book/lab integration or the next editorial work. E2 remains partially verified; #8/#24/#25 remain external-validation tracking, not an instruction to keep repeating a shared-host campaign. The [external-validation protocol](EXTERNAL_VALIDATION.md) specifies topology, code changes, clock uncertainty, load/fault design, independent oracles and evidence required for stronger claims. No failure is relabeled and no production acceptance or release is implied.
+
+## Administrative consolidation — 3 November 2026
+
+The [closeout register](PROJECT_CLOSEOUT.md) records the retired implementation/duplicate trackers. External E2 criteria from #24/#25/#74 remain in #8; distributed M1/M2/E3 criteria from #12 remain in #9; C2 remainder #64 is in #58. Issue closure is not experimental status promotion. Original source/run identifiers and all FAIL/INCONCLUSIVE artifacts remain unchanged.

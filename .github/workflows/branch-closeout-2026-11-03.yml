@@ -1,0 +1,39 @@
+name: One-time reviewed branch closeout 2026-11-03
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/branch-closeout-2026-11-03.yml'
+permissions:
+  contents: write
+  pull-requests: read
+concurrency:
+  group: branch-closeout-2026-11-03
+  cancel-in-progress: false
+jobs:
+  prune:
+    if: startsWith(github.event.head_commit.message, 'Merge branch and issue closeout 2026-11-03')
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-python@v6
+        with:
+          python-version: '3.12'
+      - name: Audit preservation and exact branch proofs
+        run: |
+          python3 -m unittest discover -s scripts -p test_branch_closeout.py -v
+          python3 scripts/prune_reviewed_branches.py
+      - name: Delete only reviewed unchanged refs with atomic leases
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: python3 scripts/prune_reviewed_branches.py --execute
+      - name: Preserve actual cleanup outcomes
+        if: always()
+        uses: actions/upload-artifact@v6
+        with:
+          name: branch-closeout-2026-11-03
+          path: lab/results/branch-closeout.json
+          if-no-files-found: ignore

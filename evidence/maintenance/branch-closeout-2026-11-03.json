@@ -1,0 +1,227 @@
+{
+  "date": "2026-11-03",
+  "repository": "jmfloreszazo/de-la-caja-negra-a-la-evidencia",
+  "baselineMain": "fa0cd64355a3b75c18226ea78da149358d9531b2",
+  "branches": [
+    {
+      "branch": "book/functional-first-diagrams-54",
+      "sha": "e86be3c49cfcf7e0685e02d38ed206b4b9ad0e77",
+      "pr": 55,
+      "proof": "ancestor_of_main",
+      "mergeCommit": "300a348f03e9bb3236708ce19c89755e96971a11",
+      "merged": true
+    },
+    {
+      "branch": "ci/brownfield-postmerge-evidence-58",
+      "sha": "ca5f862fa4620205e2d8cfcfc50c3855f7f7e880",
+      "pr": 62,
+      "proof": "identical_merged_tree",
+      "mergeCommit": "a1d59430fd85eeb1d005c474ccb68cb3a17b421b",
+      "merged": true
+    },
+    {
+      "branch": "ci/unconditional-premerge-gate-16",
+      "sha": "2a7f5a58bf7bed213268d48e811f5ac1e87e01df",
+      "pr": 57,
+      "proof": "ancestor_of_main",
+      "mergeCommit": "d60dc561463a93099d294ae710e7266034073ff7",
+      "merged": true
+    },
+    {
+      "branch": "docs/e2-b05-40-80-sql-evidence",
+      "sha": "bd61bc35229bfb2ecbdd4344d533f87a93e108f5",
+      "pr": 46,
+      "proof": "superseded_archived",
+      "mergeCommit": null,
+      "merged": false
+    },
+    {
+      "branch": "docs/roadmap-evidence-rebaseline-2026-11-01",
+      "sha": "57ea1186bfa06520191b7a8056a032d39d0e6aff",
+      "pr": 65,
+      "proof": "ancestor_of_main",
+      "mergeCommit": "12b9f3a1da687c9edb13bc72e2c09d90ba9f4f76",
+      "merged": true
+    },
+    {
+      "branch": "experiment/b05-dispatch-diagnostics-25",
+      "sha": "7a74a9f1cdc781b348d681fb7795202c064b68ad",
+      "pr": 81,
+      "proof": "ancestor_of_main",
+      "mergeCommit": "fa0cd64355a3b75c18226ea78da149358d9531b2",
+      "merged": true
+    },
+    {
+      "branch": "experiment/brownfield-c2-durable-fence-recovery",
+      "sha": "ba83ed08858ab35415eec04419823b6ea0cefbd1",
+      "pr": 69,
+      "proof": "ancestor_of_main",
+      "mergeCommit": "279ca5662dd870c0f1bb7dab7d1474f346904df3",
+      "merged": true
+    },
+    {
+      "branch": "experiment/c01-controlled-placement-44",
+      "sha": "5e8663f0510d36fcface49bc59256c082d2342fe",
+      "pr": 72,
+      "proof": "ancestor_of_main",
+      "mergeCommit": "4260b2e6abcf736c4fa725bdfe2bb3a0831dd533",
+      "merged": true
+    },
+    {
+      "branch": "experiment/c05-c06-directional-partition-24",
+      "sha": "e2a5c755c64c21dd422e02318f2d84ecdb5771f3",
+      "pr": 73,
+      "proof": "ancestor_of_main",
+      "mergeCommit": "fb683dd7dfecb2f71b0cf63856c9fea718da136f",
+      "merged": true
+    },
+    {
+      "branch": "experiment/e2-account-directed-24",
+      "sha": "1ef218e5ef06d660505326fc4195c4f6a3626ec2",
+      "pr": 80,
+      "proof": "ancestor_of_main",
+      "mergeCommit": "68b4283268113a44d8afe2b75393a3fd0eef304e",
+      "merged": true
+    },
+    {
+      "branch": "experiment/e2-activation-observation-24",
+      "sha": "8a09da1230fa600f055afc3c2a17355a53fa0745",
+      "pr": 78,
+      "proof": "ancestor_of_main",
+      "mergeCommit": "fab9290310234c82b4435084608be1dd3f7970cc",
+      "merged": true
+    },
+    {
+      "branch": "experiment/e2-f10-c04-client-gateways",
+      "sha": "3b11e92d86b81a82a9cc0407746d82a163b28504",
+      "pr": 34,
+      "proof": "ancestor_of_main",
+      "mergeCommit": "8345d2439a7b201b558d81ef8124d66f726b6037",
+      "merged": true
+    },
+    {
+      "branch": "experiment/e2-long-partition-24",
+      "sha": "3359b5be2c31364d8f3c72226268e753f7682b0c",
+      "pr": 77,
+      "proof": "ancestor_of_main",
+      "mergeCommit": "2e254eb643f93aa70609425ed9d5a67099333260",
+      "merged": true
+    },
+    {
+      "branch": "experiment/e2-observer-calibration-24",
+      "sha": "6b2eccd0a85b09ac6651ce5573245abb94fd8a53",
+      "pr": 79,
+      "proof": "ancestor_of_main",
+      "mergeCommit": "278a042ead721da271294a7781d6df4a10af17f3",
+      "merged": true
+    },
+    {
+      "branch": "experiment/e2-placement-observation-74",
+      "sha": "023064b51230ae4682bdf76c66b53d236b4e5c6d",
+      "pr": 76,
+      "proof": "ancestor_of_main",
+      "mergeCommit": "12074c390189db7fb3610cc19871a8bda7cb65bf",
+      "merged": true
+    },
+    {
+      "branch": "feature/brownfield-c2-admission-journal-64",
+      "sha": "005a13125f2efb9e6e14046849e5aa58fde928a6",
+      "pr": 66,
+      "proof": "ancestor_of_main",
+      "mergeCommit": "b90470bf48d10731f8a13e0bf7b8c5699c837e9b",
+      "merged": true
+    },
+    {
+      "branch": "feature/brownfield-capability-gateway-58",
+      "sha": "258207846a5037fafb8ee3a5cf682f9bdf303f26",
+      "pr": 68,
+      "proof": "identical_merged_tree",
+      "mergeCommit": "c17e6cee3ec1e78a093a244fc4540dc6370e241a",
+      "merged": true
+    },
+    {
+      "branch": "feature/brownfield-cutover-rehearsal-58",
+      "sha": "95f61a4dd57601a0669284e4ca4baaaa2c7d7ab2",
+      "pr": 60,
+      "proof": "identical_merged_tree",
+      "mergeCommit": "ae9b8344cbfd711b4cbaee565d00edd982ea4620",
+      "merged": true
+    },
+    {
+      "branch": "feature/brownfield-durable-authority-58",
+      "sha": "fe4078affd7f493d42ed8155b1e214e529d1f521",
+      "pr": 61,
+      "proof": "identical_merged_tree",
+      "mergeCommit": "79d5f014670efff6c5a021b2a0d91359baef8c0c",
+      "merged": true
+    },
+    {
+      "branch": "feature/brownfield-two-store-coexistence-58",
+      "sha": "9744c81c66ad4d19ace6e97c871d346eb0f89b10",
+      "pr": 67,
+      "proof": "superseded_archived",
+      "mergeCommit": null,
+      "merged": false
+    },
+    {
+      "branch": "feature/c2-inflight-controller-link",
+      "sha": "24fe021c9dbc3c442c48996b82ded1396cd788cd",
+      "pr": 70,
+      "proof": "ancestor_of_main",
+      "mergeCommit": "f028fdc423ab4cd7eb998f0c976e6e30bc4673e1",
+      "merged": true
+    },
+    {
+      "branch": "feature/greenfield-cap007-cap005-contract",
+      "sha": "0d71cc0b25b1155d0c8a91ccef83ad8aaddcd646",
+      "pr": 52,
+      "proof": "ancestor_of_main",
+      "mergeCommit": "11af1c0d42e6709ec2a491fb739a95d95f40327c",
+      "merged": true
+    },
+    {
+      "branch": "fix/pdf-alert-markers",
+      "sha": "54788976ca8c75de1714af6fe4acea3468c2e68b",
+      "pr": 71,
+      "proof": "ancestor_of_main",
+      "mergeCommit": "442428e1bbeb5fb6525a1675a764a9f07390af04",
+      "merged": true
+    },
+    {
+      "branch": "release/v2026.10.31-research-preview",
+      "sha": "450e6afcd2a047a684ef028360de18b1e5ca502b",
+      "pr": 56,
+      "proof": "ancestor_of_main",
+      "mergeCommit": "a5f2c2fcc5af3c371f2fab10d3d456f7eb1cc6c1",
+      "merged": true
+    },
+    {
+      "branch": "research/brownfield-cap007-005-gap-58",
+      "sha": "367d36f6e083e8c1e4f3c0c1e5ff314655717b9b",
+      "pr": 59,
+      "proof": "ancestor_of_main",
+      "mergeCommit": "76a453aa4ae40fbc7fe32451aa08e083e6b60725",
+      "merged": true
+    },
+    {
+      "branch": "research/mainframe-decomposition-contract-32",
+      "sha": "c48c269cd3b3d590b5791c31a89f2d463bcb5839",
+      "pr": 50,
+      "proof": "ancestor_of_main",
+      "mergeCommit": "3dd21390fb6d885b58d8b5b8b4b5e05381100d23",
+      "merged": true
+    },
+    {
+      "branch": "research/mainframe-static-archaeology-32",
+      "sha": "0e4ee9705bcbf18e3db0a5f1c698a59eb44eb6a2",
+      "pr": 51,
+      "proof": "ancestor_of_main",
+      "mergeCommit": "59dfb456e831f73696ff3f7fb7f0dd44bc802c38",
+      "merged": true
+    }
+  ],
+  "archive": {
+    "path": "evidence/maintenance/branch-closeout-2026-11-03.bundle",
+    "sha256": "318200539fa05ec478e5ad9fb7c98497a9db95b72b14d257ebdebca6db6133e0"
+  }
+}
