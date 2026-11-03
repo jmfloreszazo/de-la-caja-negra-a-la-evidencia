@@ -458,7 +458,6 @@ refutar antes de prometer una migración.
 
 [← Capítulo 27 · Hacer que el error se vea](27-hacer-que-el-error-se-vea.md) · [Índice](../README.md) · [Capítulo 29 · Incorporar agentes sin permitir que escriban el aprobado →](29-incorporar-agentes-sin-permitir-que-escriban-el-aprobado.md)
 
-
 ### B05: distinguir límites de admisión y capacidad del servidor
 
 El [diagnóstico de admisión directa](../../../evidence/runs/B05-DISPATCH-DIAGNOSTIC.md) añade tres cohortes en runners a 320 ofertas/s, con fases de medición de 60 segundos. Cada pareja mantiene el pool PostgreSQL en 32 conexiones y cambia la admisión del cliente de 32 a 128 plazas; una cohorte invierte el orden. Los eventos exactos de admisión, finalización y liberación, junto con las marcas independientes de commit SQL, sustituyen las estimaciones retrospectivas de ocupación.

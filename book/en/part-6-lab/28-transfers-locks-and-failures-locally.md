@@ -451,7 +451,6 @@ falsifiable before they become migration promises.
 
 [← Chapter 27 · Making the error visible](27-making-the-error-visible.md) · [Contents](../README.md) · [Chapter 29 · Bringing in agents without letting them write the approval →](29-bringing-in-agents-without-letting-them-write-the-approval.md)
 
-
 ### B05: distinguish admission limits from backend capacity
 
 The [direct admission diagnostic](../../../evidence/runs/B05-DISPATCH-DIAGNOSTIC.md) adds three runner cohorts at 320 offered/s with 60-second measurement phases. Each paired trial keeps the PostgreSQL connection pool at 32 and changes client admission from 32 to 128 slots, reversing the order in one cohort. Exact admission/completion/release events and independent SQL commit timestamps replace retrospective occupancy estimates.
