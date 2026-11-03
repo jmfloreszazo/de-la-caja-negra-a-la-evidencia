@@ -1,7 +1,7 @@
 """Protect book prose and executable examples while hiding print-only noise."""
 import unittest
 
-from pdf_markdown import normalize_alerts, keep_listing_captions
+from pdf_markdown import normalize_alerts, keep_listing_captions, keep_channel_figures
 
 
 class PdfMarkdownTests(unittest.TestCase):
@@ -23,6 +23,21 @@ class PdfMarkdownTests(unittest.TestCase):
         source='<p><strong>Listing 1</strong> — <em>Illustrative</em></p>\n<div class="sourceCode" id="cb1"><pre\nclass="sourceCode csharp"><code>x</code></pre></div>'
         self.assertEqual(keep_listing_captions(source),
                          source.replace('<p>','<p class="listing-caption">',1))
+
+    def test_channel_diagram_caption_is_bound_without_changing_image_or_text(self):
+        for lang,label in [('en','Figure'),('es','Figura')]:
+            image=f'<img src="figures/{lang}/channels_cash_happy.png" alt="Cash" />'
+            caption=label+' C.3 · Cash &amp; ledger.'
+            source='<p>'+image+'</p>\n<p><em>'+caption+'</em></p>'
+            rendered=keep_channel_figures(source)
+            self.assertEqual(rendered.count('<figure class="channel-figure">'),1)
+            self.assertIn(image,rendered)
+            self.assertIn('<figcaption><em>'+caption+'</em></figcaption>',rendered)
+            self.assertEqual(keep_channel_figures(rendered),rendered)
+            separated=source.replace('</p>\n<p>','</p>\n<p>Context</p>\n<p>',1)
+            self.assertEqual(keep_channel_figures(separated),separated)
+            unrelated=source.replace('channels_cash_happy','bank_faults')
+            self.assertEqual(keep_channel_figures(unrelated),unrelated)
 
     def test_alert_control_is_hidden_but_thesis_and_blockquote_remain(self):
         source = "> [!IMPORTANT]\n> **Chapter thesis.** Preserve this argument.\n"

@@ -9,7 +9,7 @@ import subprocess
 from urllib.parse import urlparse, unquote
 from pypdf import PdfReader
 from weasyprint import HTML, default_url_fetcher
-from pdf_markdown import normalize_alerts, keep_listing_captions
+from pdf_markdown import normalize_alerts, keep_listing_captions, keep_channel_figures
 
 ROOT=Path(__file__).resolve().parents[1]
 BOOK=ROOT/"book"
@@ -103,6 +103,9 @@ def build(lang):
             +html.escape(title)+"'></section>"+body.group(1)+"</body></html>")
     markup=markup.replace('content:"CONTENTS / ÍNDICE"','content:"'+toc.upper()+'"')
     markup=keep_listing_captions(markup)
+    markup=keep_channel_figures(markup)
+    if markup.count('<figure class="channel-figure">')!=6:
+        raise ValueError(f"{lang}: expected six channel diagrams bound to their captions")
     OUT.mkdir(parents=True,exist_ok=True)
     target=OUT/filename
     HTML(string=markup,base_url=str(BOOK),url_fetcher=offline_fetcher).write_pdf(str(target))

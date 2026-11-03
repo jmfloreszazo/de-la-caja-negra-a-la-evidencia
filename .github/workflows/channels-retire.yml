@@ -16,7 +16,7 @@ jobs:
       - uses: actions/checkout@v5
         with:
           fetch-depth: 0
-      - name: Delete only the exact merged editorial head with an atomic lease
+      - name: Delete only the exact merged channel head with an atomic lease
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
