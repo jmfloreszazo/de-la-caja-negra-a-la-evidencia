@@ -1,0 +1,100 @@
+{
+  "source_sha": "d3d01ec01bb55c460d106eee0a6b7424d0aaa82b",
+  "run_id": 41713039344,
+  "archive_sha256": "c2a8a7664a29804dcfa31c25224e6e03082e35c4400ed69ea5bac79faec3a20f",
+  "editions": {
+    "en": {
+      "pages": 152,
+      "pdf_sha256": "50d59f72e284a8a81adfd8f9c73be3ad471a72f92ab386ffe90a786e830a3033",
+      "images_including_cover": 48,
+      "caption_pages": {
+        "1": 71,
+        "2": 72,
+        "3": 74,
+        "4": 75,
+        "5": 76,
+        "6": 77
+      },
+      "channel_image_pages": {
+        "channels_as_is": 71,
+        "channels_to_be": 72,
+        "channels_cash_happy": 74,
+        "channels_cash_unknown": 75,
+        "channels_standin": 76,
+        "channels_web_unknown": 77
+      },
+      "all_six_captions_share_image_page": true
+    },
+    "es": {
+      "pages": 156,
+      "pdf_sha256": "6cd8b0b55a952bd1ac092cec344872aa4999a431604ea1fdd50324041babc5f0",
+      "images_including_cover": 48,
+      "caption_pages": {
+        "1": 73,
+        "2": 74,
+        "3": 76,
+        "4": 77,
+        "5": 78,
+        "6": 79
+      },
+      "channel_image_pages": {
+        "channels_as_is": 73,
+        "channels_to_be": 74,
+        "channels_cash_happy": 76,
+        "channels_cash_unknown": 77,
+        "channels_standin": 78,
+        "channels_web_unknown": 79
+      },
+      "all_six_captions_share_image_page": true
+    }
+  },
+  "render_inputs": {
+    "book/en.md": "8a66666682c3e4d1fd9dd820514c1db11e877a44fbea43bac82ac10c8fd10e6f",
+    "book/es.md": "e2dab98740890d21a92728cbbe36f91ed0f22ca8de8d45db8a84d6f00ae8ff8c",
+    "scripts/build_pdf.py": "4abb71efbbc19e3e576e8cb2434eb89e43de716fa7fce3363b84437126149fa4",
+    "scripts/pdf_markdown.py": "0957dbbeee84918e0f215e475e53e8f3fdfccd3dd35888706f771487a5b5fcb0",
+    "book/figures/en/channels_as_is.png": "b47752f5b3a0b5c20c0c68877b0eee85a52aab81d41a1a71695bc47351c9cde3",
+    "book/figures/en/channels_cash_happy.png": "bd8b8f07b899bcc2fc730c26207716c2c5e72fa3190e2a010f435dd04d6f420a",
+    "book/figures/en/channels_cash_unknown.png": "1628277666e71a4ee756d44ee07018b8fd0ed614eb49caac8a7a5c5c1bca0052",
+    "book/figures/en/channels_standin.png": "e85399c067cffb062fc7ce170f20181b251da930d8f74e51cb01da077697533a",
+    "book/figures/en/channels_to_be.png": "b31581e1f2c039874a567e78187915ada89528b334d5a6a18385a0330df0cfb8",
+    "book/figures/en/channels_web_unknown.png": "230d56eec2571d8a61a1a04ead602d74b10a38030c7d69641b10d209ff0233c1",
+    "book/figures/es/channels_as_is.png": "da5817b2ce057ac0feb7528d62275df2e45f0cff8a2e5612cd28acc450e48940",
+    "book/figures/es/channels_cash_happy.png": "847f39c2c0975cd3e19f69ffc981cfdc4c66281f2719c219b9083e6863e01de9",
+    "book/figures/es/channels_cash_unknown.png": "c6b50c26c4d6631dd4665c7d513944d246cd3b3527d3643bf87efa3b5661401c",
+    "book/figures/es/channels_standin.png": "1dcac4858e78231176f781ce830ac2c04b840c72363a2a7271e9cd8ad5fda656",
+    "book/figures/es/channels_to_be.png": "9573d585e4b0193c22a06fb5a1345f731f7d17f36b9471f8574eac8185a2fa03",
+    "book/figures/es/channels_web_unknown.png": "6460a721d8febac0da903918b43a217b2922be24b9829a0fcf82ff7d71dfd612"
+  },
+  "artifact_id": 13269275703,
+  "visual_review": {
+    "scope": "Twelve channel diagram/caption pages only; not a complete editorial re-review",
+    "pages": {
+      "en": [
+        71,
+        72,
+        74,
+        75,
+        76,
+        77
+      ],
+      "es": [
+        73,
+        74,
+        76,
+        77,
+        78,
+        79
+      ]
+    },
+    "outcome": "PASS",
+    "previous_caption_orphans_corrected": [
+      "C.3",
+      "C.6"
+    ]
+  },
+  "samples": {
+    "evidence/channels/pdf-en-cash-caption.png": "08652ce5b3d9b02f36652c8af1c35fe947b5b6d847d46109d503e279c76d9580",
+    "evidence/channels/pdf-es-cash-caption.png": "4a182c1fa0e02b21a103bdef0327f4235b61062a8204ef6d08736de3bfba6ead"
+  }
+}
