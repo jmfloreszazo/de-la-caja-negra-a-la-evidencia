@@ -36,7 +36,7 @@ mandate:
   id: MND-2026-114
   scope: capability/fee-calculation
   grantedTo: agent/builder
-  grantedBy: owner/payments-domain      # en producción, una identidad humana verificable
+  grantedBy: owner/payments-domain      # in production, a verifiable human identity
   validFrom: 2026-10-29T08:00:00Z
   validUntil: 2026-11-05T20:00:00Z
   allow:
@@ -46,7 +46,7 @@ mandate:
   deny:
     write: ["contracts/**", "Gate/**", "ci/**"]
     actions: ["publish", "approve-baseline", "delegate-beyond-scope"]
-  revocation: "revocada en el proveedor de identidad; se comprueba antes de cada acción"
+  revocation: "revoked at the identity provider; checked before every action"
 ```
 
 La línea más importante es `deny.write`. Si el constructor puede escribir en `contracts/` o en `Gate/`, el resto del mandato es literatura.

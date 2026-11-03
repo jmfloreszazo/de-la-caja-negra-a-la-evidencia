@@ -1,0 +1,758 @@
+{
+  "schema": "BOOK_LISTINGS_V1",
+  "pairedFences": 32,
+  "canonicalExecutableFences": 27,
+  "language": "English executable/config code in both editions",
+  "listings": [
+    {
+      "id": "A.1",
+      "title": "Starting with Podman",
+      "publishedLabel": "Reproduction commands \u00b7 platform-dependent",
+      "language": "bash",
+      "fenceIndex": 1,
+      "english": {
+        "path": "book/en/annexes/annex-a-a-lab-that-can-prove-us-wrong.md",
+        "line": 28,
+        "sha256": "6dea7435083ffd3ca5fbad94ef1567186f576f151aca11cdc2e7dadd7dce74a2"
+      },
+      "spanish": {
+        "path": "book/es/anexos/anexo-a-un-laboratorio-que-pueda-contradecirnos.md",
+        "line": 28,
+        "sha256": "6dea7435083ffd3ca5fbad94ef1567186f576f151aca11cdc2e7dadd7dce74a2"
+      },
+      "canonicalExecutableCode": true,
+      "sameBytes": true,
+      "dependencies": "Bash syntax only here; real Podman/SDK/PowerShell and OS reproduction remain separate",
+      "staticChecks": [
+        {
+          "kind": "BASH_SYNTAX",
+          "commandsExecuted": false
+        }
+      ],
+      "completeIntegrationEstablished": false
+    },
+    {
+      "id": "A.2",
+      "title": "Native reproduction commands",
+      "publishedLabel": "Requires GnuCOBOL and .NET 10",
+      "language": "bash",
+      "fenceIndex": 2,
+      "english": {
+        "path": "book/en/annexes/annex-a-a-lab-that-can-prove-us-wrong.md",
+        "line": 50,
+        "sha256": "a609bfb8995c870a123c67f672a9e653a69e6709117860b02befd802cceca273"
+      },
+      "spanish": {
+        "path": "book/es/anexos/anexo-a-un-laboratorio-que-pueda-contradecirnos.md",
+        "line": 50,
+        "sha256": "a609bfb8995c870a123c67f672a9e653a69e6709117860b02befd802cceca273"
+      },
+      "canonicalExecutableCode": true,
+      "sameBytes": true,
+      "dependencies": "Bash syntax only here; real Podman/SDK/PowerShell and OS reproduction remain separate",
+      "staticChecks": [
+        {
+          "kind": "BASH_SYNTAX",
+          "commandsExecuted": false
+        }
+      ],
+      "completeIntegrationEstablished": false
+    },
+    {
+      "id": "3.1",
+      "title": "COBOL withdrawal under CICS: the read reserves the record",
+      "publishedLabel": "Illustrative",
+      "language": "cobol",
+      "fenceIndex": 1,
+      "english": {
+        "path": "book/en/part-1-before-translating/03-why-one-to-one-conversion-is-not-modernization.md",
+        "line": 42,
+        "sha256": "b15229db222c7d8958687c20992f4f67f586d2605e6c6dc9ffebee4a4a84d54d"
+      },
+      "spanish": {
+        "path": "book/es/parte-1-antes-de-traducir/03-por-que-la-conversion-uno-a-uno-no-es-modernizacion.md",
+        "line": 42,
+        "sha256": "b15229db222c7d8958687c20992f4f67f586d2605e6c6dc9ffebee4a4a84d54d"
+      },
+      "canonicalExecutableCode": true,
+      "sameBytes": true,
+      "dependencies": "GnuCOBOL for full 26.1; 3.1 requires CICS, declarations and an enterprise fixture; 12.1 is an excerpt",
+      "staticChecks": [],
+      "completeIntegrationEstablished": false
+    },
+    {
+      "id": "3.2",
+      "title": "Literal C# translation: it compiles, passes the happy path and loses the guarantee",
+      "publishedLabel": "Illustrative",
+      "language": "csharp",
+      "fenceIndex": 2,
+      "english": {
+        "path": "book/en/part-1-before-translating/03-why-one-to-one-conversion-is-not-modernization.md",
+        "line": 69,
+        "sha256": "b8691536072f5c1bf2b97212aeb9ec7464a0c224ae9e8563af1784fcf087ef3b"
+      },
+      "spanish": {
+        "path": "book/es/parte-1-antes-de-traducir/03-por-que-la-conversion-uno-a-uno-no-es-modernizacion.md",
+        "line": 69,
+        "sha256": "b8691536072f5c1bf2b97212aeb9ec7464a0c224ae9e8563af1784fcf087ef3b"
+      },
+      "canonicalExecutableCode": true,
+      "sameBytes": true,
+      "dependencies": "SDK .NET 10; 12.2 and 15.1 have isolated harnesses; other fragments need their application types/services",
+      "staticChecks": [],
+      "completeIntegrationEstablished": false
+    },
+    {
+      "id": "3.3",
+      "title": "Conditional debit inside the transaction (Bank/Program.cs)",
+      "publishedLabel": "Executed",
+      "language": "csharp",
+      "fenceIndex": 3,
+      "english": {
+        "path": "book/en/part-1-before-translating/03-why-one-to-one-conversion-is-not-modernization.md",
+        "line": 90,
+        "sha256": "26871684b989cbdd5cf41a63df59d224fbcf08f9eb6b5182b4cbbdcd18e89327"
+      },
+      "spanish": {
+        "path": "book/es/parte-1-antes-de-traducir/03-por-que-la-conversion-uno-a-uno-no-es-modernizacion.md",
+        "line": 90,
+        "sha256": "26871684b989cbdd5cf41a63df59d224fbcf08f9eb6b5182b4cbbdcd18e89327"
+      },
+      "canonicalExecutableCode": true,
+      "sameBytes": true,
+      "dependencies": "SDK .NET 10; 12.2 and 15.1 have isolated harnesses; other fragments need their application types/services",
+      "staticChecks": [],
+      "completeIntegrationEstablished": false
+    },
+    {
+      "id": "6.1",
+      "title": "An EvidenceItem: the claim, its provenance and what we still do not know",
+      "publishedLabel": "Illustrative",
+      "language": "json",
+      "fenceIndex": 1,
+      "english": {
+        "path": "book/en/part-2-archaeology-and-authority/06-rea-and-archaeology-that-leaves-a-trail.md",
+        "line": 62,
+        "sha256": "0d95d8becaadcb6ee80957fcc860b5c3338f54fb46dbadc4ec2e085e9963f429"
+      },
+      "spanish": {
+        "path": "book/es/parte-2-arqueologia-y-autoridad/06-rea-y-la-arqueologia-que-deja-rastro.md",
+        "line": 62,
+        "sha256": "0d95d8becaadcb6ee80957fcc860b5c3338f54fb46dbadc4ec2e085e9963f429"
+      },
+      "canonicalExecutableCode": true,
+      "sameBytes": true,
+      "dependencies": "JSON documents only; examples do not establish approval, provenance or executable business semantics",
+      "staticChecks": [
+        {
+          "kind": "JSON_SYNTAX",
+          "documents": 1
+        }
+      ],
+      "completeIntegrationEstablished": false
+    },
+    {
+      "id": "9.1",
+      "title": "A bounded mandate for the builder agent",
+      "publishedLabel": "Illustrative",
+      "language": "yaml",
+      "fenceIndex": 1,
+      "english": {
+        "path": "book/en/part-2-archaeology-and-authority/09-from-the-agent-s-authority-to-the-rule-s-authority.md",
+        "line": 34,
+        "sha256": "7605221f01260edc912aa0939559dbbc8bc4ccc0b9861d9433ec4d43aee42402"
+      },
+      "spanish": {
+        "path": "book/es/parte-2-arqueologia-y-autoridad/09-de-la-autoridad-del-agente-a-la-autoridad-de-la-regla.md",
+        "line": 34,
+        "sha256": "7605221f01260edc912aa0939559dbbc8bc4ccc0b9861d9433ec4d43aee42402"
+      },
+      "canonicalExecutableCode": true,
+      "sameBytes": true,
+      "dependencies": "YAML syntax only; mandate schema and GitHub workflow validity/execution are separate",
+      "staticChecks": [
+        {
+          "kind": "YAML_SYNTAX",
+          "workflowExecutionEstablished": false
+        }
+      ],
+      "completeIntegrationEstablished": false
+    },
+    {
+      "id": "12.1",
+      "title": "The calculation in legacy/fee.cob",
+      "publishedLabel": "Executed",
+      "language": "cobol",
+      "fenceIndex": 1,
+      "english": {
+        "path": "book/en/part-3-oracles/12-cobol-and-c-must-agree-on-meaning.md",
+        "line": 32,
+        "sha256": "31d37b39d374178a2e1f91200aa921a5dc6c627f2e0e0c4a435b716f3d969687"
+      },
+      "spanish": {
+        "path": "book/es/parte-3-oraculos/12-cobol-y-c-deben-acordar-el-significado.md",
+        "line": 32,
+        "sha256": "31d37b39d374178a2e1f91200aa921a5dc6c627f2e0e0c4a435b716f3d969687"
+      },
+      "canonicalExecutableCode": true,
+      "sameBytes": true,
+      "dependencies": "GnuCOBOL for full 26.1; 3.1 requires CICS, declarations and an enterprise fixture; 12.1 is an excerpt",
+      "staticChecks": [],
+      "completeIntegrationEstablished": false
+    },
+    {
+      "id": "12.2",
+      "title": "Documented behaviour of Math.Round [8]",
+      "publishedLabel": "Illustrative",
+      "language": "csharp",
+      "fenceIndex": 2,
+      "english": {
+        "path": "book/en/part-3-oracles/12-cobol-and-c-must-agree-on-meaning.md",
+        "line": 44,
+        "sha256": "1eacc2f6a402eacf0a4f933ba1441e593eec7e820dcfb4792e3d90ae398e026e"
+      },
+      "spanish": {
+        "path": "book/es/parte-3-oraculos/12-cobol-y-c-deben-acordar-el-significado.md",
+        "line": 44,
+        "sha256": "1eacc2f6a402eacf0a4f933ba1441e593eec7e820dcfb4792e3d90ae398e026e"
+      },
+      "canonicalExecutableCode": true,
+      "sameBytes": true,
+      "dependencies": "SDK .NET 10; 12.2 and 15.1 have isolated harnesses; other fragments need their application types/services",
+      "staticChecks": [],
+      "completeIntegrationEstablished": false
+    },
+    {
+      "id": "14.1",
+      "title": "Coexistence facade with shadow mode for a capability without side effects",
+      "publishedLabel": "Illustrative",
+      "language": "csharp",
+      "fenceIndex": 1,
+      "english": {
+        "path": "book/en/part-4-patterns/14-strangler-fig-change-the-edge-before-the-heart.md",
+        "line": 28,
+        "sha256": "94e12e294389e4ccb076e964aa33d6c8289f698f2dd1d149ccb6b213e730000b"
+      },
+      "spanish": {
+        "path": "book/es/parte-4-patrones/14-strangler-fig-cambiar-el-borde-antes-que-el-corazon.md",
+        "line": 28,
+        "sha256": "94e12e294389e4ccb076e964aa33d6c8289f698f2dd1d149ccb6b213e730000b"
+      },
+      "canonicalExecutableCode": true,
+      "sameBytes": true,
+      "dependencies": "SDK .NET 10; 12.2 and 15.1 have isolated harnesses; other fragments need their application types/services",
+      "staticChecks": [],
+      "completeIntegrationEstablished": false
+    },
+    {
+      "id": "15.1",
+      "title": "Explicit COMP-3 decoding with the copybook scale",
+      "publishedLabel": "Illustrative \u00b7 logic verified",
+      "language": "csharp",
+      "fenceIndex": 1,
+      "english": {
+        "path": "book/en/part-4-patterns/15-anti-corruption-layer-translate-meanings-not-types.md",
+        "line": 30,
+        "sha256": "d011988c069dce5812cfe7d35495175a758cc5fafe6de5a161ac88ec77d6ba14"
+      },
+      "spanish": {
+        "path": "book/es/parte-4-patrones/15-anti-corruption-layer-traducir-significados-no-tipos.md",
+        "line": 30,
+        "sha256": "d011988c069dce5812cfe7d35495175a758cc5fafe6de5a161ac88ec77d6ba14"
+      },
+      "canonicalExecutableCode": true,
+      "sameBytes": true,
+      "dependencies": "SDK .NET 10; 12.2 and 15.1 have isolated harnesses; other fragments need their application types/services",
+      "staticChecks": [],
+      "completeIntegrationEstablished": false
+    },
+    {
+      "id": "17.1",
+      "title": "Transfer in T-SQL: idempotency, global lock order, conditional debit and outbox",
+      "publishedLabel": "Illustrative",
+      "language": "sql",
+      "fenceIndex": 1,
+      "english": {
+        "path": "book/en/part-4-patterns/17-from-mainframe-locks-to-explicit-concurrency-control.md",
+        "line": 58,
+        "sha256": "cae6d27da39beda44a4ad1f8b225c5d5888cb6147d83dbf33fef253c93da1488"
+      },
+      "spanish": {
+        "path": "book/es/parte-4-patrones/17-de-los-locks-del-mainframe-al-control-explicito-de.md",
+        "line": 58,
+        "sha256": "cae6d27da39beda44a4ad1f8b225c5d5888cb6147d83dbf33fef253c93da1488"
+      },
+      "canonicalExecutableCode": true,
+      "sameBytes": true,
+      "dependencies": "SQLite in-memory fixture for 28.1; T-SQL 17.1/18.1 needs SQL Server schema, parameters and transactional tests",
+      "staticChecks": [],
+      "completeIntegrationEstablished": false
+    },
+    {
+      "id": "17.2",
+      "title": "Retry with a budget and the same identity when chosen as a deadlock victim",
+      "publishedLabel": "Illustrative",
+      "language": "csharp",
+      "fenceIndex": 2,
+      "english": {
+        "path": "book/en/part-4-patterns/17-from-mainframe-locks-to-explicit-concurrency-control.md",
+        "line": 111,
+        "sha256": "297b1c06b36eed813de9e3a6a1d382a293f9c0ba38f2bf4dcab906c584634dae"
+      },
+      "spanish": {
+        "path": "book/es/parte-4-patrones/17-de-los-locks-del-mainframe-al-control-explicito-de.md",
+        "line": 111,
+        "sha256": "297b1c06b36eed813de9e3a6a1d382a293f9c0ba38f2bf4dcab906c584634dae"
+      },
+      "canonicalExecutableCode": true,
+      "sameBytes": true,
+      "dependencies": "SDK .NET 10; 12.2 and 15.1 have isolated harnesses; other fragments need their application types/services",
+      "staticChecks": [],
+      "completeIntegrationEstablished": false
+    },
+    {
+      "id": "18.1",
+      "title": "Fencing: the store rejects writes from a stale owner",
+      "publishedLabel": "Illustrative",
+      "language": "sql",
+      "fenceIndex": 1,
+      "english": {
+        "path": "book/en/part-4-patterns/18-distributing-without-breaking-the-books.md",
+        "line": 50,
+        "sha256": "e5044a114cd8b5f3bd9db6b6f551fd41dad2e96021abb5d853a22768e065c3bd"
+      },
+      "spanish": {
+        "path": "book/es/parte-4-patrones/18-distribuir-sin-romper-la-contabilidad.md",
+        "line": 50,
+        "sha256": "e5044a114cd8b5f3bd9db6b6f551fd41dad2e96021abb5d853a22768e065c3bd"
+      },
+      "canonicalExecutableCode": true,
+      "sameBytes": true,
+      "dependencies": "SQLite in-memory fixture for 28.1; T-SQL 17.1/18.1 needs SQL Server schema, parameters and transactional tests",
+      "staticChecks": [],
+      "completeIntegrationEstablished": false
+    },
+    {
+      "id": "19.1",
+      "title": "Orleans: the actor coordinates, the ledger commits",
+      "publishedLabel": "Illustrative",
+      "language": "csharp",
+      "fenceIndex": 1,
+      "english": {
+        "path": "book/en/part-4-patterns/19-actors-a-great-tool-a-poor-universal-substitute.md",
+        "line": 46,
+        "sha256": "a78f661e008ff40adf33f2ad25a750d0ee7fd7c7c692df5a8cb79fe25b495eca"
+      },
+      "spanish": {
+        "path": "book/es/parte-4-patrones/19-actores-una-gran-herramienta-un-mal-sustituto-universal.md",
+        "line": 46,
+        "sha256": "a78f661e008ff40adf33f2ad25a750d0ee7fd7c7c692df5a8cb79fe25b495eca"
+      },
+      "canonicalExecutableCode": true,
+      "sameBytes": true,
+      "dependencies": "SDK .NET 10; 12.2 and 15.1 have isolated harnesses; other fragments need their application types/services",
+      "staticChecks": [],
+      "completeIntegrationEstablished": false
+    },
+    {
+      "id": "20.1",
+      "title": "Partitioned batch with the checkpoint in the same transaction as the results",
+      "publishedLabel": "Illustrative",
+      "language": "csharp",
+      "fenceIndex": 1,
+      "english": {
+        "path": "book/en/part-4-patterns/20-batch-and-parallelism-speeding-up-without-changing-the.md",
+        "line": 36,
+        "sha256": "d840c44b071216551a6c51078878be0b5df0dfc9add7edf7446356deb827e833"
+      },
+      "spanish": {
+        "path": "book/es/parte-4-patrones/20-batch-y-paralelismo-acelerar-sin-cambiar-el-resultado.md",
+        "line": 36,
+        "sha256": "d840c44b071216551a6c51078878be0b5df0dfc9add7edf7446356deb827e833"
+      },
+      "canonicalExecutableCode": true,
+      "sameBytes": true,
+      "dependencies": "SDK .NET 10; 12.2 and 15.1 have isolated harnesses; other fragments need their application types/services",
+      "staticChecks": [],
+      "completeIntegrationEstablished": false
+    },
+    {
+      "id": "23.1",
+      "title": "Backpressure with a bounded Channel and explicit rejection",
+      "publishedLabel": "Illustrative",
+      "language": "csharp",
+      "fenceIndex": 1,
+      "english": {
+        "path": "book/en/part-5-capacity/23-concurrency-that-makes-use-of-the-machine.md",
+        "line": 26,
+        "sha256": "1d4f530ac574055703ed7d4f6e17d1bdf101a9a6d5ca03ae88a9fdfe3a64df0b"
+      },
+      "spanish": {
+        "path": "book/es/parte-5-capacidad/23-concurrencia-que-aprovecha-la-maquina.md",
+        "line": 26,
+        "sha256": "1d4f530ac574055703ed7d4f6e17d1bdf101a9a6d5ca03ae88a9fdfe3a64df0b"
+      },
+      "canonicalExecutableCode": true,
+      "sameBytes": true,
+      "dependencies": "SDK .NET 10; 12.2 and 15.1 have isolated harnesses; other fragments need their application types/services",
+      "staticChecks": [],
+      "completeIntegrationEstablished": false
+    },
+    {
+      "id": "24.1",
+      "title": "tools/coordinated_omission_demo.py",
+      "publishedLabel": "Executed \u00b7 simulation",
+      "language": "text",
+      "fenceIndex": 1,
+      "english": {
+        "path": "book/en/part-5-capacity/24-the-benchmark-that-counts-load-contention-failure-and-cost.md",
+        "line": 34,
+        "sha256": "5859e3f4dffa72797b49ec7bbc1ee9ac216f16fb9fe4cb1ffb26545f3e6fe0de"
+      },
+      "spanish": {
+        "path": "book/es/parte-5-capacidad/24-el-benchmark-que-vale-carga-contencion-fallo-y-coste.md",
+        "line": 34,
+        "sha256": "5859e3f4dffa72797b49ec7bbc1ee9ac216f16fb9fe4cb1ffb26545f3e6fe0de"
+      },
+      "canonicalExecutableCode": false,
+      "sameBytes": true,
+      "dependencies": "Narrative topology, file tree or historical output; not executable source",
+      "staticChecks": [],
+      "completeIntegrationEstablished": false
+    },
+    {
+      "id": "25a.1",
+      "title": "Branch-to-ledger path",
+      "publishedLabel": "Illustrative topology",
+      "language": "text",
+      "fenceIndex": 1,
+      "english": {
+        "path": "book/en/part-5-capacity/25a-mainframe-on-prem-azure-and-banking-network-infrastructure.md",
+        "line": 37,
+        "sha256": "3a169aa257b9224ec2e4dd5a354e45abad1c407527eef329ec519a63ceac6e9f"
+      },
+      "spanish": {
+        "path": "book/es/parte-5-capacidad/25a-infraestructura-mainframe-local-azure-y-redes-bancarias.md",
+        "line": 37,
+        "sha256": "aa5ede54c01a882c1daa772dcddf1ab05e155c3876d7a2cabdd01fb89d3cc3d4"
+      },
+      "canonicalExecutableCode": false,
+      "sameBytes": false,
+      "dependencies": "Narrative topology, file tree or historical output; not executable source",
+      "staticChecks": [],
+      "completeIntegrationEstablished": false
+    },
+    {
+      "id": "26.1",
+      "title": "legacy/fee.cob",
+      "publishedLabel": "Executed",
+      "language": "cobol",
+      "fenceIndex": 1,
+      "english": {
+        "path": "book/en/part-6-lab/26-a-local-lab-you-can-understand.md",
+        "line": 27,
+        "sha256": "136cc8c21ae514634f93b7139fb9e185b115e6b817c20890ad0e1f9265971cbf"
+      },
+      "spanish": {
+        "path": "book/es/parte-6-laboratorio/26-un-laboratorio-local-que-se-puede-entender.md",
+        "line": 27,
+        "sha256": "136cc8c21ae514634f93b7139fb9e185b115e6b817c20890ad0e1f9265971cbf"
+      },
+      "canonicalExecutableCode": true,
+      "sameBytes": true,
+      "dependencies": "GnuCOBOL for full 26.1; 3.1 requires CICS, declarations and an enterprise fixture; 12.1 is an excerpt",
+      "staticChecks": [
+        {
+          "kind": "EXACT_FULL_SOURCE_MATCH",
+          "path": "lab/legacy/fee.cob"
+        }
+      ],
+      "completeIntegrationEstablished": false
+    },
+    {
+      "id": "26.2",
+      "title": "Lab structure (in English)",
+      "publishedLabel": "Executed",
+      "language": "text",
+      "fenceIndex": 2,
+      "english": {
+        "path": "book/en/part-6-lab/26-a-local-lab-you-can-understand.md",
+        "line": 92,
+        "sha256": "3dc6ad0886bd61ab33abedfddd2aebbcfeaa7f92eaea0eda8fa0ddf1762859f2"
+      },
+      "spanish": {
+        "path": "book/es/parte-6-laboratorio/26-un-laboratorio-local-que-se-puede-entender.md",
+        "line": 92,
+        "sha256": "87aa67a9a018625955d78c29006616a681d1bcb2600643f139eee54aabf66cf2"
+      },
+      "canonicalExecutableCode": false,
+      "sameBytes": false,
+      "dependencies": "Narrative topology, file tree or historical output; not executable source",
+      "staticChecks": [],
+      "completeIntegrationEstablished": false
+    },
+    {
+      "id": "26.3",
+      "title": "Offline verification (abridged output)",
+      "publishedLabel": "Executed",
+      "language": "text",
+      "fenceIndex": 3,
+      "english": {
+        "path": "book/en/part-6-lab/26-a-local-lab-you-can-understand.md",
+        "line": 118,
+        "sha256": "920bd9da5595d7e8d1814d155894b48bbdd8761cc38c13bf6fb9813acd9e003b"
+      },
+      "spanish": {
+        "path": "book/es/parte-6-laboratorio/26-un-laboratorio-local-que-se-puede-entender.md",
+        "line": 118,
+        "sha256": "920bd9da5595d7e8d1814d155894b48bbdd8761cc38c13bf6fb9813acd9e003b"
+      },
+      "canonicalExecutableCode": false,
+      "sameBytes": true,
+      "dependencies": "Narrative topology, file tree or historical output; not executable source",
+      "staticChecks": [],
+      "completeIntegrationEstablished": false
+    },
+    {
+      "id": "27.1",
+      "title": "Gate/Program.cs: three verdicts and a separate authorization",
+      "publishedLabel": "Executed",
+      "language": "csharp",
+      "fenceIndex": 1,
+      "english": {
+        "path": "book/en/part-6-lab/27-making-the-error-visible.md",
+        "line": 22,
+        "sha256": "c79bd50029739590516895d3314fec62f7719ed562461ca9be3025392f11303b"
+      },
+      "spanish": {
+        "path": "book/es/parte-6-laboratorio/27-hacer-que-el-error-se-vea.md",
+        "line": 22,
+        "sha256": "c79bd50029739590516895d3314fec62f7719ed562461ca9be3025392f11303b"
+      },
+      "canonicalExecutableCode": true,
+      "sameBytes": true,
+      "dependencies": "SDK .NET 10; 12.2 and 15.1 have isolated harnesses; other fragments need their application types/services",
+      "staticChecks": [],
+      "completeIntegrationEstablished": false
+    },
+    {
+      "id": "27.2",
+      "title": "Candidate/Program.cs: where the defects are seeded",
+      "publishedLabel": "Executed",
+      "language": "csharp",
+      "fenceIndex": 2,
+      "english": {
+        "path": "book/en/part-6-lab/27-making-the-error-visible.md",
+        "line": 54,
+        "sha256": "7f8183b191d489ed03cd7ab2c0a9a486b575ec97fb71f794b9a0b613a81dab8f"
+      },
+      "spanish": {
+        "path": "book/es/parte-6-laboratorio/27-hacer-que-el-error-se-vea.md",
+        "line": 54,
+        "sha256": "7f8183b191d489ed03cd7ab2c0a9a486b575ec97fb71f794b9a0b613a81dab8f"
+      },
+      "canonicalExecutableCode": true,
+      "sameBytes": true,
+      "dependencies": "SDK .NET 10; 12.2 and 15.1 have isolated harnesses; other fragments need their application types/services",
+      "staticChecks": [],
+      "completeIntegrationEstablished": false
+    },
+    {
+      "id": "27.3",
+      "title": "reference-results/round-even-gate.json and equal-but-wrong-gate.json",
+      "publishedLabel": "Executed",
+      "language": "json",
+      "fenceIndex": 3,
+      "english": {
+        "path": "book/en/part-6-lab/27-making-the-error-visible.md",
+        "line": 74,
+        "sha256": "a191759b209ad8cefe99133874b380ad22f656ecdcfe70b496346467142f5329"
+      },
+      "spanish": {
+        "path": "book/es/parte-6-laboratorio/27-hacer-que-el-error-se-vea.md",
+        "line": 74,
+        "sha256": "a191759b209ad8cefe99133874b380ad22f656ecdcfe70b496346467142f5329"
+      },
+      "canonicalExecutableCode": true,
+      "sameBytes": true,
+      "dependencies": "JSON documents only; examples do not establish approval, provenance or executable business semantics",
+      "staticChecks": [
+        {
+          "kind": "JSON_SYNTAX",
+          "documents": 2
+        }
+      ],
+      "completeIntegrationEstablished": false
+    },
+    {
+      "id": "27.4",
+      "title": "reference-results/no-mandate-gate.json",
+      "publishedLabel": "Executed",
+      "language": "json",
+      "fenceIndex": 4,
+      "english": {
+        "path": "book/en/part-6-lab/27-making-the-error-visible.md",
+        "line": 87,
+        "sha256": "9eec026b47781c57c3ee04edefdd8ccde74623abdbd97cf2f0ecd2c1fbd81ad7"
+      },
+      "spanish": {
+        "path": "book/es/parte-6-laboratorio/27-hacer-que-el-error-se-vea.md",
+        "line": 87,
+        "sha256": "9eec026b47781c57c3ee04edefdd8ccde74623abdbd97cf2f0ecd2c1fbd81ad7"
+      },
+      "canonicalExecutableCode": true,
+      "sameBytes": true,
+      "dependencies": "JSON documents only; examples do not establish approval, provenance or executable business semantics",
+      "staticChecks": [
+        {
+          "kind": "JSON_SYNTAX",
+          "documents": 1
+        }
+      ],
+      "completeIntegrationEstablished": false
+    },
+    {
+      "id": "28.1",
+      "title": "Schema created by Bank/Program.cs",
+      "publishedLabel": "Executed",
+      "language": "sql",
+      "fenceIndex": 1,
+      "english": {
+        "path": "book/en/part-6-lab/28-transfers-locks-and-failures-locally.md",
+        "line": 30,
+        "sha256": "5c245ed2b98c4bc6e230ceb63577458b38a0f44d84442e1882b888026f428187"
+      },
+      "spanish": {
+        "path": "book/es/parte-6-laboratorio/28-transferencias-bloqueos-y-fallos-en-local.md",
+        "line": 30,
+        "sha256": "5c245ed2b98c4bc6e230ceb63577458b38a0f44d84442e1882b888026f428187"
+      },
+      "canonicalExecutableCode": true,
+      "sameBytes": true,
+      "dependencies": "SQLite in-memory fixture for 28.1; T-SQL 17.1/18.1 needs SQL Server schema, parameters and transactional tests",
+      "staticChecks": [],
+      "completeIntegrationEstablished": false
+    },
+    {
+      "id": "28.2",
+      "title": "Bank/Program.cs: resend versus identity conflict",
+      "publishedLabel": "Executed",
+      "language": "csharp",
+      "fenceIndex": 2,
+      "english": {
+        "path": "book/en/part-6-lab/28-transfers-locks-and-failures-locally.md",
+        "line": 49,
+        "sha256": "491ff87c4adc863651730e16ff88bbd0470d9629e7b09f37f83e83daceb39afa"
+      },
+      "spanish": {
+        "path": "book/es/parte-6-laboratorio/28-transferencias-bloqueos-y-fallos-en-local.md",
+        "line": 49,
+        "sha256": "491ff87c4adc863651730e16ff88bbd0470d9629e7b09f37f83e83daceb39afa"
+      },
+      "canonicalExecutableCode": true,
+      "sameBytes": true,
+      "dependencies": "SDK .NET 10; 12.2 and 15.1 have isolated harnesses; other fragments need their application types/services",
+      "staticChecks": [],
+      "completeIntegrationEstablished": false
+    },
+    {
+      "id": "28.3",
+      "title": "Bank/Program.cs: three injected failures and the bounded retry",
+      "publishedLabel": "Executed",
+      "language": "csharp",
+      "fenceIndex": 3,
+      "english": {
+        "path": "book/en/part-6-lab/28-transfers-locks-and-failures-locally.md",
+        "line": 65,
+        "sha256": "bfedc6ce9535ed615505b3f4f6aa18f9b80180a57a2b6e4564a1c8caa782bd60"
+      },
+      "spanish": {
+        "path": "book/es/parte-6-laboratorio/28-transferencias-bloqueos-y-fallos-en-local.md",
+        "line": 65,
+        "sha256": "bfedc6ce9535ed615505b3f4f6aa18f9b80180a57a2b6e4564a1c8caa782bd60"
+      },
+      "canonicalExecutableCode": true,
+      "sameBytes": true,
+      "dependencies": "SDK .NET 10; 12.2 and 15.1 have isolated harnesses; other fragments need their application types/services",
+      "staticChecks": [],
+      "completeIntegrationEstablished": false
+    },
+    {
+      "id": "28.4",
+      "title": "bank_test.py: accounting invariants over the persisted state",
+      "publishedLabel": "Executed",
+      "language": "python",
+      "fenceIndex": 4,
+      "english": {
+        "path": "book/en/part-6-lab/28-transfers-locks-and-failures-locally.md",
+        "line": 93,
+        "sha256": "522022b452c8a7d7ff6096c261b76752747e983ba01021a448c7b877db700527"
+      },
+      "spanish": {
+        "path": "book/es/parte-6-laboratorio/28-transferencias-bloqueos-y-fallos-en-local.md",
+        "line": 93,
+        "sha256": "522022b452c8a7d7ff6096c261b76752747e983ba01021a448c7b877db700527"
+      },
+      "canonicalExecutableCode": true,
+      "sameBytes": true,
+      "dependencies": "Python syntax plus the four displayed 28.4 predicates in a disposable SQLite fixture; not the full seven-oracle suite",
+      "staticChecks": [
+        {
+          "kind": "PYTHON_SYNTAX",
+          "standaloneProgram": false
+        }
+      ],
+      "completeIntegrationEstablished": false
+    },
+    {
+      "id": "31.1",
+      "title": "Evidence sheet template for a modernization PR",
+      "publishedLabel": "Illustrative",
+      "language": "markdown",
+      "fenceIndex": 1,
+      "english": {
+        "path": "book/en/part-7-organization/31-the-sdlc-as-part-of-the-migration-engine.md",
+        "line": 47,
+        "sha256": "a4a1ea512085cf1c1917f5ae8defbb451de18b6b12989e6b9c4afb73cea2c21f"
+      },
+      "spanish": {
+        "path": "book/es/parte-7-organizacion/31-el-sdlc-como-parte-del-motor-de-migracion.md",
+        "line": 47,
+        "sha256": "9199b01e14dfe8ad34b6fac0aa3e101baec9bbc773a38aedcaf9febd474bb5db"
+      },
+      "canonicalExecutableCode": false,
+      "sameBytes": false,
+      "dependencies": "Illustrative evidence-sheet template; not an actual mandate or acceptance record",
+      "staticChecks": [],
+      "completeIntegrationEstablished": false
+    },
+    {
+      "id": "31.2",
+      "title": "ci/github-actions.yml in the lab",
+      "publishedLabel": "Template \u00b7 not enabled",
+      "language": "yaml",
+      "fenceIndex": 2,
+      "english": {
+        "path": "book/en/part-7-organization/31-the-sdlc-as-part-of-the-migration-engine.md",
+        "line": 68,
+        "sha256": "33bb7babf1a46f84f5ca139035456e5976abcb7bdd2acc9ad72d1b5b4eb5e382"
+      },
+      "spanish": {
+        "path": "book/es/parte-7-organizacion/31-el-sdlc-como-parte-del-motor-de-migracion.md",
+        "line": 68,
+        "sha256": "33bb7babf1a46f84f5ca139035456e5976abcb7bdd2acc9ad72d1b5b4eb5e382"
+      },
+      "canonicalExecutableCode": true,
+      "sameBytes": true,
+      "dependencies": "YAML syntax only; mandate schema and GitHub workflow validity/execution are separate",
+      "staticChecks": [
+        {
+          "kind": "YAML_SYNTAX",
+          "workflowExecutionEstablished": false
+        }
+      ],
+      "completeIntegrationEstablished": false
+    }
+  ],
+  "limitation": "Static parsing and bounded helper tests do not establish complete integration, production safety or cross-platform execution."
+}

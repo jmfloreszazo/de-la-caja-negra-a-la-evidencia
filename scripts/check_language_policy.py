@@ -35,6 +35,21 @@ SPANISH_PROSE = re.compile(
     re.IGNORECASE,
 )
 
+FENCE = re.compile(r'^```([^\n]*)\n(.*?)^```[ \t]*$', re.M | re.S)
+
+def code_pair_errors(english: str, spanish: str) -> list[str]:
+    """Keep executable/config examples canonical; translated diagrams are prose."""
+    en, es = list(FENCE.finditer(english)), list(FENCE.finditer(spanish))
+    if len(en) != len(es):
+        return ['different fenced-block counts']
+    issues = []
+    for index,(left,right) in enumerate(zip(en,es),1):
+        if left[1] != right[1]:
+            issues.append(f'block {index}: different languages')
+        elif left[1] not in ('text','markdown') and left[2] != right[2]:
+            issues.append(f'block {index}: executable/config code differs between editions')
+    return issues
+
 def errors(root: pathlib.Path) -> list[str]:
     problems = []
     lab = root / "lab"
@@ -69,6 +84,17 @@ def errors(root: pathlib.Path) -> list[str]:
         problems.append("AGENTS.md: required contribution rules missing")
     if not (root / "docs/LANGUAGE_POLICY.md").is_file():
         problems.append("docs/LANGUAGE_POLICY.md: language policy missing")
+    for english in sorted((root/'book/en').rglob('*.md')):
+        if english.name in ('README.md','diagrams.md'):
+            continue
+        text = english.read_text(encoding='utf-8')
+        link = re.search(r'\]\(([^)]+\.md)\)',text.splitlines()[0]) if text else None
+        if not link:
+            continue  # The structural checker reports missing counterparts.
+        spanish = (english.parent/link[1]).resolve()
+        if spanish.is_file():
+            for issue in code_pair_errors(text,spanish.read_text(encoding='utf-8')):
+                problems.append(f'{english.relative_to(root)}: {issue}')
     return problems
 
 def self_test() -> None:
@@ -76,6 +102,10 @@ def self_test() -> None:
     assert SPANISH_PROSE.search("Ejecución local")
     assert SPANISH_PROSE.search("Se ejecutan 20 casos")
     assert not SPANISH_PROSE.search("A .NET 10 ledger and José María Flores Zazo")
+    assert code_pair_errors('```csharp\n// English\n```','```csharp\n// traducido\n```')
+    assert code_pair_errors('```json\n{}\n```','```yaml\n{}\n```')
+    assert not code_pair_errors('```text\nBranch\n```','```text\nSucursal\n```')
+    assert not code_pair_errors('```python\nx=1\n```','```python\nx=1\n```')
     print("LANGUAGE POLICY SELF-TEST: PASS")
 
 if __name__ == "__main__":

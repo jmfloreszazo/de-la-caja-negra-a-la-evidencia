@@ -31,7 +31,7 @@ El ejemplo más pequeño de ACL que merece la pena escribir es el decodificador 
 public static decimal DecodePacked(ReadOnlySpan<byte> field, int scale)
 {
     if (field.IsEmpty || scale < 0 || scale > 18)
-        throw new ArgumentException("Campo o escala inválidos");
+        throw new ArgumentException("Invalid field or scale");
 
     long digits = 0;
     for (int i = 0; i < field.Length; i++)
@@ -45,16 +45,16 @@ public static decimal DecodePacked(ReadOnlySpan<byte> field, int scale)
     {
         0x0D or 0x0B => true,
         0x0C or 0x0F or 0x0A or 0x0E => false,
-        _ => throw new FormatException("Nibble de signo inválido")
+        _ => throw new FormatException("Invalid sign nibble")
     };
 
     decimal value = digits;
-    for (int s = 0; s < scale; s++) value /= 10m;   // exacto: decimal es base 10
+    for (int s = 0; s < scale; s++) value /= 10m;   // exact: decimal is base 10
     return negative ? -value : value;
 
     static int Digit(int nibble, int index) => nibble <= 9
         ? nibble
-        : throw new FormatException($"Nibble de dígito inválido en el byte {index}");
+        : throw new FormatException($"Invalid digit nibble in byte {index}");
 }
 ```
 

@@ -69,10 +69,10 @@ Ahora, la traducción que cualquiera —persona o agente— produce en cinco min
 ```csharp
 public async Task<string> WithdrawAsync(string accountId, decimal amount)
 {
-    var account = await _repository.GetAsync(accountId); // sin reserva
+    var account = await _repository.GetAsync(accountId); // no reservation
     if (account.Balance < amount) return "NSF";
-    account.Balance -= amount;                           // sobre una foto
-    await _repository.SaveAsync(account);                // incondicional
+    account.Balance -= amount;                           // decided on a snapshot
+    await _repository.SaveAsync(account);                // unconditional write
     return "OK";
 }
 ```
@@ -89,13 +89,13 @@ La corrección no consiste en poner un `lock` en el controlador: protegería un 
 
 ```csharp
 db.Exec("BEGIN IMMEDIATE"); begun = true;
-// ... comprobación de idempotencia por identidad de operación ...
+// ... idempotency check on the operation identity ...
 db.Exec($"UPDATE accounts SET balance=balance-{amount} WHERE id={src} AND balance>={amount}");
-var approved = db.Changes == 1;   // 1 fila: aprobado; 0: fondos insuficientes
+var approved = db.Changes == 1;   // 1 row: approved; 0: insufficient funds
 if (approved) {
     db.Exec($"UPDATE accounts SET balance=balance+{amount} WHERE id={dst}");
 }
-// ... operación, dos asientos y fila outbox en la MISMA transacción ...
+// ... operation, two postings and outbox row in the SAME transaction ...
 db.Exec("COMMIT");
 ```
 

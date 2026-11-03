@@ -23,7 +23,7 @@ Registraría peticiones ofrecidas, admitidas, confirmadas, rechazadas por negoci
 
 Separaría warm-up y medición, repetiría ensayos y conservaría su variabilidad. La carga de recuperación y la mezcla batch tendrían pruebas propias. Solo entonces podríamos afirmar qué arquitectura se acerca al compromiso operativo del mainframe y qué diferencias siguen abiertas.
 
-Es la misma disciplina que me impuse al comparar dos agentes alojados en Microsoft Foundry, uno en .NET 10 y otro en Python: misma región, misma cuota, mismo sobre de recursos y una única variable de verdad, el runtime. Un benchmark que cambia dos cosas a la vez no mide nada, y el «cómo lo he medido» es donde un benchmark se gana o se pierde la credibilidad [45].
+La comparación de Foundry mantuvo constante la infraestructura y comparó stacks completos C#/.NET y Python/CPython, incluidos SDK y serialización. No aisló el coste del runtime. La latencia secuencial medida con poca carga no demuestra throughput máximo ni saturación [45].
 
 ## Un ejemplo que se puede ejecutar: la omisión coordinada
 

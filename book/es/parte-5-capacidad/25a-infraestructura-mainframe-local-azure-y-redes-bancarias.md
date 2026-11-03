@@ -32,6 +32,8 @@ La restricción física tampoco desaparece con ExpressRoute: la luz viaja aproxi
 
 El presupuesto no termina en el `HTTP 200` del backend:
 
+**Listado 25a.1 · Recorrido de sucursal a ledger** — *Topología ilustrativa*
+
 ```text
 Oficina / TN3270 o navegador
   | LAN + SD-WAN/MPLS/VPN + proveedor + encaminamiento + TLS

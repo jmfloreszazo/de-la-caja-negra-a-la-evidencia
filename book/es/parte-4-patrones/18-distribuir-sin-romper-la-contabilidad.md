@@ -48,20 +48,20 @@ La técnica de las épocas se entiende mejor en dos sentencias. El destino es qu
 **Listado 18.1 · Fencing: el almacén rechaza escrituras de un propietario obsoleto** — *Ilustrativo*
 
 ```sql
--- Toma de propiedad: la época crece y solo se concede si el lease anterior caducó.
+-- Taking ownership: the epoch grows and is only granted if the previous lease expired.
 UPDATE dbo.PartitionLeases
    SET Owner = @Worker, Epoch = Epoch + 1,
        ExpiresUtc = DATEADD(second, 30, SYSUTCDATETIME())
 OUTPUT inserted.Epoch
  WHERE PartitionId = @Partition AND ExpiresUtc < SYSUTCDATETIME();
 
--- Cada escritura lleva la época obtenida. HOLDLOCK impide que el relevo
--- se confirme mientras esta escritura está en curso.
+-- Every write carries the epoch obtained. HOLDLOCK prevents the takeover
+-- from committing while this write is in progress.
 INSERT dbo.BatchResults (PartitionId, Epoch, AccountId, Amount)
 SELECT @Partition, @Epoch, @AccountId, @Amount
  WHERE EXISTS (SELECT 1 FROM dbo.PartitionLeases WITH (HOLDLOCK)
                 WHERE PartitionId = @Partition AND Epoch = @Epoch);
--- 0 filas insertadas: este worker ya no es el dueño. Debe detenerse, no reintentar.
+-- 0 rows inserted: this worker is no longer the owner. It must stop, not retry.
 ```
 
 ![Figura 18.2 · Fencing: un propietario obsoleto puede seguir vivo, pero el almacén deja de confirmar sus escrituras.](../../figures/es/fencing_seq.png)

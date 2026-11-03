@@ -23,7 +23,7 @@ I would record requests offered, admitted, committed, rejected by the business, 
 
 I would separate warm-up from measurement, repeat runs and keep their variability. The recovery load and the batch mix would have their own tests. Only then could we state which architecture approaches the mainframe's operational commitment and which differences remain open.
 
-It is the same discipline I imposed on myself when comparing two agents hosted on Microsoft Foundry, one on .NET 10 and the other on Python: same region, same quota, same resource envelope and a single real variable, the runtime. A benchmark that changes two things at once measures nothing, and the "how I measured it" is where a benchmark wins or loses its credibility [45].
+The Foundry comparison held the infrastructure constant while comparing complete C#/.NET and Python/CPython stacks, including their SDKs and serialization paths. It did not isolate runtime overhead. The measured sequential, low-load latency does not establish peak throughput or saturation [45].
 
 ## An example you can run: coordinated omission
 

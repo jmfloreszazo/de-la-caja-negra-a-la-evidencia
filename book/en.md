@@ -76,7 +76,7 @@ Two conventions help in reading this book.
 
 **Source, proposal and execution.** I separate what exists in a source, what I propose as a design and what the lab has actually executed. When I describe a production architecture, it is a proposal that still needs integration and verification. When I present a result from the demo, its validity is limited to the program, the cases and the versions recorded.
 
-**Labels on listings.** Every code fragment carries a label. *Executed* means it is part of the lab and has a reference run with its hashes. *Verified* means its logic has been checked with an independent implementation. *Illustrative* means it is a design fragment that has been neither compiled nor executed: it is there to reason with, not to copy into production.
+**Labels on listings.** Every code fragment carries a label. *Executed* identifies lab code or recorded output with reference-run provenance. *Verified* identifies logic checked against an independent implementation. *Illustrative* identifies a design fragment; a syntax check or a bounded helper test does not certify its complete integration or production behaviour. The [listing inventory](../docs/BOOK_LISTINGS.md) records the exact scope tested and the dependencies still missing. Executable code and configuration are identical and in English in both editions; narrative diagrams and templates may be translated.
 
 The lab is entirely in English, runs with Podman and is designed so that anyone can prove me wrong. Annex [A](#annex-a--a-lab-that-can-prove-us-wrong) explains how.
 
@@ -1587,7 +1587,7 @@ I would record requests offered, admitted, committed, rejected by the business, 
 
 I would separate warm-up from measurement, repeat runs and keep their variability. The recovery load and the batch mix would have their own tests. Only then could we state which architecture approaches the mainframe's operational commitment and which differences remain open.
 
-It is the same discipline I imposed on myself when comparing two agents hosted on Microsoft Foundry, one on .NET 10 and the other on Python: same region, same quota, same resource envelope and a single real variable, the runtime. A benchmark that changes two things at once measures nothing, and the "how I measured it" is where a benchmark wins or loses its credibility [45].
+The Foundry comparison held the infrastructure constant while comparing complete C#/.NET and Python/CPython stacks, including their SDKs and serialization paths. It did not isolate runtime overhead. The measured sequential, low-load latency does not establish peak throughput or saturation [45].
 
 #### An example you can run: coordinated omission
 
@@ -1709,6 +1709,8 @@ Physics remains relevant after buying ExpressRoute: light travels at roughly 200
 ##### Latency budget: keyboard to rendered response
 
 The budget does not stop at an application returning `HTTP 200`:
+
+**Listing 25a.1 · Branch-to-ledger path** — *Illustrative topology*
 
 ```text
 Branch / TN3270 or browser
@@ -2928,7 +2930,7 @@ For the offline checks, Python 3 is enough.
 
 #### Running with Podman
 
-**Listing A.1 · Starting with Podman** — *Executed by design · recipe not built here*
+**Listing A.1 · Starting with Podman** — *Reproduction commands · platform-dependent*
 
 ```bash
 # Linux, macOS or WSL
@@ -2949,6 +2951,8 @@ The build needs network access once: the base image, the packages and the .NET r
 The reference run is native on Linux. The Podman recipe is built and run by the `podman` continuous integration job; if it behaves differently on your machine, that reproduction report is exactly the evidence the lab asks for.
 
 #### Native run
+
+**Listing A.2 · Native reproduction commands** — *Requires GnuCOBOL and .NET 10*
 
 ```bash
 sudo apt-get update

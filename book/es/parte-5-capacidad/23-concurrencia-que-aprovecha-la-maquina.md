@@ -27,18 +27,18 @@ Este es el patrón que pondría en el borde de un servicio de transferencias: un
 var queue = Channel.CreateBounded<TransferCommand>(
     new BoundedChannelOptions(capacity: 2_000)
 {
-    FullMode = BoundedChannelFullMode.Wait,   // presión hacia el productor
+    FullMode = BoundedChannelFullMode.Wait,   // pressure on the producer
     SingleReader = false,
     SingleWriter = false
 });
 
-// En el borde HTTP: si no cabe ahora, se dice ahora.
+// At the HTTP edge: if it does not fit now, say so now.
 app.MapPost("/transfers", (TransferCommand cmd) =>
     queue.Writer.TryWrite(cmd)
         ? Results.Accepted($"/transfers/{cmd.OperationId}")
         : Results.StatusCode(StatusCodes.Status429TooManyRequests));
 
-// Consumidores limitados por la capacidad de confirmación del ledger.
+// Consumers limited by the ledger's commit capacity.
 for (var i = 0; i < ledgerConcurrency; i++)
 {
     _ = Task.Run(async () =>

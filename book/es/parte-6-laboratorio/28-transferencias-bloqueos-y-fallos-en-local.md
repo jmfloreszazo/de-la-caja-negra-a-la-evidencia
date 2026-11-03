@@ -68,7 +68,7 @@ Una nota de oficio: el laboratorio construye SQL interpolando valores porque lla
     if(fault=="throw-after-debit")throw new InvalidOperationException("Injected failure after debit");
     db.Exec($"UPDATE accounts SET balance=balance+{amount} WHERE id={dst}");
    }
-   // ... operación, asientos y outbox ...
+   // ... operation, postings and outbox ...
    db.Exec("COMMIT");begun=false;
    if(fault=="lost-response")Environment.Exit(92);
    return new(status,retries,clock.Elapsed.TotalMilliseconds);
@@ -98,7 +98,7 @@ tests={
                       'HAVING SUM(delta)<>0 OR COUNT(*)<>2)')==0,
  'projectionAgrees':s('SELECT COUNT(*) FROM accounts a WHERE balance<>100000+COALESCE('
                       '(SELECT SUM(delta) FROM postings p WHERE p.account=a.id),0)')==0,
- # ... twoPostingsPerCommit y outboxAtomic
+ # ... twoPostingsPerCommit and outboxAtomic
 }
 ```
 

@@ -40,8 +40,8 @@ public sealed class FeeFacade(ILegacyFee legacy, IModernFee modern,
 
             case Route.Shadow:
                 var authoritative = await legacy.CalculateAsync(request, ct);
-                shadow.Enqueue(request, authoritative);   // el candidato se evalúa aparte
-                return authoritative;                     // responde la referencia
+                shadow.Enqueue(request, authoritative);   // candidate evaluated separately
+                return authoritative;                     // the reference answers
 
             default:
                 return await legacy.CalculateAsync(request, ct);
