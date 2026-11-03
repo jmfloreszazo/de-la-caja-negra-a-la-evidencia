@@ -1,0 +1,68 @@
+name: E2 observer positive calibration
+on:
+  push:
+    branches: [experiment/e2-observer-calibration-24]
+  pull_request:
+    paths:
+      - 'lab/e2_activation_calibration/**'
+      - 'lab/e2_activation_observer/observation.py'
+      - 'lab/e2_orleans/OrleansLab/**'
+      - '.github/workflows/e2-activation-calibration.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  calibration:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    services:
+      postgres:
+        image: postgres:16.13
+        env:
+          POSTGRES_DB: e2calibration
+          POSTGRES_PASSWORD: e2local
+        ports: ['55438:5432']
+        options: >-
+          --health-cmd "pg_isready -U postgres -d e2calibration"
+          --health-interval 5s --health-timeout 3s --health-retries 20
+    env:
+      E2_CALIBRATION_TEST: '1'
+      E1_PG_DSN: 'host=127.0.0.1 port=55438 dbname=e2calibration user=postgres password=e2local'
+      E2_CALIBRATION_NPGSQL: 'Host=127.0.0.1;Port=55438;Database=e2calibration;Username=postgres;Password=e2local'
+      SOURCE_HEAD_SHA: ${{ github.event.pull_request.head.sha || github.sha }}
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+      - uses: actions/setup-dotnet@v5
+        with:
+          dotnet-version: '10.0.x'
+      - uses: actions/setup-python@v6
+        with:
+          python-version: '3.12'
+      - name: Validate language and paired book before proposing this increment
+        run: |
+          python3 scripts/check_language_policy.py
+          python3 scripts/check.py
+          python3 -m unittest discover -s lab/e2_activation_calibration -p test_contract.py -v
+      - run: python3 -m pip install -r lab/e1_pg/requirements.txt
+      - name: Publish exact separate calibration host
+        run: dotnet publish lab/e2_activation_calibration/Calibration.csproj -c Release -m:1 --disable-build-servers -o lab/results/e2-calibration/app
+      - name: Record runtime and actual disposable database image
+        run: |
+          mkdir -p lab/results/e2-calibration
+          docker inspect ${{ job.services.postgres.id }} > lab/results/e2-calibration/postgres-inspect.json
+          dotnet --info > lab/results/e2-calibration/dotnet-info.txt
+          find lab/results/e2-calibration/app -type f -exec sha256sum {} + > lab/results/e2-calibration/published-sha256.txt
+      - name: Run fresh-process sensitive negative then live positive SQL calibration
+        run: python3 lab/e2_activation_calibration/run.py
+      - name: Preserve original outcomes on success or failure
+        if: always()
+        uses: actions/upload-artifact@v6
+        with:
+          name: e2-activation-calibration-original
+          path: |
+            lab/results/e2-calibration/*.json
+            lab/results/e2-calibration/*.log
+            lab/results/e2-calibration/*.txt
+          if-no-files-found: warn
