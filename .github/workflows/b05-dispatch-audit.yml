@@ -1,0 +1,23 @@
+name: B05 original dispatch archive audit
+on:
+  pull_request:
+    paths:
+      - 'evidence/runs/b05-dispatch-41656639275/**'
+      - 'scripts/*b05_dispatch.py'
+      - 'lab/e2_b05_dispatch/analysis.py'
+      - 'lab/e2_orleans/b05_arrival_contract.py'
+      - 'lab/e2_orleans/b05_sweep_analysis.py'
+      - '.github/workflows/b05-dispatch-audit.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  audit:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-python@v6
+        with:
+          python-version: '3.12'
+      - run: git fetch --no-tags --depth=1 origin 97e2efcf399c9ef75b4b093c22e36cfb5622cb17
+      - run: python3 scripts/check_b05_dispatch.py

@@ -6,23 +6,23 @@ This is the **repository development roadmap**, not a declaration of production 
 
 ## Exact position in the active plan
 
-**We are at execution-order step 4: E2, long partitions and recovery under #24.** Steps 1 and 3 continue with every increment: evidence and paired chapter 28. C2 retains its own acceptance gates; its synthetic tests do not establish a real bank writer fence.
+**The bounded E2 research checkpoint is ready for integration; the active plan moves to step 5, editorial/source review and the next-edition preview.** External capacity/HA validation is documented and non-blocking for development, by the author's 3 November decision; scientific claim acceptance remains separate. Steps 1 and 3 continue with every increment: evidence and paired chapter 28. C2 retains its own acceptance gates; its synthetic tests do not establish a real bank writer fence.
 
-| E2 substep | Current status | Gate before advancing |
+| E2 substep | Current status | Remaining claim validation (non-blocking for integration) |
 | --- | --- | --- |
 | C01: controlled fixture | Integrated, PR #72; #44 closed on that alternative | Historical cause is not claimed resolved |
 | C05/C06: short cuts | Integrated, PR #73; PCAP/SQL audited | Do not extrapolate to long partitions or physical HA |
 | Provider-specific diagnostics | Integrated, PR #76; real controls retain FAIL and zero effects | #74 remains open for natural placement investigation |
 | Scheduled 120s cut and sampled recovery >=60s | **Bounded verification, [PR #77](https://github.com/jmfloreszazo/de-la-caja-negra-a-la-evidencia/pull/77)** | Two original cases PASS and audited; next: concurrent activations; not continuous recovery |
 | Concurrent-activation behavior | [Directed trial and stderr repeat](evidence/runs/E2-ACCOUNT-DIRECTED.md), PR #80: 2 positive envelope witnesses / 4 INCONCLUSIVE; membership fatal path observed | Repeatability and natural lifecycle/partition acceptance remain open; capacity #25 can proceed independently |
-| Sustained capacity and bottleneck | Pending, #25 | Comparable saturation and COMMIT/p99; existing pilots do not close this gate |
+| Sustained capacity and bottleneck | Three-cohort direct admission diagnostic integrated with PR #81; external #25 follow-up | Comparable saturation and COMMIT/p99; existing pilots do not close this gate |
 | Physical domains and HA | Pending | Execution/evidence on independent hosts and fault domains |
 
 E2 remains **partially verified**. The long experiment has bounded audited evidence in PR #77; it does not establish automatic or continuous recovery. No percentage-complete estimates or completion dates are invented.
 
 ## Position now
 
-| Workstream | Observed status | What still blocks completion |
+| Workstream | Observed status | Remaining work / claim acceptance |
 | --- | --- | --- |
 | Book, bilingual diagrams and CI | **Integrated**: 37 numbered chapters plus two companion chapters, 41 diagrams per language, bilingual chapter 28 coexistence discussion, reproducible PDF preview; latest premerge checks PASS | Editorial/source review, full illustrative listing coverage, cross-platform reproducibility; a preview is not a release |
 | E1 PostgreSQL and SQL Server | **Partially verified**: real disposable SQL CI and independent oracles, .NET 10 parity slices, concurrency and negative cases | Full E1 business scope, power-loss/HA, customer-specific contract, production load |
@@ -51,7 +51,7 @@ All of these are **synthetic engineering results**; no real bank behavior was ob
 1. Reconcile the ES/EN book and documentation against evidence; preserve original SHAs and outcomes.
 2. Complete C2 #64: in-flight partitions, lock loss and response windows; business acceptance and real source fence remain under #58/#32.
 3. Update chapter 28 with contract, implementation, failure, correction, evidence and limits.
-4. Complete bounded E2 #8/#24/#25 gates: concurrent-activation observations/long-partition recovery, load repetitions, bottleneck diagnosis and physical fault domains.
+4. Integrate the bounded E2 checkpoint (PRs #78–#81); retain #8/#24/#25 as non-blocking external validation with the [dedicated protocol](docs/EXTERNAL_VALIDATION.md).
 5. Prepare the next-edition preview: English review, citations, overlap, listings and ES/EN visual QA; publish only after the authorized editorial cut.
 6. Execute E3 #9/#12 with comparable workload, infrastructure, WAN and TCO; then E4 #10.
 
@@ -74,3 +74,7 @@ Loopback ADO.NET dual-host placement failed separately in broad validation; [#74
 Issue #74 observation persistence now has [two real induced controls](evidence/runs/E2-PLACEMENT-OBSERVATION.md): provider-specific failed attempts retain their own maps/logs without borrowing earlier PASS results. Natural placement concentration remains unresolved.
 
 The [audited long experiment](evidence/runs/E2-LONG-PARTITION.md) retains two initial failures and two corrected cases: 120s schedule, earlier secondary exit, assisted recovery and 14 pairs across about 66s. It does not establish continuous service or physical HA.
+
+B05 #25 now has a [three-cohort direct admission diagnostic](evidence/runs/B05-DISPATCH-DIAGNOSTIC.md): 119,040 offers, 118,887 SQL commits, 153 exact cap-32 admission misses and no misses at cap 128, with 42 financial invariant checks. This does not establish backend saturation, Orleans scaling or the historical warmup cause; sustained capacity and bottleneck attribution remain open.
+
+The external-validation protocol records what a single-runner fixture cannot establish, what remains merely untested, and the host/clock/driver/telemetry changes needed for stronger claims. E2 stays partially verified while editorial work proceeds independently. No release is authorized by this integration decision.

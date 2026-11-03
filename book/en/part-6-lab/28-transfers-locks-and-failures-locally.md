@@ -450,3 +450,31 @@ falsifiable before they become migration promises.
 ---
 
 [← Chapter 27 · Making the error visible](27-making-the-error-visible.md) · [Contents](../README.md) · [Chapter 29 · Bringing in agents without letting them write the approval →](29-bringing-in-agents-without-letting-them-write-the-approval.md)
+
+### B05: distinguish admission limits from backend capacity
+
+The [direct admission diagnostic](../../../evidence/runs/B05-DISPATCH-DIAGNOSTIC.md) adds three runner cohorts at 320 offered/s with 60-second measurement phases. Each paired trial keeps the PostgreSQL connection pool at 32 and changes client admission from 32 to 128 slots, reversing the order in one cohort. Exact admission/completion/release events and independent SQL commit timestamps replace retrospective occupancy estimates.
+
+Across six trials, 119,040 offers yielded 118,887 durable commits and 153 admission misses: 129 during warmup and 24 during measurement. All misses occurred at exactly 32 active slots. The three 128-slot trials admitted every offer. All seven financial invariants held in each trial. One 32-slot trial recorded 319.6 certain SQL commits/s; the others recorded 320.0000–320.0167/s in the independent SQL window, whose boundaries differ from offer phases.
+
+This is evidence of an admission-policy effect in this instrumented direct-client setup, not a backend capacity ceiling or an explanation of the older 12 misses. Pool-acquisition waits remain unmeasured; runner noise and instrumentation affect timing. Orleans routing, sustained scaling and bottleneck attribution under #25 remain open. The frozen archive audit is distinct from a new live campaign; a skipped live matrix proves nothing about capacity.
+
+### Integrate bounded evidence and defer external validation explicitly
+
+On 3 November 2026, the author authorized integration of the E2 observations and B05 diagnostic without requiring hosted CI to establish every production claim first. The [external-validation protocol](../../../docs/EXTERNAL_VALIDATION.md) keeps the exact remaining work reviewable. Missing external measurements no longer block book/lab integration or editorial progress. E2 remains partially verified; this decision does not turn an INCONCLUSIVE result into PASS or authorize banking deployment.
+
+A single hosted runner can test real SQL, distinct processes, logical partitions and independent reconciliation. It cannot make those containers physically independent. Capacity and natural activation observations are not intrinsically impossible in Actions; the present campaigns simply do not establish them. Actions can orchestrate dedicated infrastructure or self-hosted runners. The important distinction is the actual topology and evidence, not the orchestration product.
+
+| Pending claim | More realistic experiment | Required harness change |
+| --- | --- | --- |
+| Sustained capacity and bottleneck (#25) | Separate load, silo and SQL hosts; identical direct/Orleans vectors; 1/2/4/8/16 silos, fixed durability and repeated rate sweeps | New external-endpoint driver with fixture allowlist; measure scheduling, queues, connection acquisition, SQL waits/WAL/storage and per-host resources |
+| Natural activation and continuous recovery (#24) | Ordinary grains without injected pre-invoke delay; directional faults on actual interfaces; unassisted recovery | Replace local container assumptions with explicit remote process identities; retain lifecycle events, both log streams and PCAPs; bound clock uncertainty |
+| Physical HA and durability (#8/#9) | Recorded independent failure domains; separate host loss, network partition and database failover | Record replication/acknowledgement policy and reconcile ambiguous IDs; dedicated disposable hardware for storage power-loss tests |
+| WAN, transport and economics (#9/#12) | Actual branch/backend paths with equal TLS/authentication for gRPC and REST; dated total cost per correct durable transfer | Separate controlled impairment from field observations; capture DNS, gateways, reused channels, deadlines and operating/DR cost |
+| Banking cutover (#32/#58/#64) | Owner-approved contract, authorized traces and a real incumbent-side writer fence | Connect an approved adapter, reconcile external effects and repeat in-flight/UNKNOWN/rollback controls; retain TODM G2/G6 approval |
+
+The existing B05 probe deliberately checks an exact loopback DSN; changing an environment variable alone cannot make it a distributed benchmark. Keep the frozen fixture and add a separately identified driver. Remote monotonic timestamps cannot be directly compared: record host clock offset and uncertainty, require a positive overlap even after uncertainty bounds, and otherwise retain INCONCLUSIVE.
+
+The proposed external study starts by reproducing 320 offered/s, then uses at least three repetitions per configuration, fixed seeded uniform/hot/crossed profiles and preregistered load points around degradation. A suggested initial schedule separates 5 minutes of warmup, 15 minutes of steady measurement and bounded drain; these are proposed study durations, not results or production acceptance thresholds. Prove spare generator capacity first, include every missed/late/ambiguous offer in service outcomes, and preserve warmup rather than cropping it away. Keep pool, retries, timeouts and durability fixed while changing one factor. Measure queue growth and attributable resources before declaring a capacity knee.
+
+Archive every original attempt with exact source, host/domain map, clock uncertainty, environment, workload, raw logs and independent SQL oracles. Preserve all seven financial invariants and corruption controls. Source and archive regressions remain integration checks; original live campaigns retain their existing manual invocation and exit behavior. A skipped campaign proves nothing about capacity. Stronger claims remain conditional on their own acceptance record, while development proceeds. Publication retains its separate authorization.

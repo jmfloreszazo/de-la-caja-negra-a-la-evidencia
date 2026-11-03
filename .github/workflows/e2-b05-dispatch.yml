@@ -1,0 +1,98 @@
+name: E2 B05 dispatch source and manual diagnostic
+on:
+  pull_request:
+    paths:
+      - 'lab/e2_b05_dispatch/**'
+      - '.github/workflows/e2-b05-dispatch.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  source:
+    name: Dispatch source and adversarial slot checks
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-dotnet@v5
+        with:
+          dotnet-version: '10.0.x'
+      - uses: actions/setup-python@v6
+        with:
+          python-version: '3.12'
+      - run: python3 scripts/check_language_policy.py
+      - run: python3 scripts/check.py
+      - run: python3 -m unittest discover -s lab/e2_b05_dispatch -p test_analysis.py -v
+      - run: python3 -m py_compile lab/e2_b05_dispatch/run.py
+      - run: dotnet publish lab/e2_b05_dispatch/DispatchProbe.csproj -c Release -m:1 --disable-build-servers -o /tmp/b05-dispatch-source
+  diagnostic:
+    if: github.event_name == 'workflow_dispatch'
+    name: Direct dispatch cohort ${{ matrix.cohort }}
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    strategy:
+      fail-fast: false
+      matrix:
+        cohort: [0, 1, 2]
+    services:
+      postgres:
+        image: postgres:16.13
+        env:
+          POSTGRES_DB: e2dispatch
+          POSTGRES_PASSWORD: e2local
+        ports: ['55439:5432']
+        options: >-
+          --health-cmd "pg_isready -U postgres -d e2dispatch"
+          --health-interval 5s --health-timeout 3s --health-retries 20
+    env:
+      E2_DISPATCH_DIAGNOSTIC: '1'
+      E2_MAX_ACCOUNT_ID: '1000'
+      E1_PG_DSN: 'host=127.0.0.1 port=55439 dbname=e2dispatch user=postgres password=e2local'
+      E2_DISPATCH_NPGSQL: 'Host=127.0.0.1;Port=55439;Database=e2dispatch;Username=postgres;Password=e2local;Pooling=true;Maximum Pool Size=32;GSS Encryption Mode=Disable'
+      DISPATCH_COHORT: '${{ matrix.cohort }}'
+      SOURCE_HEAD_SHA: ${{ github.event.pull_request.head.sha || github.sha }}
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+      - uses: actions/setup-dotnet@v5
+        with:
+          dotnet-version: '10.0.x'
+      - uses: actions/setup-python@v6
+        with:
+          python-version: '3.12'
+      - name: Validate source and slot-accounting negative controls
+        run: |
+          python3 scripts/check_language_policy.py
+          python3 scripts/check.py
+          python3 -m unittest discover -s lab/e2_b05_dispatch -p test_analysis.py -v
+          python3 -m py_compile lab/e2_b05_dispatch/run.py
+      - run: python3 -m pip install -r lab/e1_pg/requirements.txt
+      - name: Enable disposable PostgreSQL server COMMIT timestamps
+        run: |
+          python3 - <<'PY'
+          import os,psycopg
+          with psycopg.connect(os.environ['E1_PG_DSN'],autocommit=True) as db:
+              db.execute('ALTER SYSTEM SET track_commit_timestamp=on')
+          PY
+          docker restart ${{ job.services.postgres.id }}
+      - name: Publish immutable ledger reference and diagnostic client
+        run: |
+          mkdir -p lab/results/b05-dispatch
+          dotnet publish lab/e2_b05_dispatch/DispatchProbe.csproj -c Release -m:1 --disable-build-servers -o lab/results/b05-dispatch/app
+          dotnet --info > lab/results/b05-dispatch/dotnet-info.txt
+          docker inspect ${{ job.services.postgres.id }} > lab/results/b05-dispatch/postgres-inspect.json
+          lscpu --json > lab/results/b05-dispatch/cpu-info.json
+          uname -a > lab/results/b05-dispatch/uname.txt
+          find lab/results/b05-dispatch/app -type f -exec sha256sum {} + > lab/results/b05-dispatch/published-sha256.txt
+      - name: Compare 32 and 128 admission slots at exactly 320 offered/s
+        run: python3 lab/e2_b05_dispatch/run.py
+      - name: Preserve every original including failures and missed offers
+        if: always()
+        uses: actions/upload-artifact@v6
+        with:
+          name: e2-b05-dispatch-original-cohort-${{ matrix.cohort }}
+          path: |
+            lab/results/b05-dispatch/*.json
+            lab/results/b05-dispatch/*.log
+            lab/results/b05-dispatch/*.txt
+          if-no-files-found: warn

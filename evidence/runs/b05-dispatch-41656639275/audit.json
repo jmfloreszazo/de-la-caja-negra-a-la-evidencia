@@ -1,0 +1,459 @@
+[
+  {
+    "status": "AUDITED_DIAGNOSTIC_NOT_CAPACITY",
+    "source": "97e2efcf399c9ef75b4b093c22e36cfb5622cb17",
+    "cohort": 0,
+    "bytes": 3984983,
+    "sha256": "8af2ed76c58e728e08a47e603d8559acae67a6db9db1911e7c74dfe3aa54faea",
+    "sourceHashes": 22,
+    "vectorSha256": "e31755f6b0636272b65e60b9122229f8fec58db792d251fa5d3beb7fb1953b3a",
+    "trials": [
+      {
+        "cap": 32,
+        "missed": 40,
+        "ambiguous": 0,
+        "sqlCommitted": 19800,
+        "certainCommitsPerSecond": 319.6,
+        "phases": {
+          "warmup": {
+            "offered": 320,
+            "counts": {
+              "ADMIT": 304,
+              "MISS": 16,
+              "ACKNOWLEDGED": 304
+            },
+            "peakActiveSlots": 32,
+            "allOfferDecisionLagMs": {
+              "p50": 0.000378,
+              "p95": 7.887886,
+              "p99": 25.424905,
+              "max": 35.193849
+            },
+            "completeToReleaseMs": {
+              "p50": 0.000421,
+              "p95": 0.000559,
+              "p99": 0.000936,
+              "max": 0.005278
+            }
+          },
+          "measurement": {
+            "offered": 19200,
+            "counts": {
+              "ADMIT": 19176,
+              "ACKNOWLEDGED": 19176,
+              "MISS": 24
+            },
+            "peakActiveSlots": 32,
+            "allOfferDecisionLagMs": {
+              "p50": 0.000235,
+              "p95": 0.000444,
+              "p99": 0.000694,
+              "max": 4.763845
+            },
+            "completeToReleaseMs": {
+              "p50": 0.00017,
+              "p95": 0.000281,
+              "p99": 0.00049,
+              "max": 0.15959
+            }
+          },
+          "cooldown": {
+            "offered": 320,
+            "counts": {
+              "ADMIT": 320,
+              "ACKNOWLEDGED": 320
+            },
+            "peakActiveSlots": 5,
+            "allOfferDecisionLagMs": {
+              "p50": 0.000235,
+              "p95": 0.00045,
+              "p99": 0.016369,
+              "max": 0.037585
+            },
+            "completeToReleaseMs": {
+              "p50": 0.00016,
+              "p95": 0.00023,
+              "p99": 0.000321,
+              "max": 0.015473
+            }
+          }
+        }
+      },
+      {
+        "cap": 128,
+        "missed": 0,
+        "ambiguous": 0,
+        "sqlCommitted": 19840,
+        "certainCommitsPerSecond": 320.0,
+        "phases": {
+          "warmup": {
+            "offered": 320,
+            "counts": {
+              "ADMIT": 320,
+              "ACKNOWLEDGED": 320
+            },
+            "peakActiveSlots": 51,
+            "allOfferDecisionLagMs": {
+              "p50": 0.000348,
+              "p95": 7.678355,
+              "p99": 26.611339,
+              "max": 36.192753
+            },
+            "completeToReleaseMs": {
+              "p50": 0.0004,
+              "p95": 0.000581,
+              "p99": 0.001216,
+              "max": 0.00629
+            }
+          },
+          "measurement": {
+            "offered": 19200,
+            "counts": {
+              "ADMIT": 19200,
+              "ACKNOWLEDGED": 19200
+            },
+            "peakActiveSlots": 26,
+            "allOfferDecisionLagMs": {
+              "p50": 0.000238,
+              "p95": 0.000431,
+              "p99": 0.000544,
+              "max": 5.449887
+            },
+            "completeToReleaseMs": {
+              "p50": 0.00016,
+              "p95": 0.00023,
+              "p99": 0.000481,
+              "max": 0.025879
+            }
+          },
+          "cooldown": {
+            "offered": 320,
+            "counts": {
+              "ADMIT": 320,
+              "ACKNOWLEDGED": 320
+            },
+            "peakActiveSlots": 1,
+            "allOfferDecisionLagMs": {
+              "p50": 0.000242,
+              "p95": 0.000418,
+              "p99": 0.000513,
+              "max": 0.000596
+            },
+            "completeToReleaseMs": {
+              "p50": 0.00015,
+              "p95": 0.0002,
+              "p99": 0.000236,
+              "max": 0.00037
+            }
+          }
+        }
+      }
+    ],
+    "capacityEstablished": false,
+    "bottleneckAttributionEstablished": false
+  },
+  {
+    "status": "AUDITED_DIAGNOSTIC_NOT_CAPACITY",
+    "source": "97e2efcf399c9ef75b4b093c22e36cfb5622cb17",
+    "cohort": 1,
+    "bytes": 3991364,
+    "sha256": "75df6ce95cbbedf13944b8de9da947ec0aee2ee8d49b25eb3e922ddd36155294",
+    "sourceHashes": 22,
+    "vectorSha256": "e31755f6b0636272b65e60b9122229f8fec58db792d251fa5d3beb7fb1953b3a",
+    "trials": [
+      {
+        "cap": 128,
+        "missed": 0,
+        "ambiguous": 0,
+        "sqlCommitted": 19840,
+        "certainCommitsPerSecond": 320.0167,
+        "phases": {
+          "warmup": {
+            "offered": 320,
+            "counts": {
+              "ADMIT": 320,
+              "ACKNOWLEDGED": 320
+            },
+            "peakActiveSlots": 93,
+            "allOfferDecisionLagMs": {
+              "p50": 0.000675,
+              "p95": 33.985134,
+              "p99": 67.953924,
+              "max": 77.865942
+            },
+            "completeToReleaseMs": {
+              "p50": 0.000531,
+              "p95": 0.000791,
+              "p99": 0.001808,
+              "max": 0.002735
+            }
+          },
+          "measurement": {
+            "offered": 19200,
+            "counts": {
+              "ADMIT": 19200,
+              "ACKNOWLEDGED": 19200
+            },
+            "peakActiveSlots": 17,
+            "allOfferDecisionLagMs": {
+              "p50": 0.000425,
+              "p95": 0.000811,
+              "p99": 0.011989,
+              "max": 7.129063
+            },
+            "completeToReleaseMs": {
+              "p50": 0.000201,
+              "p95": 0.00035,
+              "p99": 0.001603,
+              "max": 0.158456
+            }
+          },
+          "cooldown": {
+            "offered": 320,
+            "counts": {
+              "ADMIT": 320,
+              "ACKNOWLEDGED": 320
+            },
+            "peakActiveSlots": 3,
+            "allOfferDecisionLagMs": {
+              "p50": 0.000445,
+              "p95": 0.000835,
+              "p99": 0.026869,
+              "max": 0.472124
+            },
+            "completeToReleaseMs": {
+              "p50": 0.000201,
+              "p95": 0.000291,
+              "p99": 0.000368,
+              "max": 0.002424
+            }
+          }
+        }
+      },
+      {
+        "cap": 32,
+        "missed": 55,
+        "ambiguous": 0,
+        "sqlCommitted": 19785,
+        "certainCommitsPerSecond": 320.0167,
+        "phases": {
+          "warmup": {
+            "offered": 320,
+            "counts": {
+              "ADMIT": 265,
+              "MISS": 55,
+              "ACKNOWLEDGED": 265
+            },
+            "peakActiveSlots": 32,
+            "allOfferDecisionLagMs": {
+              "p50": 0.000663,
+              "p95": 29.557944,
+              "p99": 61.471097,
+              "max": 71.433757
+            },
+            "completeToReleaseMs": {
+              "p50": 0.000541,
+              "p95": 0.000782,
+              "p99": 0.002981,
+              "max": 0.010639
+            }
+          },
+          "measurement": {
+            "offered": 19200,
+            "counts": {
+              "ADMIT": 19200,
+              "ACKNOWLEDGED": 19200
+            },
+            "peakActiveSlots": 6,
+            "allOfferDecisionLagMs": {
+              "p50": 0.000392,
+              "p95": 0.000751,
+              "p99": 0.013595,
+              "max": 8.326757
+            },
+            "completeToReleaseMs": {
+              "p50": 0.000201,
+              "p95": 0.000371,
+              "p99": 0.000751,
+              "max": 0.036058
+            }
+          },
+          "cooldown": {
+            "offered": 320,
+            "counts": {
+              "ADMIT": 320,
+              "ACKNOWLEDGED": 320
+            },
+            "peakActiveSlots": 3,
+            "allOfferDecisionLagMs": {
+              "p50": 0.000373,
+              "p95": 0.000669,
+              "p99": 0.000934,
+              "max": 0.007319
+            },
+            "completeToReleaseMs": {
+              "p50": 0.0002,
+              "p95": 0.00025,
+              "p99": 0.000316,
+              "max": 0.024126
+            }
+          }
+        }
+      }
+    ],
+    "capacityEstablished": false,
+    "bottleneckAttributionEstablished": false
+  },
+  {
+    "status": "AUDITED_DIAGNOSTIC_NOT_CAPACITY",
+    "source": "97e2efcf399c9ef75b4b093c22e36cfb5622cb17",
+    "cohort": 2,
+    "bytes": 3992531,
+    "sha256": "d7158dbe740886815cab4a2b27a89da2312df598cacfe88388b08add499d837a",
+    "sourceHashes": 22,
+    "vectorSha256": "e31755f6b0636272b65e60b9122229f8fec58db792d251fa5d3beb7fb1953b3a",
+    "trials": [
+      {
+        "cap": 32,
+        "missed": 58,
+        "ambiguous": 0,
+        "sqlCommitted": 19782,
+        "certainCommitsPerSecond": 320.0167,
+        "phases": {
+          "warmup": {
+            "offered": 320,
+            "counts": {
+              "ADMIT": 262,
+              "MISS": 58,
+              "ACKNOWLEDGED": 262
+            },
+            "peakActiveSlots": 32,
+            "allOfferDecisionLagMs": {
+              "p50": 0.000686,
+              "p95": 33.927322,
+              "p99": 66.088555,
+              "max": 76.048436
+            },
+            "completeToReleaseMs": {
+              "p50": 0.000561,
+              "p95": 0.000801,
+              "p99": 0.002116,
+              "max": 0.01066
+            }
+          },
+          "measurement": {
+            "offered": 19200,
+            "counts": {
+              "ADMIT": 19200,
+              "ACKNOWLEDGED": 19200
+            },
+            "peakActiveSlots": 10,
+            "allOfferDecisionLagMs": {
+              "p50": 0.000385,
+              "p95": 0.002772,
+              "p99": 0.021947,
+              "max": 8.960281
+            },
+            "completeToReleaseMs": {
+              "p50": 0.00021,
+              "p95": 0.00034,
+              "p99": 0.000682,
+              "max": 0.039954
+            }
+          },
+          "cooldown": {
+            "offered": 320,
+            "counts": {
+              "ADMIT": 320,
+              "ACKNOWLEDGED": 320
+            },
+            "peakActiveSlots": 3,
+            "allOfferDecisionLagMs": {
+              "p50": 0.000391,
+              "p95": 0.003709,
+              "p99": 0.01227,
+              "max": 0.026797
+            },
+            "completeToReleaseMs": {
+              "p50": 0.000201,
+              "p95": 0.000281,
+              "p99": 0.000416,
+              "max": 0.002464
+            }
+          }
+        }
+      },
+      {
+        "cap": 128,
+        "missed": 0,
+        "ambiguous": 0,
+        "sqlCommitted": 19840,
+        "certainCommitsPerSecond": 320.0167,
+        "phases": {
+          "warmup": {
+            "offered": 320,
+            "counts": {
+              "ADMIT": 320,
+              "ACKNOWLEDGED": 320
+            },
+            "peakActiveSlots": 92,
+            "allOfferDecisionLagMs": {
+              "p50": 0.000706,
+              "p95": 30.282019,
+              "p99": 63.90605,
+              "max": 73.801174
+            },
+            "completeToReleaseMs": {
+              "p50": 0.000561,
+              "p95": 0.000832,
+              "p99": 0.001332,
+              "max": 0.009187
+            }
+          },
+          "measurement": {
+            "offered": 19200,
+            "counts": {
+              "ADMIT": 19200,
+              "ACKNOWLEDGED": 19200
+            },
+            "peakActiveSlots": 6,
+            "allOfferDecisionLagMs": {
+              "p50": 0.00039,
+              "p95": 0.000835,
+              "p99": 0.015993,
+              "max": 7.73139
+            },
+            "completeToReleaseMs": {
+              "p50": 0.000201,
+              "p95": 0.00041,
+              "p99": 0.000912,
+              "max": 0.051326
+            }
+          },
+          "cooldown": {
+            "offered": 320,
+            "counts": {
+              "ADMIT": 320,
+              "ACKNOWLEDGED": 320
+            },
+            "peakActiveSlots": 3,
+            "allOfferDecisionLagMs": {
+              "p50": 0.0005,
+              "p95": 0.001006,
+              "p99": 0.002227,
+              "max": 0.019149
+            },
+            "completeToReleaseMs": {
+              "p50": 0.00022,
+              "p95": 0.000401,
+              "p99": 0.000557,
+              "max": 0.002435
+            }
+          }
+        }
+      }
+    ],
+    "capacityEstablished": false,
+    "bottleneckAttributionEstablished": false
+  }
+]

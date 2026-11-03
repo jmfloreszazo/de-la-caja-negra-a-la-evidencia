@@ -73,7 +73,7 @@ deferred. Published stable and research tags have not changed.
 
 ### E2 specific status correction
 
-[E2 issue #8](https://github.com/jmfloreszazo/de-la-caja-negra-a-la-evidencia/issues/8) has actual original CI results: Orleans 10.4.0, durable PostgreSQL and ADO.NET membership, process loss/ambiguous response, network-fault scopes and selected 20/40/80 offered-rate observations. These establish **bounded tested behaviors only**, not an accepted sustained capacity ceiling, two physical hosts or production HA. [sustained benchmark #25](https://github.com/jmfloreszazo/de-la-caja-negra-a-la-evidencia/issues/25), concurrent-activation observations, continuous unassisted recovery and physical-host tests remain blocking. No blanket E2 PASS is permitted.
+[E2 issue #8](https://github.com/jmfloreszazo/de-la-caja-negra-a-la-evidencia/issues/8) has actual original CI results: Orleans 10.4.0, durable PostgreSQL and ADO.NET membership, process loss/ambiguous response, network-fault scopes and selected 20/40/80 offered-rate observations. These establish **bounded tested behaviors only**, not an accepted sustained capacity ceiling, two physical hosts or production HA. [sustained benchmark #25](https://github.com/jmfloreszazo/de-la-caja-negra-a-la-evidencia/issues/25), concurrent-activation observations, continuous unassisted recovery and physical-host tests remain required for their associated scientific claims, but are non-blocking for book/lab integration under the author's 3 November decision. No blanket E2 PASS is permitted.
 
 ## Acceptance rules
 
@@ -89,3 +89,9 @@ See [E1 protocol](../lab/docs/EXPERIMENT_PROTOCOL.md) and [ES/EN evidence matric
 C05/C06 now have [audited short directional packet-loss cases](../evidence/runs/E2-C05-C06-DIRECTIONAL.md). They do not establish exclusive activation or sustained stable service. A later [long-schedule audit](../evidence/runs/E2-LONG-PARTITION.md) verifies only assisted recovery with 14 paired samples across about 66s after earlier secondary exit; it does not retrospectively extend the short-case scope.
 
 The [directed ordinary-grain trial](../evidence/runs/E2-ACCOUNT-DIRECTED.md) in PR #80 records two positive incoming-envelope witnesses and four INCONCLUSIVE originals across three archived campaigns. The third campaign reproduces a secondary-outbound witness with both log streams retained, while all three primary-outbound cases remain inconclusive. The added pre-invoke delay changes timing; natural lifecycle/partition acceptance and repeatability remain open. The repeat identifies a fatal membership path after the local silo is recorded Dead. Sustained-capacity work under #25 may proceed independently without closing these gates.
+
+B05 #25 now has a [three-cohort direct admission diagnostic](../evidence/runs/B05-DISPATCH-DIAGNOSTIC.md): 119,040 offers, 118,887 SQL commits, 153 exact cap-32 admission misses and no misses at cap 128, with 42 financial invariant checks. This does not establish backend saturation, Orleans scaling or the historical warmup cause; sustained capacity and bottleneck attribution remain open.
+
+## Integration decision — 3 November 2026
+
+The author authorized merging the bounded E2 observations, calibration, directed trials and B05 diagnostic (PRs #78–#81). Unmet external claims no longer block book/lab integration or the next editorial work. E2 remains partially verified; #8/#24/#25 remain external-validation tracking, not an instruction to keep repeating a shared-host campaign. The [external-validation protocol](EXTERNAL_VALIDATION.md) specifies topology, code changes, clock uncertainty, load/fault design, independent oracles and evidence required for stronger claims. No failure is relabeled and no production acceptance or release is implied.
