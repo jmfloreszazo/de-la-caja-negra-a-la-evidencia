@@ -23,7 +23,7 @@ For the offline checks, Python 3 is enough.
 
 ## Running with Podman
 
-**Listing A.1 · Starting with Podman** — *Executed by design · recipe not built here*
+**Listing A.1 · Starting with Podman** — *Reproduction commands · platform-dependent*
 
 ```bash
 # Linux, macOS or WSL
@@ -44,6 +44,8 @@ The build needs network access once: the base image, the packages and the .NET r
 The reference run is native on Linux. The Podman recipe is built and run by the `podman` continuous integration job; if it behaves differently on your machine, that reproduction report is exactly the evidence the lab asks for.
 
 ## Native run
+
+**Listing A.2 · Native reproduction commands** — *Requires GnuCOBOL and .NET 10*
 
 ```bash
 sudo apt-get update

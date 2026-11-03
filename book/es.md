@@ -76,7 +76,7 @@ Dos convenciones ayudan a leer este libro.
 
 **Fuente, propuesta y ejecución.** Distingo lo que existe en una fuente, lo que propongo como diseño y lo que el laboratorio ha ejecutado. Cuando describo una arquitectura de producción, es una propuesta que exige integración y verificación. Cuando presento un resultado de la demo, su validez se limita al programa, los casos y las versiones registrados.
 
-**Etiquetas en los listados.** Cada fragmento de código lleva una etiqueta. *Ejecutado* significa que forma parte del laboratorio y tiene una ejecución de referencia con sus hashes. *Verificado* significa que su lógica se ha comprobado con una implementación independiente. *Ilustrativo* significa que es un fragmento de diseño que no se ha compilado ni ejecutado: sirve para razonar, no para copiar a producción.
+**Etiquetas de los listados.** Cada fragmento lleva una etiqueta. *Ejecutado* identifica código del laboratorio o salida registrada con procedencia de una ejecución de referencia. *Verificado* identifica lógica contrastada con una implementación independiente. *Ilustrativo* identifica un fragmento de diseño; comprobar sintaxis o una función auxiliar acotada no certifica su integración completa ni su comportamiento en producción. El [inventario de listados](../docs/BOOK_LISTINGS.es.md) registra el alcance exacto probado y las dependencias pendientes. El código ejecutable y la configuración son idénticos y están en inglés en ambas ediciones; los diagramas narrativos y las plantillas pueden traducirse.
 
 El laboratorio está íntegramente en inglés, se ejecuta con Podman y está pensado para que cualquiera pueda contradecirme. El anexo [A](#anexo-a--un-laboratorio-que-pueda-contradecirnos) explica cómo.
 
@@ -255,10 +255,10 @@ Ahora, la traducción que cualquiera —persona o agente— produce en cinco min
 ```csharp
 public async Task<string> WithdrawAsync(string accountId, decimal amount)
 {
-    var account = await _repository.GetAsync(accountId); // sin reserva
+    var account = await _repository.GetAsync(accountId); // no reservation
     if (account.Balance < amount) return "NSF";
-    account.Balance -= amount;                           // sobre una foto
-    await _repository.SaveAsync(account);                // incondicional
+    account.Balance -= amount;                           // decided on a snapshot
+    await _repository.SaveAsync(account);                // unconditional write
     return "OK";
 }
 ```
@@ -275,13 +275,13 @@ La corrección no consiste en poner un `lock` en el controlador: protegería un 
 
 ```csharp
 db.Exec("BEGIN IMMEDIATE"); begun = true;
-// ... comprobación de idempotencia por identidad de operación ...
+// ... idempotency check on the operation identity ...
 db.Exec($"UPDATE accounts SET balance=balance-{amount} WHERE id={src} AND balance>={amount}");
-var approved = db.Changes == 1;   // 1 fila: aprobado; 0: fondos insuficientes
+var approved = db.Changes == 1;   // 1 row: approved; 0: insufficient funds
 if (approved) {
     db.Exec($"UPDATE accounts SET balance=balance+{amount} WHERE id={dst}");
 }
-// ... operación, dos asientos y fila outbox en la MISMA transacción ...
+// ... operation, two postings and outbox row in the SAME transaction ...
 db.Exec("COMMIT");
 ```
 
@@ -436,7 +436,7 @@ Así se vería un hallazgo del laboratorio expresado con ese contrato. El hash e
 ```json
 {
   "id": "EV-0142",
-  "claim": "Cliente activo: la comisión se redondea al céntimo; el empate se aleja de cero",
+  "claim": "Active customer: the fee rounds to the cent; ties go away from zero",
   "status": "observed",
   "artifact": {
     "path": "legacy/fee.cob",
@@ -444,10 +444,10 @@ Así se vería un hallazgo del laboratorio expresado con ese contrato. El hash e
     "locator": "COMPUTE fee-cents ROUNDED"
   },
   "tool": { "name": "cobc", "version": "GnuCOBOL 3.1.2.0",
-            "method": "ejecución con entrada fijada" },
+            "method": "execution with a fixed input" },
   "observation": { "input": "0000002500200Y", "output": "APPROVE|00000001" },
-  "coverage": "un empate exacto; sin negativos ni otras opciones de compilación",
-  "unknowns": ["comportamiento en Enterprise COBOL con las opciones de producción"],
+  "coverage": "one exact tie; no negatives or other compiler options",
+  "unknowns": ["behaviour on Enterprise COBOL with production options"],
   "approval": null,
   "verifiedBy": []
 }
@@ -615,7 +615,7 @@ mandate:
   id: MND-2026-114
   scope: capability/fee-calculation
   grantedTo: agent/builder
-  grantedBy: owner/payments-domain      # en producción, una identidad humana verificable
+  grantedBy: owner/payments-domain      # in production, a verifiable human identity
   validFrom: 2026-10-29T08:00:00Z
   validUntil: 2026-11-05T20:00:00Z
   allow:
@@ -625,7 +625,7 @@ mandate:
   deny:
     write: ["contracts/**", "Gate/**", "ci/**"]
     actions: ["publish", "approve-baseline", "delegate-beyond-scope"]
-  revocation: "revocada en el proveedor de identidad; se comprueba antes de cada acción"
+  revocation: "revoked at the identity provider; checked before every action"
 ```
 
 La línea más importante es `deny.write`. Si el constructor puede escribir en `contracts/` o en `Gate/`, el resto del mandato es literatura.
@@ -815,11 +815,11 @@ En .NET, la trampa está en la sobrecarga que no dice nada:
 **Listado 12.2 · Comportamiento documentado de Math.Round [8]** — *Ilustrativo*
 
 ```csharp
-Math.Round(0.5m);                                  // 0 -> al par, por defecto
-Math.Round(1.5m);                                  // 2 -> también al par
+Math.Round(0.5m);                                  // 0 -> to even, by default
+Math.Round(1.5m);                                  // 2 -> also to even
 Math.Round(0.5m, MidpointRounding.AwayFromZero);   // 1
 decimal.Round(25m * 200m / 10000m, 0,
-              MidpointRounding.AwayFromZero);      // 1 -> caso C003 del laboratorio
+              MidpointRounding.AwayFromZero);      // 1 -> lab case C003
 ```
 
 Ninguna de las dos líneas por defecto es un error de .NET. Es una política distinta. El error aparece cuando nadie decide cuál es la nuestra.
@@ -914,8 +914,8 @@ public sealed class FeeFacade(ILegacyFee legacy, IModernFee modern,
 
             case Route.Shadow:
                 var authoritative = await legacy.CalculateAsync(request, ct);
-                shadow.Enqueue(request, authoritative);   // el candidato se evalúa aparte
-                return authoritative;                     // responde la referencia
+                shadow.Enqueue(request, authoritative);   // candidate evaluated separately
+                return authoritative;                     // the reference answers
 
             default:
                 return await legacy.CalculateAsync(request, ct);
@@ -961,7 +961,7 @@ El ejemplo más pequeño de ACL que merece la pena escribir es el decodificador 
 public static decimal DecodePacked(ReadOnlySpan<byte> field, int scale)
 {
     if (field.IsEmpty || scale < 0 || scale > 18)
-        throw new ArgumentException("Campo o escala inválidos");
+        throw new ArgumentException("Invalid field or scale");
 
     long digits = 0;
     for (int i = 0; i < field.Length; i++)
@@ -975,16 +975,16 @@ public static decimal DecodePacked(ReadOnlySpan<byte> field, int scale)
     {
         0x0D or 0x0B => true,
         0x0C or 0x0F or 0x0A or 0x0E => false,
-        _ => throw new FormatException("Nibble de signo inválido")
+        _ => throw new FormatException("Invalid sign nibble")
     };
 
     decimal value = digits;
-    for (int s = 0; s < scale; s++) value /= 10m;   // exacto: decimal es base 10
+    for (int s = 0; s < scale; s++) value /= 10m;   // exact: decimal is base 10
     return negative ? -value : value;
 
     static int Digit(int nibble, int index) => nibble <= 9
         ? nibble
-        : throw new FormatException($"Nibble de dígito inválido en el byte {index}");
+        : throw new FormatException($"Invalid digit nibble in byte {index}");
 }
 ```
 
@@ -1083,24 +1083,24 @@ CREATE OR ALTER PROCEDURE dbo.Transfer
 AS
 BEGIN
     SET NOCOUNT ON;
-    SET XACT_ABORT ON;               -- cualquier error deshace la transacción completa
+    SET XACT_ABORT ON;               -- any error rolls back the whole transaction
     BEGIN TRANSACTION;
 
-    -- 1. Idempotencia: un reenvío con la misma identidad ve la decisión anterior.
+    -- 1. Idempotency: a resend with the same identity sees the previous decision.
     IF EXISTS (SELECT 1 FROM dbo.Operations WITH (UPDLOCK, HOLDLOCK)
                WHERE OperationId = @OperationId)
     BEGIN
         COMMIT;  SELECT 'DUPLICATE' AS Result;  RETURN;
     END;
 
-    -- 2. Orden global: siempre se bloquea primero la cuenta de menor clave.
+    -- 2. Global order: always lock the account with the lower key first.
     DECLARE @First nvarchar(64)  = IIF(@From < @To, @From, @To),
             @Second nvarchar(64) = IIF(@From < @To, @To, @From),
             @Touch int;
     SELECT @Touch = 1 FROM dbo.Accounts WITH (UPDLOCK, ROWLOCK) WHERE AccountId = @First;
     SELECT @Touch = 1 FROM dbo.Accounts WITH (UPDLOCK, ROWLOCK) WHERE AccountId = @Second;
 
-    -- 3. La regla se evalúa donde se confirma.
+    -- 3. The rule is evaluated where it is committed.
     UPDATE dbo.Accounts SET Balance = Balance - @Amount
      WHERE AccountId = @From AND Balance >= @Amount;
     IF @@ROWCOUNT = 0
@@ -1112,7 +1112,7 @@ BEGIN
 
     UPDATE dbo.Accounts SET Balance = Balance + @Amount WHERE AccountId = @To;
 
-    -- 4. Operación, doble asiento y evento pendiente: todo o nada.
+    -- 4. Operation, double entry and pending event: all or nothing.
     INSERT dbo.Operations (OperationId, OperationType, Status)
     VALUES (@OperationId, 'TRANSFER', 'COMMITTED');
     INSERT dbo.LedgerEntries (OperationId, AccountId, SignedAmount)
@@ -1137,14 +1137,14 @@ public async Task<TransferResult> TransferAsync(TransferCommand cmd, Cancellatio
     {
         try
         {
-            // Misma OperationId en cada intento.
+            // Same OperationId on every attempt.
             return await _ledger.ExecuteTransferAsync(cmd, ct);
         }
         catch (SqlException ex) when (ex.Number == 1205 && attempt < maxAttempts)
         {
             var backoffMs = Math.Min(200, 10 * (1 << attempt))
                             + Random.Shared.Next(0, 10);
-            await Task.Delay(backoffMs, ct);    // jitter; nunca infinita
+            await Task.Delay(backoffMs, ct);    // jitter; never infinite
         }
     }
 }
@@ -1218,20 +1218,20 @@ La técnica de las épocas se entiende mejor en dos sentencias. El destino es qu
 **Listado 18.1 · Fencing: el almacén rechaza escrituras de un propietario obsoleto** — *Ilustrativo*
 
 ```sql
--- Toma de propiedad: la época crece y solo se concede si el lease anterior caducó.
+-- Taking ownership: the epoch grows and is only granted if the previous lease expired.
 UPDATE dbo.PartitionLeases
    SET Owner = @Worker, Epoch = Epoch + 1,
        ExpiresUtc = DATEADD(second, 30, SYSUTCDATETIME())
 OUTPUT inserted.Epoch
  WHERE PartitionId = @Partition AND ExpiresUtc < SYSUTCDATETIME();
 
--- Cada escritura lleva la época obtenida. HOLDLOCK impide que el relevo
--- se confirme mientras esta escritura está en curso.
+-- Every write carries the epoch obtained. HOLDLOCK prevents the takeover
+-- from committing while this write is in progress.
 INSERT dbo.BatchResults (PartitionId, Epoch, AccountId, Amount)
 SELECT @Partition, @Epoch, @AccountId, @Amount
  WHERE EXISTS (SELECT 1 FROM dbo.PartitionLeases WITH (HOLDLOCK)
                 WHERE PartitionId = @Partition AND Epoch = @Epoch);
--- 0 filas insertadas: este worker ya no es el dueño. Debe detenerse, no reintentar.
+-- 0 rows inserted: this worker is no longer the owner. It must stop, not retry.
 ```
 
 ![Figura 18.2 · Fencing: un propietario obsoleto puede seguir vivo, pero el almacén deja de confirmar sus escrituras.](figures/es/fencing_seq.png)
@@ -1287,11 +1287,11 @@ public interface IAccountGrain : IGrainWithStringKey
     Task<DebitDecision> DebitAsync(DebitCommand command);
 }
 
-// No [Reentrant]: each request completes before the next starts.
+// No [Reentrant]: each request finishes before the next one starts.
 public sealed class AccountGrain(ILedger ledger) : Grain, IAccountGrain
 {
     public Task<DebitDecision> DebitAsync(DebitCommand command) =>
-        // The actor orders requests; the ledger decides and commits.
+        // The actor provides order; the ledger provides decision and durability.
         ledger.DebitAsync(this.GetPrimaryKeyString(),
                           command.OperationId, command.Amount);
 }
@@ -1388,20 +1388,20 @@ var options = new ParallelOptions
 
 await Parallel.ForEachAsync(plan.Partitions, options, async (partition, token) =>
 {
-    // Una partición confirmada no se vuelve a aplicar: reiniciar es seguro.
+    // A committed partition is not applied again: restarting is safe.
     if (await store.IsCommittedAsync(plan.RunId, partition.Id, token)) return;
 
     await using var tx = await store.BeginAsync(token);
     var totals = await ProcessAsync(partition, plan.RulesVersion,
                                     plan.BusinessDate, tx, token);
 
-    // Resultados y checkpoint en la MISMA transacción, con sumas de control.
+    // Results and checkpoint in the SAME transaction, with control totals.
     await tx.SaveCheckpointAsync(plan.RunId, partition.Id,
                                  totals.Count, totals.Amount, token);
     await tx.CommitAsync(token);
 });
 
-// Reducción determinista sobre lo confirmado, no sobre la memoria de los workers.
+// Deterministic reduction over what was committed, not over the workers' memory.
 var control = await store.ReconcileAsync(plan.RunId,
                                         plan.ExpectedCount, plan.ExpectedAmount, ct);
 ```
@@ -1520,18 +1520,18 @@ Este es el patrón que pondría en el borde de un servicio de transferencias: un
 var queue = Channel.CreateBounded<TransferCommand>(
     new BoundedChannelOptions(capacity: 2_000)
 {
-    FullMode = BoundedChannelFullMode.Wait,   // presión hacia el productor
+    FullMode = BoundedChannelFullMode.Wait,   // pressure on the producer
     SingleReader = false,
     SingleWriter = false
 });
 
-// En el borde HTTP: si no cabe ahora, se dice ahora.
+// At the HTTP edge: if it does not fit now, say so now.
 app.MapPost("/transfers", (TransferCommand cmd) =>
     queue.Writer.TryWrite(cmd)
         ? Results.Accepted($"/transfers/{cmd.OperationId}")
         : Results.StatusCode(StatusCodes.Status429TooManyRequests));
 
-// Consumidores limitados por la capacidad de confirmación del ledger.
+// Consumers limited by the ledger's commit capacity.
 for (var i = 0; i < ledgerConcurrency; i++)
 {
     _ = Task.Run(async () =>
@@ -1587,7 +1587,7 @@ Registraría peticiones ofrecidas, admitidas, confirmadas, rechazadas por negoci
 
 Separaría warm-up y medición, repetiría ensayos y conservaría su variabilidad. La carga de recuperación y la mezcla batch tendrían pruebas propias. Solo entonces podríamos afirmar qué arquitectura se acerca al compromiso operativo del mainframe y qué diferencias siguen abiertas.
 
-Es la misma disciplina que me impuse al comparar dos agentes alojados en Microsoft Foundry, uno en .NET 10 y otro en Python: misma región, misma cuota, mismo sobre de recursos y una única variable de verdad, el runtime. Un benchmark que cambia dos cosas a la vez no mide nada, y el «cómo lo he medido» es donde un benchmark se gana o se pierde la credibilidad [45].
+La comparación de Foundry mantuvo constante la infraestructura y comparó stacks completos C#/.NET y Python/CPython, incluidos SDK y serialización. No aisló el coste del runtime. La latencia secuencial medida con poca carga no demuestra throughput máximo ni saturación [45].
 
 #### Un ejemplo que se puede ejecutar: la omisión coordinada
 
@@ -1605,9 +1605,9 @@ closed-loop (1 client)       9500    950.0     1.0     1.0      1.0    501.0    
 open-loop (500/s)            5000    500.1     1.0   251.0    451.0    501.0     401
 ```
 
-![Figura 24.1 · El mismo servidor y la misma parada. El circuito cerrado registra el atasco una vez; el circuito abierto cuenta cada petición que esperó detrás de él.](figures/es/omission_chart.png)
+![Figura 24.1 · Latencia máxima por intervalo de 100 ms en la simulación. Rojo: circuito abierto, con solicitudes en cola que se drenan tras la parada. Gris: circuito cerrado, que registra un único pico.](figures/es/omission_chart.png)
 
-*Figura 24.1 · El mismo servidor y la misma parada. El circuito cerrado registra el atasco una vez; el circuito abierto cuenta cada petición que esperó detrás de él.*
+*Figura 24.1 · Latencia máxima por intervalo de 100 ms en la simulación. Rojo: circuito abierto, con solicitudes en cola que se drenan tras la parada. Gris: circuito cerrado, que registra un único pico.*
 
 El circuito cerrado informa de un p99 de un milisegundo y de casi el doble de throughput. No miente sobre las peticiones que midió; miente por omisión, porque su único cliente estaba esperando mientras el servidor estaba parado y dejó de ofrecer carga. El circuito abierto revela que 401 peticiones superaron los 100 ms. Ese es el atasco que vería un cliente real en el cierre de mes.
 
@@ -1709,6 +1709,8 @@ La restricción física tampoco desaparece con ExpressRoute: la luz viaja aproxi
 ##### Presupuesto de respuesta desde el teclado hasta la pantalla
 
 El presupuesto no termina en el `HTTP 200` del backend:
+
+**Listado 25a.1 · Recorrido de sucursal a ledger** — *Topología ilustrativa*
 
 ```text
 Oficina / TN3270 o navegador
@@ -2119,7 +2121,7 @@ Una nota de oficio: el laboratorio construye SQL interpolando valores porque lla
     if(fault=="throw-after-debit")throw new InvalidOperationException("Injected failure after debit");
     db.Exec($"UPDATE accounts SET balance=balance+{amount} WHERE id={dst}");
    }
-   // ... operación, asientos y outbox ...
+   // ... operation, postings and outbox ...
    db.Exec("COMMIT");begun=false;
    if(fault=="lost-response")Environment.Exit(92);
    return new(status,retries,clock.Elapsed.TotalMilliseconds);
@@ -2149,7 +2151,7 @@ tests={
                       'HAVING SUM(delta)<>0 OR COUNT(*)<>2)')==0,
  'projectionAgrees':s('SELECT COUNT(*) FROM accounts a WHERE balance<>100000+COALESCE('
                       '(SELECT SUM(delta) FROM postings p WHERE p.account=a.id),0)')==0,
- # ... twoPostingsPerCommit y outboxAtomic
+ # ... twoPostingsPerCommit and outboxAtomic
 }
 ```
 
@@ -2168,9 +2170,9 @@ Conservar el total es necesario y no suficiente: un movimiento cargado a la cuen
 | caliente | 4 | 128 | 495,6 | 0,81 | 2,04 | 42,08 | 0 |
 | caliente | 8 | 256 | 624,4 | 0,85 | 28,40 | 109,78 | 5 |
 
-![Figura 28.3 · Ejecución de referencia: la mediana baja y la cola se dispara al añadir procesos que compiten por un único escritor.](figures/es/measures_chart.png)
+![Figura 28.3 · Ejecución de referencia con cuentas uniformes: las barras rojas muestran p99 y la línea gris p50, en milisegundos. La mediana baja mientras crece la cola.](figures/es/measures_chart.png)
 
-*Figura 28.3 · Ejecución de referencia: la mediana baja y la cola se dispara al añadir procesos que compiten por un único escritor.*
+*Figura 28.3 · Ejecución de referencia con cuentas uniformes: las barras rojas muestran p99 y la línea gris p50, en milisegundos. La mediana baja mientras crece la cola.*
 
 La tabla enseña una cosa verdadera y nada más: al añadir procesos que compiten por un recurso serializado, la mediana mejora y la cola se dispara. Es el mismo fenómeno que aparecerá con una cuenta caliente o con un log saturado. Pero son 32 operaciones por proceso, en circuito cerrado, incluyendo el arranque de cada proceso .NET, sobre un motor que serializa escrituras, en una sola máquina. No hay calentamiento ni duración suficiente, no hay baseline del mainframe y no hay Azure. Esta tabla no puede aprobar capacidad, y el código lo deja escrito en el propio resumen de resultados.
 
@@ -2933,18 +2935,18 @@ Para las comprobaciones offline basta con Python 3.
 
 #### Ejecución con Podman
 
-**Listado A.1 · Arranque con Podman** — *Ejecutado en diseño · receta no construida aquí*
+**Listado A.1 · Arranque con Podman** — *Comandos de reproducción · dependen de la plataforma*
 
 ```bash
-# Linux, macOS o WSL
-bash scripts/run-podman.sh          # recorrido guiado, con pausas
-bash scripts/run-podman.sh --auto   # todo, incluido el módulo bancario
+# Linux, macOS or WSL
+bash scripts/run-podman.sh          # guided walkthrough, with pauses
+bash scripts/run-podman.sh --auto   # everything, including the banking module
 
 # Windows PowerShell
 pwsh scripts/run-podman.ps1
 pwsh scripts/run-podman.ps1 -Auto
 
-# A mano
+# By hand
 podman build -t cobol-modernization-lab -f Containerfile .
 podman run --rm -it --network=none -v "$PWD/results:/work/results:Z" cobol-modernization-lab
 ```
@@ -2955,11 +2957,13 @@ La ejecución de referencia es nativa en Linux. La receta de Podman la construye
 
 #### Ejecución nativa
 
+**Listado A.2 · Comandos de reproducción nativa** — *Requiere GnuCOBOL y .NET 10*
+
 ```bash
 sudo apt-get update
 sudo apt-get install -y gnucobol3 python3 libsqlite3-0 gcc
-python3 walkthrough.py                 # guiado
-python3 walkthrough.py --auto --bank   # todo
+python3 walkthrough.py                 # guided
+python3 walkthrough.py --auto --bank   # everything
 ```
 
 Las variables `DOTNET` y `COBC` permiten usar otros ejecutables.

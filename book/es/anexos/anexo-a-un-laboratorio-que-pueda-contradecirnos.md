@@ -23,18 +23,18 @@ Para las comprobaciones offline basta con Python 3.
 
 ## Ejecución con Podman
 
-**Listado A.1 · Arranque con Podman** — *Ejecutado en diseño · receta no construida aquí*
+**Listado A.1 · Arranque con Podman** — *Comandos de reproducción · dependen de la plataforma*
 
 ```bash
-# Linux, macOS o WSL
-bash scripts/run-podman.sh          # recorrido guiado, con pausas
-bash scripts/run-podman.sh --auto   # todo, incluido el módulo bancario
+# Linux, macOS or WSL
+bash scripts/run-podman.sh          # guided walkthrough, with pauses
+bash scripts/run-podman.sh --auto   # everything, including the banking module
 
 # Windows PowerShell
 pwsh scripts/run-podman.ps1
 pwsh scripts/run-podman.ps1 -Auto
 
-# A mano
+# By hand
 podman build -t cobol-modernization-lab -f Containerfile .
 podman run --rm -it --network=none -v "$PWD/results:/work/results:Z" cobol-modernization-lab
 ```
@@ -45,11 +45,13 @@ La ejecución de referencia es nativa en Linux. La receta de Podman la construye
 
 ## Ejecución nativa
 
+**Listado A.2 · Comandos de reproducción nativa** — *Requiere GnuCOBOL y .NET 10*
+
 ```bash
 sudo apt-get update
 sudo apt-get install -y gnucobol3 python3 libsqlite3-0 gcc
-python3 walkthrough.py                 # guiado
-python3 walkthrough.py --auto --bank   # todo
+python3 walkthrough.py                 # guided
+python3 walkthrough.py --auto --bank   # everything
 ```
 
 Las variables `DOTNET` y `COBC` permiten usar otros ejecutables.

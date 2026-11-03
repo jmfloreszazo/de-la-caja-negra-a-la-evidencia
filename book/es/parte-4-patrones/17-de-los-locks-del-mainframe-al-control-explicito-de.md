@@ -62,24 +62,24 @@ CREATE OR ALTER PROCEDURE dbo.Transfer
 AS
 BEGIN
     SET NOCOUNT ON;
-    SET XACT_ABORT ON;               -- cualquier error deshace la transacción completa
+    SET XACT_ABORT ON;               -- any error rolls back the whole transaction
     BEGIN TRANSACTION;
 
-    -- 1. Idempotencia: un reenvío con la misma identidad ve la decisión anterior.
+    -- 1. Idempotency: a resend with the same identity sees the previous decision.
     IF EXISTS (SELECT 1 FROM dbo.Operations WITH (UPDLOCK, HOLDLOCK)
                WHERE OperationId = @OperationId)
     BEGIN
         COMMIT;  SELECT 'DUPLICATE' AS Result;  RETURN;
     END;
 
-    -- 2. Orden global: siempre se bloquea primero la cuenta de menor clave.
+    -- 2. Global order: always lock the account with the lower key first.
     DECLARE @First nvarchar(64)  = IIF(@From < @To, @From, @To),
             @Second nvarchar(64) = IIF(@From < @To, @To, @From),
             @Touch int;
     SELECT @Touch = 1 FROM dbo.Accounts WITH (UPDLOCK, ROWLOCK) WHERE AccountId = @First;
     SELECT @Touch = 1 FROM dbo.Accounts WITH (UPDLOCK, ROWLOCK) WHERE AccountId = @Second;
 
-    -- 3. La regla se evalúa donde se confirma.
+    -- 3. The rule is evaluated where it is committed.
     UPDATE dbo.Accounts SET Balance = Balance - @Amount
      WHERE AccountId = @From AND Balance >= @Amount;
     IF @@ROWCOUNT = 0
@@ -91,7 +91,7 @@ BEGIN
 
     UPDATE dbo.Accounts SET Balance = Balance + @Amount WHERE AccountId = @To;
 
-    -- 4. Operación, doble asiento y evento pendiente: todo o nada.
+    -- 4. Operation, double entry and pending event: all or nothing.
     INSERT dbo.Operations (OperationId, OperationType, Status)
     VALUES (@OperationId, 'TRANSFER', 'COMMITTED');
     INSERT dbo.LedgerEntries (OperationId, AccountId, SignedAmount)
@@ -116,14 +116,14 @@ public async Task<TransferResult> TransferAsync(TransferCommand cmd, Cancellatio
     {
         try
         {
-            // Misma OperationId en cada intento.
+            // Same OperationId on every attempt.
             return await _ledger.ExecuteTransferAsync(cmd, ct);
         }
         catch (SqlException ex) when (ex.Number == 1205 && attempt < maxAttempts)
         {
             var backoffMs = Math.Min(200, 10 * (1 << attempt))
                             + Random.Shared.Next(0, 10);
-            await Task.Delay(backoffMs, ct);    // jitter; nunca infinita
+            await Task.Delay(backoffMs, ct);    // jitter; never infinite
         }
     }
 }

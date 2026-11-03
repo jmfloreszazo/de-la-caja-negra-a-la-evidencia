@@ -9,7 +9,7 @@ import subprocess
 from urllib.parse import urlparse, unquote
 from pypdf import PdfReader
 from weasyprint import HTML, default_url_fetcher
-from pdf_markdown import normalize_alerts
+from pdf_markdown import normalize_alerts, keep_listing_captions
 
 ROOT=Path(__file__).resolve().parents[1]
 BOOK=ROOT/"book"
@@ -42,7 +42,9 @@ h4{font-size:11pt;margin:6mm 0 3mm}
 p,li{orphans:3;widows:3}
 blockquote{border-left:3px solid #D9232E;margin:5mm 0;padding:2mm 4mm;background:#F7F7F5}
 pre,code{font-family:"DejaVu Sans Mono",monospace;font-size:7.4pt}
-pre{white-space:pre-wrap;overflow-wrap:anywhere;background:#F4F4F3;padding:3mm;border:1px solid #E5E5E3}
+pre{white-space:pre-wrap;overflow-wrap:anywhere;break-inside:avoid;background:#F4F4F3;padding:3mm;border:1px solid #E5E5E3}
+.listing-caption{break-after:avoid}
+div.sourceCode{break-inside:avoid}
 code{overflow-wrap:anywhere}
 table{border-collapse:collapse;width:100%;font-size:8pt;margin:4mm 0}
 th{color:#17191B;background:#EEEFF0}
@@ -100,6 +102,7 @@ def build(lang):
             +"<section class='cover'><img src='../assets/cover-"+lang+".png' alt='"
             +html.escape(title)+"'></section>"+body.group(1)+"</body></html>")
     markup=markup.replace('content:"CONTENTS / ÍNDICE"','content:"'+toc.upper()+'"')
+    markup=keep_listing_captions(markup)
     OUT.mkdir(parents=True,exist_ok=True)
     target=OUT/filename
     HTML(string=markup,base_url=str(BOOK),url_fetcher=offline_fetcher).write_pdf(str(target))

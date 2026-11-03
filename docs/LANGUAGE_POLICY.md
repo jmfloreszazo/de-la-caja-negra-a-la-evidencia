@@ -27,6 +27,8 @@ The repository contains **one bilingual book** and **English-only software proje
 
    The first check enforces project structure and catches common accidental Spanish engineering prose; the second checks book synchronization, relative links, figures and generated editions. **Automated checks do not replace a human language and code review.**
 
+7. Executable/configuration fences in paired book pages use the same canonical English bytes. The language guard compares them directly; prose in `text` diagrams and `markdown` templates may differ by language. Keep source code separate from translated explanatory prose.
+
 ## Boundary examples
 
 - ✅ `lab/durable_rpc/README.md` contains setup, usage and warnings in English.

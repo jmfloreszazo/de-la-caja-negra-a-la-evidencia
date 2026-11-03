@@ -62,7 +62,7 @@ Así se vería un hallazgo del laboratorio expresado con ese contrato. El hash e
 ```json
 {
   "id": "EV-0142",
-  "claim": "Cliente activo: la comisión se redondea al céntimo; el empate se aleja de cero",
+  "claim": "Active customer: the fee rounds to the cent; ties go away from zero",
   "status": "observed",
   "artifact": {
     "path": "legacy/fee.cob",
@@ -70,10 +70,10 @@ Así se vería un hallazgo del laboratorio expresado con ese contrato. El hash e
     "locator": "COMPUTE fee-cents ROUNDED"
   },
   "tool": { "name": "cobc", "version": "GnuCOBOL 3.1.2.0",
-            "method": "ejecución con entrada fijada" },
+            "method": "execution with a fixed input" },
   "observation": { "input": "0000002500200Y", "output": "APPROVE|00000001" },
-  "coverage": "un empate exacto; sin negativos ni otras opciones de compilación",
-  "unknowns": ["comportamiento en Enterprise COBOL con las opciones de producción"],
+  "coverage": "one exact tie; no negatives or other compiler options",
+  "unknowns": ["behaviour on Enterprise COBOL with production options"],
   "approval": null,
   "verifiedBy": []
 }

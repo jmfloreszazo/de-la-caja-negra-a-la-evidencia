@@ -82,3 +82,5 @@ El protocolo de validación externa distingue qué no puede demostrar una prueba
 ## Cierre consolidado — 3 de noviembre de 2026
 
 Consulta el [cierre de ramas/issues y el trabajo pendiente ordenado](docs/PROJECT_CLOSEOUT.es.md): nueve tareas entregadas o solapadas cerradas; validación E2 agrupada en #8, E3 en #9, brownfield en #58 y canales en #30. Las referencias históricas #24/#25/#74/#64/#12 conservan procedencia, no añaden colas activas. #16/#53 siguen congeladas. El manifiesto conserva todas las referencias revisadas y archiva las historias no contenidas en main antes de retirar ramas.
+
+Corte editorial PR #83: corregidas 17 divergencias de código/configuración, inventariados 32 bloques y superados 58 casos COBOL impresos más pruebas acotadas de redondeo/COMP-3 con originales archivados. Corregidos saltos de listados/títulos y pies de series grises; diez páginas inspeccionadas. Véase el [registro editorial](docs/EDITORIAL_CHECKPOINT_2026-11-03.es.md). #11 sigue abierto para integración contextual, EBCDIC y reproducción por plataforma; no es una release ni certificación idiomática integral.

@@ -42,11 +42,11 @@ En .NET, la trampa está en la sobrecarga que no dice nada:
 **Listado 12.2 · Comportamiento documentado de Math.Round [8]** — *Ilustrativo*
 
 ```csharp
-Math.Round(0.5m);                                  // 0 -> al par, por defecto
-Math.Round(1.5m);                                  // 2 -> también al par
+Math.Round(0.5m);                                  // 0 -> to even, by default
+Math.Round(1.5m);                                  // 2 -> also to even
 Math.Round(0.5m, MidpointRounding.AwayFromZero);   // 1
 decimal.Round(25m * 200m / 10000m, 0,
-              MidpointRounding.AwayFromZero);      // 1 -> caso C003 del laboratorio
+              MidpointRounding.AwayFromZero);      // 1 -> lab case C003
 ```
 
 Ninguna de las dos líneas por defecto es un error de .NET. Es una política distinta. El error aparece cuando nadie decide cuál es la nuestra.

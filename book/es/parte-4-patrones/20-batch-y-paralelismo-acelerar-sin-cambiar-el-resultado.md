@@ -42,20 +42,20 @@ var options = new ParallelOptions
 
 await Parallel.ForEachAsync(plan.Partitions, options, async (partition, token) =>
 {
-    // Una partición confirmada no se vuelve a aplicar: reiniciar es seguro.
+    // A committed partition is not applied again: restarting is safe.
     if (await store.IsCommittedAsync(plan.RunId, partition.Id, token)) return;
 
     await using var tx = await store.BeginAsync(token);
     var totals = await ProcessAsync(partition, plan.RulesVersion,
                                     plan.BusinessDate, tx, token);
 
-    // Resultados y checkpoint en la MISMA transacción, con sumas de control.
+    // Results and checkpoint in the SAME transaction, with control totals.
     await tx.SaveCheckpointAsync(plan.RunId, partition.Id,
                                  totals.Count, totals.Amount, token);
     await tx.CommitAsync(token);
 });
 
-// Reducción determinista sobre lo confirmado, no sobre la memoria de los workers.
+// Deterministic reduction over what was committed, not over the workers' memory.
 var control = await store.ReconcileAsync(plan.RunId,
                                         plan.ExpectedCount, plan.ExpectedAmount, ct);
 ```

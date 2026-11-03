@@ -68,7 +68,7 @@ Una nota de oficio: el laboratorio construye SQL interpolando valores porque lla
     if(fault=="throw-after-debit")throw new InvalidOperationException("Injected failure after debit");
     db.Exec($"UPDATE accounts SET balance=balance+{amount} WHERE id={dst}");
    }
-   // ... operación, asientos y outbox ...
+   // ... operation, postings and outbox ...
    db.Exec("COMMIT");begun=false;
    if(fault=="lost-response")Environment.Exit(92);
    return new(status,retries,clock.Elapsed.TotalMilliseconds);
@@ -98,7 +98,7 @@ tests={
                       'HAVING SUM(delta)<>0 OR COUNT(*)<>2)')==0,
  'projectionAgrees':s('SELECT COUNT(*) FROM accounts a WHERE balance<>100000+COALESCE('
                       '(SELECT SUM(delta) FROM postings p WHERE p.account=a.id),0)')==0,
- # ... twoPostingsPerCommit y outboxAtomic
+ # ... twoPostingsPerCommit and outboxAtomic
 }
 ```
 
@@ -117,9 +117,9 @@ Conservar el total es necesario y no suficiente: un movimiento cargado a la cuen
 | caliente | 4 | 128 | 495,6 | 0,81 | 2,04 | 42,08 | 0 |
 | caliente | 8 | 256 | 624,4 | 0,85 | 28,40 | 109,78 | 5 |
 
-![Figura 28.3 · Ejecución de referencia: la mediana baja y la cola se dispara al añadir procesos que compiten por un único escritor.](../../figures/es/measures_chart.png)
+![Figura 28.3 · Ejecución de referencia con cuentas uniformes: las barras rojas muestran p99 y la línea gris p50, en milisegundos. La mediana baja mientras crece la cola.](../../figures/es/measures_chart.png)
 
-*Figura 28.3 · Ejecución de referencia: la mediana baja y la cola se dispara al añadir procesos que compiten por un único escritor.*
+*Figura 28.3 · Ejecución de referencia con cuentas uniformes: las barras rojas muestran p99 y la línea gris p50, en milisegundos. La mediana baja mientras crece la cola.*
 
 La tabla enseña una cosa verdadera y nada más: al añadir procesos que compiten por un recurso serializado, la mediana mejora y la cola se dispara. Es el mismo fenómeno que aparecerá con una cuenta caliente o con un log saturado. Pero son 32 operaciones por proceso, en circuito cerrado, incluyendo el arranque de cada proceso .NET, sobre un motor que serializa escrituras, en una sola máquina. No hay calentamiento ni duración suficiente, no hay baseline del mainframe y no hay Azure. Esta tabla no puede aprobar capacidad, y el código lo deja escrito en el propio resumen de resultados.
 

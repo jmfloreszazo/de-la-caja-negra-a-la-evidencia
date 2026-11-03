@@ -82,3 +82,5 @@ The external-validation protocol records what a single-runner fixture cannot est
 ## Consolidated closeout — 3 November 2026
 
 See the [branch/issue closeout and ordered remaining work](docs/PROJECT_CLOSEOUT.md): nine delivered/overlapping trackers closed; remaining E2 validation is consolidated in #8, E3 in #9, brownfield in #58 and channels in #30. Historical #24/#25/#74/#64/#12 references are provenance, not additional active work queues. #16/#53 remain frozen. The cleanup manifest preserves all reviewed branch tips and archives non-ancestor histories before any ref removal.
+
+Editorial checkpoint PR #83: 17 bilingual code/config drifts corrected; all 32 listings inventoried, 58 printed COBOL cases plus bounded rounding/COMP-3 checks passed with archived original provenance. PDF listing/caption pagination and gray-series captions corrected; 10 pages visually sampled. See the [editorial record](docs/EDITORIAL_CHECKPOINT_2026-11-03.md). #11 remains open for full contextual listing, EBCDIC and platform reproduction; this is not a release or full native-English certification.

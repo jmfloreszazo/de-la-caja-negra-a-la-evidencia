@@ -23,7 +23,7 @@ Registraría peticiones ofrecidas, admitidas, confirmadas, rechazadas por negoci
 
 Separaría warm-up y medición, repetiría ensayos y conservaría su variabilidad. La carga de recuperación y la mezcla batch tendrían pruebas propias. Solo entonces podríamos afirmar qué arquitectura se acerca al compromiso operativo del mainframe y qué diferencias siguen abiertas.
 
-Es la misma disciplina que me impuse al comparar dos agentes alojados en Microsoft Foundry, uno en .NET 10 y otro en Python: misma región, misma cuota, mismo sobre de recursos y una única variable de verdad, el runtime. Un benchmark que cambia dos cosas a la vez no mide nada, y el «cómo lo he medido» es donde un benchmark se gana o se pierde la credibilidad [45].
+La comparación de Foundry mantuvo constante la infraestructura y comparó stacks completos C#/.NET y Python/CPython, incluidos SDK y serialización. No aisló el coste del runtime. La latencia secuencial medida con poca carga no demuestra throughput máximo ni saturación [45].
 
 ## Un ejemplo que se puede ejecutar: la omisión coordinada
 
@@ -41,9 +41,9 @@ closed-loop (1 client)       9500    950.0     1.0     1.0      1.0    501.0    
 open-loop (500/s)            5000    500.1     1.0   251.0    451.0    501.0     401
 ```
 
-![Figura 24.1 · El mismo servidor y la misma parada. El circuito cerrado registra el atasco una vez; el circuito abierto cuenta cada petición que esperó detrás de él.](../../figures/es/omission_chart.png)
+![Figura 24.1 · Latencia máxima por intervalo de 100 ms en la simulación. Rojo: circuito abierto, con solicitudes en cola que se drenan tras la parada. Gris: circuito cerrado, que registra un único pico.](../../figures/es/omission_chart.png)
 
-*Figura 24.1 · El mismo servidor y la misma parada. El circuito cerrado registra el atasco una vez; el circuito abierto cuenta cada petición que esperó detrás de él.*
+*Figura 24.1 · Latencia máxima por intervalo de 100 ms en la simulación. Rojo: circuito abierto, con solicitudes en cola que se drenan tras la parada. Gris: circuito cerrado, que registra un único pico.*
 
 El circuito cerrado informa de un p99 de un milisegundo y de casi el doble de throughput. No miente sobre las peticiones que midió; miente por omisión, porque su único cliente estaba esperando mientras el servidor estaba parado y dejó de ofrecer carga. El circuito abierto revela que 401 peticiones superaron los 100 ms. Ese es el atasco que vería un cliente real en el cierre de mes.
 

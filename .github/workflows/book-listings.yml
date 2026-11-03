@@ -1,0 +1,52 @@
+name: Book listing source and bounded native checks
+on:
+  pull_request:
+    paths:
+      - 'book/**'
+      - 'scripts/audit_book_listings.py'
+      - 'scripts/run_book_listing_checks.py'
+      - 'scripts/check_language_policy.py'
+      - 'scripts/check_book_listing_observations.py'
+      - 'evidence/editorial/book-listings.json'
+      - 'evidence/editorial/book-listing-native-original*'
+      - '.github/workflows/book-listings.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  listings:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    env:
+      SOURCE_HEAD_SHA: ${{ github.event.pull_request.head.sha || github.sha }}
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+      - uses: actions/setup-python@v6
+        with:
+          python-version: '3.12'
+      - uses: actions/setup-dotnet@v5
+        with:
+          dotnet-version: '10.0.x'
+      - name: Install bounded listing dependencies
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y gnucobol3
+          python3 -m pip install PyYAML==6.0.3
+      - name: Verify canonical code, inventory and structural checks
+        run: |
+          python3 scripts/check_language_policy.py --self-test
+          python3 scripts/check.py
+          python3 scripts/audit_book_listings.py
+          git fetch --no-tags --depth=1 origin e8785e0a5c565e3b006c3d23feebc888130dce3b
+          python3 scripts/check_book_listing_observations.py
+      - name: Execute selected printed code with explicit fixtures
+        run: python3 scripts/run_book_listing_checks.py
+      - name: Preserve original outcome and raw compiler/runtime logs
+        if: always()
+        uses: actions/upload-artifact@v6
+        with:
+          name: book-listing-original-checks
+          path: lab/results/book-listings/
+          if-no-files-found: warn

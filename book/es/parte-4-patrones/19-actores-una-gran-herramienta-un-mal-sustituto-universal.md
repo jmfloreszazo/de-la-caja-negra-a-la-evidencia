@@ -49,11 +49,11 @@ public interface IAccountGrain : IGrainWithStringKey
     Task<DebitDecision> DebitAsync(DebitCommand command);
 }
 
-// No [Reentrant]: each request completes before the next starts.
+// No [Reentrant]: each request finishes before the next one starts.
 public sealed class AccountGrain(ILedger ledger) : Grain, IAccountGrain
 {
     public Task<DebitDecision> DebitAsync(DebitCommand command) =>
-        // The actor orders requests; the ledger decides and commits.
+        // The actor provides order; the ledger provides decision and durability.
         ledger.DebitAsync(this.GetPrimaryKeyString(),
                           command.OperationId, command.Amount);
 }

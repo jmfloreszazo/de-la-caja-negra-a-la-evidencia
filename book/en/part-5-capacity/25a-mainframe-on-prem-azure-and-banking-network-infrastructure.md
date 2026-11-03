@@ -32,6 +32,8 @@ Physics remains relevant after buying ExpressRoute: light travels at roughly 200
 
 The budget does not stop at an application returning `HTTP 200`:
 
+**Listing 25a.1 · Branch-to-ledger path** — *Illustrative topology*
+
 ```text
 Branch / TN3270 or browser
   | LAN + SD-WAN/MPLS/VPN + provider + routing + TLS

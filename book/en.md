@@ -76,7 +76,7 @@ Two conventions help in reading this book.
 
 **Source, proposal and execution.** I separate what exists in a source, what I propose as a design and what the lab has actually executed. When I describe a production architecture, it is a proposal that still needs integration and verification. When I present a result from the demo, its validity is limited to the program, the cases and the versions recorded.
 
-**Labels on listings.** Every code fragment carries a label. *Executed* means it is part of the lab and has a reference run with its hashes. *Verified* means its logic has been checked with an independent implementation. *Illustrative* means it is a design fragment that has been neither compiled nor executed: it is there to reason with, not to copy into production.
+**Labels on listings.** Every code fragment carries a label. *Executed* identifies lab code or recorded output with reference-run provenance. *Verified* identifies logic checked against an independent implementation. *Illustrative* identifies a design fragment; a syntax check or a bounded helper test does not certify its complete integration or production behaviour. The [listing inventory](../docs/BOOK_LISTINGS.md) records the exact scope tested and the dependencies still missing. Executable code and configuration are identical and in English in both editions; narrative diagrams and templates may be translated.
 
 The lab is entirely in English, runs with Podman and is designed so that anyone can prove me wrong. Annex [A](#annex-a--a-lab-that-can-prove-us-wrong) explains how.
 
@@ -1587,7 +1587,7 @@ I would record requests offered, admitted, committed, rejected by the business, 
 
 I would separate warm-up from measurement, repeat runs and keep their variability. The recovery load and the batch mix would have their own tests. Only then could we state which architecture approaches the mainframe's operational commitment and which differences remain open.
 
-It is the same discipline I imposed on myself when comparing two agents hosted on Microsoft Foundry, one on .NET 10 and the other on Python: same region, same quota, same resource envelope and a single real variable, the runtime. A benchmark that changes two things at once measures nothing, and the "how I measured it" is where a benchmark wins or loses its credibility [45].
+The Foundry comparison held the infrastructure constant while comparing complete C#/.NET and Python/CPython stacks, including their SDKs and serialization paths. It did not isolate runtime overhead. The measured sequential, low-load latency does not establish peak throughput or saturation [45].
 
 #### An example you can run: coordinated omission
 
@@ -1605,9 +1605,9 @@ closed-loop (1 client)       9500    950.0     1.0     1.0      1.0    501.0    
 open-loop (500/s)            5000    500.1     1.0   251.0    451.0    501.0     401
 ```
 
-![Figure 24.1 · Maximum latency per 100 ms interval in the simulation. In red, the open loop: the queue takes half a second to drain. In blue, the closed loop: a single spike and nothing else.](figures/en/omission_chart.png)
+![Figure 24.1 · Maximum latency per 100 ms interval in the simulation. Red: open loop, with queued requests draining after the stall. Gray: closed loop, which records a single spike.](figures/en/omission_chart.png)
 
-*Figure 24.1 · Maximum latency per 100 ms interval in the simulation. In red, the open loop: the queue takes half a second to drain. In blue, the closed loop: a single spike and nothing else.*
+*Figure 24.1 · Maximum latency per 100 ms interval in the simulation. Red: open loop, with queued requests draining after the stall. Gray: closed loop, which records a single spike.*
 
 The closed loop reports a p99 of one millisecond and almost twice the throughput. It does not lie about the requests it measured; it lies by omission, because its only client was waiting while the server was stopped and stopped offering load. The open loop reveals that 401 requests exceeded 100 ms. That is the congestion a real customer would see at month-end close.
 
@@ -1709,6 +1709,8 @@ Physics remains relevant after buying ExpressRoute: light travels at roughly 200
 ##### Latency budget: keyboard to rendered response
 
 The budget does not stop at an application returning `HTTP 200`:
+
+**Listing 25a.1 · Branch-to-ledger path** — *Illustrative topology*
 
 ```text
 Branch / TN3270 or browser
@@ -2170,9 +2172,9 @@ Preserving the total is necessary and not sufficient: a movement charged to the 
 | hot | 4 | 128 | 495.6 | 0.81 | 2.04 | 42.08 | 0 |
 | hot | 8 | 256 | 624.4 | 0.85 | 28.40 | 109.78 | 5 |
 
-![Figure 28.3 · Reference run with uniform accounts: red bars for p99 and a blue line for p50, in milliseconds. The median drops and the tail explodes.](figures/en/measures_chart.png)
+![Figure 28.3 · Reference run with uniform accounts: red bars show p99 and the gray line shows p50, in milliseconds. The median falls while the tail rises.](figures/en/measures_chart.png)
 
-*Figure 28.3 · Reference run with uniform accounts: red bars for p99 and a blue line for p50, in milliseconds. The median drops and the tail explodes.*
+*Figure 28.3 · Reference run with uniform accounts: red bars show p99 and the gray line shows p50, in milliseconds. The median falls while the tail rises.*
 
 The table teaches one true thing and nothing more: when we add processes that compete for a serialized resource, the median improves and the tail explodes. It is the same phenomenon that will appear with a hot account or a saturated log. But these are 32 operations per process, in a closed loop, including the start-up of each .NET process, on an engine that serializes writes, on a single machine. There is no warm-up or sufficient duration, no mainframe baseline and no Azure. This table cannot approve capacity, and the code writes that down in the results summary itself.
 
@@ -2928,7 +2930,7 @@ For the offline checks, Python 3 is enough.
 
 #### Running with Podman
 
-**Listing A.1 · Starting with Podman** — *Executed by design · recipe not built here*
+**Listing A.1 · Starting with Podman** — *Reproduction commands · platform-dependent*
 
 ```bash
 # Linux, macOS or WSL
@@ -2949,6 +2951,8 @@ The build needs network access once: the base image, the packages and the .NET r
 The reference run is native on Linux. The Podman recipe is built and run by the `podman` continuous integration job; if it behaves differently on your machine, that reproduction report is exactly the evidence the lab asks for.
 
 #### Native run
+
+**Listing A.2 · Native reproduction commands** — *Requires GnuCOBOL and .NET 10*
 
 ```bash
 sudo apt-get update
