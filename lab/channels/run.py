@@ -166,7 +166,7 @@ try:
                          '-e', 'POSTGRES_PASSWORD=channelslocal', '-e', 'POSTGRES_DB=channelslab_' + name,
                          '-p', f'127.0.0.1:{port}:5432', image])
         containers.append(ident)
-        wait_until(lambda i=ident: subprocess.run(['podman', 'exec', i, 'pg_isready', '-U', 'postgres'], capture_output=True).returncode == 0, 45)
+        wait_until(lambda i=ident: subprocess.run(['podman', 'exec', i, 'pg_isready', '-h', '127.0.0.1', '-U', 'postgres'], capture_output=True).returncode == 0, 45)
         with connect(name, probe=False) as db:
             assert db.execute('SELECT current_database() AS db').fetchone()['db'] == 'channelslab_' + name
             db.execute((ROOT / f'lab/channels/{name}.sql').read_text())
