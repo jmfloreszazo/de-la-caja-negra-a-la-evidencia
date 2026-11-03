@@ -39,6 +39,7 @@ def main():
               'physicalHosts': 1, 'siloHost': 'DirectedSilo', 'logs': saved,
               'activationExclusivityEstablished': False,
               'preInvokeDelayInjected': True, 'monitorErrors': monitor_errors,
+              'logStreamsCaptured': 'stdout_and_stderr',
               'extraOutcomes': extra_outcomes, 'probeLimitPerWorker': 12}
     monitor = None
 
@@ -85,11 +86,17 @@ def main():
         identity = inspected[0]['Id']
         if identity in seen:
             return
-        raw = original_p('logs', name)
+        log_result = subprocess.run(['podman', 'logs', name], capture_output=True,
+                                    text=True, timeout=45)
+        assert log_result.returncode == 0, 'Failed to capture silo log streams'
         path = out / ('directed-' + name + '-' + str(len(saved)) + '.log')
-        path.write_text(raw + '\n')
+        stderr_path = path.with_suffix('.stderr.log')
+        path.write_text(log_result.stdout)
+        stderr_path.write_text(log_result.stderr)
         saved.append({'containerId': identity, 'node': name, 'file': path.name,
-                      'sha256': hashlib.sha256(path.read_bytes()).hexdigest()})
+                      'sha256': hashlib.sha256(path.read_bytes()).hexdigest(),
+                      'stderrFile': stderr_path.name,
+                      'stderrSha256': hashlib.sha256(stderr_path.read_bytes()).hexdigest()})
         seen.add(identity)
 
     def finish_probes():
