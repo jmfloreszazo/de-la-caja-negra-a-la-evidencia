@@ -106,6 +106,30 @@ The author's articles are cited by their original Spanish titles, with an Englis
 
 [50] CSF International. *EZswitch — Online ATM/Debit Middleware System*. Commercial example of host authorization and stand-in; not a bank-approved policy for this lab. Consulted 3 November 2026. <https://www.csfi.com/ezswitch-2/>
 
+[51] IBM. *Channel subsystem (CSS)*. IBM Z basic-skills documentation. Indexed primary documentation. Consulted 3 November 2026; publication date not supplied. <https://www.ibm.com/docs/en/zos-basic-skills?topic=mainframe-channel-subsystem-css>
+
+[52] IBM. *PR/SM Concepts*. z/VM 7.3.0 documentation. Indexed primary documentation. Consulted 3 November 2026; publication date not supplied. <https://www.ibm.com/docs/en/zvm/7.3.0?topic=hiperdispatch-prsm-concepts>
+
+[53] IBM. *Virtual storage overview*. z/OS 3.1.0 documentation. Indexed primary documentation. Consulted 3 November 2026; publication date not supplied. <https://www.ibm.com/docs/en/zos/3.1.0?topic=overview-virtual-storage>
+
+[54] IBM. *Defining service classes and performance goals*. z/OS 3.2.0 documentation. Indexed primary documentation; direct reader returned HTTP 403. Consulted 3 November 2026; publication date not supplied. <https://www.ibm.com/docs/SSLTBW_3.2.0/com.ibm.zos.v3r2.ieaw100/sclg.htm>
+
+[55] IBM. *Processing units*. z/OS 3.1.0 documentation. Indexed primary documentation. Consulted 3 November 2026; publication date not supplied. <https://www.ibm.com/docs/en/zos/3.1.0?topic=basics-processing-units>
+
+[56] IBM. *Improved performance through concurrency control*. Db2 for z/OS 13 documentation. Indexed primary documentation. Consulted 3 November 2026; publication date not supplied. <https://www.ibm.com/docs/en/db2-for-zos/13.0.0?topic=users-improved-performance-through-concurrency-control>
+
+[57] IBM. *Db2 data sharing*. Db2 for z/OS 13 documentation. Indexed primary documentation. Consulted 3 November 2026; publication date not supplied. <https://www.ibm.com/docs/en/db2-for-zos/13.0.0?topic=concepts-db2-data-sharing>
+
+[58] Unisys. *Automatic Single Transaction Abort Recovery*. ClearPath MCP 21.0; document 38508198-005. Primary documentation read directly. Consulted 3 November 2026; publication date not supplied. <https://www.support.unisys.com/aseries/docs/ClearPath-MCP-21.0/38508198-005/section-000082014.html>
+
+[59] Unisys. *OS 2200 TIP Application Configuration Properties*. ClearPath ePortal 10.0; document 82073594. Primary documentation read directly. Consulted 3 November 2026; publication date not supplied. <https://www.support.unisys.com/ePortalIC-10.0/topic/82073594_clearpath_eportal_developerhelp/html/section-000039378.htm>
+
+[60] IBM. *Database files*. IBM i 7.6.0. Indexed primary documentation consulted 3 November 2026; version scope does not establish installed products or current availability. <https://www.ibm.com/docs/en/i/7.6.0?topic=concepts-database-files>
+
+[61] Fujitsu. *COBOL2000 V1.6 — Net Express development environment with the BS2000/OSD option*. BS2000/OSD documentation. Indexed primary documentation consulted 3 November 2026; version scope does not establish installed products or current availability. <https://bs2manuals.ts.fujitsu.com/psCOBOL2000V16en/net-express-development-environment-with-the-bs2000-osd-option-cobol-compiler-user-guide-164-22034711.html>
+
+[62] IBM. *IBM Power Systems Performance Capabilities Reference*. IBM i / Power9 reference, April 2021. Indexed primary documentation consulted 3 November 2026; version scope does not establish installed products or current availability. <https://public.dhe.ibm.com/services/us/igsc/idoctor/perf/systems_power_software_i_perfmgmt_pcrm_p9_april_2021_v1_26016726USEN.pdf>
+
 ---
 
 [← Annex F · Operational glossary](annex-f-operational-glossary.md) · [Contents](../README.md)

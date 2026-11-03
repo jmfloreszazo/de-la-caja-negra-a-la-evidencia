@@ -158,6 +158,55 @@ Translated into a status meeting: when someone says "it's already equivalent", t
 
 > **Measuring a mainframe by its MIPS is like measuring an airport by the thrust of its engines.**
 
+#### Identify the layer that owns each guarantee
+
+An assessment needs a platform address, not just an application name: machine/model, partition, operating system/version, runtime/monitor, resource manager and configuration. A partition running Linux on IBM Z does not acquire z/OS, CICS or Db2 for z/OS semantics from the processor. Nor does a container constitute the recovery boundary of everything it calls. Record the installed topology before choosing what to retain, replatform or redesign.
+
+The [source catalog](../research/platform-contracts/catalog.json) records ten bounded contracts, their version scope and a proposed falsification test. It separates documented source behavior, execution on the original platform and verification of the replacement. Here only the first has evidence. Unreviewed product families remain visible as unknowns; no blank means that a feature is absent.
+
+| Layer / contract | Documented scope | What to investigate in the replacement |
+|---|---|---|
+| Partition and dispatch | PR/SM entitlement for shared CPU depends on partition weights and the shared pool [52] | Allocated versus consumed CPU, competition, topology and tail latency; a container CPU limit is not a semantic equivalent |
+| Channel I/O | IBM describes CSS handling I/O asynchronously relative to central-processor work [51] | Queue/service time along the complete storage path; language-level async alone does not reproduce a channel subsystem |
+| Virtual and real storage | z/OS may page or postpone work under real-storage shortage [53] | Resident working set, buffers, paging and allocation pressure; addressability and RAM capacity are different measurements |
+| Workload policy | WLM uses service goals and importance [54] | Interactive versus batch budgets and delays; a priority queue alone is insufficient evidence |
+| Processor roles | zIIPs run eligible work [55] | Workload eligibility, actual use and licensing inventory; count useful work rather than converting engines to vCPUs |
+| Transaction monitor | A CICS task can span several units of work [49] | Actual syncpoints, participants and external effects; session/task/transaction boundaries need separate inventories |
+| Data manager | Db2 for z/OS locking/isolation and data sharing depend on engine settings and topology [56], [57] | Concurrent histories, access paths, predicate safety and recovery; familiar isolation names or writable replicas do not establish equivalence |
+
+The sources describe particular products and documentation versions, not every installation. The structured catalog records retrieval through an index where direct IBM document access was unavailable; publication dates remain unknown where not supplied. Version scope is not a statement of current support or availability. No CPU frequency, MIPS conversion, hardware capacity or bank workload result is derived from these rows.
+
+#### Follow one instruction through its recovery boundaries
+
+Consider a **proposed assessment trace**, with no measured durations: branch/browser → channel adapter → transaction service → authoritative database → durable decision → response. Record the operation identity and distinguish it from a session, task, unit-of-work identifier and trace span. The [channel companion](#companion-chapter--channels-atm-cash-and-the-core) develops the ATM/device boundary; the following trace concerns a recoverable account update.
+
+| Observation point | Capture under approved access | Failure or ambiguity to investigate |
+|---|---|---|
+| Branch and adapter | Client send/receive, network budget, ingress identity and adapter mapping | Client timeout before acceptance versus response lost after commit; preserve the original operation identity |
+| Dispatch and execution | Service-class delay, task/UOW boundaries and CPU consumption | An available CPU does not prove that a queued request met its deadline |
+| Read and lock | Access path, logical/physical reads, buffer hit rate, lock wait and affected predicate | A cached read can be fast while a competing update violates the rule; inspect concurrent histories |
+| Update and durability | Rows/records changed, recoverable participants, log/syncpoint acknowledgment and event publication | Crash before/after the boundary; determine which effects are committed, backed out or unresolved |
+| Response and recovery | Authoritative decision, client outcome, retry identity and reconciliation | Lost acknowledgment remains uncertain to the client; a new transport connection must not silently create another debit |
+
+Trace intervals must have defined endpoints. Use monotonic durations within each observer and retain clock offsets/uncertainty before comparing timestamps across machines. A host transaction-response metric does not automatically include branch display, WAN or device work. The [infrastructure chapter](#chapter-25-bis--infrastructure-versus-a-current-mainframe-on-premises-azure-and-the-branch-network) addresses the network/capacity comparison; do not add overlapping durations as if they were independent.
+
+Two **assessment designs**, rather than benchmarks, make the questions concrete. For a read-heavy candidate, preregister 32 concurrent clients querying an immutable 1,000,000-account fixture, then compare warm and cold working sets, query plans, real reads and response tails. Report the achieved cache behavior; a process restart is not proof that storage caches are cold. For a write-heavy candidate, preregister 16 concurrent clients issuing 1,000 unique transfers of 100 minor units across 100 accounts with 10,000 each, then a separate run concentrated on two hot accounts. Reconcile accepted/declined/uncertain operations, paired entries, deduplication and durability under pre/post-commit failure. The numbers define hypothetical inputs, not observed throughput. Both scenarios need approved service objectives, restore tests and matched persistence/security before comparison.
+
+#### Ask the operator and DBA for evidence that can change the design
+
+Request only authorized, minimized extracts. The useful output is a manifest with collection interval, version/configuration, units, owner, sensitivity and missing-data reasons; production dumps, credentials and customer records do not belong in this public repository.
+
+| Question | Evidence to request | Design decision it can change |
+|---|---|---|
+| Which environments actually execute this capability? | Model/partition/OS inventory, monitor and engine versions, active resource definitions | Retain an engine, replace an adapter or redraw the capability boundary |
+| Which workload competes at the peak? | SMF/RMF and service-class records as applicable; CP/zIIP use, delays and batch deadlines | Admission, isolation, scheduling and capacity placement |
+| Which data path dominates? | Db2 accounting/statistics, access plans, buffers, lock/deadlock evidence and log/storage timing | Query/index work, transaction size, concurrency limit or storage design |
+| What else commits or changes state? | Dataset/queue/resource inventory, syncpoints, job graph, generations and external effects | Local transaction versus coordinated resources or explicit reconciliation |
+| What must recovery preserve? | Acknowledged-effect history, backups/restore rehearsal, replication topology and RPO/RTO | Failure domains, ownership fence and operator runbook |
+| Who approves the behavior and exceptions? | Versioned policy, accountable owner and independently expected outcomes | Business acceptance; observed source behavior alone is insufficient |
+
+The unanswered fields remain `NEEDS_CUSTOMER_DATA` in an actual assessment. A Linux SQL test can validate a candidate invariant; it cannot measure an IBM channel fabric, establish an MCP recovery option or certify the old installation. The [pattern chapter](#chapter-13--before-choosing-a-pattern-identify-the-contract) uses three platform examples to show why attribution matters.
+
 ### Chapter 2 · The system we are trying to preserve
 
 > [!IMPORTANT]
@@ -541,15 +590,15 @@ Retain the legacy core if critical invariants cannot yet be reproduced. Wrap it 
 
 #### Source-platform interview and assessment
 
-Archaeology starts with a structured interview and continues by checking each answer against evidence. The platform may be IBM Z with z/OS, IBM i on Power, Fujitsu BS2000 or another environment; the COBOL language alone identifies neither the operating system nor the data manager. Record the actual vendor, model, release, partition and installed products before drawing conclusions.
+Archaeology starts with a structured interview and continues by checking each answer against evidence. The platform may be IBM Z with z/OS, IBM i on Power, Fujitsu BS2000 or another environment; the COBOL language alone identifies neither the operating system nor the data manager. Record the actual vendor, model, release, partition and installed products before drawing conclusions. Include IBM i as an adjacent enterprise platform and keep the BS2000 interview separate from the GS21/MSP/XSP discovery entry; vendor identity alone does not establish shared behavior.
 
 The interview brings together business, development, operations, data, security and infrastructure specialists. It identifies capabilities and owners; languages and source; data managers and files; transactions and locks; jobs and batch windows; interfaces, file transfers, branches, continuity, metrics and costs. Record the owner, date, source, scope and limitations of each answer. An expert statement is a hypothesis until checked against source, configuration, observations and representative tests; absence from a sampled trace does not establish that a dependency is absent.
 
 | Environment or technology | Initial question |
 |---|---|
 | IBM Z and z/OS | Are CICS, IMS DB or TM, Db2 for z/OS, VSAM and JCL used? |
-| IBM i | Which RPG, COBOL and CL programs access Db2 for i and physical and logical files? |
-| Fujitsu BS2000 | Which releases of COBOL2000, openUTM, UDS/SQL, SESAM/SQL or openFT are installed? |
+| IBM i | Which RPG, COBOL and CL programs access Db2 for i and physical and logical files [60]? |
+| Fujitsu BS2000 | Which releases of COBOL2000, openUTM, UDS/SQL, SESAM/SQL or openFT are installed [61]? |
 | Other products | Are Natural, Adabas, IDMS, Datacom or a Unisys platform present, and which releases and interfaces are used? |
 
 Verify each product's presence: these are examples, not mandatory components of an architecture. IMS DB and IMS TM serve different functions. VSAM organizes and provides access to data sets; investigate keys, ordering and encoding before selecting a target structure.
@@ -558,7 +607,9 @@ Verify each product's presence: these are examples, not mandatory components of 
 
 For each capability, identify rules, data, write authority, transaction boundaries, consumers and acceptance criteria. Record unknowns and decide what can be retained, wrapped, progressively replaced or retired, with a rationale and test for each decision. A saga or an actor does not automatically replace an atomic transaction.
 
-Compare on-premises, cloud and hybrid alternatives using equivalent workloads and periods, volumes, latency, batch windows, recovery, security, dated costs and constraints. MIPS, MSU and CPW are not interchangeable units and do not convert directly to core counts. Differential tests use controlled inputs, edge cases and reference outputs; investigate and approve differences. Do not treat a synthetic experiment or shared runner as a mainframe measurement or production test.
+Compare on-premises, cloud and hybrid alternatives using equivalent workloads and periods, volumes, latency, batch windows, recovery, security, dated costs and constraints. MIPS, MSU and CPW are not interchangeable units and do not convert directly to core counts. IBM describes CPW as a relative commercial-workload capacity measure whose result depends on workload characteristics [62]. Differential tests use controlled inputs, edge cases and reference outputs; investigate and approve differences. Do not treat a synthetic experiment or shared runner as a mainframe measurement or production test.
+
+For the platform-layer evidence questionnaire, use [Chapter 1](#chapter-1--the-mainframe-is-not-a-fast-box). For source-scoped pattern decisions, use [Chapter 13](#chapter-13--before-choosing-a-pattern-identify-the-contract) and the [catalog scope](../research/platform-contracts/README.md). The interview records discovery hypotheses; it does not promote the catalog's unverified families or adjacent platforms to verified migrations.
 
 #### Evidence contract
 
@@ -897,6 +948,34 @@ The matrix is deliberately conditional. There is no pattern that replaces "the m
 To read the matrix it helps to ask the same three questions every time, in this order. What did the old system guarantee, even if nobody wrote it down? What new problem appears when we take it off its platform: networks, several instances, another engine, another encoding? What is the simplest mechanism that solves both and that we can test? If a proposal cannot answer the third, it is still a preference, not a design.
 
 > **There is no pattern that replaces "the mainframe" as a whole. Different guarantees must be rebuilt in different layers.**
+
+#### Three platform mappings, with different failure contracts
+
+The [machine-readable seed catalog](../research/platform-contracts/catalog.json) and its [scope guide](../research/platform-contracts/README.md) make the preceding matrix specific. It covers IBM Z/z/OS, Unisys MCP and OS 2200 integration; these are three platform contexts, not interchangeable implementations. The following are proposed replacements and acceptance tests. None was executed against an original vendor runtime for this research increment.
+
+**IBM / CICS and Db2.** Inventory the recoverable resources and actual unit-of-work boundaries before extracting an API [49], [56]. A target SQL transaction is a candidate for resources inside its boundary. If the source also coordinates a queue or another manager, an outbox may require an approved change to externally observable intermediate states. Inject a failure between participants and inspect both resource histories; final balances alone cannot prove the old coordination contract survived.
+
+**Unisys MCP / Enterprise Database Server.** MCP 21 documentation conditions SINGLEABORT on `INDEPENDENTTRANS` and assigns rectification of an aborted transaction to the application/end user [58]. Therefore obtain DASDL/audit settings before designing retries. A candidate must retry the appropriate complete instruction and reconcile its outcome; retrying just the failed statement can omit earlier effects.
+
+**OS 2200 TIP / ePortal.** The ePortal 10 connector can resend after reconnecting; its guidance treats stateful sessions differently [59]. Recover session context and financial identity separately. A new connection is neither proof that the previous instruction failed nor permission to repeat its effect. This source documents a connector, not the complete OS 2200 database recovery model.
+
+| Mapping | Candidate layers | Counterexample and required oracle |
+|---|---|---|
+| MF006: CICS resource boundary | Application UOW; data transaction; recoverable integration | Separate commits after extraction: crash between effects and reconcile each participant |
+| MF009: MCP recovery configuration | Application retry; engine recovery; operational procedure | Statement-only retry loses earlier work: compare the complete expected instruction and unaffected work |
+| MF010: TIP reconnect/session | Semantic adapter; session recovery; durable identity | Replay on another session duplicates or misroutes work: compare accepted effect, identity and context |
+
+The schema requires a dated source/version, original contract, candidate layers, semantic gap, failure control, oracle, customer measurements and risk IDs. Its validator rejects invented equivalence, undocumented sources and unsupported evidence states. Six catalog mutations exercise those checks. **These are metadata checks, not six vendor-behavior tests.** Existing SQL/ATM oracles can inform candidate test design; their success does not verify an MCP, OS 2200 or IBM installation.
+
+#### A decision sequence for synchronous, asynchronous and batch work
+
+Start with the business deadline and durable owner. If the caller must know the final decision now, keep the minimum authoritative command synchronous and provide status recovery for a lost response. If eventual completion is allowed, acknowledge durable acceptance with a distinct state and correlate the later final result. A queue changes delivery and buffering; it does not grant permission to approve work offline.
+
+Then identify atomicity. Keep immediately inseparable effects in a compatible transaction boundary. Use a saga only when each intermediate state and compensation is permitted. A workflow supplies durable progress across steps; a batch DAG additionally needs immutable input identity, dependencies, restart checkpoints and controlled publication. Neither a scheduler nor one worker per record establishes a correct end-of-day close.
+
+Finally choose placement from measured demand and failure domains. A read projection may offload queries if freshness is explicit. CDC may feed that projection but does not transfer write authority. Horizontal application workers still share database/log/hot-key limits. Retain or integrate the original engine when its contract is unknown, a necessary recovery mechanism has no demonstrated replacement, or a narrower modernization already delivers the business value.
+
+Fujitsu GS21, NEC ACOS, Hitachi VOS and Bull GCOS remain discovery entries without verified feature mappings in this increment. NonStop, OpenVMS, IBM i and HP 3000 are separately marked adjacent research scope. Unknown means that research is still required; it does not mean absent, unsupported or equivalent. The complete #28 inventory and its batch/offline/CDC/cross-border worked examples remain future deliverables. This first seed gives those entries a checkable format instead of presenting a long unreviewed list as completed research.
 
 ### Chapter 14 · Strangler Fig: change the edge before the heart
 
@@ -3537,3 +3616,27 @@ The author's articles are cited by their original Spanish titles, with an Englis
 [49] IBM. *How CICS runs transactions, tasks, and programs*. CICS TS 6.x documentation; indexed source consulted 3 November 2026 (direct reader returned HTTP 403). <https://www.ibm.com/docs/en/cics-ts/6.x?topic=development-transactions-in-cics>
 
 [50] CSF International. *EZswitch — Online ATM/Debit Middleware System*. Commercial example of host authorization and stand-in; not a bank-approved policy for this lab. Consulted 3 November 2026. <https://www.csfi.com/ezswitch-2/>
+
+[51] IBM. *Channel subsystem (CSS)*. IBM Z basic-skills documentation. Indexed primary documentation. Consulted 3 November 2026; publication date not supplied. <https://www.ibm.com/docs/en/zos-basic-skills?topic=mainframe-channel-subsystem-css>
+
+[52] IBM. *PR/SM Concepts*. z/VM 7.3.0 documentation. Indexed primary documentation. Consulted 3 November 2026; publication date not supplied. <https://www.ibm.com/docs/en/zvm/7.3.0?topic=hiperdispatch-prsm-concepts>
+
+[53] IBM. *Virtual storage overview*. z/OS 3.1.0 documentation. Indexed primary documentation. Consulted 3 November 2026; publication date not supplied. <https://www.ibm.com/docs/en/zos/3.1.0?topic=overview-virtual-storage>
+
+[54] IBM. *Defining service classes and performance goals*. z/OS 3.2.0 documentation. Indexed primary documentation; direct reader returned HTTP 403. Consulted 3 November 2026; publication date not supplied. <https://www.ibm.com/docs/SSLTBW_3.2.0/com.ibm.zos.v3r2.ieaw100/sclg.htm>
+
+[55] IBM. *Processing units*. z/OS 3.1.0 documentation. Indexed primary documentation. Consulted 3 November 2026; publication date not supplied. <https://www.ibm.com/docs/en/zos/3.1.0?topic=basics-processing-units>
+
+[56] IBM. *Improved performance through concurrency control*. Db2 for z/OS 13 documentation. Indexed primary documentation. Consulted 3 November 2026; publication date not supplied. <https://www.ibm.com/docs/en/db2-for-zos/13.0.0?topic=users-improved-performance-through-concurrency-control>
+
+[57] IBM. *Db2 data sharing*. Db2 for z/OS 13 documentation. Indexed primary documentation. Consulted 3 November 2026; publication date not supplied. <https://www.ibm.com/docs/en/db2-for-zos/13.0.0?topic=concepts-db2-data-sharing>
+
+[58] Unisys. *Automatic Single Transaction Abort Recovery*. ClearPath MCP 21.0; document 38508198-005. Primary documentation read directly. Consulted 3 November 2026; publication date not supplied. <https://www.support.unisys.com/aseries/docs/ClearPath-MCP-21.0/38508198-005/section-000082014.html>
+
+[59] Unisys. *OS 2200 TIP Application Configuration Properties*. ClearPath ePortal 10.0; document 82073594. Primary documentation read directly. Consulted 3 November 2026; publication date not supplied. <https://www.support.unisys.com/ePortalIC-10.0/topic/82073594_clearpath_eportal_developerhelp/html/section-000039378.htm>
+
+[60] IBM. *Database files*. IBM i 7.6.0. Indexed primary documentation consulted 3 November 2026; version scope does not establish installed products or current availability. <https://www.ibm.com/docs/en/i/7.6.0?topic=concepts-database-files>
+
+[61] Fujitsu. *COBOL2000 V1.6 — Net Express development environment with the BS2000/OSD option*. BS2000/OSD documentation. Indexed primary documentation consulted 3 November 2026; version scope does not establish installed products or current availability. <https://bs2manuals.ts.fujitsu.com/psCOBOL2000V16en/net-express-development-environment-with-the-bs2000-osd-option-cobol-compiler-user-guide-164-22034711.html>
+
+[62] IBM. *IBM Power Systems Performance Capabilities Reference*. IBM i / Power9 reference, April 2021. Indexed primary documentation consulted 3 November 2026; version scope does not establish installed products or current availability. <https://public.dhe.ibm.com/services/us/igsc/idoctor/perf/systems_power_software_i_perfmgmt_pcrm_p9_april_2021_v1_26016726USEN.pdf>
