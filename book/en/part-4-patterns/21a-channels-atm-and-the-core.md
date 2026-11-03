@@ -15,6 +15,8 @@ IBM's educational Bank of Z demonstrates a browser UI, REST APIs through z/OS Co
 
 ![Figure C.1 · Illustrative starting topology: channels and switch reach host services; deployment and authority must be verified per installation.](../../figures/en/channels_as_is.png)
 
+*Figure C.1 · Illustrative starting topology: channels and switch reach host services; deployment and authority must be verified per installation.*
+
 The diagram deliberately omits certified device/network protocols. Do not infer that every ATM speaks ISO 8583 directly, that CICS/IMS always share Db2, or that the host owns the switch. NDC/DDC variants, ISO 8583 network profiles, ISO 20022 integration and proprietary host contracts require the actual provider specifications and certification scope. A synthetic operation UUID is not a STAN, RRN, network authorization identifier or physical journal identifier.
 
 | Architecture variant | What stays authoritative | Migration question and required evidence |
@@ -33,6 +35,8 @@ These are design alternatives. This repository has not surveyed installations or
 The [synthetic lab contract](../../../lab/channels/CONTRACT.md) uses integer cents and invented policies. Its customer account starts at 10,000. Authorizing a 6,000 withdrawal reserves 6,000 without posting it; available funds become 4,000. Preparation durably binds one operation to one device command. Only a final device outcome permits the candidate to post the actual positive amount, or cancel a final zero. Posting debits the customer and credits a synthetic cash-control account; this closed-world teaching ledger is not a bank's general-ledger policy.
 
 ![Figure C.2 · Proposed synthetic target: core and dispenser have separate SQL stores; the independent oracle reads both.](../../figures/en/channels_to_be.png)
+
+*Figure C.2 · Proposed synthetic target: core and dispenser have separate SQL stores; the independent oracle reads both.*
 
 Both databases run on one CI host. Their separation proves only that a core transaction cannot roll back the emulator's committed device record. The device emulator puts its stock decrement and final journal row in a single local SQL transaction. Real banknotes, sensors, retract bins and customer collection do not acquire that atomicity from a database.
 
@@ -53,17 +57,25 @@ A real issuer must approve partial delivery, hold lifetime, reversals, late advi
 
 ![Figure C.3 · Happy path under the declared synthetic policy: authorize, prepare one command, record device outcome, then post actual cash.](../../figures/en/channels_cash_happy.png)
 
+*Figure C.3 · Happy path under the declared synthetic policy: authorize, prepare one command, record device outcome, then post actual cash.*
+
 Preparation and financial settlement are separate core transactions. The device acts between them. A C# exception or core rollback after delivery cannot put money back into the ATM. A compensation is a new authorized business action with its own audit trail; it cannot erase customer receipt of cash.
 
 ![Figure C.4 · Lost device response: keep UNKNOWN and the hold, recover the original journal outcome and reconcile once.](../../figures/en/channels_cash_unknown.png)
+
+*Figure C.4 · Lost device response: keep UNKNOWN and the hold, recover the original journal outcome and reconcile once.*
 
 A stable command ID is useful only if the device/provider contract actually deduplicates it and preserves an authoritative journal across failures. The synthetic adapter provides that property in SQL. For a real terminal, obtain proof of delivered, partial, rejected and retracted notes and the meaning of a final journal result. Conflicting or unavailable evidence requires an operator procedure, a reconciliation deadline and an exposure record. The current fixture does not automate that repair.
 
 ![Figure C.5 · Core unavailable: this lab denies new cash; issuer-approved stand-in is a separate, unimplemented policy branch.](../../figures/en/channels_standin.png)
 
+*Figure C.5 · Core unavailable: this lab denies new cash; issuer-approved stand-in is a separate, unimplemented policy branch.*
+
 Stand-in is a delegated decision, not a successful retry to a dead core. As a commercial example, CSFi describes EZswitch authorizing with a positive balance file and/or card limits when its host is unavailable [50]. That product description establishes that the alternative exists; it does not authorize our fixture or specify any bank's safe exposure. The lab has no delegated budget and must not dispense without a prepared online authorization. Replicated positive balances cannot by themselves prevent concurrent spending elsewhere.
 
 ![Figure C.6 · Digital transfer with a lost response after COMMIT: the status query resolves the original instruction without another debit.](../../figures/en/channels_web_unknown.png)
+
+*Figure C.6 · Digital transfer with a lost response after COMMIT: the status query resolves the original instruction without another debit.*
 
 A web/mobile BFF may adapt presentation and aggregate informational reads. Business authorization still uses the authoritative account and active holds; an eventual balance projection cannot approve spending. An outbox records a financial event atomically with the decision, but a push notification, SMS or receipt alone is not proof of posting. Reopening the app should recover the original operation ID and decision rather than invent a second instruction.
 

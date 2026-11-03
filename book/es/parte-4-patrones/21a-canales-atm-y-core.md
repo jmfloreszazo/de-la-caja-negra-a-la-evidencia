@@ -15,6 +15,8 @@ El Bank of Z educativo de IBM muestra una interfaz de navegador, APIs REST media
 
 ![Figura C.1 · Topología inicial ilustrativa: canales y switch acceden a servicios host; el despliegue y la autoridad deben verificarse por instalación.](../../figures/es/channels_as_is.png)
 
+*Figura C.1 · Topología inicial ilustrativa: canales y switch acceden a servicios host; el despliegue y la autoridad deben verificarse por instalación.*
+
 El diagrama omite deliberadamente protocolos certificados de dispositivo y red. No permite inferir que todo ATM habla ISO 8583 directamente, que CICS/IMS siempre comparten Db2 o que el host aloja el switch. Las variantes NDC/DDC, los perfiles de red ISO 8583, la integración ISO 20022 y los contratos propietarios del host requieren las especificaciones reales del proveedor y el alcance de homologación. Un UUID sintético de operación no es un STAN, RRN, identificador de autorización de red ni identificador del journal físico.
 
 | Variante de arquitectura | Qué conserva la autoridad | Pregunta de migración y evidencia necesaria |
@@ -33,6 +35,8 @@ Son alternativas de diseño. Este repositorio no ha estudiado instalaciones ni e
 El [contrato del laboratorio sintético](../../../lab/channels/CONTRACT.md) usa céntimos enteros y políticas inventadas. La cuenta del cliente empieza con 10.000. Autorizar una retirada de 6.000 reserva 6.000 sin contabilizarlos; el disponible pasa a 4.000. La preparación vincula de forma duradera una operación con una orden de dispositivo. Solo un resultado final del dispositivo permite al candidato contabilizar el importe positivo real o cancelar un cero final. La contabilización carga al cliente y abona una cuenta sintética de control de efectivo; este ledger didáctico cerrado no es la política de contabilidad general de un banco.
 
 ![Figura C.2 · Destino sintético propuesto: core y dispensador tienen almacenes SQL separados; el oráculo independiente lee ambos.](../../figures/es/channels_to_be.png)
+
+*Figura C.2 · Destino sintético propuesto: core y dispensador tienen almacenes SQL separados; el oráculo independiente lee ambos.*
 
 Ambas bases de datos se ejecutan en un mismo host de CI. Su separación solo demuestra que una transacción del core no puede deshacer el registro confirmado del dispositivo emulado. El emulador realiza el decremento de inventario y el registro final del journal en una única transacción SQL local. Los billetes reales, sensores, cajetines de retractado y recogida por el cliente no adquieren esa atomicidad por utilizar una base de datos.
 
@@ -53,17 +57,25 @@ Un emisor real debe aprobar entrega parcial, duración de retenciones, reversos,
 
 ![Figura C.3 · Camino feliz bajo la política sintética declarada: autorizar, preparar una orden, registrar resultado del dispositivo y contabilizar efectivo real.](../../figures/es/channels_cash_happy.png)
 
+*Figura C.3 · Camino feliz bajo la política sintética declarada: autorizar, preparar una orden, registrar resultado del dispositivo y contabilizar efectivo real.*
+
 La preparación y la contabilización financiera son transacciones separadas del core. El dispositivo actúa entre ambas. Una excepción C# o un rollback del core tras la entrega no devuelve el dinero al cajero. Una compensación es otra acción de negocio autorizada con su propia traza; no borra la recepción de efectivo por el cliente.
 
 ![Figura C.4 · Respuesta del dispositivo perdida: conservar UNKNOWN y la retención, recuperar el resultado del journal original y conciliar una vez.](../../figures/es/channels_cash_unknown.png)
+
+*Figura C.4 · Respuesta del dispositivo perdida: conservar UNKNOWN y la retención, recuperar el resultado del journal original y conciliar una vez.*
 
 Un identificador estable de orden solo sirve si el contrato del dispositivo/proveedor realmente lo deduplica y conserva un journal autoritativo tras los fallos. El adaptador sintético proporciona esa propiedad mediante SQL. Para un terminal real hacen falta pruebas de billetes entregados, parciales, rechazados y retractados, y del significado de un resultado final del journal. La evidencia contradictoria o ausente exige procedimiento operativo, plazo de conciliación y registro de exposición. La implementación actual no automatiza esa reparación.
 
 ![Figura C.5 · Core inaccesible: este laboratorio deniega nuevo efectivo; el stand-in aprobado por el emisor es otra política todavía sin implementar.](../../figures/es/channels_standin.png)
 
+*Figura C.5 · Core inaccesible: este laboratorio deniega nuevo efectivo; el stand-in aprobado por el emisor es otra política todavía sin implementar.*
+
 Stand-in es una decisión delegada, no un reintento exitoso contra un core caído. Como ejemplo comercial, CSFi describe EZswitch autorizando mediante fichero de saldo positivo y/o límites de tarjeta cuando su host está inaccesible [50]. Esa descripción establece que existe la alternativa; no autoriza nuestro laboratorio ni fija la exposición segura de ningún banco. El laboratorio no tiene presupuesto delegado y no debe dispensar sin autorización online preparada. Los saldos positivos replicados no evitan por sí solos el gasto concurrente en otro lugar.
 
 ![Figura C.6 · Transferencia digital con respuesta perdida tras COMMIT: la consulta de estado resuelve la instrucción original sin otro cargo.](../../figures/es/channels_web_unknown.png)
+
+*Figura C.6 · Transferencia digital con respuesta perdida tras COMMIT: la consulta de estado resuelve la instrucción original sin otro cargo.*
 
 Un BFF web/móvil puede adaptar la presentación y agregar consultas informativas. La autorización de negocio sigue usando la cuenta autoritativa y las retenciones activas; una proyección eventual del saldo no puede aprobar gasto. El outbox registra un evento financiero atómicamente con la decisión, pero una notificación push, SMS o recibo aislado no prueba la contabilización. Reabrir la aplicación debe recuperar el identificador y la decisión originales, no inventar otra instrucción.
 

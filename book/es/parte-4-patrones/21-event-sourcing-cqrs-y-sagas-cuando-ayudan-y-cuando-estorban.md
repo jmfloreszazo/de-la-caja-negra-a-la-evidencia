@@ -1,6 +1,6 @@
 **Español** · [English](../../en/part-4-patterns/21-event-sourcing-cqrs-and-sagas-when-they-help-and-when-they.md)
 
-[← Capítulo 20 · Batch y paralelismo: acelerar sin cambiar el resultado](20-batch-y-paralelismo-acelerar-sin-cambiar-el-resultado.md) · [Índice](../README.md) · [Parte V · Capacidad: MIPS, concurrencia y plataforma →](../parte-5-capacidad/README.md)
+[← Capítulo 20 · Batch y paralelismo: acelerar sin cambiar el resultado](20-batch-y-paralelismo-acelerar-sin-cambiar-el-resultado.md) · [Índice](../README.md) · [Capítulo complementario · Canales, efectivo ATM y core →](21a-canales-atm-y-core.md)
 
 # Capítulo 21 · Event sourcing, CQRS y sagas: cuándo ayudan y cuándo estorban
 
@@ -23,4 +23,4 @@ La regla es exigente y sencilla: **el patrón elegido debe preservar el nivel de
 
 ---
 
-[← Capítulo 20 · Batch y paralelismo: acelerar sin cambiar el resultado](20-batch-y-paralelismo-acelerar-sin-cambiar-el-resultado.md) · [Índice](../README.md) · [Parte V · Capacidad: MIPS, concurrencia y plataforma →](../parte-5-capacidad/README.md)
+[← Capítulo 20 · Batch y paralelismo: acelerar sin cambiar el resultado](20-batch-y-paralelismo-acelerar-sin-cambiar-el-resultado.md) · [Índice](../README.md) · [Capítulo complementario · Canales, efectivo ATM y core →](21a-canales-atm-y-core.md)

@@ -40,3 +40,5 @@ Se cierran nueve issues y quedan trece abiertas, dos de ellas congeladas. Cerrar
 | Congelado | Protección de main y clean rooms/confidential computing | #16/#53; fuera del plan activo hasta nueva instrucción |
 
 A partir de este corte, una rama breve por entregable concreto y retirada tras comprobar su integración. La procedencia experimental se conserva mediante commits, originales y archivo recuperable, sin mantener ramas de trabajo integradas como si siguieran activas.
+
+El primer incremento de #30 incorpora el capítulo bilingüe de canales y un laboratorio nativo de efectivo/digital con almacenes separados. El [checkpoint de canales](CHANNELS_CHECKPOINT_2026-11-03.es.md) conserva éxitos/fallos originales y la matriz pendiente. No cierra #30.
