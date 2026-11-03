@@ -1,0 +1,39 @@
+name: Synthetic channels native and separate SQL stores
+on:
+  push:
+    branches: [book/channels-30]
+    paths: ['lab/channels/**', '.github/workflows/channels-synthetic.yml']
+  pull_request:
+    paths: ['lab/channels/**', '.github/workflows/channels-synthetic.yml']
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  synthetic:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 25
+    env:
+      SOURCE_HEAD_SHA: ${{ github.event.pull_request.head.sha || github.sha }}
+      CHANNELS_DISPOSABLE: 'YES'
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+      - uses: actions/setup-python@v6
+        with:
+          python-version: '3.12'
+      - uses: actions/setup-dotnet@v5
+        with:
+          dotnet-version: '10.0.x'
+      - run: python3 -m pip install -r lab/e1_pg/requirements.txt
+      - name: Execute actual HTTP, SQL, process kills and independent oracles
+        run: python3 lab/channels/run.py
+      - name: Preserve original observations on every outcome
+        if: always()
+        uses: actions/upload-artifact@v6
+        with:
+          name: channels-synthetic-original
+          path: |
+            lab/results/channels/*.json
+            lab/results/channels/*.log
+          if-no-files-found: warn
