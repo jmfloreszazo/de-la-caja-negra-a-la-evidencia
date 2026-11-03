@@ -14,7 +14,7 @@ This is the **repository development roadmap**, not a declaration of production 
 | C05/C06: short cuts | Integrated, PR #73; PCAP/SQL audited | Do not extrapolate to long partitions or physical HA |
 | Provider-specific diagnostics | Integrated, PR #76; real controls retain FAIL and zero effects | #74 remains open for natural placement investigation |
 | Scheduled 120s cut and sampled recovery >=60s | **Bounded verification, [PR #77](https://github.com/jmfloreszazo/de-la-caja-negra-a-la-evidencia/pull/77)** | Two original cases PASS and audited; next: concurrent activations; not continuous recovery |
-| Concurrent-activation behavior | [Two original observations audited](evidence/runs/E2-ACTIVATION-OBSERVATION.md), PR #78: 38/39 complete calls, no observed overlap | Positive concurrent-activation scenario remains pending; no-overlap samples do not prove global actor exclusivity |
+| Concurrent-activation behavior | [Directed trial and stderr repeat](evidence/runs/E2-ACCOUNT-DIRECTED.md), PR #80: 1 positive envelope witness / 3 INCONCLUSIVE; membership fatal path observed | Repeatability and natural lifecycle/partition acceptance remain open; capacity #25 can proceed independently |
 | Sustained capacity and bottleneck | Pending, #25 | Comparable saturation and COMMIT/p99; existing pilots do not close this gate |
 | Physical domains and HA | Pending | Execution/evidence on independent hosts and fault domains |
 

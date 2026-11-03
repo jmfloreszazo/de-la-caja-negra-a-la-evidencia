@@ -1,0 +1,24 @@
+name: E2 directed original archive audit
+on:
+  pull_request:
+    paths:
+      - 'evidence/runs/e2-account-directed-*'
+      - 'scripts/check_e2_account_directed.py'
+      - 'scripts/audit_e2_account_directed.py'
+      - 'lab/e2_account_directed/probe_contract.py'
+      - 'lab/e2_activation_observer/observation.py'
+      - '.github/workflows/e2-account-directed-audit.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  audit:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-python@v6
+        with:
+          python-version: '3.12'
+      - run: git fetch --no-tags --depth=1 origin bfc7662df377632a34d1fb076cdc2de0291e4021
+      - run: git fetch --no-tags --depth=1 origin c1d174d263b453c9e1a55420f90ad42f091ef88a
+      - run: python3 scripts/check_e2_account_directed.py

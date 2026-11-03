@@ -262,6 +262,29 @@ SQL simultáneas. Sigue pendiente provocar y observar un caso positivo de
 activaciones concurrentes con aceptación SQL independiente. Cada ensayo usó
 un host físico y recuperación asistida; E2 permanece parcialmente verificado.
 
+## Pausa dirigida · Un testigo positivo no demuestra repetibilidad
+
+El [ensayo dirigido del grain normal](../../../evidence/runs/E2-ACCOUNT-DIRECTED.es.md)
+retuvo una llamada antigua en un filtro separado, antes de invocar el método
+financiero. No cambió el AccountGrain, ledger ni colocación predeterminada.
+Un caso mostró dos intervalos completos sobre IDs de activación distintos
+para la misma clave, solapados 5,06 ms con la regla de corte presente: la nueva
+llamada confirmó el importe 31 y la antigua, al liberarse, devolvió
+DUPLICATE_COMMITTED. SQL conservó el efecto único y rechazó payloads incompatibles.
+
+El sentido opuesto quedó inconcluso. El primer colector omitía stderr; al
+corregirlo, los dos casos repetidos también quedaron inconclusos. Hay un testigo
+positivo entre cuatro observaciones, no repetibilidad demostrada. En las
+repeticiones, stderr y SQL identifican una ruta fatal de membresía: el primario
+se descubre Dead, ejecuta KillMyselfLocally y termina con código 139. La selección
+de víctima entre particiones sigue sin explicarse por completo.
+
+Cada caso terminó con recuperación asistida, tres operaciones, seis asientos,
+tres eventos outbox y siete invariantes. La pausa es artificial y mide llamadas
+entrantes, no ciclos de vida Active simultáneos ni transacciones SQL simultáneas.
+Los originales inconclusos se conservan como tales. E2 sigue parcial; capacidad
+sostenida y dominios físicos continúan siendo puertas independientes.
+
 ## Del débito atómico al traspaso de autoridad entre dos almacenes
 
 La siguiente dificultad no consiste en hacer funcionar una transferencia con

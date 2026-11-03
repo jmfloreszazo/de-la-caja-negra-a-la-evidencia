@@ -261,6 +261,29 @@ SQL transactions. A targeted positive concurrent-activation scenario with
 independent SQL acceptance remains pending. Each case used one physical host
 and assisted recovery; E2 remains partially verified.
 
+## Directed delay · One positive witness does not establish repeatability
+
+The [directed ordinary-grain trial](../../../evidence/runs/E2-ACCOUNT-DIRECTED.md)
+held an old request in a separate filter before invoking the financial method.
+It changed neither AccountGrain, ledger nor default placement. One case showed
+two complete request envelopes on distinct activation IDs for the same key,
+overlapping 5.06ms with the fault rule present: the new request committed amount
+31 and the old request returned DUPLICATE_COMMITTED after release. SQL retained
+one durable effect and rejected incompatible payloads.
+
+The opposite direction was inconclusive. The first collector omitted stderr;
+after correction, both repeated cases were also inconclusive. One positive
+witness across four observations does not establish repeatability. In the
+repeats, stderr and SQL identify a fatal membership path: the primary discovers
+itself Dead, enters KillMyselfLocally and exits with code 139. Victim selection
+across directional partitions remains incompletely explained.
+
+Every case ended with assisted recovery, three operations, six postings,
+three outbox events and seven invariants. The delay is artificial and measures
+incoming requests, not simultaneous Active lifecycles or simultaneous SQL
+transactions. Inconclusive originals retain their classification. E2 remains
+partial; sustained capacity and physical domains are independent gates.
+
 ## From atomic debit to authority transfer across two stores
 
 The next challenge is not making a PostgreSQL transfer work. It is

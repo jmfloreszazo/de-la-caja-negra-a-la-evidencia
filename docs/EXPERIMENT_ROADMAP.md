@@ -87,3 +87,5 @@ deferred. Published stable and research tags have not changed.
 See [E1 protocol](../lab/docs/EXPERIMENT_PROTOCOL.md) and [ES/EN evidence matrices](EVIDENCE.md).
 
 C05/C06 now have [audited short directional packet-loss cases](../evidence/runs/E2-C05-C06-DIRECTIONAL.md). They do not establish exclusive activation or sustained stable service. A later [long-schedule audit](../evidence/runs/E2-LONG-PARTITION.md) verifies only assisted recovery with 14 paired samples across about 66s after earlier secondary exit; it does not retrospectively extend the short-case scope.
+
+The [directed ordinary-grain trial](../evidence/runs/E2-ACCOUNT-DIRECTED.md) in PR #80 records one positive incoming-envelope witness and three INCONCLUSIVE originals across the first run and full-stderr repeat. The added pre-invoke delay changes timing; natural lifecycle/partition acceptance and repeatability remain open. The repeat identifies a fatal membership path after the local silo is recorded Dead. Sustained-capacity work under #25 may proceed independently without closing these gates.

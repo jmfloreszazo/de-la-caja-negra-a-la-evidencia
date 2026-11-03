@@ -1,8 +1,10 @@
 # E2 ordinary AccountGrain directed partition probe
 
-Status: preregistered source, not original execution evidence. Depends on PRs
-#78/#79; the existing positive calibration is a diagnostic stateless worker,
-not this ordinary-grain trial. Software and lab documentation are English.
+Status: first run has one directed positive / one INCONCLUSIVE; the corrected
+stdout/stderr repeat has two INCONCLUSIVE cases. See the
+[paired evidence](../../evidence/runs/E2-ACCOUNT-DIRECTED.md). Repeatability is
+not established and E2 stays partial. This trial depends on PRs #78/#79; their
+stateless-worker calibration remains a distinct control. Software/lab docs are English.
 
 ## Fixed question and injected condition
 
