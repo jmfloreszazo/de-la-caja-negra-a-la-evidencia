@@ -6,13 +6,13 @@ Esta es la hoja de ruta **del repositorio**, no una declaración de que una migr
 
 ## Punto exacto del plan activo
 
-**El hito acotado de investigación E2 está listo para integrarse; el plan activo pasa al punto 5, revisión editorial y de fuentes y vista previa de la siguiente edición.** Por decisión del autor del 3 de noviembre, las validaciones externas de capacidad y HA quedan documentadas sin bloquear el desarrollo; la aceptación científica de esas afirmaciones sigue separada. Los puntos 1 y 3 se mantienen con cada incremento: evidencias y capítulo 28 ES/EN. C2 conserva sus puertas de aceptación propias; sus pruebas sintéticas no acreditan fencing bancario.
+**El hito acotado de investigación E2 está integrado; el plan activo pasa al punto 5, revisión editorial y de fuentes y vista previa de la siguiente edición.** Por decisión del autor del 3 de noviembre, las validaciones externas de capacidad y HA quedan documentadas sin bloquear el desarrollo; la aceptación científica de esas afirmaciones sigue separada. Los puntos 1 y 3 se mantienen con cada incremento: evidencias y capítulo 28 ES/EN. C2 conserva sus puertas de aceptación propias; sus pruebas sintéticas no acreditan fencing bancario.
 
 | Subpaso E2 | Estado actual | Validación de la afirmación pendiente (no bloquea integración) |
 | --- | --- | --- |
 | C01: fixture controlado | Integrado, PR #72; #44 cerrado por esa alternativa | La causa histórica no se declara resuelta |
 | C05/C06: cortes breves | Integrado, PR #73; PCAP y SQL auditados | No extrapolar a particiones largas o HA física |
-| Diagnóstico por proveedor | Integrado, PR #76; controles reales con FAIL conservado y efectos cero | #74 sigue abierto para investigar colocación natural |
+| Diagnóstico por proveedor | Integrado, PR #76; controles reales con FAIL conservado y efectos cero | La colocación natural pasa al backlog externo #8 |
 | Corte programado 120 s y recuperación muestreada >=60 s | **Verificado con alcance acotado, [PR #77](https://github.com/jmfloreszazo/de-la-caja-negra-a-la-evidencia/pull/77)** | Dos casos originales PASS y auditados; siguiente: activaciones concurrentes; no equivale a recuperación continua |
 | Comportamiento de activaciones concurrentes | [Ensayo dirigido y repetición con stderr](evidence/runs/E2-ACCOUNT-DIRECTED.es.md), PR #80: 2 testigos positivos / 4 INCONCLUSIVE; ruta fatal de membresía observada | Siguen abiertas repetibilidad y aceptación natural de ciclos de vida/particiones; capacidad #25 puede avanzar de forma independiente |
 | Capacidad sostenida y cuello de botella | Diagnóstico directo de tres cohortes integrado con PR #81; seguimiento externo #25 | Saturación y COMMIT/p99 comparables; los pilotos existentes no cierran el gate |
@@ -78,3 +78,7 @@ El [ensayo largo auditado](evidence/runs/E2-LONG-PARTITION.es.md) conserva dos f
 B05 #25 incorpora un [diagnóstico directo con tres cohortes](evidence/runs/B05-DISPATCH-DIAGNOSTIC.md): 119.040 ofertas, 118.887 commits SQL, 153 rechazos observados exactamente en el límite de 32 plazas y ninguno con 128, con 42 comprobaciones de invariantes financieras. No demuestra saturación del servidor, escalado Orleans ni la causa del calentamiento histórico; siguen abiertas la capacidad sostenida y la atribución del cuello de botella.
 
 El protocolo de validación externa distingue qué no puede demostrar una prueba dentro de un único runner y qué simplemente sigue sin probarse; concreta cambios de hosts, relojes, generadores y telemetría para afirmaciones más amplias. E2 sigue parcialmente verificado, sin bloquear la siguiente revisión editorial por infraestructura externa. Esta integración no autoriza una publicación nueva.
+
+## Cierre consolidado — 3 de noviembre de 2026
+
+Consulta el [cierre de ramas/issues y el trabajo pendiente ordenado](docs/PROJECT_CLOSEOUT.es.md): nueve tareas entregadas o solapadas cerradas; validación E2 agrupada en #8, E3 en #9, brownfield en #58 y canales en #30. Las referencias históricas #24/#25/#74/#64/#12 conservan procedencia, no añaden colas activas. #16/#53 siguen congeladas. El manifiesto conserva todas las referencias revisadas y archiva las historias no contenidas en main antes de retirar ramas.

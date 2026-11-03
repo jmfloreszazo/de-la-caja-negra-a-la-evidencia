@@ -6,13 +6,13 @@ This is the **repository development roadmap**, not a declaration of production 
 
 ## Exact position in the active plan
 
-**The bounded E2 research checkpoint is ready for integration; the active plan moves to step 5, editorial/source review and the next-edition preview.** External capacity/HA validation is documented and non-blocking for development, by the author's 3 November decision; scientific claim acceptance remains separate. Steps 1 and 3 continue with every increment: evidence and paired chapter 28. C2 retains its own acceptance gates; its synthetic tests do not establish a real bank writer fence.
+**The bounded E2 research checkpoint is integrated; the active plan moves to step 5, editorial/source review and the next-edition preview.** External capacity/HA validation is documented and non-blocking for development, by the author's 3 November decision; scientific claim acceptance remains separate. Steps 1 and 3 continue with every increment: evidence and paired chapter 28. C2 retains its own acceptance gates; its synthetic tests do not establish a real bank writer fence.
 
 | E2 substep | Current status | Remaining claim validation (non-blocking for integration) |
 | --- | --- | --- |
 | C01: controlled fixture | Integrated, PR #72; #44 closed on that alternative | Historical cause is not claimed resolved |
 | C05/C06: short cuts | Integrated, PR #73; PCAP/SQL audited | Do not extrapolate to long partitions or physical HA |
-| Provider-specific diagnostics | Integrated, PR #76; real controls retain FAIL and zero effects | #74 remains open for natural placement investigation |
+| Provider-specific diagnostics | Integrated, PR #76; real controls retain FAIL and zero effects | Natural placement investigation is consolidated in external backlog #8 |
 | Scheduled 120s cut and sampled recovery >=60s | **Bounded verification, [PR #77](https://github.com/jmfloreszazo/de-la-caja-negra-a-la-evidencia/pull/77)** | Two original cases PASS and audited; next: concurrent activations; not continuous recovery |
 | Concurrent-activation behavior | [Directed trial and stderr repeat](evidence/runs/E2-ACCOUNT-DIRECTED.md), PR #80: 2 positive envelope witnesses / 4 INCONCLUSIVE; membership fatal path observed | Repeatability and natural lifecycle/partition acceptance remain open; capacity #25 can proceed independently |
 | Sustained capacity and bottleneck | Three-cohort direct admission diagnostic integrated with PR #81; external #25 follow-up | Comparable saturation and COMMIT/p99; existing pilots do not close this gate |
@@ -78,3 +78,7 @@ The [audited long experiment](evidence/runs/E2-LONG-PARTITION.md) retains two in
 B05 #25 now has a [three-cohort direct admission diagnostic](evidence/runs/B05-DISPATCH-DIAGNOSTIC.md): 119,040 offers, 118,887 SQL commits, 153 exact cap-32 admission misses and no misses at cap 128, with 42 financial invariant checks. This does not establish backend saturation, Orleans scaling or the historical warmup cause; sustained capacity and bottleneck attribution remain open.
 
 The external-validation protocol records what a single-runner fixture cannot establish, what remains merely untested, and the host/clock/driver/telemetry changes needed for stronger claims. E2 stays partially verified while editorial work proceeds independently. No release is authorized by this integration decision.
+
+## Consolidated closeout — 3 November 2026
+
+See the [branch/issue closeout and ordered remaining work](docs/PROJECT_CLOSEOUT.md): nine delivered/overlapping trackers closed; remaining E2 validation is consolidated in #8, E3 in #9, brownfield in #58 and channels in #30. Historical #24/#25/#74/#64/#12 references are provenance, not additional active work queues. #16/#53 remain frozen. The cleanup manifest preserves all reviewed branch tips and archives non-ancestor histories before any ref removal.
