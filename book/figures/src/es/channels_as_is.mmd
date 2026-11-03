@@ -1,0 +1,7 @@
+flowchart TD
+  atm["ATM físico"] --> sw["Switch ATM / procesador"]
+  digital["Web / móvil / sucursal"] --> api["APIs de canal / adaptadores"]
+  sw --> host["Interfaz del host"]
+  api --> host
+  host --> core["Capacidad de negocio CICS / IMS"]
+  core --> db["Db2 / registros autoritativos"]

@@ -1,0 +1,16 @@
+sequenceDiagram
+  participant A as ATM
+  participant C as API de capacidad
+  participant D as Adaptador de dispositivo
+  participant L as Ledger del core
+  A->>C: Autorizar ID estable de operación
+  C->>L: Confirmar retención de fondos
+  A->>C: Preparar comando estable de dispositivo
+  C->>L: Confirmar DISPENSE_PENDING
+  A->>D: Dispensar con ID de comando
+  Note over D: Confirmar resultado de efectivo simulado en su DB
+  D-->>A: Importe final dispensado
+  A->>C: Conciliar ID de operación
+  C->>D: Leer resultado inmutable del dispositivo
+  C->>L: Confirmar débito real, apuntes y outbox, liberar retención
+  C-->>A: POSTED o CANCELLED

@@ -1,0 +1,17 @@
+sequenceDiagram
+  participant A as Channel
+  participant S as Switch / policy
+  participant C as Core
+  participant B as Stand-in authority
+  participant D as Device
+  A->>S: Authorization request
+  S->>C: Request online decision
+  C--xS: Unavailable
+  alt No approved stand-in policy: lab default
+    S-->>A: UNAVAILABLE / deny
+    Note over S,D: No dispense command
+  else Issuer-approved bounded policy: outside lab
+    S->>B: Check delegated budget and authority
+    B-->>S: Bounded decision and reconciliation record
+    Note over S,D: Device action requires that separate approved contract
+  end

@@ -1,0 +1,9 @@
+flowchart TD
+  atm["Cliente de prueba ATM"] --> api["API de capacidad .NET 10"]
+  web["Cliente digital de prueba"] --> api
+  api --> ledger["PostgreSQL core: retenciones y ledger"]
+  atm --> device["Adaptador de dispositivo sintético"]
+  device --> journal["PostgreSQL dispositivo: resultados inmutables"]
+  api --> journal
+  oracle["Oráculo independiente de solo lectura"] --> ledger
+  oracle --> journal

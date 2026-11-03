@@ -1,0 +1,17 @@
+sequenceDiagram
+  participant A as ATM
+  participant C as Capability API
+  participant D as Device adapter
+  participant L as Core ledger
+  A->>C: Prepare already-authorized withdrawal
+  C->>L: Commit command ID and keep hold
+  A->>D: Dispense stable command ID
+  Note over D: Cash outcome persists independently
+  D--xA: Response lost
+  A->>C: Query operation
+  C-->>A: UNKNOWN, hold retained
+  Note over A,D: Do not issue a new dispense ID
+  A->>C: Reconcile same operation
+  C->>D: Read final journal record
+  C->>L: Post actual amount once and release hold
+  C-->>A: Recorded final decision
