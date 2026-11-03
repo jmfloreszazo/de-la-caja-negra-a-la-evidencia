@@ -8,6 +8,8 @@ on:
       - 'lab/e2_activation_observer/observation.py'
       - 'lab/e2_orleans/OrleansLab/**'
       - '.github/workflows/e2-activation-calibration.yml'
+      - 'scripts/check_e2_activation_calibration.py'
+      - 'evidence/runs/e2-activation-calibration-original.json'
   workflow_dispatch:
 permissions:
   contents: read
