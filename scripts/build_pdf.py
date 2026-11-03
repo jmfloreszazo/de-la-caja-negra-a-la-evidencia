@@ -42,7 +42,7 @@ h4{font-size:11pt;margin:6mm 0 3mm}
 p,li{orphans:3;widows:3}
 blockquote{border-left:3px solid #D9232E;margin:5mm 0;padding:2mm 4mm;background:#F7F7F5}
 pre,code{font-family:"DejaVu Sans Mono",monospace;font-size:7.4pt}
-pre{white-space:pre-wrap;overflow-wrap:anywhere;background:#F4F4F3;padding:3mm;border:1px solid #E5E5E3}
+pre{white-space:pre-wrap;overflow-wrap:anywhere;break-inside:avoid;background:#F4F4F3;padding:3mm;border:1px solid #E5E5E3}
 code{overflow-wrap:anywhere}
 table{border-collapse:collapse;width:100%;font-size:8pt;margin:4mm 0}
 th{color:#17191B;background:#EEEFF0}

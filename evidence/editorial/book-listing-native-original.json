@@ -1,0 +1,436 @@
+{
+  "status": "PASS_BOUNDED_LISTING_CHECKS",
+  "sourceHeadSha": "e8785e0a5c565e3b006c3d23feebc888130dce3b",
+  "runId": "41680741456",
+  "completeBookCompilationEstablished": false,
+  "crossPlatformEstablished": false,
+  "listingLabelsPromoted": false,
+  "sourceHashes": {
+    ".github/workflows/book-listings.yml": "306fc26409c2eb4b153e77d84af16d465f9e340af82f577f9e68b598a4a5c0b6",
+    "book/en/annexes/annex-a-a-lab-that-can-prove-us-wrong.md": "1f5325b788b959f432aaed63252d959e14683224034f0669a6f8d5de35844141",
+    "book/en/part-1-before-translating/03-why-one-to-one-conversion-is-not-modernization.md": "b4b59666780eed8be2eba209c2cf839c6c4d85b550d07bb6b07c8ed09757381b",
+    "book/en/part-2-archaeology-and-authority/06-rea-and-archaeology-that-leaves-a-trail.md": "5cbb9e55822fa15013b76ee9e4c022f0fb2aaff3cd4a9cb1ebde6bbcb346f9b6",
+    "book/en/part-2-archaeology-and-authority/09-from-the-agent-s-authority-to-the-rule-s-authority.md": "81feab5de1003c3b1d1c4f7bab261b6f1cb291855d4c3cf96cbbd9338ad7296c",
+    "book/en/part-3-oracles/12-cobol-and-c-must-agree-on-meaning.md": "403285812c184637377cd443aa4cce9c16ddbc00f7b4c274892989326db52e81",
+    "book/en/part-4-patterns/14-strangler-fig-change-the-edge-before-the-heart.md": "da48b8b82e46c7a46ed2b76010b9ae82b039a437cc01b9c9377cde536db84a3c",
+    "book/en/part-4-patterns/15-anti-corruption-layer-translate-meanings-not-types.md": "e2d146c6c703f59b8fab9ccb326223a3f1bdefe91b6cb04a7f427818bb22af2f",
+    "book/en/part-4-patterns/17-from-mainframe-locks-to-explicit-concurrency-control.md": "99f53d022e5a4e6e2f3ee8384ec1b99040a6c8d7e9bd9a66b87c3a961677aa6d",
+    "book/en/part-4-patterns/18-distributing-without-breaking-the-books.md": "d85faa0f6a9bfbb5d255729730097f15b14053027216e9c23fb5f1ca62602c23",
+    "book/en/part-4-patterns/19-actors-a-great-tool-a-poor-universal-substitute.md": "1a295b23d8413c634994d4872df41b9eafd1b6517cba1090aa0b3784ed912430",
+    "book/en/part-4-patterns/20-batch-and-parallelism-speeding-up-without-changing-the.md": "554a4b4419c396de6fa89fc7bd08d1ee1b9c664d93aca23e5bb6351fb206fe19",
+    "book/en/part-5-capacity/23-concurrency-that-makes-use-of-the-machine.md": "92ff6abce66014112f770ee73a9b810deb8bca7956078f3c945a1ba3c2eeb949",
+    "book/en/part-5-capacity/24-the-benchmark-that-counts-load-contention-failure-and-cost.md": "9d13bbffe9ff71bf8d599058397cb5bd68de9d359497dc7b1d4ba4f106eb38a0",
+    "book/en/part-5-capacity/25a-mainframe-on-prem-azure-and-banking-network-infrastructure.md": "104a93e30030607f18cecd4d9fc3b1a28be711662b326ebfee20703c8b95ff2e",
+    "book/en/part-6-lab/26-a-local-lab-you-can-understand.md": "2af3f5e082e82e9655a11c0c66ef3e966f0de79b838e056fe6e59a4e64e1c3ff",
+    "book/en/part-6-lab/27-making-the-error-visible.md": "8e6bc5a84ff43f9a9c09aa6123895dbaa117f16e5614dd5ff8b57ec31c8d4dbd",
+    "book/en/part-6-lab/28-transfers-locks-and-failures-locally.md": "cb871f055ae47a2df9e699241179e2a1df88ead9a80033d061eb11947b2eb848",
+    "book/en/part-7-organization/31-the-sdlc-as-part-of-the-migration-engine.md": "13a698930ac2dd7dbf06381d273c939cc9a76e4b9d03df238fe4ccfe12343c1d",
+    "book/es/anexos/anexo-a-un-laboratorio-que-pueda-contradecirnos.md": "9f8064429bb97c0b2cb1e4a968d5ecaf3ae60d6c526d41b740e6188dbc15ad99",
+    "book/es/parte-1-antes-de-traducir/03-por-que-la-conversion-uno-a-uno-no-es-modernizacion.md": "0c5c11515521294d9b034476bf7137d2919b5b8db0c474dd180ca55abd4118d0",
+    "book/es/parte-2-arqueologia-y-autoridad/06-rea-y-la-arqueologia-que-deja-rastro.md": "f44c26e2b6c780855de453f419de5be13e68e75f81a907fb58ae9169632d6348",
+    "book/es/parte-2-arqueologia-y-autoridad/09-de-la-autoridad-del-agente-a-la-autoridad-de-la-regla.md": "88dab88528679f80ad4e1f45e3a94e6bb1e5ccfea0241013f26e7c7bfea5b4dc",
+    "book/es/parte-3-oraculos/12-cobol-y-c-deben-acordar-el-significado.md": "36eed8b86b9c36387821de93905496fe1a130fe40046b0d198c1d51c73303dd6",
+    "book/es/parte-4-patrones/14-strangler-fig-cambiar-el-borde-antes-que-el-corazon.md": "65c22a23064617e79a58c4d157728cf35a77c268ecaedd4a47dac0077e2a858a",
+    "book/es/parte-4-patrones/15-anti-corruption-layer-traducir-significados-no-tipos.md": "38733c483623b06742311d5c78c8b0b8a1c4cdfde219c12a490f5684e40fc51a",
+    "book/es/parte-4-patrones/17-de-los-locks-del-mainframe-al-control-explicito-de.md": "ffb65037504845014678af145a7560c90cb721c88d34f8f3c388ba5af1d8ecbc",
+    "book/es/parte-4-patrones/18-distribuir-sin-romper-la-contabilidad.md": "7eee0d78c7281b5e06d067d214db16baff038b0fa63981ab910903439ac39f8c",
+    "book/es/parte-4-patrones/19-actores-una-gran-herramienta-un-mal-sustituto-universal.md": "28d36432a341d2ea8cd91fae09b55188b9a13c89e4a9fe5e656b268b5dfbcb90",
+    "book/es/parte-4-patrones/20-batch-y-paralelismo-acelerar-sin-cambiar-el-resultado.md": "c32fc53fd3bc89157903291b3ae1479c82a6fde6f449923cac425754f2bd7459",
+    "book/es/parte-5-capacidad/23-concurrencia-que-aprovecha-la-maquina.md": "06baa1daa29aa871d9d2e7507b91cbc1152f6a63cf5cea9c11f2a2b9a6f83e14",
+    "book/es/parte-5-capacidad/24-el-benchmark-que-vale-carga-contencion-fallo-y-coste.md": "8dca7cc79a53e6f89f6864f889c48f935c626daa0b6684aed00f454b50e081c1",
+    "book/es/parte-5-capacidad/25a-infraestructura-mainframe-local-azure-y-redes-bancarias.md": "2188c778d73e02f3ecfa287b03368cfa0084a7440261f67fb163807a46df72e3",
+    "book/es/parte-6-laboratorio/26-un-laboratorio-local-que-se-puede-entender.md": "fa4425eaecac53d5729fa2118cec384c96e6f0c9e25885afd6b68cc544fbdb66",
+    "book/es/parte-6-laboratorio/27-hacer-que-el-error-se-vea.md": "d64afa9edd5181aabd3e69076a84491d3fcae3a76f86131ed664b9ed5b2d930b",
+    "book/es/parte-6-laboratorio/28-transferencias-bloqueos-y-fallos-en-local.md": "78ce6023973a266d4533b07b2e1ac1950a2b568ac82d055a0443bd6c89fd3df9",
+    "book/es/parte-7-organizacion/31-el-sdlc-como-parte-del-motor-de-migracion.md": "cb3c15063b304e567b0b2b6ab870f81e7be2adf51ab4d20e87f7cd8ed37d58fa",
+    "lab/contracts/cases.json": "976d7127d30206e77bbef03fd84bb41d719311be9ea8b63eafd6f83e9c0449a1",
+    "lab/contracts/cases.sha256": "53fed8d38ef15bb4b2b7977cca8a4573608b347cb063999de0768cf75239826d",
+    "lab/legacy/fee.cob": "136cc8c21ae514634f93b7139fb9e185b115e6b817c20890ad0e1f9265971cbf",
+    "scripts/audit_book_listings.py": "12bc22560796c3e7e30d7779f517121395a19d7d869835dbee4ec5be7a33bca0",
+    "scripts/check_language_policy.py": "2295e4aed113ca520e3bf869a769322965dbe56ee2d61bb824a61f16e7b9374d",
+    "scripts/run_book_listing_checks.py": "de2079b07396236419829d96ed4c77100404bb3619b0fbc6224ea6abf71128cc"
+  },
+  "pairedFences": 32,
+  "canonicalExecutableFences": 27,
+  "sqlite": {
+    "schemaListing": "28.1",
+    "predicateListing": "28.4",
+    "displayedPredicates": 4,
+    "positive": {
+      "nonnegative": true,
+      "conserved": true,
+      "balancedPostings": true,
+      "projectionAgrees": true
+    },
+    "corruptedBalanceRejected": true,
+    "corruptedPostingsRejected": true,
+    "fullSevenOracleAcceptance": false
+  },
+  "tools": {
+    "dotnet": "10.0.403",
+    "gnucobol": "cobc (GnuCOBOL) 3.1.2.0\nCopyright (C) 2020 Free Software Foundation, Inc.\nLicense GPLv3+: GNU GPL version 3 or later <https://gnu.org/licenses/gpl.html>\nThis is free software; see the source for copying conditions.  There is NO\nwarranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.\nWritten by Keisuke Nishida, Roger While, Ron Norman, Simon Sobisch, Edward Hart\nBuilt     Apr 14 2024 07:59:15\nPackaged  Dec 23 2020 12:04:58 UTC\nC version \"13.2.0\"",
+    "python": "Python 3.12.16"
+  },
+  "cobol": {
+    "listing": "26.1",
+    "cases": [
+      {
+        "id": "C001",
+        "input": "0000000000000Y",
+        "expected": "APPROVE|00000000",
+        "actual": "APPROVE|00000000"
+      },
+      {
+        "id": "C002",
+        "input": "0000000010000Y",
+        "expected": "APPROVE|00000000",
+        "actual": "APPROVE|00000000"
+      },
+      {
+        "id": "C003",
+        "input": "0000002500200Y",
+        "expected": "APPROVE|00000001",
+        "actual": "APPROVE|00000001"
+      },
+      {
+        "id": "C004",
+        "input": "0000007500200Y",
+        "expected": "APPROVE|00000002",
+        "actual": "APPROVE|00000002"
+      },
+      {
+        "id": "C005",
+        "input": "0000002400200Y",
+        "expected": "APPROVE|00000000",
+        "actual": "APPROVE|00000000"
+      },
+      {
+        "id": "C006",
+        "input": "0000002600200Y",
+        "expected": "APPROVE|00000001",
+        "actual": "APPROVE|00000001"
+      },
+      {
+        "id": "C007",
+        "input": "0099999900015Y",
+        "expected": "APPROVE|00001500",
+        "actual": "APPROVE|00001500"
+      },
+      {
+        "id": "C008",
+        "input": "0100000000015Y",
+        "expected": "APPROVE|00001500",
+        "actual": "APPROVE|00001500"
+      },
+      {
+        "id": "C009",
+        "input": "0100000100015Y",
+        "expected": "REVIEW|00001500",
+        "actual": "REVIEW|00001500"
+      },
+      {
+        "id": "C010",
+        "input": "0110000000015Y",
+        "expected": "REVIEW|00001650",
+        "actual": "REVIEW|00001650"
+      },
+      {
+        "id": "C011",
+        "input": "9999999910000Y",
+        "expected": "REVIEW|99999999",
+        "actual": "REVIEW|99999999"
+      },
+      {
+        "id": "C012",
+        "input": "0000010010000N",
+        "expected": "REJECT|00000000",
+        "actual": "REJECT|00000000"
+      },
+      {
+        "id": "C013",
+        "input": "9999999910000N",
+        "expected": "REJECT|00000000",
+        "actual": "REJECT|00000000"
+      },
+      {
+        "id": "C014",
+        "input": "0000000100001Y",
+        "expected": "APPROVE|00000000",
+        "actual": "APPROVE|00000000"
+      },
+      {
+        "id": "C015",
+        "input": "5579346702158Y",
+        "expected": "REVIEW|12040230",
+        "actual": "REVIEW|12040230"
+      },
+      {
+        "id": "C016",
+        "input": "8275673806394N",
+        "expected": "REJECT|00000000",
+        "actual": "REJECT|00000000"
+      },
+      {
+        "id": "C017",
+        "input": "4308236404507Y",
+        "expected": "REVIEW|19417221",
+        "actual": "REVIEW|19417221"
+      },
+      {
+        "id": "C018",
+        "input": "6919510608087Y",
+        "expected": "REVIEW|55958082",
+        "actual": "REVIEW|55958082"
+      },
+      {
+        "id": "C019",
+        "input": "6297109002578Y",
+        "expected": "REVIEW|16233947",
+        "actual": "REVIEW|16233947"
+      },
+      {
+        "id": "C020",
+        "input": "7701300307805Y",
+        "expected": "REVIEW|60108649",
+        "actual": "REVIEW|60108649"
+      },
+      {
+        "id": "C021",
+        "input": "0362060402077Y",
+        "expected": "REVIEW|00751999",
+        "actual": "REVIEW|00751999"
+      },
+      {
+        "id": "C022",
+        "input": "2413750905519Y",
+        "expected": "REVIEW|13321491",
+        "actual": "REVIEW|13321491"
+      },
+      {
+        "id": "C023",
+        "input": "2301042203894Y",
+        "expected": "REVIEW|08960258",
+        "actual": "REVIEW|08960258"
+      },
+      {
+        "id": "C024",
+        "input": "5980329401000N",
+        "expected": "REJECT|00000000",
+        "actual": "REJECT|00000000"
+      },
+      {
+        "id": "C025",
+        "input": "4515871500066N",
+        "expected": "REJECT|00000000",
+        "actual": "REJECT|00000000"
+      },
+      {
+        "id": "C026",
+        "input": "2257972608466N",
+        "expected": "REJECT|00000000",
+        "actual": "REJECT|00000000"
+      },
+      {
+        "id": "C027",
+        "input": "9020664605825N",
+        "expected": "REJECT|00000000",
+        "actual": "REJECT|00000000"
+      },
+      {
+        "id": "C028",
+        "input": "5417447405256N",
+        "expected": "REJECT|00000000",
+        "actual": "REJECT|00000000"
+      },
+      {
+        "id": "C029",
+        "input": "2251571305642N",
+        "expected": "REJECT|00000000",
+        "actual": "REJECT|00000000"
+      },
+      {
+        "id": "C030",
+        "input": "3596460607219Y",
+        "expected": "REVIEW|25962849",
+        "actual": "REVIEW|25962849"
+      },
+      {
+        "id": "C031",
+        "input": "9711540307835N",
+        "expected": "REJECT|00000000",
+        "actual": "REJECT|00000000"
+      },
+      {
+        "id": "C032",
+        "input": "2242056602720N",
+        "expected": "REJECT|00000000",
+        "actual": "REJECT|00000000"
+      },
+      {
+        "id": "C033",
+        "input": "6449916804550Y",
+        "expected": "REVIEW|29347121",
+        "actual": "REVIEW|29347121"
+      },
+      {
+        "id": "C034",
+        "input": "1362350506191N",
+        "expected": "REJECT|00000000",
+        "actual": "REJECT|00000000"
+      },
+      {
+        "id": "C035",
+        "input": "8937771107641N",
+        "expected": "REJECT|00000000",
+        "actual": "REJECT|00000000"
+      },
+      {
+        "id": "C036",
+        "input": "3071205908101Y",
+        "expected": "REVIEW|24879839",
+        "actual": "REVIEW|24879839"
+      },
+      {
+        "id": "C037",
+        "input": "1404176807321N",
+        "expected": "REJECT|00000000",
+        "actual": "REJECT|00000000"
+      },
+      {
+        "id": "C038",
+        "input": "7301070606900Y",
+        "expected": "REVIEW|50377387",
+        "actual": "REVIEW|50377387"
+      },
+      {
+        "id": "C039",
+        "input": "3330870305979Y",
+        "expected": "REVIEW|19915274",
+        "actual": "REVIEW|19915274"
+      },
+      {
+        "id": "C040",
+        "input": "7096613506270Y",
+        "expected": "REVIEW|44495767",
+        "actual": "REVIEW|44495767"
+      },
+      {
+        "id": "C041",
+        "input": "4154969900990Y",
+        "expected": "REVIEW|04113420",
+        "actual": "REVIEW|04113420"
+      },
+      {
+        "id": "C042",
+        "input": "1359545806938Y",
+        "expected": "REVIEW|09432529",
+        "actual": "REVIEW|09432529"
+      },
+      {
+        "id": "C043",
+        "input": "9984074600384N",
+        "expected": "REJECT|00000000",
+        "actual": "REJECT|00000000"
+      },
+      {
+        "id": "C044",
+        "input": "8012702709459Y",
+        "expected": "REVIEW|75792155",
+        "actual": "REVIEW|75792155"
+      },
+      {
+        "id": "C045",
+        "input": "3388873907012N",
+        "expected": "REJECT|00000000",
+        "actual": "REJECT|00000000"
+      },
+      {
+        "id": "C046",
+        "input": "2915728206925N",
+        "expected": "REJECT|00000000",
+        "actual": "REJECT|00000000"
+      },
+      {
+        "id": "C047",
+        "input": "3278574502660N",
+        "expected": "REJECT|00000000",
+        "actual": "REJECT|00000000"
+      },
+      {
+        "id": "C048",
+        "input": "6719672400123N",
+        "expected": "REJECT|00000000",
+        "actual": "REJECT|00000000"
+      },
+      {
+        "id": "C049",
+        "input": "8558181901824N",
+        "expected": "REJECT|00000000",
+        "actual": "REJECT|00000000"
+      },
+      {
+        "id": "C050",
+        "input": "8215859003647N",
+        "expected": "REJECT|00000000",
+        "actual": "REJECT|00000000"
+      },
+      {
+        "id": "C051",
+        "input": "5019568604860Y",
+        "expected": "REVIEW|24395103",
+        "actual": "REVIEW|24395103"
+      },
+      {
+        "id": "C052",
+        "input": "7142132508951Y",
+        "expected": "REVIEW|63929228",
+        "actual": "REVIEW|63929228"
+      },
+      {
+        "id": "C053",
+        "input": "0330737100416Y",
+        "expected": "REVIEW|00137587",
+        "actual": "REVIEW|00137587"
+      },
+      {
+        "id": "C054",
+        "input": "0664885908447N",
+        "expected": "REJECT|00000000",
+        "actual": "REJECT|00000000"
+      },
+      {
+        "id": "C055",
+        "input": "0000010010001Y",
+        "expected": "INVALID|00000000",
+        "actual": "INVALID|00000000"
+      },
+      {
+        "id": "C056",
+        "input": "0000010000010X",
+        "expected": "INVALID|00000000",
+        "actual": "INVALID|00000000"
+      },
+      {
+        "id": "C057",
+        "input": "0000010A00010Y",
+        "expected": "INVALID|00000000",
+        "actual": "INVALID|00000000"
+      },
+      {
+        "id": "C058",
+        "input": "00000100000A0Y",
+        "expected": "INVALID|00000000",
+        "actual": "INVALID|00000000"
+      }
+    ],
+    "passed": 58
+  },
+  "csharp": {
+    "roundListing": "12.2",
+    "roundExpressions": 4,
+    "packedListing": "15.1",
+    "packedValues": 9,
+    "packedNegativeControls": 6,
+    "scope": "Exact expressions/method in an isolated harness; no application integration"
+  }
+}

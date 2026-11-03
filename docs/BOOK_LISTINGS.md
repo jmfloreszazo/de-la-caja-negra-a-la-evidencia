@@ -12,7 +12,7 @@ The editorial correction aligns 17 formerly divergent executable/configuration b
 - YAML: parse two mappings. This does not validate a mandate schema, authorize a user or execute a GitHub workflow.
 - Bash: `bash -n` for both command blocks; no installation, PowerShell command or container is launched by this check.
 - SQLite/Python: execute the exact printed 28.1 schema and the four displayed 28.4 predicates against a disposable consistent state; deliberately corrupt balance and postings and require rejection. This is not the full seven-invariant financial acceptance suite.
-- Native selected listings: the dedicated CI compiles the complete printed 26.1 COBOL program, verifies exact identity with the protected reference source and checks all 58 pinned contract records. It also compiles/runs the four exact 12.2 rounding expressions and the complete 15.1 decoder with nine positive and six negative cases. The first original CI result remains pending until archived evidence is recorded below.
+- Native selected listings: the dedicated CI compiles the complete printed 26.1 COBOL program, verifies exact identity with the protected reference source and checks all 58 pinned contract records. It also compiles/runs the four exact 12.2 rounding expressions and the complete 15.1 decoder with nine positive and six negative cases. The original native result and independent archive audit are recorded below.
 - Other COBOL/C#/T-SQL blocks remain application-context examples. CICS needs its transaction environment; Orleans needs actual grain/runtime types; database fragments need their schema/parameters. No fabricated interfaces or no-op stubs are used to claim these complete applications compile.
 
 No listing label is promoted by static parsing or an isolated helper harness. The inventory preserves the published labels and explicitly records that complete integration and cross-platform reproduction are not established. Full Linux/macOS/Windows/WSL execution remains in #11.
@@ -63,3 +63,7 @@ SOURCE_HEAD_SHA=$(git rev-parse HEAD) GITHUB_RUN_ID=local python3 scripts/run_bo
 ```
 
 The native runner records exact checkout, run ID, source hashes, tool versions, individual expected/observed COBOL records and raw compiler/runtime output before reporting failure. A source-only or skipped check is not a successful native run.
+
+## Original native observation
+
+Original native run [41680741456](https://github.com/jmfloreszazo/de-la-caja-negra-a-la-evidencia/actions/runs/41680741456), exact source `e8785e0a5c565e3b006c3d23feebc888130dce3b`, passed. The byte-identical ZIP and summary are committed under `evidence/editorial/`; ZIP SHA256 `9bff18d5ae6f44bcef890277d3afaa04bf98356f1eec04cb79b2e55b669f8cfa`. The independent `scripts/check_book_listing_observations.py` audit verifies all 43 original source hashes, 58 individual COBOL outputs and raw C# outcome. Tools: .NET SDK 10.0.403, GnuCOBOL 3.1.2.0 and Python 3.12.16 on hosted Linux.

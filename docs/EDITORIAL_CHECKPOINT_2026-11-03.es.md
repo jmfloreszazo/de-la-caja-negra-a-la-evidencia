@@ -29,3 +29,9 @@ No se propone un recorte porcentual ni se afirma haber revisado cada frase. Sigu
 Se verificó por SHA256 el artefacto original 13240919909 de la ejecución 41660337335, código `7a74a9f1cdc781b348d681fb7795202c064b68ad`: ES, 144 páginas; EN, 141. El código del libro no cambió entre esa ejecución y la base main revisada. La inspección visual muestreada comprende índice EN página 2, continuación de tabla EN 106, benchmark ES 78 y tabla de validación externa ES 108. En esas muestras no se observa recorte ni texto ilegible y la tabla conserva su cabecera al continuar. No acredita todas las páginas.
 
 El registro inglés conserva los hashes y la procedencia exacta. Hay que generar y revisar muestras de los PDF corregidos antes de dar por revisado visualmente este corte. Los PDF anteriores no se presentan como salida corregida. El [inventario de listados](BOOK_LISTINGS.es.md) detalla las pruebas y sus dependencias pendientes.
+
+## Ejecución nativa y ajuste de impresión
+
+El resultado original y su ZIP auditado están registrados en el [inventario](BOOK_LISTINGS.es.md): 58 casos COBOL, cuatro expresiones de redondeo y nueve valores/seis negativos COMP-3, sin promover la integración completa.
+
+La primera vista previa corregida todavía divide bloques cortos al pie de página: la simulación del capítulo 24 empieza con solo dos líneas de salida. Se ajusta el estilo para conservar entero un listado cuando cabe en una página. Falta regenerar e inspeccionar ese cambio de impresión antes de aceptarlo.

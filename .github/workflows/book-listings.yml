@@ -6,7 +6,9 @@ on:
       - 'scripts/audit_book_listings.py'
       - 'scripts/run_book_listing_checks.py'
       - 'scripts/check_language_policy.py'
+      - 'scripts/check_book_listing_observations.py'
       - 'evidence/editorial/book-listings.json'
+      - 'evidence/editorial/book-listing-native-original*'
       - '.github/workflows/book-listings.yml'
   workflow_dispatch:
 permissions:
@@ -37,6 +39,8 @@ jobs:
           python3 scripts/check_language_policy.py --self-test
           python3 scripts/check.py
           python3 scripts/audit_book_listings.py
+          git fetch --no-tags --depth=1 origin e8785e0a5c565e3b006c3d23feebc888130dce3b
+          python3 scripts/check_book_listing_observations.py
       - name: Execute selected printed code with explicit fixtures
         run: python3 scripts/run_book_listing_checks.py
       - name: Preserve original outcome and raw compiler/runtime logs

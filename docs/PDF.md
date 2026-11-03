@@ -39,3 +39,5 @@ PDF only; the thesis/warning text and blockquote remain. Fenced code and
 inline literal tokens are preserved. Focused regression cases run in the
 preview workflow. Both editions still need visual review for each editorial
 cut; a successful PDF build alone is not full layout or language approval.
+
+Code listings now request `break-inside: avoid`: a block that fits on one content page moves as a unit instead of starting with only a few lines at the page foot. Oversized blocks may still span pages. The editorial visual sample must check actual output; CSS alone is not a layout verdict.
