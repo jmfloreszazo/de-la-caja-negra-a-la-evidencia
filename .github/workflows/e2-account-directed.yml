@@ -1,0 +1,78 @@
+name: E2 ordinary AccountGrain directed partition probe
+on:
+  pull_request:
+    paths:
+      - 'lab/e2_account_directed/**'
+      - 'lab/e2_activation_observer/observation.py'
+      - 'lab/e2_orleans/**'
+      - '.github/workflows/e2-account-directed.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  observe:
+    name: Directed ordinary-grain probe (${{ matrix.blocked_role }} outbound)
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    strategy:
+      fail-fast: false
+      matrix:
+        blocked_role: [primary, secondary]
+    env:
+      E2_NETWORK_TEST: '1'
+      E2_LONG_PARTITION_TEST: '1'
+      E2_ACTIVATION_OBSERVATION_TEST: '1'
+      E2_ACCOUNT_DIRECTED_TEST: '1'
+      E1_PG_DSN: 'host=127.0.0.1 port=55435 dbname=e2lab user=postgres password=e2local'
+      C05_BLOCKED_ROLE: '${{ matrix.blocked_role }}'
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+      - uses: actions/setup-python@v6
+        with:
+          python-version: '3.12'
+      - uses: actions/setup-dotnet@v5
+        with:
+          dotnet-version: '10.0.x'
+      - name: Install independent SQL observer
+        run: python3 -m pip install -r lab/e1_pg/requirements.txt
+      - name: Validate source policy and paired book
+        run: |
+          python3 scripts/check_language_policy.py
+          python3 scripts/check.py
+      - name: Verify interpretation negative controls
+        run: python3 -m unittest discover -s lab/e2_account_directed -p 'test_probe_contract.py' -v
+      - name: Publish original client and separate instrumented host
+        run: |
+          mkdir -p lab/results/e2f10/c05-c06
+          dotnet publish lab/e2_orleans/OrleansLab/OrleansLab.csproj -c Release -m:1 --disable-build-servers -o lab/results/e2f10/app
+          dotnet publish lab/e2_account_directed/DirectedSilo.csproj -c Release -m:1 --disable-build-servers -o lab/results/e2f10/app
+      - name: Preserve exact source and runtime provenance
+        env:
+          SOURCE_HEAD_SHA: ${{ github.event.pull_request.head.sha || github.sha }}
+        run: |
+          echo "source_head_sha=$SOURCE_HEAD_SHA" > lab/results/e2f10/c05-c06/long-partition-provenance.txt
+          echo "checkout_sha=$(git rev-parse HEAD)" >> lab/results/e2f10/c05-c06/long-partition-provenance.txt
+          test "$SOURCE_HEAD_SHA" = "$(git rev-parse HEAD)"
+          echo "blocked_role=$C05_BLOCKED_ROLE runner=$RUNNER_NAME" >> lab/results/e2f10/c05-c06/long-partition-provenance.txt
+          uname -a >> lab/results/e2f10/c05-c06/long-partition-provenance.txt
+          dotnet --info >> lab/results/e2f10/c05-c06/long-partition-provenance.txt
+          podman version >> lab/results/e2f10/c05-c06/long-partition-provenance.txt
+          git ls-files lab/e2_orleans lab/e1_pg lab/e2_activation_observer lab/e2_account_directed .github/workflows/e2-account-directed.yml | xargs sha256sum >> lab/results/e2f10/c05-c06/long-partition-provenance.txt
+      - name: Observe request envelopes and independently reconcile SQL effects
+        run: python3 lab/e2_account_directed/run_probe.py
+      - name: Preserve all original observations and failures
+        if: always()
+        uses: actions/upload-artifact@v6
+        with:
+          name: e2-account-directed-original-${{ matrix.blocked_role }}
+          path: lab/results/e2f10/c05-c06/
+          if-no-files-found: warn
+      - name: Remove only disposable test resources
+        if: always()
+        run: |
+          for name in c05-capture-primary c05-capture-secondary e2long-net-primary e2long-net-secondary e2f10-client e2f10-secondary e2f10-primary e2f10-pg; do
+            podman rm -f "$name" 2>/dev/null || true
+          done
+          podman network rm e2f10-net 2>/dev/null || true
