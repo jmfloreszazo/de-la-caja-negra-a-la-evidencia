@@ -14,7 +14,7 @@ Esta es la hoja de ruta **del repositorio**, no una declaración de que una migr
 | C05/C06: cortes breves | Integrado, PR #73; PCAP y SQL auditados | No extrapolar a particiones largas o HA física |
 | Diagnóstico por proveedor | Integrado, PR #76; controles reales con FAIL conservado y efectos cero | #74 sigue abierto para investigar colocación natural |
 | Corte programado 120 s y recuperación muestreada >=60 s | **Verificado con alcance acotado, [PR #77](https://github.com/jmfloreszazo/de-la-caja-negra-a-la-evidencia/pull/77)** | Dos casos originales PASS y auditados; siguiente: activaciones concurrentes; no equivale a recuperación continua |
-| Comportamiento de activaciones concurrentes | Pendiente | Observación explícita y oráculo SQL; no asumir exclusividad global del actor |
+| Comportamiento de activaciones concurrentes | [Observador separado preparado](lab/e2_activation_observer/README.md); ejecución original y auditoría pendientes | Registrar intervalos de llamadas entrantes y efectos SQL; muestras sin solapamiento no prueban exclusividad global del actor |
 | Capacidad sostenida y cuello de botella | Pendiente, #25 | Saturación y COMMIT/p99 comparables; los pilotos existentes no cierran el gate |
 | Dominios físicos y HA | Pendiente | Ejecución y evidencia sobre hosts/fallos independientes |
 
