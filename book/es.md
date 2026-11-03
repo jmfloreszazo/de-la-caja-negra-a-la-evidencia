@@ -588,6 +588,29 @@ Conservar el núcleo es una decisión legítima si todavía concentra invariante
 
 **La regla central:** primero demostrar la frontera de responsabilidad; después escoger la topología. La propuesta se invalida cuando una evidencia nueva contradice la hipótesis, no cuando el diagrama ya está dibujado.
 
+#### Entrevista y assessment de la plataforma de origen
+
+La arqueología comienza con una entrevista estructurada y continúa contrastando cada respuesta con evidencia. La plataforma puede ser IBM Z con z/OS, IBM i sobre Power, Fujitsu BS2000 u otra; el lenguaje COBOL no identifica por sí solo ni el sistema operativo ni el gestor de datos. Registrar fabricante, modelo, versión, partición y productos realmente instalados evita inferencias prematuras. Incluir IBM i como plataforma empresarial adyacente y mantener la entrevista BS2000 separada del descubrimiento GS21/MSP/XSP; compartir fabricante no demuestra compartir comportamiento.
+
+La entrevista reúne a negocio, desarrollo, operaciones, datos, seguridad e infraestructura. Identifica capacidades y propietarios; lenguajes y fuentes; gestores de datos y archivos; transacciones y bloqueos; trabajos y ventanas batch; interfaces, transferencias, sucursales, continuidad, métricas y costes. Para cada respuesta se registra responsable, fecha, fuente, alcance y limitaciones. Una descripción del comportamiento existente sigue siendo una hipótesis hasta contrastarla con código, configuración, observación y pruebas representativas; una traza que no muestra una dependencia no demuestra su inexistencia. Registrar por separado la política de negocio aprobada: puede diferir deliberadamente del comportamiento observado en el origen.
+
+| Entorno o tecnología | Pregunta inicial |
+|---|---|
+| IBM Z y z/OS | ¿Se utilizan CICS, IMS DB o TM, Db2 for z/OS, VSAM y JCL? |
+| IBM i | ¿Qué programas RPG, COBOL y CL acceden a Db2 for i y a archivos físicos y lógicos [60]? |
+| Fujitsu BS2000 | ¿Qué versiones de COBOL2000, openUTM, UDS/SQL, SESAM/SQL u openFT están instaladas [61]? |
+| Otros productos | ¿Existen Natural, Adabas, IDMS, Datacom o una plataforma Unisys y qué versiones e interfaces se usan? |
+
+La presencia de cada producto debe comprobarse: son ejemplos, no componentes obligatorios de una arquitectura. IMS DB e IMS TM cumplen funciones diferentes. VSAM organiza y proporciona acceso a conjuntos de datos; sus claves, orden y codificación deben investigarse antes de seleccionar una estructura de destino.
+
+##### De la entrevista a una decisión verificable
+
+Para cada capacidad se identifican reglas, datos, autoridad de escritura, límites de transacción, consumidores y criterios de aceptación. El equipo registra las incógnitas y decide qué puede mantenerse, encapsularse, sustituirse progresivamente o retirarse, con una justificación y una prueba para cada decisión. Una saga o un actor no sustituyen automáticamente una transacción atómica.
+
+La comparación de alternativas local, cloud e híbrida usa cargas y periodos equivalentes, volúmenes, latencias, ventana batch, recuperación, seguridad, costes fechados y restricciones. MIPS, MSU y CPW no son unidades intercambiables ni se convierten directamente en núcleos. IBM describe CPW como medida relativa de capacidad para carga comercial cuyo resultado depende de las características de esa carga [62]. Las pruebas diferenciales utilizan entradas controladas, casos límite y resultados de referencia; las diferencias se investigan y aprueban. No se presume que un experimento sintético o un runner compartido represente una medición del mainframe o una prueba productiva.
+
+Para el cuestionario de evidencia por capas, consultar el [capítulo 1](#capítulo-1--el-mainframe-no-es-una-caja-rápida). Para decisiones de patrones respaldadas por fuentes, el [capítulo 13](#capítulo-13--antes-de-elegir-un-patrón-identifica-el-contrato) y el [alcance del catálogo](../research/platform-contracts/README.md). La entrevista registra hipótesis de descubrimiento; no convierte las familias pendientes ni plataformas adyacentes en migraciones verificadas.
+
 #### Contrato de evidencia
 
 Este capítulo es una explicación de método apoyada por un **modelo sintético**, no por trazas de un banco, mediciones IBM Z ni aceptación productiva. Las pruebas del laboratorio sólo examinan decisiones estructurales. Véase [investigación detallada](../docs/research/mainframe-decomposition.es.md) y [laboratorio](../lab/decomposition/README.md).
@@ -3614,3 +3637,9 @@ La numeración identifica cada riesgo; no expresa frecuencia, gravedad ni priori
 [58] Unisys. *Automatic Single Transaction Abort Recovery*. ClearPath MCP 21.0; document 38508198-005. Documentación primaria leída directamente. Consultada el 3 de noviembre de 2026; fecha de publicación no proporcionada. <https://www.support.unisys.com/aseries/docs/ClearPath-MCP-21.0/38508198-005/section-000082014.html>
 
 [59] Unisys. *OS 2200 TIP Application Configuration Properties*. ClearPath ePortal 10.0; document 82073594. Documentación primaria leída directamente. Consultada el 3 de noviembre de 2026; fecha de publicación no proporcionada. <https://www.support.unisys.com/ePortalIC-10.0/topic/82073594_clearpath_eportal_developerhelp/html/section-000039378.htm>
+
+[60] IBM. *Database files*. IBM i 7.6.0. Documentación primaria indexada consultada el 3 de noviembre de 2026; la versión no acredita productos instalados ni disponibilidad actual. <https://www.ibm.com/docs/en/i/7.6.0?topic=concepts-database-files>
+
+[61] Fujitsu. *COBOL2000 V1.6 — Net Express development environment with the BS2000/OSD option*. BS2000/OSD documentation. Documentación primaria indexada consultada el 3 de noviembre de 2026; la versión no acredita productos instalados ni disponibilidad actual. <https://bs2manuals.ts.fujitsu.com/psCOBOL2000V16en/net-express-development-environment-with-the-bs2000-osd-option-cobol-compiler-user-guide-164-22034711.html>
+
+[62] IBM. *IBM Power Systems Performance Capabilities Reference*. IBM i / Power9 reference, April 2021. Documentación primaria indexada consultada el 3 de noviembre de 2026; la versión no acredita productos instalados ni disponibilidad actual. <https://public.dhe.ibm.com/services/us/igsc/idoctor/perf/systems_power_software_i_perfmgmt_pcrm_p9_april_2021_v1_26016726USEN.pdf>

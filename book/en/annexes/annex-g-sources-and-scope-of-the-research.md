@@ -124,6 +124,12 @@ The author's articles are cited by their original Spanish titles, with an Englis
 
 [59] Unisys. *OS 2200 TIP Application Configuration Properties*. ClearPath ePortal 10.0; document 82073594. Primary documentation read directly. Consulted 3 November 2026; publication date not supplied. <https://www.support.unisys.com/ePortalIC-10.0/topic/82073594_clearpath_eportal_developerhelp/html/section-000039378.htm>
 
+[60] IBM. *Database files*. IBM i 7.6.0. Indexed primary documentation consulted 3 November 2026; version scope does not establish installed products or current availability. <https://www.ibm.com/docs/en/i/7.6.0?topic=concepts-database-files>
+
+[61] Fujitsu. *COBOL2000 V1.6 — Net Express development environment with the BS2000/OSD option*. BS2000/OSD documentation. Indexed primary documentation consulted 3 November 2026; version scope does not establish installed products or current availability. <https://bs2manuals.ts.fujitsu.com/psCOBOL2000V16en/net-express-development-environment-with-the-bs2000-osd-option-cobol-compiler-user-guide-164-22034711.html>
+
+[62] IBM. *IBM Power Systems Performance Capabilities Reference*. IBM i / Power9 reference, April 2021. Indexed primary documentation consulted 3 November 2026; version scope does not establish installed products or current availability. <https://public.dhe.ibm.com/services/us/igsc/idoctor/perf/systems_power_software_i_perfmgmt_pcrm_p9_april_2021_v1_26016726USEN.pdf>
+
 ---
 
 [← Annex F · Operational glossary](annex-f-operational-glossary.md) · [Contents](../README.md)
