@@ -41,3 +41,5 @@ preview workflow. Both editions still need visual review for each editorial
 cut; a successful PDF build alone is not full layout or language approval.
 
 Code listings now request `break-inside: avoid`: a block that fits on one content page moves as a unit instead of starting with only a few lines at the page foot. Oversized blocks may still span pages. The editorial visual sample must check actual output; CSS alone is not a layout verdict.
+
+Immediate ES/EN listing-caption paragraphs also receive a print-only keep-with-next class. Both caption and code move together; the helper does not reclassify unrelated or separated prose. Focused regression tests preserve the code HTML exactly.

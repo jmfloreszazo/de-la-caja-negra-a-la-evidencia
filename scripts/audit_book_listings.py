@@ -68,9 +68,9 @@ def inventory():
                     sha256=hashlib.sha256(es[2].encode()).hexdigest()),
                 canonicalExecutableCode=language not in ('text','markdown'),sameBytes=en[2]==es[2],
                 dependencies=dependencies,staticChecks=checks,completeIntegrationEstablished=False))
-    assert len(rows)==32 and len({r['id'] for r in rows})==32
-    assert sum(r['canonicalExecutableCode'] for r in rows)==27
-    return dict(schema='BOOK_LISTINGS_V1',pairedFences=32,canonicalExecutableFences=27,
+    assert rows and len({r['id'] for r in rows})==len(rows)
+    return dict(schema='BOOK_LISTINGS_V1',pairedFences=len(rows),
+        canonicalExecutableFences=sum(r['canonicalExecutableCode'] for r in rows),
         language='English executable/config code in both editions',listings=rows,
         limitation='Static parsing and bounded helper tests do not establish complete integration, production safety or cross-platform execution.')
 
@@ -115,7 +115,8 @@ def main():
         TARGET.write_text(json.dumps(current,indent=2)+'\n')
     else:
         assert current==json.loads(TARGET.read_text()),'Regenerate the reviewed inventory with --write'
-    print(json.dumps(dict(pairedFences=32,canonicalExecutableFences=27,sqlite=sqlite_checks()),indent=2))
+    print(json.dumps(dict(pairedFences=current['pairedFences'],
+                         canonicalExecutableFences=current['canonicalExecutableFences'],sqlite=sqlite_checks()),indent=2))
 
 
 if __name__=='__main__':

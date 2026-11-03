@@ -2,6 +2,13 @@
 import re
 
 
+def keep_listing_captions(html: str) -> str:
+    """Give immediate ES/EN listing captions a keep-with-next print class."""
+    pattern=(r'<p>(<strong>(?:Listing|Listado)\s(?:(?!</p>).)*</p>)'
+             r'(?=\s*(?:<div\b[^>]*class="sourceCode"[^>]*>\s*)?<pre\b)')
+    return re.sub(pattern,r'<p class="listing-caption">\1',html,flags=re.S)
+
+
 def normalize_alerts(markdown: str) -> str:
     lines = []
     fence = None
