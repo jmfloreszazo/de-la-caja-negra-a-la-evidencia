@@ -23,3 +23,7 @@ The roadmap now reflects #83/#84 and 47 figures, and places platform contracts b
 ## Original CI observation
 
 [Run 41721242997](https://github.com/jmfloreszazo/de-la-caja-negra-a-la-evidencia/actions/runs/41721242997) passed all six catalog-integrity controls. The [original ZIP](../evidence/platform-contracts/catalog-integrity-original.zip) and [provenance](../evidence/platform-contracts/provenance.json) retain source head `9f6d20267e137ff8de3c1559e8c2dbdc433215fa` and PR test checkout `32a2956826ffb0ec1c0e4f0629af5f444722570c` separately. The temporary commit object is archived so the audit does not depend on preserving an ephemeral GitHub ref. It checks object identity, parentage, identical trees and three historical source hashes. The result remains metadata-only and does not validate native vendor behavior.
+
+## Bounded visual review
+
+The [PDF from run 41722105250](https://github.com/jmfloreszazo/de-la-caja-negra-a-la-evidencia/actions/runs/41722105250) has 160 ES pages and 156 EN pages, with 47 diagrams plus cover per edition. Ten pages covering the expanded material were visually reviewed. The [record](../evidence/platform-contracts/pdf-review.json) retains ZIP/PDF SHA-256 identities, one hundred render inputs and two samples. PR test checkout `5f1e96272c25048db9cf74fe48f19bafafffea81` and source head `22cd0f3d650623cdcbe6b59127be0725fa409498` have identical trees. Citation/blank-line formatting found by the initial lint was corrected; this does not certify full-book editorial quality or native platform execution.
