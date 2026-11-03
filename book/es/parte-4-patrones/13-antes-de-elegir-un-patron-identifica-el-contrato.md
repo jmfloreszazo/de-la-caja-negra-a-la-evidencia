@@ -38,7 +38,7 @@ Para leer la matriz conviene hacerse siempre las mismas tres preguntas, en este 
 
 El [catálogo inicial legible por máquina](../../../research/platform-contracts/catalog.json) y su [guía de alcance](../../../research/platform-contracts/README.md) concretan la matriz anterior. Abarca IBM Z/z/OS, Unisys MCP e integración OS 2200; son tres contextos de plataforma, no implementaciones intercambiables. Lo siguiente propone reemplazos y pruebas de aceptación. Ninguno se ejecutó contra un runtime original del fabricante en este incremento de investigación.
 
-**IBM / CICS y Db2.** Inventariar recursos recuperables y límites reales de unidad de trabajo antes de extraer una API [49][56]. Una transacción SQL candidata puede cubrir recursos dentro de su límite. Si el origen coordina además una cola u otro gestor, introducir outbox puede requerir cambiar con aprobación los estados intermedios observables. Inyectar un fallo entre participantes e inspeccionar ambas historias; los saldos finales por sí solos no prueban que sobreviva la coordinación original.
+**IBM / CICS y Db2.** Inventariar recursos recuperables y límites reales de unidad de trabajo antes de extraer una API [49], [56]. Una transacción SQL candidata puede cubrir recursos dentro de su límite. Si el origen coordina además una cola u otro gestor, introducir outbox puede requerir cambiar con aprobación los estados intermedios observables. Inyectar un fallo entre participantes e inspeccionar ambas historias; los saldos finales por sí solos no prueban que sobreviva la coordinación original.
 
 **Unisys MCP / Enterprise Database Server.** La documentación MCP 21 condiciona SINGLEABORT a `INDEPENDENTTRANS` y asigna la rectificación de la transacción abortada a aplicación/usuario [58]. Obtener, por tanto, opciones DASDL/auditoría antes de diseñar reintentos. El candidato debe repetir la instrucción completa adecuada y conciliar su resultado; repetir solo la sentencia fallida puede omitir efectos previos.
 
@@ -61,7 +61,6 @@ Después, identificar atomicidad. Conservar efectos inmediatamente inseparables 
 Finalmente, elegir ubicación según demanda medida y dominios de fallo. Una proyección puede descargar consultas si explicita su frescura. CDC puede alimentarla, pero no transfiere autoridad de escritura. Los workers horizontales siguen compartiendo límites de base de datos/log/cuentas calientes. Conservar o integrar el motor original cuando se desconoce su contrato, falta un reemplazo demostrado de una recuperación necesaria o una modernización más estrecha ya aporta el valor buscado.
 
 Fujitsu GS21, NEC ACOS, Hitachi VOS y Bull GCOS siguen como descubrimiento sin correspondencias de funciones verificadas en este incremento. NonStop, OpenVMS, IBM i y HP 3000 se marcan aparte como plataformas adyacentes por investigar. Desconocido significa investigación pendiente; no ausente, sin soporte o equivalente. El inventario completo de #28 y sus ejemplos batch/offline/CDC/internacionales siguen pendientes. Esta primera base aporta un formato verificable sin presentar una lista larga sin revisar como investigación terminada.
-
 
 ---
 

@@ -16,6 +16,10 @@ The schema validator executes six negative catalog mutations. It checks attribut
 
 ## Remaining parent scope
 
-#17 retains deeper execution/memory/I/O/Db2/dataset/security/operations research, the requested paired architecture diagrams, actual measurements and SME review. #18 retains complete manufacturer/subsystem coverage, native semantic-gap controls and installation-specific evidence. #28 retains its 236 entries, fifteen category matrices, diagrams and runnable batch/offline/CDC/cross-border worked examples. Discovery rows remain NOT_VERIFIED. Unknown customer data and external hardware tests are documented follow-ups; they do not block integrating this bounded research.
+Issue #17 retains deeper execution/memory/I/O/Db2/dataset/security/operations research, the requested paired architecture diagrams, actual measurements and SME review. #18 retains complete manufacturer/subsystem coverage, runnable semantic-gap controls and installation-specific evidence. #28 retains its 236 entries, fifteen category matrices, diagrams and runnable batch/offline/CDC/cross-border worked examples. Discovery rows remain NOT_VERIFIED. Unknown customer data and external hardware tests are documented follow-ups; they do not block integrating this bounded research.
 
 The roadmap now reflects #83/#84 and 47 figures, and places platform contracts before the remaining decomposition/channel/editorial/refactor/agent work. #16/#53 stay frozen.
+
+## Original CI observation
+
+[Run 41721242997](https://github.com/jmfloreszazo/de-la-caja-negra-a-la-evidencia/actions/runs/41721242997) passed all six catalog-integrity controls. The [original ZIP](../evidence/platform-contracts/catalog-integrity-original.zip) and [provenance](../evidence/platform-contracts/provenance.json) retain source head `9f6d20267e137ff8de3c1559e8c2dbdc433215fa` and PR test checkout `32a2956826ffb0ec1c0e4f0629af5f444722570c` separately. The temporary commit object is archived so the audit does not depend on preserving an ephemeral GitHub ref. It checks object identity, parentage, identical trees and three historical source hashes. The result remains metadata-only and does not validate native vendor behavior.

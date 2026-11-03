@@ -45,7 +45,7 @@ The [source catalog](../../../research/platform-contracts/catalog.json) records 
 | Workload policy | WLM uses service goals and importance [54] | Interactive versus batch budgets and delays; a priority queue alone is insufficient evidence |
 | Processor roles | zIIPs run eligible work [55] | Workload eligibility, actual use and licensing inventory; count useful work rather than converting engines to vCPUs |
 | Transaction monitor | A CICS task can span several units of work [49] | Actual syncpoints, participants and external effects; session/task/transaction boundaries need separate inventories |
-| Data manager | Db2 for z/OS locking/isolation and data sharing depend on engine settings and topology [56][57] | Concurrent histories, access paths, predicate safety and recovery; familiar isolation names or writable replicas do not establish equivalence |
+| Data manager | Db2 for z/OS locking/isolation and data sharing depend on engine settings and topology [56], [57] | Concurrent histories, access paths, predicate safety and recovery; familiar isolation names or writable replicas do not establish equivalence |
 
 The sources describe particular products and documentation versions, not every installation. The structured catalog records retrieval through an index where direct IBM document access was unavailable; publication dates remain unknown where not supplied. Version scope is not a statement of current support or availability. No CPU frequency, MIPS conversion, hardware capacity or bank workload result is derived from these rows.
 
@@ -79,7 +79,6 @@ Request only authorized, minimized extracts. The useful output is a manifest wit
 | Who approves the behavior and exceptions? | Versioned policy, accountable owner and independently expected outcomes | Business acceptance; observed source behavior alone is insufficient |
 
 The unanswered fields remain `NEEDS_CUSTOMER_DATA` in an actual assessment. A Linux SQL test can validate a candidate invariant; it cannot measure an IBM channel fabric, establish an MCP recovery option or certify the old installation. The [pattern chapter](../part-4-patterns/13-before-choosing-a-pattern-identify-the-contract.md) uses three platform examples to show why attribution matters.
-
 
 ---
 

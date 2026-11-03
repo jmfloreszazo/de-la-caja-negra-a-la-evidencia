@@ -172,7 +172,7 @@ The [source catalog](../research/platform-contracts/catalog.json) records ten bo
 | Workload policy | WLM uses service goals and importance [54] | Interactive versus batch budgets and delays; a priority queue alone is insufficient evidence |
 | Processor roles | zIIPs run eligible work [55] | Workload eligibility, actual use and licensing inventory; count useful work rather than converting engines to vCPUs |
 | Transaction monitor | A CICS task can span several units of work [49] | Actual syncpoints, participants and external effects; session/task/transaction boundaries need separate inventories |
-| Data manager | Db2 for z/OS locking/isolation and data sharing depend on engine settings and topology [56][57] | Concurrent histories, access paths, predicate safety and recovery; familiar isolation names or writable replicas do not establish equivalence |
+| Data manager | Db2 for z/OS locking/isolation and data sharing depend on engine settings and topology [56], [57] | Concurrent histories, access paths, predicate safety and recovery; familiar isolation names or writable replicas do not establish equivalence |
 
 The sources describe particular products and documentation versions, not every installation. The structured catalog records retrieval through an index where direct IBM document access was unavailable; publication dates remain unknown where not supplied. Version scope is not a statement of current support or availability. No CPU frequency, MIPS conversion, hardware capacity or bank workload result is derived from these rows.
 
@@ -930,7 +930,7 @@ To read the matrix it helps to ask the same three questions every time, in this 
 
 The [machine-readable seed catalog](../research/platform-contracts/catalog.json) and its [scope guide](../research/platform-contracts/README.md) make the preceding matrix specific. It covers IBM Z/z/OS, Unisys MCP and OS 2200 integration; these are three platform contexts, not interchangeable implementations. The following are proposed replacements and acceptance tests. None was executed against an original vendor runtime for this research increment.
 
-**IBM / CICS and Db2.** Inventory the recoverable resources and actual unit-of-work boundaries before extracting an API [49][56]. A target SQL transaction is a candidate for resources inside its boundary. If the source also coordinates a queue or another manager, an outbox may require an approved change to externally observable intermediate states. Inject a failure between participants and inspect both resource histories; final balances alone cannot prove the old coordination contract survived.
+**IBM / CICS and Db2.** Inventory the recoverable resources and actual unit-of-work boundaries before extracting an API [49], [56]. A target SQL transaction is a candidate for resources inside its boundary. If the source also coordinates a queue or another manager, an outbox may require an approved change to externally observable intermediate states. Inject a failure between participants and inspect both resource histories; final balances alone cannot prove the old coordination contract survived.
 
 **Unisys MCP / Enterprise Database Server.** MCP 21 documentation conditions SINGLEABORT on `INDEPENDENTTRANS` and assigns rectification of an aborted transaction to the application/end user [58]. Therefore obtain DASDL/audit settings before designing retries. A candidate must retry the appropriate complete instruction and reconcile its outcome; retrying just the failed statement can omit earlier effects.
 

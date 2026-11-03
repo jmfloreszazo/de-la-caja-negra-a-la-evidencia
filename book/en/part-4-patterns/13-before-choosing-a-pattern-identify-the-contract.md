@@ -38,7 +38,7 @@ To read the matrix it helps to ask the same three questions every time, in this 
 
 The [machine-readable seed catalog](../../../research/platform-contracts/catalog.json) and its [scope guide](../../../research/platform-contracts/README.md) make the preceding matrix specific. It covers IBM Z/z/OS, Unisys MCP and OS 2200 integration; these are three platform contexts, not interchangeable implementations. The following are proposed replacements and acceptance tests. None was executed against an original vendor runtime for this research increment.
 
-**IBM / CICS and Db2.** Inventory the recoverable resources and actual unit-of-work boundaries before extracting an API [49][56]. A target SQL transaction is a candidate for resources inside its boundary. If the source also coordinates a queue or another manager, an outbox may require an approved change to externally observable intermediate states. Inject a failure between participants and inspect both resource histories; final balances alone cannot prove the old coordination contract survived.
+**IBM / CICS and Db2.** Inventory the recoverable resources and actual unit-of-work boundaries before extracting an API [49], [56]. A target SQL transaction is a candidate for resources inside its boundary. If the source also coordinates a queue or another manager, an outbox may require an approved change to externally observable intermediate states. Inject a failure between participants and inspect both resource histories; final balances alone cannot prove the old coordination contract survived.
 
 **Unisys MCP / Enterprise Database Server.** MCP 21 documentation conditions SINGLEABORT on `INDEPENDENTTRANS` and assigns rectification of an aborted transaction to the application/end user [58]. Therefore obtain DASDL/audit settings before designing retries. A candidate must retry the appropriate complete instruction and reconcile its outcome; retrying just the failed statement can omit earlier effects.
 
@@ -61,7 +61,6 @@ Then identify atomicity. Keep immediately inseparable effects in a compatible tr
 Finally choose placement from measured demand and failure domains. A read projection may offload queries if freshness is explicit. CDC may feed that projection but does not transfer write authority. Horizontal application workers still share database/log/hot-key limits. Retain or integrate the original engine when its contract is unknown, a necessary recovery mechanism has no demonstrated replacement, or a narrower modernization already delivers the business value.
 
 Fujitsu GS21, NEC ACOS, Hitachi VOS and Bull GCOS remain discovery entries without verified feature mappings in this increment. NonStop, OpenVMS, IBM i and HP 3000 are separately marked adjacent research scope. Unknown means that research is still required; it does not mean absent, unsupported or equivalent. The complete #28 inventory and its batch/offline/CDC/cross-border worked examples remain future deliverables. This first seed gives those entries a checkable format instead of presenting a long unreviewed list as completed research.
-
 
 ---
 

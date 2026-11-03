@@ -16,6 +16,10 @@ El validador ejecuta seis mutaciones negativas del catálogo. Comprueba atribuci
 
 ## Alcance pendiente de los issues principales
 
-#17 conserva investigación profunda de ejecución/memoria/I/O/Db2/datasets/seguridad/operación, diagramas solicitados, mediciones reales y revisión de especialistas. #18 conserva cobertura completa por fabricante/subsistema, controles nativos de brechas semánticas y evidencia de instalación. #28 conserva sus 236 entradas, quince matrices, diagramas y ejemplos ejecutables batch/offline/CDC/internacionales. El descubrimiento sigue NOT_VERIFIED. Datos desconocidos del cliente y pruebas de hardware externo quedan documentados para después; no bloquean integrar esta investigación acotada.
+El issue #17 conserva investigación profunda de ejecución/memoria/I/O/Db2/datasets/seguridad/operación, diagramas solicitados, mediciones reales y revisión de especialistas. #18 conserva cobertura completa por fabricante/subsistema, controles ejecutables de brechas semánticas y evidencia de instalación. #28 conserva sus 236 entradas, quince matrices, diagramas y ejemplos ejecutables batch/offline/CDC/internacionales. El descubrimiento sigue NOT_VERIFIED. Datos desconocidos del cliente y pruebas de hardware externo quedan documentados para después; no bloquean integrar esta investigación acotada.
 
 El roadmap refleja ahora #83/#84 y 47 figuras, y coloca contratos de plataforma antes de descomposición/canales/editorial/refactor/agentes pendientes. #16/#53 siguen congelados.
+
+## Original de CI
+
+La [ejecución 41721242997](https://github.com/jmfloreszazo/de-la-caja-negra-a-la-evidencia/actions/runs/41721242997) pasó los seis controles de integridad del catálogo. El [ZIP original](../evidence/platform-contracts/catalog-integrity-original.zip) y su [procedencia](../evidence/platform-contracts/provenance.json) conservan rama fuente `9f6d20267e137ff8de3c1559e8c2dbdc433215fa` y checkout de prueba `32a2956826ffb0ec1c0e4f0629af5f444722570c` por separado. Se archiva el objeto de commit temporal para que el control no dependa de conservar una referencia efímera de GitHub. El auditor verifica identidad del objeto, parentesco, igualdad de árboles y tres hashes históricos. El resultado sigue limitado a metadatos; no valida comportamiento nativo de fabricantes.
