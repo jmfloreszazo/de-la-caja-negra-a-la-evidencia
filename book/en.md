@@ -2326,7 +2326,9 @@ one durable effect and rejected incompatible payloads.
 
 The opposite direction was inconclusive. The first collector omitted stderr;
 after correction, both repeated cases were also inconclusive. One positive
-witness across four observations does not establish repeatability. In the
+witness across those four observations. A third campaign observed another
+4.68ms overlap with full stderr: two directed positives and four inconclusive
+outcomes in total, partially reproduced only in the secondary-outbound case. In the
 repeats, stderr and SQL identify a fatal membership path: the primary discovers
 itself Dead, enters KillMyselfLocally and exits with code 139. Victim selection
 across directional partitions remains incompletely explained.

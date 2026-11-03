@@ -1,5 +1,7 @@
 # E2 · Directed incoming requests on ordinary AccountGrain activations
 
+**Current checkpoint: 2 directed positives / 4 INCONCLUSIVE across three archived campaigns.**
+
 **Mixed first trial: secondary-outbound positive witness, primary-outbound INCONCLUSIVE. E2 stays partial.**
 
 [Original run #41634279617](https://github.com/jmfloreszazo/de-la-caja-negra-a-la-evidencia/actions/runs/41634279617),
@@ -82,6 +84,42 @@ reconciliation and the fatal-path evidence. Across all four originals there is
 **one directed positive and three INCONCLUSIVE outcomes**. The experimental
 workflow remains red where exit 2 was required; archive-audit PASS is separate.
 Keep lifecycle/partition acceptance open. Capacity #25 can proceed independently.
+
+## Third campaign: positive witness recurs with stderr retained
+
+[Run #41649646557](https://github.com/jmfloreszazo/de-la-caja-negra-a-la-evidencia/actions/runs/41649646557),
+exact source/checkout `9590bc3f663ea965394f84ddad4a1748677dee54`, observed
+another secondary-outbound witness: **4.683800 ms**, with both log streams
+retained. The old request returned DUPLICATE_COMMITTED and the new request
+COMMITTED. Primary-outbound remained INCONCLUSIVE. Both cases had complete
+financial/recovery acceptance, SQL 3/6/3, 7/7 invariants and no incomplete calls.
+Full stderr again records the local membership fatal path: primary in the
+primary-outbound case, secondary in the secondary-outbound case, each exiting
+139 after its membership generation became Dead.
+
+| Third-campaign original | Bytes | ZIP SHA-256 |
+| --- | --- | --- |
+| Primary artifact 13236768340 | 51487 | 9bef85e4ef088a8d6925ce2a0a6b90efdb3341b72dc7ef974407ad175f580a62 |
+| Secondary artifact 13237051743 | 55383 | ff4ef9352bd77527012bf7ce217b974b6ae440fe67e5962b50c75dcbe26fb332 |
+
+[Primary ZIP](e2-account-directed-primary-repeat3-original.zip) /
+[summary](e2-account-directed-primary-repeat3-original.json) and
+[secondary ZIP](e2-account-directed-secondary-repeat3-original.zip) /
+[summary](e2-account-directed-secondary-repeat3-original.json) remain unmodified.
+The auditor checks all six originals and their 84 source hashes per job.
+The positive witness recurred in two secondary-outbound cases out of three;
+this is partial reproduction, not reliable success across both directions or
+proof of natural Active lifecycle overlap. All three primary-outbound cases
+remain inconclusive. One initial stdout-only positive is distinct from the
+later positive with full stderr. No result is discarded or relabeled.
+
+## Campaign execution versus source CI
+
+New original campaigns are explicitly launched using workflow_dispatch, with
+unchanged criteria and exit 2 for INCONCLUSIVE. PRs automatically compile the
+host, run adversarial witness tests and audit archived originals. This avoids
+launching new campaigns for every book edit. A skipped live matrix is not a
+successful experiment; the historical red workflow conclusions remain intact.
 
 ## Original bytes and reproduction
 

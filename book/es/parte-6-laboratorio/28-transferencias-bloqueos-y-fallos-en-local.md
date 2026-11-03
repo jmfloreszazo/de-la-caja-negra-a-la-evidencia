@@ -274,7 +274,9 @@ DUPLICATE_COMMITTED. SQL conservó el efecto único y rechazó payloads incompat
 
 El sentido opuesto quedó inconcluso. El primer colector omitía stderr; al
 corregirlo, los dos casos repetidos también quedaron inconclusos. Hay un testigo
-positivo entre cuatro observaciones, no repetibilidad demostrada. En las
+positivo entre esas cuatro observaciones. Una tercera campaña volvió a mostrar
+un solapamiento de 4,68 ms con stderr completo: dos positivos dirigidos y cuatro
+inconclusos en total, con reproducción parcial solo en el sentido secundario. En las
 repeticiones, stderr y SQL identifican una ruta fatal de membresía: el primario
 se descubre Dead, ejecuta KillMyselfLocally y termina con código 139. La selección
 de víctima entre particiones sigue sin explicarse por completo.

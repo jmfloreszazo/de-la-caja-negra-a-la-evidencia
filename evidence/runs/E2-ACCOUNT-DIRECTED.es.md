@@ -1,5 +1,7 @@
 # E2 · Llamadas dirigidas sobre activaciones del AccountGrain normal
 
+**Estado actual: 2 positivos dirigidos / 4 INCONCLUSIVE en tres campañas archivadas.**
+
 **Primer ensayo mixto: testigo positivo al bloquear salida secundaria e INCONCLUSIVE al bloquear primaria. E2 sigue parcial.**
 
 [Ejecución original #41634279617](https://github.com/jmfloreszazo/de-la-caja-negra-a-la-evidencia/actions/runs/41634279617),
@@ -82,6 +84,41 @@ de la ruta fatal. Los cuatro originales suman **un positivo dirigido y tres
 INCONCLUSIVE**. El workflow experimental sigue rojo donde se exigió salida 2;
 el PASS de auditoría de archivos es independiente. La aceptación de particiones
 y ciclos de vida sigue abierta. Capacidad #25 puede avanzar de forma independiente.
+
+## Tercera campaña: reaparece el testigo con stderr conservado
+
+La [ejecución #41649646557](https://github.com/jmfloreszazo/de-la-caja-negra-a-la-evidencia/actions/runs/41649646557),
+código/checkout `9590bc3f663ea965394f84ddad4a1748677dee54`, observó otro
+testigo con salida secundaria bloqueada: **4,683800 ms**, conservando ambos
+flujos. La llamada antigua devolvió DUPLICATE_COMMITTED y la nueva COMMITTED.
+El sentido primario siguió INCONCLUSIVE. Ambos casos conservaron aceptación
+financiera y recuperación completas, SQL 3/6/3, 7/7 invariantes y cero llamadas
+incompletas. stderr vuelve a registrar la ruta fatal de membresía local: el
+primario en el caso primario y el secundario en el caso secundario, con salida
+139 después de quedar su generación como Dead.
+
+| Original de tercera campaña | Bytes | SHA-256 ZIP |
+| --- | --- | --- |
+| Artefacto primario 13236768340 | 51487 | 9bef85e4ef088a8d6925ce2a0a6b90efdb3341b72dc7ef974407ad175f580a62 |
+| Artefacto secundario 13237051743 | 55383 | ff4ef9352bd77527012bf7ce217b974b6ae440fe67e5962b50c75dcbe26fb332 |
+
+Se conservan intactos [ZIP primario](e2-account-directed-primary-repeat3-original.zip) /
+[resumen](e2-account-directed-primary-repeat3-original.json) y
+[ZIP secundario](e2-account-directed-secondary-repeat3-original.zip) /
+[resumen](e2-account-directed-secondary-repeat3-original.json). El auditor verifica
+los seis originales y los 84 hashes por trabajo. El testigo reapareció en dos
+de los tres casos secundarios: reproducción parcial, no éxito consistente en
+ambos sentidos ni prueba natural de ciclos de vida Active simultáneos. Los
+tres casos primarios siguen inconclusos. El primer positivo sin stderr se
+distingue del posterior que sí lo conserva. No se descartan ni reclasifican resultados.
+
+## Ejecución de campañas y CI de código
+
+Las nuevas campañas se lanzan explícitamente mediante workflow_dispatch, con
+los mismos criterios y salida 2 para INCONCLUSIVE. Las PR compilan el host,
+ejecutan controles adversariales y auditan los originales automáticamente.
+Así, editar el libro no lanza otra campaña. Una matriz viva omitida no es un
+experimento satisfactorio; se conservan las conclusiones rojas históricas.
 
 ## Bytes originales y reproducción
 

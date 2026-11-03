@@ -21,4 +21,5 @@ jobs:
           python-version: '3.12'
       - run: git fetch --no-tags --depth=1 origin bfc7662df377632a34d1fb076cdc2de0291e4021
       - run: git fetch --no-tags --depth=1 origin c1d174d263b453c9e1a55420f90ad42f091ef88a
+      - run: git fetch --no-tags --depth=1 origin 9590bc3f663ea965394f84ddad4a1748677dee54
       - run: python3 scripts/check_e2_account_directed.py

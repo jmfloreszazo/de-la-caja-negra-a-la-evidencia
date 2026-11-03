@@ -3,7 +3,10 @@
 Status: first run has one directed positive / one INCONCLUSIVE; the corrected
 stdout/stderr repeat has two INCONCLUSIVE cases. See the
 [paired evidence](../../evidence/runs/E2-ACCOUNT-DIRECTED.md). Repeatability is
-not established and E2 stays partial. This trial depends on PRs #78/#79; their
+not established across both directions and E2 stays partial. A third archived
+campaign adds a second secondary-outbound positive witness with both log
+streams retained; the primary-outbound case remains inconclusive. The total
+is 2 positive witnesses / 4 INCONCLUSIVE outcomes. This trial depends on PRs #78/#79; their
 stateless-worker calibration remains a distinct control. Software/lab docs are English.
 
 ## Fixed question and injected condition
@@ -74,3 +77,14 @@ python3 -m unittest discover -s lab/e2_account_directed -p test_probe_contract.p
 The dedicated CI workflow runs mandatory language/book checks, publishes the
 original client and separate host, then executes this exact preregistered
 protocol. No book finding or release/tag is promoted by preparing source.
+
+## Source regression versus an original campaign
+
+PR checks always compile this host, run the adversarial witness contracts and
+validate the paired book. A separate archive-audit workflow verifies the frozen
+original ZIPs, including legitimate INCONCLUSIVE outcomes. New live 120s
+campaigns use explicit workflow_dispatch. Documentation-only revisions do not
+launch another original campaign. Manual invocation uses the same acceptance
+criteria, bounded probes, raw reports and exit 2 for INCONCLUSIVE; nothing is
+converted to PASS. Previously red original workflow conclusions remain red.
+A skipped live matrix on a source-only PR is not a successful partition test.

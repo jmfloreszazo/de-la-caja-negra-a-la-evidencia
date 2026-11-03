@@ -57,7 +57,38 @@ def main():
             assert exits and exits[0]['processes']['primary']['exitCode'] == 139
             assert any(r[0] == '10.78.30.11' and r[1] == 11150 and r[3] == 6
                        for r in exits[0]['sql']['membershipGenerations'])
-    print('DIRECTED ARCHIVE AUDIT: PASS (1 directed positive / 3 INCONCLUSIVE; stderr repeat identifies membership fatal path; E2 partial)')
+    third_source = '9590bc3f663ea965394f84ddad4a1748677dee54'
+    third_digests = {
+        'primary': '9bef85e4ef088a8d6925ce2a0a6b90efdb3341b72dc7ef974407ad175f580a62',
+        'secondary': 'ff4ef9352bd77527012bf7ce217b974b6ae440fe67e5962b50c75dcbe26fb332',
+    }
+    for role,digest in third_digests.items():
+        path = ROOT/'evidence/runs'/('e2-account-directed-'+role+'-repeat3-original.zip')
+        assert hashlib.sha256(path.read_bytes()).hexdigest() == digest
+        with zipfile.ZipFile(path) as z:
+            assert z.read('account-directed-summary.json') == path.with_suffix('.json').read_bytes()
+        result = audit(path,third_source)
+        assert result['fullLogStreamsRetained'] is True and result['financialAcceptanceAudited'] is True
+        assert result['sourceHashes'] == 84 and result['incompleteCalls'] == 0
+        assert result['status'] == ('INCONCLUSIVE_NO_LIVE_OVERLAP' if role=='primary'
+                                    else 'PASS_DIRECTED_REQUEST_OVERLAP')
+        if role == 'secondary':
+            assert result['directedWitness'] == dict(overlapTicks=4683800,frequency=1000000000,
+                oldResult='DUPLICATE_COMMITTED',newResult='COMMITTED')
+        with zipfile.ZipFile(path) as z:
+            d = json.loads(z.read('account-directed-summary.json'))
+            parent = json.loads(z.read('long-partition-summary.json'))
+            old_id = d['originalProcesses'][role]['id']
+            records = [item for item in d['logs'] if item['containerId'] == old_id]
+            assert len(records) == 1
+            stderr = z.read(records[0]['stderrFile']).decode()
+            assert 'FATAL EXCEPTION from Orleans.Runtime.MembershipService.MembershipTableManager' in stderr
+            assert 'I should be Dead according to the membership table' in stderr
+            assert 'MembershipTableManager.KillMyselfLocally' in stderr
+            exits = [x for x in parent['samples'] if x['processes'][role]['status'] == 'exited']
+            assert exits and exits[0]['processes'][role]['exitCode'] == 139
+
+    print('DIRECTED ARCHIVE AUDIT: PASS (2 directed positives / 4 INCONCLUSIVE across 3 campaigns; E2 partial)')
 
 
 if __name__=='__main__':main()

@@ -1,4 +1,4 @@
-name: E2 ordinary AccountGrain directed partition probe
+name: E2 directed source checks and manual original trial
 on:
   pull_request:
     paths:
@@ -10,7 +10,27 @@ on:
 permissions:
   contents: read
 jobs:
+  source:
+    name: Directed probe source and adversarial contracts
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-python@v6
+        with:
+          python-version: '3.12'
+      - uses: actions/setup-dotnet@v5
+        with:
+          dotnet-version: '10.0.x'
+      - name: Validate source policy and witness sensitivity
+        run: |
+          python3 scripts/check_language_policy.py
+          python3 scripts/check.py
+          python3 -m unittest discover -s lab/e2_account_directed -p 'test_probe_contract.py' -v
+          python3 -m py_compile lab/e2_account_directed/run_probe.py
+      - name: Compile the separate directed host
+        run: dotnet publish lab/e2_account_directed/DirectedSilo.csproj -c Release -m:1 --disable-build-servers -o /tmp/e2-directed-source-app
   observe:
+    if: github.event_name == 'workflow_dispatch'
     name: Directed ordinary-grain probe (${{ matrix.blocked_role }} outbound)
     runs-on: ubuntu-24.04
     timeout-minutes: 30
