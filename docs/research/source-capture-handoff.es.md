@@ -33,4 +33,4 @@ Incluso si el fixture pasa, siempre se informa **TODM G2=INCONCLUSIVE y G6=BLOCK
 
 Solicitar al banco una traza original versionada, el bookmark de snapshot certificado por el origen, los COMMIT/UOR consecutivos, política de retención/reinicio, una segunda comprobación independiente y fallos inyectados con el conector nativo que realmente esté instalado. La prueba sintética es un protocolo falsable, **no** aprobación para cortar un core bancario. #53 congelado, E2 `partially_verified`; sin release.
 
-[README y ejecución en inglés](../../lab/brownfield/source_capture/README.md). Cualquier PASS de CI debe denominarse **oráculo sintético**, nunca CDC de fabricante.
+[README y ejecución en inglés](../../lab/brownfield/source_capture/README.md). La [ejecución original #41908404394](https://github.com/jmfloreszazo/de-la-caja-negra-a-la-evidencia/actions/runs/41908404394) ha superado **26/26 controles sintéticos**, con SHA-256 del ZIP original descargado verificado independientemente. Véanse las actas [ES](../../evidence/runs/SOURCE-HANDOFF.es.md) / [EN](../../evidence/runs/SOURCE-HANDOFF.md). **No** supone un PASS de CDC nativo ni del banco.
