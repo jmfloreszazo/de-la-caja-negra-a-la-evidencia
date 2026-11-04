@@ -28,22 +28,54 @@ LEGACY_SCHEMA = HERE.parent / "coexistence" / "legacy_schema.sql"
 REPORT = ROOT / "lab/results/brownfield/w01/w01-original.json"
 
 
+def admin_dsn() -> str:
+    """Test-harness-only superuser. The read-projection module cannot import it."""
+    if os.environ.get("W01_DISPOSABLE") != "YES":
+        raise UnsafeFixture("Disposable source administrator requires opt-in")
+    dsn = os.environ["W01_LEGACY_ADMIN_DSN"]
+    params = psycopg.conninfo.conninfo_to_dict(dsn)
+    if (any(params.get(k) for k in ("hostaddr", "service", "servicefile",
+                                    "target_session_attrs", "options"))
+            or (params.get("host"), params.get("port"), params.get("dbname"),
+                params.get("user"))
+            != ("127.0.0.1", "55438", "bf_legacy", "postgres")):
+        raise UnsafeFixture("Refusing test admin credentials outside named fixture")
+    return dsn
+
+
 def reset_disposable() -> tuple[str, str]:
-    """Test-only destructive reset; strict env, database and loopback checks first."""
-    source, target = validated_dsns()
-    with psycopg.connect(source) as db:
+    """Test-only destructive reset, before validating the restricted read role."""
+    # Only this test harness contains the superuser credentials. An actual
+    # projection process must receive the reader DSN, not the admin DSN.
+    with psycopg.connect(admin_dsn()) as db:
+        if db.execute("SELECT current_database(),current_user").fetchone() != (
+                "bf_legacy", "postgres"):
+            raise UnsafeFixture("Wrong source test-admin identity")
         db.execute("DROP SCHEMA IF EXISTS legacy CASCADE")
         db.execute(LEGACY_SCHEMA.read_text(encoding="utf-8"))
-    with psycopg.connect(target) as db:
+        exists = db.execute(
+            "SELECT EXISTS(SELECT 1 FROM pg_roles WHERE rolname='w01_reader')"
+        ).fetchone()[0]
+        if not exists:
+            db.execute("CREATE ROLE w01_reader LOGIN PASSWORD 'w01readerlocal'")
+        else:
+            db.execute("ALTER ROLE w01_reader LOGIN PASSWORD 'w01readerlocal'")
+        db.execute("REVOKE ALL ON SCHEMA legacy FROM PUBLIC")
+        db.execute("REVOKE ALL ON ALL TABLES IN SCHEMA legacy FROM PUBLIC")
+        db.execute("GRANT USAGE ON SCHEMA legacy TO w01_reader")
+        db.execute("GRANT SELECT ON legacy.accounts,legacy.clock TO w01_reader")
+    with psycopg.connect(os.environ["W01_PROJECTION_DSN"]) as db:
+        if db.execute("SELECT current_database(),current_user").fetchone() != (
+                "bf_projection", "postgres"):
+            raise UnsafeFixture("Wrong projection database identity")
         db.execute("DROP SCHEMA IF EXISTS projection CASCADE")
         db.execute((HERE / "schema.sql").read_text(encoding="utf-8"))
-    return source, target
+    return validated_dsns()
 
 
 def source_transfer(operation: str, amount=83, source_acc=1, target_acc=2):
     """Test writer belongs to the source fixture, never to projection.py."""
-    source, _ = validated_dsns()
-    with psycopg.connect(source) as db:
+    with psycopg.connect(admin_dsn()) as db:
         for acc in sorted((source_acc, target_acc)):
             db.execute(
                 "SELECT account_no FROM legacy.accounts WHERE account_no=%s FOR UPDATE",
@@ -132,7 +164,7 @@ class W01ProjectionTests(unittest.TestCase):
         self.assertEqual(result["watermark"], 0)
         self.assertEqual(balance(1)["status"], "PROJECTION_OBSERVED_CURRENT")
         self.assertEqual(before, authoritative_snapshot(self.source))
-        self.assertTrue(all(ledger_oracle(self.source).values()))
+        self.assertTrue(all(ledger_oracle(admin_dsn()).values()))
 
     def test_03_source_commit_marks_projection_stale_then_fallback(self):
         refresh()
@@ -142,7 +174,7 @@ class W01ProjectionTests(unittest.TestCase):
         self.assertEqual(result["bookedMinor"], 99917)
         self.assertEqual(result["sourceWatermark"], 1)
         self.assertEqual(result["projectionWatermark"], 0)
-        self.assertTrue(all(ledger_oracle(self.source).values()))
+        self.assertTrue(all(ledger_oracle(admin_dsn()).values()))
 
     def test_04_refresh_catches_up_and_replay_is_idempotent(self):
         refresh()
@@ -188,7 +220,7 @@ class W01ProjectionTests(unittest.TestCase):
         refresh()
         # A privileged/noncooperative writer is outside the synthetic source
         # clock contract; same-clock mutation must not silently be certified.
-        with psycopg.connect(self.source) as conn:
+        with psycopg.connect(admin_dsn()) as conn:
             conn.execute("UPDATE legacy.accounts SET ledger_minor=ledger_minor-1 "
                          "WHERE account_no=1")
             conn.execute("UPDATE legacy.accounts SET ledger_minor=ledger_minor+1 "
@@ -202,7 +234,7 @@ class W01ProjectionTests(unittest.TestCase):
         refresh()
         source_transfer("W01-FOUR")
         refresh()
-        with psycopg.connect(self.source) as conn:
+        with psycopg.connect(admin_dsn()) as conn:
             conn.execute("UPDATE legacy.accounts SET revision=0")
             conn.execute("UPDATE legacy.clock SET sequence_no=0 WHERE singleton=1")
         with self.assertRaisesRegex(InvalidSource, "SOURCE_WATERMARK_REGRESSION"):
@@ -241,12 +273,12 @@ class W01ProjectionTests(unittest.TestCase):
             with self.assertRaises(UnsafeFixture):
                 validated_dsns()
         with patch.dict(os.environ, {"W01_LEGACY_DSN":
-                                     "host=192.0.2.1 port=55438 dbname=bf_legacy user=postgres"}):
+                                     "host=192.0.2.1 port=55438 dbname=bf_legacy user=w01_reader"}):
             with self.assertRaises(UnsafeFixture):
                 validated_dsns()
 
     def test_15_two_actual_database_clusters_but_one_physical_runner(self):
-        with psycopg.connect(self.source) as s, psycopg.connect(self.target) as p:
+        with psycopg.connect(admin_dsn()) as s, psycopg.connect(self.target) as p:
             sid = s.execute("SELECT system_identifier FROM pg_control_system()").fetchone()[0]
             pid = p.execute("SELECT system_identifier FROM pg_control_system()").fetchone()[0]
         self.assertNotEqual(sid, pid)
@@ -254,13 +286,51 @@ class W01ProjectionTests(unittest.TestCase):
     def test_16_source_financial_tables_unchanged_by_repeated_projection_reads(self):
         source_transfer("W01-SIX")
         state_before = authoritative_snapshot(self.source)
-        financial_before = ledger_oracle(self.source)
+        financial_before = ledger_oracle(admin_dsn())
         refresh()
         for _ in range(3):
             self.assertEqual(balance(1)["status"], "PROJECTION_OBSERVED_CURRENT")
         self.assertEqual(state_before, authoritative_snapshot(self.source))
-        self.assertEqual(financial_before, ledger_oracle(self.source))
+        self.assertEqual(financial_before, ledger_oracle(admin_dsn()))
         self.assertTrue(all(financial_before.values()))
+
+    def test_17_source_reader_sql_permissions_reject_financial_mutations(self):
+        """SQL privilege rejection, even after session chooses READ WRITE."""
+        with psycopg.connect(self.source) as db:
+            db.execute("SET TRANSACTION READ WRITE")
+            with self.assertRaises(psycopg.errors.InsufficientPrivilege):
+                db.execute("UPDATE legacy.accounts SET ledger_minor=0 WHERE account_no=1")
+        with psycopg.connect(self.source) as db:
+            with self.assertRaises(psycopg.errors.InsufficientPrivilege):
+                db.execute("UPDATE legacy.clock SET sequence_no=1 WHERE singleton=1")
+        with psycopg.connect(self.source) as db:
+            with self.assertRaises(psycopg.errors.InsufficientPrivilege):
+                db.execute("SELECT request_id FROM legacy.transactions")
+        self.assertTrue(all(ledger_oracle(admin_dsn()).values()))
+
+    def test_18_reader_only_cli_has_no_test_admin_credentials(self):
+        """Separate process gets only the reader secret, never source superuser."""
+        environment = {
+            "PATH": os.environ.get("PATH", ""),
+            "W01_DISPOSABLE": "YES",
+            "W01_LEGACY_DSN": self.source,
+            "W01_PROJECTION_DSN": self.target,
+        }
+        self.assertNotIn("W01_LEGACY_ADMIN_DSN", environment)
+        p = subprocess.run(
+            [sys.executable, str(HERE / "projection.py"), "balance", "1"],
+            env=environment, capture_output=True, text=True, timeout=10)
+        self.assertEqual(p.returncode, 0, p.stderr)
+        payload = json.loads(p.stdout)
+        self.assertEqual(payload["status"], "AUTHORITATIVE_FALLBACK")
+        self.assertEqual(payload["sourceAuthority"], "LEGACY")
+        self.assertFalse(payload["isSpendableFunds"])
+
+    def test_19_application_rejects_postgres_superuser_as_source(self):
+        with patch.dict(os.environ, {"W01_LEGACY_DSN": admin_dsn()}):
+            with self.assertRaises(UnsafeFixture):
+                validated_dsns()
+
 
 
 if __name__ == "__main__":
@@ -283,10 +353,13 @@ if __name__ == "__main__":
         "passed": result.testsRun - len(result.failures) - len(result.errors) - len(result.skipped),
         "failedCaseIds": case_failures,
         "negativeControls": ["projection_corruption", "unknown_source_write",
-                             "watermark_regression", "source_failure",
+                             "watermark_regression", "source_sql_role_denial",
+                             "reader_only_cli", "superuser_dsn_denial", "source_failure",
                              "source_fallback_failure", "invalid_endpoint"],
         "physicalHosts": 1, "independentFailureDomains": False,
         "sourceAuthority": "LEGACY", "sourceReadOnlyInProjectionCode": True,
+        "sourceReaderRole": "w01_reader", "sourceSuperuserRejected": True,
+        "sourceFinancialWritesDeniedByDatabase": True,
         "readFreshness": "SAMPLED_WATERMARK_NOT_LINEARIZABLE",
         "incrementalCdcImplemented": False, "isSpendableBalance": False,
         "todmG2": "INCONCLUSIVE", "todmG6": "BLOCK",
