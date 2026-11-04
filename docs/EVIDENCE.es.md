@@ -57,6 +57,7 @@
 | ID | Afirmación | Estado | Límite | Procedencia |
 | --- | --- | --- | --- | --- |
 | `BROWNFIELD-C2-LINK` | Corte TCP del controlador con transferencia en curso | **Ejecutado en CI, alcance acotado** | Dos escritores sintéticos en un runner: sesiones de control perdidas, gateway SIGKILL, UNKNOWN y cutover BLOCK, después 1 decisión/2 apuntes/1 outbox y ambos oráculos 10/10 por caso. No partición silenciosa/asimétrica ni fencing real. | [Original y ZIP auditado](../evidence/runs/BROWNFIELD-CONTROLLER-LOSS.es.md) |
+| `BROWNFIELD-W01-PROJECTION` | Proyección CAP-005 de saldo contable no autoritativa sobre PostgreSQL, watermark y fallback bloqueante | **Ejecutado: 16/16 controles CI PostgreSQL reales, alcance sintético acotado** | Dos clústeres PostgreSQL separados pero en un único runner; reconstrucción en transacción, fallback ante obsolescencia/corrupción y controles de reloj de origen. No CDC, lectura linealizable, saldo disponible, HA física, legacy real ni aprobación G2/G6. | [Acta permanente de ejecución original](../evidence/runs/W01-PROJECTION.es.md) · [Actions #41853096276](https://github.com/jmfloreszazo/de-la-caja-negra-a-la-evidencia/actions/runs/41853096276) |
 
 ## Observaciones experimentales complementarias en la PR #5
 
