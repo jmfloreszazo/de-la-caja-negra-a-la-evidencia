@@ -1,0 +1,89 @@
+{
+  "schemaVersion": 1,
+  "classification": "CUSTOMER_SOURCE_CAPTURE_DISCOVERY_NOT_VALIDATED",
+  "sourceSystem": "UNSPECIFIED-NOT-A-CUSTOMER-INSTALLATION",
+  "ownerApproval": null,
+  "baselineGoldenMaster": null,
+  "snapshotCutoverPlan": null,
+  "externalEffectOracle": null,
+  "reconciliationSignoff": null,
+  "paths": [
+    {
+      "family": "DB2_ZOS_LOG",
+      "applicability": "UNKNOWN",
+      "captureProduct": null,
+      "productVersion": null,
+      "controls": {},
+      "outOfScopeEvidence": null,
+      "ownerQuestions": [
+        "Are data capture logging and the Q Capture reader enabled for every source table, including utility and data-sharing paths?"
+      ]
+    },
+    {
+      "family": "VSAM_CICS",
+      "applicability": "UNKNOWN",
+      "captureProduct": null,
+      "productVersion": null,
+      "controls": {},
+      "outOfScopeEvidence": null,
+      "ownerQuestions": [
+        "Which CICS regions, VSAM access modes, LOGREPLICATE streams and load-mode bypass routes write to the affected dataset?"
+      ]
+    },
+    {
+      "family": "VSAM_BATCH_NON_RLS",
+      "applicability": "UNKNOWN",
+      "captureProduct": null,
+      "productVersion": null,
+      "controls": {},
+      "outOfScopeEvidence": null,
+      "ownerQuestions": [
+        "Does CICS VR capture all batch non-RLS changes including direct JCL paths and utility loads?"
+      ]
+    },
+    {
+      "family": "IMS_ONLINE",
+      "applicability": "UNKNOWN",
+      "captureProduct": null,
+      "productVersion": null,
+      "controls": {},
+      "outOfScopeEvidence": null,
+      "ownerQuestions": [
+        "Are every DBD EXIT, subsystem, OLDS and RECON mapping configured and verified through a full recovery?"
+      ]
+    },
+    {
+      "family": "IMS_DLI_BATCH",
+      "applicability": "UNKNOWN",
+      "captureProduct": null,
+      "productVersion": null,
+      "controls": {},
+      "outOfScopeEvidence": null,
+      "ownerQuestions": [
+        "Is DL/I batch run with DBRC Y, the expected exit and permanent IEFRDER, and how long does ordering stop?"
+      ]
+    },
+    {
+      "family": "IBM_I_JOURNAL",
+      "applicability": "UNKNOWN",
+      "captureProduct": null,
+      "productVersion": null,
+      "controls": {},
+      "outOfScopeEvidence": null,
+      "ownerQuestions": [
+        "What journal image, receiver chain, remote filter and commitment-control coverage is in operation for every table?"
+      ]
+    },
+    {
+      "family": "FUJITSU_OR_OTHER",
+      "applicability": "UNKNOWN",
+      "captureProduct": null,
+      "productVersion": null,
+      "controls": {},
+      "outOfScopeEvidence": null,
+      "ownerQuestions": [
+        "What exact vendor OS and DB version and officially supported log capture and recovery contract exists on the installed system?"
+      ]
+    }
+  ]
+}
