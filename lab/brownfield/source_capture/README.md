@@ -6,6 +6,20 @@ This is an **assessment/interview**, not a COBOL parser, IBM mainframe emulator,
 
 The dated [capture catalog](capture_catalog.json) cites primary IBM documentation for six different platform/write-path families and explicitly leaves the Fujitsu/other branch **NOT_VERIFIED**. Each source is a **version-scoped documentation reference**; it does not prove installed software, product support on any bank estate, workload coverage or current licensing. Customers may have a mix of stores and online, batch, offline and privileged access in one estate.
 
+## Synthetic snapshot/log continuity oracle (separate, offline)
+
+The [source-neutral handoff protocol](../../../docs/research/source-capture-handoff.en.md) ([ES](../../../docs/research/source-capture-handoff.es.md)) compares an **independently declared synthetic source commit history** with an MVCC snapshot bookmark, captured tail and target replay. It is **not** a native vendor log reader. The 26 dedicated negative/positive cases reject missing/reordered events, expired retention, a mismatched snapshot cut, stale target, wrong source epoch and attempted banking self-approval.
+
+```bash
+python3 -m unittest discover -s lab/brownfield/source_capture -p 'test_handoff.py' -v
+python3 lab/brownfield/source_capture/handoff.py \
+  lab/brownfield/source_capture/handoff.example.json
+# exit 0 = internal SYNTHETIC handoff consistency only
+# exit 2 = REJECT; exit 3 = INVALID
+```
+
+The sample contains **four fictional accounts and five fictional committed transfers**. No customer data is read, no source evidence is authenticated and all outputs maintain G2 INCONCLUSIVE/G6 BLOCK. A wholly fabricated but internally coherent source/capture pair can PASS; use an independently attested bank-owned source oracle before assigning a broader claim.
+
 ## Run
 
 ```bash
