@@ -18,7 +18,7 @@ This is the **repository development roadmap**, not a declaration of production 
 | Sustained capacity and bottleneck | Three-cohort direct admission diagnostic integrated with PR #81; external #25 follow-up | Comparable saturation and COMMIT/p99; existing pilots do not close this gate |
 | Physical domains and HA | Pending | Execution/evidence on independent hosts and fault domains |
 
-E2's **bounded hosted-CI campaign is administratively closed**, while its scientific claim remains **partially verified**. [E2 closeout and excluded acceptance](docs/E2_CLOSEOUT.md) records the retained results, missing distributed validation and the closure of #8 as NOT_PLANNED rather than PASS. The long experiment in PR #77 does not establish automatic or continuous recovery.
+E2's **bounded hosted-CI campaign is administratively closed**, while its scientific claim remains **partially verified**. A future technical PASS would require the separate [distributed E2 acceptance protocol](docs/E2_FULL_PASS_PROTOCOL.md) (X00–X08, physical fault domains, SQL failover and independent audit), **not active E2 work**. [E2 closeout and excluded acceptance](docs/E2_CLOSEOUT.md) records the retained results, missing distributed validation and the closure of #8 as NOT_PLANNED rather than PASS. The long experiment in PR #77 does not establish automatic or continuous recovery.
 
 ## Position now
 
