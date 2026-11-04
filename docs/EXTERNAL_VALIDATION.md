@@ -2,6 +2,10 @@
 
 Decision date: 3 November 2026; administrative E2 closeout: 4 November 2026. The author authorized integration of bounded experiments and documentation of remaining external validation. The bounded E2 campaign is now closed and #8 closed NOT_PLANNED, **not** fully accepted: [EN closeout](E2_CLOSEOUT.md) / [ES closeout](E2_CLOSEOUT.es.md). Missing results remain prerequisites before any capacity, availability or banking claim. Scientific E2 remains partially verified, performance contract UNCONFIGURED and TODM G2/G6 unchanged.
 
+## Exact technical PASS campaign protocol
+
+For the concrete, auditable external campaign required to establish a **global scientific E2 PASS**, including approved service-contract fields, physical host/SQL HA topology, new source modules, test gates X00–X08, raw evidence layout and independent decision rules, see [E2 FULL PASS Protocol (English)](E2_FULL_PASS_PROTOCOL.md) / [Español](E2_FULL_PASS_PROTOCOL.es.md). This is **not** an active issue or a completed experiment; the bounded campaign remains closed and E2 scientifically `partially_verified`.
+
 ## What the current environment can establish
 
 One hosted runner can execute real SQL transactions, distinct processes and containers, logical packet drops, client admission diagnostics and independent persisted-state checks. It can preserve an inconclusive activation witness honestly. These are useful repeatable observations. Several containers on that runner share its kernel, scheduler, memory, storage and physical failure domain.
