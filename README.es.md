@@ -104,6 +104,10 @@ El [protocolo de fencing y aceptación CAP-005/007](docs/BROWNFIELD_SOURCE_FENCE
 
 La investigación [ES](docs/research/source-native-capture-assessment.es.md) / [EN](docs/research/source-native-capture-assessment.en.md) y el [gate ejecutable (en inglés)](lab/brownfield/source_capture/README.md) diferencian Db2 z/OS, VSAM CICS, batch no-RLS, IMS online/DL-I, journals IBM i y mecanismos Fujitsu/otros **sin verificar**. Son **posibilidades documentadas**, no CDC probado en cliente. Las siete rutas parten de UNKNOWN; TODM G2/G6 siguen INCONCLUSIVE/BLOCK.
 
+## Continuidad entre snapshot y journal: oráculo sintético independiente
+
+El método [ES](docs/research/source-capture-handoff.es.md) / [EN](docs/research/source-capture-handoff.en.md) añade un **oráculo offline de continuidad de snapshot y eventos**, con 26 controles positivos y negativos. Reutiliza el catálogo de fabricantes como clasificación, pero **no ejecuta CDC nativo** ni autoriza el corte bancario.
+
 ## W01: journal transaccional del origen, en entorno sintético
 
 El [laboratorio de journal incremental](lab/brownfield/w01_feed/README.md) y la investigación [ES](docs/research/w01-source-journal.es.md) / [EN](docs/research/w01-source-journal.en.md) prueban secuencia confirmada en origen, captura MVCC, replay, rechazo de huecos/corrupción y cursor atómico en dos PostgreSQL. **No** es CDC productivo, fencing de mainframe, lectura linealizable ni aceptación bancaria. La proyección anterior se mantiene independiente.
