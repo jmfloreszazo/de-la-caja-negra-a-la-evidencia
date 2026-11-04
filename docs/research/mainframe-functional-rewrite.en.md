@@ -2,6 +2,10 @@
 
 > **EN research draft — issue #32.** This explicitly replaces the idea of parsing COBOL into microservices with **discovering capabilities and implementing a new system from first principles**. The accompanying banking catalog contains reference hypotheses, not requirements observed in a real institution or signed off by an owner.
 
+## From functional hypotheses to staged extraction waves
+
+The [extraction-wave research protocol](mainframe-extraction-waves.en.md) studies four synthetic migration proposals against atomic ledger, batch-cutoff, unknown-runtime and external-effect relationships. A structural candidate is never owner-approved; this remains brownfield modernization even if new code is written from scratch. G2 and G6 remain blocked.
+
 ## What we need to know
 
 The question is not which COBOL paragraphs to port. It is **which business capabilities exist, what outcomes they promise, what exceptions they handle, and which guarantees must survive**. We may replace the implementation completely while preserving authorized business contracts. Long-hidden exceptions and operational calendars are part of the contract.
