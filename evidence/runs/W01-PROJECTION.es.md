@@ -34,7 +34,7 @@ La consulta primero observa el reloj del origen y después accede a la proyecci�
 
 Para usarlo en un banco faltan: disciplina de versión impuesta por todos los escritores reales, contrato de CDC o frontera de snapshot/reconstrucción, detección de gaps, autorización, presupuesto de retraso, recuperación, consistencia por canal y oráculos aprobados.
 
-No se ha probado CDC continuo, HA física, mejora productiva de TPS/p99, autorización ATM, integración real con mainframe, fencing del origen propiedad del banco, Golden Master aprobado ni SLO operacionales. **TODM G2 = INCONCLUSIVE y G6 = BLOCK.** Las 30 capacidades siguen siendo hipótesis; #32 y #58 continúan abiertos; E2 #8 sigue cerrado y #53 congelado. No autoriza release ni versión nueva.
+No se ha probado CDC continuo, HA física, mejora productiva de TPS/p99, autorización ATM, integración real con mainframe, fencing del origen propiedad del banco, Golden Master aprobado ni SLO operacionales. **TODM G2 = INCONCLUSIVE y G6 = BLOCK.** Las 30 capacidades siguen siendo hipótesis; #32 está ahora CERRADO / completed como investigación; #58 continúa ABIERTO para las pruebas reales; E2 #8 sigue cerrado y #53 congelado. No autoriza release ni versión nueva.
 
 ## Workflows complementarios
 
