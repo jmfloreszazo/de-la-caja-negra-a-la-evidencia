@@ -79,6 +79,10 @@ La herramienta comprueba **estructura y completitud** de las declaraciones: siet
 
 **No descarga los archivos**, no verifica firmas ni inspecciona CICS/IMS/Db2, no ejecuta transferencias ni certifica un Golden Master y no autoriza producción. Es una herramienta de preparación tipo G0/G1; no un motor de aprobación de negocio. Las pruebas originales C2 y sus SHA no se modifican.
 
+## Assessment de CDC nativo por plataforma
+
+El [estudio ES](research/source-native-capture-assessment.es.md) / [EN](research/source-native-capture-assessment.en.md) y el [intake estructural](../lab/brownfield/source_capture/README.md) distinguen Db2, VSAM CICS/batch, IMS online/DL-I, IBM i y otros fabricantes sin verificar. **CDC no equivale al fencing del escritor ni a la conciliación de efectos externos**; el catálogo nuevo no verifica ninguna instalación real. Las siete familias siguen UNKNOWN; G2 INCONCLUSIVE y G6 BLOCK.
+
 ## 5. Secuencia de aceptación y estados auténticos
 
 | Etapa | Responsable real | Entregable de aceptación | Estado actual |
