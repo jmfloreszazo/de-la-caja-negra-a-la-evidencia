@@ -1,0 +1,36 @@
+name: One-time generated book sync for vendor research branch
+on:
+  push:
+    branches:
+      - feature/vendor-runtime-contracts-17-18-28
+    paths:
+      - .github/workflows/vendor-runtime-book-sync-once.yml
+permissions:
+  contents: write
+jobs:
+  regenerate-and-commit-only-generated-editions:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          ref: feature/vendor-runtime-contracts-17-18-28
+          fetch-depth: 0
+      - name: Rebuild ES/EN whole-book artifacts from source chapters
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          test "$GITHUB_REPOSITORY" = "jmfloreszazo/de-la-caja-negra-a-la-evidencia"
+          test "$GITHUB_REF" = "refs/heads/feature/vendor-runtime-contracts-17-18-28"
+          git status --porcelain
+          python3 scripts/build.py
+          git add -- book/es.md book/en.md
+          if git diff --cached --quiet; then
+            echo "Whole-book generated files already match source"
+            exit 0
+          fi
+          git -c user.name='github-actions[bot]' \
+              -c user.email='41898282+github-actions[bot]@users.noreply.github.com' \
+              commit -m "docs(book): regenerate ES/EN whole-book editions after vendor research"
+          git push origin HEAD:refs/heads/feature/vendor-runtime-contracts-17-18-28
