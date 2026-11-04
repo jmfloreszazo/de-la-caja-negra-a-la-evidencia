@@ -100,6 +100,10 @@ La [campaña E2 acotada está cerrada](docs/E2_CLOSEOUT.es.md), pero **E2 no tie
 
 El [protocolo de fencing y aceptación CAP-005/007](docs/BROWNFIELD_SOURCE_FENCE.es.md) ([EN](docs/BROWNFIELD_SOURCE_FENCE.md)) y el [inventario bloqueante](lab/brownfield/owner_readiness/README.md) especifican qué rutas de escritura del legacy y efectos externos deben estar demostrados antes de cualquier corte. La herramienta solo valida estructura, **no** comprueba el fencing en CICS/IMS/Db2 ni concede aprobación TODM G2/G6.
 
+## Oleadas funcionales de modernización brownfield
+
+Los protocolos [ES](docs/research/mainframe-extraction-waves.es.md) / [EN](docs/research/mainframe-extraction-waves.en.md) y el [oráculo de oleadas](lab/decomposition/wave_gate.py) conectan capacidades del negocio con decisiones de extracción refutables sin parser COBOL. Las 30 capacidades continúan siendo hipótesis y ninguna candidata queda autorizada para producción.
+
 ## Más del autor
 
 El libro se apoya en este trabajo:
