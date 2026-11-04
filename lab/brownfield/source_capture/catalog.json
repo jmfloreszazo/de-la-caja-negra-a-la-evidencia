@@ -1,0 +1,216 @@
+{
+  "schemaVersion": 1,
+  "classification": "VENDOR_PATTERN_RESEARCH_NOT_INSTALLED_PRODUCT_ATTESTATION",
+  "researchDate": "2026-11-04",
+  "nativeSystemExecution": "NOT_EXECUTED",
+  "customerApproval": "NOT_OBTAINED",
+  "laboratoryEvidence": "W01_SYNTHETIC_POSTGRES_22_OF_22_PASS_SEPARATE_SCOPE",
+  "notes": "The referenced lab's synthetic PostgreSQL result does not attest any vendor source-native capture. No mainframe credentials, customer topology or native manuals have been supplied.",
+  "requiredProofs": [
+    "sourceCommitOrdering",
+    "snapshotLogBoundary",
+    "bookmarkAndRetention",
+    "replayDuplicateGap",
+    "allWriterPaths",
+    "schemaAndBeforeAfterImages",
+    "privilegedWriterFence",
+    "independentReconciliation",
+    "failureRecovery"
+  ],
+  "sources": [
+    {
+      "id": "IBM-VSAM-CDC",
+      "url": "https://www.ibm.com/docs/en/idr/11.4.0?topic=replication-augmenting-vsam-data-sets-change-data-capture",
+      "vendor": "IBM",
+      "versionScope": "IBM InfoSphere Data Replication 11.4",
+      "retrieval": "FULL_TEXT",
+      "description": "IDCAMS LOGREPLICATE/LOGSTREAMID setup for specified Classic CDC VSAM path"
+    },
+    {
+      "id": "IBM-VSAM-MODES",
+      "url": "https://www.ibm.com/docs/en/idr/11.4.0?topic=zos-frequently-asked-questions",
+      "vendor": "IBM",
+      "versionScope": "IBM InfoSphere Data Replication 11.4",
+      "retrieval": "FULL_TEXT",
+      "description": "CICS TS, CICS VR batch non-RLS, TVS/batch RLS have different writer-path capture"
+    },
+    {
+      "id": "IBM-VSAM-SYSTEM",
+      "url": "https://www.ibm.com/docs/en/idr/11.4.0?topic=recommendations-zos-system-software-requirements",
+      "vendor": "IBM",
+      "versionScope": "IBM InfoSphere Data Replication 11.4",
+      "retrieval": "FULL_TEXT",
+      "description": "Version/product prerequisites vary; CICS VR required for non-CICS batch in documented path"
+    },
+    {
+      "id": "IBM-IMS-REQUIREMENTS",
+      "url": "https://www.ibm.com/docs/en/idr/11.4.0?topic=architect-system-requirements-ims",
+      "vendor": "IBM",
+      "versionScope": "IBM InfoSphere Data Replication 11.4",
+      "retrieval": "FULL_TEXT",
+      "description": "DL/I batch prerequisites DBRC=Y, DFSFLGX0, permanent IEFRDER in documented product"
+    },
+    {
+      "id": "IBM-IMS-READ",
+      "url": "https://www.ibm.com/docs/en/idr/11.4.0?topic=processing-reading-ims-logs",
+      "vendor": "IBM",
+      "versionScope": "IBM InfoSphere Data Replication 11.4",
+      "retrieval": "FULL_TEXT",
+      "description": "Some DL/I batch logs unavailable until step ends, delays log merge/order"
+    },
+    {
+      "id": "IBM-I-JOURNAL-STATE",
+      "url": "https://www.ibm.com/docs/en/i/7.5.0?topic=journals-displaying-remote-journal-function-information",
+      "vendor": "IBM",
+      "versionScope": "IBM i 7.5",
+      "retrieval": "FULL_TEXT",
+      "description": "Remote journal state, latency, filters and sender/receiver metrics are exposed"
+    },
+    {
+      "id": "IBM-I-JOURNAL-START",
+      "url": "https://www.ibm.com/docs/en/i/7.5.0?topic=journals-activating-replication-journal-entries-remote-journal",
+      "vendor": "IBM",
+      "versionScope": "IBM i 7.5",
+      "retrieval": "FULL_TEXT",
+      "description": "Remote journal start receiver, sync/async delivery, filtering and restart are configurable"
+    },
+    {
+      "id": "IBM-I-RECEIVER",
+      "url": "https://www.ibm.com/docs/en/i/7.5.0?topic=receivers-deleting-journal-receiver",
+      "vendor": "IBM",
+      "versionScope": "IBM i 7.5",
+      "retrieval": "FULL_TEXT",
+      "description": "Receiver chain deletion can remove required recovery data; archive/retention is an explicit operational risk"
+    }
+  ],
+  "families": [
+    {
+      "id": "DB2_ZOS",
+      "platform": "IBM Z / Db2 for z/OS",
+      "mechanism": "Recovery-log replication (product/version dependent; Q Capture is a candidate, not universally installed)",
+      "discovery": [
+        "Db2 and replication product version",
+        "DATA CAPTURE CHANGES/log table options",
+        "member and data-sharing topology",
+        "recovery log and backout boundaries",
+        "LOB/XML/schema/utility visibility",
+        "batch/online write inventory"
+      ],
+      "sourceIds": [],
+      "sourceStatus": "VENDOR_RESEARCH_REQUIRED_FOR_SPECIFIC_PRODUCT",
+      "risk": "Db2 transaction log mechanisms cannot be assumed configured or available for every table; verify actual product manuals and subsystem"
+    },
+    {
+      "id": "VSAM_CICS",
+      "platform": "IBM Z / VSAM through CICS",
+      "mechanism": "Configured CICS/VSAM replication log stream (conditional)",
+      "discovery": [
+        "VSAM dataset cluster and access modes",
+        "IDCAMS LOGREPLICATE/LOGSTREAMID",
+        "CICS file/resource definitions",
+        "RLS/recoverable/nonrecoverable paths",
+        "cluster load-mode operations",
+        "alternate index and utilities"
+      ],
+      "sourceIds": [
+        "IBM-VSAM-CDC",
+        "IBM-VSAM-MODES",
+        "IBM-VSAM-SYSTEM"
+      ],
+      "sourceStatus": "DOCUMENTED_CONDITIONAL",
+      "risk": "Dataset load-mode records and bypass paths may not appear in replication log"
+    },
+    {
+      "id": "VSAM_BATCH",
+      "platform": "IBM Z / VSAM outside CICS",
+      "mechanism": "CICS VR non-RLS batch path, DFSMStvs for RLS/TVS where supported, or other approved approach",
+      "discovery": [
+        "all batch JCL and utility jobs",
+        "RLS/TVS/non-RLS access",
+        "CICS VR product and FRLOG setup",
+        "restore and load-mode boundaries",
+        "batch cutoff and terminal state"
+      ],
+      "sourceIds": [
+        "IBM-VSAM-MODES",
+        "IBM-VSAM-SYSTEM"
+      ],
+      "sourceStatus": "DOCUMENTED_CONDITIONAL",
+      "risk": "CICS logger alone does not cover all direct VSAM batch writes"
+    },
+    {
+      "id": "IMS_ONLINE",
+      "platform": "IBM Z / IMS online",
+      "mechanism": "Product-specific IMS log capture and ordering (conditional)",
+      "discovery": [
+        "IMS and CDC product versions",
+        "DBD/segment/transaction definitions",
+        "OLDS/SLDS/RECON availability",
+        "online UOR and commit boundaries",
+        "capture exit options",
+        "recoverable external resources"
+      ],
+      "sourceIds": [
+        "IBM-IMS-REQUIREMENTS",
+        "IBM-IMS-READ"
+      ],
+      "sourceStatus": "DOCUMENTED_CONDITIONAL",
+      "risk": "IMS source log reader ordering and product support must be validated for actual database types"
+    },
+    {
+      "id": "IMS_DLI_BATCH",
+      "platform": "IBM Z / IMS DL/I batch",
+      "mechanism": "IMS Classic CDC batch log capture subject to configured prerequisites and step-close lag",
+      "discovery": [
+        "DBRC=Y",
+        "DFSFLGX0 STEPLIB setup",
+        "IEFRDER permanent dataset",
+        "step duration, log close and ordering suspension",
+        "archive/recovery-log distinctions",
+        "JCL and batch overrides"
+      ],
+      "sourceIds": [
+        "IBM-IMS-REQUIREMENTS",
+        "IBM-IMS-READ"
+      ],
+      "sourceStatus": "DOCUMENTED_CONDITIONAL",
+      "risk": "Unclosed DL/I batch steps can defer ordering/visibility for hours; violates assumed low-lag envelope"
+    },
+    {
+      "id": "IBM_I_JOURNAL",
+      "platform": "IBM i / Db2 for i and journaled files",
+      "mechanism": "Local/remote journal receiver chain, conditional on journaling configuration",
+      "discovery": [
+        "physical file/table and journal relationship",
+        "receiver chain and save/retention",
+        "record images and object filters",
+        "remote journal state and delivery mode",
+        "journal restart and cursor",
+        "IBM i release, record encoding"
+      ],
+      "sourceIds": [
+        "IBM-I-JOURNAL-STATE",
+        "IBM-I-JOURNAL-START",
+        "IBM-I-RECEIVER"
+      ],
+      "sourceStatus": "DOCUMENTED_CONDITIONAL",
+      "risk": "Filtered and expired receiver chains can omit data necessary for a complete and restartable projection"
+    },
+    {
+      "id": "FUJITSU_OTHER",
+      "platform": "Fujitsu BS2000/GS21 or other vendor",
+      "mechanism": "UNDETERMINED pending exact installed OS, database, log capture product, version and vendor documentation",
+      "discovery": [
+        "hardware/OS product model",
+        "database/file product and record format",
+        "installed journal/log reader/capture product",
+        "online/batch/native utilities",
+        "vendor primary manual and license",
+        "recovery/durability/privileged writer coverage"
+      ],
+      "sourceIds": [],
+      "sourceStatus": "NOT_VERIFIED",
+      "risk": "Do not transplant IBM log semantics to unverified Fujitsu, Unisys, Micro Focus or other platforms"
+    }
+  ]
+}
