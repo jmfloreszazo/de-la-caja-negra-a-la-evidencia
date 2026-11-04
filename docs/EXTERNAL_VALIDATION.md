@@ -1,6 +1,6 @@
 # External validation after the hosted-CI checkpoint
 
-Decision date: 3 November 2026. The author authorized integration of the current bounded experiments and documentation of remaining external validation. Missing external results do not block merging the book, lab sources or audited evidence. They remain required before making the corresponding capacity, availability or banking claim. E2 stays partially verified; the performance contract stays UNCONFIGURED. This changes development sequencing, not an experimental result or a financial acceptance rule.
+Decision date: 3 November 2026; administrative E2 closeout: 4 November 2026. The author authorized integration of bounded experiments and documentation of remaining external validation. The bounded E2 campaign is now closed and #8 closed NOT_PLANNED, **not** fully accepted: [EN closeout](E2_CLOSEOUT.md) / [ES closeout](E2_CLOSEOUT.es.md). Missing results remain prerequisites before any capacity, availability or banking claim. Scientific E2 remains partially verified, performance contract UNCONFIGURED and TODM G2/G6 unchanged.
 
 ## What the current environment can establish
 
@@ -42,4 +42,4 @@ The following is a proposed protocol, not an executed result or a production siz
 
 Archive every original attempt, including FAIL and INCONCLUSIVE, with source/checkout SHA, run ID, workload hash, host/domain map, clock uncertainty, environment/image manifests, exact commands, raw traces, SQL snapshots and oracle results. Report all repetitions and per-configuration outcomes; do not select the best run. Record the declared scope and unmet criteria explicitly.
 
-Hosted PR checks continue to validate source, negative controls, archive integrity, paired editions and PDFs. Original live campaigns remain explicit manual runs with their existing exit behavior. A skipped live job is not PASS. External issues remain open for the corresponding claim, but no longer prevent ordinary development, integration or editorial preview. Publication still requires its own authorization; this decision does not authorize a release or deployment.
+Hosted PR checks continue to validate source, negative controls, archive integrity, paired editions and PDFs. Original live campaigns remain explicit manual runs with their existing exit behavior. A skipped live job is not PASS. Remaining claim acceptance is documented as unmet. E2 tracker #8 is closed NOT_PLANNED rather than PASS; other independently scoped issues may remain open. None prevents ordinary development, integration or editorial preview. Publication still requires its own authorization; this decision does not authorize a release or deployment.
