@@ -100,6 +100,10 @@ La [campaña E2 acotada está cerrada](docs/E2_CLOSEOUT.es.md), pero **E2 no tie
 
 El [protocolo de fencing y aceptación CAP-005/007](docs/BROWNFIELD_SOURCE_FENCE.es.md) ([EN](docs/BROWNFIELD_SOURCE_FENCE.md)) y el [inventario bloqueante](lab/brownfield/owner_readiness/README.md) especifican qué rutas de escritura del legacy y efectos externos deben estar demostrados antes de cualquier corte. La herramienta solo valida estructura, **no** comprueba el fencing en CICS/IMS/Db2 ni concede aprobación TODM G2/G6.
 
+## Assessment CDC de plataformas originales y aceptación del cliente (#58)
+
+La investigación [ES](docs/research/source-native-capture-assessment.es.md) / [EN](docs/research/source-native-capture-assessment.en.md) y el [gate ejecutable (en inglés)](lab/brownfield/source_capture/README.md) diferencian Db2 z/OS, VSAM CICS, batch no-RLS, IMS online/DL-I, journals IBM i y mecanismos Fujitsu/otros **sin verificar**. Son **posibilidades documentadas**, no CDC probado en cliente. Las siete rutas parten de UNKNOWN; TODM G2/G6 siguen INCONCLUSIVE/BLOCK.
+
 ## W01: journal transaccional del origen, en entorno sintético
 
 El [laboratorio de journal incremental](lab/brownfield/w01_feed/README.md) y la investigación [ES](docs/research/w01-source-journal.es.md) / [EN](docs/research/w01-source-journal.en.md) prueban secuencia confirmada en origen, captura MVCC, replay, rechazo de huecos/corrupción y cursor atómico en dos PostgreSQL. **No** es CDC productivo, fencing de mainframe, lectura linealizable ni aceptación bancaria. La proyección anterior se mantiene independiente.
