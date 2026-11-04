@@ -1,0 +1,36 @@
+{
+  "sourceHeadSha": "3783f94249b3d3e3efd36096ec029b795eda2648",
+  "runId": "41801198131",
+  "artifacts": [
+    {
+      "os": "ubuntu-24.04",
+      "artifactId": 13306629254,
+      "file": "ebcdic-original-ubuntu-24.04.zip",
+      "bytes": 1590,
+      "sha256": "3b4e99e9909f3f0078fd957cfeabe2f4c0a190b644d4467a0a8cba032aa0839f",
+      "platform": "Linux-7.0.0-1017-azure-x86_64-with-glibc2.39",
+      "python": "3.12.15",
+      "checkoutLineEndings": "LF"
+    },
+    {
+      "os": "macos-14",
+      "artifactId": 13307842169,
+      "file": "ebcdic-original-macos-14.zip",
+      "bytes": 1600,
+      "sha256": "efb71552f14c7bdfa12d460a401b8026b247f86f955d1923c3d90cb579b8a362",
+      "platform": "macOS-14.8.9-arm64-arm-64bit",
+      "python": "3.12.10",
+      "checkoutLineEndings": "LF"
+    },
+    {
+      "os": "windows-2022",
+      "artifactId": 13307238043,
+      "file": "ebcdic-original-windows-2022.zip",
+      "bytes": 1607,
+      "sha256": "474e11633fe7652d66157306c1ea28607441cb34805f6fd449fa0d2462220e0a",
+      "platform": "Windows-2022Server-10.0.20348-SP0",
+      "python": "3.12.10",
+      "checkoutLineEndings": "CRLF"
+    }
+  ]
+}

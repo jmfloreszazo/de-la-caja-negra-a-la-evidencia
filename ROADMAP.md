@@ -1,4 +1,4 @@
-# Open roadmap — evidence-based checkpoint (3 November 2026)
+# Open roadmap — evidence-based checkpoint (4 November 2026)
 
 **English** · [Español](ROADMAP.es.md)
 
@@ -6,7 +6,7 @@ This is the **repository development roadmap**, not a declaration of production 
 
 ## Exact position in the active plan
 
-**Editorial checkpoint #83 and channel increment #84 are integrated; the active work now covers platform contracts and vendor-aware patterns (#17/#18/#28).** External E2/E3 capacity and HA validation remains non-blocking for book development. The channel fixture is bounded synthetic evidence; source/approver and production gates remain separate.
+**Increments #83–#87 are integrated: editorial listings, channels, platform-contract seed, source-platform interview and directional controller-stream observations.** The next bounded editorial slice, #88, addresses EBCDIC/CCSID field boundaries. Remaining platform/channel coverage and owner-approved functional discovery stay open; external capacity/HA validation does not block the book.
 
 | E2 substep | Current status | Remaining claim validation (non-blocking for integration) |
 | --- | --- | --- |
@@ -27,7 +27,7 @@ E2 remains **partially verified**. The long experiment has bounded audited evide
 | Book, bilingual diagrams and CI | **Integrated**: 37 numbered chapters, chapter 25 bis and two companion chapters, 47 diagrams per language, bilingual chapter 28 coexistence discussion, reproducible PDF preview; latest premerge checks PASS | Editorial/source review, full illustrative listing coverage, cross-platform reproducibility; a preview is not a release |
 | E1 PostgreSQL and SQL Server | **Partially verified**: real disposable SQL CI and independent oracles, .NET 10 parity slices, concurrency and negative cases | Full E1 business scope, power-loss/HA, customer-specific contract, production load |
 | E2 Orleans | **Partially verified, actually executed**: one-host Podman multi-process/multi-silo slices, PostgreSQL membership, durable ledger checks and selected failures and load; see [#8](https://github.com/jmfloreszazo/de-la-caja-negra-a-la-evidencia/issues/8) | concurrent-activation observations/long-partition recovery, physical hosts/HA and sustained capacity [#25](https://github.com/jmfloreszazo/de-la-caja-negra-a-la-evidencia/issues/25) |
-| CAP-007/005 brownfield replacement | **Synthetic slices CI-verified and merged**: SQL writer epoch, .NET 10 durable transactions, black-box legacy adapter, two distinct PostgreSQL containers/stores, shadow, reconciliation and rollback veto. [#58](https://github.com/jmfloreszazo/de-la-caja-negra-a-la-evidencia/issues/58) | In-flight controller partitions and remaining journal recovery [#64](https://github.com/jmfloreszazo/de-la-caja-negra-a-la-evidencia/issues/64), true incumbent-side writer fence, customer policy/mandates/Golden Master, TODM G2/G6 approval |
+| CAP-007/005 brownfield replacement | **Synthetic slices CI-verified and merged**: SQL writer epoch, .NET 10 durable transactions, black-box legacy adapter, two distinct PostgreSQL containers/stores, shadow, reconciliation and rollback veto. [#58](https://github.com/jmfloreszazo/de-la-caja-negra-a-la-evidencia/issues/58) | Further controller partition/timing windows under #58, beyond the four #87 application-stream cases, true incumbent-side writer fence, customer policy/mandates/Golden Master, TODM G2/G6 approval |
 | Business-capability decomposition | **Synthetic inventory**: 30 capability hypotheses in 12 domains, functional-first rewrite; [#32](https://github.com/jmfloreszazo/de-la-caja-negra-a-la-evidencia/issues/32) | Real authorized traces, owner-approved policies, target domains and independent acceptance; no mandatory COBOL parser and no 1:1 rewrite |
 | E3 on-prem/Azure/hybrid | **Designed, not capacity-verified**: M1/M2 transport smoke, dated Azure price references and WAN model are inputs, not E3 PASS; [#9](https://github.com/jmfloreszazo/de-la-caja-negra-a-la-evidencia/issues/9), [#12](https://github.com/jmfloreszazo/de-la-caja-negra-a-la-evidencia/issues/12) | Approved workload, open-loop saturation/commits/p99, failure domains, WAN, fair TLS gRPC/REST and dated comparable end-to-end TCO |
 | E4 agent-based modernization | **Designed, not executed/accepted as E4**; [#10](https://github.com/jmfloreszazo/de-la-caja-negra-a-la-evidencia/issues/10) | Bounded agent write authority, reproducible proposal/evaluation, mutation-qualified Oracle Gates, independent review and approval |
@@ -91,3 +91,5 @@ Channel increment #30: paired companion chapter, six diagrams per edition, ten n
 Platform-contract seed: ten documented rows, three platform contexts, four unverified discovery families and six catalog-integrity mutation controls. Native platform execution and migration equivalence remain unverified; see the [scope ADR](docs/PLATFORM_CONTRACTS_ADR.md).
 
 Brownfield #58 now has a bounded directional controller-stream observation: four native SQL cases and two rejected observation mutants, with an explicit recovery reset. [Original evidence](evidence/runs/BROWNFIELD-CONTROLLER-PARTITION.md). Platform catalog coverage remains partial; real source fencing and owner approval remain open.
+
+Editorial #11: bounded EBCDIC/CCSID kata with 36 checks per hosted OS and four rejected result transformations; original Linux/macOS/Windows artifacts and exact checkout-line-ending audit retained. This does not establish full Podman/WSL2 portability or native host conversion. See the [checkpoint](docs/EBCDIC_CHECKPOINT_2026-11-04.md).
