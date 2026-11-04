@@ -1,0 +1,32 @@
+# VERBATIM SELECTED ORIGINAL GitHub Actions test-merge log lines
+# PR #95, original run https://github.com/jmfloreszazo/de-la-caja-negra-a-la-evidencia/actions/runs/41898291348, job 126813593665
+# Source PR-head e23d5a8dd071655b87e504de2dac255438a534d0
+# Actual Actions test-merge checkout 172158b898475d0bf85613ffde8b373e6c9df255 (NOT the source head)
+# Selected original timestamped lines only, NOT original full logs or verified ZIP bytes
+2026-11-04T19:34:53.4649273Z test_01_sample_stays_not_ready_and_every_family_unknown (test_assess.NativeCaptureIntakeTests.test_01_sample_stays_not_ready_and_every_family_unknown) ... ok
+2026-11-04T19:34:53.4652729Z test_02_all_excluded_self_assertions_do_not_approve_any_bank (test_assess.NativeCaptureIntakeTests.test_02_all_excluded_self_assertions_do_not_approve_any_bank) ... ok
+2026-11-04T19:34:53.4655366Z test_03_source_system_missing_is_not_ready (test_assess.NativeCaptureIntakeTests.test_03_source_system_missing_is_not_ready) ... ok
+2026-11-04T19:34:53.4657625Z test_04_unknown_family_remains_not_ready (test_assess.NativeCaptureIntakeTests.test_04_unknown_family_remains_not_ready) ... ok
+2026-11-04T19:34:53.4660238Z test_05_unknown_family_cannot_smuggle_capture_config (test_assess.NativeCaptureIntakeTests.test_05_unknown_family_cannot_smuggle_capture_config) ... ok
+2026-11-04T19:34:53.4662865Z test_06_missing_family_is_refused (test_assess.NativeCaptureIntakeTests.test_06_missing_family_is_refused) ... ok
+2026-11-04T19:34:53.4665088Z test_07_duplicate_family_is_invalid (test_assess.NativeCaptureIntakeTests.test_07_duplicate_family_is_invalid) ... ok
+2026-11-04T19:34:53.4667448Z test_08_unknown_vendor_not_magically_supported (test_assess.NativeCaptureIntakeTests.test_08_unknown_vendor_not_magically_supported) ... ok
+2026-11-04T19:34:53.4670157Z test_09_every_documented_family_can_be_structurally_intaked (test_assess.NativeCaptureIntakeTests.test_09_every_documented_family_can_be_structurally_intaked) ... ok
+2026-11-04T19:34:53.4673382Z test_10_in_scope_without_product_version_stays_not_ready (test_assess.NativeCaptureIntakeTests.test_10_in_scope_without_product_version_stays_not_ready) ... ok
+2026-11-04T19:34:53.4676161Z test_11_required_cdc_control_missing_is_not_ready (test_assess.NativeCaptureIntakeTests.test_11_required_cdc_control_missing_is_not_ready) ... ok
+2026-11-04T19:34:53.4678374Z test_12_false_pass_root_is_rejected (test_assess.NativeCaptureIntakeTests.test_12_false_pass_root_is_rejected) ... ok
+2026-11-04T19:34:53.4680771Z test_13_fake_out_of_scope_proof_has_no_production_authority (test_assess.NativeCaptureIntakeTests.test_13_fake_out_of_scope_proof_has_no_production_authority) ... ok
+2026-11-04T19:34:53.4683343Z test_14_out_of_scope_requires_evidence (test_assess.NativeCaptureIntakeTests.test_14_out_of_scope_requires_evidence) ... ok
+2026-11-04T19:34:53.4685602Z test_15_excluded_path_cannot_supply_in_scope_claims (test_assess.NativeCaptureIntakeTests.test_15_excluded_path_cannot_supply_in_scope_claims) ... ok
+2026-11-04T19:34:53.4687912Z test_16_in_scope_cannot_assert_exclusion (test_assess.NativeCaptureIntakeTests.test_16_in_scope_cannot_assert_exclusion) ... ok
+2026-11-04T19:34:53.4690153Z test_17_undeclared_vendor_control_fails_closed (test_assess.NativeCaptureIntakeTests.test_17_undeclared_vendor_control_fails_closed) ... ok
+2026-11-04T19:34:53.4692586Z test_18_invalid_hash_or_uri_is_rejected (test_assess.NativeCaptureIntakeTests.test_18_invalid_hash_or_uri_is_rejected) ... ok
+2026-11-04T19:34:53.4694868Z test_19_missing_owner_question_refused (test_assess.NativeCaptureIntakeTests.test_19_missing_owner_question_refused) ... ok
+2026-11-04T19:34:53.4697105Z test_20_unidentified_or_extra_path_family_refused (test_assess.NativeCaptureIntakeTests.test_20_unidentified_or_extra_path_family_refused) ... ok
+2026-11-04T19:34:53.4699487Z test_21_invalid_schema_and_wrong_classification (test_assess.NativeCaptureIntakeTests.test_21_invalid_schema_and_wrong_classification) ... ok
+2026-11-04T19:34:53.4917470Z test_22_cli_sample_returns_not_ready_and_block (test_assess.NativeCaptureIntakeTests.test_22_cli_sample_returns_not_ready_and_block) ... ok
+2026-11-04T19:34:53.4920064Z Ran 22 tests in 0.027s
+2026-11-04T19:34:53.4920639Z OK
+2026-11-04T19:34:53.5086569Z [36;1mprint('Catalog source references verified structurally; no vendor platform was executed')[0m
+2026-11-04T19:34:53.5312450Z Catalog source references verified structurally; no vendor platform was executed
+2026-11-04T19:34:53.5406865Z [36;1mprint('7 unknown native source families, release and bank approval BLOCKED')[0m
