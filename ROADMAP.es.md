@@ -18,7 +18,7 @@ Esta es la hoja de ruta **del repositorio**, no una declaración de que una migr
 | Capacidad sostenida y cuello de botella | Diagnóstico directo de tres cohortes integrado con PR #81; seguimiento externo #25 | Saturación y COMMIT/p99 comparables; los pilotos existentes no cierran el gate |
 | Dominios físicos y HA | Pendiente | Ejecución y evidencia sobre hosts/fallos independientes |
 
-E2 permanece **parcialmente verificado**. El ensayo largo tiene evidencia acotada auditada en la PR #77; no acredita recuperación automática ni continua. No se inventan porcentajes ni fechas de cierre.
+La **campaña E2 de alcance acotado queda cerrada administrativamente**, pero su afirmación científica permanece **parcialmente verificada**. El [acta de cierre E2](docs/E2_CLOSEOUT.es.md) documenta las pruebas, los límites y el cierre de #8 como NOT_PLANNED, no como PASS. El ensayo de la PR #77 no acredita recuperación automática ni continua.
 
 ## Situación actual
 
@@ -26,7 +26,7 @@ E2 permanece **parcialmente verificado**. El ensayo largo tiene evidencia acotad
 | --- | --- | --- |
 | Libro, diagramas y CI bilingüe | **Integrado**: 37 capítulos numerados, capítulo 25 bis y dos complementarios, 47 diagramas por idioma, capítulo 28 ampliado con convivencia y PDF de vista previa reproducibles | Revisión editorial y técnica, listados ilustrativos, reproducción multiplataforma; la vista previa no es una release |
 | E1 PostgreSQL y SQL Server | **Parcialmente verificado**: CI sobre SQL real y desechable, oráculos independientes, subconjuntos de paridad .NET 10, concurrencia y controles negativos | Alcance funcional E1 completo, fallo eléctrico/HA, contrato del cliente y carga productiva |
-| E2 Orleans | **Parcialmente verificado y ejecutado**: pruebas de varios procesos/silos con Podman en una máquina, membership PostgreSQL, ledger durable, fallos y carga limitada; [#8](https://github.com/jmfloreszazo/de-la-caja-negra-a-la-evidencia/issues/8) | observación de activaciones concurrentes/recuperación tras particiones largas, hosts físicos/HA y capacidad sostenida [#25](https://github.com/jmfloreszazo/de-la-caja-negra-a-la-evidencia/issues/25) |
+| E2 Orleans | **Campaña acotada CERRADA; estado científico PARTIALLY_VERIFIED**: Podman multisislo en un host, PostgreSQL membership, ledger durable, fallos y carga limitada; [acta E2](docs/E2_CLOSEOUT.es.md) | La colocación natural/recuperación, HA física y capacidad sostenida siguen **sin verificar y excluidas**, no PASS; #8 cerrado NOT_PLANNED |
 | Brownfield CAP-007/005 | **Subconjuntos sintéticos verificados en CI y fusionados**: época de escritor SQL, transacciones .NET 10, adaptador legado de caja negra, dos almacenes PostgreSQL distintos, shadow, conciliación y veto al rollback; [#58](https://github.com/jmfloreszazo/de-la-caja-negra-a-la-evidencia/issues/58) | Ventanas adicionales de partición/temporización del controlador en #58, además de los cuatro casos de flujo de aplicación de #87, fencing real en el origen, políticas/mandatos/Golden Master del cliente y aprobación TODM G2/G6 |
 | Descomposición funcional | **Inventario sintético**: 30 hipótesis de capacidades y 12 dominios, reescritura functional-first; [#32](https://github.com/jmfloreszazo/de-la-caja-negra-a-la-evidencia/issues/32) | Trazas autorizadas, reglas aprobadas, límites de dominio y aceptación independiente; sin parser COBOL obligatorio y sin conversión 1:1 |
 | E3 Azure/local/híbrido | **Diseñado, sin capacidad verificada**: M1/M2, precios de referencia fechados y modelo WAN son entradas, no un PASS de E3; [#9](https://github.com/jmfloreszazo/de-la-caja-negra-a-la-evidencia/issues/9), [#12](https://github.com/jmfloreszazo/de-la-caja-negra-a-la-evidencia/issues/12) | Contrato de carga aprobado, saturación abierta y commits/p99, dominios de fallo, WAN, gRPC/REST con TLS comparable y TCO integral fechado |
@@ -54,7 +54,7 @@ Todo ello es **ingeniería sintética**. No hemos observado ningún sistema banc
 4. Terminar revisión/reproducción #11: idioma/bibliografía/solapes completos, listados restantes, EBCDIC y reproducción real por SO.
 5. Reorganizar entrada/estructura del laboratorio #15 preservando rutas protegidas y evidencia original.
 6. Ejecutar E4 #10: agente frente a oráculo independiente con alcance de escritura declarado.
-7. Mantener aceptación externa E2 #8 y E3 #9 en su backlog documentado; HA física, WAN y capacidad no bloquean los incrementos anteriores del libro.
+7. E2 #8 queda cerrado NOT_PLANNED para la campaña externa no ejecutada; sus [límites científicos](docs/E2_CLOSEOUT.es.md) se conservan. E3 #9 y la validación WAN/TCO continúan por separado; no se infiere aceptación de HA física ni capacidad.
 
 **Congelado:** [#53](https://github.com/jmfloreszazo/de-la-caja-negra-a-la-evidencia/issues/53), clean rooms/confidential computing, queda fuera del plan activo hasta nueva indicación. La protección de rama [#16](https://github.com/jmfloreszazo/de-la-caja-negra-a-la-evidencia/issues/16) también está aplazada, aunque sigue abierta.
 
