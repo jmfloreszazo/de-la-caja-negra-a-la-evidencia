@@ -1,0 +1,185 @@
+﻿2026-11-04T10:25:16.3126891Z Current runner version: '2.338.2'
+2026-11-04T10:25:16.3147755Z ##[group]Runner Image Provisioner
+2026-11-04T10:25:16.3148363Z Hosted Compute Agent
+2026-11-04T10:25:16.3148769Z Version: 20261021.618
+2026-11-04T10:25:16.3149236Z Commit: 21505ad2541d5be6135ed84fc33697146cf75b8e
+2026-11-04T10:25:16.3149774Z Build Date: 2026-10-21T00:45:21Z
+2026-11-04T10:25:16.3150259Z Worker ID: {5a021ab4-0260-495e-99c7-997bd2babb8b}
+2026-11-04T10:25:16.3150753Z Region: westus3
+2026-11-04T10:25:16.3151120Z Cloud: Azure
+2026-11-04T10:25:16.3151517Z ##[endgroup]
+2026-11-04T10:25:16.3152471Z ##[group]Operating System
+2026-11-04T10:25:16.3152923Z Microsoft Windows Server 2022
+2026-11-04T10:25:16.3153356Z 10.0.20348
+2026-11-04T10:25:16.3153711Z Datacenter
+2026-11-04T10:25:16.3154106Z ##[endgroup]
+2026-11-04T10:25:16.3154537Z ##[group]Runner Image
+2026-11-04T10:25:16.3154940Z Image: windows-2022
+2026-11-04T10:25:16.3155339Z Version: 20261025.346.1
+2026-11-04T10:25:16.3156433Z Included Software: https://github.com/actions/runner-images/blob/win22/20261025.346/images/windows/Windows2022-Readme.md
+2026-11-04T10:25:16.3157562Z Image Release: https://github.com/actions/runner-images/releases/tag/win22%2F20261025.346
+2026-11-04T10:25:16.3158232Z ##[endgroup]
+2026-11-04T10:25:16.3159012Z ##[group]GITHUB_TOKEN Permissions
+2026-11-04T10:25:16.3160411Z Contents: read
+2026-11-04T10:25:16.3160881Z Metadata: read
+2026-11-04T10:25:16.3161257Z ##[endgroup]
+2026-11-04T10:25:16.3162868Z Secret source: Actions
+2026-11-04T10:25:16.3163518Z Cache mode: write
+2026-11-04T10:25:16.3164034Z Prepare workflow directory
+2026-11-04T10:25:16.3479617Z Prepare all required actions
+2026-11-04T10:25:16.3532374Z Getting action download info
+2026-11-04T10:25:16.6982089Z Download action repository 'actions/checkout@v5' (SHA:fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09)
+2026-11-04T10:25:16.7937982Z Download action repository 'actions/setup-python@v6' (SHA:ece7cb06caefa5fff74198d8649806c4678c61a1)
+2026-11-04T10:25:17.0272766Z Complete job name: collector-tests (windows-2022)
+2026-11-04T10:25:17.2208178Z ##[group]Run actions/checkout@v5
+2026-11-04T10:25:17.2209116Z with:
+2026-11-04T10:25:17.2209510Z   ref: 80aab1fcdf1e331e75e4e438766290a97dfc87e3
+2026-11-04T10:25:17.2210028Z   repository: jmfloreszazo/de-la-caja-negra-a-la-evidencia
+2026-11-04T10:25:17.2213309Z   token: ***
+2026-11-04T10:25:17.2213617Z   ssh-strict: true
+2026-11-04T10:25:17.2213928Z   ssh-user: git
+2026-11-04T10:25:17.2214239Z   persist-credentials: true
+2026-11-04T10:25:17.2214583Z   clean: true
+2026-11-04T10:25:17.2214889Z   sparse-checkout-cone-mode: true
+2026-11-04T10:25:17.2215260Z   fetch-depth: 1
+2026-11-04T10:25:17.2215566Z   fetch-tags: false
+2026-11-04T10:25:17.2215874Z   show-progress: true
+2026-11-04T10:25:17.2216182Z   lfs: false
+2026-11-04T10:25:17.2216469Z   submodules: false
+2026-11-04T10:25:17.2216781Z   set-safe-directory: true
+2026-11-04T10:25:17.2217144Z   allow-unsafe-pr-checkout: false
+2026-11-04T10:25:17.2217682Z ##[endgroup]
+2026-11-04T10:25:17.3428825Z Syncing repository: jmfloreszazo/de-la-caja-negra-a-la-evidencia
+2026-11-04T10:25:17.3430282Z ##[group]Getting Git version info
+2026-11-04T10:25:17.3430941Z Working directory is 'D:\a\de-la-caja-negra-a-la-evidencia\de-la-caja-negra-a-la-evidencia'
+2026-11-04T10:25:17.4343390Z [command]"C:\Program Files\Git\bin\git.exe" version
+2026-11-04T10:25:18.1003660Z git version 2.56.0.windows.3
+2026-11-04T10:25:18.1041666Z ##[endgroup]
+2026-11-04T10:25:18.1059961Z Temporarily overriding HOME='D:\a\_temp\a97f4c49-9e13-4230-aab9-7cb1e70af0a7' before making global git config changes
+2026-11-04T10:25:18.1070171Z Adding repository directory to the temporary git global config as a safe directory
+2026-11-04T10:25:18.1072211Z [command]"C:\Program Files\Git\bin\git.exe" config --global --add safe.directory D:\a\de-la-caja-negra-a-la-evidencia\de-la-caja-negra-a-la-evidencia
+2026-11-04T10:25:18.2109476Z Deleting the contents of 'D:\a\de-la-caja-negra-a-la-evidencia\de-la-caja-negra-a-la-evidencia'
+2026-11-04T10:25:18.2115683Z ##[group]Initializing the repository
+2026-11-04T10:25:18.2123398Z [command]"C:\Program Files\Git\bin\git.exe" init D:\a\de-la-caja-negra-a-la-evidencia\de-la-caja-negra-a-la-evidencia
+2026-11-04T10:25:18.3360113Z Initialized empty Git repository in D:/a/de-la-caja-negra-a-la-evidencia/de-la-caja-negra-a-la-evidencia/.git/
+2026-11-04T10:25:18.3392113Z [command]"C:\Program Files\Git\bin\git.exe" remote add origin https://github.com/jmfloreszazo/de-la-caja-negra-a-la-evidencia
+2026-11-04T10:25:18.3907970Z ##[endgroup]
+2026-11-04T10:25:18.3908931Z ##[group]Disabling automatic garbage collection
+2026-11-04T10:25:18.3914920Z [command]"C:\Program Files\Git\bin\git.exe" config --local gc.auto 0
+2026-11-04T10:25:18.4145514Z ##[endgroup]
+2026-11-04T10:25:18.4146804Z ##[group]Setting up auth
+2026-11-04T10:25:18.4155296Z [command]"C:\Program Files\Git\bin\git.exe" config --local --name-only --get-regexp core\.sshCommand
+2026-11-04T10:25:18.4392560Z [command]"C:\Program Files\Git\bin\git.exe" submodule foreach --recursive "sh -c \"git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :\""
+2026-11-04T10:25:20.3653509Z [command]"C:\Program Files\Git\bin\git.exe" config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+2026-11-04T10:25:20.3893681Z [command]"C:\Program Files\Git\bin\git.exe" submodule foreach --recursive "sh -c \"git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :\""
+2026-11-04T10:25:20.8015470Z [command]"C:\Program Files\Git\bin\git.exe" config --local --name-only --get-regexp ^includeIf\.gitdir:
+2026-11-04T10:25:20.8263590Z [command]"C:\Program Files\Git\bin\git.exe" submodule foreach --recursive "git config --local --show-origin --name-only --get-regexp remote.origin.url"
+2026-11-04T10:25:21.2405397Z [command]"C:\Program Files\Git\bin\git.exe" config --local http.https://github.com/.extraheader "AUTHORIZATION: basic ***"
+2026-11-04T10:25:21.2658569Z ##[endgroup]
+2026-11-04T10:25:21.2659252Z ##[group]Fetching the repository
+2026-11-04T10:25:21.2669879Z [command]"C:\Program Files\Git\bin\git.exe" -c protocol.version=2 fetch --no-tags --prune --no-recurse-submodules --depth=1 origin 80aab1fcdf1e331e75e4e438766290a97dfc87e3
+2026-11-04T10:25:24.1146246Z From https://github.com/jmfloreszazo/de-la-caja-negra-a-la-evidencia
+2026-11-04T10:25:24.1147050Z  * branch            80aab1fcdf1e331e75e4e438766290a97dfc87e3 -> FETCH_HEAD
+2026-11-04T10:25:24.1174693Z ##[endgroup]
+2026-11-04T10:25:24.1175050Z ##[group]Determining the checkout info
+2026-11-04T10:25:24.1176857Z ##[endgroup]
+2026-11-04T10:25:24.1187945Z [command]"C:\Program Files\Git\bin\git.exe" sparse-checkout disable
+2026-11-04T10:25:24.2636252Z [command]"C:\Program Files\Git\bin\git.exe" config --local --unset-all extensions.worktreeConfig
+2026-11-04T10:25:24.2908698Z ##[group]Checking out the ref
+2026-11-04T10:25:24.2918245Z [command]"C:\Program Files\Git\bin\git.exe" checkout --progress --force 80aab1fcdf1e331e75e4e438766290a97dfc87e3
+2026-11-04T10:25:24.7962326Z Note: switching to '80aab1fcdf1e331e75e4e438766290a97dfc87e3'.
+2026-11-04T10:25:24.7962752Z 
+2026-11-04T10:25:24.7962996Z You are in 'detached HEAD' state. You can look around, make experimental
+2026-11-04T10:25:24.7963481Z changes and commit them, and you can discard any commits you make in this
+2026-11-04T10:25:24.7963963Z state without impacting any branches by switching back to a branch.
+2026-11-04T10:25:24.7964254Z 
+2026-11-04T10:25:24.7964426Z If you want to create a new branch to retain commits you create, you may
+2026-11-04T10:25:24.7964803Z do so (now or later) by using -c with the switch command. Example:
+2026-11-04T10:25:24.7965011Z 
+2026-11-04T10:25:24.7965154Z   git switch -c <new-branch-name>
+2026-11-04T10:25:24.7965292Z 
+2026-11-04T10:25:24.7965378Z Or undo this operation with:
+2026-11-04T10:25:24.7965508Z 
+2026-11-04T10:25:24.7966477Z   git switch -
+2026-11-04T10:25:24.7966581Z 
+2026-11-04T10:25:24.7966745Z Turn off this advice by setting config variable advice.detachedHead to false
+2026-11-04T10:25:24.7966966Z 
+2026-11-04T10:25:25.0401480Z HEAD is now at 80aab1f Add isolated host reproduction collector and non-blocking external protocol
+2026-11-04T10:25:25.0564831Z ##[endgroup]
+2026-11-04T10:25:25.1818120Z [command]"C:\Program Files\Git\bin\git.exe" log -1 --format=%H
+2026-11-04T10:25:25.2789892Z 80aab1fcdf1e331e75e4e438766290a97dfc87e3
+2026-11-04T10:25:25.3123590Z ##[group]Run actions/setup-python@v6
+2026-11-04T10:25:25.3123868Z with:
+2026-11-04T10:25:25.3124026Z   python-version: 3.12
+2026-11-04T10:25:25.3124199Z   check-latest: false
+2026-11-04T10:25:25.3126125Z   token: ***
+2026-11-04T10:25:25.3126312Z   update-environment: true
+2026-11-04T10:25:25.3126502Z   allow-prereleases: false
+2026-11-04T10:25:25.3126664Z   freethreaded: false
+2026-11-04T10:25:25.3126824Z ##[endgroup]
+2026-11-04T10:25:25.4399783Z ##[group]Installed versions
+2026-11-04T10:25:25.4476025Z Successfully set up CPython (3.12.10)
+2026-11-04T10:25:25.4476533Z ##[endgroup]
+2026-11-04T10:25:25.4677621Z ##[group]Run python -m unittest discover -s lab/tools -p test_host_reproduction.py -v
+2026-11-04T10:25:25.4678266Z [36;1mpython -m unittest discover -s lab/tools -p test_host_reproduction.py -v[0m
+2026-11-04T10:25:25.6131736Z shell: C:\Program Files\PowerShell\7\pwsh.EXE -command ". '{0}'"
+2026-11-04T10:25:25.6132051Z env:
+2026-11-04T10:25:25.6132288Z   pythonLocation: C:\hostedtoolcache\windows\Python\3.12.10\x64
+2026-11-04T10:25:25.6132680Z   PKG_CONFIG_PATH: C:\hostedtoolcache\windows\Python\3.12.10\x64/lib/pkgconfig
+2026-11-04T10:25:25.6133021Z   Python_ROOT_DIR: C:\hostedtoolcache\windows\Python\3.12.10\x64
+2026-11-04T10:25:25.6133327Z   Python2_ROOT_DIR: C:\hostedtoolcache\windows\Python\3.12.10\x64
+2026-11-04T10:25:25.6133627Z   Python3_ROOT_DIR: C:\hostedtoolcache\windows\Python\3.12.10\x64
+2026-11-04T10:25:25.6133874Z ##[endgroup]
+2026-11-04T10:25:29.6490070Z test_accounting_and_gate_reject_changed_copies (test_host_reproduction.HostReproductionTests.test_accounting_and_gate_reject_changed_copies) ... ERROR
+2026-11-04T10:25:29.6500215Z test_existing_output_is_refused (test_host_reproduction.HostReproductionTests.test_existing_output_is_refused) ... ok
+2026-11-04T10:25:30.0026657Z test_missing_engine_is_inconclusive (test_host_reproduction.HostReproductionTests.test_missing_engine_is_inconclusive) ... ok
+2026-11-04T10:25:30.0027266Z 
+2026-11-04T10:25:30.0027449Z ======================================================================
+2026-11-04T10:25:30.0028357Z ERROR: test_accounting_and_gate_reject_changed_copies (test_host_reproduction.HostReproductionTests.test_accounting_and_gate_reject_changed_copies)
+2026-11-04T10:25:30.0029214Z ----------------------------------------------------------------------
+2026-11-04T10:25:30.0029619Z Traceback (most recent call last):
+2026-11-04T10:25:30.0034487Z   File "C:\hostedtoolcache\windows\Python\3.12.10\x64\Lib\shutil.py", line 633, in _rmtree_unsafe
+2026-11-04T10:25:30.0035109Z     os.unlink(fullname)
+2026-11-04T10:25:30.0035981Z PermissionError: [WinError 32] The process cannot access the file because it is being used by another process: 'C:\\Users\\RUNNER~1\\AppData\\Local\\Temp\\tmphqm4j90w\\outputs\\bank\\acceptance.db'
+2026-11-04T10:25:30.0036810Z 
+2026-11-04T10:25:30.0037005Z During handling of the above exception, another exception occurred:
+2026-11-04T10:25:30.0037317Z 
+2026-11-04T10:25:30.0037420Z Traceback (most recent call last):
+2026-11-04T10:25:30.0038307Z   File "D:\a\de-la-caja-negra-a-la-evidencia\de-la-caja-negra-a-la-evidencia\lab\tools\test_host_reproduction.py", line 36, in test_accounting_and_gate_reject_changed_copies
+2026-11-04T10:25:30.0039161Z     with tempfile.TemporaryDirectory() as directory:
+2026-11-04T10:25:30.0039479Z          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+2026-11-04T10:25:30.0039981Z   File "C:\hostedtoolcache\windows\Python\3.12.10\x64\Lib\tempfile.py", line 950, in __exit__
+2026-11-04T10:25:30.0040704Z     self.cleanup()
+2026-11-04T10:25:30.0041125Z   File "C:\hostedtoolcache\windows\Python\3.12.10\x64\Lib\tempfile.py", line 954, in cleanup
+2026-11-04T10:25:30.0041681Z     self._rmtree(self.name, ignore_errors=self._ignore_cleanup_errors)
+2026-11-04T10:25:30.0042281Z   File "C:\hostedtoolcache\windows\Python\3.12.10\x64\Lib\tempfile.py", line 934, in _rmtree
+2026-11-04T10:25:30.0042758Z     _shutil.rmtree(name, onexc=onexc)
+2026-11-04T10:25:30.0043206Z   File "C:\hostedtoolcache\windows\Python\3.12.10\x64\Lib\shutil.py", line 781, in rmtree
+2026-11-04T10:25:30.0043655Z     return _rmtree_unsafe(path, onexc)
+2026-11-04T10:25:30.0043920Z            ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+2026-11-04T10:25:30.0044396Z   File "C:\hostedtoolcache\windows\Python\3.12.10\x64\Lib\shutil.py", line 635, in _rmtree_unsafe
+2026-11-04T10:25:30.0044871Z     onexc(os.unlink, fullname, err)
+2026-11-04T10:25:30.0045323Z   File "C:\hostedtoolcache\windows\Python\3.12.10\x64\Lib\tempfile.py", line 909, in onexc
+2026-11-04T10:25:30.0045772Z     _os.unlink(path)
+2026-11-04T10:25:30.0048212Z PermissionError: [WinError 32] The process cannot access the file because it is being used by another process: 'C:\\Users\\RUNNER~1\\AppData\\Local\\Temp\\tmphqm4j90w\\outputs\\bank\\acceptance.db'
+2026-11-04T10:25:30.0049053Z 
+2026-11-04T10:25:30.0049213Z ----------------------------------------------------------------------
+2026-11-04T10:25:30.0049560Z Ran 3 tests in 0.666s
+2026-11-04T10:25:30.0049704Z 
+2026-11-04T10:25:30.0049788Z FAILED (errors=1)
+2026-11-04T10:25:30.1006629Z ##[error]Process completed with exit code 1.
+2026-11-04T10:25:30.1207188Z Post job cleanup.
+2026-11-04T10:25:30.2522766Z [command]"C:\Program Files\Git\bin\git.exe" version
+2026-11-04T10:25:30.2767485Z git version 2.56.0.windows.3
+2026-11-04T10:25:30.2817630Z Temporarily overriding HOME='D:\a\_temp\97eeb22c-bc98-4e70-ae83-673c504943a2' before making global git config changes
+2026-11-04T10:25:30.2818333Z Adding repository directory to the temporary git global config as a safe directory
+2026-11-04T10:25:30.2826950Z [command]"C:\Program Files\Git\bin\git.exe" config --global --add safe.directory D:\a\de-la-caja-negra-a-la-evidencia\de-la-caja-negra-a-la-evidencia
+2026-11-04T10:25:30.3069253Z [command]"C:\Program Files\Git\bin\git.exe" config --local --name-only --get-regexp core\.sshCommand
+2026-11-04T10:25:30.3311791Z [command]"C:\Program Files\Git\bin\git.exe" submodule foreach --recursive "sh -c \"git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :\""
+2026-11-04T10:25:30.7744787Z [command]"C:\Program Files\Git\bin\git.exe" config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+2026-11-04T10:25:30.8021832Z http.https://github.com/.extraheader
+2026-11-04T10:25:30.8054723Z [command]"C:\Program Files\Git\bin\git.exe" config --local --unset-all http.https://github.com/.extraheader
+2026-11-04T10:25:30.8318413Z [command]"C:\Program Files\Git\bin\git.exe" submodule foreach --recursive "sh -c \"git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :\""
+2026-11-04T10:25:31.2557352Z [command]"C:\Program Files\Git\bin\git.exe" config --local --name-only --get-regexp ^includeIf\.gitdir:
+2026-11-04T10:25:31.2792474Z [command]"C:\Program Files\Git\bin\git.exe" submodule foreach --recursive "git config --local --show-origin --name-only --get-regexp remote.origin.url"
+2026-11-04T10:25:31.7243277Z Cleaning up orphan processes

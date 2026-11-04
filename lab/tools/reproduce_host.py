@@ -31,7 +31,8 @@ def main():
     report = {'status': 'INCONCLUSIVE', 'sourceHeadSha': os.environ.get('SOURCE_HEAD_SHA', source),
               'checkoutSha': source, 'runId': os.environ.get('GITHUB_RUN_ID', 'LOCAL'),
               'host': {'system': platform.system(), 'release': platform.release(),
-                       'machine': platform.machine(), 'python': sys.version},
+                       'machine': platform.machine(), 'python': sys.version,
+                       'isWsl': 'microsoft' in platform.release().lower()},
               'mode': 'EXECUTE' if args.execute else 'PREFLIGHT', 'commands': [],
               'startedUtc': datetime.datetime.now(datetime.timezone.utc).isoformat(),
               'limits': 'Synthetic Linux-container lab; not native host DB/HA/capacity or bank acceptance.'}

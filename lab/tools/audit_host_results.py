@@ -1,9 +1,11 @@
 """Read fresh lab outputs with the existing read-only accounting oracle."""
 import ast
+from contextlib import closing
 import hashlib
 import json
 import pathlib
 import sqlite3
+from types import SimpleNamespace
 
 LAB = pathlib.Path(__file__).resolve().parents[1]
 
@@ -42,7 +44,10 @@ def audit(results):
     oracle_path = LAB / 'tools/verify_offline.py'
     source = ast.parse(oracle_path.read_text())
     function = next(n for n in source.body if isinstance(n, ast.FunctionDef) and n.name == 'ledger_invariants')
-    scope = {'pathlib': pathlib, 'sqlite3': sqlite3}
+    # sqlite3's transaction context manager does not close its connection.
+    # Supply an explicit read-only connection lifetime without changing oracle predicates.
+    connections = SimpleNamespace(connect=lambda *args, **kwargs: closing(sqlite3.connect(*args, **kwargs)))
+    scope = {'pathlib': pathlib, 'sqlite3': connections}
     # Execute the existing function alone; importing the module would inspect historical results.
     exec(compile(ast.Module(body=[function], type_ignores=[]), str(oracle_path), 'exec'), scope)
     names = {'acceptance.db', 'negative-control.db'} | {
@@ -58,4 +63,5 @@ def audit(results):
     return {'status': 'PASS', 'feeCases': 58, 'gateControls': 10,
             'positiveDatabases': 9, 'rejectedCorruptDatabases': 1,
             'accountingPredicatesPerDatabase': 6, 'ledgerObservations': observations,
+            'connectionLifecycle': 'EXPLICIT_CLOSE_AFTER_EACH_READ_ONLY_AUDIT',
             'oracleSha256': hashlib.sha256(oracle_path.read_bytes()).hexdigest()}
