@@ -90,5 +90,7 @@ watermark and a green CI job are **not** an independently authorized bank
 contract. Issue #32 remains open; W01 remains a structural/engineering slice
 and #58 real incumbent fencing is a separate unsatisfied requirement.
 
+**Original real-PostgreSQL CI 16/16 PASS (bounded synthetic scope):** [run 41853096276](https://github.com/jmfloreszazo/de-la-caja-negra-a-la-evidencia/actions/runs/41853096276) and permanent [EN evidence record](../../../evidence/runs/W01-PROJECTION.md) / [ES](../../../evidence/runs/W01-PROJECTION.es.md). No customer release or full scientific approval follows.
+
 Companion research: [English](../../../docs/research/w01-projection.en.md) ·
 [Spanish](../../../docs/research/w01-projection.es.md).
