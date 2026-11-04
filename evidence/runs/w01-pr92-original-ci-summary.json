@@ -1,0 +1,51 @@
+{
+  "classification": "TRANSCRIBED_FROM_ORIGINAL_ACTIONS_JOB_LOG_NOT_ARTIFACT_BYTES",
+  "originalResult": {
+    "checkoutSha": "730b40a241986fbd4975d60285bd1b149ec743f3",
+    "classification": "REAL_POSTGRESQL_SYNTHETIC_W01_NOT_BANK_ACCEPTANCE",
+    "customerApproval": false,
+    "failedCaseIds": [],
+    "incrementalCdcImplemented": false,
+    "independentFailureDomains": false,
+    "isSpendableBalance": false,
+    "negativeControls": [
+      "projection_corruption",
+      "unknown_source_write",
+      "watermark_regression",
+      "source_failure",
+      "source_fallback_failure",
+      "invalid_endpoint"
+    ],
+    "passed": 16,
+    "physicalHosts": 1,
+    "python": "3.12.15",
+    "readFreshness": "SAMPLED_WATERMARK_NOT_LINEARIZABLE",
+    "sourceAuthority": "LEGACY",
+    "sourceHeadSha": "730b40a241986fbd4975d60285bd1b149ec743f3",
+    "sourceReadOnlyInProjectionCode": true,
+    "status": "PASS_BOUNDED_SYNTHETIC_TESTS",
+    "testsPlanned": 16,
+    "testsRun": 16,
+    "todmG2": "INCONCLUSIVE",
+    "todmG6": "BLOCK",
+    "utc": "2026-11-04T14:59:52.558342+00:00"
+  },
+  "originalJob": {
+    "id": 126654375641,
+    "runId": 41853096276,
+    "headSha": "730b40a241986fbd4975d60285bd1b149ec743f3",
+    "mergeCommitSha": "ce96fa0f4c8f4be950f08b67d8ae8e6049878e20",
+    "jobUrl": "https://github.com/jmfloreszazo/de-la-caja-negra-a-la-evidencia/actions/runs/41853096276",
+    "excerptPath": "evidence/runs/W01-PR92-ORIGINAL-CI-EXCERPT.log"
+  },
+  "originalArtifactMetadata": {
+    "id": 13334909404,
+    "name": "w01-postgresql-synthetic-original-not-bank-approved",
+    "sizeBytes": 2462,
+    "sha256": "sha256:c467243029ca0f37d0683c59f1b5fd242a01874eb73182ca475beecf5c8ad2ca",
+    "archiveDownloadUrl": "https://api.github.com/repos/jmfloreszazo/de-la-caja-negra-a-la-evidencia/actions/artifacts/13334909404/zip",
+    "expiresAt": "2027-02-02T14:59:31Z"
+  },
+  "scope": "Two PostgreSQL 16.13 clusters on one hosted physical runner; synthetic read snapshot/fallback only; no CDC, linearizable read, bank permission, mainframe proof, physics HA or TODM approval",
+  "evidenceBoundary": "The verbatim selected CI log excerpt is committed; the ZIP remains an Actions artifact, and this JSON is an exact log-transcription with metadata rather than a claim of directly auditing ZIP bytes."
+}
