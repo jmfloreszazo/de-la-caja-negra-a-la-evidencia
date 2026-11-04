@@ -2,7 +2,7 @@
 
 # W01 source-owned synthetic journal — integrated, NOT executed
 
-**Checkpoint: 4 November 2026.** [Español](W01-SOURCE-JOURNAL-CHECKPOINT.es.md) · [PR #94 merged](https://github.com/jmfloreszazo/de-la-caja-negra-a-la-evidencia/pull/94) · [Issue #58 still OPEN](https://github.com/jmfloreszazo/de-la-caja-negra-a-la-evidencia/issues/58)
+**Checkpoint: 4 November 2026.** [Español](W01_SOURCE_JOURNAL_CHECKPOINT.es.md) · [PR #94 merged](https://github.com/jmfloreszazo/de-la-caja-negra-a-la-evidencia/pull/94) · [Issue #58 still OPEN](https://github.com/jmfloreszazo/de-la-caja-negra-a-la-evidencia/issues/58)
 
 ## Evidence classification and exact integration
 
