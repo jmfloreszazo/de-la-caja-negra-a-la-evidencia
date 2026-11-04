@@ -65,6 +65,10 @@ Do not assign numerical scores to unknown contract data. Use a **gated decision 
 
 Each wave must have a preregistered refusal condition and an independent decision: `RETAIN`, `EXPOSE`, `REPLACE`, `RETIRE`, or `INCONCLUSIVE`. A possible next infrastructure target (on-prem, Azure, hybrid, modular monolith or Orleans) is a **design choice**, not the definition of a business context.
 
+## Executable bounded W01 follow-up
+
+The [W01 synthetic PostgreSQL read-projection experiment](w01-projection.en.md) extends the proposed read-only seam with real SQL snapshots, watermark, digest, fallback and negative controls. It is **not** a CDC pipeline, physically independent HA, a real mainframe read contract or a substitute for the #58 incumbent fence. The original graph proposal remains CANDIDATE_ONLY.
+
 ## Status and next evidence requirements
 
 **Delivered by this increment:** an executable and auditable **synthetic wave screen**, four proposed slices, explicit cross-capability constraints, adverse tests and ES/EN research. This does not revise the 30 historical hypotheses into real bank requirements.
