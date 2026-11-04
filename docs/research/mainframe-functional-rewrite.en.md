@@ -35,7 +35,7 @@ The [English-only machine-readable catalog](../../lab/decomposition/functional_c
 | Insufficient balance | Rejection without debit | Before/after ledger and audit |
 | Crash after COMMIT before ACK | Uncertain reply and safe query/replay | SQL authority and exact operation effects |
 
-A possible greenfield implementation is a .NET 10 domain service with PostgreSQL as accounting authority, durable idempotency and transactional outbox. Orleans is optional coordination rather than a substitute for ACID. REST at channel boundaries and internal gRPC must be justified by the deployment contract and measurements. This is an architectural hypothesis, not a mandated design.
+A possible **brownfield replacement candidate** is a newly implemented .NET 10 domain service with PostgreSQL as accounting authority, durable idempotency and transactional outbox. Orleans is optional coordination rather than a substitute for ACID. REST at channel boundaries and internal gRPC must be justified by the deployment contract and measurements. This is an architectural hypothesis, not a mandated design.
 
 ## ATM: authorization is not dispensing (CAP-011/012)
 
