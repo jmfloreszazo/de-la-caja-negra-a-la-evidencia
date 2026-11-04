@@ -57,6 +57,7 @@
 | ID | Claim | Status | Limit | Provenance |
 | --- | --- | --- | --- | --- |
 | `BROWNFIELD-C2-LINK` | Controller TCP cut with an in-flight transfer | **Executed in CI, bounded scope** | Two synthetic writers on one runner: controller sessions lost, gateway SIGKILL, UNKNOWN and cutover BLOCK, then 1 decision/2 postings/1 outbox and both oracles 10/10 per case. No silent/asymmetric partition or actual incumbent fence. | [Original and audited ZIP](../evidence/runs/BROWNFIELD-CONTROLLER-LOSS.md) |
+| `BROWNFIELD-W01-PROJECTION` | CAP-005 nonauthoritative PostgreSQL booked-balance snapshot, watermark and fail-closed source fallback | **Executed: 16/16 real PostgreSQL CI tests, bounded synthetic scope** | Two separate PostgreSQL clusters on one hosted runner; transactional snapshot refresh, stale/corrupt fallback and negative source-clock tests. No CDC, linearizable read, spendable balance, independent physical HA, real incumbent or business G2/G6 acceptance. | [Permanent original-run audit](../evidence/runs/W01-PROJECTION.md) · [Actions #41853096276](https://github.com/jmfloreszazo/de-la-caja-negra-a-la-evidencia/actions/runs/41853096276) |
 
 ## Supplemental observations originally introduced by merged PR #5
 
