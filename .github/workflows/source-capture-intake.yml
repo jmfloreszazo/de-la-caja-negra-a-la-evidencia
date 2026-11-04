@@ -1,0 +1,72 @@
+name: Source capture owner intake
+on:
+  pull_request:
+    paths:
+      - 'lab/brownfield/source_capture/**'
+      - 'docs/research/source-native-capture-assessment.*'
+      - '.github/workflows/source-capture-intake.yml'
+  push:
+    branches: [main]
+    paths:
+      - 'lab/brownfield/source_capture/**'
+      - 'docs/research/source-native-capture-assessment.*'
+      - '.github/workflows/source-capture-intake.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  structural-intake:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-python@v6
+        with:
+          python-version: '3.12'
+      - name: Adversarial source capture discovery controls (NOT native CDC)
+        run: python3 -m unittest discover -s lab/brownfield/source_capture -p 'test_*.py' -v
+      - name: Validate catalog source IDs and source version caveats
+        run: |
+          python3 - <<'PY'
+          import json
+          from pathlib import Path
+          c = json.loads(Path('lab/brownfield/source_capture/capture_catalog.json').read_text())
+          assert c['classification'] == 'DOCUMENTED_VENDOR_PATTERNS_NOT_INSTALLED_OR_TESTED'
+          assert c['sourceNativeTests'] == 'NOT_EXECUTED'
+          assert c['customerApproval'] == 'NOT_OBTAINED'
+          assert len(c['families']) == 7 and len(c['genericChecks']) == 9
+          known = {s['id'] for s in c['sources']}
+          assert len(known) == len(c['sources']) >= 8
+          assert all(s['url'].startswith('https://www.ibm.com/docs/') for s in c['sources'])
+          assert all(s['retrieval'] in ('SEARCH_INDEX', 'SEARCH_INDEX_DIRECT_403')
+                     for s in c['sources'])
+          for name, f in c['families'].items():
+              assert len(set(f['checks'])) == len(f['checks'])
+              assert set(f['sourceIds']) <= known
+              if f['documented']:
+                  assert f['sourceIds'], name
+              else:
+                  assert not f['sourceIds'] and name == 'FUJITSU_OR_OTHER'
+          print('Catalog source references verified structurally; no vendor platform was executed')
+          PY
+      - name: Example intake must remain NOT_READY, not bank PASS
+        run: |
+          python3 - <<'PY'
+          import json
+          import subprocess
+          import sys
+          result = subprocess.run(
+              [sys.executable, 'lab/brownfield/source_capture/assess.py',
+               'lab/brownfield/source_capture/intake.example.json'],
+              text=True, capture_output=True)
+          assert result.returncode == 2, (result.returncode, result.stdout, result.stderr)
+          data = json.loads(result.stdout)
+          assert data['status'] == 'NOT_READY'
+          assert data['pathsUnknown'] == data['pathsDeclared'] == 7
+          assert data['nativeCaptureTestExecuted'] is False
+          assert data['evidenceBytesVerified'] is False
+          assert data['bankSourceWriterFenceProven'] is False
+          assert data['productionApproved'] is False
+          assert data['todmG2'] == 'INCONCLUSIVE' and data['todmG6'] == 'BLOCK'
+          print('7 unknown native source families, release and bank approval BLOCKED')
+          PY

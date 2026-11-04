@@ -98,6 +98,10 @@ Start with [CONTRIBUTING.md](CONTRIBUTING.md): paths by profile, a first contrib
 
 **Not yet established:** complete E1 acceptance (E1a/E1b have only the documented partial CI evidence), E2–E4 experimental acceptance, compilation of all *Illustrative* listings, native-level English editorial review, or cross-platform reproductions beyond hosted Linux runners. M1/M2 are local experimental observations, not E3. See [editorial and evidence register](docs/EDITORIAL_REVIEW.md).
 
+## Source-native CDC assessment and owner acceptance (#58)
+
+The paired research [EN](docs/research/source-native-capture-assessment.en.md) / [ES](docs/research/source-native-capture-assessment.es.md) and [English-only discovery gate](lab/brownfield/source_capture/README.md) distinguish Db2 for z/OS logging, CICS VSAM, VSAM non-RLS batch, IMS online/DL-I batch, IBM i journaling, and **unverified** Fujitsu/other mechanisms. These are documentation-backed **candidate paths**, not installed CDC or bank acceptance. Seven owner paths begin UNKNOWN and TODM G2/G6 remain INCONCLUSIVE/BLOCK.
+
 ## W01 source-owned transactional journal (synthetic)
 
 The [source journal lab](lab/brownfield/w01_feed/README.md), [EN](docs/research/w01-source-journal.en.md) / [ES](docs/research/w01-source-journal.es.md) method tests a source-owned committed sequence, MVCC snapshot cut, replay, gap/hash rejection and target cursor atomicity in two PostgreSQL containers. This is **not** production CDC, an incumbent source fence, a linearizable read or bank acceptance. The prior W01 full-snapshot prototype is preserved separately.

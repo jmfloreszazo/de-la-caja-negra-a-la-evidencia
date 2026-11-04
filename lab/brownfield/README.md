@@ -62,6 +62,10 @@ For productization the team must obtain approved policy and actual business owne
 
 See [issue #58](https://github.com/jmfloreszazo/de-la-caja-negra-a-la-evidencia/issues/58).
 
+## Source capture discovery by installed platform (#58)
+
+The [native CDC discovery intake](source_capture/README.md) adds an English-only fail-closed structural assessor with seven platform/source-write families and 22 adversarial **metadata** unit tests. Its official reference catalog documents possible Db2 z/OS, VSAM CICS/batch, IMS online/batch and IBM i journal paths, leaving Fujitsu/other alternatives NOT_VERIFIED. No IBM/other native engine runs here. See paired [EN](../../docs/research/source-native-capture-assessment.en.md) / [ES](../../docs/research/source-native-capture-assessment.es.md) research and the independent source-fence acceptance below.
+
 ## Actual incumbent source-fencing acceptance is still missing
 
 The [independent source-authority intake](owner_readiness/README.md) adds a fail-closed **structural** inventory for all online, batch, channel, offline, asynchronous, privileged and external-effect writer families. The customer must provide independent source-enforced fence and reconciliation proof before any production cutover. This check never validates evidence bytes, approves a Golden Master or grants TODM G2/G6. See the paired design [EN](../../docs/BROWNFIELD_SOURCE_FENCE.md) / [ES](../../docs/BROWNFIELD_SOURCE_FENCE.es.md). A new CI job tests its negative controls; the real bank proof remains not demonstrated.

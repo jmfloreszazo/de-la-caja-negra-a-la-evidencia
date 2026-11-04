@@ -57,6 +57,10 @@ At bootstrap the reader captures source balances, cursor and full bounded histor
 | Reader tries UPDATE or access to private transactions | PostgreSQL **permission denied** |
 | Second bootstrap over applied state | **BLOCK**, no cursor rewind |
 
+## Product-specific CDC source discovery follow-up
+
+The [source-native capture assessment](source-native-capture-assessment.en.md) lists source-version-specific Db2, VSAM CICS/batch, IMS online/DL-I and IBM i journal requirements and leaves Fujitsu/other vendor capture unverified. Its gate tests **metadata structure only**, not real source logs or client approval. Do not transfer this synthetic PostgreSQL test's 22/22 PASS to a mainframe native CDC claim.
+
 ## Acceptance boundary: synthetic journal vs actual CDC
 
 This experiment has no WAL decoding, replication slot, DB2 log reader, MQ capture, IMS/CICS source hook, offset retention guarantee, source restart/warm-up process, checkpoint lease, independent failover topology or externally signed source anchor. It replays **at most 256 synthetic operations** and audits an all-16-account fixture. This is not a scale/performance benchmark. Real CDC is product/version specific and must define (among other items): snapshot/log rendezvous, transaction commit order, delete/update handling, schema evolution, gaps/retention/rewind, privileged/batch/offline writers, recovery, topology, privacy and independent financial reconciliation.
