@@ -21,6 +21,7 @@ Even if an installed vendor CDC product emits every row modification, **row CDC 
 | **Fujitsu GS21/BS2000, NEC ACOS, Hitachi VOS, Unisys or other** | **Undetermined in this increment** (do not borrow IBM terminology) | Require vendor/OS/DB/version and primary technical references plus an installation-specific native recovery test before naming any equivalent capture mechanism |
 
 **Primary documentation consulted (not vendor installation verification):**
+
 - IBM [Db2 13 change capture and log limits](https://www.ibm.com/docs/en/db2-for-zos/13.0.0?topic=tables-altering-table-capture-changed-data); [Q Capture / Q Apply](https://www.ibm.com/docs/en/idr/11.4.0?topic=zos-replication-event-publishing-programs).
 - IBM [VSAM CDC FAQs and writer differences](https://www.ibm.com/docs/en/idr/11.4.0?topic=zos-frequently-asked-questions); [LOGREPLICATE and LOGSTREAMID](https://www.ibm.com/docs/en/idr/11.4.0?topic=replication-augmenting-vsam-data-sets-change-data-capture).
 - IBM [IMS prerequisites and DL/I batch restrictions](https://www.ibm.com/docs/en/idr/11.4.0?topic=architect-system-requirements-ims); [IMS log capture and latency](https://www.ibm.com/docs/en/idr/11.4.0?topic=processing-reading-ims-logs); [DBD capture EXIT](https://www.ibm.com/docs/en/idr/11.4.0?topic=information-augmenting-downloading-dbds-ims-change-data-capture).
