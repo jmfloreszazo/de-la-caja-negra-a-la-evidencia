@@ -92,6 +92,10 @@ La guía es [CONTRIBUTING.md](CONTRIBUTING.md) (en inglés): caminos por perfil,
 3. **Pasos pequeños y reversibles.** Una idea por pull request, en los dos idiomas.
 4. **Nadie aprueba su propio oráculo.** Los contratos y el gate del laboratorio tienen revisores obligatorios.
 
+## Estado de aceptación E2
+
+La [campaña E2 acotada está cerrada](docs/E2_CLOSEOUT.es.md), pero **E2 no tiene un PASS científico global**. Para obtenerlo haría falta una nueva campaña con recursos distribuidos reales y un contrato aprobado: [protocolo completo E2 Full PASS (ES)](docs/E2_FULL_PASS_PROTOCOL.es.md) · [EN](docs/E2_FULL_PASS_PROTOCOL.md). Requiere probar X00–X08, incluir fallos físicos y SQL HA, registrar métricas crudas y obtener auditoría independiente. **No se reactiva E2 como tarea activa.**
+
 ## Más del autor
 
 El libro se apoya en este trabajo:
