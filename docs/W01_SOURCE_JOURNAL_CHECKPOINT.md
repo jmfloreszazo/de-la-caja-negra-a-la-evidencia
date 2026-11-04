@@ -1,3 +1,5 @@
+> **POST-RUN UPDATE — SUPERSEDED STATUS.** The `NOT_EXECUTED/QUEUED` statements below are **historical observations at PR #94 merge**, not the current state. GitHub Actions subsequently ran the original PR-head `80c45437312030a8abe90e0c3fdaa85a00c3056a`: **22/22 real PostgreSQL tests PASS** in [run #41864738886](https://github.com/jmfloreszazo/de-la-caja-negra-a-la-evidencia/actions/runs/41864738886). The original ZIP was downloaded and its SHA-256 independently checked against GitHub's digest. See the [permanent original-run audit](../evidence/runs/W01-SOURCE-JOURNAL.md) and [Spanish report](../evidence/runs/W01-SOURCE-JOURNAL.es.md). This is a **bounded synthetic journal PASS only**; G2 remains INCONCLUSIVE and G6 BLOCK. The record below remains intact to explain the pre-run state.
+
 # W01 source-owned synthetic journal — integrated, NOT executed
 
 **Checkpoint: 4 November 2026.** [Español](W01-SOURCE-JOURNAL-CHECKPOINT.es.md) · [PR #94 merged](https://github.com/jmfloreszazo/de-la-caja-negra-a-la-evidencia/pull/94) · [Issue #58 still OPEN](https://github.com/jmfloreszazo/de-la-caja-negra-a-la-evidencia/issues/58)
