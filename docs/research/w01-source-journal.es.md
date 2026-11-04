@@ -63,4 +63,4 @@ Los gates reales siguen en [#58](https://github.com/jmfloreszazo/de-la-caja-negr
 
 ## Cómo reproducirlo
 
-Véase el [laboratorio Podman (código y README en inglés)](../../lab/brownfield/w01_feed/README.md). El resultado original de CI y los artifacts deben enlazarse aquí **una vez ejecutados**, con SHA y negativos observados; la mera existencia del protocolo no es un PASS.
+La [campaña CI original de 22/22 pruebas PostgreSQL](https://github.com/jmfloreszazo/de-la-caja-negra-a-la-evidencia/actions/runs/41864738886) ha finalizado, y el SHA-256 del ZIP original descargado se ha verificado independientemente. Véanse las actas [ES](../../evidence/runs/W01-SOURCE-JOURNAL.es.md) / [EN](../../evidence/runs/W01-SOURCE-JOURNAL.md). El [laboratorio Podman](../../lab/brownfield/w01_feed/README.md) permite repetir el ensayo con nuevas evidencias. Nada de esto certifica un contrato bancario.
