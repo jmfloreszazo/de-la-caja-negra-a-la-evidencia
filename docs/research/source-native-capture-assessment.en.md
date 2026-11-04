@@ -2,6 +2,10 @@
 
 **Issue #58 · research/assessment dated 4 November 2026 · no native source execution.** [Español](source-native-capture-assessment.es.md) · [W01 synthetic proof](../../evidence/runs/W01-SOURCE-JOURNAL.md) · [Executable interview intake](../../lab/brownfield/source_capture/README.md).
 
+## Follow-up: synthetic snapshot-to-tail continuity oracle
+
+The [ES](source-capture-handoff.es.md) / [EN](source-capture-handoff.en.md) follow-up now defines a **separate offline synthetic commit-history oracle** with 26 planned negative/positive tests for snapshot cut, bookmark, tail ordering and target replay. It is not a source-native CDC run and does not change the seven-family intake results or bank gates.
+
 ## Decision
 
 **Do not automatically carry the W01 synthetic PostgreSQL journal to a customer's mainframe.** W01 proved 22/22 narrow source/target PostgreSQL controls with a journal written by a *test actor* in the same financial transaction, but has never run a Db2, VSAM, IMS, IBM i or Fujitsu capture reader. Real source-system transaction order, initial snapshot position, recovery, batch access and external money effects must be independently discovered before choosing CDC, an approved transactional outbox, a verified export or keeping the original source authoritative.
