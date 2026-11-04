@@ -89,3 +89,5 @@ Corte editorial PR #83: corregidas 17 divergencias de código/configuración, in
 Incremento de canales #30: capítulo complementario bilingüe, seis diagramas por edición, diez casos nativos sintéticos y dos mutaciones rechazadas por el oráculo. Los fallos originales, supuestos del dispositivo físico y trabajo pendiente de red/stand-in/corte están en el [checkpoint de canales](docs/CHANNELS_CHECKPOINT_2026-11-03.es.md).
 
 Base de contratos de plataforma: diez filas documentadas, tres contextos de plataforma, cuatro familias pendientes y seis controles de mutación de integridad del catálogo. La ejecución nativa y equivalencia de migración siguen sin verificar; véase el [ADR de alcance](docs/PLATFORM_CONTRACTS_ADR.es.md).
+
+Brownfield #58 incorpora una observación direccional del flujo al controlador: cuatro casos SQL nativos y dos mutantes de observación rechazados, con restablecimiento explícito para recuperar. [Evidencia original](evidence/runs/BROWNFIELD-CONTROLLER-PARTITION.es.md). El catálogo de plataformas sigue parcial; fencing real y aprobación de negocio continúan pendientes.

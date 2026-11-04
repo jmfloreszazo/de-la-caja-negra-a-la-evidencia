@@ -6,11 +6,15 @@ on:
       - 'lab/brownfield/coexistence/**'
       - 'lab/brownfield/durable/**'
       - '.github/workflows/brownfield-journal.yml'
+      - 'scripts/check_c2_directional_observations.py'
+      - 'evidence/brownfield/c2-directional-original.zip'
   push:
     branches: [main]
     paths:
       - 'lab/brownfield/journal/**'
       - '.github/workflows/brownfield-journal.yml'
+      - 'scripts/check_c2_directional_observations.py'
+      - 'evidence/brownfield/c2-directional-original.zip'
   workflow_dispatch:
 permissions:
   contents: read
@@ -30,6 +34,10 @@ jobs:
           python-version: '3.12'
       - name: Install independent database observer
         run: python3 -m pip install -r lab/e1_pg/requirements.txt
+      - name: Audit original directional observations with historical pure oracles
+        run: |
+          git fetch --no-tags --depth=1 origin a9ae65dcf0704147d99b2af16fae4a538daa0189
+          python3 scripts/check_c2_directional_observations.py
       - name: Start three independently addressed disposable SQL containers
         run: |
           podman run -d --name bf-legacy-pg -e POSTGRES_DB=bf_legacy -e POSTGRES_PASSWORD=bflocal -p 127.0.0.1:55438:5432 docker.io/library/postgres:16.13
@@ -82,7 +90,7 @@ jobs:
           done
           test "$ready" -eq 1
           podman inspect bf-control-pg --format '{{.Name}} {{.Id}} {{.NetworkSettings.Ports}}' >> lab/results/brownfield/journal/provenance.txt
-      - name: Execute actual in-flight controller TCP session-loss matrix
+      - name: Execute session-loss and directional live-stream campaigns
         env:
           BROWNFIELD_DISPOSABLE: 'YES'
           BROWNFIELD_LEGACY_DSN: 'host=127.0.0.1 port=55438 dbname=bf_legacy user=postgres password=bflocal'

@@ -113,7 +113,7 @@ digests, process signal/exit observations and `c2-summary.json`.
 records 19 passing controls, exact source hashes, the unchanged ZIP and the
 first failed concurrency run. Later source SHAs still require their own CI. The final negative audit intentionally fails for two unresolved
 admissions and one raw-SQL bypass; the test passes only if these are detected.
-No in-flight controller-partition proof, independent physical hosts, external
+That original observation did not establish in-flight controller partitions, independent physical hosts, external
 payment effects, WAN, RTO/RPO, capacity benchmark or owner approval is claimed.
 
 
@@ -144,3 +144,11 @@ failure results. Source hashes, actual backend waits, socket cuts, gateway
 SIGKILL, reconciliation, accounting oracles and counts remain inspectable.
 **Original exact-SHA CI passed both cases:** see the [archived report](../../../evidence/runs/BROWNFIELD-CONTROLLER-LOSS.md). Later source heads require their own CI. No E2,
 physical-domain, production capacity, RTO/RPO, real-bank fence or G2/G6 claim.
+
+## Directional suppression with live controller sessions
+
+`test_controller_partition.py` adds four cases using `stream_partition.py`: both writers crossed with CLIENT_TO_SERVER and SERVER_TO_CLIENT suppression. The [declared contract](PARTITION_CONTRACT.md) is an application-stream fault: sockets remain open, the proxy consumes/discards bytes and TCP still acknowledges those proxy reads. It is not kernel-level packet blackholing. Independent SQL observes the tagged probe query, existing controller sessions, precommit financial lock wait and the separate financial COMMIT.
+
+The first exact-SHA campaign passed all four cases; see the [original observation](../../../evidence/runs/BROWNFIELD-CONTROLLER-PARTITION.md). Raw outputs preserve an observed distinction: after financial COMMIT the controller transaction remained open when client-to-server bytes were discarded, while the server was idle when only replies were discarded. Do not extrapolate these samples into driver/lock timeout guarantees.
+
+Recovery is a controlled reset of all relay sockets followed by authoritative reconciliation and identical replay. Two altered observation copies must be rejected by `partition_oracle.py`. Socket and interpretation unit controls run with `python3 -m unittest discover -s lab/brownfield/journal -p test_stream_partition.py -v`; the real SQL campaign runs after the existing C2 matrices. Original snapshots, bytes/PIDs, command errors, SIGKILL, source hashes and failure outcomes remain in `c2-controller-partition.json`. G2/G6 and all bank/physical-domain limits remain unchanged.

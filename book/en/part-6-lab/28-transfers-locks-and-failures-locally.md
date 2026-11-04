@@ -431,6 +431,14 @@ evidence does not close #64 or establish bank fencing, RTO/RPO or production
 migration.
 G2=INCONCLUSIVE and G6=BLOCK.
 
+### C2 · A live connection does not mean a known decision
+
+The next [original campaign](../../../evidence/runs/BROWNFIELD-CONTROLLER-PARTITION.md) keeps controller sockets open while discarding opaque stream bytes in one direction. Four cases cross the legacy/candidate writers with each direction. A tagged SQL probe, observed outside the relay, distinguishes a request that never reached the server from a response that never reached the client. This application relay acknowledges TCP reads; it is not a kernel packet-loss emulator.
+
+All four cases passed on their recorded source. Before releasing the financial barrier, controller holder sessions remained alive and financial decisions were absent. New admission and cutover attempts failed without changing authority. After the gateway was externally killed and the barrier released, each ledger still committed exactly one decision, two postings and one outbox. In these attempts, suppressing requests left the controller session in transaction; suppressing replies left it idle after the separate financial COMMIT. An open socket or missing response cannot decide what another database committed.
+
+Recovery explicitly resets connections before reconciliation; discarded protocol bytes cannot safely be resumed as a complete stream. Both SQL oracles pass ten checks each, replay adds no effect and two deliberately false observation claims are rejected. This demonstrates neither automatic recovery nor a real incumbent-side fence. Actual packet retransmission, timeout/lock budgets, symmetric faults and independent physical hosts remain external validation. G2=INCONCLUSIVE and G6=BLOCK.
+
 ### What would be needed for a real cutover
 
 A simulated black-box contract cannot take away a bank's incumbent writer
