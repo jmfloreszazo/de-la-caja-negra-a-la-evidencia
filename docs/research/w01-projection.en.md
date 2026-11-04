@@ -55,4 +55,4 @@ The new independent test suite covers *first refresh, stale fallback after a rea
 
 ## Result scope
 
-Until there is an original exact-SHA CI run, the new code is **a candidate with tests pending**, not an executed result. After CI succeeds, cite its original action URL and artifact, not merely the presence of this file. This increment does not close #32 or #58, change E2, authorize a release, or reactivate frozen #53.
+The bounded mechanism **has now been executed**: [original W01 CI run #41853096276](https://github.com/jmfloreszazo/de-la-caja-negra-a-la-evidencia/actions/runs/41853096276) on exact PR-head SHA `730b40a241986fbd4975d60285bd1b149ec743f3` passed **16/16** real PostgreSQL tests. Its [permanent EN evidence audit](../../evidence/runs/W01-PROJECTION.md) / [ES audit](../../evidence/runs/W01-PROJECTION.es.md) preserve the verbatim test-log excerpt, transcribed original JSON, artifact identity and the limitations. This is **PASS_BOUNDED_SYNTHETIC_TESTS**, not a banking contract or global PASS. This increment does not close #32 or #58, change E2, authorize a release, or reactivate frozen #53.
