@@ -1,0 +1,42 @@
+name: Brownfield source authority readiness
+on:
+  pull_request:
+    paths:
+      - 'lab/brownfield/owner_readiness/**'
+      - 'docs/BROWNFIELD_SOURCE_FENCE*'
+      - '.github/workflows/brownfield-owner-readiness.yml'
+  push:
+    branches: [main]
+    paths:
+      - 'lab/brownfield/owner_readiness/**'
+      - 'docs/BROWNFIELD_SOURCE_FENCE*'
+      - '.github/workflows/brownfield-owner-readiness.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  negative-controls:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-python@v6
+        with:
+          python-version: '3.12'
+      - name: Independently exercise intake and adversarial controls
+        run: python3 -m unittest discover -s lab/brownfield/owner_readiness -p 'test_*.py' -v
+      - name: Verify unknown customer evidence fails closed, not as PASS
+        run: |
+          python3 - <<'PY'
+          import json, subprocess, sys
+          p=subprocess.run(
+              [sys.executable, 'lab/brownfield/owner_readiness/assess.py',
+               'lab/brownfield/owner_readiness/intake.example.json'],
+              capture_output=True, text=True)
+          assert p.returncode == 2, (p.returncode, p.stdout, p.stderr)
+          r=json.loads(p.stdout)
+          assert r['status'] == 'NOT_READY'
+          assert r['todmG2'] == 'INCONCLUSIVE' and r['todmG6'] == 'BLOCK'
+          assert not r['productionApproved']
+          print('Intentionally unapproved source intake remains NOT_READY/BLOCK.')
+          PY
