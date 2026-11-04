@@ -436,6 +436,14 @@ Esta evidencia acotada no cierra #64 ni acredita fencing bancario, RTO/RPO o
 una migración productiva.
 G2=INCONCLUSIVE y G6=BLOCK.
 
+### C2 · Una conexión viva no significa una decisión conocida
+
+La siguiente [campaña original](../../../evidence/runs/BROWNFIELD-CONTROLLER-PARTITION.es.md) mantiene abiertos los sockets del controlador mientras descarta bytes opacos en una dirección. Cuatro casos cruzan escritores legado/candidato con cada dirección. Una consulta SQL marcada, observada fuera del relay, distingue petición que no llega al servidor de respuesta que no llega al cliente. Este relay confirma las lecturas TCP; no emula pérdida de paquetes del kernel.
+
+Los cuatro casos pasaron sobre su fuente registrada. Antes de liberar la barrera financiera, las sesiones del controlador seguían vivas y no había decisiones financieras visibles. La admisión nueva y el corte fallaron sin cambiar autoridad. Tras terminar externamente el gateway y liberar la barrera, cada ledger confirmó una decisión, dos apuntes y un outbox. En estos intentos, suprimir peticiones dejó la sesión del controlador en transacción; suprimir respuestas la dejó idle tras el COMMIT financiero separado. Un socket abierto o una respuesta ausente no deciden qué confirmó otra base de datos.
+
+La recuperación restablece explícitamente conexiones antes de conciliar; no es seguro reanudar como íntegro un flujo al que faltan bytes de protocolo. Ambos oráculos SQL pasan diez comprobaciones, repetir no añade efecto y se rechazan dos observaciones deliberadamente falsas. No demuestra recuperación automática ni fencing real del origen. Retransmisión de paquetes, presupuestos de timeout/locks, fallos simétricos y hosts físicos independientes quedan para validación externa. G2=INCONCLUSIVE y G6=BLOCK.
+
 ### Qué falta antes de permitir un cutover real
 
 Un contrato de caja negra simulado no concede al proveedor acceso a los

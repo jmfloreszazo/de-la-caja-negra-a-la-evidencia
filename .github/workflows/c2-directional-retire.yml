@@ -1,0 +1,43 @@
+name: Retire integrated C2 directional branch
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/c2-directional-retire.yml'
+permissions:
+  contents: write
+  pull-requests: read
+jobs:
+  retire:
+    if: startsWith(github.event.head_commit.message, 'Merge C2 directional increment')
+    runs-on: ubuntu-24.04
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          fetch-depth: 0
+      - name: Delete only the exact merged C2 directional head with an atomic lease
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          python3 - <<'PY'
+          import json,os,subprocess,urllib.parse
+          branch='lab/c2-directional-partition'
+          repo=os.environ['GITHUB_REPOSITORY']
+          assert repo=='jmfloreszazo/de-la-caja-negra-a-la-evidencia'
+          assert os.environ['GITHUB_REF']=='refs/heads/main'
+          sha=subprocess.check_output(['git','rev-parse','HEAD'],text=True).strip()
+          assert sha==os.environ['GITHUB_SHA']
+          query='repos/'+repo+'/pulls?state=closed&head='+urllib.parse.quote(repo.split('/')[0]+':'+branch,safe='')
+          pulls=json.loads(subprocess.check_output(['gh','api',query],text=True))
+          own=[p for p in pulls if p['merged_at'] and p['base']['ref']=='main' and p['merge_commit_sha']==sha]
+          assert len(own)==1
+          tip=own[0]['head']['sha']
+          subprocess.run(['git','merge-base','--is-ancestor',tip,'HEAD'],check=True)
+          current=subprocess.check_output(['git','ls-remote','origin','refs/heads/'+branch],text=True).strip()
+          if current:
+              assert current.split()[0]==tip,'Changed branch; refuse deletion'
+              subprocess.run(['git','push','--force-with-lease=refs/heads/'+branch+':'+tip,'origin',':refs/heads/'+branch],check=True)
+          assert not subprocess.check_output(['git','ls-remote','origin','refs/heads/'+branch],text=True).strip()
+          print('Retired exact integrated C2 directional branch '+tip)
+          PY

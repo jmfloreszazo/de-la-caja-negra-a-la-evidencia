@@ -89,3 +89,5 @@ Editorial checkpoint PR #83: 17 bilingual code/config drifts corrected; all 32 l
 Channel increment #30: paired companion chapter, six diagrams per edition, ten native synthetic cases and two rejected oracle mutations. Original failures, physical-device assumptions and remaining network/stand-in/cutover work are recorded in the [channel checkpoint](docs/CHANNELS_CHECKPOINT_2026-11-03.md).
 
 Platform-contract seed: ten documented rows, three platform contexts, four unverified discovery families and six catalog-integrity mutation controls. Native platform execution and migration equivalence remain unverified; see the [scope ADR](docs/PLATFORM_CONTRACTS_ADR.md).
+
+Brownfield #58 now has a bounded directional controller-stream observation: four native SQL cases and two rejected observation mutants, with an explicit recovery reset. [Original evidence](evidence/runs/BROWNFIELD-CONTROLLER-PARTITION.md). Platform catalog coverage remains partial; real source fencing and owner approval remain open.
