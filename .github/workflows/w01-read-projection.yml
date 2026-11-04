@@ -1,0 +1,102 @@
+name: W01 brownfield PostgreSQL read projection
+on:
+  pull_request:
+    paths:
+      - 'lab/brownfield/w01_projection/**'
+      - 'docs/research/w01-projection.*'
+      - '.github/workflows/w01-read-projection.yml'
+  push:
+    branches: [main]
+    paths:
+      - 'lab/brownfield/w01_projection/**'
+      - 'docs/research/w01-projection.*'
+      - '.github/workflows/w01-read-projection.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  w01-postgresql:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+      - uses: actions/setup-python@v6
+        with:
+          python-version: '3.12'
+      - name: Install PostgreSQL client
+        run: python3 -m pip install -r lab/e1_pg/requirements.txt
+      - name: Start two disposable PostgreSQL 16.13 clusters
+        run: |
+          podman run -d --name w01-source-pg \
+            -e POSTGRES_DB=bf_legacy -e POSTGRES_PASSWORD=bflocal \
+            -p 127.0.0.1:55438:5432 docker.io/library/postgres:16.13
+          podman run -d --name w01-projection-pg \
+            -e POSTGRES_DB=bf_projection -e POSTGRES_PASSWORD=bflocal \
+            -p 127.0.0.1:55442:5432 docker.io/library/postgres:16.13
+          ready=0
+          for i in $(seq 1 60); do
+            if podman exec w01-source-pg pg_isready -U postgres -d bf_legacy >/dev/null 2>&1 \
+               && podman exec w01-projection-pg pg_isready -U postgres -d bf_projection >/dev/null 2>&1 \
+               && python3 -c 'import psycopg; a=psycopg.connect("host=127.0.0.1 port=55438 dbname=bf_legacy user=postgres password=bflocal"); b=psycopg.connect("host=127.0.0.1 port=55442 dbname=bf_projection user=postgres password=bflocal"); a.close(); b.close()' >/dev/null 2>&1; then
+              ready=1
+              break
+            fi
+            sleep 2
+          done
+          test "$ready" -eq 1
+      - name: Preserve original source and disposable topology identities
+        env:
+          SOURCE_HEAD_SHA: ${{ github.event.pull_request.head.sha || github.sha }}
+        run: |
+          mkdir -p lab/results/brownfield/w01
+          test "$SOURCE_HEAD_SHA" = "$(git rev-parse HEAD)"
+          echo "source_head_sha=$SOURCE_HEAD_SHA" > lab/results/brownfield/w01/provenance.txt
+          echo "checkout_sha=$(git rev-parse HEAD)" >> lab/results/brownfield/w01/provenance.txt
+          python3 --version >> lab/results/brownfield/w01/provenance.txt
+          podman version >> lab/results/brownfield/w01/provenance.txt
+          uname -a >> lab/results/brownfield/w01/provenance.txt
+          podman inspect w01-source-pg w01-projection-pg --format '{{.Name}} {{.Id}} {{.NetworkSettings.Ports}}' >> lab/results/brownfield/w01/provenance.txt
+          podman image inspect docker.io/library/postgres:16.13 --format '{{.Id}} {{json .RepoDigests}}' >> lab/results/brownfield/w01/provenance.txt
+      - name: Execute original read projection and independent negative oracle
+        env:
+          W01_DISPOSABLE: 'YES'
+          W01_LEGACY_DSN: 'host=127.0.0.1 port=55438 dbname=bf_legacy user=postgres password=bflocal'
+          W01_PROJECTION_DSN: 'host=127.0.0.1 port=55442 dbname=bf_projection user=postgres password=bflocal'
+        run: |
+          set -o pipefail
+          python3 lab/brownfield/w01_projection/test_projection.py 2>&1 | tee lab/results/brownfield/w01/test-original.log
+      - name: Independently gate exact source evidence and prohibit bank PASS
+        env:
+          SOURCE_HEAD_SHA: ${{ github.event.pull_request.head.sha || github.sha }}
+        run: |
+          python3 - <<'PY'
+          import json,os
+          from pathlib import Path
+          r=json.loads(Path('lab/results/brownfield/w01/w01-original.json').read_text())
+          assert r['sourceHeadSha']==os.environ['SOURCE_HEAD_SHA']==r['checkoutSha']
+          assert r['status']=='PASS_BOUNDED_SYNTHETIC_TESTS'
+          assert r['testsPlanned']==r['testsRun']==r['passed']==16
+          assert not r['failedCaseIds']
+          assert r['physicalHosts']==1 and r['independentFailureDomains'] is False
+          assert r['sourceAuthority']=='LEGACY' and r['sourceReadOnlyInProjectionCode'] is True
+          assert r['readFreshness']=='SAMPLED_WATERMARK_NOT_LINEARIZABLE'
+          assert r['incrementalCdcImplemented'] is False and r['isSpendableBalance'] is False
+          assert r['todmG2']=='INCONCLUSIVE' and r['todmG6']=='BLOCK'
+          assert r['customerApproval'] is False
+          print('Original PostgreSQL W01 technical slice verified, never a banking/cutover PASS')
+          PY
+      - name: Preserve source, test logs and negative evidence even on failure
+        if: always()
+        uses: actions/upload-artifact@v6
+        with:
+          name: w01-postgresql-synthetic-original-not-bank-approved
+          path: lab/results/brownfield/w01/
+          if-no-files-found: warn
+      - name: Clean up only two disposable instances
+        if: always()
+        run: |
+          podman logs --tail 80 w01-source-pg || true
+          podman logs --tail 80 w01-projection-pg || true
+          podman rm -f w01-source-pg w01-projection-pg || true
