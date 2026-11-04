@@ -102,6 +102,10 @@ Start with [CONTRIBUTING.md](CONTRIBUTING.md): paths by profile, a first contrib
 
 The paired research [EN](docs/research/source-native-capture-assessment.en.md) / [ES](docs/research/source-native-capture-assessment.es.md) and [English-only discovery gate](lab/brownfield/source_capture/README.md) distinguish Db2 for z/OS logging, CICS VSAM, VSAM non-RLS batch, IMS online/DL-I batch, IBM i journaling, and **unverified** Fujitsu/other mechanisms. These are documentation-backed **candidate paths**, not installed CDC or bank acceptance. Seven owner paths begin UNKNOWN and TODM G2/G6 remain INCONCLUSIVE/BLOCK.
 
+## Vendor-specific runtime contracts (#17/#18/#28)
+
+[ES research](docs/research/vendor-runtime-contracts.es.md) / [EN](docs/research/vendor-runtime-contracts.en.md) and Chapters 1/13 distinguish IBM Z/z/OS, Db2 for z/OS, IBM i, ClearPath MCP, OS 2200 and historically documented Fujitsu GS21. The [11-row contract/discovery catalog](research/vendor-runtime-contracts/catalog.json) cites ten primary vendor references and specifies replacement gaps and negative oracles. NEC ACOS and Bull GCOS stay **unknown**, never assumed equivalent. Its 25 automated cases validate **metadata only**, not native vendor execution or bank approval.
+
 ## W01 source-owned transactional journal (synthetic)
 
 The [source journal lab](lab/brownfield/w01_feed/README.md), [EN](docs/research/w01-source-journal.en.md) / [ES](docs/research/w01-source-journal.es.md) method tests a source-owned committed sequence, MVCC snapshot cut, replay, gap/hash rejection and target cursor atomicity in two PostgreSQL containers. This is **not** production CDC, an incumbent source fence, a linearizable read or bank acceptance. The prior W01 full-snapshot prototype is preserved separately.
