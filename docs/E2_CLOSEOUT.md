@@ -23,7 +23,7 @@ All original source identities, CI runs, artifact manifests and negative control
 3. **Independent failure domains/durability:** distinct hosts/zones, replicated/failover SQL, host/zone failures and acknowledged-operation reconciliation.
 4. **Customer contract/authorization:** approved business rules, baseline traces and deployment mandate.
 
-The executable protocol and prerequisite changes to the fixture, driver, topology and telemetry are in [EXTERNAL_VALIDATION.md](EXTERNAL_VALIDATION.md). These remain requirements **for any future stronger claim**, not work counted as finished. Historical STARTUP/placement causes remain unknown. TODM **G2 = INCONCLUSIVE** and **G6 = BLOCK**. The performance contract remains **UNCONFIGURED**; no banking deployment, release approval, or MIPS/vCPU equivalence follows from this closeout.
+The **exact prerequisites, hardware topology, source changes, mandatory experiments X00–X08, raw evidence schema and deterministic acceptance rules needed for a future global scientific PASS** are in [E2 Full PASS Protocol (English)](E2_FULL_PASS_PROTOCOL.md) / [Español](E2_FULL_PASS_PROTOCOL.es.md). The original engineering gaps are detailed in [EXTERNAL_VALIDATION.md](EXTERNAL_VALIDATION.md). These remain requirements **for any future stronger claim**, not work counted as finished. Historical STARTUP/placement causes remain unknown. TODM **G2 = INCONCLUSIVE** and **G6 = BLOCK**. The performance contract remains **UNCONFIGURED**; no banking deployment, release approval, or MIPS/vCPU equivalence follows from this closeout.
 
 ## Separate PR #89 — not E2 acceptance
 
