@@ -126,5 +126,7 @@ still OPEN and unverified.
 
 **Original real-PostgreSQL CI 16/16 PASS (bounded synthetic scope):** [run 41853096276](https://github.com/jmfloreszazo/de-la-caja-negra-a-la-evidencia/actions/runs/41853096276) and permanent [EN evidence record](../../../evidence/runs/W01-PROJECTION.md) / [ES](../../../evidence/runs/W01-PROJECTION.es.md). No customer release or full scientific approval follows.
 
+**Separate feed experiment:** [source-owned journal/catch-up lab](../w01_feed/README.md) provides a bounded synthetic sequencing design; it does not silently turn this full-snapshot W01 implementation into CDC.
+
 Companion research: [English](../../../docs/research/w01-projection.en.md) ·
 [Spanish](../../../docs/research/w01-projection.es.md).

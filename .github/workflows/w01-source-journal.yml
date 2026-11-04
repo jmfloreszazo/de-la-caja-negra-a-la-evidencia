@@ -1,0 +1,116 @@
+name: W01 source-owned journal catchup
+on:
+  pull_request:
+    paths:
+      - 'lab/brownfield/w01_feed/**'
+      - 'docs/research/w01-source-journal.*'
+      - '.github/workflows/w01-source-journal.yml'
+  push:
+    branches: [main]
+    paths:
+      - 'lab/brownfield/w01_feed/**'
+      - 'docs/research/w01-source-journal.*'
+      - '.github/workflows/w01-source-journal.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  synthetic-source-feed:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+      - uses: actions/setup-python@v6
+        with:
+          python-version: '3.12'
+      - name: Install PostgreSQL driver
+        run: python3 -m pip install -r lab/e1_pg/requirements.txt
+      - name: Start two disposable Podman PostgreSQL 16.13 servers
+        run: |
+          podman run -d --name w01-feed-source \
+            -e POSTGRES_DB=bf_legacy -e POSTGRES_PASSWORD=bflocal \
+            -p 127.0.0.1:55438:5432 docker.io/library/postgres:16.13
+          podman run -d --name w01-feed-target \
+            -e POSTGRES_DB=bf_projection -e POSTGRES_PASSWORD=bflocal \
+            -p 127.0.0.1:55442:5432 docker.io/library/postgres:16.13
+          ready=0
+          for i in $(seq 1 60); do
+            if podman exec w01-feed-source pg_isready -U postgres -d bf_legacy >/dev/null 2>&1 \
+               && podman exec w01-feed-target pg_isready -U postgres -d bf_projection >/dev/null 2>&1 \
+               && python3 -c 'import psycopg; a=psycopg.connect("host=127.0.0.1 port=55438 dbname=bf_legacy user=postgres password=bflocal"); b=psycopg.connect("host=127.0.0.1 port=55442 dbname=bf_projection user=postgres password=bflocal"); a.close(); b.close()' >/dev/null 2>&1; then
+              ready=1
+              break
+            fi
+            sleep 2
+          done
+          test "$ready" -eq 1
+      - name: Capture fixture provenance before any test
+        env:
+          SOURCE_HEAD_SHA: ${{ github.event.pull_request.head.sha || github.sha }}
+        run: |
+          mkdir -p lab/results/brownfield/w01-feed
+          test "$SOURCE_HEAD_SHA" = "$(git rev-parse HEAD)"
+          {
+            echo "source_head_sha=$SOURCE_HEAD_SHA"
+            echo "checkout_sha=$(git rev-parse HEAD)"
+            python3 --version
+            podman version
+            uname -a
+            podman inspect w01-feed-source w01-feed-target \
+              --format '{{.Name}} {{.Id}} {{.NetworkSettings.Ports}}'
+            podman image inspect docker.io/library/postgres:16.13 \
+              --format '{{.Id}} {{json .RepoDigests}}'
+          } > lab/results/brownfield/w01-feed/provenance.txt
+          sha256sum lab/brownfield/w01_feed/{feed.py,test_feed.py,source.sql,target.sql} \
+            >> lab/results/brownfield/w01-feed/provenance.txt
+      - name: Real PostgreSQL source-owned journal and negative oracle
+        env:
+          W01_DISPOSABLE: 'YES'
+          W01_LEGACY_ADMIN_DSN: 'host=127.0.0.1 port=55438 dbname=bf_legacy user=postgres password=bflocal'
+          W01_LEGACY_DSN: 'host=127.0.0.1 port=55438 dbname=bf_legacy user=w01_reader password=w01readerlocal'
+          W01_PROJECTION_DSN: 'host=127.0.0.1 port=55442 dbname=bf_projection user=postgres password=bflocal'
+          W01_FEED_SOURCE_DSN: 'host=127.0.0.1 port=55438 dbname=bf_legacy user=w01_feed_reader password=w01feedlocal'
+          W01_FEED_TARGET_DSN: 'host=127.0.0.1 port=55442 dbname=bf_projection user=postgres password=bflocal'
+        run: |
+          set -o pipefail
+          python3 lab/brownfield/w01_feed/test_feed.py 2>&1 \
+            | tee lab/results/brownfield/w01-feed/test-original.log
+      - name: Verify original 20 results and deny all bank approval claims
+        env:
+          SOURCE_HEAD_SHA: ${{ github.event.pull_request.head.sha || github.sha }}
+        run: |
+          python3 - <<'PY'
+          import json, os
+          from pathlib import Path
+          p = Path('lab/results/brownfield/w01-feed/feed-original.json')
+          r = json.loads(p.read_text())
+          assert r['headSha'] == r['checkoutSha'] == os.environ['SOURCE_HEAD_SHA']
+          assert r['status'] == 'PASS_BOUNDED_SYNTHETIC_TESTS'
+          assert r['testsRun'] == r['testsPlanned'] == r['passed'] == 22
+          assert not r['failedCaseIds']
+          assert r['physicalHosts'] == 1 and r['twoPostgresqlClusters'] is True
+          assert r['sourceReadRole'] == 'w01_feed_reader'
+          assert r['changeCaptureType'] == 'SYNTHETIC_OWNER_WRITTEN_JOURNAL_NOT_CDC'
+          assert r['sourceJournalAtomicity'] == 'TEST_HARNESS_SINGLE_SQL_COMMIT'
+          assert r['realIncumbentFence'] is False
+          assert r['clockReadsLinearizable'] is False
+          assert r['scalesToBank'] is False
+          assert r['businessApproval'] is False
+          assert r['todmG2'] == 'INCONCLUSIVE' and r['todmG6'] == 'BLOCK'
+          print('Synthetic source-owner journal 20/20: no CDC or banking acceptance')
+          PY
+      - name: Preserve original logs and failed cases on every outcome
+        if: always()
+        uses: actions/upload-artifact@v6
+        with:
+          name: w01-owner-journal-original-not-mainframe-cdc
+          path: lab/results/brownfield/w01-feed/
+          if-no-files-found: warn
+      - name: Clean up only disposable named Podman servers
+        if: always()
+        run: |
+          podman logs --tail 80 w01-feed-source || true
+          podman logs --tail 80 w01-feed-target || true
+          podman rm -f w01-feed-source w01-feed-target || true
