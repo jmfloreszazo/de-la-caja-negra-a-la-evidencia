@@ -1,0 +1,51 @@
+# VERBATIM SELECTED ORIGINAL GitHub Actions W01 job log
+# Workflow https://github.com/jmfloreszazo/de-la-caja-negra-a-la-evidencia/actions/runs/41855993179
+# Job 126664633712; original PR-head fc248c0ba72f40ac797b407dac818d2e1ad7219e
+# Log selection original lines 250-296; this is NOT the complete Actions log nor downloaded ZIP.
+2026-11-04T15:16:42.5948489Z test_01_empty_projection_uses_authoritative_fallback (__main__.W01ProjectionTests.test_01_empty_projection_uses_authoritative_fallback) ... ok
+2026-11-04T15:16:42.8028264Z test_02_refresh_and_projection_read (__main__.W01ProjectionTests.test_02_refresh_and_projection_read) ... ok
+2026-11-04T15:16:43.0336699Z test_03_source_commit_marks_projection_stale_then_fallback (__main__.W01ProjectionTests.test_03_source_commit_marks_projection_stale_then_fallback) ... ok
+2026-11-04T15:16:43.4087805Z test_04_refresh_catches_up_and_replay_is_idempotent (__main__.W01ProjectionTests.test_04_refresh_catches_up_and_replay_is_idempotent) ... ok
+2026-11-04T15:16:43.8932439Z test_05_client_minimum_watermark_uses_source (__main__.W01ProjectionTests.test_05_client_minimum_watermark_uses_source) ... ok
+2026-11-04T15:16:44.0563505Z test_06_unattainable_minimum_watermark_blocks (__main__.W01ProjectionTests.test_06_unattainable_minimum_watermark_blocks) ... ok
+2026-11-04T15:16:44.3997213Z test_07_corrupted_projection_forces_fallback_and_repair (__main__.W01ProjectionTests.test_07_corrupted_projection_forces_fallback_and_repair) ... ok
+2026-11-04T15:16:44.5903804Z test_08_source_writes_without_watermark_refuse_rebuild (__main__.W01ProjectionTests.test_08_source_writes_without_watermark_refuse_rebuild) ... ok
+2026-11-04T15:16:44.8502076Z test_09_regressing_source_clock_refuses_rebuild (__main__.W01ProjectionTests.test_09_regressing_source_clock_refuses_rebuild) ... ok
+2026-11-04T15:16:45.0366573Z test_10_projection_unavailable_uses_source (__main__.W01ProjectionTests.test_10_projection_unavailable_uses_source) ... ok
+2026-11-04T15:16:45.1941575Z test_11_source_unavailable_blocks_even_if_projection_was_valid (__main__.W01ProjectionTests.test_11_source_unavailable_blocks_even_if_projection_was_valid) ... ok
+2026-11-04T15:16:45.3867538Z test_12_source_fallback_unavailable_blocks (__main__.W01ProjectionTests.test_12_source_fallback_unavailable_blocks) ... ok
+2026-11-04T15:16:45.4768512Z test_13_invalid_read_inputs_rejected (__main__.W01ProjectionTests.test_13_invalid_read_inputs_rejected) ... ok
+2026-11-04T15:16:45.5633709Z test_14_nonloopback_and_missing_optin_refused (__main__.W01ProjectionTests.test_14_nonloopback_and_missing_optin_refused) ... ok
+2026-11-04T15:16:45.6727889Z test_15_two_actual_database_clusters_but_one_physical_runner (__main__.W01ProjectionTests.test_15_two_actual_database_clusters_but_one_physical_runner) ... ok
+2026-11-04T15:16:46.0028357Z test_16_source_financial_tables_unchanged_by_repeated_projection_reads (__main__.W01ProjectionTests.test_16_source_financial_tables_unchanged_by_repeated_projection_reads) ... ok
+2026-11-04T15:16:46.0031937Z test_17_source_reader_sql_permissions_reject_financial_mutations (__main__.W01ProjectionTests.test_17_source_reader_sql_permissions_reject_financial_mutations)
+2026-11-04T15:16:46.1286501Z SQL privilege rejection, even after session chooses READ WRITE. ... ok
+2026-11-04T15:16:46.1288542Z test_18_reader_only_cli_has_no_test_admin_credentials (__main__.W01ProjectionTests.test_18_reader_only_cli_has_no_test_admin_credentials)
+2026-11-04T15:16:46.4630968Z Separate process gets only the reader secret, never source superuser. ... ok
+2026-11-04T15:16:46.5598327Z test_19_application_rejects_postgres_superuser_as_source (__main__.W01ProjectionTests.test_19_application_rejects_postgres_superuser_as_source) ... ok
+2026-11-04T15:16:46.6812520Z test_20_both_destructive_endpoints_preflight_before_reset (__main__.W01ProjectionTests.test_20_both_destructive_endpoints_preflight_before_reset) ... ok
+2026-11-04T15:16:46.6815989Z 
+2026-11-04T15:16:46.6816384Z ----------------------------------------------------------------------
+2026-11-04T15:16:46.6817260Z Ran 20 tests in 4.224s
+2026-11-04T15:16:46.6817779Z 
+2026-11-04T15:16:46.6818151Z OK
+2026-11-04T15:16:46.6848721Z {"checkoutSha": "fc248c0ba72f40ac797b407dac818d2e1ad7219e", "classification": "REAL_POSTGRESQL_SYNTHETIC_W01_NOT_BANK_ACCEPTANCE", "customerApproval": false, "failedCaseIds": [], "incrementalCdcImplemented": false, "independentFailureDomains": false, "isSpendableBalance": false, "negativeControls": ["projection_corruption", "unknown_source_write", "watermark_regression", "source_sql_role_denial", "reader_only_cli", "superuser_dsn_denial", "preflight_destructive_endpoints", "source_failure", "source_fallback_failure", "invalid_endpoint"], "passed": 20, "physicalHosts": 1, "python": "3.12.15", "readFreshness": "SAMPLED_WATERMARK_NOT_LINEARIZABLE", "sourceAuthority": "LEGACY", "sourceFinancialWritesDeniedByDatabase": true, "sourceHeadSha": "fc248c0ba72f40ac797b407dac818d2e1ad7219e", "sourceReadOnlyInProjectionCode": true, "sourceReaderRole": "w01_reader", "sourceSuperuserRejected": true, "status": "PASS_BOUNDED_SYNTHETIC_TESTS", "testsPlanned": 20, "testsRun": 20, "todmG2": "INCONCLUSIVE", "todmG6": "BLOCK", "utc": "2026-11-04T15:16:46.683618+00:00"}
+2026-11-04T15:16:46.7201995Z ##[group]Run python3 - <<'PY'
+2026-11-04T15:16:46.7202503Z [36;1mpython3 - <<'PY'[0m
+2026-11-04T15:16:46.7202840Z [36;1mimport json,os[0m
+2026-11-04T15:16:46.7203135Z [36;1mfrom pathlib import Path[0m
+2026-11-04T15:16:46.7203675Z [36;1mr=json.loads(Path('lab/results/brownfield/w01/w01-original.json').read_text())[0m
+2026-11-04T15:16:46.7204363Z [36;1massert r['sourceHeadSha']==os.environ['SOURCE_HEAD_SHA']==r['checkoutSha'][0m
+2026-11-04T15:16:46.7204952Z [36;1massert r['status']=='PASS_BOUNDED_SYNTHETIC_TESTS'[0m
+2026-11-04T15:16:46.7205471Z [36;1massert r['testsPlanned']==r['testsRun']==r['passed']==20[0m
+2026-11-04T15:16:46.7206384Z [36;1massert not r['failedCaseIds'][0m
+2026-11-04T15:16:46.7206885Z [36;1massert r['physicalHosts']==1 and r['independentFailureDomains'] is False[0m
+2026-11-04T15:16:46.7207604Z [36;1massert r['sourceAuthority']=='LEGACY' and r['sourceReadOnlyInProjectionCode'] is True[0m
+2026-11-04T15:16:46.7208248Z [36;1massert r['sourceReaderRole']=='w01_reader'[0m
+2026-11-04T15:16:46.7208683Z [36;1massert r['sourceSuperuserRejected'] is True[0m
+2026-11-04T15:16:46.7209177Z [36;1massert r['sourceFinancialWritesDeniedByDatabase'] is True[0m
+2026-11-04T15:16:46.7209743Z [36;1massert r['readFreshness']=='SAMPLED_WATERMARK_NOT_LINEARIZABLE'[0m
+2026-11-04T15:16:46.7210424Z [36;1massert r['incrementalCdcImplemented'] is False and r['isSpendableBalance'] is False[0m
+2026-11-04T15:16:46.7211075Z [36;1massert r['todmG2']=='INCONCLUSIVE' and r['todmG6']=='BLOCK'[0m
+2026-11-04T15:16:46.7211536Z [36;1massert r['customerApproval'] is False[0m
+2026-11-04T15:16:46.7212125Z [36;1mprint('Original PostgreSQL W01 technical slice verified, never a banking/cutover PASS')[0m
