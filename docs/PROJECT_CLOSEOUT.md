@@ -75,7 +75,7 @@ Nine issues were closed; 13 remain open, including two explicitly frozen items. 
 | 3 | One complete channel/core treatment and synthetic ATM/digital-channel lab, preserving physical dispense versus financial COMMIT | #30 incorporates #29 |
 | 4 | Editorial/source review of both editions, listings, citations, overlaps and visual PDF QA; cross-platform reproduction | #11; integration previews do not authorize a release |
 | 5 | Dedicated lab organization/entrypoint refactor and consolidated maintenance review | #15; preserve every protected path/hash or provide an explicit compatibility plan |
-| External backlog | Stronger E2 capacity/activation/HA and E3 distributed WAN/TCO campaigns | #8/#9, [external protocol](EXTERNAL_VALIDATION.md); non-blocking for editorial progress |
+| External backlog | E2 capacity/activation/physical-HA acceptance **not performed**, E3 distributed WAN/TCO still open | E2 #8 closed NOT_PLANNED as bounded campaign closeout, see [E2 disposition](E2_CLOSEOUT.md); E3 #9 remains open; no PASS inferred |
 | Later experiment | Agent proposal versus independent mutation-qualified Oracle Gate | #10; not yet accepted as E4 |
 | Frozen | Main branch ruleset; confidential computing/clean rooms | #16/#53; excluded until renewed instruction |
 
