@@ -32,7 +32,7 @@ cd lab/decomposition && python3 -m unittest discover -v -p 'test_*.py'
 
 Commit both regenerated `book/es.md` and `book/en.md` in the same draft PR **only after** verifying that the generated content exactly follows the indexed ES/EN source chapters. The paired whole-book editions were regenerated and checked in PR #50. **New changes on subsequent branches must pass their own exact-head CI.** Do not equate missing or pending GitHub Actions runs with passing tests. Never edit generated whole-book Markdown by hand and never alter the published release.
 
-## Functional-first greenfield rewrite (issue #32)
+## Functional-first brownfield replacement (issue #32)
 
 **No source parser is planned in this track.** Start with [30 hypothesized banking business capabilities](functional_capabilities.json), not COBOL programs, copybooks, tables or JCL step counts. The catalog is illustrative, **not evidence of any real bank's implemented features**.
 
