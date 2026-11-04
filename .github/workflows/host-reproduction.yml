@@ -1,0 +1,54 @@
+name: Host reproduction protocol
+on:
+  pull_request:
+    paths:
+      - 'lab/tools/*host*py'
+      - 'lab/docs/HOST_REPRODUCTION.md'
+      - '.github/workflows/host-reproduction.yml'
+  push:
+    branches: [main]
+    paths:
+      - 'lab/tools/*host*py'
+      - 'lab/docs/HOST_REPRODUCTION.md'
+      - '.github/workflows/host-reproduction.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  collector-tests:
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-24.04, macos-14, windows-2022]
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+      - uses: actions/setup-python@v6
+        with:
+          python-version: '3.12'
+      - name: Verify collector verdicts and copied-reference negative controls
+        run: python -m unittest discover -s lab/tools -p test_host_reproduction.py -v
+  linux-podman:
+    needs: collector-tests
+    runs-on: ubuntu-24.04
+    timeout-minutes: 40
+    env:
+      SOURCE_HEAD_SHA: ${{ github.event.pull_request.head.sha || github.sha }}
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+      - uses: actions/setup-python@v6
+        with:
+          python-version: '3.12'
+      - name: Run complete synthetic lab with isolated output and host-side accounting audit
+        run: python lab/tools/reproduce_host.py --execute --output lab/results/host-reproduction/linux
+      - name: Preserve original outcome, raw logs, image identity and fresh databases
+        if: always()
+        uses: actions/upload-artifact@v6
+        with:
+          name: host-reproduction-linux-original
+          path: lab/results/host-reproduction/linux/
+          if-no-files-found: error
