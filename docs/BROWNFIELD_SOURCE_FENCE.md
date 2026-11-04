@@ -79,6 +79,10 @@ The checker validates the **completeness and shape** of declarations for all sou
 
 This is a useful `G0/G1` intake control that helps identify *what must be witnessed*, not a G2/G6 approval engine. Historical C2 SQL and controller tests, negative artifacts and SHA are untouched.
 
+## Native source capture platform assessment
+
+The [source-native capture assessment EN](research/source-native-capture-assessment.en.md) / [ES](research/source-native-capture-assessment.es.md) and [structural intake](../lab/brownfield/source_capture/README.md) distinguish Db2 z/OS, VSAM CICS/non-RLS batch, IMS online/DL-I, IBM i journals and unverified vendor systems. **CDC is not source-writer fencing or external-effect reconciliation**; nothing in the new catalog verifies a real installation. The seven candidate families default to UNKNOWN, G2 remains INCONCLUSIVE and G6 BLOCK.
+
 ## 5. Acceptance route and scope boundaries
 
 | Stage | Owner | Required output | State today |
