@@ -1,0 +1,50 @@
+name: Retire merged source-handoff feature branch
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/source-handoff-retire.yml'
+  workflow_dispatch:
+permissions:
+  contents: write
+  pull-requests: read
+jobs:
+  retire-exact-merged-ref:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          fetch-depth: 0
+      - name: Delete only unchanged, merged and ancestor source ref
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          python3 - <<'PY'
+          import json, os, subprocess
+          repo = os.environ['GITHUB_REPOSITORY']
+          branch = 'feature/platform-cdc-assessment-58'
+          expected_tip = '2a794e8819c9b761a031367d262d5c367046db60'
+          expected_merge = 'b723d8ad082fd63917d2b9f1bff7f47135e04151'
+          assert repo == 'jmfloreszazo/de-la-caja-negra-a-la-evidencia'
+          assert os.environ['GITHUB_REF'] == 'refs/heads/main'
+          pr = json.loads(subprocess.check_output(
+              ['gh','api','repos/'+repo+'/pulls/96'],text=True))
+          assert pr['state']=='closed' and pr['merged_at']
+          assert pr['base']['ref']=='main'
+          assert pr['head']['ref']==branch
+          assert pr['head']['sha']==expected_tip
+          assert pr['merge_commit_sha']==expected_merge
+          subprocess.run(['git','merge-base','--is-ancestor',expected_merge,'HEAD'],check=True)
+          subprocess.run(['git','merge-base','--is-ancestor',expected_tip,'HEAD'],check=True)
+          current = subprocess.check_output(
+              ['git','ls-remote','origin','refs/heads/'+branch],text=True).strip()
+          if current:
+              assert current.split()[0] == expected_tip, 'Branch moved after merge'
+              subprocess.run(['git','push',
+                              '--force-with-lease=refs/heads/'+branch+':'+expected_tip,
+                              'origin',':refs/heads/'+branch],check=True)
+          assert not subprocess.check_output(
+              ['git','ls-remote','origin','refs/heads/'+branch],text=True).strip()
+          print('Retired unchanged merged feature branch', expected_tip)
+          PY
