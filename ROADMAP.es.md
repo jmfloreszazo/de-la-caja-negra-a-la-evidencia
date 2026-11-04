@@ -49,7 +49,7 @@ Todo ello es **ingeniería sintética**. No hemos observado ningún sistema banc
 ## Orden de ejecución a partir de ahora (sin fechas inventadas)
 
 1. Reforzar contratos de plataforma y patrones por fabricante en #17/#18/#28; primero catálogo de fuentes acotado, después categorías/ejemplos pendientes.
-2. Ampliar descomposición/coexistencia #32/#58 con propiedad en origen, oleadas de extracción y comportamiento aprobado. El [protocolo de autoridad impuesta en el legacy](docs/BROWNFIELD_SOURCE_FENCE.es.md) incorpora inventario estructural bloqueante y doce escenarios negativos futuros; **no** acredita fencing real, Golden Master aprobado ni PASS de corte bancario.
+2. Ampliar descomposición/coexistencia #32/#58 con propiedad en origen, oleadas de extracción y comportamiento aprobado. El [protocolo ES](docs/research/mainframe-extraction-waves.es.md) / [EN](docs/research/mainframe-extraction-waves.en.md) contrasta candidatas de lectura/ACL con cortes contables y batch rechazados. Una candidata estructural no implica autorización de negocio. El [protocolo de autoridad impuesta en el legacy](docs/BROWNFIELD_SOURCE_FENCE.es.md) incorpora inventario estructural bloqueante y doce escenarios negativos futuros; **no** acredita fencing real, Golden Master aprobado ni PASS de corte bancario.
 3. Completar escenarios pendientes de canales #30: core inaccesible, mensajes tardíos, fallos por salto, stand-in y corte de rutas.
 4. Terminar revisión/reproducción #11: idioma/bibliografía/solapes completos, listados restantes, EBCDIC y reproducción real por SO.
 5. Reorganizar entrada/estructura del laboratorio #15 preservando rutas protegidas y evidencia original.
