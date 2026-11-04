@@ -80,6 +80,22 @@ Request only authorized, minimized extracts. The useful output is a manifest wit
 
 The unanswered fields remain `NEEDS_CUSTOMER_DATA` in an actual assessment. A Linux SQL test can validate a candidate invariant; it cannot measure an IBM channel fabric, establish an MCP recovery option or certify the old installation. The [pattern chapter](../part-4-patterns/13-before-choosing-a-pattern-identify-the-contract.md) uses three platform examples to show why attribution matters.
 
+## Which operating system and subsystem are we actually replacing?
+
+"Mainframe" alone does not identify an execution platform. On **IBM Z**, start with the CPC, PR/SM partitions, LPARs and the actual installed OS: z/OS, z/VM, Linux on IBM Z or another environment. z/OS WLM classifies work by service goals, while the channel subsystem performs I/O asynchronously relative to the central processors. Neither property is equivalent to adding threads, `async/await`, an HPA or RAM. Measure queues, channel paths, device and log I/O and priority goals together. [IBM: CSS](https://www.ibm.com/docs/en/zos-basic-skills?topic=mainframe-channel-subsystem-css) · [IBM: WLM](https://www.ibm.com/docs/en/zos/3.2.0?topic=tabs-service-classes).
+
+**Db2 for z/OS** is not identical to Db2 for i or PostgreSQL. `UR`, `CS`, `RS` and `RR` change isolation and locking; the package `BIND` settings also matter. "We will use `READ COMMITTED`" is a migration hypothesis, not proven parity. The oracle needs concurrent writes, rollback, lock waits, repeated queries and financial balance invariants. [IBM: Db2 13 isolation](https://www.ibm.com/docs/en/db2-for-zos/13.0.0?topic=services-isolation).
+
+**IBM i (formerly AS/400)** is a distinct platform. Its commitment control coordinates transaction and journaling behaviors with jobs, but does not inherit Db2 for z/OS, CICS or IBM Z semantics by sharing a vendor name. Inventory journals, receivers, jobs, restoration and actual commit boundaries. [IBM: commitment control](https://www.ibm.com/docs/en/i/7.6.0?topic=database-commitment-control).
+
+On **Unisys ClearPath MCP**, Enterprise Database Server offers record organization and ordering through *Accesses* that cannot simply be called SQL indexes without proof. **OS 2200** is not MCP: a documented OS 2200 TIP connector can reconnect and resend after a send failure, and its manual warns that the behavior may be inappropriate for stateful applications. In banking, the source may have committed while only its response was lost; an HTTP endpoint that retries without an operation identity or durable outcome query risks a second effect. [Unisys: Accesses](https://www.support.unisys.com/aseries/docs/ClearPath-MCP-21.0/38508198-005/section-000081944.html) · [Unisys: TIP](https://www.support.unisys.com/ePortalIC-10.0/topic/82073594_clearpath_eportal_developerhelp/html/section-000039403.htm).
+
+**Fujitsu GS21** requires separate research. A **2018 archived announcement** covering GS21 3600/3400 and GSS21sx supports a historical product claim, not which MSP/XSP version, database, monitor, record system or support contract a specific installation has in 2026. NEC ACOS and Bull/Atos GCOS likewise remain discovery entries when model, version and authorized manuals are missing. Assigning them z/OS properties would be incorrect archaeology. [Fujitsu: archived announcement](https://info.archives.global.fujitsu/global/about/resources/news/press-releases/2018/0417-01.html).
+
+**A trace I would request:** branch or mobile arrival → authentication and routing → admission queue → monitor unit of work → access path and buffer pool → lock wait → log and durable COMMIT → acknowledgment → channel delivery. Each hop needs an operation and trace identity, writer epoch, monotonic timing, retry status, return path, p50/p95/p99 measured over the *same request population*, and a record of external effects. Do not sum component percentiles to manufacture global p99. Without this evidence, no CP/MSU/MIPS/CPW-to-vCPU coefficient or production SLO can be inferred from another database engine's lab.
+
+The [vendor-runtime contract compendium](../../../docs/research/vendor-runtime-contracts.en.md) maps these questions to candidate replacement patterns, semantic gaps and adversarial oracles. Its entries are **documented research or discovery**, never observation of a customer's installed host.
+
 ---
 
 [← Part I · Before translating](README.md) · [Contents](../README.md) · [Chapter 2 · The system we are trying to preserve →](02-the-system-we-are-trying-to-preserve.md)
