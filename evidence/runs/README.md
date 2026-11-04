@@ -73,3 +73,7 @@ The checker validates recorded controls, current source SHA-256 values for curre
 The overall experiment remains **E1 partially verified**: E1c and comprehensive reference-contract parity are outstanding.
 
 [C2: in-flight controller TCP loss](BROWNFIELD-CONTROLLER-LOSS.md): two original cases, unchanged ZIP and JSON; no bank acceptance.
+
+## W01 CAP-005 — independent PostgreSQL read projection, 4 November 2026
+
+[Original PR-head CI 41853096276](https://github.com/jmfloreszazo/de-la-caja-negra-a-la-evidencia/actions/runs/41853096276) passed **16/16** real PostgreSQL synthetic snapshot/watermark/fallback controls, including actual committed source transfers, stale projection, corrupt read model, source clock bypass/regression and failure refusals. [EN audit](W01-PROJECTION.md) · [ES audit](W01-PROJECTION.es.md) · [selected verbatim CI test log](W01-PR92-ORIGINAL-CI-EXCERPT.log) · [machine-readable provenance](w01-pr92-original-ci-summary.json). Two PostgreSQL clusters ran on **one hosted physical runner**; this result establishes neither CDC, linearizable financial reads, actual mainframe authority, production HA nor TODM G2/G6 acceptance. The Actions ZIP artifact has finite retention and the log excerpt/JSON are retained in Git with explicit transcription limits.
