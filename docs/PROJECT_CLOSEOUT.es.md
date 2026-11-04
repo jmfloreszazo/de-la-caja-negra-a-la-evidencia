@@ -35,7 +35,7 @@ Se cierran nueve issues y quedan trece abiertas, dos de ellas congeladas. Cerrar
 | 3 | Un capítulo completo de canales/core y laboratorio sintético ATM/digital, separando dispensación física y COMMIT | #30 incorpora #29 |
 | 4 | Revisión editorial y de fuentes ES/EN: listados, citas, solapes y QA visual de PDF; reproducción en otros sistemas | #11; generar una vista previa no autoriza publicar |
 | 5 | Refactor dedicado de organización/entrada al laboratorio y revisión de mantenimiento | #15; preservar rutas, hashes y evidencias protegidas |
-| Validación externa | Capacidad/activaciones/HA E2 y comparación distribuida WAN/TCO E3 | #8/#9 y [protocolo](EXTERNAL_VALIDATION.md); no bloquea avanzar el libro |
+| Validación externa | Criterios E2 de capacidad/activación/HA **no ejecutados**; E3 WAN/TCO continúa abierto | E2 #8 cerrado NOT_PLANNED según [acta E2](E2_CLOSEOUT.es.md); E3 #9 sigue abierto; no implica PASS |
 | Experimento posterior | Propuesta de agente frente a Oracle Gate independiente y controles de mutación | #10; E4 sigue sin aceptación |
 | Congelado | Protección de main y clean rooms/confidential computing | #16/#53; fuera del plan activo hasta nueva instrucción |
 
