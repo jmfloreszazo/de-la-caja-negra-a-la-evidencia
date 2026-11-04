@@ -80,6 +80,8 @@ and keeps the full test logs, manifest and negative outcomes as an artifact.
 
 ## Source-reader least-privilege boundary
 
+**Original exact-commit 20/20 PASS:** [GitHub Actions #41855993179](https://github.com/jmfloreszazo/de-la-caja-negra-a-la-evidencia/actions/runs/41855993179) and [EN audit](../../../evidence/runs/W01-READER.md) / [ES audit](../../../evidence/runs/W01-READER.es.md), proving only **restricted SQL reader grants on the disposable source fixture**. The previous 16/16 run is preserved independently.
+
 **New technical control:** the projector no longer accepts the PostgreSQL
 `postgres` superuser as its source credential. It requires a named,
 non-superuser `w01_reader` login and verifies the effective database role
