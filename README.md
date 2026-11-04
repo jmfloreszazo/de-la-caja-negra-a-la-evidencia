@@ -98,6 +98,10 @@ Start with [CONTRIBUTING.md](CONTRIBUTING.md): paths by profile, a first contrib
 
 **Not yet established:** complete E1 acceptance (E1a/E1b have only the documented partial CI evidence), E2–E4 experimental acceptance, compilation of all *Illustrative* listings, native-level English editorial review, or cross-platform reproductions beyond hosted Linux runners. M1/M2 are local experimental observations, not E3. See [editorial and evidence register](docs/EDITORIAL_REVIEW.md).
 
+## W01: PostgreSQL balance read projection
+
+The [bounded W01 PostgreSQL laboratory](lab/brownfield/w01_projection/README.md) and [EN](docs/research/w01-projection.en.md) / [ES](docs/research/w01-projection.es.md) research test a nonauthoritative balance snapshot with an atomic watermark, independent source fallback and refusal of stale/corrupt data. No CDC, linearizability, spendable balance, bank approval or source fencing is claimed.
+
 ## Functional-first brownfield extraction waves
 
 The [ES](docs/research/mainframe-extraction-waves.es.md) / [EN](docs/research/mainframe-extraction-waves.en.md) research pair and [wave gate](lab/decomposition/wave_gate.py) connect functional capabilities to falsifiable extraction decisions without a COBOL parser. All 30 capability definitions remain hypotheses and no candidate is approved for deployment.
