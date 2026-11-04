@@ -12,6 +12,10 @@ The fixture intentionally contains both a safe **candidate** read-model extracti
 
 Each graph edge has a provenance class, observation marker, confidence level and optional atomic transaction group. A cut through an atomic-group hyperedge, an unknown crossing dependency, or an inferred crossing dependency fails closed. Conflicting evidence attached to extracted nodes also rejects a proposed cut; the evidence-merge module does not discard original observations. The source graph is synthetic; no runtime trace has been gathered. The model is intentionally conservative and incomplete: an edge without an atomic label is **not** proof that the linked resources are independently safe. Before applying to a real estate, require business-owner sign-off, trustworthy domain/runtime evidence, atomic hyperedge validation, security/authorization invariants, timing/batch considerations, and real independent Oracle Gates.
 
+## Functional extraction waves (brownfield)
+
+The [wave screen](wave_gate.py) uses the existing 30-capability hypotheses and a [four-wave fixture](wave_fixture.json). It keeps read-only projection and legacy façade decisions as CANDIDATE_ONLY but REJECTS unilateral ledger/atomic and unresolved batch/seasonal cuts. Run the decomposition Python unittest suite and invoke wave_gate.py with functional_capabilities.json and wave_fixture.json; exit 1 is the expected rejection of unsafe hypotheses, not a production gate. No COBOL parser or customer claims are involved. See [ES](../../docs/research/mainframe-extraction-waves.es.md) and [EN](../../docs/research/mainframe-extraction-waves.en.md). TODM G2 remains INCONCLUSIVE, G6 BLOCK.
+
 Links: [English research](../../docs/research/mainframe-decomposition.en.md) · [Spanish research](../../docs/research/mainframe-decomposition.es.md) · issue #32. Published v2026.10.29 unchanged.
 
 ## Reproducible checks and evidence status
