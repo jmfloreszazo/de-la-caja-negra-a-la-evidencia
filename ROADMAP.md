@@ -18,7 +18,7 @@ This is the **repository development roadmap**, not a declaration of production 
 | Sustained capacity and bottleneck | Three-cohort direct admission diagnostic integrated with PR #81; external #25 follow-up | Comparable saturation and COMMIT/p99; existing pilots do not close this gate |
 | Physical domains and HA | Pending | Execution/evidence on independent hosts and fault domains |
 
-E2 remains **partially verified**. The long experiment has bounded audited evidence in PR #77; it does not establish automatic or continuous recovery. No percentage-complete estimates or completion dates are invented.
+E2's **bounded hosted-CI campaign is administratively closed**, while its scientific claim remains **partially verified**. [E2 closeout and excluded acceptance](docs/E2_CLOSEOUT.md) records the retained results, missing distributed validation and the closure of #8 as NOT_PLANNED rather than PASS. The long experiment in PR #77 does not establish automatic or continuous recovery.
 
 ## Position now
 
@@ -26,7 +26,7 @@ E2 remains **partially verified**. The long experiment has bounded audited evide
 | --- | --- | --- |
 | Book, bilingual diagrams and CI | **Integrated**: 37 numbered chapters, chapter 25 bis and two companion chapters, 47 diagrams per language, bilingual chapter 28 coexistence discussion, reproducible PDF preview; latest premerge checks PASS | Editorial/source review, full illustrative listing coverage, cross-platform reproducibility; a preview is not a release |
 | E1 PostgreSQL and SQL Server | **Partially verified**: real disposable SQL CI and independent oracles, .NET 10 parity slices, concurrency and negative cases | Full E1 business scope, power-loss/HA, customer-specific contract, production load |
-| E2 Orleans | **Partially verified, actually executed**: one-host Podman multi-process/multi-silo slices, PostgreSQL membership, durable ledger checks and selected failures and load; see [#8](https://github.com/jmfloreszazo/de-la-caja-negra-a-la-evidencia/issues/8) | concurrent-activation observations/long-partition recovery, physical hosts/HA and sustained capacity [#25](https://github.com/jmfloreszazo/de-la-caja-negra-a-la-evidencia/issues/25) |
+| E2 Orleans | **Bounded campaign CLOSED; scientific status PARTIALLY_VERIFIED**: one-host Podman multi-process/multi-silo slices, PostgreSQL membership, durable ledger checks and selected faults and load; [closeout](docs/E2_CLOSEOUT.md) | Natural activation/recovery, physical hosts/HA and sustained capacity remain **unverified and excluded**, not PASS; #8 closed NOT_PLANNED |
 | CAP-007/005 brownfield replacement | **Synthetic slices CI-verified and merged**: SQL writer epoch, .NET 10 durable transactions, black-box legacy adapter, two distinct PostgreSQL containers/stores, shadow, reconciliation and rollback veto. [#58](https://github.com/jmfloreszazo/de-la-caja-negra-a-la-evidencia/issues/58) | Further controller partition/timing windows under #58, beyond the four #87 application-stream cases, true incumbent-side writer fence, customer policy/mandates/Golden Master, TODM G2/G6 approval |
 | Business-capability decomposition | **Synthetic inventory**: 30 capability hypotheses in 12 domains, functional-first rewrite; [#32](https://github.com/jmfloreszazo/de-la-caja-negra-a-la-evidencia/issues/32) | Real authorized traces, owner-approved policies, target domains and independent acceptance; no mandatory COBOL parser and no 1:1 rewrite |
 | E3 on-prem/Azure/hybrid | **Designed, not capacity-verified**: M1/M2 transport smoke, dated Azure price references and WAN model are inputs, not E3 PASS; [#9](https://github.com/jmfloreszazo/de-la-caja-negra-a-la-evidencia/issues/9), [#12](https://github.com/jmfloreszazo/de-la-caja-negra-a-la-evidencia/issues/12) | Approved workload, open-loop saturation/commits/p99, failure domains, WAN, fair TLS gRPC/REST and dated comparable end-to-end TCO |
@@ -54,7 +54,7 @@ All of these are **synthetic engineering results**; no real bank behavior was ob
 4. Finish editorial/reproduction #11: full idiom/bibliography/overlap review, remaining listings, EBCDIC and real OS reproduction.
 5. Reorganize laboratory entry/layout #15 while preserving protected paths and original evidence.
 6. Execute agent-versus-independent-oracle E4 #10 within a declared write scope.
-7. Keep external E2 #8 and E3 #9 acceptance in their documented backlog; physical HA, WAN and capacity do not block the preceding book increments.
+7. E2 #8 is closed NOT_PLANNED for its unexecuted external campaign; preserve its [scientific limitations](docs/E2_CLOSEOUT.md). Keep E3 #9 and its WAN/TCO validation separately open; no physical HA or capacity acceptance is inferred.
 
 **Frozen:** [#53](https://github.com/jmfloreszazo/de-la-caja-negra-a-la-evidencia/issues/53) confidential computing/clean-room research is postponed by explicit decision. Do not include it in the active execution sequence without renewed instruction. Branch protection [#16](https://github.com/jmfloreszazo/de-la-caja-negra-a-la-evidencia/issues/16) is also deferred but remains open.
 
