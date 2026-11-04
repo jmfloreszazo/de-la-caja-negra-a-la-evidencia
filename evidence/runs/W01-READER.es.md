@@ -27,7 +27,7 @@
 
 No existe demostración de identidad ni fencing en COBOL/CICS/IMS/Db2 reales, protección contra un escritor privilegiado del banco, obligatoriedad del reloj, saldo linealizable, CDC, HA física, carga productiva ni Golden Master/política de negocio aprobados. Una lectura por watermark puede omitir una modificación del origen sin nueva versión y un COMMIT posterior a muestrear el reloj; véase el [acta W01 original](W01-PROJECTION.es.md). Estas pruebas **no constituyen aceptación bancaria**.
 
-**TODM G2 `INCONCLUSIVE` / G6 `BLOCK`**; #32 y #58 continúan abiertos, E2 #8 cerrado administrativamente y #53 congelado. No se autoriza despliegue ni release. Ver la guía [ES](../../docs/research/w01-reader-identity.es.md) y [EN](../../docs/research/w01-reader-identity.en.md).
+**TODM G2 `INCONCLUSIVE` / G6 `BLOCK`**; #32 está CERRADO / completed como investigación y #58 permanece ABIERTO para validación bancaria y del origen; E2 #8 cerrado administrativamente y #53 congelado. No se autoriza despliegue ni release. Ver la guía [ES](../../docs/research/w01-reader-identity.es.md) y [EN](../../docs/research/w01-reader-identity.en.md).
 
 ## Workflows adicionales
 
