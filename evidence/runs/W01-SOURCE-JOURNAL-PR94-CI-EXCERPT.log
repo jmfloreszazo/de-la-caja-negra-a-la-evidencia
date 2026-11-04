@@ -1,0 +1,30 @@
+# VERBATIM SELECTED ACTIONS JOB LOG LINES — PR #94 (timestamp prefixes preserved)
+# Source https://github.com/jmfloreszazo/de-la-caja-negra-a-la-evidencia/actions/runs/41864738886, job 126695939112
+# Head 80c45437312030a8abe90e0c3fdaa85a00c3056a; summary in original log incorrectly prints 20/20 although real JSON says 22/22.
+# The lines below are unchanged selections from original GitHub job text, not the entire log or original ZIP.
+2026-11-04T16:10:59.9025351Z test_01_empty_consistent_bootstrap (__main__.W01SourceFeedTests.test_01_empty_consistent_bootstrap) ... ok
+2026-11-04T16:11:00.1442216Z test_02_committed_source_write_replayed_in_one_batch (__main__.W01SourceFeedTests.test_02_committed_source_write_replayed_in_one_batch) ... ok
+2026-11-04T16:11:00.5176598Z test_03_batch_one_catches_up_then_noop_replay (__main__.W01SourceFeedTests.test_03_batch_one_catches_up_then_noop_replay) ... ok
+2026-11-04T16:11:00.7462322Z test_04_removed_source_sequence_blocks_without_target_promotion (__main__.W01SourceFeedTests.test_04_removed_source_sequence_blocks_without_target_promotion) ... ok
+2026-11-04T16:11:00.9496706Z test_05_tampered_pending_event_hash_rejected (__main__.W01SourceFeedTests.test_05_tampered_pending_event_hash_rejected) ... ok
+2026-11-04T16:11:01.1475900Z test_06_valid_hash_but_wrong_previous_chain_rejected (__main__.W01SourceFeedTests.test_06_valid_hash_but_wrong_previous_chain_rejected) ... ok
+2026-11-04T16:11:01.3298922Z test_07_projection_tamper_rejected_before_replay (__main__.W01SourceFeedTests.test_07_projection_tamper_rejected_before_replay) ... ok
+2026-11-04T16:11:01.7033194Z test_08_injected_crash_rolls_back_rows_and_cursor_together (__main__.W01SourceFeedTests.test_08_injected_crash_rolls_back_rows_and_cursor_together) ... ok
+2026-11-04T16:11:02.2703509Z test_09_source_aborted_transaction_has_no_journal_or_money_effect (__main__.W01SourceFeedTests.test_09_source_aborted_transaction_has_no_journal_or_money_effect) ... ok
+2026-11-04T16:11:03.2836751Z test_10_privileged_bypass_same_clock_rejected_by_full_audit (__main__.W01SourceFeedTests.test_10_privileged_bypass_same_clock_rejected_by_full_audit) ... ok
+2026-11-04T16:11:03.5653792Z test_11_source_checkpoint_committed_after_capture_caught_up (__main__.W01SourceFeedTests.test_11_source_checkpoint_committed_after_capture_caught_up) ... ok
+2026-11-04T16:11:03.7044458Z test_12_restricted_feed_reader_cannot_modify_legacy (__main__.W01SourceFeedTests.test_12_restricted_feed_reader_cannot_modify_legacy) ... ok
+2026-11-04T16:11:03.8168584Z test_13_source_superuser_connection_rejected (__main__.W01SourceFeedTests.test_13_source_superuser_connection_rejected) ... ok
+2026-11-04T16:11:03.9779350Z test_14_bootstrap_with_missing_source_history_rejected (__main__.W01SourceFeedTests.test_14_bootstrap_with_missing_source_history_rejected) ... ok
+2026-11-04T16:11:04.1615852Z test_15_clock_advanced_without_journal_blocks_catchup (__main__.W01SourceFeedTests.test_15_clock_advanced_without_journal_blocks_catchup) ... ok
+2026-11-04T16:11:04.4246100Z test_16_deleted_already_applied_history_detected_by_audit (__main__.W01SourceFeedTests.test_16_deleted_already_applied_history_detected_by_audit) ... ok
+2026-11-04T16:11:04.6524621Z test_17_source_journal_digest_tied_to_source_account_images (__main__.W01SourceFeedTests.test_17_source_journal_digest_tied_to_source_account_images) ... ok
+2026-11-04T16:11:04.9662987Z test_18_feed_reader_only_separate_process_without_admin_secret (__main__.W01SourceFeedTests.test_18_feed_reader_only_separate_process_without_admin_secret) ... ok
+2026-11-04T16:11:05.1014680Z test_19_invalid_batch_and_uninitialized_consumer_fail_closed (__main__.W01SourceFeedTests.test_19_invalid_batch_and_uninitialized_consumer_fail_closed) ... ok
+2026-11-04T16:11:05.3260258Z test_20_double_bootstrap_cannot_rewind_cursor (__main__.W01SourceFeedTests.test_20_double_bootstrap_cannot_rewind_cursor) ... ok
+2026-11-04T16:11:05.6319700Z test_21_parallel_disjoint_writers_preserve_one_total_order (__main__.W01SourceFeedTests.test_21_parallel_disjoint_writers_preserve_one_total_order) ... ok
+2026-11-04T16:11:05.8362817Z test_22_semantically_wrong_before_image_rejected_even_with_valid_hash (__main__.W01SourceFeedTests.test_22_semantically_wrong_before_image_rejected_even_with_valid_hash) ... ok
+2026-11-04T16:11:05.8365041Z Ran 22 tests in 6.107s
+2026-11-04T16:11:05.8365663Z OK
+2026-11-04T16:11:05.8386327Z {"businessApproval": false, "changeCaptureType": "SYNTHETIC_OWNER_WRITTEN_JOURNAL_NOT_CDC", "checkoutSha": "80c45437312030a8abe90e0c3fdaa85a00c3056a", "classification": "REAL_PG_SYNTHETIC_SOURCE_OWNED_JOURNAL_NOT_MAINFRAME_CDC", "clockReadsLinearizable": false, "failedCaseIds": [], "headSha": "80c45437312030a8abe90e0c3fdaa85a00c3056a", "negativeControls": ["source_feed_gap", "source_hash_tamper", "prev_chain_divergence", "target_tamper", "injected_target_partial_commit", "source_abort", "unversioned_source_mutation", "missing_old_history", "clock_without_feed", "source_role_write_denied", "double_bootstrap", "parallel_disjoint_writer_order", "valid_hash_wrong_before_image"], "passed": 22, "physicalHosts": 1, "python": "3.12.16", "realIncumbentFence": false, "scalesToBank": false, "sourceAuthority": "LEGACY", "sourceJournalAtomicity": "TEST_HARNESS_SINGLE_SQL_COMMIT", "sourceReadRole": "w01_feed_reader", "status": "PASS_BOUNDED_SYNTHETIC_TESTS", "targetRole": "postgres_TEST_ONLY", "testsPlanned": 22, "testsRun": 22, "todmG2": "INCONCLUSIVE", "todmG6": "BLOCK", "twoPostgresqlClusters": true, "utc": "2026-11-04T16:11:05.837718+00:00"}
+2026-11-04T16:11:05.8706280Z [36;1mprint('Synthetic source-owner journal 20/20: no CDC or banking acceptance')[0m
