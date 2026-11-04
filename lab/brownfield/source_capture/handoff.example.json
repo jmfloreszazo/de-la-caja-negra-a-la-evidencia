@@ -1,0 +1,103 @@
+{
+  "schemaVersion": 1,
+  "classification": "SYNTHETIC_SOURCE_SNAPSHOT_LOG_HANDOFF_NOT_VENDOR_NATIVE",
+  "sourceFamily": "VSAM_CICS",
+  "sourceEpoch": "fixture-epoch-a1",
+  "nativeCaptureExecuted": false,
+  "customerApproval": false,
+  "initialBalances": {
+    "A1": 100000,
+    "A2": 100000,
+    "A3": 100000,
+    "A4": 100000
+  },
+  "sourceCommits": [
+    {
+      "sequence": 1,
+      "operationId": "TX01",
+      "debit": "A1",
+      "credit": "A2",
+      "amountMinor": 100
+    },
+    {
+      "sequence": 2,
+      "operationId": "TX02",
+      "debit": "A3",
+      "credit": "A4",
+      "amountMinor": 250
+    },
+    {
+      "sequence": 3,
+      "operationId": "TX03",
+      "debit": "A2",
+      "credit": "A3",
+      "amountMinor": 75
+    },
+    {
+      "sequence": 4,
+      "operationId": "TX04",
+      "debit": "A1",
+      "credit": "A4",
+      "amountMinor": 200
+    },
+    {
+      "sequence": 5,
+      "operationId": "TX05",
+      "debit": "A4",
+      "credit": "A2",
+      "amountMinor": 50
+    }
+  ],
+  "abortedOperationIds": [
+    "TX-ABORTED"
+  ],
+  "snapshot": {
+    "sourceEpoch": "fixture-epoch-a1",
+    "cutSequence": 2,
+    "balances": {
+      "A1": 99900,
+      "A2": 100100,
+      "A3": 99750,
+      "A4": 100250
+    }
+  },
+  "capture": {
+    "sourceEpoch": "fixture-epoch-a1",
+    "resumeAfterSequence": 2,
+    "oldestRetainedSequence": 1,
+    "observedHeadSequence": 5,
+    "events": [
+      {
+        "sequence": 3,
+        "operationId": "TX03",
+        "debit": "A2",
+        "credit": "A3",
+        "amountMinor": 75
+      },
+      {
+        "sequence": 4,
+        "operationId": "TX04",
+        "debit": "A1",
+        "credit": "A4",
+        "amountMinor": 200
+      },
+      {
+        "sequence": 5,
+        "operationId": "TX05",
+        "debit": "A4",
+        "credit": "A2",
+        "amountMinor": 50
+      }
+    ]
+  },
+  "target": {
+    "sourceEpoch": "fixture-epoch-a1",
+    "appliedSequence": 5,
+    "balances": {
+      "A1": 99700,
+      "A2": 100075,
+      "A3": 99825,
+      "A4": 100400
+    }
+  }
+}
