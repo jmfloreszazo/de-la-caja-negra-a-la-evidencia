@@ -21,6 +21,7 @@ Incluso cuando CDC replica todas las modificaciones de filas, **eso no demuestra
 | **Fujitsu GS21/BS2000, NEC ACOS, Hitachi VOS, Unisys u otros** | **SIN DETERMINAR en este incremento** | Exigir documentación primaria fechada y versión instalada de SO/base de datos, más prueba de recuperación nativa; no trasladar terminología IBM por analogía |
 
 **Referencias oficiales consultadas (no equivalen a instalar o ejecutar el producto):**
+
 - IBM [Db2 for z/OS 13 y límites de captura](https://www.ibm.com/docs/en/db2-for-zos/13.0.0?topic=tables-altering-table-capture-changed-data); [Q Capture / Q Apply](https://www.ibm.com/docs/en/idr/11.4.0?topic=zos-replication-event-publishing-programs).
 - IBM [preguntas VSAM y diferencias de escritores](https://www.ibm.com/docs/en/idr/11.4.0?topic=zos-frequently-asked-questions); [LOGREPLICATE y LOGSTREAMID](https://www.ibm.com/docs/en/idr/11.4.0?topic=replication-augmenting-vsam-data-sets-change-data-capture).
 - IBM [requisitos y restricciones IMS DL/I](https://www.ibm.com/docs/en/idr/11.4.0?topic=architect-system-requirements-ims); [logs IMS y latencia](https://www.ibm.com/docs/en/idr/11.4.0?topic=processing-reading-ims-logs); [EXIT de captura DBD](https://www.ibm.com/docs/en/idr/11.4.0?topic=information-augmenting-downloading-dbds-ims-change-data-capture).
