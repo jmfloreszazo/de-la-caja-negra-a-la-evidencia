@@ -74,7 +74,7 @@ jobs:
           podman run -d --name bf-control-pg -e POSTGRES_DB=bf_control -e POSTGRES_PASSWORD=bflocal -p 127.0.0.1:55441:5432 docker.io/library/postgres:16.13
           ready=0
           for i in $(seq 1 60); do
-            if podman exec bf-control-pg pg_isready -U postgres -d bf_control >/dev/null 2>&1; then
+            if podman exec bf-control-pg pg_isready -h 127.0.0.1 -U postgres -d bf_control >/dev/null 2>&1; then
               ready=1
               break
             fi
@@ -94,6 +94,8 @@ jobs:
         run: |
           python3 -m unittest discover -s lab/brownfield/journal -p test_controller_link.py -v
           python3 lab/brownfield/journal/test_controller_loss.py
+          python3 -m unittest discover -s lab/brownfield/journal -p test_stream_partition.py -v
+          python3 lab/brownfield/journal/test_controller_partition.py
       - name: Preserve original evidence even when failing
         if: always()
         uses: actions/upload-artifact@v6
