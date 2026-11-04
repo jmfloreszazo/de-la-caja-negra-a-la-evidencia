@@ -192,7 +192,7 @@ class NegativeControls(unittest.TestCase):
         self.bad(lambda d: d["records"][3].update(negative_control=""))
 
     def test_12_vendor_mismatch(self):
-        self.bad(lambda d: d["records"][6].update(source_ids=["P05"]))
+        self.bad(lambda d: d["records"][6].update(source_ids=["P01"]))
 
     def test_13_false_source(self):
         self.bad(lambda d: d["records"][1].update(source_ids=["UNVERIFIED"]))
