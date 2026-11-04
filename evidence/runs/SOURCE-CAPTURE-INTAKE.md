@@ -26,4 +26,3 @@ The original [W01 journal 22/22 real PostgreSQL technical proof](W01-SOURCE-JOUR
 ## Next genuine customer-side evidence
 
 A named system owner must identify installed OS/DB/version and all write paths, reconcile online/batch/load/offline/privileged coverage, obtain a source-authoritative snapshot/log handoff and independent replay/retention proof, and execute negative scenarios on **actual native** logs with safe change approval. Independent reviewers must reconcile paired postings, external effects and source-side fencing before either G2/G6 can advance. The [source-fencing protocol](../../docs/BROWNFIELD_SOURCE_FENCE.md) remains the boundary.
-
