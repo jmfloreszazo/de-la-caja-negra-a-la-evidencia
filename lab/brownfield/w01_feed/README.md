@@ -42,9 +42,10 @@ export W01_FEED_TARGET_DSN='host=127.0.0.1 port=55442 dbname=bf_projection user=
 # After both servers are accepting connections:
 python3 lab/brownfield/w01_feed/test_feed.py
 cat lab/results/brownfield/w01-feed/feed-original.json
-# The test suite resets the source and target between its 20 scenarios.
-# The last test leaves a bootstrapped synthetic target at sequence 1.
-python3 lab/brownfield/w01_feed/feed.py audit
+# The test suite resets the source and target between its 22 scenarios.
+# Its last negative case intentionally leaves a tampered source feed.
+# Therefore a separate 'feed.py audit' after the whole suite is NOT expected
+# to PASS without resetting a clean fixture. Check each test's actual outcome.
 
 podman rm -f w01-feed-source w01-feed-target
 ```
