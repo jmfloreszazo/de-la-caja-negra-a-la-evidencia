@@ -27,7 +27,7 @@
 
 No real COBOL/CICS/IMS/Db2 role mapping, no enforcement against a privileged bank source writer, no unbypassable clock/cutover fence, no linearizable balance, no CDC, physical HA, production load, customer-authorized Golden Master or business policy. A clock-only read can still miss an unversioned source edit and a post-clock-sample COMMIT; the original [W01 source audit](W01-PROJECTION.md) retains those limitations. This test is **not** a banking acceptance.
 
-**TODM G2 `INCONCLUSIVE` / G6 `BLOCK`**; #32 and #58 remain OPEN, E2 #8 administratively CLOSED, #53 frozen. No deployment approval or book release. See [EN implementation note](../../docs/research/w01-reader-identity.en.md) and [ES](../../docs/research/w01-reader-identity.es.md).
+**TODM G2 `INCONCLUSIVE` / G6 `BLOCK`**; #32 is CLOSED / completed for research, while #58 remains OPEN for the actual source/bank acceptance; E2 #8 administratively CLOSED and #53 frozen. No deployment approval or book release. See [EN implementation note](../../docs/research/w01-reader-identity.en.md) and [ES](../../docs/research/w01-reader-identity.es.md).
 
 ## Complementary PR-head workflows
 
