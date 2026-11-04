@@ -62,6 +62,28 @@ Finally choose placement from measured demand and failure domains. A read projec
 
 Fujitsu GS21, NEC ACOS, Hitachi VOS and Bull GCOS remain discovery entries without verified feature mappings in this increment. NonStop, OpenVMS, IBM i and HP 3000 are separately marked adjacent research scope. Unknown means that research is still required; it does not mean absent, unsupported or equivalent. The complete #28 inventory and its batch/offline/CDC/cross-border worked examples remain future deliverables. This first seed gives those entries a checkable format instead of presenting a long unreviewed list as completed research.
 
+## The pattern depends on the vendor, subsystem and COMMIT owner
+
+| Documented platform responsibility | Candidate replacement | What the candidate does **not** provide automatically | Essential negative oracle |
+| --- | --- | --- | --- |
+| IBM Z: CSS/FICON offloads central-CPU I/O | Bounded async queues, durable storage and redundant paths | `async` does not recreate a channel subsystem or its failure domains | Saturate/fail a log storage path and measure durable-commit latency |
+| z/OS: WLM service classes | Quotas, admission, priority and horizontal autoscale | CPU limits/HPA do not guarantee the same service goals | Competing loads with per-class p99 |
+| Db2 for z/OS: isolation and locks | SQL transaction with explicit retry policy | Similar isolation names do not prove identical concurrent histories | Two transfers, rollback, timeouts and conserved balance |
+| IBM i: commitment control and journals | Source-authoritative incremental projection | A journal does not prove the whole channel's transaction boundary | Abort a job and verify no partial posting |
+| MCP: Enterprise Database Server Accesses | Key/ordering ACL and domain model | SQL indexes do not establish the same ordering/selection behavior | Ordered record selection, restart and duplicates |
+| OS 2200: optional TIP connector resend | Operation-key idempotency and durable outcome lookup | A retry after lost reply can duplicate an effect | COMMIT with lost ACK, retry and exactly one posting |
+| Fujitsu GS21 historical product announcement | **Retain / investigate** until installation is identified | An old model name does not establish OS, database, CDC or current support | Reject premature pattern selection without source manuals |
+
+There is no universal *vendor → microservice* mapping. Each candidate must state its infrastructure, application, data, security, operations, exception and failure contracts. **Retain** can be a valid modernization decision when a necessary invariant cannot yet be demonstrated. These are version-scoped documented examples or an explicitly historical announcement; none is an executed vendor-source experiment.
+
+### Two costly anti-patterns
+
+**First:** choose Orleans actors to replace every financial lock. An actor can serialize work per identity; two actors, two storage systems and a payment switch do not thereby share one atomic COMMIT. A single durable writer and SQL transaction, with outbox, audit and idempotency, may preserve a transfer more directly. Actors are optional and must justify what actual contention they solve without inventing financial atomicity.
+
+**Second:** claim production CDC because a synthetic journal is green. The W01 PostgreSQL lab passed 22/22 bounded snapshot/sequence/replay controls, and a separate synthetic handoff oracle passed 26/26. Neither read native Db2/VSAM/IMS logs or proved all online, batch and privileged writers were captured. Real options include proved CDC, a controlled export boundary, a nondouble-writer adapter or **retention** until source guarantees exist.
+
+For each candidate the [machine-readable catalog](../../../research/vendor-runtime-contracts/catalog.json) requires the original contract, pattern, gap, negative test, independent oracle and customer measurements; its metadata controls refuse inflated equivalence or approval. The [EN dossier](../../../docs/research/vendor-runtime-contracts.en.md) and [Spanish edition](../../../docs/research/vendor-runtime-contracts.es.md) hold the operator/DBA/security/business interview.
+
 ---
 
 [← Part IV · Patterns that replace responsibilities, not syntax](README.md) · [Contents](../README.md) · [Chapter 14 · Strangler Fig: change the edge before the heart →](14-strangler-fig-change-the-edge-before-the-heart.md)
