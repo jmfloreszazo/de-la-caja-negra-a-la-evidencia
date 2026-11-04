@@ -128,6 +128,10 @@
 
 [62] IBM. *IBM Power Systems Performance Capabilities Reference*. IBM i / Power9 reference, April 2021. Documentación primaria indexada consultada el 3 de noviembre de 2026; la versión no acredita productos instalados ni disponibilidad actual. <https://public.dhe.ibm.com/services/us/igsc/idoctor/perf/systems_power_software_i_perfmgmt_pcrm_p9_april_2021_v1_26016726USEN.pdf>
 
+[63] IBM. *CCSID Comparisons*, swg21197185. Modificado el 20 de junio de 2019; consultado el 4 de noviembre de 2026. Siete diferencias documentadas entre los CCSID 37 y 500; no es una prueba de conversión nativa. <https://www.ibm.com/support/pages/ccsid-comparisons>
+
+[64] Python Software Foundation. *Python 3.12: codecs — Codec registry and base classes*. Consultado el 4 de noviembre de 2026. Codecs cp037/cp500 seleccionados y manejo de errores strict/replace. <https://docs.python.org/3.12/library/codecs.html>
+
 ---
 
 [← Anexo F · Glosario operativo](anexo-f-glosario-operativo.md) · [Índice](../README.md)

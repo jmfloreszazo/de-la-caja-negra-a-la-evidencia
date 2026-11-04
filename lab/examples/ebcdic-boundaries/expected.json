@@ -1,0 +1,20 @@
+{
+  "authority": "Synthetic exercise, not bank-approved data. Seven code-point pairs transcribed from IBM swg21197185; other values fixed by the exercise contract.",
+  "source": "https://www.ibm.com/support/pages/ccsid-comparisons",
+  "sourceModified": "2019-06-20",
+  "consulted": "2026-11-04",
+  "codePoints": [
+    {"hex": "4a", "37": "¢", "500": "["},
+    {"hex": "4f", "37": "|", "500": "!"},
+    {"hex": "5a", "37": "!", "500": "]"},
+    {"hex": "5f", "37": "¬", "500": "^"},
+    {"hex": "b0", "37": "^", "500": "¢"},
+    {"hex": "ba", "37": "[", "500": "¬"},
+    {"hex": "bb", "37": "]", "500": "|"}
+  ],
+  "records": [
+    {"name": "brackets-037", "ccsid": 37, "hex": "c1baf1bb4040404000123c000a", "expected": {"label": "A[1]    ", "packedHex": "00123c", "counter": 10}},
+    {"name": "brackets-500", "ccsid": 500, "hex": "c14af15a4040404000123c000a", "expected": {"label": "A[1]    ", "packedHex": "00123c", "counter": 10}},
+    {"name": "accent-037", "ccsid": 37, "hex": "c3c1c6714040404000123c000a", "expected": {"label": "CAFÉ    ", "packedHex": "00123c", "counter": 10}}
+  ]
+}

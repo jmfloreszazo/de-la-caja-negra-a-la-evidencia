@@ -1,4 +1,4 @@
-# Hoja de ruta abierta — estado basado en evidencias (3 de noviembre de 2026)
+# Hoja de ruta abierta — estado basado en evidencias (4 de noviembre de 2026)
 
 [English](ROADMAP.md) · **Español**
 
@@ -6,7 +6,7 @@ Esta es la hoja de ruta **del repositorio**, no una declaración de que una migr
 
 ## Punto exacto del plan activo
 
-**El corte editorial #83 y el incremento de canales #84 están integrados; el trabajo activo pasa a contratos de plataforma y patrones por fabricante (#17/#18/#28).** La validación externa E2/E3 de capacidad y HA sigue sin bloquear el libro. El laboratorio de canales aporta evidencia sintética acotada; las puertas de origen/aprobadores y producción siguen separadas.
+**Los incrementos #83–#87 están integrados: listados, canales, catálogo inicial de contratos de plataforma, entrevista y observaciones direccionales del controlador.** El siguiente incremento editorial acotado, #88, aborda fronteras de campos EBCDIC/CCSID. Siguen pendientes el resto de cobertura de plataformas/canales y el descubrimiento funcional aprobado; la validación externa de capacidad/HA no bloquea el libro.
 
 | Subpaso E2 | Estado actual | Validación de la afirmación pendiente (no bloquea integración) |
 | --- | --- | --- |
@@ -27,7 +27,7 @@ E2 permanece **parcialmente verificado**. El ensayo largo tiene evidencia acotad
 | Libro, diagramas y CI bilingüe | **Integrado**: 37 capítulos numerados, capítulo 25 bis y dos complementarios, 47 diagramas por idioma, capítulo 28 ampliado con convivencia y PDF de vista previa reproducibles | Revisión editorial y técnica, listados ilustrativos, reproducción multiplataforma; la vista previa no es una release |
 | E1 PostgreSQL y SQL Server | **Parcialmente verificado**: CI sobre SQL real y desechable, oráculos independientes, subconjuntos de paridad .NET 10, concurrencia y controles negativos | Alcance funcional E1 completo, fallo eléctrico/HA, contrato del cliente y carga productiva |
 | E2 Orleans | **Parcialmente verificado y ejecutado**: pruebas de varios procesos/silos con Podman en una máquina, membership PostgreSQL, ledger durable, fallos y carga limitada; [#8](https://github.com/jmfloreszazo/de-la-caja-negra-a-la-evidencia/issues/8) | observación de activaciones concurrentes/recuperación tras particiones largas, hosts físicos/HA y capacidad sostenida [#25](https://github.com/jmfloreszazo/de-la-caja-negra-a-la-evidencia/issues/25) |
-| Brownfield CAP-007/005 | **Subconjuntos sintéticos verificados en CI y fusionados**: época de escritor SQL, transacciones .NET 10, adaptador legado de caja negra, dos almacenes PostgreSQL distintos, shadow, conciliación y veto al rollback; [#58](https://github.com/jmfloreszazo/de-la-caja-negra-a-la-evidencia/issues/58) | Particiones del journal persistente durante operaciones y recuperación restante [#64](https://github.com/jmfloreszazo/de-la-caja-negra-a-la-evidencia/issues/64), fencing real en el origen, políticas/mandatos/Golden Master del cliente y aprobación TODM G2/G6 |
+| Brownfield CAP-007/005 | **Subconjuntos sintéticos verificados en CI y fusionados**: época de escritor SQL, transacciones .NET 10, adaptador legado de caja negra, dos almacenes PostgreSQL distintos, shadow, conciliación y veto al rollback; [#58](https://github.com/jmfloreszazo/de-la-caja-negra-a-la-evidencia/issues/58) | Ventanas adicionales de partición/temporización del controlador en #58, además de los cuatro casos de flujo de aplicación de #87, fencing real en el origen, políticas/mandatos/Golden Master del cliente y aprobación TODM G2/G6 |
 | Descomposición funcional | **Inventario sintético**: 30 hipótesis de capacidades y 12 dominios, reescritura functional-first; [#32](https://github.com/jmfloreszazo/de-la-caja-negra-a-la-evidencia/issues/32) | Trazas autorizadas, reglas aprobadas, límites de dominio y aceptación independiente; sin parser COBOL obligatorio y sin conversión 1:1 |
 | E3 Azure/local/híbrido | **Diseñado, sin capacidad verificada**: M1/M2, precios de referencia fechados y modelo WAN son entradas, no un PASS de E3; [#9](https://github.com/jmfloreszazo/de-la-caja-negra-a-la-evidencia/issues/9), [#12](https://github.com/jmfloreszazo/de-la-caja-negra-a-la-evidencia/issues/12) | Contrato de carga aprobado, saturación abierta y commits/p99, dominios de fallo, WAN, gRPC/REST con TLS comparable y TCO integral fechado |
 | E4 agentes y Oracle Gates | **Diseñado, no ejecutado ni aceptado como E4**; [#10](https://github.com/jmfloreszazo/de-la-caja-negra-a-la-evidencia/issues/10) | Alcance de escritura del agente, propuestas evaluadas reproducibles, mutaciones de oráculos, revisión y aprobación independientes |
@@ -91,3 +91,5 @@ Incremento de canales #30: capítulo complementario bilingüe, seis diagramas po
 Base de contratos de plataforma: diez filas documentadas, tres contextos de plataforma, cuatro familias pendientes y seis controles de mutación de integridad del catálogo. La ejecución nativa y equivalencia de migración siguen sin verificar; véase el [ADR de alcance](docs/PLATFORM_CONTRACTS_ADR.es.md).
 
 Brownfield #58 incorpora una observación direccional del flujo al controlador: cuatro casos SQL nativos y dos mutantes de observación rechazados, con restablecimiento explícito para recuperar. [Evidencia original](evidence/runs/BROWNFIELD-CONTROLLER-PARTITION.es.md). El catálogo de plataformas sigue parcial; fencing real y aprobación de negocio continúan pendientes.
+
+Editorial #11: kata EBCDIC/CCSID acotada con 36 comprobaciones por SO hospedado y cuatro transformaciones erróneas rechazadas; originales de Linux/macOS/Windows y auditoría exacta de finales de línea conservados. No acredita portabilidad completa Podman/WSL2 ni conversión nativa del host. Véase el [corte](docs/EBCDIC_CHECKPOINT_2026-11-04.es.md).

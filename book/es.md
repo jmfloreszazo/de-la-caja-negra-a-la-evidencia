@@ -897,6 +897,21 @@ decimal.Round(25m * 200m / 10000m, 0,
 
 Ninguna de las dos líneas por defecto es un error de .NET. Es una política distinta. El error aparece cuando nadie decide cuál es la nuestra.
 
+#### Un error de CCSID puede sobrevivir a la ida y vuelta
+
+La conversión de caracteres tiene su propio contrato de observación. IBM documenta significados distintos para varios bytes en los CCSID 37 y 500 [63]. Por ejemplo:
+
+| Byte de origen | CCSID 37 | CCSID 500 |
+| --- | --- | --- |
+| `BA` | `[` | `¬` |
+| `4A` | `¢` | `[` |
+
+Decodificar con el mapa equivocado puede producir texto válido. Volver a codificarlo con ese mismo mapa puede recuperar los bytes originales y conservar la interpretación errónea. Por tanto, una ida y vuelta correcta y el manejo estricto de errores no acreditan equivalencia semántica. Los caracteres esperados necesitan una autoridad separada.
+
+La [kata de fronteras EBCDIC](../lab/examples/ebcdic-boundaries/README.md) fija tres registros sintéticos con independencia del decodificador: ocho bytes de texto, tres bytes opacos de decimal empaquetado y un contador binario de dos bytes. Comprueba catorce expectativas documentadas de códigos de carácter, relleno, límites de campos y una etiqueta cuya representación UTF-8 crece. Cuatro transformaciones deliberadamente erróneas atacan la selección de CCSID, la eliminación de relleno, la conversión de binarios y el orden de bytes. Califican esos predicados; no certifican todas las codificaciones.
+
+El símbolo del euro no puede codificarse con el codec cp037 seleccionado; el manejo estricto genera un error y la sustitución pierde el carácter [64]. La kata exige un CCSID soportado explícito y conserva los campos binarios. No deduce la codificación por el aspecto plausible del texto. En una interfaz real hay que obtener registros autorizados y metadatos de codificación/layout, y validar juntos origen, herramienta de transferencia y destino, incluidas conversiones, sustituciones y truncamiento. Reproducir Python en un sistema operativo es distinto de validar el host nativo o Podman/WSL2. Estos casos no promueven listados ilustrativos existentes ni aprueban políticas bancarias.
+
 #### La memoria también es parte del contrato
 
 REDEFINES permite describir una misma región de datos con otra estructura. Una traducción que convierte cada nombre en una variable independiente puede perder esa relación. En nuestro programa, el registro de entrada se interpreta mediante un grupo redefinido. El ejemplo es sencillo y visible: los mismos caracteres representan importe, tasa y estado del cliente.
@@ -3651,3 +3666,7 @@ La numeración identifica cada riesgo; no expresa frecuencia, gravedad ni priori
 [61] Fujitsu. *COBOL2000 V1.6 — Net Express development environment with the BS2000/OSD option*. BS2000/OSD documentation. Documentación primaria indexada consultada el 3 de noviembre de 2026; la versión no acredita productos instalados ni disponibilidad actual. <https://bs2manuals.ts.fujitsu.com/psCOBOL2000V16en/net-express-development-environment-with-the-bs2000-osd-option-cobol-compiler-user-guide-164-22034711.html>
 
 [62] IBM. *IBM Power Systems Performance Capabilities Reference*. IBM i / Power9 reference, April 2021. Documentación primaria indexada consultada el 3 de noviembre de 2026; la versión no acredita productos instalados ni disponibilidad actual. <https://public.dhe.ibm.com/services/us/igsc/idoctor/perf/systems_power_software_i_perfmgmt_pcrm_p9_april_2021_v1_26016726USEN.pdf>
+
+[63] IBM. *CCSID Comparisons*, swg21197185. Modificado el 20 de junio de 2019; consultado el 4 de noviembre de 2026. Siete diferencias documentadas entre los CCSID 37 y 500; no es una prueba de conversión nativa. <https://www.ibm.com/support/pages/ccsid-comparisons>
+
+[64] Python Software Foundation. *Python 3.12: codecs — Codec registry and base classes*. Consultado el 4 de noviembre de 2026. Codecs cp037/cp500 seleccionados y manejo de errores strict/replace. <https://docs.python.org/3.12/library/codecs.html>

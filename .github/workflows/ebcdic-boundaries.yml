@@ -1,0 +1,49 @@
+name: EBCDIC fixed-record boundaries
+on:
+  pull_request:
+    paths:
+      - 'lab/examples/ebcdic-boundaries/**'
+      - '.github/workflows/ebcdic-boundaries.yml'
+      - 'scripts/check_ebcdic_observations.py'
+      - 'evidence/editorial/ebcdic-*'
+  push:
+    branches: [main]
+    paths:
+      - 'lab/examples/ebcdic-boundaries/**'
+      - '.github/workflows/ebcdic-boundaries.yml'
+      - 'scripts/check_ebcdic_observations.py'
+      - 'evidence/editorial/ebcdic-*'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  codecs:
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-24.04, macos-14, windows-2022]
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 10
+    env:
+      SOURCE_HEAD_SHA: ${{ github.event.pull_request.head.sha || github.sha }}
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+      - uses: actions/setup-python@v6
+        with:
+          python-version: '3.12'
+      - name: Audit untouched original artifacts and checkout provenance
+        if: matrix.os == 'ubuntu-24.04'
+        run: |
+          git fetch --no-tags --depth=1 origin 3783f94249b3d3e3efd36096ec029b795eda2648
+          python scripts/check_ebcdic_observations.py
+      - name: Execute fixed vectors, counterexamples and rejected mutants
+        run: python lab/examples/ebcdic-boundaries/run_checks.py
+      - name: Preserve original observations even on failure
+        if: always()
+        uses: actions/upload-artifact@v6
+        with:
+          name: ebcdic-original-${{ matrix.os }}
+          path: lab/results/ebcdic-boundaries/
+          if-no-files-found: error
