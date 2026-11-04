@@ -64,6 +64,10 @@ No debemos otorgar una nota numérica a datos todavía desconocidos. Cada decisi
 
 Cada oleada debe tener criterios previos de rechazo y una decisión independiente entre `RETAIN`, `EXPOSE`, `REPLACE`, `RETIRE` o `INCONCLUSIVE`. On-premises, Azure, híbrido, monolito modular u Orleans son **decisiones de arquitectura posteriores**, no el criterio que define los dominios.
 
+## Seguimiento ejecutable acotado de W01
+
+El [experimento PostgreSQL de proyección de lectura W01](w01-projection.es.md) prueba instantáneas SQL, watermark, digest, fallback y controles negativos sobre dos servidores desechables. **No** es CDC, HA física ni un contrato de lectura real de mainframe. Tampoco sustituye el fencing #58. La oleada del grafo continúa en CANDIDATE_ONLY.
+
 ## Entregado frente a pendiente
 
 **Entregado en este incremento:** gate ejecutable y auditable **sobre hipótesis sintéticas**, cuatro oleadas, dependencias cruzadas, controles negativos y documento de investigación ES/EN. Las 30 capacidades históricas **no** se convierten en requisitos reales.
