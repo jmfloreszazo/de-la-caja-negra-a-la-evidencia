@@ -120,8 +120,9 @@ projector. Each test starts from two fresh, **disposable** DB schemas.
 Original test output and SHA-based provenance are archived by
 `.github/workflows/w01-read-projection.yml`. A source snapshot, a target
 watermark and a green CI job are **not** an independently authorized bank
-contract. Issue #32 remains open; W01 remains a structural/engineering slice
-and #58 real incumbent fencing is a separate unsatisfied requirement.
+contract. Issue #32 is CLOSED / completed for its research-method deliverable;
+W01 remains a bounded engineering slice, and #58 real incumbent fencing is
+still OPEN and unverified.
 
 **Original real-PostgreSQL CI 16/16 PASS (bounded synthetic scope):** [run 41853096276](https://github.com/jmfloreszazo/de-la-caja-negra-a-la-evidencia/actions/runs/41853096276) and permanent [EN evidence record](../../../evidence/runs/W01-PROJECTION.md) / [ES](../../../evidence/runs/W01-PROJECTION.es.md). No customer release or full scientific approval follows.
 
