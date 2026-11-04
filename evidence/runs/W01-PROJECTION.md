@@ -32,7 +32,7 @@ The independent SQL test oracle checks balance conservation, two equal/opposite 
 
 A read first samples the source clock, then reads the projection. The source can COMMIT immediately **after** that sample. Therefore the label `PROJECTION_OBSERVED_CURRENT` means **current relative to the observed clock sample**, not an authoritative linearizable balance. A noncooperative writer that changes source balances without increasing the clock cannot be detected by watermark-only reads at query time; the **next refresh** rejects same-clock divergent source data. A production program must enforce source-owned version discipline, a verified CDC/snapshot-cutover protocol, client consistency rules, authorization, safe lag budget, resnapshot/recovery, and real customer oracles.
 
-No streaming CDC, no physical HA, no measurable production throughput improvement, no cash authorization, no real mainframe or bank-owned source fencing, no actual Golden Master and no production SLO are proven. TODM **G2 = INCONCLUSIVE**, **G6 = BLOCK**. The catalog's 30 reference capabilities remain hypotheses; #32/#58 stay open; closed E2 #8 and frozen #53 remain unchanged. No release or tag follows from this result.
+No streaming CDC, no physical HA, no measurable production throughput improvement, no cash authorization, no real mainframe or bank-owned source fencing, no actual Golden Master and no production SLO are proven. TODM **G2 = INCONCLUSIVE**, **G6 = BLOCK**. The catalog's 30 reference capabilities remain hypotheses; #32 is now CLOSED / completed for research; #58 stays OPEN for real banking proof; closed E2 #8 and frozen #53 remain unchanged. No release or tag follows from this result.
 
 ## Companion CI gates
 
