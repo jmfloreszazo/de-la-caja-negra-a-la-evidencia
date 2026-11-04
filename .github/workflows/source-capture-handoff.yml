@@ -1,0 +1,102 @@
+name: Source-native handoff synthetic continuity oracle
+on:
+  pull_request:
+    paths:
+      - 'lab/brownfield/source_capture/handoff.py'
+      - 'lab/brownfield/source_capture/handoff.example.json'
+      - 'lab/brownfield/source_capture/test_handoff.py'
+      - 'docs/research/source-capture-handoff.*'
+      - '.github/workflows/source-capture-handoff.yml'
+  push:
+    branches: [main]
+    paths:
+      - 'lab/brownfield/source_capture/handoff.py'
+      - 'lab/brownfield/source_capture/handoff.example.json'
+      - 'lab/brownfield/source_capture/test_handoff.py'
+      - 'docs/research/source-capture-handoff.*'
+      - '.github/workflows/source-capture-handoff.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  synthetic-source-handoff:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+      - uses: actions/setup-python@v6
+        with:
+          python-version: '3.12'
+      - name: Record exact checkout, runtime and source SHA
+        env:
+          SOURCE_SHA: ${{ github.event.pull_request.head.sha || github.sha }}
+        run: |
+          mkdir -p lab/results/brownfield/source-capture-handoff
+          test "$SOURCE_SHA" = "$(git rev-parse HEAD)"
+          {
+            echo "source_sha=$SOURCE_SHA"
+            echo "checkout_sha=$(git rev-parse HEAD)"
+            python3 --version
+            uname -a
+            sha256sum lab/brownfield/source_capture/{handoff.py,handoff.example.json,test_handoff.py,capture_catalog.json}
+          } > lab/results/brownfield/source-capture-handoff/provenance.txt
+      - name: Execute 26 original synthetic positive and rejection controls
+        env:
+          SOURCE_SHA: ${{ github.event.pull_request.head.sha || github.sha }}
+        run: |
+          set -o pipefail
+          python3 - <<'PY' 2>&1 | tee lab/results/brownfield/source-capture-handoff/test-original.log
+          import json, os, sys, unittest
+          from pathlib import Path
+          suite = unittest.defaultTestLoader.discover(
+              'lab/brownfield/source_capture', pattern='test_handoff.py')
+          result = unittest.TextTestRunner(verbosity=2).run(suite)
+          report = {
+            'classification':'SYNTHETIC_HANDOFF_TRACE_ORACLE_NOT_NATIVE_CDC',
+            'sourceHeadSha': os.environ['SOURCE_SHA'],
+            'checkoutSha':os.environ['SOURCE_SHA'],
+            'testsRun': result.testsRun,
+            'testsPlanned':26,
+            'unexpectedFailures':len(result.failures)+len(result.errors),
+            'skipped':len(result.skipped),
+            'status':'PASS_BOUNDED_SYNTHETIC_HANDOFF' if result.wasSuccessful()
+                     and result.testsRun==26 and not result.skipped else 'FAIL',
+            'nativeSourceCaptureExecuted':False,
+            'customerEvidenceBytesChecked':False,
+            'externalEffectOracle':False,
+            'realSourceWriterFence':False,
+            'todmG2':'INCONCLUSIVE','todmG6':'BLOCK',
+            'productionApproved':False
+          }
+          path = Path('lab/results/brownfield/source-capture-handoff/original-result.json')
+          path.write_text(json.dumps(report,indent=2,sort_keys=True)+'\n')
+          print(json.dumps(report,sort_keys=True))
+          sys.exit(0 if report['status']=='PASS_BOUNDED_SYNTHETIC_HANDOFF' else 1)
+          PY
+      - name: Independent fail-closed provenance and native non-approval gate
+        env:
+          SOURCE_SHA: ${{ github.event.pull_request.head.sha || github.sha }}
+        run: |
+          python3 - <<'PY'
+          import json,os
+          from pathlib import Path
+          r=json.loads(Path('lab/results/brownfield/source-capture-handoff/original-result.json').read_text())
+          assert r['sourceHeadSha']==r['checkoutSha']==os.environ['SOURCE_SHA']
+          assert r['status']=='PASS_BOUNDED_SYNTHETIC_HANDOFF'
+          assert r['testsRun']==r['testsPlanned']==26
+          assert r['unexpectedFailures']==0 and r['skipped']==0
+          for field in ('nativeSourceCaptureExecuted','customerEvidenceBytesChecked',
+                        'externalEffectOracle','realSourceWriterFence','productionApproved'):
+              assert r[field] is False
+          assert r['todmG2']=='INCONCLUSIVE' and r['todmG6']=='BLOCK'
+          print('26 synthetic trace checks only; all native/customer approval gates stay BLOCK')
+          PY
+      - name: Preserve original source/run outputs on pass or fail
+        if: always()
+        uses: actions/upload-artifact@v6
+        with:
+          name: source-capture-handoff-synthetic-only-original
+          path: lab/results/brownfield/source-capture-handoff/
+          if-no-files-found: warn
