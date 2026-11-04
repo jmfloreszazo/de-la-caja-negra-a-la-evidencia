@@ -6,7 +6,7 @@
 
 El primer W01 reconstruía la proyección con snapshots completos, comprobaba un reloj muestreado en el origen y recurría a fallback cuando faltaba frescura o integridad. La ampliación de 20 pruebas demostró una **identidad PostgreSQL con permisos exclusivamente de lectura**. Todavía no existía un journal completo y reproducible, una frontera verificable entre instantánea inicial y cambios posteriores, ni pruebas de que una caída no publicase saldos parciales.
 
-Este incremento añade un **journal transaccional sintético en el PostgreSQL del origen**, con veinte escenarios sobre bases reales. No usa parser COBOL ni presupone que IBM Z, IBM i, Fujitsu, BS2000, IMS, CICS o Db2 implementen el mismo mecanismo de captura.
+Este incremento añade un **journal transaccional sintético en el PostgreSQL del origen**, con veintidós escenarios previstos sobre bases reales, incluidos escritores concurrentes y una imagen previa falsa con hash recalculado. No usa parser COBOL ni presupone que IBM Z, IBM i, Fujitsu, BS2000, IMS, CICS o Db2 implementen el mismo mecanismo de captura.
 
 ## Frontera de COMMIT y responsabilidades
 
