@@ -207,6 +207,22 @@ Request only authorized, minimized extracts. The useful output is a manifest wit
 
 The unanswered fields remain `NEEDS_CUSTOMER_DATA` in an actual assessment. A Linux SQL test can validate a candidate invariant; it cannot measure an IBM channel fabric, establish an MCP recovery option or certify the old installation. The [pattern chapter](#chapter-13--before-choosing-a-pattern-identify-the-contract) uses three platform examples to show why attribution matters.
 
+#### Which operating system and subsystem are we actually replacing?
+
+"Mainframe" alone does not identify an execution platform. On **IBM Z**, start with the CPC, PR/SM partitions, LPARs and the actual installed OS: z/OS, z/VM, Linux on IBM Z or another environment. z/OS WLM classifies work by service goals, while the channel subsystem performs I/O asynchronously relative to the central processors. Neither property is equivalent to adding threads, `async/await`, an HPA or RAM. Measure queues, channel paths, device and log I/O and priority goals together. [IBM: CSS](https://www.ibm.com/docs/en/zos-basic-skills?topic=mainframe-channel-subsystem-css) · [IBM: WLM](https://www.ibm.com/docs/en/zos/3.2.0?topic=tabs-service-classes).
+
+**Db2 for z/OS** is not identical to Db2 for i or PostgreSQL. `UR`, `CS`, `RS` and `RR` change isolation and locking; the package `BIND` settings also matter. "We will use `READ COMMITTED`" is a migration hypothesis, not proven parity. The oracle needs concurrent writes, rollback, lock waits, repeated queries and financial balance invariants. [IBM: Db2 13 isolation](https://www.ibm.com/docs/en/db2-for-zos/13.0.0?topic=services-isolation).
+
+**IBM i (formerly AS/400)** is a distinct platform. Its commitment control coordinates transaction and journaling behaviors with jobs, but does not inherit Db2 for z/OS, CICS or IBM Z semantics by sharing a vendor name. Inventory journals, receivers, jobs, restoration and actual commit boundaries. [IBM: commitment control](https://www.ibm.com/docs/en/i/7.6.0?topic=database-commitment-control).
+
+On **Unisys ClearPath MCP**, Enterprise Database Server offers record organization and ordering through *Accesses* that cannot simply be called SQL indexes without proof. **OS 2200** is not MCP: a documented OS 2200 TIP connector can reconnect and resend after a send failure, and its manual warns that the behavior may be inappropriate for stateful applications. In banking, the source may have committed while only its response was lost; an HTTP endpoint that retries without an operation identity or durable outcome query risks a second effect. [Unisys: Accesses](https://www.support.unisys.com/aseries/docs/ClearPath-MCP-21.0/38508198-005/section-000081944.html) · [Unisys: TIP](https://www.support.unisys.com/ePortalIC-10.0/topic/82073594_clearpath_eportal_developerhelp/html/section-000039403.htm).
+
+**Fujitsu GS21** requires separate research. A **2018 archived announcement** covering GS21 3600/3400 and GSS21sx supports a historical product claim, not which MSP/XSP version, database, monitor, record system or support contract a specific installation has in 2026. NEC ACOS and Bull/Atos GCOS likewise remain discovery entries when model, version and authorized manuals are missing. Assigning them z/OS properties would be incorrect archaeology. [Fujitsu: archived announcement](https://info.archives.global.fujitsu/global/about/resources/news/press-releases/2018/0417-01.html).
+
+**A trace I would request:** branch or mobile arrival → authentication and routing → admission queue → monitor unit of work → access path and buffer pool → lock wait → log and durable COMMIT → acknowledgment → channel delivery. Each hop needs an operation and trace identity, writer epoch, monotonic timing, retry status, return path, p50/p95/p99 measured over the *same request population*, and a record of external effects. Do not sum component percentiles to manufacture global p99. Without this evidence, no CP/MSU/MIPS/CPW-to-vCPU coefficient or production SLO can be inferred from another database engine's lab.
+
+The [vendor-runtime contract compendium](../docs/research/vendor-runtime-contracts.en.md) maps these questions to candidate replacement patterns, semantic gaps and adversarial oracles. Its entries are **documented research or discovery**, never observation of a customer's installed host.
+
 ### Chapter 2 · The system we are trying to preserve
 
 > [!IMPORTANT]
@@ -991,6 +1007,28 @@ Then identify atomicity. Keep immediately inseparable effects in a compatible tr
 Finally choose placement from measured demand and failure domains. A read projection may offload queries if freshness is explicit. CDC may feed that projection but does not transfer write authority. Horizontal application workers still share database/log/hot-key limits. Retain or integrate the original engine when its contract is unknown, a necessary recovery mechanism has no demonstrated replacement, or a narrower modernization already delivers the business value.
 
 Fujitsu GS21, NEC ACOS, Hitachi VOS and Bull GCOS remain discovery entries without verified feature mappings in this increment. NonStop, OpenVMS, IBM i and HP 3000 are separately marked adjacent research scope. Unknown means that research is still required; it does not mean absent, unsupported or equivalent. The complete #28 inventory and its batch/offline/CDC/cross-border worked examples remain future deliverables. This first seed gives those entries a checkable format instead of presenting a long unreviewed list as completed research.
+
+#### The pattern depends on the vendor, subsystem and COMMIT owner
+
+| Documented platform responsibility | Candidate replacement | What the candidate does **not** provide automatically | Essential negative oracle |
+| --- | --- | --- | --- |
+| IBM Z: CSS/FICON offloads central-CPU I/O | Bounded async queues, durable storage and redundant paths | `async` does not recreate a channel subsystem or its failure domains | Saturate/fail a log storage path and measure durable-commit latency |
+| z/OS: WLM service classes | Quotas, admission, priority and horizontal autoscale | CPU limits/HPA do not guarantee the same service goals | Competing loads with per-class p99 |
+| Db2 for z/OS: isolation and locks | SQL transaction with explicit retry policy | Similar isolation names do not prove identical concurrent histories | Two transfers, rollback, timeouts and conserved balance |
+| IBM i: commitment control and journals | Source-authoritative incremental projection | A journal does not prove the whole channel's transaction boundary | Abort a job and verify no partial posting |
+| MCP: Enterprise Database Server Accesses | Key/ordering ACL and domain model | SQL indexes do not establish the same ordering/selection behavior | Ordered record selection, restart and duplicates |
+| OS 2200: optional TIP connector resend | Operation-key idempotency and durable outcome lookup | A retry after lost reply can duplicate an effect | COMMIT with lost ACK, retry and exactly one posting |
+| Fujitsu GS21 historical product announcement | **Retain / investigate** until installation is identified | An old model name does not establish OS, database, CDC or current support | Reject premature pattern selection without source manuals |
+
+There is no universal *vendor → microservice* mapping. Each candidate must state its infrastructure, application, data, security, operations, exception and failure contracts. **Retain** can be a valid modernization decision when a necessary invariant cannot yet be demonstrated. These are version-scoped documented examples or an explicitly historical announcement; none is an executed vendor-source experiment.
+
+##### Two costly anti-patterns
+
+**First:** choose Orleans actors to replace every financial lock. An actor can serialize work per identity; two actors, two storage systems and a payment switch do not thereby share one atomic COMMIT. A single durable writer and SQL transaction, with outbox, audit and idempotency, may preserve a transfer more directly. Actors are optional and must justify what actual contention they solve without inventing financial atomicity.
+
+**Second:** claim production CDC because a synthetic journal is green. The W01 PostgreSQL lab passed 22/22 bounded snapshot/sequence/replay controls, and a separate synthetic handoff oracle passed 26/26. Neither read native Db2/VSAM/IMS logs or proved all online, batch and privileged writers were captured. Real options include proved CDC, a controlled export boundary, a nondouble-writer adapter or **retention** until source guarantees exist.
+
+For each candidate the [machine-readable catalog](../research/vendor-runtime-contracts/catalog.json) requires the original contract, pattern, gap, negative test, independent oracle and customer measurements; its metadata controls refuse inflated equivalence or approval. The [EN dossier](../docs/research/vendor-runtime-contracts.en.md) and [Spanish edition](../docs/research/vendor-runtime-contracts.es.md) hold the operator/DBA/security/business interview.
 
 ### Chapter 14 · Strangler Fig: change the edge before the heart
 
