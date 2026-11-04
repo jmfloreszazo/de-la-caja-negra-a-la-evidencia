@@ -2,6 +2,10 @@
 
 **Issue #58 · investigación y assessment del 4 de noviembre de 2026 · sin ejecución nativa de origen.** [English](source-native-capture-assessment.en.md) · [W01 sintético ya probado](../../evidence/runs/W01-SOURCE-JOURNAL.es.md) · [Entrevista y gate ejecutable](../../lab/brownfield/source_capture/README.md).
 
+## Seguimiento: oráculo sintético de continuidad snapshot→tail
+
+La investigación [ES](source-capture-handoff.es.md) / [EN](source-capture-handoff.en.md) incorpora un **oráculo offline con historial sintético independiente**, con 26 controles preparados para corte, bookmark, orden y replay. No constituye captura nativa de fabricante ni modifica la evidencia del assessment anterior o los gates bancarios.
+
 ## Decisión
 
 **No debemos trasladar automáticamente el journal PostgreSQL sintético de W01 a un mainframe real.** W01 pasó 22/22 pruebas acotadas entre dos PostgreSQL, con eventos escritos por un *actor de prueba* en el mismo COMMIT financiero. Nunca ha ejecutado un lector nativo de Db2, VSAM, IMS, IBM i ni Fujitsu. El orden de transacciones, la posición de captura inicial, la recuperación, el batch y los efectos externos necesitan evidencias independientes antes de elegir CDC, outbox transaccional aprobado, exportación verificable o conservar el legacy como autoridad.

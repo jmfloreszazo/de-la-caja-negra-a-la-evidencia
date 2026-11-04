@@ -1,0 +1,55 @@
+{
+  "classification": "AUDITED_ORIGINAL_GITHUB_ACTIONS_ZIP_SYNTHETIC_ONLY",
+  "source": {
+    "repo": "jmfloreszazo/de-la-caja-negra-a-la-evidencia",
+    "pr": 96,
+    "prHead": "63c2e2119d662569b92bb99791a4eb4d471355e4",
+    "runId": 41908404394,
+    "jobId": 126849132395,
+    "url": "https://github.com/jmfloreszazo/de-la-caja-negra-a-la-evidencia/actions/runs/41908404394"
+  },
+  "originalResult": {
+    "status": "PASS_BOUNDED_SYNTHETIC_HANDOFF",
+    "testsRun": 26,
+    "testsPlanned": 26,
+    "unexpectedFailures": 0,
+    "skipped": 0,
+    "classification": "SYNTHETIC_HANDOFF_TRACE_ORACLE_NOT_NATIVE_CDC",
+    "sourceHeadSha": "63c2e2119d662569b92bb99791a4eb4d471355e4",
+    "checkoutSha": "63c2e2119d662569b92bb99791a4eb4d471355e4",
+    "nativeSourceCaptureExecuted": false,
+    "customerEvidenceBytesChecked": false,
+    "externalEffectOracle": false,
+    "realSourceWriterFence": false,
+    "productionApproved": false,
+    "todmG2": "INCONCLUSIVE",
+    "todmG6": "BLOCK"
+  },
+  "artifact": {
+    "id": 13360258324,
+    "name": "source-capture-handoff-synthetic-only-original",
+    "sizeBytes": 2099,
+    "expiresAt": "2027-02-02T20:37:43Z",
+    "githubReportedZipSha256": "b15bf9d394d53f93280e707c9df538420ea22f53eeeb6d0a3c87b77aad0e943c",
+    "independentlyRehashedZipSha256": "b15bf9d394d53f93280e707c9df538420ea22f53eeeb6d0a3c87b77aad0e943c",
+    "zipIntegrity": "ALL_MEMBERS_CRC_PASS",
+    "members": [
+      "original-result.json",
+      "provenance.txt",
+      "test-original.log"
+    ]
+  },
+  "originalRunner": {
+    "python": "3.12.15",
+    "physicalHosts": 1,
+    "operatingSystem": "Ubuntu 24.04 hosted runner x86_64 (Linux 7.0.0-1017-azure)",
+    "sourceHashesReportedByOriginalRunner": {
+      "lab/brownfield/source_capture/handoff.py": "6d9a7ca86a60e39b34359d510a2342f049e6e1a3dd12c2744e335afaa834be8b",
+      "lab/brownfield/source_capture/handoff.example.json": "0002e3e86166b0349682e1aa1de2dceb1b292e2f33fdaf6a05bab7f896f233b6",
+      "lab/brownfield/source_capture/test_handoff.py": "a09d579d523ed234af675b4bcce66f14673f21ad7647215178b5b5d72957e1ab",
+      "lab/brownfield/source_capture/capture_catalog.json": "5d53db34bafdd22d75da83e41a907aa8f551df2904e36465b8a28cdd36c1b8f0"
+    }
+  },
+  "preservedOriginalTestExcerpt": "evidence/runs/SOURCE-HANDOFF-PR96-ORIGINAL-CI-EXCERPT.log",
+  "limitations": "Source commits and captured events are both synthetic fixture declarations, not independently authenticated customer originals. No native Db2/VSAM/IMS/IBM i/Fujitsu capture tests, external cash/payment effects, real physical failover, throughput or bank policy approval. A coherently forged fixture could pass."
+}

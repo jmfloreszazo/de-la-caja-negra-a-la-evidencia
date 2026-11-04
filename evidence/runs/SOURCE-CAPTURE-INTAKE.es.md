@@ -26,4 +26,3 @@ La [campaña anterior W01 PostgreSQL 22/22](W01-SOURCE-JOURNAL.es.md) es un ensa
 ## Próxima demostración real
 
 El responsable debe identificar SO/base de datos/versión instalados y **todas** las rutas de escritura; evaluar online, batch, LOAD/REORG, offline y privilegiados; demostrar el empalme snapshot/log y el replay bajo retención/reinicio; y ejecutar contraejemplos **en logs nativos reales** con permisos controlados. Un revisor independiente debe conciliar apuntes, efectos financieros externos y fencing impuesto por el origen antes de avanzar G2/G6. Consultar el [protocolo de fencing](../../docs/BROWNFIELD_SOURCE_FENCE.es.md).
-

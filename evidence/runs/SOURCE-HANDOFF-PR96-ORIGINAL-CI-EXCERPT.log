@@ -1,0 +1,35 @@
+# SELECTED VERBATIM original GitHub Actions CI lines
+# Run https://github.com/jmfloreszazo/de-la-caja-negra-a-la-evidencia/actions/runs/41908404394
+# Original job 126849132395; PR head 63c2e2119d662569b92bb99791a4eb4d471355e4
+# Excerpt only; original downloaded ZIP has the full log; timestamps preserved.
+2026-11-04T20:37:51.0522857Z test_01_consistent_synthetic_handoff_only (test_handoff.SyntheticHandoffTests.test_01_consistent_synthetic_handoff_only) ... ok
+2026-11-04T20:37:51.0525181Z test_02_missing_tail_event_rejected (test_handoff.SyntheticHandoffTests.test_02_missing_tail_event_rejected) ... ok
+2026-11-04T20:37:51.0527404Z test_03_duplicate_event_rejected (test_handoff.SyntheticHandoffTests.test_03_duplicate_event_rejected) ... ok
+2026-11-04T20:37:51.0529523Z test_04_out_of_order_delivery_rejected (test_handoff.SyntheticHandoffTests.test_04_out_of_order_delivery_rejected) ... ok
+2026-11-04T20:37:51.0531955Z test_05_amount_tampering_rejected (test_handoff.SyntheticHandoffTests.test_05_amount_tampering_rejected) ... ok
+2026-11-04T20:37:51.0534382Z test_06_transaction_id_substitution_rejected (test_handoff.SyntheticHandoffTests.test_06_transaction_id_substitution_rejected) ... ok
+2026-11-04T20:37:51.0536287Z test_07_resume_from_wrong_snapshot_position_rejected (test_handoff.SyntheticHandoffTests.test_07_resume_from_wrong_snapshot_position_rejected) ... ok
+2026-11-04T20:37:51.0538181Z test_08_retention_expired_before_cut_rejected (test_handoff.SyntheticHandoffTests.test_08_retention_expired_before_cut_rejected) ... ok
+2026-11-04T20:37:51.0540150Z test_09_snapshot_balances_tampered_but_conserved_rejected (test_handoff.SyntheticHandoffTests.test_09_snapshot_balances_tampered_but_conserved_rejected) ... ok
+2026-11-04T20:37:51.0542492Z test_10_snapshot_cut_moved_without_reconstruct_rejected (test_handoff.SyntheticHandoffTests.test_10_snapshot_cut_moved_without_reconstruct_rejected) ... ok
+2026-11-04T20:37:51.0544806Z test_11_target_balances_tampered_but_conserved_rejected (test_handoff.SyntheticHandoffTests.test_11_target_balances_tampered_but_conserved_rejected) ... ok
+2026-11-04T20:37:51.0546680Z test_12_target_cursor_does_not_match_head_rejected (test_handoff.SyntheticHandoffTests.test_12_target_cursor_does_not_match_head_rejected) ... ok
+2026-11-04T20:37:51.0548547Z test_13_source_clock_and_capture_head_diverge_rejected (test_handoff.SyntheticHandoffTests.test_13_source_clock_and_capture_head_diverge_rejected) ... ok
+2026-11-04T20:37:51.0550072Z test_14_changed_source_epoch_rejected (test_handoff.SyntheticHandoffTests.test_14_changed_source_epoch_rejected) ... ok
+2026-11-04T20:37:51.0551218Z test_15_source_transaction_commit_sequence_gap_rejected (test_handoff.SyntheticHandoffTests.test_15_source_transaction_commit_sequence_gap_rejected) ... ok
+2026-11-04T20:37:51.0552783Z test_16_duplicate_committed_operation_id_rejected (test_handoff.SyntheticHandoffTests.test_16_duplicate_committed_operation_id_rejected) ... ok
+2026-11-04T20:37:51.0554101Z test_17_aborted_operation_reappears_in_source_rejected (test_handoff.SyntheticHandoffTests.test_17_aborted_operation_reappears_in_source_rejected) ... ok
+2026-11-04T20:37:51.0555275Z test_18_bank_approval_self_assertion_is_invalid (test_handoff.SyntheticHandoffTests.test_18_bank_approval_self_assertion_is_invalid) ... ok
+2026-11-04T20:37:51.0557011Z test_19_native_product_execution_self_assertion_is_invalid (test_handoff.SyntheticHandoffTests.test_19_native_product_execution_self_assertion_is_invalid) ... ok
+2026-11-04T20:37:51.0558776Z test_20_unknown_platform_or_customer_claim_invalid (test_handoff.SyntheticHandoffTests.test_20_unknown_platform_or_customer_claim_invalid) ... ok
+2026-11-04T20:37:51.0560078Z test_21_extra_pass_property_refused (test_handoff.SyntheticHandoffTests.test_21_extra_pass_property_refused) ... ok
+2026-11-04T20:37:51.0561399Z test_22_invalid_account_amount_and_boolean_sequence_refused (test_handoff.SyntheticHandoffTests.test_22_invalid_account_amount_and_boolean_sequence_refused) ... ok
+2026-11-04T20:37:51.0562842Z test_23_bad_schema_and_invalid_aborted_list_refused (test_handoff.SyntheticHandoffTests.test_23_bad_schema_and_invalid_aborted_list_refused) ... ok
+2026-11-04T20:37:51.0984156Z test_24_cli_valid_fixture_is_only_synthetic_pass (test_handoff.SyntheticHandoffTests.test_24_cli_valid_fixture_is_only_synthetic_pass) ... ok
+2026-11-04T20:37:51.1386089Z test_25_cli_bad_snapshot_fails_closed_with_exit_2 (test_handoff.SyntheticHandoffTests.test_25_cli_bad_snapshot_fails_closed_with_exit_2) ... ok
+2026-11-04T20:37:51.1762962Z test_26_cli_invalid_json_exits_3 (test_handoff.SyntheticHandoffTests.test_26_cli_invalid_json_exits_3) ... ok
+2026-11-04T20:37:51.1765565Z Ran 26 tests in 0.124s
+2026-11-04T20:37:51.1766038Z OK
+2026-11-04T20:37:51.1770051Z {"checkoutSha": "63c2e2119d662569b92bb99791a4eb4d471355e4", "classification": "SYNTHETIC_HANDOFF_TRACE_ORACLE_NOT_NATIVE_CDC", "customerEvidenceBytesChecked": false, "externalEffectOracle": false, "nativeSourceCaptureExecuted": false, "productionApproved": false, "realSourceWriterFence": false, "skipped": 0, "sourceHeadSha": "63c2e2119d662569b92bb99791a4eb4d471355e4", "status": "PASS_BOUNDED_SYNTHETIC_HANDOFF", "testsPlanned": 26, "testsRun": 26, "todmG2": "INCONCLUSIVE", "todmG6": "BLOCK", "unexpectedFailures": 0}
+2026-11-04T20:37:51.1935015Z [36;1mprint('26 synthetic trace checks only; all native/customer approval gates stay BLOCK')[0m
+2026-11-04T20:37:51.2270347Z 26 synthetic trace checks only; all native/customer approval gates stay BLOCK
