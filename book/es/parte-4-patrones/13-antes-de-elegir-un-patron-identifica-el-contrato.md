@@ -62,6 +62,28 @@ Finalmente, elegir ubicación según demanda medida y dominios de fallo. Una pro
 
 Fujitsu GS21, NEC ACOS, Hitachi VOS y Bull GCOS siguen como descubrimiento sin correspondencias de funciones verificadas en este incremento. NonStop, OpenVMS, IBM i y HP 3000 se marcan aparte como plataformas adyacentes por investigar. Desconocido significa investigación pendiente; no ausente, sin soporte o equivalente. El inventario completo de #28 y sus ejemplos batch/offline/CDC/internacionales siguen pendientes. Esta primera base aporta un formato verificable sin presentar una lista larga sin revisar como investigación terminada.
 
+## El patrón depende del fabricante, del subsistema y de quién posee el COMMIT
+
+| Plataforma y responsabilidad documentada | Sustitución candidata | Diferencia no cubierta automáticamente | Oráculo negativo imprescindible |
+| --- | --- | --- | --- |
+| IBM Z: CSS/FICON descarga E/S de CPU | Colas acotadas, almacenamiento duradero, rutas redundantes | `async` no crea un subsistema de canales ni un dominio de fallo equivalente | Saturar/romper camino de log y medir respuesta hasta COMMIT |
+| z/OS: WLM y clases de servicio | Cuotas, admisión, prioridades y autoscaling horizontal | CPU limit y HPA no ofrecen las mismas metas de servicio | Competencia de cargas con p99 por clase |
+| Db2 for z/OS: aislamiento y locking | SQL transaccional + política explícita de reintentos | Mismo nombre de aislamiento no prueba mismo historial concurrente | Dos transferencias, rollback, timeouts y saldo conservado |
+| IBM i: commitment control y journal | Lector incremental bajo autoridad origen | Un journal no garantiza el contrato transaccional completo del canal | Interrumpir job y recuperar sin asiento parcial |
+| MCP: Access de Enterprise Database Server | ACL de claves, orden y modelo de dominio | Índice SQL no demuestra orden/selección original | Selección y orden de registros, restart y duplicados |
+| OS 2200: conector TIP con reenvío opcional | Idempotencia por operación + consulta de resultado | Reenviar después de perder respuesta puede duplicar el efecto | COMMIT sin ACK y reenvío: un solo asiento |
+| Fujitsu GS21 (anuncio histórico) | **Retener / investigar** hasta identificar el producto instalado | Modelo histórico no acredita OS, DB, CDC o soporte del cliente | Rechazar elección de patrón sin inventario/manuales |
+
+No hay una tabla universal *fabricante → microservicio*; el modelo tiene que declarar **infraestructura, aplicación, datos, seguridad, operación, excepción y contrato de fallo**. «Conservar» también es una decisión moderna y legítima cuando la invariante aún no se sabe demostrar. Los ejemplos de la matriz no son el resultado de ejecutar los sistemas de origen: proceden de documentación de producto versionada o de un anuncio histórico clasificado como tal.
+
+### Dos anti-patrones particularmente caros
+
+**Primero:** usar actores Orleans para sustituir automáticamente un bloqueo de dos cuentas. Un actor puede serializar peticiones por clave, pero dos actores, dos persistencias y un switch externo no comparten por ello un COMMIT atómico. Para una transferencia, puede ser preferible **un único escritor duradero y una transacción SQL**, con outbox, auditoría e idempotencia. El actor es opcional y debe demostrar qué contención elimina, sin regalar semántica contable.
+
+**Segundo:** llamar CDC al consumo de un journal de pruebas. Nuestro W01 PostgreSQL ya demostró 22/22 controles acotados de snapshot, secuencia, replay y cursor; el oráculo sintético independiente de handoff pasó 26/26. Ninguno leyó logs nativos de Db2/VSAM/IMS ni prueba que se cubrieran todos los escritores batch, online o privilegiados. La estrategia real puede ser CDC validado, exportación con corte, adaptación sin doble escritor o **conservación** del motor hasta que haya garantías.
+
+Para cada candidato, el [catálogo machine-readable](../../../research/vendor-runtime-contracts/catalog.json) exige contrato original, patrón, brecha, prueba negativa, oráculo y medidas del cliente. Sus controles rechazan elevar una hipótesis a equivalencia o aprobación sin evidencias. El [dossier ES](../../../docs/research/vendor-runtime-contracts.es.md) y la [edición EN](../../../docs/research/vendor-runtime-contracts.en.md) reúnen las preguntas para operador, DBA, seguridad y negocio.
+
 ---
 
 [← Parte IV · Patrones que sustituyen responsabilidades, no sintaxis](README.md) · [Índice](../README.md) · [Capítulo 14 · Strangler Fig: cambiar el borde antes que el corazón →](14-strangler-fig-cambiar-el-borde-antes-que-el-corazon.md)
