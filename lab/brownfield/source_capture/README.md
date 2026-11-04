@@ -8,6 +8,8 @@ The dated [capture catalog](capture_catalog.json) cites primary IBM documentatio
 
 ## Synthetic snapshot/log continuity oracle (separate, offline)
 
+**Original 26/26 synthetic CI PASS:** [run #41908404394](https://github.com/jmfloreszazo/de-la-caja-negra-a-la-evidencia/actions/runs/41908404394), [EN exact-head audit](../../../evidence/runs/SOURCE-HANDOFF.md) / [ES](../../../evidence/runs/SOURCE-HANDOFF.es.md). The original ZIP was downloaded and SHA-256 independently rechecked; no actual vendor source has been tested.
+
 The [source-neutral handoff protocol](../../../docs/research/source-capture-handoff.en.md) ([ES](../../../docs/research/source-capture-handoff.es.md)) compares an **independently declared synthetic source commit history** with an MVCC snapshot bookmark, captured tail and target replay. It is **not** a native vendor log reader. The 26 dedicated negative/positive cases reject missing/reordered events, expired retention, a mismatched snapshot cut, stale target, wrong source epoch and attempted banking self-approval.
 
 ```bash
