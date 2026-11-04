@@ -1,3 +1,5 @@
+> **ACTUALIZACIÓN POSTERIOR — ESTADO HISTÓRICO SUPERADO.** Las frases `NO EJECUTADO / EN COLA` siguientes describen el momento **de la fusión del PR #94**, no el estado actual. GitHub Actions ejecutó después las pruebas sobre el SHA original `80c45437312030a8abe90e0c3fdaa85a00c3056a`: **22/22 PASS sobre PostgreSQL real** en [Actions #41864738886](https://github.com/jmfloreszazo/de-la-caja-negra-a-la-evidencia/actions/runs/41864738886). El ZIP original se descargó y su SHA-256 se contrastó independientemente. Consultar [acta ES](../evidence/runs/W01-SOURCE-JOURNAL.es.md) y [acta EN](../evidence/runs/W01-SOURCE-JOURNAL.md). Es un **PASS técnico sintético acotado**, con G2 INCONCLUSIVE y G6 BLOCK. Se mantiene el texto histórico para mostrar el estado inicial.
+
 # W01 — Journal transaccional sintético: integrado, sin pruebas ejecutadas
 
 **Fecha del corte: 4 de noviembre de 2026.** [English](W01_SOURCE_JOURNAL_CHECKPOINT.md) · [PR #94](https://github.com/jmfloreszazo/de-la-caja-negra-a-la-evidencia/pull/94) · [Issue #58](https://github.com/jmfloreszazo/de-la-caja-negra-a-la-evidencia/issues/58).
