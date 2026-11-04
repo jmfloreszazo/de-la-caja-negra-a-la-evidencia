@@ -44,6 +44,8 @@ The build needs network once (base image, `apt`, `dotnet restore`). The lab itse
 
 > **Container recipe.** The reference run below was executed natively on Linux. The `Containerfile` and the Podman scripts are validated by the `podman` job of the repository's CI; a reproduction report from your machine is the best evidence you can add.
 
+For a fresh host-specific run with image identity, raw failures and a host-side accounting audit, use the [full-lab host reproduction protocol](docs/HOST_REPRODUCTION.md). Collector unit tests and EBCDIC Python checks are separate from actual macOS/Podman-machine or Windows/WSL2 execution.
+
 ## Native start (Ubuntu 24.04 or WSL2)
 
 Install the .NET 10 SDK following Microsoft's instructions and check `dotnet --version`. Then:
