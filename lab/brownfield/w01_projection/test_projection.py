@@ -57,9 +57,13 @@ def admin_dsn() -> str:
 
 def reset_disposable() -> tuple[str, str]:
     """Test-only destructive reset, before validating the restricted read role."""
+    # Preflight BOTH destructive fixture destinations before touching either.
+    # An invalid target cannot trigger an irreversible source reset.
+    source_admin = admin_dsn()
+    target_admin = _checked_reset_dsn("W01_PROJECTION_DSN", "bf_projection", "55442")
     # Only this test harness contains the superuser credentials. An actual
     # projection process must receive the reader DSN, not the admin DSN.
-    with psycopg.connect(admin_dsn()) as db:
+    with psycopg.connect(source_admin) as db:
         if db.execute("SELECT current_database(),current_user").fetchone() != (
                 "bf_legacy", "postgres"):
             raise UnsafeFixture("Wrong source test-admin identity")
@@ -76,8 +80,7 @@ def reset_disposable() -> tuple[str, str]:
         db.execute("REVOKE ALL ON ALL TABLES IN SCHEMA legacy FROM PUBLIC")
         db.execute("GRANT USAGE ON SCHEMA legacy TO w01_reader")
         db.execute("GRANT SELECT ON legacy.accounts,legacy.clock TO w01_reader")
-    with psycopg.connect(_checked_reset_dsn(
-            "W01_PROJECTION_DSN", "bf_projection", "55442")) as db:
+    with psycopg.connect(target_admin) as db:
         if db.execute("SELECT current_database(),current_user").fetchone() != (
                 "bf_projection", "postgres"):
             raise UnsafeFixture("Wrong projection database identity")
@@ -344,6 +347,19 @@ class W01ProjectionTests(unittest.TestCase):
             with self.assertRaises(UnsafeFixture):
                 validated_dsns()
 
+    def test_20_both_destructive_endpoints_preflight_before_reset(self):
+        before = authoritative_snapshot(self.source)
+        with patch.dict(os.environ, {"W01_PROJECTION_DSN":
+                                     "host=192.0.2.1 port=55442 dbname=bf_projection user=postgres"}):
+            with self.assertRaises(UnsafeFixture):
+                reset_disposable()
+        self.assertEqual(authoritative_snapshot(self.source), before)
+        with patch.dict(os.environ, {"W01_LEGACY_ADMIN_DSN":
+                                     "host=192.0.2.1 port=55438 dbname=bf_legacy user=postgres"}):
+            with self.assertRaises(UnsafeFixture):
+                reset_disposable()
+        self.assertEqual(authoritative_snapshot(self.source), before)
+
 
 
 if __name__ == "__main__":
@@ -367,7 +383,8 @@ if __name__ == "__main__":
         "failedCaseIds": case_failures,
         "negativeControls": ["projection_corruption", "unknown_source_write",
                              "watermark_regression", "source_sql_role_denial",
-                             "reader_only_cli", "superuser_dsn_denial", "source_failure",
+                             "reader_only_cli", "superuser_dsn_denial",
+                             "preflight_destructive_endpoints", "source_failure",
                              "source_fallback_failure", "invalid_endpoint"],
         "physicalHosts": 1, "independentFailureDomains": False,
         "sourceAuthority": "LEGACY", "sourceReadOnlyInProjectionCode": True,
