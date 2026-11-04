@@ -78,7 +78,7 @@ jobs:
           r=json.loads(Path('lab/results/brownfield/w01/w01-original.json').read_text())
           assert r['sourceHeadSha']==os.environ['SOURCE_HEAD_SHA']==r['checkoutSha']
           assert r['status']=='PASS_BOUNDED_SYNTHETIC_TESTS'
-          assert r['testsPlanned']==r['testsRun']==r['passed']==19
+          assert r['testsPlanned']==r['testsRun']==r['passed']==20
           assert not r['failedCaseIds']
           assert r['physicalHosts']==1 and r['independentFailureDomains'] is False
           assert r['sourceAuthority']=='LEGACY' and r['sourceReadOnlyInProjectionCode'] is True
