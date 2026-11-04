@@ -96,6 +96,10 @@ La guía es [CONTRIBUTING.md](CONTRIBUTING.md) (en inglés): caminos por perfil,
 
 La [campaña E2 acotada está cerrada](docs/E2_CLOSEOUT.es.md), pero **E2 no tiene un PASS científico global**. Para obtenerlo haría falta una nueva campaña con recursos distribuidos reales y un contrato aprobado: [protocolo completo E2 Full PASS (ES)](docs/E2_FULL_PASS_PROTOCOL.es.md) · [EN](docs/E2_FULL_PASS_PROTOCOL.md). Requiere probar X00–X08, incluir fallos físicos y SQL HA, registrar métricas crudas y obtener auditoría independiente. **No se reactiva E2 como tarea activa.**
 
+## Autoridad del origen en una migración brownfield
+
+El [protocolo de fencing y aceptación CAP-005/007](docs/BROWNFIELD_SOURCE_FENCE.es.md) ([EN](docs/BROWNFIELD_SOURCE_FENCE.md)) y el [inventario bloqueante](lab/brownfield/owner_readiness/README.md) especifican qué rutas de escritura del legacy y efectos externos deben estar demostrados antes de cualquier corte. La herramienta solo valida estructura, **no** comprueba el fencing en CICS/IMS/Db2 ni concede aprobación TODM G2/G6.
+
 ## Más del autor
 
 El libro se apoya en este trabajo:
