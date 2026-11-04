@@ -1,0 +1,58 @@
+{
+  "classification": "TRANSCRIBED_FROM_ACTIONS_ORIGINAL_JOB_LOG_NOT_ZIP_BYTES",
+  "originalResult": {
+    "checkoutSha": "fc248c0ba72f40ac797b407dac818d2e1ad7219e",
+    "classification": "REAL_POSTGRESQL_SYNTHETIC_W01_NOT_BANK_ACCEPTANCE",
+    "customerApproval": false,
+    "failedCaseIds": [],
+    "incrementalCdcImplemented": false,
+    "independentFailureDomains": false,
+    "isSpendableBalance": false,
+    "negativeControls": [
+      "projection_corruption",
+      "unknown_source_write",
+      "watermark_regression",
+      "source_sql_role_denial",
+      "reader_only_cli",
+      "superuser_dsn_denial",
+      "preflight_destructive_endpoints",
+      "source_failure",
+      "source_fallback_failure",
+      "invalid_endpoint"
+    ],
+    "passed": 20,
+    "physicalHosts": 1,
+    "python": "3.12.15",
+    "readFreshness": "SAMPLED_WATERMARK_NOT_LINEARIZABLE",
+    "sourceAuthority": "LEGACY",
+    "sourceFinancialWritesDeniedByDatabase": true,
+    "sourceHeadSha": "fc248c0ba72f40ac797b407dac818d2e1ad7219e",
+    "sourceReadOnlyInProjectionCode": true,
+    "sourceReaderRole": "w01_reader",
+    "sourceSuperuserRejected": true,
+    "status": "PASS_BOUNDED_SYNTHETIC_TESTS",
+    "testsPlanned": 20,
+    "testsRun": 20,
+    "todmG2": "INCONCLUSIVE",
+    "todmG6": "BLOCK",
+    "utc": "2026-11-04T15:16:46.683618+00:00"
+  },
+  "workflow": {
+    "url": "https://github.com/jmfloreszazo/de-la-caja-negra-a-la-evidencia/actions/runs/41855993179",
+    "runId": 41855993179,
+    "jobId": 126664633712,
+    "sourceSha": "fc248c0ba72f40ac797b407dac818d2e1ad7219e",
+    "mergeSha": "0894478ddbc2733e1fcffbd44c4b5b1137ed06db"
+  },
+  "artifactMetadata": {
+    "id": 13336738360,
+    "name": "w01-postgresql-synthetic-original-not-bank-approved",
+    "sizeBytes": 2838,
+    "sha256": "sha256:8a8b036c2ac47d73a4a065e73bf1b7484a41be0fa39a77b71f37d75c25b1831f",
+    "expiresAt": "2027-02-02T15:16:24Z",
+    "archiveDownloadUrl": "https://api.github.com/repos/jmfloreszazo/de-la-caja-negra-a-la-evidencia/actions/artifacts/13336738360/zip"
+  },
+  "verbatimExcerpt": "evidence/runs/W01-READER-PR93-ORIGINAL-CI-EXCERPT.log",
+  "scope": "PostgreSQL SELECT-only source reader role and test-only admin SQL permissions, two independent clusters but one hosted runner, no real mainframe, bank release, CDC, source-clock unbypassability or linearizable read",
+  "limitations": "Log transcript and GitHub published artifact metadata; ZIP bytes not independently downloaded and rehashed by this check."
+}
