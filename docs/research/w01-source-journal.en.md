@@ -6,7 +6,7 @@
 
 W01's original read model took full PostgreSQL snapshots, checked a sampled source clock and fell back to the legacy database on stale/corrupt data. Its 20-case follow-up established **SQL-enforced SELECT-only credentials**. Neither proved that the source emits a complete, replayable journal, that an initial snapshot aligns with subsequent changes, or that failures cannot publish partial target state.
 
-The new experiment builds a **synthetic transactional change journal in the source fixture**, with 20 real-PostgreSQL test scenarios. It does not use a COBOL parser or assume a particular IBM Z, IBM i, Fujitsu, BS2000, IMS, CICS or Db2 change-capture mechanism.
+The new experiment builds a **synthetic transactional change journal in the source fixture**, with 22 planned real-PostgreSQL test scenarios, including concurrent writers and a valid-hash wrong-before-image negative. It does not use a COBOL parser or assume a particular IBM Z, IBM i, Fujitsu, BS2000, IMS, CICS or Db2 change-capture mechanism.
 
 ## Architecture and invariants
 
