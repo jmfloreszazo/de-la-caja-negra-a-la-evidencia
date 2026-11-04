@@ -100,6 +100,10 @@ La [campaña E2 acotada está cerrada](docs/E2_CLOSEOUT.es.md), pero **E2 no tie
 
 El [protocolo de fencing y aceptación CAP-005/007](docs/BROWNFIELD_SOURCE_FENCE.es.md) ([EN](docs/BROWNFIELD_SOURCE_FENCE.md)) y el [inventario bloqueante](lab/brownfield/owner_readiness/README.md) especifican qué rutas de escritura del legacy y efectos externos deben estar demostrados antes de cualquier corte. La herramienta solo valida estructura, **no** comprueba el fencing en CICS/IMS/Db2 ni concede aprobación TODM G2/G6.
 
+## W01: journal transaccional del origen, en entorno sintético
+
+El [laboratorio de journal incremental](lab/brownfield/w01_feed/README.md) y la investigación [ES](docs/research/w01-source-journal.es.md) / [EN](docs/research/w01-source-journal.en.md) prueban secuencia confirmada en origen, captura MVCC, replay, rechazo de huecos/corrupción y cursor atómico en dos PostgreSQL. **No** es CDC productivo, fencing de mainframe, lectura linealizable ni aceptación bancaria. La proyección anterior se mantiene independiente.
+
 ## W01: seguridad de lectura impuesta por PostgreSQL
 
 La investigación [ES](docs/research/w01-reader-identity.es.md) / [EN](docs/research/w01-reader-identity.en.md) distingue una transacción SQL `READ ONLY` de una **identidad SQL con permisos exclusivamente de lectura**. Los controles negativos rechazan escrituras al origen, credenciales privilegiadas y destinos de reset no autorizados. No equivale al fencing del mainframe real.
