@@ -1,0 +1,48 @@
+name: Retire integrated vendor-runtime feature branch
+on:
+  push:
+    branches: [main]
+    paths: ['.github/workflows/vendor-runtime-retire.yml']
+permissions:
+  contents: write
+  pull-requests: read
+jobs:
+  retire-exact-merged-branch:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          fetch-depth: 0
+      - name: Remove only unchanged, already merged source branch with atomic lease
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          python3 - <<'PY'
+          import json, os, subprocess
+          repo = os.environ['GITHUB_REPOSITORY']
+          branch = 'feature/vendor-runtime-contracts-17-18-28'
+          expected_tip = 'e3510d950105959852de2bc47cc99bca7ca56abf'
+          expected_merge = '69a915bd0f7e6b8c736bb4a738d106325b6cfdef'
+          assert repo == 'jmfloreszazo/de-la-caja-negra-a-la-evidencia'
+          assert os.environ['GITHUB_REF'] == 'refs/heads/main'
+          pr = json.loads(subprocess.check_output(
+              ['gh','api','repos/'+repo+'/pulls/97'], text=True))
+          assert pr['state']=='closed' and pr['merged_at'] and pr['base']['ref']=='main'
+          assert pr['merge_commit_sha']==expected_merge
+          assert pr['head']['ref']==branch and pr['head']['sha']==expected_tip
+          for ancestor in (expected_tip, expected_merge):
+              subprocess.run(['git','merge-base','--is-ancestor',ancestor,'HEAD'],check=True)
+          current = subprocess.check_output(
+              ['git','ls-remote','origin','refs/heads/'+branch],
+              text=True).strip()
+          if current:
+              assert current.split()[0]==expected_tip, 'Branch was changed; refuse deletion'
+              subprocess.run(
+                  ['git','push','--force-with-lease=refs/heads/'+branch+':'+expected_tip,
+                   'origin',':refs/heads/'+branch], check=True)
+          assert not subprocess.check_output(
+              ['git','ls-remote','origin','refs/heads/'+branch],
+              text=True).strip()
+          print('Retired exact integrated vendor-runtime research branch',expected_tip)
+          PY
