@@ -31,4 +31,4 @@ No real COBOL/CICS/IMS/Db2 role mapping, no enforcement against a privileged ban
 
 ## Complementary PR-head workflows
 
-Premerge, Brand artwork, Lab (offline/native/Podman) and the W01 run are all PASS on the exact PR-head SHA. Book markdown and ES/EN links are PASS; check the [Book run #41855993301](https://github.com/jmfloreszazo/de-la-caja-negra-a-la-evidencia/actions/runs/41855993301) for the final diagram-render status before claiming **full Book PASS**. This follow-up did not modify diagram sources.
+Premerge, Brand artwork, Lab (offline/native/Podman) and the W01 run are all PASS on the exact PR-head SHA. [Book #41855993301](https://github.com/jmfloreszazo/de-la-caja-negra-a-la-evidencia/actions/runs/41855993301) **fully completed SUCCESS** on the exact PR-head SHA: diagrams, Markdown and ES/EN links/sync all passed. This was independently observed after the original partial checkpoint. This follow-up did not modify diagram sources.
