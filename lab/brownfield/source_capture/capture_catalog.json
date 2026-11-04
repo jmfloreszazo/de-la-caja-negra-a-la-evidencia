@@ -4,7 +4,7 @@
   "researchDate": "2026-11-04",
   "sourceNativeTests": "NOT_EXECUTED",
   "customerApproval": "NOT_OBTAINED",
-  "coverageNotice": "Platform and installed product are unknown; sources document possible mechanisms, not bank installation capability.",
+  "coverageNotice": "Platform and installed product unknown. Search indexing supplied technical excerpts; direct IBM Docs opening returned HTTP 403 for some references. No full-manual audit or bank installation verification claimed.",
   "genericChecks": [
     "COMMIT_ORDER_AND_UOR",
     "SNAPSHOT_LOG_HANDOFF",
@@ -23,7 +23,7 @@
       "title": "Db2 13 altering tables to capture changed data",
       "vendor": "IBM",
       "versionScope": "Db2 for z/OS 13 documentation",
-      "retrieval": "SEARCH_RESULT_READ",
+      "retrieval": "SEARCH_INDEX_DIRECT_403",
       "claim": "For products that require it, DATA CAPTURE CHANGES changes logging; activation, special data types and version must be assessed"
     },
     {
@@ -32,7 +32,7 @@
       "title": "Q Capture / Q Apply and Db2 log",
       "vendor": "IBM",
       "versionScope": "InfoSphere Data Replication 11.4.0 docs",
-      "retrieval": "SEARCH_RESULT_READ",
+      "retrieval": "SEARCH_INDEX",
       "claim": "Q Capture reads Db2 recovery log and forwards committed changes through MQ"
     },
     {
@@ -41,7 +41,7 @@
       "title": "VSAM CDC FAQs",
       "vendor": "IBM",
       "versionScope": "Classic CDC for z/OS 11.4.0 docs",
-      "retrieval": "SEARCH_RESULT_READ",
+      "retrieval": "SEARCH_INDEX_DIRECT_403",
       "claim": "VSAM has no universal built-in database logging; CICS versus non-RLS batch paths require different capture"
     },
     {
@@ -50,7 +50,7 @@
       "title": "VSAM LOGREPLICATE and LOGSTREAMID",
       "vendor": "IBM",
       "versionScope": "Classic CDC for z/OS 11.4.0 docs",
-      "retrieval": "SEARCH_RESULT_READ",
+      "retrieval": "SEARCH_INDEX",
       "claim": "IDCAMS LOGREPLICATE and logstream augmentation for stated Classic CDC pathway"
     },
     {
@@ -59,7 +59,7 @@
       "title": "IMS source prerequisites and DL/I batch",
       "vendor": "IBM",
       "versionScope": "Classic CDC for z/OS 11.4.0 docs",
-      "retrieval": "SEARCH_RESULT_READ",
+      "retrieval": "SEARCH_INDEX",
       "claim": "DL/I batch requires DBRC Y, DFSFLGX0, permanent IEFRDER; supported IMS database types vary"
     },
     {
@@ -68,7 +68,7 @@
       "title": "IMS online/archive logs and DL/I batch ordering",
       "vendor": "IBM",
       "versionScope": "Classic CDC for z/OS 11.4.0 docs",
-      "retrieval": "SEARCH_RESULT_READ",
+      "retrieval": "SEARCH_INDEX_DIRECT_403",
       "claim": "IMS changes and syncpoints can be read; batch steps can delay ordering until log closes"
     },
     {
@@ -77,7 +77,7 @@
       "title": "IMS DBD EXIT capture augmentation",
       "vendor": "IBM",
       "versionScope": "IMS Remote Source 11.4.0 docs",
-      "retrieval": "SEARCH_RESULT_READ",
+      "retrieval": "SEARCH_INDEX",
       "claim": "Capture-specific DBD/SEGM EXIT and DBDGEN/ACBLIB configuration required where applicable"
     },
     {
@@ -86,7 +86,7 @@
       "title": "IBM i journal management",
       "vendor": "IBM",
       "versionScope": "IBM i 7.6 documentation",
-      "retrieval": "SEARCH_RESULT_READ",
+      "retrieval": "SEARCH_INDEX",
       "claim": "Journal receiver contains row/file activity with source and record images subject to journal settings"
     },
     {
@@ -95,7 +95,7 @@
       "title": "Remote receiver chains and filtering",
       "vendor": "IBM",
       "versionScope": "IBM i 7.5 documentation",
-      "retrieval": "SEARCH_RESULT_READ",
+      "retrieval": "SEARCH_INDEX_DIRECT_403",
       "claim": "Remote journal receivers form chains; filtered remote journals are not necessarily complete replicas"
     }
   ],
