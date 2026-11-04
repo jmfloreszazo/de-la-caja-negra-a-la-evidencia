@@ -31,4 +31,4 @@ No existe demostración de identidad ni fencing en COBOL/CICS/IMS/Db2 reales, pr
 
 ## Workflows adicionales
 
-Premerge, Brand artwork, Lab (offline/nativo/Podman) y W01 están en PASS sobre el mismo SHA original. Book tiene superados Markdown y enlaces ES/EN; comprobar el [workflow Book #41855993301](https://github.com/jmfloreszazo/de-la-caja-negra-a-la-evidencia/actions/runs/41855993301) antes de afirmar el PASS **completo** de diagramas. No se han cambiado fuentes de figuras.
+Premerge, Brand artwork, Lab (offline/nativo/Podman) y W01 están en PASS sobre el mismo SHA original. [Book #41855993301](https://github.com/jmfloreszazo/de-la-caja-negra-a-la-evidencia/actions/runs/41855993301) **finalizó con SUCCESS completo** en el SHA exacto del PR: diagramas, Markdown, enlaces y sincronización ES/EN superados. Comprobado después de la observación inicial parcial. No se han cambiado fuentes de figuras.
