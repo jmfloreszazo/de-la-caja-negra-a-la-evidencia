@@ -67,4 +67,4 @@ The real incumbent-owned fence and accounting acceptance remain [#58](https://gi
 
 ## Reproducibility
 
-Execute the [Podman laboratory](../../lab/brownfield/w01_feed/README.md). The original-head GitHub Actions artifact and any adverse results must be linked here **after** the workflow runs, with exact source SHA, test counts and raw-log provenance; documentation alone is not a PASS.
+The [original 22/22 PostgreSQL CI campaign](https://github.com/jmfloreszazo/de-la-caja-negra-a-la-evidencia/actions/runs/41864738886) has now completed and its original artifact ZIP was independently SHA-256 verified. See [original-run evidence EN](../../evidence/runs/W01-SOURCE-JOURNAL.md) / [ES](../../evidence/runs/W01-SOURCE-JOURNAL.es.md). The [Podman runbook](../../lab/brownfield/w01_feed/README.md) remains available for fresh tests; the original SHA and negative controls must be preserved. This does not establish a banking contract.
