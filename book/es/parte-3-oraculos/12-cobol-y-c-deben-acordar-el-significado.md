@@ -51,6 +51,21 @@ decimal.Round(25m * 200m / 10000m, 0,
 
 Ninguna de las dos líneas por defecto es un error de .NET. Es una política distinta. El error aparece cuando nadie decide cuál es la nuestra.
 
+## Un error de CCSID puede sobrevivir a la ida y vuelta
+
+La conversión de caracteres tiene su propio contrato de observación. IBM documenta significados distintos para varios bytes en los CCSID 37 y 500 [63]. Por ejemplo:
+
+| Byte de origen | CCSID 37 | CCSID 500 |
+| --- | --- | --- |
+| `BA` | `[` | `¬` |
+| `4A` | `¢` | `[` |
+
+Decodificar con el mapa equivocado puede producir texto válido. Volver a codificarlo con ese mismo mapa puede recuperar los bytes originales y conservar la interpretación errónea. Por tanto, una ida y vuelta correcta y el manejo estricto de errores no acreditan equivalencia semántica. Los caracteres esperados necesitan una autoridad separada.
+
+La [kata de fronteras EBCDIC](../../../lab/examples/ebcdic-boundaries/README.md) fija tres registros sintéticos con independencia del decodificador: ocho bytes de texto, tres bytes opacos de decimal empaquetado y un contador binario de dos bytes. Comprueba catorce expectativas documentadas de códigos de carácter, relleno, límites de campos y una etiqueta cuya representación UTF-8 crece. Cuatro transformaciones deliberadamente erróneas atacan la selección de CCSID, la eliminación de relleno, la conversión de binarios y el orden de bytes. Califican esos predicados; no certifican todas las codificaciones.
+
+El símbolo del euro no puede codificarse con el codec cp037 seleccionado; el manejo estricto genera un error y la sustitución pierde el carácter [64]. La kata exige un CCSID soportado explícito y conserva los campos binarios. No deduce la codificación por el aspecto plausible del texto. En una interfaz real hay que obtener registros autorizados y metadatos de codificación/layout, y validar juntos origen, herramienta de transferencia y destino, incluidas conversiones, sustituciones y truncamiento. Reproducir Python en un sistema operativo es distinto de validar el host nativo o Podman/WSL2. Estos casos no promueven listados ilustrativos existentes ni aprueban políticas bancarias.
+
 ## La memoria también es parte del contrato
 
 REDEFINES permite describir una misma región de datos con otra estructura. Una traducción que convierte cada nombre en una variable independiente puede perder esa relación. En nuestro programa, el registro de entrada se interpreta mediante un grupo redefinido. El ejemplo es sencillo y visible: los mismos caracteres representan importe, tasa y estado del cliente.

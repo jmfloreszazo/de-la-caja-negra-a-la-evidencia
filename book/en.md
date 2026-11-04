@@ -897,6 +897,21 @@ decimal.Round(25m * 200m / 10000m, 0,
 
 Neither default line is a .NET bug. It is a different policy. The bug appears when nobody decides which one is ours.
 
+#### A CCSID error can survive a round trip
+
+Character conversion has its own observation contract. IBM documents different meanings for several byte values in CCSIDs 37 and 500 [63]. For example:
+
+| Source byte | CCSID 37 | CCSID 500 |
+| --- | --- | --- |
+| `BA` | `[` | `¬` |
+| `4A` | `¢` | `[` |
+
+Decoding under the wrong mapping can produce valid text. Encoding it back under that same wrong mapping can recover the original bytes while preserving the wrong interpretation. A successful round trip and strict error handling therefore do not establish semantic equivalence. Expected characters need a separate authority.
+
+The [EBCDIC boundary exercise](../lab/examples/ebcdic-boundaries/README.md) fixes three synthetic records independently of the decoder: eight text bytes, three opaque packed-decimal bytes and a two-byte binary counter. It checks fourteen documented code-point expectations, padding, field boundaries and a label whose UTF-8 representation expands. Four deliberately wrong result transformations target CCSID selection, stripped padding, binary transcoding and byte order. They qualify those predicates; they do not certify every encoding.
+
+The euro sign cannot be encoded by the selected cp037 codec; strict handling raises, while replacement loses the character [64]. This exercise requires an explicit supported CCSID and preserves binary fields. It does not infer encoding from plausible text. For an actual interface, obtain authorized raw records and encoding/layout metadata, then validate the host, transfer tool and destination together, including conversion, substitution and truncation. Python reproduction on an OS is separate from native host or Podman/WSL2 validation. These cases do not promote existing illustrative listings or approve bank policy.
+
 #### Memory is part of the contract too
 
 REDEFINES lets us describe the same region of data with another structure. A translation that turns each name into an independent variable may lose that relationship. In our program, the input record is interpreted through a redefined group. The example is simple and visible: the same characters represent amount, rate and customer status.
@@ -3648,3 +3663,7 @@ The author's articles are cited by their original Spanish titles, with an Englis
 [61] Fujitsu. *COBOL2000 V1.6 — Net Express development environment with the BS2000/OSD option*. BS2000/OSD documentation. Indexed primary documentation consulted 3 November 2026; version scope does not establish installed products or current availability. <https://bs2manuals.ts.fujitsu.com/psCOBOL2000V16en/net-express-development-environment-with-the-bs2000-osd-option-cobol-compiler-user-guide-164-22034711.html>
 
 [62] IBM. *IBM Power Systems Performance Capabilities Reference*. IBM i / Power9 reference, April 2021. Indexed primary documentation consulted 3 November 2026; version scope does not establish installed products or current availability. <https://public.dhe.ibm.com/services/us/igsc/idoctor/perf/systems_power_software_i_perfmgmt_pcrm_p9_april_2021_v1_26016726USEN.pdf>
+
+[63] IBM. *CCSID Comparisons*, swg21197185. Modified 20 June 2019; consulted 4 November 2026. Seven documented code-point differences between CCSIDs 37 and 500; not a native conversion test. <https://www.ibm.com/support/pages/ccsid-comparisons>
+
+[64] Python Software Foundation. *Python 3.12: codecs — Codec registry and base classes*. Consulted 4 November 2026. Selected cp037/cp500 codecs and strict/replace error handling. <https://docs.python.org/3.12/library/codecs.html>

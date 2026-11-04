@@ -71,6 +71,8 @@ python3 tools/coordinated_omission_demo.py
 
 A deterministic simulation of why a closed-loop load test hides a 500 ms stall that an open-loop test exposes. It is a simulation, not a measurement.
 
+The [EBCDIC boundary exercise](examples/ebcdic-boundaries/README.md) separately checks explicit CCSIDs, fixed text/binary fields and lossy conversion with Python only. It does not change this lab's protected financial baselines.
+
 ## Module 1 · Run your COBOL locally
 
 ```bash
