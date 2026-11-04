@@ -74,7 +74,7 @@ def validate(data) -> list[str]:
         if sid in seen_sources:
             problems.append(f"Source {sid} duplicated")
         seen_sources[sid] = src
-        if not _text(sid, 2) or not _text(src["vendor"]) or not _text(src["title"]):
+        if not _text(sid, 2) or not _text(src["vendor"], 2) or not _text(src["title"]):
             problems.append(f"Source {idx}: missing vendor/name")
         if not _text(src["version_scope"]) or not _text(src["url"]) or not (
             src["url"].startswith("https://www.ibm.com/") or
@@ -104,7 +104,7 @@ def validate(data) -> list[str]:
             problems.append(f"Record {rid}: invalid taxonomy")
         for key in ("vendor", "platform", "original_contract", "semantic_gap",
                     "negative_control", "independent_oracle"):
-            if not _text(rec[key], 12):
+            if not _text(rec[key], 2 if key == "vendor" else 12):
                 problems.append(f"Record {rid}: missing {key}")
         for key in ("candidate_patterns", "required_measurements"):
             if not isinstance(rec[key], list) or len(rec[key]) == 0 or any(
