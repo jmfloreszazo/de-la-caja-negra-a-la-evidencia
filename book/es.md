@@ -207,6 +207,22 @@ Solicitar únicamente extractos autorizados y minimizados. El resultado útil es
 
 En un assessment real, los campos sin responder siguen como `NEEDS_CUSTOMER_DATA`. Un ensayo SQL Linux puede validar una invariante candidata; no mide canales IBM, acredita una opción de recuperación MCP ni certifica la instalación antigua. El [capítulo de patrones](#capítulo-13--antes-de-elegir-un-patrón-identifica-el-contrato) utiliza tres ejemplos de plataforma para mostrar por qué importa atribuir cada garantía.
 
+#### Qué sistema operativo y subsistema estamos sustituyendo
+
+«Mainframe» no identifica por sí solo una plataforma de ejecución. En **IBM Z**, primero localizamos el CPC, su particionamiento PR/SM, las LPAR y el sistema realmente instalado: z/OS, z/VM, Linux on IBM Z u otro entorno. En z/OS, WLM clasifica trabajo según clases de servicio y objetivos; el subsistema de canales permite E/S asíncrona respecto al procesador central. No son sinónimos de hilos, `async/await`, HPA o más memoria: hay que medir colas, caminos de canal, actividad de disco, log y prioridades de trabajo conjuntamente. [IBM: CSS](https://www.ibm.com/docs/en/zos-basic-skills?topic=mainframe-channel-subsystem-css) · [IBM: WLM](https://www.ibm.com/docs/en/zos/3.2.0?topic=tabs-service-classes).
+
+Tampoco significa lo mismo **Db2 for z/OS** que Db2 for i o una instancia PostgreSQL. Las opciones `UR`, `CS`, `RS` y `RR` tienen consecuencias de visibilidad y bloqueo; el `BIND` del paquete también interviene. Decir «usaremos `READ COMMITTED` y ya está» es una hipótesis de migración, no una equivalencia demostrada. El oráculo debe forzar escrituras concurrentes, rollback, esperas, bloqueos, consultas repetidas y saldos contables. [IBM: aislamiento Db2 13](https://www.ibm.com/docs/en/db2-for-zos/13.0.0?topic=services-isolation).
+
+**IBM i, antes AS/400**, es otra familia: su *commitment control* relaciona transacciones, trabajos y journaling, pero no hereda por ello la semántica de Db2 for z/OS, CICS o un monitor de transacciones IBM Z. Hay que preguntar por journals, receivers, trabajos, restauración y límites de compromiso que realmente están activos. [IBM: commitment control](https://www.ibm.com/docs/en/i/7.6.0?topic=database-commitment-control).
+
+En **Unisys ClearPath MCP**, Enterprise Database Server dispone de estructuras y accesos ordenados que no deben trasladarse ingenuamente a una tabla SQL. MCP y **OS 2200** tampoco son el mismo sistema: en un conector TIP de OS 2200, la configuración puede reenviar una petición tras un fallo de envío; la documentación advierte que el reintento puede no ser adecuado para una aplicación con estado. El riesgo bancario es concreto: el host pudo confirmar la operación y perderse solo la respuesta. Un nuevo endpoint HTTP sin identidad de operación ni consulta de resultado puede duplicar el efecto. [Unisys: Accesses](https://www.support.unisys.com/aseries/docs/ClearPath-MCP-21.0/38508198-005/section-000081944.html) · [Unisys: TIP](https://www.support.unisys.com/ePortalIC-10.0/topic/82073594_clearpath_eportal_developerhelp/html/section-000039403.htm).
+
+**Fujitsu GS21** merece su propia ficha. Un anuncio histórico de 2018 para GS21 3600/3400 y GSS21sx acredita únicamente ese anuncio, **no** qué versión de MSP/XSP, base de datos, monitor, sistema de ficheros o soporte hay en una instalación en 2026. NEC ACOS y Bull/Atos GCOS siguen igualmente en descubrimiento cuando faltan modelo, versión y manual autorizado. Ignorar esas lagunas o atribuirles funciones de z/OS sería una mala arqueología. [Fujitsu: anuncio archivado](https://info.archives.global.fujitsu/global/about/resources/news/press-releases/2018/0417-01.html).
+
+**Una traza que sí pediría:** instante de entrada por sucursal o móvil → autenticación y enrutamiento → espera de admisión → unidad de trabajo del monitor → acceso e índices/buffer pool → bloqueo → escritura de log y COMMIT duradero → confirmación → entrega al canal. Por cada salto: `traceId`, identidad de operación, versión/época del escritor, tiempos monotónicos, estado de reintento, ruta de retorno, p50/p95/p99 *medidos en la misma población de solicitudes*, y registro de efectos externos. No se suman percentiles de componentes distintos para fabricar un p99 global. Sin esta evidencia no se convierten MIPS/MSU/CPW en vCPU ni se acredita un SLO con pruebas de otro motor.
+
+El [compendio de contratos por fabricante](../docs/research/vendor-runtime-contracts.es.md) conecta estas preguntas con sus patrones de destino, límites y pruebas negativas. Sus filas son **investigación o descubrimiento**, nunca observación del sistema de un cliente.
+
 ### Capítulo 2 · El sistema que estamos intentando conservar
 
 > [!IMPORTANT]
@@ -991,6 +1007,28 @@ Después, identificar atomicidad. Conservar efectos inmediatamente inseparables 
 Finalmente, elegir ubicación según demanda medida y dominios de fallo. Una proyección puede descargar consultas si explicita su frescura. CDC puede alimentarla, pero no transfiere autoridad de escritura. Los workers horizontales siguen compartiendo límites de base de datos/log/cuentas calientes. Conservar o integrar el motor original cuando se desconoce su contrato, falta un reemplazo demostrado de una recuperación necesaria o una modernización más estrecha ya aporta el valor buscado.
 
 Fujitsu GS21, NEC ACOS, Hitachi VOS y Bull GCOS siguen como descubrimiento sin correspondencias de funciones verificadas en este incremento. NonStop, OpenVMS, IBM i y HP 3000 se marcan aparte como plataformas adyacentes por investigar. Desconocido significa investigación pendiente; no ausente, sin soporte o equivalente. El inventario completo de #28 y sus ejemplos batch/offline/CDC/internacionales siguen pendientes. Esta primera base aporta un formato verificable sin presentar una lista larga sin revisar como investigación terminada.
+
+#### El patrón depende del fabricante, del subsistema y de quién posee el COMMIT
+
+| Plataforma y responsabilidad documentada | Sustitución candidata | Diferencia no cubierta automáticamente | Oráculo negativo imprescindible |
+| --- | --- | --- | --- |
+| IBM Z: CSS/FICON descarga E/S de CPU | Colas acotadas, almacenamiento duradero, rutas redundantes | `async` no crea un subsistema de canales ni un dominio de fallo equivalente | Saturar/romper camino de log y medir respuesta hasta COMMIT |
+| z/OS: WLM y clases de servicio | Cuotas, admisión, prioridades y autoscaling horizontal | CPU limit y HPA no ofrecen las mismas metas de servicio | Competencia de cargas con p99 por clase |
+| Db2 for z/OS: aislamiento y locking | SQL transaccional + política explícita de reintentos | Mismo nombre de aislamiento no prueba mismo historial concurrente | Dos transferencias, rollback, timeouts y saldo conservado |
+| IBM i: commitment control y journal | Lector incremental bajo autoridad origen | Un journal no garantiza el contrato transaccional completo del canal | Interrumpir job y recuperar sin asiento parcial |
+| MCP: Access de Enterprise Database Server | ACL de claves, orden y modelo de dominio | Índice SQL no demuestra orden/selección original | Selección y orden de registros, restart y duplicados |
+| OS 2200: conector TIP con reenvío opcional | Idempotencia por operación + consulta de resultado | Reenviar después de perder respuesta puede duplicar el efecto | COMMIT sin ACK y reenvío: un solo asiento |
+| Fujitsu GS21 (anuncio histórico) | **Retener / investigar** hasta identificar el producto instalado | Modelo histórico no acredita OS, DB, CDC o soporte del cliente | Rechazar elección de patrón sin inventario/manuales |
+
+No hay una tabla universal *fabricante → microservicio*; el modelo tiene que declarar **infraestructura, aplicación, datos, seguridad, operación, excepción y contrato de fallo**. «Conservar» también es una decisión moderna y legítima cuando la invariante aún no se sabe demostrar. Los ejemplos de la matriz no son el resultado de ejecutar los sistemas de origen: proceden de documentación de producto versionada o de un anuncio histórico clasificado como tal.
+
+##### Dos anti-patrones particularmente caros
+
+**Primero:** usar actores Orleans para sustituir automáticamente un bloqueo de dos cuentas. Un actor puede serializar peticiones por clave, pero dos actores, dos persistencias y un switch externo no comparten por ello un COMMIT atómico. Para una transferencia, puede ser preferible **un único escritor duradero y una transacción SQL**, con outbox, auditoría e idempotencia. El actor es opcional y debe demostrar qué contención elimina, sin regalar semántica contable.
+
+**Segundo:** llamar CDC al consumo de un journal de pruebas. Nuestro W01 PostgreSQL ya demostró 22/22 controles acotados de snapshot, secuencia, replay y cursor; el oráculo sintético independiente de handoff pasó 26/26. Ninguno leyó logs nativos de Db2/VSAM/IMS ni prueba que se cubrieran todos los escritores batch, online o privilegiados. La estrategia real puede ser CDC validado, exportación con corte, adaptación sin doble escritor o **conservación** del motor hasta que haya garantías.
+
+Para cada candidato, el [catálogo machine-readable](../research/vendor-runtime-contracts/catalog.json) exige contrato original, patrón, brecha, prueba negativa, oráculo y medidas del cliente. Sus controles rechazan elevar una hipótesis a equivalencia o aprobación sin evidencias. El [dossier ES](../docs/research/vendor-runtime-contracts.es.md) y la [edición EN](../docs/research/vendor-runtime-contracts.en.md) reúnen las preguntas para operador, DBA, seguridad y negocio.
 
 ### Capítulo 14 · Strangler Fig: cambiar el borde antes que el corazón
 

@@ -1,0 +1,42 @@
+{
+  "classification": "ORIGINAL_GITHUB_ACTIONS_JOB_LOG_PLUS_PUBLISHED_ARTIFACT_METADATA_NOT_DOWNLOADED_ZIP",
+  "source": {
+    "repository": "jmfloreszazo/de-la-caja-negra-a-la-evidencia",
+    "pr": 97,
+    "originalRunId": 41914291930,
+    "originalJobId": 126869737831,
+    "originalSourceHeadSha": "7dde2c7cff508206c2f154a4e55de798d4cff78c",
+    "originalCheckoutSha": "7dde2c7cff508206c2f154a4e55de798d4cff78c",
+    "runUrl": "https://github.com/jmfloreszazo/de-la-caja-negra-a-la-evidencia/actions/runs/41914291930"
+  },
+  "originalResult": {
+    "classification": "VENDOR_METADATA_ONLY_NOT_NATIVE_EXECUTION",
+    "status": "PASS_METADATA_INTEGRITY_25_CASES",
+    "testsRun": 25,
+    "unexpectedFailures": 0,
+    "contractRows": 11,
+    "sourceRows": 10,
+    "nativeExecution": false,
+    "parityVerified": false,
+    "productionApproved": false,
+    "todmG2": "INCONCLUSIVE",
+    "todmG6": "BLOCK"
+  },
+  "artifactMetadata": {
+    "id": 13365075026,
+    "name": "vendor-runtime-contract-metadata-original-not-native",
+    "sizeBytes": 1847,
+    "githubReportedSha256": "fb3ec79701bfc325fdf93e597b777f44dad5003e66f72c26be409c2d0e54c987",
+    "originalZipDownloadedAndIndependentlyHashed": false,
+    "expiry": "2027-02-02T21:14:57Z"
+  },
+  "originalCiLogExcerpt": "evidence/runs/VENDOR-RUNTIME-PR97-ORIGINAL-CI-EXCERPT.log",
+  "earlierNegativeRun": {
+    "runId": 41914127029,
+    "reason": "Erroneous adversarial fixture paired Unisys OS 2200 row with Unisys MCP source, so same-vendor reference was correctly accepted; test expectation incorrect; corrected negative cross-reference uses IBM source.",
+    "historicalConclusion": "FAIL_1_OF_25",
+    "notReclassified": true
+  },
+  "scope": "Metadata-only validation of authored version-attributed vendor patterns; source files documented and no IBM Z/IBM i/Unisys/Fujitsu native machine execution or real-bank data. Source access via search index (IBM direct 403), vendor technical text (Unisys) and 2018 Fujitsu archived announcement.",
+  "limitations": "Original test/metadata log preserved; GitHub-reported archive digest not independently rehashed. Historical failure remains in GitHub. A passing metadata validator is not source correctness, product support, performance parity or deployment approval."
+}

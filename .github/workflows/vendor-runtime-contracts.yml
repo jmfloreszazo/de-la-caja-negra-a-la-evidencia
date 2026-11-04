@@ -1,0 +1,86 @@
+name: Vendor runtime contract research integrity
+on:
+  pull_request:
+    paths:
+      - 'research/vendor-runtime-contracts/**'
+      - 'scripts/check_vendor_runtime_contracts.py'
+      - 'docs/research/vendor-runtime-contracts.*'
+      - '.github/workflows/vendor-runtime-contracts.yml'
+  push:
+    branches: [main]
+    paths:
+      - 'research/vendor-runtime-contracts/**'
+      - 'scripts/check_vendor_runtime_contracts.py'
+      - 'docs/research/vendor-runtime-contracts.*'
+      - '.github/workflows/vendor-runtime-contracts.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  conservative-metadata-only:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+      - uses: actions/setup-python@v6
+        with:
+          python-version: '3.12'
+      - name: Preserve original source and runtime
+        env:
+          SOURCE_SHA: ${{ github.event.pull_request.head.sha || github.sha }}
+        run: |
+          mkdir -p lab/results/vendor-runtime-contracts
+          test "$SOURCE_SHA" = "$(git rev-parse HEAD)"
+          {
+            echo "source_sha=$SOURCE_SHA"
+            echo "checkout_sha=$(git rev-parse HEAD)"
+            python3 --version
+            uname -a
+            sha256sum research/vendor-runtime-contracts/catalog.json \
+              scripts/check_vendor_runtime_contracts.py
+          } > lab/results/vendor-runtime-contracts/original-provenance.txt
+      - name: Execute catalog positive gate and 25 adversarial controls
+        run: |
+          set -o pipefail
+          python3 scripts/check_vendor_runtime_contracts.py \
+            | tee lab/results/vendor-runtime-contracts/original-metadata-gate.json
+          python3 scripts/check_vendor_runtime_contracts.py --self-test 2>&1 \
+            | tee lab/results/vendor-runtime-contracts/original-negative-tests.log
+      - name: Independent metadata-only claim gate
+        env:
+          SOURCE_SHA: ${{ github.event.pull_request.head.sha || github.sha }}
+        run: |
+          python3 - <<'PY'
+          import json,re,os
+          from pathlib import Path
+          root=Path('lab/results/vendor-runtime-contracts')
+          j=json.loads((root/'original-metadata-gate.json').read_text())
+          log=(root/'original-negative-tests.log').read_text()
+          assert j['status']=='VALID_METADATA_ONLY' and j['errors']==[]
+          assert j['nativePlatformTested'] is False and j['bankApproved'] is False
+          assert j['todmG2']=='INCONCLUSIVE' and j['todmG6']=='BLOCK'
+          assert len(re.findall(r'^test_[0-9]{2}_.* \.\.\. ok$', log, re.M))==25
+          assert 'Ran 25 tests' in log and re.search(r'^OK$',log,re.M)
+          data=json.loads(Path('research/vendor-runtime-contracts/catalog.json').read_text())
+          assert data['native_vendor_tests']=='NOT_EXECUTED'
+          assert data['business_approval']=='NOT_OBTAINED'
+          report={'classification':'VENDOR_METADATA_ONLY_NOT_NATIVE_EXECUTION',
+                  'sourceHeadSha':os.environ['SOURCE_SHA'],
+                  'checkoutSha':os.environ['SOURCE_SHA'],
+                  'status':'PASS_METADATA_INTEGRITY_25_CASES',
+                  'testsRun':25,'unexpectedFailures':0,'sourceRows':len(data['sources']),
+                  'contractRows':len(data['records']),
+                  'nativeExecution':False,'parityVerified':False,
+                  'productionApproved':False,'todmG2':'INCONCLUSIVE','todmG6':'BLOCK'}
+          (root/'original-result.json').write_text(json.dumps(report,indent=2)+'\n')
+          print(json.dumps(report,sort_keys=True))
+          PY
+      - name: Preserve provenance even after a failure
+        if: always()
+        uses: actions/upload-artifact@v6
+        with:
+          name: vendor-runtime-contract-metadata-original-not-native
+          path: lab/results/vendor-runtime-contracts/
+          if-no-files-found: warn
