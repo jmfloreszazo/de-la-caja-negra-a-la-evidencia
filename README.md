@@ -98,6 +98,10 @@ Start with [CONTRIBUTING.md](CONTRIBUTING.md): paths by profile, a first contrib
 
 **Not yet established:** complete E1 acceptance (E1a/E1b have only the documented partial CI evidence), E2–E4 experimental acceptance, compilation of all *Illustrative* listings, native-level English editorial review, or cross-platform reproductions beyond hosted Linux runners. M1/M2 are local experimental observations, not E3. See [editorial and evidence register](docs/EDITORIAL_REVIEW.md).
 
+## W01 source access-control hardening
+
+The [ES](docs/research/w01-reader-identity.es.md) / [EN](docs/research/w01-reader-identity.en.md) note distinguishes an SQL `READ ONLY` transaction from a **database-enforced SELECT-only identity**. New negative controls deny source financial writes to the reader, reject privileged source DSNs and preflight both disposable reset targets. This is a synthetic permission proof, not a real mainframe source fence.
+
 ## W01: PostgreSQL balance read projection
 
 The [bounded W01 PostgreSQL laboratory](lab/brownfield/w01_projection/README.md) and [EN](docs/research/w01-projection.en.md) / [ES](docs/research/w01-projection.es.md) research test a nonauthoritative balance snapshot with an atomic watermark, independent source fallback and refusal of stale/corrupt data. No CDC, linearizability, spendable balance, bank approval or source fencing is claimed.

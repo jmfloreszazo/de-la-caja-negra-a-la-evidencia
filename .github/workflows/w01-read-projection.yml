@@ -62,7 +62,8 @@ jobs:
       - name: Execute original read projection and independent negative oracle
         env:
           W01_DISPOSABLE: 'YES'
-          W01_LEGACY_DSN: 'host=127.0.0.1 port=55438 dbname=bf_legacy user=postgres password=bflocal'
+          W01_LEGACY_ADMIN_DSN: 'host=127.0.0.1 port=55438 dbname=bf_legacy user=postgres password=bflocal'
+          W01_LEGACY_DSN: 'host=127.0.0.1 port=55438 dbname=bf_legacy user=w01_reader password=w01readerlocal'
           W01_PROJECTION_DSN: 'host=127.0.0.1 port=55442 dbname=bf_projection user=postgres password=bflocal'
         run: |
           set -o pipefail
@@ -77,10 +78,13 @@ jobs:
           r=json.loads(Path('lab/results/brownfield/w01/w01-original.json').read_text())
           assert r['sourceHeadSha']==os.environ['SOURCE_HEAD_SHA']==r['checkoutSha']
           assert r['status']=='PASS_BOUNDED_SYNTHETIC_TESTS'
-          assert r['testsPlanned']==r['testsRun']==r['passed']==16
+          assert r['testsPlanned']==r['testsRun']==r['passed']==20
           assert not r['failedCaseIds']
           assert r['physicalHosts']==1 and r['independentFailureDomains'] is False
           assert r['sourceAuthority']=='LEGACY' and r['sourceReadOnlyInProjectionCode'] is True
+          assert r['sourceReaderRole']=='w01_reader'
+          assert r['sourceSuperuserRejected'] is True
+          assert r['sourceFinancialWritesDeniedByDatabase'] is True
           assert r['readFreshness']=='SAMPLED_WATERMARK_NOT_LINEARIZABLE'
           assert r['incrementalCdcImplemented'] is False and r['isSpendableBalance'] is False
           assert r['todmG2']=='INCONCLUSIVE' and r['todmG6']=='BLOCK'

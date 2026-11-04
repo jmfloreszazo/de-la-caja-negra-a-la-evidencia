@@ -8,6 +8,10 @@ W01 selects CAP-005 (balance enquiry) from the 30 **unobserved** reference capab
 
 The baseline is a deliberately synthetic **legacy PostgreSQL schema**, not an emulated mainframe. The existing legacy financial tables are only modified by a separate *test-only* fixture writer that increments the source clock **inside the same SQL transaction** as paired postings/outbox. The **projection application** only opens source transactions as `REPEATABLE READ READ ONLY`.
 
+## Source SQL identity boundary — least-privilege follow-up
+
+The original 16-case run used a superuser fixture DSN, despite the application issuing READ ONLY transactions. A [separate least-privilege follow-up](w01-reader-identity.en.md) now requires an effective nonprivileged `w01_reader` PostgreSQL login with SELECT only on source accounts/clock, and explicitly tests that even switching a transaction to READ WRITE cannot update the source ledger. The test harness retains **separate** disposal-only admin credentials; this is not evidence of bank secret isolation or incumbent fencing.
+
 ## Execution design
 
 ```text
