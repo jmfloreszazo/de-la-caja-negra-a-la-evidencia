@@ -18,7 +18,7 @@ Esta es la hoja de ruta **del repositorio**, no una declaración de que una migr
 | Capacidad sostenida y cuello de botella | Diagnóstico directo de tres cohortes integrado con PR #81; seguimiento externo #25 | Saturación y COMMIT/p99 comparables; los pilotos existentes no cierran el gate |
 | Dominios físicos y HA | Pendiente | Ejecución y evidencia sobre hosts/fallos independientes |
 
-La **campaña E2 de alcance acotado queda cerrada administrativamente**, pero su afirmación científica permanece **parcialmente verificada**. El [acta de cierre E2](docs/E2_CLOSEOUT.es.md) documenta las pruebas, los límites y el cierre de #8 como NOT_PLANNED, no como PASS. El ensayo de la PR #77 no acredita recuperación automática ni continua.
+La **campaña E2 de alcance acotado queda cerrada administrativamente**, pero su afirmación científica permanece **parcialmente verificada**. Un futuro PASS técnico exigiría el [protocolo de aceptación E2 distribuida](docs/E2_FULL_PASS_PROTOCOL.es.md) (X00–X08, dominios físicos, failover SQL y auditoría independiente), **no trabajo E2 activo**. El [acta de cierre E2](docs/E2_CLOSEOUT.es.md) documenta las pruebas, los límites y el cierre de #8 como NOT_PLANNED, no como PASS. El ensayo de la PR #77 no acredita recuperación automática ni continua.
 
 ## Situación actual
 
