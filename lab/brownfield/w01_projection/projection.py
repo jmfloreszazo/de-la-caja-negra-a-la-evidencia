@@ -3,7 +3,8 @@
 
 A snapshot reader, NOT CDC, a live mainframe integration, a bank balance API,
 a cash-authorization path or a production-ready consistency/HA guarantee.
-The source is only read with READ ONLY transactions. Fixture resets/writes
+The source is only read with READ ONLY transactions AND a separately
+validated PostgreSQL role with SELECT-only grants. Fixture resets/writes
 belong exclusively to the test harness, not this application.
 """
 from __future__ import annotations
@@ -45,15 +46,47 @@ def validated_dsns() -> tuple[str, str]:
         if not dsn:
             raise UnsafeFixture("Missing required " + key)
         params = psycopg.conninfo.conninfo_to_dict(dsn)
+        expected_role = "w01_reader" if key == "W01_LEGACY_DSN" else "postgres"
         if (any(params.get(option) for option in
                 ("hostaddr", "service", "servicefile", "target_session_attrs", "options"))
-                or (params.get("host"), params.get("port"), params.get("dbname"))
-                != ("127.0.0.1", port, name)):
-            raise UnsafeFixture("Only exact loopback disposable PostgreSQL endpoints allowed")
+                or (params.get("host"), params.get("port"), params.get("dbname"),
+                    params.get("user"))
+                != ("127.0.0.1", port, name, expected_role)):
+            raise UnsafeFixture("Only exact loopback disposable endpoints and roles allowed")
         with psycopg.connect(dsn) as conn:
-            actual = conn.execute("SELECT current_database()").fetchone()[0]
-            if actual != name:
-                raise UnsafeFixture("Unexpected actual database identity")
+            actual = conn.execute("SELECT current_database(), current_user").fetchone()
+            if actual != (name, expected_role):
+                raise UnsafeFixture("Unexpected database or effective role identity")
+            if key == "W01_LEGACY_DSN":
+                # A READ ONLY transaction is a session choice, not an access
+                # control boundary. Independently assert the DB role cannot
+                # mutate financial tables even after SET TRANSACTION READ WRITE.
+                permissions = conn.execute(
+                    "SELECT rolsuper,rolcreaterole,rolcreatedb,rolreplication,"
+                    "rolbypassrls FROM pg_roles WHERE rolname=current_user"
+                ).fetchone()
+                if permissions is None or any(permissions):
+                    raise UnsafeFixture("Source reader cannot be privileged")
+                if conn.execute(
+                    "SELECT has_schema_privilege(current_user,'legacy','CREATE')"
+                ).fetchone()[0]:
+                    raise UnsafeFixture("Source reader must not create legacy objects")
+                for table in ("legacy.accounts", "legacy.clock",
+                              "legacy.transactions", "legacy.entries",
+                              "legacy.notices"):
+                    for action in ("INSERT", "UPDATE", "DELETE", "TRUNCATE",
+                                   "REFERENCES", "TRIGGER"):
+                        if conn.execute(
+                            "SELECT has_table_privilege(current_user,%s,%s)",
+                            (table, action)).fetchone()[0]:
+                            raise UnsafeFixture("Source role can mutate: " + table)
+                    # This synthetic projector may read only the balances and
+                    # version clock, not operation details or external effects.
+                    can_read = conn.execute(
+                        "SELECT has_table_privilege(current_user,%s,'SELECT')",
+                        (table,)).fetchone()[0]
+                    if can_read != (table in ("legacy.accounts", "legacy.clock")):
+                        raise UnsafeFixture("Unexpected source SELECT privileges")
         out.append(dsn)
     return out[0], out[1]
 
