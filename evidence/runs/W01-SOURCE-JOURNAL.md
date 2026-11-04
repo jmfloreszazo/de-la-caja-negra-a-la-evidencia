@@ -23,6 +23,7 @@ The original ZIP was **downloaded**, its SHA-256 independently recalculated, and
 ## What was actually tested
 
 The original runner reported twenty-two `... ok` cases, including:
+
 - Atomic source COMMIT of two postings, outbox, source clock and source journal; source rollback produces no financial side effects.
 - Consistent MVCC snapshot bootstrap, transactionally applied target balances/cursor and incremental catch-up including a COMMIT after snapshot capture.
 - Missing or deleted historical sequence, changed hash or broken hash-chain predecessor, a recomputed but semantically incorrect before-image, and corrupted target accounts: **rejected**.
