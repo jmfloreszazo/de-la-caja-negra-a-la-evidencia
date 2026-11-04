@@ -51,6 +51,10 @@ Un **oráculo independiente y explícito** reconstruye el historial sintético d
 | Lector intenta escritura o consultar transacciones privadas | **Rechazo PostgreSQL por privilegios** |
 | Intento de reinstalar snapshot sobre cursor ya aplicado | **BLOCK**, sin retroceso |
 
+## Assessment complementario del CDC de origen por fabricante
+
+El [assessment de captura nativa](source-native-capture-assessment.es.md) distingue Db2 z/OS, VSAM CICS/batch, IMS online/DL-I, journals IBM i y deja Fujitsu/otros por verificar. Su validador comprueba **metadatos declarados**, nunca logs reales ni aceptación del banco. El PASS sintético 22/22 PostgreSQL de W01 no acredita CDC nativo de mainframe.
+
 ## Límites que no convierten esto en CDC bancario
 
 No hemos implementado decodificación de WAL, replication slots, lector de logs Db2, integración MQ, hooks de IMS/CICS, garantía de retención, recuperación de suscripciones, elección de dueño de checkpoint, firma independiente ni HA de dominios físicos. Se admiten **como máximo 256 operaciones sintéticas**, con 16 cuentas, para facilitar la reconstrucción exhaustiva: **no es un benchmark**.
