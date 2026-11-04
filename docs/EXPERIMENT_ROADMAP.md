@@ -96,6 +96,8 @@ B05 #25 now has a [three-cohort direct admission diagnostic](../evidence/runs/B0
 
 The author authorized merging the bounded E2 observations, calibration, directed trials and B05 diagnostic (PRs #78–#81). Unmet external claims no longer block book/lab integration or the next editorial work. E2 remains scientifically partially verified; E2 #8 is closed NOT_PLANNED for the excluded external campaign, with no stronger claim: see [bounded E2 closeout](E2_CLOSEOUT.md). The historical #24/#25 references are evidence provenance, not additional open E2 work. The [external-validation protocol](EXTERNAL_VALIDATION.md) specifies topology, code changes, clock uncertainty, load/fault design, independent oracles and evidence required for stronger claims. No failure is relabeled and no production acceptance or release is implied.
 
+A future **global E2 scientific PASS** has a [complete separately authorized X00–X08 campaign protocol](E2_FULL_PASS_PROTOCOL.md) ([ES](E2_FULL_PASS_PROTOCOL.es.md)); no external run has been made under that specification. This is **not** a new active E2 issue, and #8 remains closed `not_planned`.
+
 ## Administrative consolidation — 3 November 2026
 
 The [closeout register](PROJECT_CLOSEOUT.md) records the retired implementation/duplicate trackers. External E2 criteria from #24/#25/#74 remain in #8; distributed M1/M2/E3 criteria from #12 remain in #9; C2 remainder #64 is in #58. Issue closure is not experimental status promotion. Original source/run identifiers and all FAIL/INCONCLUSIVE artifacts remain unchanged.
