@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import datetime
+from concurrent.futures import ThreadPoolExecutor
 import hashlib
 import json
 import os
@@ -54,6 +55,14 @@ def committed_transfer(operation: str, amount=17, debit=1, credit=2,
                        fail_before_commit=False):
     """Test-only writer: ledger, journal, paired entries and clock one COMMIT."""
     with psycopg.connect(baseline.admin_dsn()) as db:
+        # Serialize journal offset *before* reading the prior event hash.
+        # Disjoint-account writers can otherwise both read one previous hash,
+        # then receive distinct clock values and break the synthetic chain.
+        # This single row is deliberately a throughput bottleneck, not a
+        # recommendation for bank-scale globally serialized transactions.
+        db.execute(
+            "SELECT sequence_no FROM legacy.clock WHERE singleton=1 FOR UPDATE"
+        ).fetchone()
         for account in sorted((debit, credit)):
             db.execute("SELECT 1 FROM legacy.accounts WHERE account_no=%s FOR UPDATE",
                        (account,)).fetchone()
@@ -315,6 +324,36 @@ class W01SourceFeedTests(unittest.TestCase):
             bootstrap()
         self.assertEqual(target_state(self.target)["watermark"], 1)
 
+    def test_21_parallel_disjoint_writers_preserve_one_total_order(self):
+        bootstrap()
+        inputs = [
+            (f"F-21-{i}", 17 + i, 1 + 2*i, 2 + 2*i)
+            for i in range(8)
+        ]
+        with ThreadPoolExecutor(max_workers=8) as workers:
+            outcomes = list(workers.map(lambda spec: committed_transfer(*spec), inputs))
+        self.assertEqual(outcomes, ["COMMITTED"] * 8)
+        self.assertEqual(source_snapshot(self.source)["watermark"], 8)
+        self.assertTrue(all(baseline.ledger_oracle(baseline.admin_dsn()).values()))
+        self.assertEqual(catchup(batch_size=8)["eventsApplied"], 8)
+        self.assertEqual(audit()["status"], "MATCHED_BOUNDED_SOURCE_SNAPSHOT")
+
+    def test_22_semantically_wrong_before_image_rejected_even_with_valid_hash(self):
+        bootstrap()
+        committed_transfer("F-22")
+        with psycopg.connect(baseline.admin_dsn()) as db:
+            from feed import _events
+            event = _events(db)[0]
+            event["debit_before"] += 10
+            event["debit_after"] += 10
+            db.execute(
+                "UPDATE legacy.balance_feed SET debit_before=%s,debit_after=%s,"
+                "event_hash=%s WHERE sequence_no=1",
+                (event["debit_before"], event["debit_after"], event_digest(event)))
+        with self.assertRaisesRegex(FeedBlocked, "TARGET_BEFORE_IMAGE_MISMATCH"):
+            catchup()
+        self.assertEqual(target_state(self.target)["watermark"], 0)
+
 
 if __name__ == "__main__":
     suite = unittest.defaultTestLoader.loadTestsFromTestCase(W01SourceFeedTests)
@@ -327,7 +366,7 @@ if __name__ == "__main__":
         "headSha": head, "checkoutSha": head,
         "utc": datetime.datetime.now(datetime.timezone.utc).isoformat(),
         "python": platform.python_version(), "testsRun": result.testsRun,
-        "testsPlanned": 20,
+        "testsPlanned": 22,
         "passed": result.testsRun - len(result.failures) - len(result.errors)
                   - len(result.skipped),
         "failedCaseIds": [t.id() for t, _ in result.failures + result.errors],
@@ -335,7 +374,8 @@ if __name__ == "__main__":
             "source_feed_gap", "source_hash_tamper", "prev_chain_divergence",
             "target_tamper", "injected_target_partial_commit", "source_abort",
             "unversioned_source_mutation", "missing_old_history",
-            "clock_without_feed", "source_role_write_denied", "double_bootstrap"],
+            "clock_without_feed", "source_role_write_denied", "double_bootstrap",
+            "parallel_disjoint_writer_order", "valid_hash_wrong_before_image"],
         "physicalHosts": 1, "sourceAuthority": "LEGACY",
         "twoPostgresqlClusters": True, "sourceJournalAtomicity": "TEST_HARNESS_SINGLE_SQL_COMMIT",
         "changeCaptureType": "SYNTHETIC_OWNER_WRITTEN_JOURNAL_NOT_CDC",
