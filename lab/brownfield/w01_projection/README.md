@@ -60,7 +60,10 @@ podman run -d --name w01-projection-pg -e POSTGRES_DB=bf_projection \
   docker.io/library/postgres:16.13
 
 export W01_DISPOSABLE=YES
-export W01_LEGACY_DSN='host=127.0.0.1 port=55438 dbname=bf_legacy user=postgres password=bflocal'
+# Test harness administration only: never pass this secret to a deployed reader.
+export W01_LEGACY_ADMIN_DSN='host=127.0.0.1 port=55438 dbname=bf_legacy user=postgres password=bflocal'
+# The test harness creates w01_reader and grants SELECT on accounts and clock only.
+export W01_LEGACY_DSN='host=127.0.0.1 port=55438 dbname=bf_legacy user=w01_reader password=w01readerlocal'
 export W01_PROJECTION_DSN='host=127.0.0.1 port=55442 dbname=bf_projection user=postgres password=bflocal'
 python3 lab/brownfield/w01_projection/test_projection.py
 cat lab/results/brownfield/w01/w01-original.json
@@ -74,6 +77,34 @@ a committed synthetic transfer; the `projection.py refresh` and
 inspection **only while the disposable servers are running**. The CLI does not
 create databases. Automated CI waits for both servers to accept connections
 and keeps the full test logs, manifest and negative outcomes as an artifact.
+
+## Source-reader least-privilege boundary
+
+**New technical control:** the projector no longer accepts the PostgreSQL
+`postgres` superuser as its source credential. It requires a named,
+non-superuser `w01_reader` login and verifies the effective database role
+and actual SQL privileges. This login has `USAGE` on the `legacy` schema
+and `SELECT` only on `legacy.accounts` and `legacy.clock`; it cannot
+update/insert/delete financial tables or read legacy operation/posting data.
+The harness explicitly attempts an `UPDATE` after `SET TRANSACTION READ WRITE`
+and expects PostgreSQL `42501 InsufficientPrivilege`, proving that merely
+changing transaction mode cannot grant the source-writer permission.
+
+A **separate test-harness-only** `W01_LEGACY_ADMIN_DSN` resets the named
+disposable schema and performs synthetic source transfers and independent
+accounting audits. The projector never imports this test harness or opens its
+admin DSN. A subprocess test executes the read CLI with **only** the restricted
+source DSN and target DSN, explicitly excluding the admin environment variable.
+In real deployment, administrator credentials must not be accessible to the
+reader process, its environment, secrets store or host; a fixture test alone
+does not establish this isolation.
+
+**Remaining limitations:** privileged writers can still bypass the source
+clock; this negative test does not implement an incumbent-enforced fence or
+bank-grade identity management. Projection reads still sample the source clock
+and are not linearizable. The named password is **disposable test data only**,
+never a production credential. [ES research](../../../docs/research/w01-reader-identity.es.md)
+· [EN research](../../../docs/research/w01-reader-identity.en.md).
 
 ## What is independently tested
 
