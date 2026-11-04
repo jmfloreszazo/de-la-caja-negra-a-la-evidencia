@@ -1,0 +1,34 @@
+# Selected verbatim original CI run lines (timestamp prefixes preserved)
+# Original run https://github.com/jmfloreszazo/de-la-caja-negra-a-la-evidencia/actions/runs/41914291930
+# Original job 126869737831, source PR head 7dde2c7cff508206c2f154a4e55de798d4cff78c
+# Excerpt only, not a copy of the GitHub Actions ZIP. The earlier failed run 41914127029 is retained by GitHub.
+2026-11-04T21:15:03.8075306Z test_01_reference_catalog (__main__.NegativeControls.test_01_reference_catalog) ... ok
+2026-11-04T21:15:03.8086093Z test_02_claim_native_execution (__main__.NegativeControls.test_02_claim_native_execution) ... ok
+2026-11-04T21:15:03.8089963Z test_03_claim_customer_data (__main__.NegativeControls.test_03_claim_customer_data) ... ok
+2026-11-04T21:15:03.8093333Z test_04_claim_bank_signoff (__main__.NegativeControls.test_04_claim_bank_signoff) ... ok
+2026-11-04T21:15:03.8097137Z test_05_claim_equivalence (__main__.NegativeControls.test_05_claim_equivalence) ... ok
+2026-11-04T21:15:03.8100661Z test_06_claim_native_row (__main__.NegativeControls.test_06_claim_native_row) ... ok
+2026-11-04T21:15:03.8104017Z test_07_claim_migration_complete (__main__.NegativeControls.test_07_claim_migration_complete) ... ok
+2026-11-04T21:15:03.8107375Z test_08_claim_installed (__main__.NegativeControls.test_08_claim_installed) ... ok
+2026-11-04T21:15:03.8110482Z test_09_claim_measured_slo (__main__.NegativeControls.test_09_claim_measured_slo) ... ok
+2026-11-04T21:15:03.8113836Z test_10_missing_oracle (__main__.NegativeControls.test_10_missing_oracle) ... ok
+2026-11-04T21:15:03.8117349Z test_11_missing_negative_control (__main__.NegativeControls.test_11_missing_negative_control) ... ok
+2026-11-04T21:15:03.8120923Z test_12_vendor_mismatch (__main__.NegativeControls.test_12_vendor_mismatch) ... ok
+2026-11-04T21:15:03.8124370Z test_13_false_source (__main__.NegativeControls.test_13_false_source) ... ok
+2026-11-04T21:15:03.8127864Z test_14_fabricated_publication_date (__main__.NegativeControls.test_14_fabricated_publication_date) ... ok
+2026-11-04T21:15:03.8131216Z test_15_missing_version_scope (__main__.NegativeControls.test_15_missing_version_scope) ... ok
+2026-11-04T21:15:03.8134943Z test_16_fujitsu_marketing_promoted (__main__.NegativeControls.test_16_fujitsu_marketing_promoted) ... ok
+2026-11-04T21:15:03.8138269Z test_17_unknown_feature_marked_equivalent (__main__.NegativeControls.test_17_unknown_feature_marked_equivalent) ... ok
+2026-11-04T21:15:03.8141795Z test_18_unknown_product_given_feature_source (__main__.NegativeControls.test_18_unknown_product_given_feature_source) ... ok
+2026-11-04T21:15:03.8145200Z test_19_remove_unknown_register (__main__.NegativeControls.test_19_remove_unknown_register) ... ok
+2026-11-04T21:15:03.8148243Z test_20_extra_approval_field (__main__.NegativeControls.test_20_extra_approval_field) ... ok
+2026-11-04T21:15:03.8151996Z test_21_untrusted_source_domain (__main__.NegativeControls.test_21_untrusted_source_domain) ... ok
+2026-11-04T21:15:03.8155272Z test_22_false_no_support_strategy (__main__.NegativeControls.test_22_false_no_support_strategy) ... ok
+2026-11-04T21:15:03.8158457Z test_23_invalid_date_or_review (__main__.NegativeControls.test_23_invalid_date_or_review) ... ok
+2026-11-04T21:15:03.8161732Z test_24_duplicate_record_id (__main__.NegativeControls.test_24_duplicate_record_id) ... ok
+2026-11-04T21:15:03.8165507Z test_25_discovery_absence_became_support_claim (__main__.NegativeControls.test_25_discovery_absence_became_support_claim) ... ok
+2026-11-04T21:15:03.8174540Z Ran 25 tests in 0.010s
+2026-11-04T21:15:03.8175085Z OK
+2026-11-04T21:15:03.8297517Z [36;1massert 'Ran 25 tests' in log and re.search(r'^OK$',log,re.M)[0m
+2026-11-04T21:15:03.8301408Z [36;1m        'status':'PASS_METADATA_INTEGRITY_25_CASES',[0m
+2026-11-04T21:15:03.8589973Z {"checkoutSha": "7dde2c7cff508206c2f154a4e55de798d4cff78c", "classification": "VENDOR_METADATA_ONLY_NOT_NATIVE_EXECUTION", "contractRows": 11, "nativeExecution": false, "parityVerified": false, "productionApproved": false, "sourceHeadSha": "7dde2c7cff508206c2f154a4e55de798d4cff78c", "sourceRows": 10, "status": "PASS_METADATA_INTEGRITY_25_CASES", "testsRun": 25, "todmG2": "INCONCLUSIVE", "todmG6": "BLOCK", "unexpectedFailures": 0}
