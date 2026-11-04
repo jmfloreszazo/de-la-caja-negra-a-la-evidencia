@@ -1,0 +1,142 @@
+{
+  "schemaVersion": "functional-waves-1",
+  "classification": "SYNTHETIC_BOUNDARY_HYPOTHESES",
+  "purpose": "Demonstrate functional-first staged brownfield extraction and contradictory Oracle Gate cases without parsing COBOL source.",
+  "dependencies": [
+    {
+      "source": "CAP-005",
+      "target": "CAP-007",
+      "relation": "authoritative_read",
+      "evidence": "HYPOTHESIS",
+      "question": "Does balance inquiry consume the authoritative transfer ledger, with what freshness and fallback?"
+    },
+    {
+      "source": "CAP-007",
+      "target": "CAP-019",
+      "relation": "atomic_write",
+      "evidence": "HYPOTHESIS",
+      "question": "Must transfer and subledger-to-general-ledger posting complete in one business atomic unit or reconciled period?"
+    },
+    {
+      "source": "CAP-020",
+      "target": "CAP-019",
+      "relation": "batch_cutoff",
+      "evidence": "HYPOTHESIS",
+      "question": "Which end-of-day close and ledger reconciliation must finish before a new authority takes over?"
+    },
+    {
+      "source": "CAP-021",
+      "target": "CAP-020",
+      "relation": "batch_cutoff",
+      "evidence": "HYPOTHESIS",
+      "question": "What actual scheduler restart and checkpoint contract gates period close?"
+    },
+    {
+      "source": "CAP-021",
+      "target": "CAP-022",
+      "relation": "unknown_runtime",
+      "evidence": "UNKNOWN",
+      "question": "Can a seasonal or backdated job restart after a seemingly unused schedule is retired?"
+    },
+    {
+      "source": "CAP-011",
+      "target": "CAP-012",
+      "relation": "external_effect",
+      "evidence": "HYPOTHESIS",
+      "question": "How are authorization, actual cash dispense and network reversal reconciled?"
+    },
+    {
+      "source": "CAP-030",
+      "target": "CAP-019",
+      "relation": "reconciliation",
+      "evidence": "HYPOTHESIS",
+      "question": "Which files and messages must reconcile with subledger/GL before moving or retiring writers?"
+    },
+    {
+      "source": "CAP-027",
+      "target": "CAP-005",
+      "relation": "channel_read",
+      "evidence": "HYPOTHESIS",
+      "question": "Which branch terminal paths require booked balance versus freshness-bounded projection?"
+    }
+  ],
+  "waves": [
+    {
+      "id": "W01",
+      "sequence": 1,
+      "name": "Read-only balance projection while the mainframe remains authoritative",
+      "capabilities": [
+        "CAP-005"
+      ],
+      "mode": "READ_ONLY_PROJECTION",
+      "sourceAuthority": "LEGACY",
+      "writesAllowed": false,
+      "readContract": {
+        "watermarkRequired": true,
+        "sourceFallbackRequired": true,
+        "nonAuthoritative": true,
+        "noExternalEffects": true,
+        "idempotentRebuild": true
+      },
+      "predecessors": [],
+      "uncertainties": [
+        "Observed read-your-writes requirements and balance watermark are unknown",
+        "The approved CAP-005 functional owner and permission remain missing"
+      ]
+    },
+    {
+      "id": "W02",
+      "sequence": 2,
+      "name": "Unsafe unilateral transfer replacement",
+      "capabilities": [
+        "CAP-007"
+      ],
+      "mode": "COMMAND_REPLACEMENT",
+      "sourceAuthority": "CANDIDATE",
+      "writesAllowed": true,
+      "readContract": null,
+      "predecessors": [
+        "W01"
+      ],
+      "uncertainties": [
+        "Transfer and general-ledger transaction semantics remain unapproved"
+      ]
+    },
+    {
+      "id": "W03",
+      "sequence": 3,
+      "name": "Unsafe retirement of batch scheduler",
+      "capabilities": [
+        "CAP-021"
+      ],
+      "mode": "RETIRE",
+      "sourceAuthority": "LEGACY",
+      "writesAllowed": false,
+      "readContract": null,
+      "predecessors": [
+        "W01"
+      ],
+      "uncertainties": [
+        "Seasonal backdated path and closing calendar are not independently witnessed"
+      ]
+    },
+    {
+      "id": "W04",
+      "sequence": 4,
+      "name": "Expose branch terminal facade while the legacy retains write authority",
+      "capabilities": [
+        "CAP-027"
+      ],
+      "mode": "EXPOSE_LEGACY",
+      "sourceAuthority": "LEGACY",
+      "writesAllowed": false,
+      "readContract": null,
+      "predecessors": [
+        "W01"
+      ],
+      "uncertainties": [
+        "Channel-level auth, routing, latency and offline reconciliation are not approved"
+      ]
+    }
+  ]
+}

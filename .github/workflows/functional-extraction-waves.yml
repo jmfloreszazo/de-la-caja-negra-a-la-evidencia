@@ -1,0 +1,48 @@
+name: Functional extraction waves
+on:
+  pull_request:
+    paths:
+      - 'lab/decomposition/**'
+      - 'docs/research/mainframe-extraction-waves.*'
+      - '.github/workflows/functional-extraction-waves.yml'
+  push:
+    branches: [main]
+    paths:
+      - 'lab/decomposition/**'
+      - 'docs/research/mainframe-extraction-waves.*'
+      - '.github/workflows/functional-extraction-waves.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  structural-oracle:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-python@v6
+        with:
+          python-version: '3.12'
+      - name: All decomposition contract, graph and wave negative tests
+        run: python3 -m unittest discover -s lab/decomposition -p 'test_*.py' -v
+      - name: Refuse two unsafe waves and all automatic approvals
+        run: |
+          python3 - <<'PY'
+          import json
+          import subprocess
+          import sys
+          p = subprocess.run(
+              [sys.executable, 'lab/decomposition/wave_gate.py',
+               'lab/decomposition/functional_capabilities.json',
+               'lab/decomposition/wave_fixture.json'],
+              text=True, capture_output=True)
+          assert p.returncode == 1, (p.returncode, p.stdout, p.stderr)
+          report = json.loads(p.stdout)
+          assert report['structuralCandidates'] == 2 and report['rejected'] == 2
+          assert report['catalogNeedsEvidence'] == 30
+          assert report['automaticApprovedWaves'] == 0
+          assert report['todmG2'] == 'INCONCLUSIVE' and report['todmG6'] == 'BLOCK'
+          assert not report['deploymentAuthorized']
+          assert {r['id'] for r in report['proposals'] if r['structuralDecision'] == 'REJECT'} == {'W02', 'W03'}
+          print('Bounded synthetic candidate screening verified; bank cutover remains BLOCKED')
+          PY

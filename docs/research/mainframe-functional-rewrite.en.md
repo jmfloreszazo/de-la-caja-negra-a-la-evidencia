@@ -2,6 +2,10 @@
 
 > **EN research draft — issue #32.** This explicitly replaces the idea of parsing COBOL into microservices with **discovering capabilities and implementing a new system from first principles**. The accompanying banking catalog contains reference hypotheses, not requirements observed in a real institution or signed off by an owner.
 
+## From functional hypotheses to staged extraction waves
+
+The [extraction-wave research protocol](mainframe-extraction-waves.en.md) studies four synthetic migration proposals against atomic ledger, batch-cutoff, unknown-runtime and external-effect relationships. A structural candidate is never owner-approved; this remains brownfield modernization even if new code is written from scratch. G2 and G6 remain blocked.
+
 ## What we need to know
 
 The question is not which COBOL paragraphs to port. It is **which business capabilities exist, what outcomes they promise, what exceptions they handle, and which guarantees must survive**. We may replace the implementation completely while preserving authorized business contracts. Long-hidden exceptions and operational calendars are part of the contract.
@@ -35,7 +39,7 @@ The [English-only machine-readable catalog](../../lab/decomposition/functional_c
 | Insufficient balance | Rejection without debit | Before/after ledger and audit |
 | Crash after COMMIT before ACK | Uncertain reply and safe query/replay | SQL authority and exact operation effects |
 
-A possible greenfield implementation is a .NET 10 domain service with PostgreSQL as accounting authority, durable idempotency and transactional outbox. Orleans is optional coordination rather than a substitute for ACID. REST at channel boundaries and internal gRPC must be justified by the deployment contract and measurements. This is an architectural hypothesis, not a mandated design.
+A possible **brownfield replacement candidate** is a newly implemented .NET 10 domain service with PostgreSQL as accounting authority, durable idempotency and transactional outbox. Orleans is optional coordination rather than a substitute for ACID. REST at channel boundaries and internal gRPC must be justified by the deployment contract and measurements. This is an architectural hypothesis, not a mandated design.
 
 ## ATM: authorization is not dispensing (CAP-011/012)
 

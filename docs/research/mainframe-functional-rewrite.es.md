@@ -2,6 +2,10 @@
 
 > **Documento de investigación ES — issue #32.** Esta guía reemplaza el enfoque de «parsear COBOL para obtener microservicios» por **descubrir funcionalidades y reescribir la solución desde cero**. El catálogo anexo contiene hipótesis bancarias ilustrativas, no observaciones de una entidad financiera ni requisitos aprobados.
 
+## De las hipótesis a las oleadas de extracción
+
+El [protocolo de oleadas funcionales](mainframe-extraction-waves.es.md) contrasta cuatro propuestas sintéticas frente a dependencias contables, de cierre batch, de ejecución desconocida y de efectos externos. Una candidata estructural nunca está aprobada por el negocio. Se trata de modernización brownfield, aunque el nuevo componente se programe desde cero. G2/G6 permanecen bloqueados.
+
 ## La pregunta que hay que responder
 
 No preguntamos «¿qué líneas, programas o copybooks hay que portar?», sino **«¿qué capacidades presta el sistema, qué consecuencias producen y qué garantías necesitan los usuarios y el negocio?»**. Podemos reemplazar toda la implementación y mantener los contratos de negocio, siempre que entendamos tanto los casos habituales como las excepciones que pueden llevar años escondidas en operaciones y procesos batch.
