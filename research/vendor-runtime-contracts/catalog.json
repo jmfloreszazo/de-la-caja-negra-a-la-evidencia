@@ -1,0 +1,505 @@
+{
+  "schema_version": 1,
+  "classification": "PRIMARY_SOURCE_RESEARCH_AND_DESIGN_NOT_VENDOR_NATIVE_TEST",
+  "reviewed_on": "2026-11-04",
+  "project_scope": "Brownfield modernization: #17/#18/#28. Not a complete 236-entry vendor catalog.",
+  "native_vendor_tests": "NOT_EXECUTED",
+  "customer_evidence": "NOT_PROVIDED",
+  "business_approval": "NOT_OBTAINED",
+  "sources": [
+    {
+      "id": "P01",
+      "vendor": "IBM",
+      "title": "IBM Z basic-skills: Channel subsystem (CSS)",
+      "version_scope": "IBM Z architectural primer",
+      "url": "https://www.ibm.com/docs/en/zos-basic-skills?topic=mainframe-channel-subsystem-css",
+      "published_on": null,
+      "accessed_on": "2026-11-04",
+      "access_mode": "SEARCH_INDEX_DIRECT_403",
+      "kind": "DOCUMENTED"
+    },
+    {
+      "id": "P02",
+      "vendor": "IBM",
+      "title": "z/OS 3.2 Service classes",
+      "version_scope": "z/OS 3.2 WLM documentation",
+      "url": "https://www.ibm.com/docs/en/zos/3.2.0?topic=tabs-service-classes",
+      "published_on": null,
+      "accessed_on": "2026-11-04",
+      "access_mode": "SEARCH_INDEX_DIRECT_403",
+      "kind": "DOCUMENTED"
+    },
+    {
+      "id": "P03",
+      "vendor": "IBM",
+      "title": "Db2 for z/OS 13 ISOLATION bind option",
+      "version_scope": "Db2 13 SQL/bind documentation",
+      "url": "https://www.ibm.com/docs/en/db2-for-zos/13.0.0?topic=services-isolation",
+      "published_on": null,
+      "accessed_on": "2026-11-04",
+      "access_mode": "SEARCH_INDEX_DIRECT_403",
+      "kind": "DOCUMENTED"
+    },
+    {
+      "id": "P04",
+      "vendor": "IBM",
+      "title": "IBM i 7.6 commitment control",
+      "version_scope": "IBM i 7.6 documentation",
+      "url": "https://www.ibm.com/docs/en/i/7.6.0?topic=database-commitment-control",
+      "published_on": null,
+      "accessed_on": "2026-11-04",
+      "access_mode": "SEARCH_INDEX_DIRECT_403",
+      "kind": "DOCUMENTED"
+    },
+    {
+      "id": "P05",
+      "vendor": "Unisys",
+      "title": "ClearPath MCP Enterprise Database Server: Accesses",
+      "version_scope": "ClearPath MCP 21.0 documentation",
+      "url": "https://www.support.unisys.com/aseries/docs/ClearPath-MCP-21.0/38508198-005/section-000081944.html",
+      "published_on": null,
+      "accessed_on": "2026-11-04",
+      "access_mode": "FULL_TEXT",
+      "kind": "DOCUMENTED"
+    },
+    {
+      "id": "P06",
+      "vendor": "Unisys",
+      "title": "ClearPath ePortal OS 2200 TIP Configuration Dialog",
+      "version_scope": "ePortal 10.0 help; not proof of all TIP deployments",
+      "url": "https://www.support.unisys.com/ePortalIC-10.0/topic/82073594_clearpath_eportal_developerhelp/html/section-000039403.htm",
+      "published_on": null,
+      "accessed_on": "2026-11-04",
+      "access_mode": "FULL_TEXT",
+      "kind": "DOCUMENTED"
+    },
+    {
+      "id": "P07",
+      "vendor": "Unisys",
+      "title": "MCP Transaction Server programming and database training",
+      "version_scope": "Unisys training description; not a complete technical guarantee",
+      "url": "https://www.unisys.com/client-education/clearpath-mcp/mcp-courses/",
+      "published_on": null,
+      "accessed_on": "2026-11-04",
+      "access_mode": "FULL_TEXT",
+      "kind": "TRAINING_DESCRIPTION"
+    },
+    {
+      "id": "P08",
+      "vendor": "Fujitsu",
+      "title": "GS21 3600/3400 historic announcement",
+      "version_scope": "2018 Fujitsu archival release; not current support evidence",
+      "url": "https://info.archives.global.fujitsu/global/about/resources/news/press-releases/2018/0417-01.html",
+      "published_on": "2018-04-17",
+      "accessed_on": "2026-11-04",
+      "access_mode": "FULL_TEXT",
+      "kind": "HISTORICAL_ANNOUNCEMENT"
+    },
+    {
+      "id": "P09",
+      "vendor": "Unisys",
+      "title": "OS 2200 TIP application restrictions (MCB, unsupported COMPOOL)",
+      "version_scope": "ePortal 10.0 help; connector-specific",
+      "url": "https://www.support.unisys.com/ePortalIC-10.0/topic/82073594_clearpath_eportal_developerhelp/html/section-000039407.htm",
+      "published_on": null,
+      "accessed_on": "2026-11-04",
+      "access_mode": "SEARCH_INDEX",
+      "kind": "DOCUMENTED"
+    },
+    {
+      "id": "P10",
+      "vendor": "IBM",
+      "title": "Db2 for z/OS 13: concurrency controls and locking",
+      "version_scope": "Db2 13 SQL isolation and locking",
+      "url": "https://www.ibm.com/docs/en/db2-for-zos/13.0.0?topic=concurrency-controls-locking",
+      "published_on": null,
+      "accessed_on": "2026-11-04",
+      "access_mode": "SEARCH_INDEX_DIRECT_403",
+      "kind": "DOCUMENTED"
+    }
+  ],
+  "records": [
+    {
+      "id": "VX01",
+      "vendor": "IBM",
+      "platform": "IBM Z / z/OS CSS",
+      "kind": "VENDOR_DOCUMENTED",
+      "layer": "INFRA",
+      "original_contract": "Channel subsystem can execute device I/O asynchronously to central processor; channels and control units form a topology, not language async.",
+      "migration_strategy": "HYBRID_COEXIST",
+      "candidate_patterns": [
+        "bounded asynchronous I/O",
+        "storage path redundancy",
+        "durable write acknowledgement"
+      ],
+      "semantic_gap": "Async C# tasks, gRPC or AKS cannot reproduce CSS/SAP/FICON topology by naming alone.",
+      "negative_control": "Throttle or break one storage/log path while throughput appears healthy.",
+      "independent_oracle": "End-to-end request-to-durable-commit traces plus path failover and log flush p99.",
+      "required_measurements": [
+        "CHPID/LCSS/path inventory",
+        "device queue depth and service time",
+        "log flush p99",
+        "failover topology"
+      ],
+      "source_ids": [
+        "P01"
+      ],
+      "risk_ids": [
+        "R083",
+        "R086"
+      ],
+      "native_execution": "NOT_EXECUTED",
+      "migration_verified": false,
+      "bank_approved": false,
+      "equivalence_claim": false,
+      "installed_status": "UNKNOWN",
+      "service_level": "NOT_MEASURED"
+    },
+    {
+      "id": "VX02",
+      "vendor": "IBM",
+      "platform": "z/OS 3.2 WLM service class",
+      "kind": "VENDOR_DOCUMENTED",
+      "layer": "OPS",
+      "original_contract": "WLM classification targets goals and importance with service classes and performance periods; resource pressure changes dispatch behavior.",
+      "migration_strategy": "REPLATFORM",
+      "candidate_patterns": [
+        "admission by priority",
+        "queue budget",
+        "resource isolation",
+        "SLO-driven autoscale"
+      ],
+      "semantic_gap": "Kubernetes PriorityClass, HPA and CPU quotas have different scheduling/queueing semantics and may not guarantee class p99.",
+      "negative_control": "CPU saturation allows low-priority work to starve critical online commits.",
+      "independent_oracle": "Correlated per-class p95/p99 and queue-delay oracle under controlled contention.",
+      "required_measurements": [
+        "service class definitions",
+        "response/velocity goals",
+        "WLM delay",
+        "real CPU/LPAR entitlements"
+      ],
+      "source_ids": [
+        "P02"
+      ],
+      "risk_ids": [
+        "R081"
+      ],
+      "native_execution": "NOT_EXECUTED",
+      "migration_verified": false,
+      "bank_approved": false,
+      "equivalence_claim": false,
+      "installed_status": "UNKNOWN",
+      "service_level": "NOT_MEASURED"
+    },
+    {
+      "id": "VX03",
+      "vendor": "IBM",
+      "platform": "Db2 for z/OS 13",
+      "kind": "VENDOR_DOCUMENTED",
+      "layer": "DATA",
+      "original_contract": "Db2 isolation UR/CS/RS/RR changes visibility and locking; application bind options can influence semantics.",
+      "migration_strategy": "REPLACE",
+      "candidate_patterns": [
+        "explicit SQL transaction isolation",
+        "independent financial ledger oracle",
+        "lock/retry policy"
+      ],
+      "semantic_gap": "SQL isolation names and driver defaults do not prove equal query, phantom, lock and time-out behavior across Db2 and PostgreSQL.",
+      "negative_control": "Concurrent transfer and balance query sees forbidden uncommitted or inconsistent financial result.",
+      "independent_oracle": "Concurrent schedule matrix, rollback/deadlock/phantom observations and booked balance invariant.",
+      "required_measurements": [
+        "package BIND isolation",
+        "Db2 lock timeout/deadlock IFCID",
+        "hot-key profiles",
+        "real query plans"
+      ],
+      "source_ids": [
+        "P03",
+        "P10"
+      ],
+      "risk_ids": [
+        "R062",
+        "R064"
+      ],
+      "native_execution": "NOT_EXECUTED",
+      "migration_verified": false,
+      "bank_approved": false,
+      "equivalence_claim": false,
+      "installed_status": "UNKNOWN",
+      "service_level": "NOT_MEASURED"
+    },
+    {
+      "id": "VX04",
+      "vendor": "IBM",
+      "platform": "IBM i 7.6 / Db2 for i",
+      "kind": "VENDOR_DOCUMENTED",
+      "layer": "DATA",
+      "original_contract": "Commitment control groups journaled changes into a unit of work with COMMIT/ROLLBACK; job/activation group recovery context matters.",
+      "migration_strategy": "HYBRID_COEXIST",
+      "candidate_patterns": [
+        "source-owned writer",
+        "incremental read projection",
+        "transactional outbox where owner approves"
+      ],
+      "semantic_gap": "IBM i job/journal/commit boundaries are not IBM Z Db2 or an automatically portable Kafka transaction.",
+      "negative_control": "Aborted job leaves partial posted balances in candidate or corrupt cursor.",
+      "independent_oracle": "Source/target reconciliation across aborted jobs, journal position and restart.",
+      "required_measurements": [
+        "journal/receiver topology",
+        "commitment control jobs",
+        "record image scope",
+        "abnormal termination runs"
+      ],
+      "source_ids": [
+        "P04"
+      ],
+      "risk_ids": [
+        "R064"
+      ],
+      "native_execution": "NOT_EXECUTED",
+      "migration_verified": false,
+      "bank_approved": false,
+      "equivalence_claim": false,
+      "installed_status": "UNKNOWN",
+      "service_level": "NOT_MEASURED"
+    },
+    {
+      "id": "VX05",
+      "vendor": "Unisys",
+      "platform": "ClearPath MCP 21.0 Enterprise Database Server",
+      "kind": "VENDOR_DOCUMENTED",
+      "layer": "DATA",
+      "original_contract": "An Access defines the physical ordering and retrieval of dataset records; it is not simply a SQL table or view.",
+      "migration_strategy": "REFACTOR",
+      "candidate_patterns": [
+        "domain key reconstruction",
+        "anti-corruption layer",
+        "record-order contract tests"
+      ],
+      "semantic_gap": "Replacing an MCP Access with a SQL index without record ordering/selection proof may silently reorder financial batch or query results.",
+      "negative_control": "Equivalent rows return in different order or duplicates after a restart.",
+      "independent_oracle": "Ordered-key and selection oracle over authorized source and candidate data, including duplicates.",
+      "required_measurements": [
+        "DASDL definitions",
+        "Access usage",
+        "dataset and key collation",
+        "restart/order behavior"
+      ],
+      "source_ids": [
+        "P05"
+      ],
+      "risk_ids": [
+        "R051",
+        "R069"
+      ],
+      "native_execution": "NOT_EXECUTED",
+      "migration_verified": false,
+      "bank_approved": false,
+      "equivalence_claim": false,
+      "installed_status": "UNKNOWN",
+      "service_level": "NOT_MEASURED"
+    },
+    {
+      "id": "VX06",
+      "vendor": "Unisys",
+      "platform": "ClearPath MCP Transaction Server / EDB",
+      "kind": "VENDOR_DOCUMENTED",
+      "layer": "APP",
+      "original_contract": "MCP Transaction Server has configured synchronized recovery capabilities; database rollback and security are documented in training scope.",
+      "migration_strategy": "HYBRID_COEXIST",
+      "candidate_patterns": [
+        "state machine",
+        "unit-of-work boundary",
+        "independent rollback oracle"
+      ],
+      "semantic_gap": "HTTP request/response and a queue do not automatically reproduce coordinated recovery scope.",
+      "negative_control": "Lose reply after commit and retry; reject duplicate confirmed effects.",
+      "independent_oracle": "Authorized source UOW trace, single financial decision and idempotent recovery.",
+      "required_measurements": [
+        "MCP release and COMS configuration",
+        "recovery domain",
+        "audit and abort paths"
+      ],
+      "source_ids": [
+        "P07"
+      ],
+      "risk_ids": [
+        "R064"
+      ],
+      "native_execution": "NOT_EXECUTED",
+      "migration_verified": false,
+      "bank_approved": false,
+      "equivalence_claim": false,
+      "installed_status": "UNKNOWN",
+      "service_level": "NOT_MEASURED"
+    },
+    {
+      "id": "VX07",
+      "vendor": "Unisys",
+      "platform": "ClearPath OS 2200 / ePortal TIP connector",
+      "kind": "VENDOR_DOCUMENTED",
+      "layer": "APP",
+      "original_contract": "TIP connector can reconnect and resend on send error; vendor cautions that this may be inappropriate for stateful applications.",
+      "migration_strategy": "REFACTOR",
+      "candidate_patterns": [
+        "operation ID based idempotency",
+        "durable status query",
+        "explicit session recovery"
+      ],
+      "semantic_gap": "Blind REST/gRPC retry or reconnect does not preserve TIP session state or the actual host commit outcome.",
+      "negative_control": "Host committed, acknowledgement lost; reconnect resends and attempts double debit.",
+      "independent_oracle": "Correlate one source commit, one target decision, client UNKNOWN and later query for outcome.",
+      "required_measurements": [
+        "ePortal connector retry settings",
+        "stateful sessions",
+        "TIP transaction codes",
+        "commit and ACK logs"
+      ],
+      "source_ids": [
+        "P06"
+      ],
+      "risk_ids": [
+        "R068",
+        "R078"
+      ],
+      "native_execution": "NOT_EXECUTED",
+      "migration_verified": false,
+      "bank_approved": false,
+      "equivalence_claim": false,
+      "installed_status": "UNKNOWN",
+      "service_level": "NOT_MEASURED"
+    },
+    {
+      "id": "VX08",
+      "vendor": "Unisys",
+      "platform": "ClearPath OS 2200 / TIP message control",
+      "kind": "VENDOR_DOCUMENTED",
+      "layer": "APP",
+      "original_contract": "ePortal TIP modernization documentation requires MCB for the supported path and excludes COMPOOL in that path.",
+      "migration_strategy": "HYBRID_COEXIST",
+      "candidate_patterns": [
+        "explicit protocol adapter",
+        "restricted ACL",
+        "side-by-side nonmutating shadow"
+      ],
+      "semantic_gap": "Adapter compatibility for a documented TIP path does not establish universal support of custom terminal or COMPOOL behavior.",
+      "negative_control": "Unsupported message form is silently accepted with fields omitted.",
+      "independent_oracle": "Original TIP message/control-ID round-trip and explicit unsupported-case refusal.",
+      "required_measurements": [
+        "TIP/MCB/COMPOOL inventory",
+        "charset/record layouts",
+        "connector version"
+      ],
+      "source_ids": [
+        "P09"
+      ],
+      "risk_ids": [
+        "R069"
+      ],
+      "native_execution": "NOT_EXECUTED",
+      "migration_verified": false,
+      "bank_approved": false,
+      "equivalence_claim": false,
+      "installed_status": "UNKNOWN",
+      "service_level": "NOT_MEASURED"
+    },
+    {
+      "id": "VX09",
+      "vendor": "Fujitsu",
+      "platform": "GS21 3600/3400 historical (2018)",
+      "kind": "HISTORICAL_VENDOR_ANNOUNCEMENT",
+      "layer": "INFRA",
+      "original_contract": "Fujitsu announced GS21 models and GSS21sx V20 in 2018; installed OS/runtime, data store and I/O path are not established by that announcement.",
+      "migration_strategy": "RETAIN",
+      "candidate_patterns": [
+        "platform discovery",
+        "controlled hybrid coexistence",
+        "measurement before choice"
+      ],
+      "semantic_gap": "An archived model announcement does not prove MSP/XSP feature set, current vendor support or equivalent IBM z/OS semantics.",
+      "negative_control": "Architect assigns CICS/Db2 or a generic CDC tool based only on the GS21 brand.",
+      "independent_oracle": "Fail closed without operator inventory of model/OS, actual DB, JCL and recovery behavior.",
+      "required_measurements": [
+        "actual model/serial and OS",
+        "installed middleware/database",
+        "vendor docs/contract",
+        "batch/online writers"
+      ],
+      "source_ids": [
+        "P08"
+      ],
+      "risk_ids": [
+        "R083"
+      ],
+      "native_execution": "NOT_EXECUTED",
+      "migration_verified": false,
+      "bank_approved": false,
+      "equivalence_claim": false,
+      "installed_status": "UNKNOWN",
+      "service_level": "NOT_MEASURED"
+    },
+    {
+      "id": "VX10",
+      "vendor": "NEC",
+      "platform": "ACOS platform not specified",
+      "kind": "DISCOVERY_ONLY",
+      "layer": "CROSS_LAYER",
+      "original_contract": "Specific installed NEC ACOS system, database and release not provided; do not assume capability presence or absence.",
+      "migration_strategy": "RETAIN",
+      "candidate_patterns": [
+        "evidence-first assessment",
+        "explicit unknown register"
+      ],
+      "semantic_gap": "No vendor contract is verified for the installation.",
+      "negative_control": "A proposed mapping asserts native log CDC or SQL equivalence with no product/version source.",
+      "independent_oracle": "Independent vendor manual + authorized operator confirmation are prerequisites; no PASS possible here.",
+      "required_measurements": [
+        "model/OS/version",
+        "data engine and file access",
+        "failure and restore semantics"
+      ],
+      "source_ids": [],
+      "risk_ids": [],
+      "native_execution": "NOT_EXECUTED",
+      "migration_verified": false,
+      "bank_approved": false,
+      "equivalence_claim": false,
+      "installed_status": "UNKNOWN",
+      "service_level": "NOT_MEASURED"
+    },
+    {
+      "id": "VX11",
+      "vendor": "Atos/Bull",
+      "platform": "GCOS platform not specified",
+      "kind": "DISCOVERY_ONLY",
+      "layer": "CROSS_LAYER",
+      "original_contract": "Exact GCOS model and subsystem/version unknown; pending primary manual and customer configuration.",
+      "migration_strategy": "RETAIN",
+      "candidate_patterns": [
+        "evidence-first assessment",
+        "explicit unknown register"
+      ],
+      "semantic_gap": "GCOS products and configurations cannot be treated as a homogeneous technology.",
+      "negative_control": "Generic pattern implies a transaction monitor or recovery feature without original source.",
+      "independent_oracle": "Acquire product/version and original recovery test before moving any authority.",
+      "required_measurements": [
+        "model/OS/version",
+        "data engine",
+        "installed transaction manager"
+      ],
+      "source_ids": [],
+      "risk_ids": [],
+      "native_execution": "NOT_EXECUTED",
+      "migration_verified": false,
+      "bank_approved": false,
+      "equivalence_claim": false,
+      "installed_status": "UNKNOWN",
+      "service_level": "NOT_MEASURED"
+    }
+  ],
+  "notes": [
+    "Links to product documentation describe possible product behavior only: not installed configuration, current support or achieved SLO.",
+    "HISTORICAL_VENDOR_ANNOUNCEMENT is a dated announcement, not a current version or functional guarantee.",
+    "DISCOVERY_ONLY rows are explicit unknowns and can never be automatically promoted to NO/UNSUPPORTED."
+  ]
+}
