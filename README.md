@@ -90,6 +90,8 @@ Start with [CONTRIBUTING.md](CONTRIBUTING.md): paths by profile, a first contrib
 
 [**Verifiable evidence matrix**](docs/EVIDENCE.md): real CI, partially verified E1/E2, executed brownfield slices and E3/E4 remaining unexecuted as complete experiments.
 
+**E2 acceptance boundary:** [closed bounded campaign](docs/E2_CLOSEOUT.md) ≠ global PASS. [What an actual distributed E2 scientific PASS requires](docs/E2_FULL_PASS_PROTOCOL.md) ([ES](docs/E2_FULL_PASS_PROTOCOL.es.md)): approved SLOs, independent physical domains, natural lifecycle/recovery, SQL failover and raw independent X00–X08 evidence. The new external campaign is **not active**.
+
 **Verified in GitHub Actions:** [Book](https://github.com/jmfloreszazo/de-la-caja-negra-a-la-evidencia/actions/runs/40900252122), [Lab (offline, native, Podman)](https://github.com/jmfloreszazo/de-la-caja-negra-a-la-evidencia/actions/runs/40900252152), and [bilingual PDFs](https://github.com/jmfloreszazo/de-la-caja-negra-a-la-evidencia/actions/runs/40900252098).
 
 **Not yet established:** complete E1 acceptance (E1a/E1b have only the documented partial CI evidence), E2–E4 experimental acceptance, compilation of all *Illustrative* listings, native-level English editorial review, or cross-platform reproductions beyond hosted Linux runners. M1/M2 are local experimental observations, not E3. See [editorial and evidence register](docs/EDITORIAL_REVIEW.md).
