@@ -104,6 +104,10 @@ El [protocolo de fencing y aceptación CAP-005/007](docs/BROWNFIELD_SOURCE_FENCE
 
 La investigación [ES](docs/research/source-native-capture-assessment.es.md) / [EN](docs/research/source-native-capture-assessment.en.md) y el [gate ejecutable (en inglés)](lab/brownfield/source_capture/README.md) diferencian Db2 z/OS, VSAM CICS, batch no-RLS, IMS online/DL-I, journals IBM i y mecanismos Fujitsu/otros **sin verificar**. Son **posibilidades documentadas**, no CDC probado en cliente. Las siete rutas parten de UNKNOWN; TODM G2/G6 siguen INCONCLUSIVE/BLOCK.
 
+## Arquitectura y patrones por fabricante (investigación #17/#18/#28)
+
+Los capítulos 1 y 13 incorporan ahora una [comparación de contratos de IBM Z, IBM i, Unisys MCP/OS 2200 y Fujitsu GS21](docs/research/vendor-runtime-contracts.es.md) ([EN](docs/research/vendor-runtime-contracts.en.md)). El [catálogo de 11 contratos/descubrimientos](research/vendor-runtime-contracts/catalog.json) enlaza diez referencias originales con riesgos, patrones sustitutos, brechas y oráculos negativos. NEC ACOS y Bull GCOS permanecen **desconocidos**, nunca presuntamente equivalentes; las 25 pruebas automáticas verifican **solo la integridad de estos metadatos**, no ejecuciones de fabricantes ni aprobación bancaria.
+
 ## Continuidad entre snapshot y journal: oráculo sintético independiente
 
 El método [ES](docs/research/source-capture-handoff.es.md) / [EN](docs/research/source-capture-handoff.en.md) añade un **oráculo offline de continuidad de snapshot y eventos**, con 26 controles positivos y negativos. Reutiliza el catálogo de fabricantes como clasificación, pero **no ejecuta CDC nativo** ni autoriza el corte bancario.
