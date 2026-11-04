@@ -1,0 +1,82 @@
+{
+  "classification": "VERIFIED_DOWNLOADED_GITHUB_ACTIONS_ZIP_AND_ORIGINAL_JOB_LOG",
+  "originalResult": {
+    "businessApproval": false,
+    "changeCaptureType": "SYNTHETIC_OWNER_WRITTEN_JOURNAL_NOT_CDC",
+    "checkoutSha": "80c45437312030a8abe90e0c3fdaa85a00c3056a",
+    "classification": "REAL_PG_SYNTHETIC_SOURCE_OWNED_JOURNAL_NOT_MAINFRAME_CDC",
+    "clockReadsLinearizable": false,
+    "failedCaseIds": [],
+    "headSha": "80c45437312030a8abe90e0c3fdaa85a00c3056a",
+    "negativeControls": [
+      "source_feed_gap",
+      "source_hash_tamper",
+      "prev_chain_divergence",
+      "target_tamper",
+      "injected_target_partial_commit",
+      "source_abort",
+      "unversioned_source_mutation",
+      "missing_old_history",
+      "clock_without_feed",
+      "source_role_write_denied",
+      "double_bootstrap",
+      "parallel_disjoint_writer_order",
+      "valid_hash_wrong_before_image"
+    ],
+    "passed": 22,
+    "physicalHosts": 1,
+    "python": "3.12.16",
+    "realIncumbentFence": false,
+    "scalesToBank": false,
+    "sourceAuthority": "LEGACY",
+    "sourceJournalAtomicity": "TEST_HARNESS_SINGLE_SQL_COMMIT",
+    "sourceReadRole": "w01_feed_reader",
+    "status": "PASS_BOUNDED_SYNTHETIC_TESTS",
+    "targetRole": "postgres_TEST_ONLY",
+    "testsPlanned": 22,
+    "testsRun": 22,
+    "todmG2": "INCONCLUSIVE",
+    "todmG6": "BLOCK",
+    "twoPostgresqlClusters": true,
+    "utc": "2026-11-04T16:11:05.837718+00:00"
+  },
+  "source": {
+    "repo": "jmfloreszazo/de-la-caja-negra-a-la-evidencia",
+    "pr": 94,
+    "headSha": "80c45437312030a8abe90e0c3fdaa85a00c3056a",
+    "mergeCommitSha": "69bb2e92fbfac66038d6ce1ca3234b020feb2d52",
+    "runId": 41864738886,
+    "jobId": 126695939112,
+    "runUrl": "https://github.com/jmfloreszazo/de-la-caja-negra-a-la-evidencia/actions/runs/41864738886"
+  },
+  "originalArtifact": {
+    "id": 13341603193,
+    "name": "w01-owner-journal-original-not-mainframe-cdc",
+    "sizeBytes": 3184,
+    "githubReportedSha256": "3019a6d70d928c71efa206d70d46cf362d85351f896e224debd6063951121806",
+    "independentlyRecomputedDownloadedZipSha256": "3019a6d70d928c71efa206d70d46cf362d85351f896e224debd6063951121806",
+    "zipMemberCrc": "PASS",
+    "members": [
+      "feed-original.json",
+      "provenance.txt",
+      "test-original.log"
+    ],
+    "expiresAt": "2027-02-02T16:10:43Z"
+  },
+  "artifactProvenanceRecordedByOriginalRunner": {
+    "python": "3.12.16",
+    "podman": "4.9.3",
+    "postgresqlImageId": "f7ebf09eb01b02bb9904972705248217baeaed03e2a0a7ed24a77740b0aee98c",
+    "sha256SourceFiles": {
+      "lab/brownfield/w01_feed/feed.py": "5d36fa904b3344b02093c9ed259d03c3c1aab202a303a8cdc1e01702fc0f1bc8",
+      "lab/brownfield/w01_feed/test_feed.py": "9a545101b0af776aa9c10aa6457c868a2f5199e4e38e043296bc714d55ad2ee2",
+      "lab/brownfield/w01_feed/source.sql": "45a79b6f3d0edb9e9fc8e87d1c603d8cdff8c0775c5b91e8b8cd0f5e7ebc75bb",
+      "lab/brownfield/w01_feed/target.sql": "3f2e19716751bcf0dff88fb4a8556be6d23c8f161532a223c65da4adbbd0f73c"
+    },
+    "physicalHosts": 1
+  },
+  "reproducibility": "Artifact ZIP was downloaded and locally rehashed; CRC passed, both headSHA and checkoutSHA verified from original JSON. Source-code file hashes listed above were reported by runner's sha256sum; separately comparing against a new repository checkout is not claimed here.",
+  "preservedSelectedCiLines": "evidence/runs/W01-SOURCE-JOURNAL-PR94-CI-EXCERPT.log",
+  "limitations": "Synthetic PostgreSQL journal with 22 real SQL tests, NOT native IBM Z/Db2/VSAM/IMS/CICS CDC or a production banking contract; G2 INCONCLUSIVE, G6 BLOCK.",
+  "ciMessageDiscrepancy": "Original workflow terminal prints '20/20' in a static message despite the assertion and original JSON validating exactly 22/22. This is only a stale output message, corrected separately without rewriting original evidence."
+}
