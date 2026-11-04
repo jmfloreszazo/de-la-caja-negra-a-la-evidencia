@@ -8,6 +8,10 @@ W01 toma la consulta de saldos CAP-005 del catálogo de 30 **hipótesis todavía
 
 El origen es una base PostgreSQL con un esquema legado ficticio, **no un mainframe emulado**. Un escritor separado y exclusivo de las pruebas simula una transferencia: modifica saldos, dos apuntes, outbox y secuencia del origen en **una única transacción SQL**. El **código del proyector** solo puede leer el origen con `REPEATABLE READ READ ONLY`.
 
+## Identidad SQL del origen — ampliación de mínimo privilegio
+
+La primera ejecución de 16 casos utilizaba el superusuario de la base de pruebas, aunque la aplicación ejecutara transacciones READ ONLY. La [ampliación de mínimo privilegio](w01-reader-identity.es.md) exige un login PostgreSQL efectivo `w01_reader` con SELECT exclusivamente en cuentas/reloj, y prueba que ni cambiando la transacción a READ WRITE puede modificarse el ledger. El harness conserva **otras credenciales administrativas desechables**; esto no acredita aislamiento de secretos bancarios ni fencing de un mainframe real.
+
 ## Arquitectura y ejecución
 
 ```text
