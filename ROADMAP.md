@@ -49,7 +49,7 @@ All of these are **synthetic engineering results**; no real bank behavior was ob
 ## Next execution order (not dates or percentage-complete estimates)
 
 1. Strengthen platform contracts and manufacturer-aware patterns in #17/#18/#28; first bounded source catalog, then remaining category/worked-example coverage.
-2. Extend functional decomposition/coexistence #32/#58 with source-side ownership, extraction waves and approved behavior.
+2. Extend functional decomposition/coexistence #32/#58 with source-side ownership, extraction waves and approved behavior. The [source-enforced authority acceptance protocol](docs/BROWNFIELD_SOURCE_FENCE.md) adds a structural fail-closed inventory and 12 future negative scenarios; it is **not** a real source fence, approved Golden Master or bank cutover PASS.
 3. Complete remaining channel #30 scenarios: unavailable core, late messages, per-hop faults, stand-in and route cutover.
 4. Finish editorial/reproduction #11: full idiom/bibliography/overlap review, remaining listings, EBCDIC and real OS reproduction.
 5. Reorganize laboratory entry/layout #15 while preserving protected paths and original evidence.

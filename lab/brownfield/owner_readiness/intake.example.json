@@ -1,0 +1,62 @@
+{
+  "schemaVersion": 1,
+  "classification": "CUSTOMER_SOURCE_DISCOVERY_NOT_VALIDATED",
+  "capabilities": [
+    "CAP-005",
+    "CAP-007"
+  ],
+  "systemRef": "",
+  "ownerApproval": null,
+  "goldenMaster": null,
+  "families": [
+    {
+      "id": "online_legacy",
+      "applicability": "UNKNOWN",
+      "evidence": null,
+      "proofs": {},
+      "notes": "Not discovered; source owner to decide applicability and authorized evidence."
+    },
+    {
+      "id": "batch_scheduler",
+      "applicability": "UNKNOWN",
+      "evidence": null,
+      "proofs": {},
+      "notes": "Not discovered; source owner to decide applicability and authorized evidence."
+    },
+    {
+      "id": "channels",
+      "applicability": "UNKNOWN",
+      "evidence": null,
+      "proofs": {},
+      "notes": "Not discovered; source owner to decide applicability and authorized evidence."
+    },
+    {
+      "id": "branches_offline",
+      "applicability": "UNKNOWN",
+      "evidence": null,
+      "proofs": {},
+      "notes": "Not discovered; source owner to decide applicability and authorized evidence."
+    },
+    {
+      "id": "asynchronous_replay",
+      "applicability": "UNKNOWN",
+      "evidence": null,
+      "proofs": {},
+      "notes": "Not discovered; source owner to decide applicability and authorized evidence."
+    },
+    {
+      "id": "privileged_operations",
+      "applicability": "UNKNOWN",
+      "evidence": null,
+      "proofs": {},
+      "notes": "Not discovered; source owner to decide applicability and authorized evidence."
+    },
+    {
+      "id": "external_effects",
+      "applicability": "UNKNOWN",
+      "evidence": null,
+      "proofs": {},
+      "notes": "Not discovered; source owner to decide applicability and authorized evidence."
+    }
+  ]
+}

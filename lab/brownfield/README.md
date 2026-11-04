@@ -61,3 +61,7 @@ Build on the synthetic coexistence rehearsal with a PostgreSQL-backed CAP-007/00
 For productization the team must obtain approved policy and actual business owner mandates. No dataset containing real financial information may be committed to the public repository. E2 Orleans and E3 cloud scale remain separate, benchmark-controlled decisions.
 
 See [issue #58](https://github.com/jmfloreszazo/de-la-caja-negra-a-la-evidencia/issues/58).
+
+## Actual incumbent source-fencing acceptance is still missing
+
+The [independent source-authority intake](owner_readiness/README.md) adds a fail-closed **structural** inventory for all online, batch, channel, offline, asynchronous, privileged and external-effect writer families. The customer must provide independent source-enforced fence and reconciliation proof before any production cutover. This check never validates evidence bytes, approves a Golden Master or grants TODM G2/G6. See the paired design [EN](../../docs/BROWNFIELD_SOURCE_FENCE.md) / [ES](../../docs/BROWNFIELD_SOURCE_FENCE.es.md). A new CI job tests its negative controls; the real bank proof remains not demonstrated.

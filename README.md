@@ -90,6 +90,8 @@ Start with [CONTRIBUTING.md](CONTRIBUTING.md): paths by profile, a first contrib
 
 [**Verifiable evidence matrix**](docs/EVIDENCE.md): real CI, partially verified E1/E2, executed brownfield slices and E3/E4 remaining unexecuted as complete experiments.
 
+**Brownfield source authority:** the [incumbent fencing/owner acceptance protocol](docs/BROWNFIELD_SOURCE_FENCE.md) ([ES](docs/BROWNFIELD_SOURCE_FENCE.es.md)) and [fail-closed structural intake](lab/brownfield/owner_readiness/README.md) identify which real source-side writer and external effects must be evidenced before any CAP-005/007 bank cutover. This is **not real incumbent fencing** or TODM G2/G6 approval.
+
 **E2 acceptance boundary:** [closed bounded campaign](docs/E2_CLOSEOUT.md) ≠ global PASS. [What an actual distributed E2 scientific PASS requires](docs/E2_FULL_PASS_PROTOCOL.md) ([ES](docs/E2_FULL_PASS_PROTOCOL.es.md)): approved SLOs, independent physical domains, natural lifecycle/recovery, SQL failover and raw independent X00–X08 evidence. The new external campaign is **not active**.
 
 **Verified in GitHub Actions:** [Book](https://github.com/jmfloreszazo/de-la-caja-negra-a-la-evidencia/actions/runs/40900252122), [Lab (offline, native, Podman)](https://github.com/jmfloreszazo/de-la-caja-negra-a-la-evidencia/actions/runs/40900252152), and [bilingual PDFs](https://github.com/jmfloreszazo/de-la-caja-negra-a-la-evidencia/actions/runs/40900252098).
