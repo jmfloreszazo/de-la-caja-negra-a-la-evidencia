@@ -23,7 +23,7 @@ Se conservan los SHA originales, ejecuciones de CI, manifiestos, resultados nega
 3. **Dominios físicos y durabilidad:** hosts o zonas independientes, replicación/failover SQL, pérdidas de nodo/zona y conciliación de operaciones confirmadas.
 4. **Aceptación del cliente:** contratos de negocio, trazas aprobadas y mandato para despliegue.
 
-El procedimiento y los cambios necesarios en infraestructura, driver, telemetría y experimentos están documentados en [EXTERNAL_VALIDATION.md](EXTERNAL_VALIDATION.md). Siguen siendo requisitos **para futuras afirmaciones de mayor alcance**, pero no tareas entregadas. Se desconoce la causa histórica de determinadas incidencias de arranque/colocación. TODM **G2 = INCONCLUSIVE**, **G6 = BLOCK** y el contrato de rendimiento permanece **UNCONFIGURED**. Este cierre no autoriza una release ni un despliegue bancario, ni demuestra equivalencia MIPS/vCPU.
+**Los requisitos exactos para un futuro PASS científico global** —topología física, cambios de código, pruebas obligatorias X00–X08, esquema de evidencias crudas y algoritmo de aceptación— están en el [Protocolo E2 Full PASS (español)](E2_FULL_PASS_PROTOCOL.es.md) / [English](E2_FULL_PASS_PROTOCOL.md). Las limitaciones originales se detallan en [EXTERNAL_VALIDATION.md](EXTERNAL_VALIDATION.md). Siguen siendo requisitos **para futuras afirmaciones de mayor alcance**, pero no tareas entregadas. Se desconoce la causa histórica de determinadas incidencias de arranque/colocación. TODM **G2 = INCONCLUSIVE**, **G6 = BLOCK** y el contrato de rendimiento permanece **UNCONFIGURED**. Este cierre no autoriza una release ni un despliegue bancario, ni demuestra equivalencia MIPS/vCPU.
 
 ## PR #89 — independiente de la aceptación E2
 
