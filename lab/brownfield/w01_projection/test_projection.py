@@ -22,25 +22,37 @@ sys.path.insert(0, str(HERE))
 from projection import (
     InvalidSource, UnsafeFixture, authoritative_snapshot, balance,
     observed_source_clock, projection_snapshot, refresh, validated_dsns,
+    FORBIDDEN_ENV,
 )
 
 LEGACY_SCHEMA = HERE.parent / "coexistence" / "legacy_schema.sql"
 REPORT = ROOT / "lab/results/brownfield/w01/w01-original.json"
 
 
-def admin_dsn() -> str:
-    """Test-harness-only superuser. The read-projection module cannot import it."""
+def _checked_reset_dsn(env_key: str, dbname: str, port: str) -> str:
+    """Never execute destructive fixture SQL before validating the endpoint."""
     if os.environ.get("W01_DISPOSABLE") != "YES":
-        raise UnsafeFixture("Disposable source administrator requires opt-in")
-    dsn = os.environ["W01_LEGACY_ADMIN_DSN"]
+        raise UnsafeFixture("Disposable test database requires explicit opt-in")
+    if any(os.environ.get(name) for name in FORBIDDEN_ENV):
+        raise UnsafeFixture("Implicit PostgreSQL environment overrides prohibited")
+    dsn = os.environ[env_key]
     params = psycopg.conninfo.conninfo_to_dict(dsn)
     if (any(params.get(k) for k in ("hostaddr", "service", "servicefile",
                                     "target_session_attrs", "options"))
             or (params.get("host"), params.get("port"), params.get("dbname"),
                 params.get("user"))
-            != ("127.0.0.1", "55438", "bf_legacy", "postgres")):
-        raise UnsafeFixture("Refusing test admin credentials outside named fixture")
+            != ("127.0.0.1", port, dbname, "postgres")):
+        raise UnsafeFixture("Refusing destructive test access outside named fixture")
+    with psycopg.connect(dsn) as db:
+        if db.execute("SELECT current_database(),current_user").fetchone() != (
+                dbname, "postgres"):
+            raise UnsafeFixture("Unexpected test database or role identity")
     return dsn
+
+
+def admin_dsn() -> str:
+    """Test-only superuser, never imported by the projection application."""
+    return _checked_reset_dsn("W01_LEGACY_ADMIN_DSN", "bf_legacy", "55438")
 
 
 def reset_disposable() -> tuple[str, str]:
@@ -64,7 +76,8 @@ def reset_disposable() -> tuple[str, str]:
         db.execute("REVOKE ALL ON ALL TABLES IN SCHEMA legacy FROM PUBLIC")
         db.execute("GRANT USAGE ON SCHEMA legacy TO w01_reader")
         db.execute("GRANT SELECT ON legacy.accounts,legacy.clock TO w01_reader")
-    with psycopg.connect(os.environ["W01_PROJECTION_DSN"]) as db:
+    with psycopg.connect(_checked_reset_dsn(
+            "W01_PROJECTION_DSN", "bf_projection", "55442")) as db:
         if db.execute("SELECT current_database(),current_user").fetchone() != (
                 "bf_projection", "postgres"):
             raise UnsafeFixture("Wrong projection database identity")
