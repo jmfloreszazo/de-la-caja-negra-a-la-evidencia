@@ -19,6 +19,12 @@ Amounts are integer cents in one fictional currency. Customer accounts 1/2 start
 7. A digital transfer commits its decision, balances, postings and outbox in one core transaction. A lost HTTP response remains client UNKNOWN until an authoritative status query; it does not justify another debit.
 8. No approved stand-in delegation exists in this fixture. Core unavailability never authorizes offline cash. Real stand-in budgets, issuer rules, device proof/authentication and source-side migration fencing remain unimplemented.
 
+## Additional bounded offline late-advice correlation, NOT a new native financial engine
+
+The separate [`advice_gate.py`](advice_gate.py) and [`advice_fixture.json`](advice_fixture.json) are fictional observations used to exercise the **#30 L09/E09** correlation and denied stand-in boundary. This does not extend the two SQL stores' physical-device simulation, no live scheme network runs, and does not change the original 10-case/7-oracle native evidence. The outcome of a network advice/reversal is not itself permission to post, reverse or dispense, and identical network delivery duplicates must not create another financial identity. A reused STAN-like field cannot be assumed globally unique across terminals; the durable operation ID remains separate.
+
+When the device journal is UNKNOWN, no arrived advice can infer cash. A full reversal requested after partial cash is delivered must be adjudicated against a trusted device journal and issuer policy, not automatically executed. Stand-in without approved owner delegation is DENIED. The new gate always retains G2 INCONCLUSIVE and G6 BLOCK.
+
 ## Initial native acceptance matrix
 
 | Case | Required observation |
