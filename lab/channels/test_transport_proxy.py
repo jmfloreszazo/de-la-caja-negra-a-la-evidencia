@@ -131,7 +131,7 @@ class OneShotTransportGuards(unittest.TestCase):
         self.assertFalse(observed["physical_link_partition_tested"])
         self.assertFalse(observed["production_approved"])
         self.assertEqual(len(observed["request_sha256"]), 64)
-        self.assertNotIn("test", str(observed))  # raw command payload not recorded
+        self.assertNotIn('{"test":1}', str(observed))  # raw command payload not recorded
 
     def test_14_downstream_proxy_binds_loopback_only(self):
         with OneShotTransportFault(55444, "drop_before_forward") as proxy:
