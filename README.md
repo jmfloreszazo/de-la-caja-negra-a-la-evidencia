@@ -9,6 +9,8 @@
 
 **English** · [Español](README.es.md)
 
+> **Research/book edition closed on 5 November 2026.** [Final bilingual closeout and experiment verdicts](docs/FINAL_CLOSEOUT.md) · [Archival release notes](docs/releases/v2026.11.05.md). The new release tag identifies the final research snapshot; the book still bears its historical first-edition cover identifier. E1/E2 are partially verified; E3/E4 were not executed as complete acceptance studies.
+
 **Modernizing COBOL beyond translation: AI agents, architecture patterns, transactions and verifiable oracles.**
 
 José María Flores Zazo · [jmfloreszazo.com](https://jmfloreszazo.com) · Edition v2026.10.29
