@@ -1,0 +1,42 @@
+# Selected unchanged original GitHub Actions job-log lines (timestamps preserved)
+# Source run: https://github.com/jmfloreszazo/de-la-caja-negra-a-la-evidencia/actions/runs/42024266243
+# Job 127234409728, exact PR source/checkout 291829f8cda34604f692a03dff6794f6cec0f51c
+# This is an excerpt, NOT the complete original job log or ZIP artifact.
+2026-11-05T12:05:59.8072536Z [36;1massert 'Ran 33 tests' in log and re.search(r'^OK$',log,re.M)[0m
+2026-11-05T12:05:59.8081684Z [36;1m  'status':'PASS_33_SYNTHETIC_ADVICE_CHECKS',[0m
+2026-11-05T12:05:59.9456202Z test_01_baseline_partial_unknown_zero_denied_standin (test_advice_gate.AdviceGateTests.test_01_baseline_partial_unknown_zero_denied_standin) ... ok
+2026-11-05T12:05:59.9460060Z test_02_repeated_identical_network_advice_is_idempotent (test_advice_gate.AdviceGateTests.test_02_repeated_identical_network_advice_is_idempotent) ... ok
+2026-11-05T12:05:59.9463913Z test_03_duplicate_stan_across_terminals_not_financial_identity (test_advice_gate.AdviceGateTests.test_03_duplicate_stan_across_terminals_not_financial_identity) ... ok
+2026-11-05T12:05:59.9467563Z test_04_unknown_journal_not_zero_and_not_posted (test_advice_gate.AdviceGateTests.test_04_unknown_journal_not_zero_and_not_posted) ... ok
+2026-11-05T12:05:59.9470981Z test_05_cash_amount_modified_without_ledger_update (test_advice_gate.AdviceGateTests.test_05_cash_amount_modified_without_ledger_update) ... ok
+2026-11-05T12:05:59.9474146Z test_06_posting_without_device_cash_fails (test_advice_gate.AdviceGateTests.test_06_posting_without_device_cash_fails) ... ok
+2026-11-05T12:05:59.9477289Z test_07_second_posting_for_one_operation_rejected (test_advice_gate.AdviceGateTests.test_07_second_posting_for_one_operation_rejected) ... ok
+2026-11-05T12:05:59.9480492Z test_08_wrong_auth_reference_rejected (test_advice_gate.AdviceGateTests.test_08_wrong_auth_reference_rejected) ... ok
+2026-11-05T12:05:59.9483350Z test_09_wrong_terminal_reference_rejected (test_advice_gate.AdviceGateTests.test_09_wrong_terminal_reference_rejected) ... ok
+2026-11-05T12:05:59.9486293Z test_10_wrong_retrieval_reference_rejected (test_advice_gate.AdviceGateTests.test_10_wrong_retrieval_reference_rejected) ... ok
+2026-11-05T12:05:59.9488340Z test_11_wrong_stan_context_rejected (test_advice_gate.AdviceGateTests.test_11_wrong_stan_context_rejected) ... ok
+2026-11-05T12:05:59.9490360Z test_12_same_message_id_new_payload_is_not_idempotent (test_advice_gate.AdviceGateTests.test_12_same_message_id_new_payload_is_not_idempotent) ... ok
+2026-11-05T12:05:59.9492432Z test_13_unknown_network_operation_not_allowed_to_post (test_advice_gate.AdviceGateTests.test_13_unknown_network_operation_not_allowed_to_post) ... ok
+2026-11-05T12:05:59.9494737Z test_14_late_full_reversal_of_partially_delivered_cash_requires_review (test_advice_gate.AdviceGateTests.test_14_late_full_reversal_of_partially_delivered_cash_requires_review) ... ok
+2026-11-05T12:05:59.9497101Z test_15_advice_conflicting_with_final_zero_cash_rejected (test_advice_gate.AdviceGateTests.test_15_advice_conflicting_with_final_zero_cash_rejected) ... ok
+2026-11-05T12:05:59.9499025Z test_16_final_device_requires_journal_id (test_advice_gate.AdviceGateTests.test_16_final_device_requires_journal_id) ... ok
+2026-11-05T12:05:59.9501124Z test_17_missing_device_outcome_not_assumed_zero (test_advice_gate.AdviceGateTests.test_17_missing_device_outcome_not_assumed_zero) ... ok
+2026-11-05T12:05:59.9502832Z test_18_command_id_wrong_rejected (test_advice_gate.AdviceGateTests.test_18_command_id_wrong_rejected) ... ok
+2026-11-05T12:05:59.9504473Z test_19_unapproved_standin_cannot_authorize (test_advice_gate.AdviceGateTests.test_19_unapproved_standin_cannot_authorize) ... ok
+2026-11-05T12:05:59.9506349Z test_20_self_asserted_approval_cannot_override_gate (test_advice_gate.AdviceGateTests.test_20_self_asserted_approval_cannot_override_gate) ... ok
+2026-11-05T12:05:59.9508279Z test_21_denied_standin_cannot_have_device_outcome (test_advice_gate.AdviceGateTests.test_21_denied_standin_cannot_have_device_outcome) ... ok
+2026-11-05T12:05:59.9510279Z test_22_journal_reuse_between_devices_rejected (test_advice_gate.AdviceGateTests.test_22_journal_reuse_between_devices_rejected) ... ok
+2026-11-05T12:05:59.9512110Z test_23_duplicate_posting_id_rejected (test_advice_gate.AdviceGateTests.test_23_duplicate_posting_id_rejected) ... ok
+2026-11-05T12:05:59.9513835Z test_24_network_amount_above_request_rejected (test_advice_gate.AdviceGateTests.test_24_network_amount_above_request_rejected) ... ok
+2026-11-05T12:05:59.9515599Z test_25_unknown_device_cannot_claim_amount (test_advice_gate.AdviceGateTests.test_25_unknown_device_cannot_claim_amount) ... ok
+2026-11-05T12:05:59.9517220Z test_26_boolean_is_not_valid_amount (test_advice_gate.AdviceGateTests.test_26_boolean_is_not_valid_amount) ... ok
+2026-11-05T12:05:59.9518760Z test_27_extra_schema_claim_rejected (test_advice_gate.AdviceGateTests.test_27_extra_schema_claim_rejected) ... ok
+2026-11-05T12:05:59.9520567Z test_28_invalid_or_cross_epoch_messages_refused (test_advice_gate.AdviceGateTests.test_28_invalid_or_cross_epoch_messages_refused) ... ok
+2026-11-05T12:05:59.9522472Z test_29_device_cash_more_than_authorized_rejected (test_advice_gate.AdviceGateTests.test_29_device_cash_more_than_authorized_rejected) ... ok
+2026-11-05T12:05:59.9524282Z test_30_advice_is_not_automatic_posting (test_advice_gate.AdviceGateTests.test_30_advice_is_not_automatic_posting) ... ok
+2026-11-05T12:05:59.9705860Z test_31_cli_valid_baseline_returns_zero (test_advice_gate.AdviceGateTests.test_31_cli_valid_baseline_returns_zero) ... ok
+2026-11-05T12:05:59.9987074Z test_32_cli_conflicting_replay_exits_two (test_advice_gate.AdviceGateTests.test_32_cli_conflicting_replay_exits_two) ... ok
+2026-11-05T12:06:00.0210069Z test_33_cli_bad_json_exits_three (test_advice_gate.AdviceGateTests.test_33_cli_bad_json_exits_three) ... ok
+2026-11-05T12:06:00.0210750Z Ran 33 tests in 0.076s
+2026-11-05T12:06:00.0210905Z OK
+2026-11-05T12:06:00.0429589Z {"automaticPostingAllowed": false, "bankApproval": false, "checkoutSha": "291829f8cda34604f692a03dff6794f6cec0f51c", "classification": "SYNTHETIC_CHANNEL_ADVICE_METADATA_ONLY", "nativeCardNetworkTested": false, "realCashDeviceTested": false, "sourceHeadSha": "291829f8cda34604f692a03dff6794f6cec0f51c", "status": "PASS_33_SYNTHETIC_ADVICE_CHECKS", "testsPlanned": 33, "testsRun": 33, "todmG2": "INCONCLUSIVE", "todmG6": "BLOCK", "unexpectedFailures": 0}
