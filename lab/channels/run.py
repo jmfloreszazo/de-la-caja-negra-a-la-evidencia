@@ -285,7 +285,8 @@ try:
         current['transport_witness'] = witness
         assert witness['real_loopback_socket_used']
         assert witness['request_sha256'] and witness['request_bytes'] > 0
-        assert witness['downstream_response_bytes'] == 0 if not delay else True
+        if not delay:
+            assert witness['downstream_response_bytes'] == 0
         before_retry = snapshot()
         current['before_retry_snapshot'] = before_retry
         if mode == 'drop_before_forward':
