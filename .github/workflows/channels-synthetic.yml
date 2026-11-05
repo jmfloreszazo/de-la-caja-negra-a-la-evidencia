@@ -1,10 +1,10 @@
 name: Synthetic channels native and separate SQL stores
 on:
   push:
-    branches: [book/channels-30]
-    paths: ['lab/channels/**', 'evidence/channels/**', 'scripts/check_channel_observations.py', '.github/workflows/channels-synthetic.yml']
+    branches: [main]
+    paths: ['lab/channels/**', 'evidence/channels/**', 'scripts/check_channel_observations.py', 'scripts/check_channel_transport.py', 'scripts/test_channel_transport_evidence.py', '.github/workflows/channels-synthetic.yml']
   pull_request:
-    paths: ['lab/channels/**', 'evidence/channels/**', 'scripts/check_channel_observations.py', '.github/workflows/channels-synthetic.yml']
+    paths: ['lab/channels/**', 'evidence/channels/**', 'scripts/check_channel_observations.py', 'scripts/check_channel_transport.py', 'scripts/test_channel_transport_evidence.py', '.github/workflows/channels-synthetic.yml']
   workflow_dispatch:
 permissions:
   contents: read
@@ -46,6 +46,15 @@ jobs:
           set -o pipefail
           python3 scripts/check_channel_transport.py lab/results/channels/original.json \
             | tee lab/results/channels/transport-original-gate.json
+      - name: Reject 17 forged original native evidence claims
+        env:
+          SOURCE_HEAD_SHA: ${{ github.event.pull_request.head.sha || github.sha }}
+          CHANNELS_ORIGINAL_REPORT: lab/results/channels/original.json
+        run: |
+          set -o pipefail
+          python3 -m unittest discover -s scripts -p test_channel_transport_evidence.py -v 2>&1 \
+            | tee lab/results/channels/transport-evidence-mutants-original.log
+          grep -q 'Ran 18 tests' lab/results/channels/transport-evidence-mutants-original.log
       - name: Preserve original observations on every outcome
         if: always()
         uses: actions/upload-artifact@v6
