@@ -28,6 +28,10 @@ The **Release** workflow publishes a normal edition from a deliberately pushed `
 
 No existing edition number is changed by this PDF feature. The first version/release is an explicit maintainer decision **after** the PR is merged and validated.
 
+## Final research closeout archival release
+
+The explicit author-approved closing merge title `release: publish final research closeout v2026.11.05` is an additional **one-time** main-commit trigger. It publishes a distinct, immutable final **research source snapshot** using the existing book/cover identifiers and [bilingual release notes](releases/v2026.11.05.md); it must not overwrite earlier tags or imply all experiments passed. A successful Release run must be followed by verification that both PDFs and both Markdown files are attached. The version is a source-freeze tag, not a newly renumbered interior/cover edition.
+
 ## First tagged release
 
 The author-approved merge of PR #2 is the one-time publishing trigger for the existing edition identifier `v2026.10.29`. The merge commit must have the exact title `release: publish first PDF edition after PR #2 merge`. After the PDF build succeeds, the same GitHub Actions job creates the tag (without altering existing files or changing the edition number) and publishes the four assets together. GitHub's token-generated tag does not need to trigger a second workflow. Later releases are initiated only by a deliberately created `v*` tag pointing to `main`.

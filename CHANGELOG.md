@@ -2,6 +2,14 @@
 
 Editions use calendar versioning: `vYYYY.MM.DD`.
 
+## v2026.11.05 · Final bounded research closeout
+
+- Final bilingual research/book source snapshot, preserving the historical first-edition cover identity `v2026.10.29` (this tag freezes the research project rather than a second redesigned edition).
+- Bounded synthetic E1 and E2 evidence retained as `partially_verified`; E3 and E4 acceptance studies closed as `designed_not_executed`, not represented as PASS.
+- Brownfield, channel, vendor and architectural research consolidated with [English final limitations](docs/FINAL_CLOSEOUT.md) / [Spanish](docs/FINAL_CLOSEOUT.es.md).
+- No mainframe/production parity, real source-side bank fence, HA, ISO 8583/device certification or G2/G6 release authority inferred.
+- Publication is gated on the release workflow producing two complete PDF books and two Markdown books; original evidence and historical releases remain immutable.
+
 ## v2026.10.31-rc1 · Functional-first research preview (pre-release)
 
 - Bilingual companion chapter on mainframe decomposition and evidence-aware Oracle Gates (#50).

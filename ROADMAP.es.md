@@ -1,4 +1,6 @@
-# Hoja de ruta abierta — estado basado en evidencias (5 de noviembre de 2026)
+# Hoja de ruta archivada — cierre de investigación (5 de noviembre de 2026)
+
+**CERRADA PARA ESTA EDICIÓN.** Conservamos a continuación el plan histórico como evidencia, no como lista activa de tareas. El autor acepta publicar el libro y laboratorio con E3/E4 incompletos y sin PASS científico global de E1/E2. Véanse el [acta final](docs/FINAL_CLOSEOUT.es.md) y las [notas de publicación](docs/releases/v2026.11.05.md). #16/#53 siguen congelados. Las casillas históricas pendientes quedan expresamente excluidas de esta edición; no se declaran ejecutadas.
 
 [English](ROADMAP.md) · **Español**
 
