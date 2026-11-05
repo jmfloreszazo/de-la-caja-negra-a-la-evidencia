@@ -24,7 +24,7 @@ Solo después de comprobar los resultados concurrentes y el estado SQL de lectur
 
 El [verificador independiente](../../scripts/check_channel_transport.py) inspecciona el testigo TCP y sus timestamps, el ID original ofrecido, **las ocho respuestas HTTP reales** y no solo un indicador declarado, el intento con importe incorrecto y su rechazo, y snapshots SQL tanto anteriores al reintento como anteriores a liberar el ACK. Las [pruebas adversariales](../../scripts/test_channel_transport_evidence.py) deben detectar un ACK liberado prematuramente, menos reintentos, banderas de duplicación falsas, otro ID, apuntes extra, rechazo fingido y tiempos contradictorios.
 
-La nueva prueba se llama `tcp-held-reply-concurrent-recovery`. El driver alcanza **14 casos nativos** (diez originales y cuatro intervenciones de TCP local), **18** controles independientes de seguridad del proxy y **26** comprobaciones de evidencias, incluyendo negativos. Son objetivos de ejecución hasta verificar su correspondiente Actions original.
+La nueva prueba se llama `tcp-held-reply-concurrent-recovery`. El driver alcanza **14 casos nativos** (diez originales y cuatro intervenciones de TCP local), **18** controles independientes de seguridad del proxy y **27** comprobaciones de evidencias, incluyendo negativos. Son objetivos de ejecución hasta verificar su correspondiente Actions original.
 
 ## Qué no demuestra
 
