@@ -106,6 +106,10 @@ The paired research [EN](docs/research/source-native-capture-assessment.en.md) /
 
 [ES research](docs/research/vendor-runtime-contracts.es.md) / [EN](docs/research/vendor-runtime-contracts.en.md) and Chapters 1/13 distinguish IBM Z/z/OS, Db2 for z/OS, IBM i, ClearPath MCP, OS 2200 and historically documented Fujitsu GS21. The [11-row contract/discovery catalog](research/vendor-runtime-contracts/catalog.json) cites ten primary vendor references and specifies replacement gaps and negative oracles. NEC ACOS and Bull GCOS stay **unknown**, never assumed equivalent. Its 25 automated cases validate **metadata only**, not native vendor execution or bank approval.
 
+## Concurrent recovery while an original TCP response is held (#30)
+
+The [EN held-ACK protocol](docs/research/channel-held-ack.en.md) ([ES](docs/research/channel-held-ack.es.md)) tests **eight real HTTP clients** simultaneously replaying one original ID while an earlier .NET 10/PostgreSQL COMMIT response is held in a local TCP proxy. The ninth changed-amount request must be refused; independent SQL must show one effect before releasing the old ACK. This remains a **single-host, synthetic financial owner** test, not inter-host networking or a bank certification.
+
 ## Real local TCP interruption around native .NET 10 / PostgreSQL (#30)
 
 The [EN protocol](docs/research/channel-loopback-transport.en.md) ([ES](docs/research/channel-loopback-transport.es.md)) adds three **actual loopback TCP reset/timeout interventions** around the existing .NET 10 and two disposable PostgreSQL stores. An independent original SQL report checker compares committed operation, paired postings/outbox and same-ID recovery. **Not a real inter-host WAN partition, bank device or issuer certification.**
