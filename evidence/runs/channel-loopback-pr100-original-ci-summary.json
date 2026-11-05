@@ -63,5 +63,27 @@
     }
   ],
   "originalEvidenceReference": "evidence/runs/CHANNEL-LOOPBACK-PR100-ORIGINAL-CI-EXCERPT.log",
-  "limitations": "Raw original.json, socket witnesses, read-only before/after SQL snapshots, original guard log and report gate are stored in GitHub Actions artifact; ZIP digest is GitHub-reported, not independently rehashed. The connector job log supplies the concise case PASS. The real effect is a one-shot LOOPBACK socket reset/delay on a single host; no kernel netem, multi-host WAN, actual ATM/card scheme, native mainframe, physical HA or bank-approved posting authority."
+  "limitations": "Raw original.json, socket witnesses, read-only before/after SQL snapshots, original guard log and report gate are stored in GitHub Actions artifact; ZIP digest is GitHub-reported, not independently rehashed. The connector job log supplies the concise case PASS. The real effect is a one-shot LOOPBACK socket reset/delay on a single host; no kernel netem, multi-host WAN, actual ATM/card scheme, native mainframe, physical HA or bank-approved posting authority.",
+  "strengthenedEvidenceRun": {
+    "runId": 42034784257,
+    "jobId": 127269987076,
+    "originalHeadAndCheckout": "1a4effced7b5bad20ef117a3b20d0917a7f5673e",
+    "url": "https://github.com/jmfloreszazo/de-la-caja-negra-a-la-evidencia/actions/runs/42034784257",
+    "proxyControlsPassed": 14,
+    "nativeCasesPassed": 13,
+    "readOnlySqlTransportVerifier": "PASS_BOUNDED_LIVE_LOOPBACK_TRANSPORT",
+    "evidenceRefusalCasesPassed": 18,
+    "originalValid": 1,
+    "falsifiedMutationsRejected": 17,
+    "originalExcerpt": "evidence/runs/CHANNEL-LOOPBACK-PR100-EVIDENCE-MUTANTS-CI-EXCERPT.log",
+    "artifact": {
+      "id": 13418031808,
+      "name": "channels-synthetic-original",
+      "sizeBytes": 21972,
+      "githubReportedZipSha256": "c794a6739fe050d69df22de37f8883c1280b88dd03fd7131a84be34952939118",
+      "zipIndependentlyHashed": false,
+      "initialExpires": "2027-02-03T13:19:41Z"
+    },
+    "scope": "Actual one-host loopback TCP reset and reply timeout with SQL snapshot and post-COMMIT state; no real WAN, bank or issuer execution."
+  }
 }
