@@ -48,7 +48,7 @@ All of these are **synthetic engineering results**; no real bank behavior was ob
 
 ## Next execution order (not dates or percentage-complete estimates)
 
-**New bounded #30 block:** [ATM↔switch↔core hop failures](docs/research/channel-hop-failures.en.md) ([ES](docs/research/channel-hop-failures.es.md)): seven fictional event traces and **40 prepared Python controls** for undelivered instructions, COMMIT with lost ACK, UNKNOWN device cash, stale old-owner replies and denied stand-in. **No actual TCP partitions or bank approval**; it supplements the earlier native SQL and 33-case advice experiments. #30 stays open for real transport fault injection and wider channel coverage.
+**New bounded #30 block:** [ATM↔switch↔core hop failures](docs/research/channel-hop-failures.en.md) ([ES](docs/research/channel-hop-failures.es.md)): seven fictional event traces and **40/40 Python controls passed in CI** ([original audit](evidence/runs/CHANNEL-HOP-FAULTS.md)) for undelivered instructions, COMMIT with lost ACK, UNKNOWN device cash, stale old-owner replies and denied stand-in. **No actual TCP partitions or bank approval**; it supplements the earlier native SQL and 33-case advice experiments. #30 stays open for real transport fault injection and wider channel coverage.
 
 **Channels #30 verified bounded increment:** the [late-advice forensic oracle](docs/research/channel-late-advice.en.md) ([ES](docs/research/channel-late-advice.es.md)) passed **33/33 offline synthetic controls** ([original audit](evidence/runs/CHANNEL-ADVICE.md)). It does not reclassify the ten earlier native SQL cases or establish certified ISO 8583, real cash, financial reversals or delegated stand-in approval. #30 remains open for its larger scope.
 
