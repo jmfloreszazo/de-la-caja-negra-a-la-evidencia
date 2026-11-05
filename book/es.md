@@ -1734,6 +1734,28 @@ Para correlacionar no basta con STAN o RRN: hay que conservar el **ID duradero d
 
 No se introduce una nueva implementación de ISO 8583 ni un emulador de cajero certificado. El nuevo control utiliza datos inventados; **no comprueba autenticidad de journal físico, políticas del emisor, reconciliación de esquemas ni operaciones bancarias reales**. Complementa las diez pruebas nativas anteriores de .NET 10/PostgreSQL, pero no reutiliza sus resultados como evidencia de protocolos de tarjeta. Incluso si sus casos Python pasan, no autoriza de forma automática dispensar, contabilizar o revertir y conserva **TODM G2 INCONCLUSIVE / G6 BLOCK**.
 
+#### 8. No existe un único «fallo de red»: localizar el salto y la decisión
+
+En una retirada, el mismo mensaje «timeout» puede esconder estados opuestos. Si se corta el **enlace ATM→switch** antes de la entrega, no tenemos una autorización demostrada. Si falla **switch→core** antes de llegar al emisor, el switch carece de permiso para inventar un saldo o dispensar. Si el core hizo COMMIT y solo perdió la **respuesta**, repetir la instrucción con un nuevo ID puede duplicar efectos. El camino de recuperación empieza consultando el estado **con el identificador original** en la autoridad que realmente tomó la decisión; una respuesta positiva no confirma la entrega física.
+
+El [dossier ES sobre saltos y fallos](../docs/research/channel-hop-failures.es.md) ([EN](../docs/research/channel-hop-failures.en.md)) añade un oráculo de siete trazas ficticias y cuarenta controles adversariales. Complementa las pruebas de dispensación parcial y mensajes tardíos del apartado anterior, sin introducir un segundo simulador de core.
+
+| Escenario | Dictamen del oráculo sintético | Acción que bloqueamos |
+| --- | --- | --- |
+| H01: ATM→switch sin entrega | `NO_CORE_AUTHORIZATION_EVIDENCE` | Presentar timeout como rechazo confirmado o éxito |
+| H02: switch→core sin entrega | `NO_CORE_AUTHORIZATION_EVIDENCE` | Pasar a *stand-in* sin delegación |
+| H03: COMMIT del emisor, ACK perdido y consulta tras recuperar el enlace | `AUTHORIZATION_RECOVERED_BY_STATUS` | Nueva autorización con otra identidad; asumir efectivo |
+| H04: autorización y comando al dispositivo, enlace ATM↔switch caído | `CASH_UNKNOWN_NO_REDISPENSE` | Reenviar DISPENSE mientras falta journal |
+| H05: respuesta de propietario antiguo tras cambio de época | `QUARANTINED_OLD_OWNER_REPLY` | Dar al antiguo host permiso para contabilizar |
+| H06: efectivo parcial y ledger sintéticos coincidentes | `PARTIAL_CASH_RECONCILED_SYNTHETICALLY` | Confundir fixture con prueba física |
+| H07: switch sin core solicita stand-in no delegado | `STAND_IN_DENIED` | Crear crédito o dispensación offline |
+
+**Un cambio de ruta no es fencing.** Para mover de verdad el escritor de una capacidad del host a .NET/SQL hay que demostrar que el antiguo host **ya no puede confirmar la misma instrucción**, incluso por batch, privilegios o tareas offline. El `sourceEpoch` que etiqueta estos eventos de laboratorio es una señal de correlación, no un candado criptográfico ni una prueba de revocación del propietario anterior.
+
+Tampoco debemos trasladar directamente la semántica de CICS a HTTP: una tarea CICS puede tener varios *syncpoints* y la atomicidad se limita a sus recursos recuperables. La autorización de red y el dinero físico viven en otras fronteras. Véanse [syncpoints y UOW de CICS](https://www.ibm.com/docs/en/cics-ts/6.x?topic=work-synchronization-points) y la [guía de fallos transitorios de Azure](https://learn.microsoft.com/en-us/azure/architecture/best-practices/transient-faults).
+
+El [oráculo Python](../lab/channels/network_fault_gate.py) **solo analiza eventos declarados en JSON**: no corta sockets, no ejecuta ISO 8583, no consulta al emisor ni escribe un asiento. Un PASS valida coherencia de una maqueta, no garantías de la red. Una aceptación real exige pérdidas y reconexiones instrumentadas por separado, logs nativos de COMMIT, identidad de reintento, journal físico, conciliación y aprobación del negocio. **Ningún resultado del fixture autoriza automáticamente una retirada, reverso, asiento, corte de escritor o stand-in.** TODM G2 `INCONCLUSIVE`, G6 `BLOCK`.
+
 ## Parte V · Capacidad: MIPS, concurrencia y plataforma
 
 La pregunta que más preocupa al sacar una carga de un mainframe no es si el programa compila. Es si aguantará el cierre, el pico y un fallo a la vez. Esta parte trata de cómo acercarse a lo que da un mainframe —en Azure o en una máquina enorme en casa del cliente— sin hacerse trampas al medir.

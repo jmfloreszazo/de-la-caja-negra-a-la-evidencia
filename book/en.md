@@ -1734,6 +1734,28 @@ Neither STAN nor RRN alone is a durable financial identity. Retain the original 
 
 This is **not** a certified ISO 8583 implementation or a real ATM simulator. The new check has invented data: it **does not authenticate device journal entries, issuer policies, network settlement or actual bank operations**. It complements the prior ten native .NET 10/PostgreSQL experiments without treating their results as card-network certification. Even if the Python checks pass, no automatic dispense, posting or reversal is permitted; **TODM G2 INCONCLUSIVE / G6 BLOCK**.
 
+#### 8. There is no generic network failure: locate the hop and decision
+
+A channel “timeout” can conceal different financial states. If **ATM→switch** fails before delivery, no original authorization is demonstrated. If **switch→core** drops the request before the issuer receives it, the switch cannot invent account authority or dispense cash. If the core durably committed and **only its reply** was lost, starting a new operation ID risks a duplicate effect. Recovery queries the **actual decision owner under the original identity**; approval does not prove physical cash.
+
+The [EN per-hop failure dossier](../docs/research/channel-hop-failures.en.md) ([ES](../docs/research/channel-hop-failures.es.md)) adds seven fictional traces and forty negative controls. It extends the previous partial-cash and late-advice examples without duplicating the core simulator.
+
+| Scenario | Synthetic oracle outcome | Forbidden inference or action |
+| --- | --- | --- |
+| H01: ATM→switch request not delivered | `NO_CORE_AUTHORIZATION_EVIDENCE` | Treat timeout as a confirmed decline or success |
+| H02: switch→core request not delivered | `NO_CORE_AUTHORIZATION_EVIDENCE` | Invent stand-in authority |
+| H03: issuer COMMIT, lost ACK, status recovered on restored link | `AUTHORIZATION_RECOVERED_BY_STATUS` | Start another operation identity or infer cash delivery |
+| H04: approval and device command, ATM↔switch fails | `CASH_UNKNOWN_NO_REDISPENSE` | Re-send dispense while journal remains unknown |
+| H05: old owner replies after writer epoch changes | `QUARANTINED_OLD_OWNER_REPLY` | Allow old host to create another posting |
+| H06: partial cash and fictional ledger agree | `PARTIAL_CASH_RECONCILED_SYNTHETICALLY` | Present fictional agreement as hardware proof |
+| H07: core outage with undelegated stand-in request | `STAND_IN_DENIED` | Authorize offline credit or dispense |
+
+**Routing is not source fencing.** A real change of authoritative writer from a host capability to .NET/SQL requires proof that the previous owner **can no longer commit the same operation**, including batch, privileged and disconnected paths. The fixture's `sourceEpoch` field is only a correlation marker, not a cryptographic lock or independent proof of revocation.
+
+Nor does CICS UOW equal an HTTP transaction: a CICS task can have multiple syncpoints, with atomicity scoped to recoverable resources in each UOW. Network authorization and physical notes are external boundaries. See [IBM CICS syncpoints](https://www.ibm.com/docs/en/cics-ts/6.x?topic=work-synchronization-points) and [Azure transient fault guidance](https://learn.microsoft.com/en-us/azure/architecture/best-practices/transient-faults).
+
+The [lab Python trace oracle](../lab/channels/network_fault_gate.py) **only checks declared JSON events**. It does not disconnect TCP sockets, execute a certified card protocol, contact an issuer or post to a financial ledger. A PASS shows consistency of this model, not a network guarantee. Real acceptance requires independent per-hop loss/reconnection injection, native issuer COMMIT logs, original retry identity, authenticated device journals, reconciliation and business-owner approval. **No fixture outcome authorizes automatic cash, reversal, posting, writer cutover or stand-in.** TODM G2 `INCONCLUSIVE`, G6 `BLOCK`.
+
 ## Part V · Capacity: MIPS, concurrency and platform
 
 The question that worries me most when taking a workload off a mainframe is not whether the program compiles. It is whether it will hold up when month-end close, the peak and a failure arrive at once. This part is about approaching what a mainframe delivers —in Azure or on a huge machine at the customer's site— without cheating when we measure.
