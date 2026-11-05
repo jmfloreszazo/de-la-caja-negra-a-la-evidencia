@@ -1,0 +1,50 @@
+name: Retire merged channel late-advice branch
+on:
+  push:
+    branches: [main]
+    paths:
+      - ".github/workflows/channels-advice-retire.yml"
+  workflow_dispatch:
+permissions:
+  contents: write
+  pull-requests: read
+jobs:
+  retire-exact-merged-feature-ref:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          fetch-depth: 0
+      - name: Refuse changed refs; delete only exact integrated branch with lease
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          python3 - <<'PY'
+          import json, os, subprocess
+          repo = os.environ['GITHUB_REPOSITORY']
+          branch = 'feature/channels-late-advice-reconciliation-30'
+          expected_tip = '838dbd8879054f5f489cbccca9da51aa7d67e545'
+          expected_merge = '7be3783279324bf95ea571a5d8ab011ac718d3ce'
+          assert repo == 'jmfloreszazo/de-la-caja-negra-a-la-evidencia'
+          assert os.environ['GITHUB_REF'] == 'refs/heads/main'
+          pr = json.loads(subprocess.check_output(
+              ['gh', 'api', 'repos/'+repo+'/pulls/98'], text=True))
+          assert pr['state']=='closed' and pr['merged_at'] is not None
+          assert pr['base']['ref']=='main' and pr['head']['ref']==branch
+          assert pr['head']['sha']==expected_tip
+          assert pr['merge_commit_sha']==expected_merge
+          for ancestor in (expected_tip, expected_merge):
+              subprocess.run(['git','merge-base','--is-ancestor',ancestor,'HEAD'],check=True)
+          current=subprocess.check_output(
+              ['git','ls-remote','origin','refs/heads/'+branch],text=True).strip()
+          if current:
+              assert current.split()[0]==expected_tip, 'Branch advanced after PR merge'
+              subprocess.run(
+                  ['git','push',
+                   '--force-with-lease=refs/heads/'+branch+':'+expected_tip,
+                   'origin',':refs/heads/'+branch],check=True)
+          assert not subprocess.check_output(
+              ['git','ls-remote','origin','refs/heads/'+branch],text=True).strip()
+          print('Safely retired unchanged #98 branch',expected_tip)
+          PY
