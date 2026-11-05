@@ -1,0 +1,38 @@
+{
+  "classification": "ORIGINAL_ACTIONS_LOG_AND_PUBLISHED_ARTIFACT_METADATA_NOT_ZIP_INDEPENDENT_AUDIT",
+  "reference": {
+    "repository": "jmfloreszazo/de-la-caja-negra-a-la-evidencia",
+    "issue": 30,
+    "pr": 99,
+    "originalRunId": 42028436325,
+    "originalJobId": 127248415098,
+    "originalHeadSha": "8bec46074a50daa5d08ecc174662e837cad8ab8c",
+    "checkoutSha": "8bec46074a50daa5d08ecc174662e837cad8ab8c",
+    "url": "https://github.com/jmfloreszazo/de-la-caja-negra-a-la-evidencia/actions/runs/42028436325"
+  },
+  "originalResult": {
+    "status": "PASS_40_SYNTHETIC_HOP_CONTROLS",
+    "testsRun": 40,
+    "testsPlanned": 40,
+    "unexpectedFailures": 0,
+    "logicalHopCases": 7,
+    "physicalNetworkPartitionTested": false,
+    "nativeBankSourceTested": false,
+    "bankApproved": false,
+    "automatedMoneyMovementAllowed": false,
+    "todmG2": "INCONCLUSIVE",
+    "todmG6": "BLOCK"
+  },
+  "artifactMetadata": {
+    "artifactId": 13415051431,
+    "name": "channel-hop-faults-synthetic-original-not-physical",
+    "sizeBytes": 2637,
+    "githubReportedSha256": "3ac341c70ccf4a17db27a8218f299768ff64f7c782cedb5cebec62ed66ad2101",
+    "independentZipSha256Verified": false,
+    "zipMembersInspectedIndependently": false,
+    "initialExpires": "2027-02-03T12:35:28Z"
+  },
+  "excerpt": "evidence/runs/CHANNEL-HOP-PR99-ORIGINAL-CI-EXCERPT.log",
+  "scope": "7 fictional ordered hop event traces over ATM_SWITCH, SWITCH_CORE, ISSUER, DEVICE and CONTROL. No physical link dropped, independent issuer log, authenticated dispenser evidence, approved delegation, bank authorization, actual writer fencing, source log, ISO8583 or performance benchmarks.",
+  "limitations": "A fabricated internally consistent event history can pass. Original artifact metadata obtained from GitHub; do not call its reported checksum independently verified. Earlier Book MD012 run stays failed; later correction is a distinct commit."
+}

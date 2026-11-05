@@ -1,0 +1,98 @@
+name: Channel hop partition and late-reply synthetic trace gate
+on:
+  pull_request:
+    paths:
+      - 'lab/channels/network_fault_gate.py'
+      - 'lab/channels/network_fault_fixture.json'
+      - 'lab/channels/test_network_fault_gate.py'
+      - 'docs/research/channel-hop-failures.*'
+      - '.github/workflows/channels-network-faults.yml'
+  push:
+    branches: [main]
+    paths:
+      - 'lab/channels/network_fault_gate.py'
+      - 'lab/channels/network_fault_fixture.json'
+      - 'lab/channels/test_network_fault_gate.py'
+      - 'docs/research/channel-hop-failures.*'
+      - '.github/workflows/channels-network-faults.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  adversarial-synthetic-partition-traces:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+      - uses: actions/setup-python@v6
+        with:
+          python-version: '3.12'
+      - name: Capture exact source and checkout provenance
+        env:
+          SOURCE_SHA: ${{ github.event.pull_request.head.sha || github.sha }}
+        run: |
+          mkdir -p lab/results/channels/hop-faults
+          test "$SOURCE_SHA" = "$(git rev-parse HEAD)"
+          {
+            echo "source_sha=$SOURCE_SHA"
+            echo "checkout_sha=$(git rev-parse HEAD)"
+            python3 --version
+            uname -a
+            sha256sum lab/channels/{network_fault_gate.py,network_fault_fixture.json,test_network_fault_gate.py}
+          } > lab/results/channels/hop-faults/original-provenance.txt
+      - name: Execute 7 synthetic hop cases and 40 adversarial controls
+        env:
+          SOURCE_SHA: ${{ github.event.pull_request.head.sha || github.sha }}
+        run: |
+          set -o pipefail
+          python3 lab/channels/network_fault_gate.py lab/channels/network_fault_fixture.json \
+            | tee lab/results/channels/hop-faults/original-baseline.json
+          python3 -m unittest discover -s lab/channels -p test_network_fault_gate.py -v \
+            2>&1 | tee lab/results/channels/hop-faults/original-negative-tests.log
+          python3 - <<'PY'
+          import json,os,re
+          from pathlib import Path
+          root=Path('lab/results/channels/hop-faults')
+          base=json.loads((root/'original-baseline.json').read_text())
+          logs=(root/'original-negative-tests.log').read_text()
+          expected={
+             'H01':'NO_CORE_AUTHORIZATION_EVIDENCE',
+             'H02':'NO_CORE_AUTHORIZATION_EVIDENCE',
+             'H03':'AUTHORIZATION_RECOVERED_BY_STATUS',
+             'H04':'CASH_UNKNOWN_NO_REDISPENSE',
+             'H05':'QUARANTINED_OLD_OWNER_REPLY',
+             'H06':'PARTIAL_CASH_RECONCILED_SYNTHETICALLY',
+             'H07':'STAND_IN_DENIED',
+          }
+          assert base['status']=='PASS_SYNTHETIC_HOP_CONSISTENCY'
+          assert base['outcomes']==expected
+          assert len(re.findall(r'^test_\d+_.* \.\.\. ok$',logs,re.M))==40
+          assert 'Ran 40 tests' in logs and re.search(r'^OK$',logs,re.M)
+          for f in ('physicalLinkCutTested','nativeIssuerLogAuthenticated',
+                    'physicalCashJournalAuthenticated','delegatedStandInAuthority',
+                    'automaticAuthorizationAllowed','automaticDispenseAllowed',
+                    'automaticPostingAllowed','automaticReversalAllowed',
+                    'cohortWriterCutoverAuthorized','productionApproved'):
+              assert base[f] is False
+          assert base['todmG2']=='INCONCLUSIVE' and base['todmG6']=='BLOCK'
+          sha=os.environ['SOURCE_SHA']
+          result={'classification':'SYNTHETIC_PER_HOP_LOGICAL_TRACE_NOT_NETWORK_INJECTION',
+                  'status':'PASS_40_SYNTHETIC_HOP_CONTROLS',
+                  'sourceHeadSha':sha,'checkoutSha':sha,'testsRun':40,
+                  'testsPlanned':40,'unexpectedFailures':0,
+                  'logicalHopCases':len(expected),'physicalNetworkPartitionTested':False,
+                  'nativeBankSourceTested':False,'bankApproved':False,
+                  'automatedMoneyMovementAllowed':False,
+                  'todmG2':'INCONCLUSIVE','todmG6':'BLOCK'}
+          (root/'original-result.json').write_text(json.dumps(result,sort_keys=True,indent=2)+'\n')
+          print(json.dumps(result,sort_keys=True))
+          PY
+      - name: Save original outcome on success or failure
+        if: always()
+        uses: actions/upload-artifact@v6
+        with:
+          name: channel-hop-faults-synthetic-original-not-physical
+          path: lab/results/channels/hop-faults/
+          if-no-files-found: warn

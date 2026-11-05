@@ -1,0 +1,49 @@
+# Selected verbatim original GitHub Actions run lines, timestamped
+# Run https://github.com/jmfloreszazo/de-la-caja-negra-a-la-evidencia/actions/runs/42028436325
+# Job 127248415098, original PR head and checkout 8bec46074a50daa5d08ecc174662e837cad8ab8c
+# Excerpt, not original ZIP or complete runner log.
+2026-11-05T12:35:35.1560397Z [36;1massert 'Ran 40 tests' in logs and re.search(r'^OK$',logs,re.M)[0m
+2026-11-05T12:35:35.1567487Z [36;1m        'status':'PASS_40_SYNTHETIC_HOP_CONTROLS',[0m
+2026-11-05T12:35:35.3639859Z test_01_seven_fixture_scenarios_all_consistent (test_network_fault_gate.SyntheticHopFaults.test_01_seven_fixture_scenarios_all_consistent) ... ok
+2026-11-05T12:35:35.3643291Z test_02_dropped_atm_request_cannot_be_marked_delivered (test_network_fault_gate.SyntheticHopFaults.test_02_dropped_atm_request_cannot_be_marked_delivered) ... ok
+2026-11-05T12:35:35.3646065Z test_03_switch_core_receive_during_partition_refused (test_network_fault_gate.SyntheticHopFaults.test_03_switch_core_receive_during_partition_refused) ... ok
+2026-11-05T12:35:35.3649358Z test_04_issuer_commit_without_source_request_refused (test_network_fault_gate.SyntheticHopFaults.test_04_issuer_commit_without_source_request_refused) ... ok
+2026-11-05T12:35:35.3651715Z test_05_lost_reply_without_issuer_commit_refused (test_network_fault_gate.SyntheticHopFaults.test_05_lost_reply_without_issuer_commit_refused) ... ok
+2026-11-05T12:35:35.3654506Z test_06_status_query_before_restored_core_path_refused (test_network_fault_gate.SyntheticHopFaults.test_06_status_query_before_restored_core_path_refused) ... ok
+2026-11-05T12:35:35.3657413Z test_07_status_query_with_missing_original_commit_refused (test_network_fault_gate.SyntheticHopFaults.test_07_status_query_with_missing_original_commit_refused) ... ok
+2026-11-05T12:35:35.3660256Z test_08_original_core_commit_is_not_cash_dispense (test_network_fault_gate.SyntheticHopFaults.test_08_original_core_commit_is_not_cash_dispense) ... ok
+2026-11-05T12:35:35.3663118Z test_09_device_dispatch_before_atm_approval_refused (test_network_fault_gate.SyntheticHopFaults.test_09_device_dispatch_before_atm_approval_refused) ... ok
+2026-11-05T12:35:35.3665613Z test_10_duplicate_device_dispatch_refused (test_network_fault_gate.SyntheticHopFaults.test_10_duplicate_device_dispatch_refused) ... ok
+2026-11-05T12:35:35.3668971Z test_11_unknown_device_without_dispatch_refused (test_network_fault_gate.SyntheticHopFaults.test_11_unknown_device_without_dispatch_refused) ... ok
+2026-11-05T12:35:35.3671575Z test_12_unknown_cash_cannot_have_fake_zero_journal (test_network_fault_gate.SyntheticHopFaults.test_12_unknown_cash_cannot_have_fake_zero_journal) ... ok
+2026-11-05T12:35:35.3674138Z test_13_unknown_cash_cannot_be_booked_to_ledger (test_network_fault_gate.SyntheticHopFaults.test_13_unknown_cash_cannot_be_booked_to_ledger) ... ok
+2026-11-05T12:35:35.3677206Z test_14_partial_dispense_ledger_mismatch_refused (test_network_fault_gate.SyntheticHopFaults.test_14_partial_dispense_ledger_mismatch_refused) ... ok
+2026-11-05T12:35:35.3680207Z test_15_device_delivers_more_than_issuer_approved (test_network_fault_gate.SyntheticHopFaults.test_15_device_delivers_more_than_issuer_approved) ... ok
+2026-11-05T12:35:35.3682592Z test_16_final_device_without_journal_id_invalid (test_network_fault_gate.SyntheticHopFaults.test_16_final_device_without_journal_id_invalid) ... ok
+2026-11-05T12:35:35.3685161Z test_17_duplicate_ledger_post_event_refused (test_network_fault_gate.SyntheticHopFaults.test_17_duplicate_ledger_post_event_refused) ... ok
+2026-11-05T12:35:35.3688304Z test_18_late_old_reply_without_cutover_refused (test_network_fault_gate.SyntheticHopFaults.test_18_late_old_reply_without_cutover_refused) ... ok
+2026-11-05T12:35:35.3690832Z test_19_wrong_cutover_writer_epoch_refused (test_network_fault_gate.SyntheticHopFaults.test_19_wrong_cutover_writer_epoch_refused) ... ok
+2026-11-05T12:35:35.3693646Z test_20_old_reply_replays_wrong_new_epoch_refused (test_network_fault_gate.SyntheticHopFaults.test_20_old_reply_replays_wrong_new_epoch_refused) ... ok
+2026-11-05T12:35:35.3696202Z test_21_stale_epoch_in_auth_request_refused (test_network_fault_gate.SyntheticHopFaults.test_21_stale_epoch_in_auth_request_refused) ... ok
+2026-11-05T12:35:35.3699750Z test_22_writer_epoch_changed_without_cutover_witness (test_network_fault_gate.SyntheticHopFaults.test_22_writer_epoch_changed_without_cutover_witness) ... ok
+2026-11-05T12:35:35.3702113Z test_23_duplicate_issuer_commit_refused (test_network_fault_gate.SyntheticHopFaults.test_23_duplicate_issuer_commit_refused) ... ok
+2026-11-05T12:35:35.3704989Z test_24_stand_in_attempt_without_core_failure_refused (test_network_fault_gate.SyntheticHopFaults.test_24_stand_in_attempt_without_core_failure_refused) ... ok
+2026-11-05T12:35:35.3707632Z test_25_stand_in_cannot_create_issuer_commit (test_network_fault_gate.SyntheticHopFaults.test_25_stand_in_cannot_create_issuer_commit) ... ok
+2026-11-05T12:35:35.3710573Z test_26_stand_in_cash_effect_refused (test_network_fault_gate.SyntheticHopFaults.test_26_stand_in_cash_effect_refused) ... ok
+2026-11-05T12:35:35.3713232Z test_27_invented_delegation_invalid (test_network_fault_gate.SyntheticHopFaults.test_27_invented_delegation_invalid) ... ok
+2026-11-05T12:35:35.3715971Z test_28_self_asserted_network_execution_invalid (test_network_fault_gate.SyntheticHopFaults.test_28_self_asserted_network_execution_invalid) ... ok
+2026-11-05T12:35:35.3718845Z test_29_self_asserted_bank_approval_invalid (test_network_fault_gate.SyntheticHopFaults.test_29_self_asserted_bank_approval_invalid) ... ok
+2026-11-05T12:35:35.3721317Z test_30_self_asserted_real_device_invalid (test_network_fault_gate.SyntheticHopFaults.test_30_self_asserted_real_device_invalid) ... ok
+2026-11-05T12:35:35.3723191Z test_31_unrecognized_approval_field_invalid (test_network_fault_gate.SyntheticHopFaults.test_31_unrecognized_approval_field_invalid) ... ok
+2026-11-05T12:35:35.3725317Z test_32_reordered_event_trace_invalid (test_network_fault_gate.SyntheticHopFaults.test_32_reordered_event_trace_invalid) ... ok
+2026-11-05T12:35:35.3728293Z test_33_event_assigned_to_wrong_hop_invalid (test_network_fault_gate.SyntheticHopFaults.test_33_event_assigned_to_wrong_hop_invalid) ... ok
+2026-11-05T12:35:35.3730858Z test_34_boolean_amount_is_not_integer_invalid (test_network_fault_gate.SyntheticHopFaults.test_34_boolean_amount_is_not_integer_invalid) ... ok
+2026-11-05T12:35:35.3733647Z test_35_duplicate_operations_across_scenarios_refused (test_network_fault_gate.SyntheticHopFaults.test_35_duplicate_operations_across_scenarios_refused) ... ok
+2026-11-05T12:35:35.3736175Z test_36_duplicate_device_journal_across_scenarios_refused (test_network_fault_gate.SyntheticHopFaults.test_36_duplicate_device_journal_across_scenarios_refused) ... ok
+2026-11-05T12:35:35.3739170Z test_37_no_core_proof_cannot_be_issuer_approved (test_network_fault_gate.SyntheticHopFaults.test_37_no_core_proof_cannot_be_issuer_approved) ... ok
+2026-11-05T12:35:35.4101657Z test_38_cli_positive_exit_zero_and_safe_flags (test_network_fault_gate.SyntheticHopFaults.test_38_cli_positive_exit_zero_and_safe_flags) ... ok
+2026-11-05T12:35:35.4472306Z test_39_cli_rejected_trace_exit_two (test_network_fault_gate.SyntheticHopFaults.test_39_cli_rejected_trace_exit_two) ... ok
+2026-11-05T12:35:35.4829778Z test_40_cli_invalid_json_exit_three (test_network_fault_gate.SyntheticHopFaults.test_40_cli_invalid_json_exit_three) ... ok
+2026-11-05T12:35:35.4832003Z Ran 40 tests in 0.119s
+2026-11-05T12:35:35.4832509Z OK
+2026-11-05T12:35:35.5159942Z {"automatedMoneyMovementAllowed": false, "bankApproved": false, "checkoutSha": "8bec46074a50daa5d08ecc174662e837cad8ab8c", "classification": "SYNTHETIC_PER_HOP_LOGICAL_TRACE_NOT_NETWORK_INJECTION", "logicalHopCases": 7, "nativeBankSourceTested": false, "physicalNetworkPartitionTested": false, "sourceHeadSha": "8bec46074a50daa5d08ecc174662e837cad8ab8c", "status": "PASS_40_SYNTHETIC_HOP_CONTROLS", "testsPlanned": 40, "testsRun": 40, "todmG2": "INCONCLUSIVE", "todmG6": "BLOCK", "unexpectedFailures": 0}

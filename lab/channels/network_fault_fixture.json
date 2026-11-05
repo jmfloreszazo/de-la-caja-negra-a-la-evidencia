@@ -1,0 +1,360 @@
+{
+  "schemaVersion": 1,
+  "classification": "SYNTHETIC_PER_HOP_NETWORK_FAULT_TRACE_NOT_PHYSICAL_PARTITION",
+  "policy": "NO_STANDIN_DELEGATION",
+  "nativeNetworkExecution": false,
+  "bankAuthorization": false,
+  "deviceHardwareObserved": false,
+  "scenarios": [
+    {
+      "id": "H01",
+      "operationId": "OP-ATM-LINK",
+      "sourceEpoch": "epoch-a",
+      "activeEpoch": "epoch-a",
+      "amountMinor": 5000,
+      "issuerDecision": "NOT_OBSERVED",
+      "deviceState": "NOT_SENT",
+      "deviceDispensedMinor": null,
+      "deviceJournalId": null,
+      "ledgerPostedMinor": 0,
+      "events": [
+        {
+          "step": 1,
+          "kind": "ATM_REQUEST",
+          "link": "ATM_SWITCH",
+          "sourceEpoch": "epoch-a"
+        },
+        {
+          "step": 2,
+          "kind": "LINK_DOWN",
+          "link": "ATM_SWITCH",
+          "sourceEpoch": "epoch-a"
+        },
+        {
+          "step": 3,
+          "kind": "ATM_REQUEST_DROPPED",
+          "link": "ATM_SWITCH",
+          "sourceEpoch": "epoch-a"
+        }
+      ]
+    },
+    {
+      "id": "H02",
+      "operationId": "OP-CORE-LINK",
+      "sourceEpoch": "epoch-a",
+      "activeEpoch": "epoch-a",
+      "amountMinor": 7000,
+      "issuerDecision": "NOT_OBSERVED",
+      "deviceState": "NOT_SENT",
+      "deviceDispensedMinor": null,
+      "deviceJournalId": null,
+      "ledgerPostedMinor": 0,
+      "events": [
+        {
+          "step": 1,
+          "kind": "ATM_REQUEST",
+          "link": "ATM_SWITCH",
+          "sourceEpoch": "epoch-a"
+        },
+        {
+          "step": 2,
+          "kind": "ATM_SWITCH_DELIVERED",
+          "link": "ATM_SWITCH",
+          "sourceEpoch": "epoch-a"
+        },
+        {
+          "step": 3,
+          "kind": "LINK_DOWN",
+          "link": "SWITCH_CORE",
+          "sourceEpoch": "epoch-a"
+        },
+        {
+          "step": 4,
+          "kind": "SWITCH_CORE_DROPPED",
+          "link": "SWITCH_CORE",
+          "sourceEpoch": "epoch-a"
+        }
+      ]
+    },
+    {
+      "id": "H03",
+      "operationId": "OP-LOST-CORE-ACK",
+      "sourceEpoch": "epoch-a",
+      "activeEpoch": "epoch-a",
+      "amountMinor": 4000,
+      "issuerDecision": "APPROVED",
+      "deviceState": "NOT_SENT",
+      "deviceDispensedMinor": null,
+      "deviceJournalId": null,
+      "ledgerPostedMinor": 0,
+      "events": [
+        {
+          "step": 1,
+          "kind": "ATM_REQUEST",
+          "link": "ATM_SWITCH",
+          "sourceEpoch": "epoch-a"
+        },
+        {
+          "step": 2,
+          "kind": "ATM_SWITCH_DELIVERED",
+          "link": "ATM_SWITCH",
+          "sourceEpoch": "epoch-a"
+        },
+        {
+          "step": 3,
+          "kind": "SWITCH_CORE_DELIVERED",
+          "link": "SWITCH_CORE",
+          "sourceEpoch": "epoch-a"
+        },
+        {
+          "step": 4,
+          "kind": "ISSUER_COMMITTED",
+          "link": "ISSUER",
+          "sourceEpoch": "epoch-a"
+        },
+        {
+          "step": 5,
+          "kind": "LINK_DOWN",
+          "link": "SWITCH_CORE",
+          "sourceEpoch": "epoch-a"
+        },
+        {
+          "step": 6,
+          "kind": "ISSUER_REPLY_LOST",
+          "link": "SWITCH_CORE",
+          "sourceEpoch": "epoch-a"
+        },
+        {
+          "step": 7,
+          "kind": "LINK_UP",
+          "link": "SWITCH_CORE",
+          "sourceEpoch": "epoch-a"
+        },
+        {
+          "step": 8,
+          "kind": "ISSUER_STATUS_CONFIRMED",
+          "link": "ISSUER",
+          "sourceEpoch": "epoch-a"
+        }
+      ]
+    },
+    {
+      "id": "H04",
+      "operationId": "OP-DEVICE-UNKNOWN",
+      "sourceEpoch": "epoch-a",
+      "activeEpoch": "epoch-a",
+      "amountMinor": 6000,
+      "issuerDecision": "APPROVED",
+      "deviceState": "UNKNOWN",
+      "deviceDispensedMinor": null,
+      "deviceJournalId": null,
+      "ledgerPostedMinor": 0,
+      "events": [
+        {
+          "step": 1,
+          "kind": "ATM_REQUEST",
+          "link": "ATM_SWITCH",
+          "sourceEpoch": "epoch-a"
+        },
+        {
+          "step": 2,
+          "kind": "ATM_SWITCH_DELIVERED",
+          "link": "ATM_SWITCH",
+          "sourceEpoch": "epoch-a"
+        },
+        {
+          "step": 3,
+          "kind": "SWITCH_CORE_DELIVERED",
+          "link": "SWITCH_CORE",
+          "sourceEpoch": "epoch-a"
+        },
+        {
+          "step": 4,
+          "kind": "ISSUER_COMMITTED",
+          "link": "ISSUER",
+          "sourceEpoch": "epoch-a"
+        },
+        {
+          "step": 5,
+          "kind": "ATM_APPROVAL_DELIVERED",
+          "link": "ATM_SWITCH",
+          "sourceEpoch": "epoch-a"
+        },
+        {
+          "step": 6,
+          "kind": "DEVICE_COMMAND_SENT",
+          "link": "DEVICE",
+          "sourceEpoch": "epoch-a"
+        },
+        {
+          "step": 7,
+          "kind": "LINK_DOWN",
+          "link": "ATM_SWITCH",
+          "sourceEpoch": "epoch-a"
+        },
+        {
+          "step": 8,
+          "kind": "DEVICE_RESPONSE_UNKNOWN",
+          "link": "DEVICE",
+          "sourceEpoch": "epoch-a"
+        },
+        {
+          "step": 9,
+          "kind": "LATE_ADVICE",
+          "link": "SWITCH_CORE",
+          "sourceEpoch": "epoch-a"
+        }
+      ]
+    },
+    {
+      "id": "H05",
+      "operationId": "OP-OLD-CUTOVER",
+      "sourceEpoch": "epoch-a",
+      "activeEpoch": "epoch-b",
+      "amountMinor": 3000,
+      "issuerDecision": "APPROVED",
+      "deviceState": "NOT_SENT",
+      "deviceDispensedMinor": null,
+      "deviceJournalId": null,
+      "ledgerPostedMinor": 0,
+      "events": [
+        {
+          "step": 1,
+          "kind": "ATM_REQUEST",
+          "link": "ATM_SWITCH",
+          "sourceEpoch": "epoch-a"
+        },
+        {
+          "step": 2,
+          "kind": "ATM_SWITCH_DELIVERED",
+          "link": "ATM_SWITCH",
+          "sourceEpoch": "epoch-a"
+        },
+        {
+          "step": 3,
+          "kind": "SWITCH_CORE_DELIVERED",
+          "link": "SWITCH_CORE",
+          "sourceEpoch": "epoch-a"
+        },
+        {
+          "step": 4,
+          "kind": "ISSUER_COMMITTED",
+          "link": "ISSUER",
+          "sourceEpoch": "epoch-a"
+        },
+        {
+          "step": 5,
+          "kind": "WRITER_CUTOVER",
+          "link": "CONTROL",
+          "sourceEpoch": "epoch-b"
+        },
+        {
+          "step": 6,
+          "kind": "LATE_OLD_REPLY",
+          "link": "SWITCH_CORE",
+          "sourceEpoch": "epoch-a"
+        }
+      ]
+    },
+    {
+      "id": "H06",
+      "operationId": "OP-SAFE-PARTIAL",
+      "sourceEpoch": "epoch-a",
+      "activeEpoch": "epoch-a",
+      "amountMinor": 10000,
+      "issuerDecision": "APPROVED",
+      "deviceState": "FINAL",
+      "deviceDispensedMinor": 6000,
+      "deviceJournalId": "DEVICE-JOURNAL-006",
+      "ledgerPostedMinor": 6000,
+      "events": [
+        {
+          "step": 1,
+          "kind": "ATM_REQUEST",
+          "link": "ATM_SWITCH",
+          "sourceEpoch": "epoch-a"
+        },
+        {
+          "step": 2,
+          "kind": "ATM_SWITCH_DELIVERED",
+          "link": "ATM_SWITCH",
+          "sourceEpoch": "epoch-a"
+        },
+        {
+          "step": 3,
+          "kind": "SWITCH_CORE_DELIVERED",
+          "link": "SWITCH_CORE",
+          "sourceEpoch": "epoch-a"
+        },
+        {
+          "step": 4,
+          "kind": "ISSUER_COMMITTED",
+          "link": "ISSUER",
+          "sourceEpoch": "epoch-a"
+        },
+        {
+          "step": 5,
+          "kind": "ATM_APPROVAL_DELIVERED",
+          "link": "ATM_SWITCH",
+          "sourceEpoch": "epoch-a"
+        },
+        {
+          "step": 6,
+          "kind": "DEVICE_COMMAND_SENT",
+          "link": "DEVICE",
+          "sourceEpoch": "epoch-a"
+        },
+        {
+          "step": 7,
+          "kind": "DEVICE_JOURNAL_FINAL",
+          "link": "DEVICE",
+          "sourceEpoch": "epoch-a"
+        },
+        {
+          "step": 8,
+          "kind": "FINAL_LEDGER_POSTING",
+          "link": "ISSUER",
+          "sourceEpoch": "epoch-a"
+        }
+      ]
+    },
+    {
+      "id": "H07",
+      "operationId": "OP-NO-STANDIN",
+      "sourceEpoch": "epoch-a",
+      "activeEpoch": "epoch-a",
+      "amountMinor": 3000,
+      "issuerDecision": "NOT_OBSERVED",
+      "deviceState": "NOT_SENT",
+      "deviceDispensedMinor": null,
+      "deviceJournalId": null,
+      "ledgerPostedMinor": 0,
+      "events": [
+        {
+          "step": 1,
+          "kind": "ATM_REQUEST",
+          "link": "ATM_SWITCH",
+          "sourceEpoch": "epoch-a"
+        },
+        {
+          "step": 2,
+          "kind": "ATM_SWITCH_DELIVERED",
+          "link": "ATM_SWITCH",
+          "sourceEpoch": "epoch-a"
+        },
+        {
+          "step": 3,
+          "kind": "LINK_DOWN",
+          "link": "SWITCH_CORE",
+          "sourceEpoch": "epoch-a"
+        },
+        {
+          "step": 4,
+          "kind": "STAND_IN_REQUEST_DENIED",
+          "link": "CONTROL",
+          "sourceEpoch": "epoch-a"
+        }
+      ]
+    }
+  ]
+}

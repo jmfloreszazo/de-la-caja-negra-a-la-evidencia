@@ -23,6 +23,22 @@ The baseline has four operations: partial final cash (posted amount only), cash 
 
 CLI exit 0 = `PASS_SYNTHETIC_CORRELATION_ONLY` (consistency of fictional observations); 2 = `REJECT`; 3 = `INVALID`. **Every** result says `safeToAutoPost=false`, `safeToAutoReverse=false`, `safeToAutoDispense=false`, `productionApproved=false`, and TODM G2 INCONCLUSIVE/G6 BLOCK. Do not use this forensic checker to drive any financial state transition. A complete fake but internally consistent trace could pass. The device and core real source evidence is not authenticated.
 
+## Offline per-hop transport failure trace oracle (not physical network injection)
+
+**Original CI: 40/40 PASS** over seven fictional scenarios in [Actions #42028436325](https://github.com/jmfloreszazo/de-la-caja-negra-a-la-evidencia/actions/runs/42028436325). [Original EN audit](../../evidence/runs/CHANNEL-HOP-FAULTS.md) · [ES audit](../../evidence/runs/CHANNEL-HOP-FAULTS.es.md). The archived SHA-256 is GitHub-reported metadata, **not independently checked ZIP bytes**; the result is logical-trace consistency only, not an actual TCP partition or a bank approval.
+
+
+The separate [EN study](../../docs/research/channel-hop-failures.en.md) / [ES](../../docs/research/channel-hop-failures.es.md) maps **seven fictional ATM/switch/core/writer-epoch cases** and **40 positive/adversarial Python tests**. The fixture contains declared events for logical `ATM_SWITCH`, `SWITCH_CORE`, `ISSUER`, `DEVICE` and `CONTROL`; it compares them with a separately declared *fictional* issuer decision, device journal state, posted amount and active writer epoch.
+
+```bash
+python3 lab/channels/network_fault_gate.py lab/channels/network_fault_fixture.json
+python3 -m unittest discover -s lab/channels -p 'test_network_fault_gate.py' -v
+```
+
+Exit 0 = `PASS_SYNTHETIC_HOP_CONSISTENCY` (fictional event/snapshot agreement); 2 = `REJECT`, 3 = `INVALID`. This module **does not open or cut a TCP connection**, observe mainframe UOW, interact with physical cash, implement ISO 8583 or authorize a source writer cutover. Its source epoch is a *correlation label*, not a bank-owned fence. It never authorizes cash, posting, reversal, duplicate retry, offline stand-in or deployment. All outputs keep G2 INCONCLUSIVE, G6 BLOCK.
+
+This is additive to the existing ten native .NET 10/SQL/device-emulator cases and the 33 earlier fictional advice/reversal controls. None of those previous observations has been overwritten. Future real per-hop packet loss/failure injection needs authentic independent issuer/device evidence and customer-approved rulebooks.
+
 ## Scope
 
 Amounts are integer cents and policies are invented for this example. The device atomically records simulated stock and journal in its own SQL transaction: **this is an emulator assumption, not proof of atomic physical cash delivery**. A partial dispense posts its actual amount; absent evidence retains UNKNOWN and the hold. Idempotent reconciliation uses the original command ID. No approved offline authorization exists; a caller must not invoke the device without core authorization and preparation.
