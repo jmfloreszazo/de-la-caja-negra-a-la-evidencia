@@ -41,6 +41,14 @@ The three cases are named `tcp-drop-before-forward`, `tcp-drop-after-owner-respo
 
 This is a **synthetic business workload over real loopback sockets** only, not a separate WAN/ATM/switch or an original bank CICS/UOW. The proxy cannot forward arbitrary bank routes/hosts, cannot execute without the disposable fixture guard, and never grants any authorization or change of writer. The independent [13-case original-run validator](../../scripts/check_channel_transport.py) and its **18 evidence refusal checks** reject false claims about network partitions, bank approval or posting multiplicity. The original historic **10-case** channel experiment remains separately preserved. The new cases are digital transfers only; no physical notes are involved.
 
+## Held upstream HTTP 200 versus concurrent same-ID recovery (bounded TCP)
+
+The one-shot disposable TCP proxy now implements `hold_until_recovery` in addition to the three original socket faults. It forwards a bounded fictional digital-transfer command to the existing .NET 10 API, observes HTTP 200 after the core's durable PostgreSQL transaction, and holds the reply while the initial client times out. The driver checks the financial SQL snapshot **before any retries**, reads the authoritative fixture status, issues **eight concurrent same-ID requests**, proves all return `COMMITTED` and `duplicate=true`, and attempts a changed-amount command with the same ID which must return `ID_CONFLICT`. The independent read-only SQL oracle checks the same account balances, paired postings and outbox again **before the old reply is released**, and after final recovery.
+
+A bounded event barrier (not a sleep heuristic) supplies an exact same-host ordering witness: upstream HTTP 200 precedes completed recovery, which precedes release of that old reply. It is a *real loopback socket* observation, not a multi-host synchronized trace, production network fault, throughput test or bank-owner fencing proof. `operationId` is a durable identifier only **inside this disposable fixture**; the real issuer and scheme must approve their own retention, message correlation and conflicts.
+
+After this extension there are **14 native driver cases**, **18 proxy refusal tests** and **26 original-evidence tests**. Source evidence must not claim ISO 8583, actual ATM cash, CICS/Db2, cross-machine WAN/HA, approved stand-in or cutover; TODM G2 INCONCLUSIVE / G6 BLOCK. Existing original 10-case, 13-case, 33-case advice and 40-case fictitious hop artifacts remain immutable.
+
 ## Initial native acceptance matrix
 
 | Case | Required observation |
