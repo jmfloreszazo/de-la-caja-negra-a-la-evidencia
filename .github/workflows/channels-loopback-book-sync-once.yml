@@ -1,0 +1,31 @@
+name: One-time regenerate bilingual channel TCP book editions
+on:
+  push:
+    branches: [feature/channels-loopback-tcp-faults-30]
+    paths: ['.github/workflows/channels-loopback-book-sync-once.yml']
+permissions:
+  contents: write
+jobs:
+  regenerate-source-derived-es-en:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          ref: feature/channels-loopback-tcp-faults-30
+          fetch-depth: 0
+      - name: Build ES and EN whole-book files from canonical source chapters
+        run: |
+          set -euo pipefail
+          test "$GITHUB_REPOSITORY" = "jmfloreszazo/de-la-caja-negra-a-la-evidencia"
+          test "$GITHUB_REF" = "refs/heads/feature/channels-loopback-tcp-faults-30"
+          python3 scripts/build.py
+          git add -- book/es.md book/en.md
+          if git diff --cached --quiet; then
+            echo 'Both generated editions already match source'
+            exit 0
+          fi
+          git -c user.name=github-actions[bot] \
+            -c user.email=41898282+github-actions[bot]@users.noreply.github.com \
+            commit -m "docs(book): regenerate ES/EN chapters after native TCP channel section"
+          git push origin HEAD:refs/heads/feature/channels-loopback-tcp-faults-30
