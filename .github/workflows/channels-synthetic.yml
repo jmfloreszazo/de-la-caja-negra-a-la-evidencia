@@ -1,10 +1,10 @@
 name: Synthetic channels native and separate SQL stores
 on:
   push:
-    branches: [book/channels-30]
-    paths: ['lab/channels/**', 'evidence/channels/**', 'scripts/check_channel_observations.py', '.github/workflows/channels-synthetic.yml']
+    branches: [main]
+    paths: ['lab/channels/**', 'evidence/channels/**', 'scripts/check_channel_observations.py', 'scripts/check_channel_transport.py', 'scripts/test_channel_transport_evidence.py', '.github/workflows/channels-synthetic.yml']
   pull_request:
-    paths: ['lab/channels/**', 'evidence/channels/**', 'scripts/check_channel_observations.py', '.github/workflows/channels-synthetic.yml']
+    paths: ['lab/channels/**', 'evidence/channels/**', 'scripts/check_channel_observations.py', 'scripts/check_channel_transport.py', 'scripts/test_channel_transport_evidence.py', '.github/workflows/channels-synthetic.yml']
   workflow_dispatch:
 permissions:
   contents: read
@@ -30,8 +30,31 @@ jobs:
         run: |
           git fetch --no-tags --depth=1 origin 065b82b3b1b6ac2f8b7a1dab0622afbf08719732 b057a875fc1485ae804222d7035e4d602271bbaf dd6cbb5c455907d6555fd1196f504be73eadc7eb 1b206b137074c3ab175c4234d8f69780217fbb97
           python3 scripts/check_channel_observations.py
-      - name: Execute actual HTTP, SQL, process kills and independent oracles
+      - name: Execute original one-shot TCP proxy guard/adversarial controls
+        run: |
+          set -o pipefail
+          mkdir -p lab/results/channels
+          python3 -m unittest discover -s lab/channels -p test_transport_proxy.py -v 2>&1 \
+            | tee lab/results/channels/transport-guards-original.log
+          grep -q 'Ran 14 tests' lab/results/channels/transport-guards-original.log
+      - name: Execute actual HTTP, PostgreSQL, local TCP interruptions and independent oracles
         run: python3 lab/channels/run.py
+      - name: Independently verify three real loopback TCP witnesses and exact original SQL
+        env:
+          SOURCE_HEAD_SHA: ${{ github.event.pull_request.head.sha || github.sha }}
+        run: |
+          set -o pipefail
+          python3 scripts/check_channel_transport.py lab/results/channels/original.json \
+            | tee lab/results/channels/transport-original-gate.json
+      - name: Reject 17 forged original native evidence claims
+        env:
+          SOURCE_HEAD_SHA: ${{ github.event.pull_request.head.sha || github.sha }}
+          CHANNELS_ORIGINAL_REPORT: lab/results/channels/original.json
+        run: |
+          set -o pipefail
+          python3 -m unittest discover -s scripts -p test_channel_transport_evidence.py -v 2>&1 \
+            | tee lab/results/channels/transport-evidence-mutants-original.log
+          grep -q 'Ran 18 tests' lab/results/channels/transport-evidence-mutants-original.log
       - name: Preserve original observations on every outcome
         if: always()
         uses: actions/upload-artifact@v6

@@ -39,6 +39,26 @@ Exit 0 = `PASS_SYNTHETIC_HOP_CONSISTENCY` (fictional event/snapshot agreement); 
 
 This is additive to the existing ten native .NET 10/SQL/device-emulator cases and the 33 earlier fictional advice/reversal controls. None of those previous observations has been overwritten. Future real per-hop packet loss/failure injection needs authentic independent issuer/device evidence and customer-approved rulebooks.
 
+## Native .NET 10 + PostgreSQL: actual loopback TCP loss and delay
+
+The [EN technical explanation](../../docs/research/channel-loopback-transport.en.md) / [ES](../../docs/research/channel-loopback-transport.es.md) documents a new bounded experiment: three **actual local TCP socket** failure interventions around the **existing .NET 10 HTTP transfer route**. The original ten native SQL/channel cases are **preserved**; the same driver now executes **13 cases**, with no new fictional core and no source parser.
+
+Run the existing original driver:
+
+```bash
+python3 lab/channels/run.py
+python3 scripts/check_channel_transport.py lab/results/channels/original.json
+python3 -m unittest discover -s lab/channels -p 'test_transport_proxy.py' -v
+CHANNELS_ORIGINAL_REPORT=lab/results/channels/original.json \
+  python3 -m unittest discover -s scripts -p 'test_channel_transport_evidence.py' -v
+```
+
+The driver itself starts two disposable PostgreSQL containers and publishes the native API. The one-shot [English TCP injector](transport_proxy.py) accepts only bounded `POST /transfer` on `127.0.0.1` to the original ephemeral .NET host port (55444–55463), refuses untrusted routes/ports, stores a request checksum rather than the financial HTTP payload, and removes its listener on exit. It does **not** need root, `tc netem`, production routes or privileged network manipulation.
+
+Three new original cases appear as `tcp-drop-before-forward` (socket reset before any upstream connection, SQL empty then one same-ID transaction), `tcp-drop-after-owner-response` (upstream 200 produced after real COMMIT, response reset before client, independent SQL proves one operation/two postings/one outbox) and `tcp-delay-owner-response` (0.8 s delay versus 0.15 s client timeout, status inquiry and same-ID replay). The original and recovered SQL snapshots, client UNKNOWN, independent financial oracle and TCP stage witness are recorded within `lab/results/channels/original.json`. The [read-only original-report gate](../../scripts/check_channel_transport.py) checks these independently, and [adversarial evidence mutations](../../scripts/test_channel_transport_evidence.py) must fail closed against the saved result. CI archives raw originals regardless of failures.
+
+**Claim boundary:** real **loopback TCP reset/delay** and actual .NET/PostgreSQL commit/replay were executed when CI reports PASS. These are **not real inter-host TCP partitions**, network switch/WAN failure, ATM cash movement, card network standard certification, CICS/Db2 semantics, physical independent failure domains, production throughput or bank approval. All customer acceptance remains TODM G2 INCONCLUSIVE / G6 BLOCK; no automatic bank posting/reversal/dispense or migration cutover is authorized.
+
 ## Scope
 
 Amounts are integer cents and policies are invented for this example. The device atomically records simulated stock and journal in its own SQL transaction: **this is an emulator assumption, not proof of atomic physical cash delivery**. A partial dispense posts its actual amount; absent evidence retains UNKNOWN and the hold. Idempotent reconciliation uses the original command ID. No approved offline authorization exists; a caller must not invoke the device without core authorization and preparation.

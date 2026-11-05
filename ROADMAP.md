@@ -1,4 +1,4 @@
-# Open roadmap — evidence-based checkpoint (4 November 2026)
+# Open roadmap — evidence-based checkpoint (5 November 2026)
 
 **English** · [Español](ROADMAP.es.md)
 
@@ -47,6 +47,8 @@ All of these are **synthetic engineering results**; no real bank behavior was ob
 - PR #66/#68/#69: durable journal, capability gateway and persisted enrollment. On `279ca566`, [C2 main #41353221630](https://github.com/jmfloreszazo/de-la-caja-negra-a-la-evidencia/actions/runs/41353221630) passed 20 controls and both SQL oracles 10/10. The [original 19-control run](evidence/runs/BROWNFIELD-C2-RECOVERY.md) retains its original coverage. Seven applicable workflows passed on that main; Release skipped.
 
 ## Next execution order (not dates or percentage-complete estimates)
+
+**Real loopback TCP transport (#30 follow-up):** [EN research](docs/research/channel-loopback-transport.en.md) ([ES](docs/research/channel-loopback-transport.es.md)). The first original [Actions #42033452330](https://github.com/jmfloreszazo/de-la-caja-negra-a-la-evidencia/actions/runs/42033452330) passed **14/14 proxy safety tests** and the expanded **13 native .NET 10/PostgreSQL cases** (original ten plus three real local TCP interruptions), with an independent SQL gate. The actual intervention covers pre-forward socket reset, reply reset after COMMIT and delayed reply beyond timeout. **No physical WAN, ATM hardware, CICS/Db2 or bank acceptance.** An additional 18-case evidence-refusal test suite is part of the final-head verification. Issue #30 remains open.
 
 **New bounded #30 block:** [ATM↔switch↔core hop failures](docs/research/channel-hop-failures.en.md) ([ES](docs/research/channel-hop-failures.es.md)): seven fictional event traces and **40/40 Python controls passed in CI** ([original audit](evidence/runs/CHANNEL-HOP-FAULTS.md)) for undelivered instructions, COMMIT with lost ACK, UNKNOWN device cash, stale old-owner replies and denied stand-in. **No actual TCP partitions or bank approval**; it supplements the earlier native SQL and 33-case advice experiments. #30 stays open for real transport fault injection and wider channel coverage.
 

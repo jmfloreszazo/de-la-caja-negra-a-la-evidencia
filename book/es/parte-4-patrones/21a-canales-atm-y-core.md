@@ -167,6 +167,22 @@ Tampoco debemos trasladar directamente la semántica de CICS a HTTP: una tarea C
 
 El [oráculo Python](../../../lab/channels/network_fault_gate.py) **solo analiza eventos declarados en JSON**: no corta sockets, no ejecuta ISO 8583, no consulta al emisor ni escribe un asiento. Un PASS valida coherencia de una maqueta, no garantías de la red. Una aceptación real exige pérdidas y reconexiones instrumentadas por separado, logs nativos de COMMIT, identidad de reintento, journal físico, conciliación y aprobación del negocio. **Ningún resultado del fixture autoriza automáticamente una retirada, reverso, asiento, corte de escritor o stand-in.** TODM G2 `INCONCLUSIVE`, G6 `BLOCK`.
 
+## 9. Primera prueba de transporte real: TCP local y COMMIT del core
+
+Las pruebas anteriores de H01–H07 describían enlaces caídos mediante eventos JSON. El siguiente escalón experimental utiliza **sockets TCP reales en loopback**: un proxy efímero recibe la petición HTTP del cliente, la interrumpe o la reenvía al API **.NET 10** existente y observa la respuesta. El core escribe en PostgreSQL, mientras un oráculo Python independiente revisa sus tablas y el almacén de dispositivo. Son **procesos y sockets reales**, pero siguen ejecutándose en un único host; no es una partición física entre sucursales, switch y mainframe.
+
+| Prueba de transporte | Intervención real | Qué comprueba el oráculo |
+| --- | --- | --- |
+| Solicitud descartada antes de reenviar | El proxy acepta el socket y envía TCP reset **sin abrir conexión al core** | SQL original vacío antes de la recuperación; con el mismo ID, una sola transferencia |
+| Respuesta descartada después del COMMIT | El proxy reenvía la solicitud, lee HTTP 200 **emitido tras `CommitAsync`** y resetea el socket del cliente sin entregarle la respuesta | Cliente `UNKNOWN` mientras SQL ya contiene un COMMIT, dos apuntes y un outbox; consulta de estado y reintento con el mismo ID, sin segundo efecto |
+| Respuesta retrasada más allá del timeout | Se retrasa 0,8 s la respuesta posterior al COMMIT; timeout real de cliente de 0,15 s | El cliente ve timeout, pero la consulta del propietario revela la decisión original y no aparece otro asiento |
+
+Los tres casos son **transferencias digitales ficticias**, no retiradas físicas de efectivo. Conservan los diez escenarios nativos anteriores: efectivo parcial, fallo tras COMMIT, procesos eliminados con `SIGKILL`, concurrencia ATM/móvil y sus oráculos. El [protocolo ES](../../../docs/research/channel-loopback-transport.es.md) ([EN](../../../docs/research/channel-loopback-transport.en.md)) identifica los puertos, la forma de repetir las pruebas, las 14 comprobaciones de seguridad del proxy y los 18 controles positivos/adversariales que inspeccionan evidencias originales sin modificar las bases.
+
+**Una observación de timeout no es prueba de que no hubo COMMIT.** El caso de petición no reenviada solo dispone de esa garantía adicional porque **nuestro proxy controlado atestigua que no abrió un socket al servidor y SQL está vacío**. En redes bancarias reales esta observación independiente no estará disponible necesariamente. El mismo `operationId` es indispensable para consultar estado y, cuando la política lo permita, reintentar sin inventar otra transacción.
+
+El nuevo incremento permite medir **interrupciones reales de TCP locales** frente al commit SQL duradero. **No** implementa `tc netem`, pérdidas WAN entre máquinas, ISO 8583, CICS ni journal físico de dispensación; tampoco mide MIPS o capacidad. El libro mantiene el patrón de **un propietario financiero y varios canales**, y la aceptación del cliente exige todavía firmas, políticas, trazas reales, writer fencing y pruebas con dominios físicos independientes. **G2 INCONCLUSIVE, G6 BLOCK**, sin permiso de cortar el sistema del banco.
+
 ---
 
 [← Capítulo 21 · Event sourcing, CQRS y sagas](21-event-sourcing-cqrs-y-sagas-cuando-ayudan-y-cuando-estorban.md) · [Índice](../README.md) · [Parte V · Capacidad →](../parte-5-capacidad/README.md)

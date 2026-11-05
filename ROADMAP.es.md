@@ -1,4 +1,4 @@
-# Hoja de ruta abierta — estado basado en evidencias (4 de noviembre de 2026)
+# Hoja de ruta abierta — estado basado en evidencias (5 de noviembre de 2026)
 
 [English](ROADMAP.md) · **Español**
 
@@ -47,6 +47,8 @@ Todo ello es **ingeniería sintética**. No hemos observado ningún sistema banc
 - PR #66/#68/#69: journal duradero, gateway e inscripción persistida. En `279ca566`, [C2 main #41353221630](https://github.com/jmfloreszazo/de-la-caja-negra-a-la-evidencia/actions/runs/41353221630) superó 20 controles y ambos oráculos 10/10. La [ejecución original de 19 controles](evidence/runs/BROWNFIELD-C2-RECOVERY.es.md) se conserva sin reatribuir cobertura. Siete workflows aplicables de ese main pasaron; Release omitido.
 
 ## Orden de ejecución a partir de ahora (sin fechas inventadas)
+
+**Transporte TCP real en loopback (nuevo incremento #30):** [investigación ES](docs/research/channel-loopback-transport.es.md) ([EN](docs/research/channel-loopback-transport.en.md)). Se han ejecutado **14/14 controles del proxy** y los **13 escenarios nativos .NET 10/PostgreSQL** (diez originales y tres fallos reales de socket) con oráculo SQL independiente en [Actions #42033452330](https://github.com/jmfloreszazo/de-la-caja-negra-a-la-evidencia/actions/runs/42033452330). El resultado original es local y acotado: reset TCP antes del reenvío, reset de respuesta posterior al COMMIT y timeout por retardo. **No implica partición WAN, ATM físico, CICS/Db2 o aceptación bancaria.** Los 18 controles adversariales del informe SQL forman una segunda barrera que se verificará en el commit final. #30 sigue abierto.
 
 **Nuevo bloque acotado de #30:** [fallos por salto ATM↔switch↔core](docs/research/channel-hop-failures.es.md) ([EN](docs/research/channel-hop-failures.en.md)): siete escenarios lógicos con **40/40 controles Python superados en CI** ([acta original](evidence/runs/CHANNEL-HOP-FAULTS.es.md)) sobre solicitudes perdidas, COMMIT con ACK perdido, journal físico UNKNOWN, respuestas de escritor antiguo y stand-in denegado. **Sin particiones reales de TCP**, sin aprobación del banco; son complementarios a los controles nativos SQL y al oráculo de 33 casos de advice. #30 permanece abierto para la inyección de fallos de transporte y la cobertura integral.
 

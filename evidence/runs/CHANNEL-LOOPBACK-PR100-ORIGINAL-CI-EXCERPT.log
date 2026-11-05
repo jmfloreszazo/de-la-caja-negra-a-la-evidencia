@@ -1,0 +1,23 @@
+# Selected original Actions job-log lines with unchanged timestamp prefixes
+# Run https://github.com/jmfloreszazo/de-la-caja-negra-a-la-evidencia/actions/runs/42033452330
+# Job 127265416676, original source/checkout SHA 6b742fdef4d0b2c134b7dc41fbb94c57acd8c599
+# This is an excerpt, not original ZIP bytes; full original.json and Postgres HTTP/SQL logs are in the GitHub artifact.
+2026-11-05T13:10:51.0501420Z {"status": "PASS", "source_hashes": 40, "native_cases": 10, "rejected_mutants": 2, "original_startup_failure_retained": true, "production_authorized": false}
+2026-11-05T13:10:51.1937977Z test_01_disposable_guard_enforced (test_transport_proxy.OneShotTransportGuards.test_01_disposable_guard_enforced) ... ok
+2026-11-05T13:10:51.1939978Z test_02_nonlocal_or_external_port_refused (test_transport_proxy.OneShotTransportGuards.test_02_nonlocal_or_external_port_refused) ... ok
+2026-11-05T13:10:51.1942354Z test_03_unknown_mode_refused (test_transport_proxy.OneShotTransportGuards.test_03_unknown_mode_refused) ... ok
+2026-11-05T13:10:51.1944207Z test_04_unbounded_or_wrong_delay_refused (test_transport_proxy.OneShotTransportGuards.test_04_unbounded_or_wrong_delay_refused) ... ok
+2026-11-05T13:10:51.1946259Z test_05_accepted_http_transfer_is_exact (test_transport_proxy.OneShotTransportGuards.test_05_accepted_http_transfer_is_exact) ... ok
+2026-11-05T13:10:51.1948217Z test_06_get_request_cannot_be_forwarded (test_transport_proxy.OneShotTransportGuards.test_06_get_request_cannot_be_forwarded) ... ok
+2026-11-05T13:10:51.1950358Z test_07_other_financial_route_cannot_be_forwarded (test_transport_proxy.OneShotTransportGuards.test_07_other_financial_route_cannot_be_forwarded) ... ok
+2026-11-05T13:10:51.1952621Z test_08_duplicate_content_length_refused (test_transport_proxy.OneShotTransportGuards.test_08_duplicate_content_length_refused) ... ok
+2026-11-05T13:10:51.1954065Z test_09_streaming_request_refused (test_transport_proxy.OneShotTransportGuards.test_09_streaming_request_refused) ... ok
+2026-11-05T13:10:51.1955746Z test_10_oversized_body_refused (test_transport_proxy.OneShotTransportGuards.test_10_oversized_body_refused) ... ok
+2026-11-05T13:10:51.1957448Z test_11_truncated_body_refused (test_transport_proxy.OneShotTransportGuards.test_11_truncated_body_refused) ... ok
+2026-11-05T13:10:51.1959293Z test_12_wrong_upstream_reply_status_refused (test_transport_proxy.OneShotTransportGuards.test_12_wrong_upstream_reply_status_refused) ... ok
+2026-11-05T13:10:51.2160784Z test_13_real_local_tcp_drop_never_opens_upstream (test_transport_proxy.OneShotTransportGuards.test_13_real_local_tcp_drop_never_opens_upstream) ... ok
+2026-11-05T13:10:51.2168478Z test_14_downstream_proxy_binds_loopback_only (test_transport_proxy.OneShotTransportGuards.test_14_downstream_proxy_binds_loopback_only) ... ok
+2026-11-05T13:10:51.2170655Z Ran 14 tests in 0.023s
+2026-11-05T13:10:51.2171287Z OK
+2026-11-05T13:11:19.5412648Z {"status": "PASS", "cases": 13, "report": "/home/runner/work/de-la-caja-negra-a-la-evidencia/de-la-caja-negra-a-la-evidencia/lab/results/channels/original.json"}
+2026-11-05T13:11:19.6125323Z   "status": "PASS_BOUNDED_LIVE_LOOPBACK_TRANSPORT",

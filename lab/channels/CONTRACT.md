@@ -33,6 +33,14 @@ The experiment **only replays fictional JSON**, rather than cutting a real Ether
 
 The original .NET/Podman/two-PostgreSQL channel experiment and archived evidence are unchanged. Extend #30 with actual isolated per-hop transport tests, issuer-approved negative controls and signed device/ledger witnesses; no synthetic event proves production fencing.
 
+## Actual loopback TCP loss on the disposable native digital transfer (bounded #30)
+
+The native channel driver includes a one-shot **real local TCP proxy** to the already running .NET 10 `POST /transfer` route. This is deliberately different from the earlier **fictional** H01–H07 hop-event protocol: socket accept, reset, upstream HTTP 200, delayed reply and client timeout are observed in a live single-host environment, while an independent Python/SQL oracle checks the financial database.
+
+The three cases are named `tcp-drop-before-forward`, `tcp-drop-after-owner-response` and `tcp-delay-owner-response`. In the first case the proxy never opens an upstream socket and the original SQL snapshot is empty before the same-ID first attempt. In the second and third cases the proxy actually forwards the original HTTP request, observes the owner's reply *after* the .NET `CommitAsync`, and deliberately prevents a timely client reply. A read-only snapshot confirms the original one COMMITTED operation, two postings and one outbox **before** replay. Querying the original operation ID and retrying that same identity does not create a second transfer; the seven existing independent financial checks are evaluated before/after where applicable.
+
+This is a **synthetic business workload over real loopback sockets** only, not a separate WAN/ATM/switch or an original bank CICS/UOW. The proxy cannot forward arbitrary bank routes/hosts, cannot execute without the disposable fixture guard, and never grants any authorization or change of writer. The independent [13-case original-run validator](../../scripts/check_channel_transport.py) and its **18 evidence refusal checks** reject false claims about network partitions, bank approval or posting multiplicity. The original historic **10-case** channel experiment remains separately preserved. The new cases are digital transfers only; no physical notes are involved.
+
 ## Initial native acceptance matrix
 
 | Case | Required observation |

@@ -1,0 +1,43 @@
+# Selected unchanged timestamped original GitHub Actions lines
+# Native SQL and loopback transport + original-evidence negative mutation campaign
+# Original source/checkout: 1a4effced7b5bad20ef117a3b20d0917a7f5673e
+# Run https://github.com/jmfloreszazo/de-la-caja-negra-a-la-evidencia/actions/runs/42034784257
+# Job 127269987076. This is a verbatim excerpt, NOT the full original ZIP or SQL snapshot.
+2026-11-05T13:20:01.3991136Z test_01_disposable_guard_enforced (test_transport_proxy.OneShotTransportGuards.test_01_disposable_guard_enforced) ... ok
+2026-11-05T13:20:01.3992380Z test_02_nonlocal_or_external_port_refused (test_transport_proxy.OneShotTransportGuards.test_02_nonlocal_or_external_port_refused) ... ok
+2026-11-05T13:20:01.3993481Z test_03_unknown_mode_refused (test_transport_proxy.OneShotTransportGuards.test_03_unknown_mode_refused) ... ok
+2026-11-05T13:20:01.3994776Z test_04_unbounded_or_wrong_delay_refused (test_transport_proxy.OneShotTransportGuards.test_04_unbounded_or_wrong_delay_refused) ... ok
+2026-11-05T13:20:01.3996013Z test_05_accepted_http_transfer_is_exact (test_transport_proxy.OneShotTransportGuards.test_05_accepted_http_transfer_is_exact) ... ok
+2026-11-05T13:20:01.3997187Z test_06_get_request_cannot_be_forwarded (test_transport_proxy.OneShotTransportGuards.test_06_get_request_cannot_be_forwarded) ... ok
+2026-11-05T13:20:01.3998457Z test_07_other_financial_route_cannot_be_forwarded (test_transport_proxy.OneShotTransportGuards.test_07_other_financial_route_cannot_be_forwarded) ... ok
+2026-11-05T13:20:01.3999827Z test_08_duplicate_content_length_refused (test_transport_proxy.OneShotTransportGuards.test_08_duplicate_content_length_refused) ... ok
+2026-11-05T13:20:01.4001057Z test_09_streaming_request_refused (test_transport_proxy.OneShotTransportGuards.test_09_streaming_request_refused) ... ok
+2026-11-05T13:20:01.4002098Z test_10_oversized_body_refused (test_transport_proxy.OneShotTransportGuards.test_10_oversized_body_refused) ... ok
+2026-11-05T13:20:01.4003211Z test_11_truncated_body_refused (test_transport_proxy.OneShotTransportGuards.test_11_truncated_body_refused) ... ok
+2026-11-05T13:20:01.4004629Z test_12_wrong_upstream_reply_status_refused (test_transport_proxy.OneShotTransportGuards.test_12_wrong_upstream_reply_status_refused) ... ok
+2026-11-05T13:20:01.4169359Z test_13_real_local_tcp_drop_never_opens_upstream (test_transport_proxy.OneShotTransportGuards.test_13_real_local_tcp_drop_never_opens_upstream) ... ok
+2026-11-05T13:20:01.4175542Z test_14_downstream_proxy_binds_loopback_only (test_transport_proxy.OneShotTransportGuards.test_14_downstream_proxy_binds_loopback_only) ... ok
+2026-11-05T13:20:01.4176972Z Ran 14 tests in 0.019s
+2026-11-05T13:20:01.4177225Z OK
+2026-11-05T13:21:00.6646656Z {"status": "PASS", "cases": 13, "report": "/home/runner/work/de-la-caja-negra-a-la-evidencia/de-la-caja-negra-a-la-evidencia/lab/results/channels/original.json"}
+2026-11-05T13:21:00.7275892Z   "status": "PASS_BOUNDED_LIVE_LOOPBACK_TRANSPORT",
+2026-11-05T13:21:00.7863072Z test_01_original_13_case_live_evidence_is_valid (test_channel_transport_evidence.NativeEvidenceRefusal.test_01_original_13_case_live_evidence_is_valid) ... ok
+2026-11-05T13:21:00.7880174Z test_02_forged_global_success_rejected (test_channel_transport_evidence.NativeEvidenceRefusal.test_02_forged_global_success_rejected) ... ok
+2026-11-05T13:21:00.7897405Z test_03_missing_native_case_rejected (test_channel_transport_evidence.NativeEvidenceRefusal.test_03_missing_native_case_rejected) ... ok
+2026-11-05T13:21:00.7914130Z test_04_false_physical_wan_pass_rejected (test_channel_transport_evidence.NativeEvidenceRefusal.test_04_false_physical_wan_pass_rejected) ... ok
+2026-11-05T13:21:00.7932385Z test_05_false_production_bank_authorization_rejected (test_channel_transport_evidence.NativeEvidenceRefusal.test_05_false_production_bank_authorization_rejected) ... ok
+2026-11-05T13:21:00.7949348Z test_06_pre_forward_drop_cannot_contact_core (test_channel_transport_evidence.NativeEvidenceRefusal.test_06_pre_forward_drop_cannot_contact_core) ... ok
+2026-11-05T13:21:00.7966282Z test_07_pre_forward_drop_cannot_have_postings (test_channel_transport_evidence.NativeEvidenceRefusal.test_07_pre_forward_drop_cannot_have_postings) ... ok
+2026-11-05T13:21:00.7983034Z test_08_client_must_observe_response_loss (test_channel_transport_evidence.NativeEvidenceRefusal.test_08_client_must_observe_response_loss) ... ok
+2026-11-05T13:21:00.8000203Z test_09_core_commit_must_precede_response_replay (test_channel_transport_evidence.NativeEvidenceRefusal.test_09_core_commit_must_precede_response_replay) ... ok
+2026-11-05T13:21:00.8017242Z test_10_exactly_one_outbox_row_before_retry (test_channel_transport_evidence.NativeEvidenceRefusal.test_10_exactly_one_outbox_row_before_retry) ... ok
+2026-11-05T13:21:00.8034113Z test_11_separately_read_sql_oracle_cannot_be_forged_failed (test_channel_transport_evidence.NativeEvidenceRefusal.test_11_separately_read_sql_oracle_cannot_be_forged_failed) ... ok
+2026-11-05T13:21:00.8051270Z test_12_idempotent_original_identity_is_required (test_channel_transport_evidence.NativeEvidenceRefusal.test_12_idempotent_original_identity_is_required) ... ok
+2026-11-05T13:21:00.8068053Z test_13_balance_mutation_is_detected_even_if_conserved (test_channel_transport_evidence.NativeEvidenceRefusal.test_13_balance_mutation_is_detected_even_if_conserved) ... ok
+2026-11-05T13:21:00.8085060Z test_14_duplicate_final_posting_is_rejected (test_channel_transport_evidence.NativeEvidenceRefusal.test_14_duplicate_final_posting_is_rejected) ... ok
+2026-11-05T13:21:00.8102072Z test_15_false_proxy_physical_network_claim_rejected (test_channel_transport_evidence.NativeEvidenceRefusal.test_15_false_proxy_physical_network_claim_rejected) ... ok
+2026-11-05T13:21:00.8118341Z test_16_proxy_must_have_processed_a_real_socket (test_channel_transport_evidence.NativeEvidenceRefusal.test_16_proxy_must_have_processed_a_real_socket) ... ok
+2026-11-05T13:21:00.8134953Z test_17_client_timeout_must_precede_delayed_response (test_channel_transport_evidence.NativeEvidenceRefusal.test_17_client_timeout_must_precede_delayed_response) ... ok
+2026-11-05T13:21:00.8136377Z test_18_fail_closed_when_checkout_source_is_unrelated (test_channel_transport_evidence.NativeEvidenceRefusal.test_18_fail_closed_when_checkout_source_is_unrelated) ... ok
+2026-11-05T13:21:00.8144854Z Ran 18 tests in 0.028s
+2026-11-05T13:21:00.8145290Z OK
