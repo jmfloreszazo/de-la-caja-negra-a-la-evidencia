@@ -6,7 +6,7 @@
 
 ## Original execution, not a projected plan
 
-- **Source and checkout:** `67981c24d9164f8952e1e24ce8ecd1ec4788078f400c281fa6b`; original run `42052288542`, job `127331264991`.
+- **Source and checkout:** `67981c24d9164f8952e1e24ce8ecd1ec4bb582ff`; original run `42052288542`, job `127331264991`.
 - **18/18** real-socket proxy/held-ACK guard checks **PASS**; **14/14** native .NET 10 + two disposable PostgreSQL channel cases **PASS** (historical 10, prior three TCP interventions, one new held-ACK race).
 - **Independent read-only transport/SQL gate:** `PASS_BOUNDED_LIVE_LOOPBACK_TRANSPORT`.
 - **27/27** original-evidence controls **PASS**: one valid original report and **26 deliberately corrupted variants rejected**. New negatives include fake release order, missing concurrent retries, false duplicate flags, changed operation identity, double financial posting before old ACK release, false conflict approval and a fabricated eight-way start barrier. Actual named checks and timestamped original result lines are retained in the [job-log excerpt](CHANNEL-HELD-ACK-PR101-ORIGINAL-CI-EXCERPT.log); the complete original output is retained separately by GitHub Actions.
