@@ -6,7 +6,7 @@
 
 ## Ejecución original, no simplemente un diseño
 
-- **SHA de fuente y checkout:** `67981c24d9164f8952e1e24ce8ecd1ec4788078f400c281fa6b`; run `42052288542`, job `127331264991`.
+- **SHA de fuente y checkout:** `67981c24d9164f8952e1e24ce8ecd1ec4bb582ff`; run `42052288542`, job `127331264991`.
 - **18/18** controles de seguridad del proxy real y barrera de ACK **PASS**; **14/14** casos nativos de .NET 10 con dos PostgreSQL desechables **PASS** (diez históricos, tres TCP ya existentes y el nuevo escenario de concurrencia).
 - **Oráculo SQL y transporte independiente:** `PASS_BOUNDED_LIVE_LOOPBACK_TRANSPORT`.
 - **27/27** controles de evidencias originales **PASS**: un informe original válido y **26 modificaciones deliberadamente corruptas rechazadas**. Entre los negativos están el ACK liberado antes de tiempo, reintentos ausentes, duplicados falsos, cambio de ID de operación, asientos repetidos antes del ACK antiguo, supuesta aprobación de un importe distinto y una barrera de ocho clientes falsificada. Los resultados nombrados con timestamps se conservan en el [extracto del log original](CHANNEL-HELD-ACK-PR101-ORIGINAL-CI-EXCERPT.log); la salida completa permanece en el artifact de Actions.
