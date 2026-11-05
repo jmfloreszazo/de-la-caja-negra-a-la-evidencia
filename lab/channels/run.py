@@ -11,6 +11,7 @@ import signal
 import socket
 import subprocess
 import sys
+import threading
 import time
 import traceback
 import urllib.error
@@ -339,8 +340,14 @@ try:
         assert len(original_sql['core']['outbox']) == 1
         decision = http('operations/' + op['operationId'])
         assert decision['state'] == 'COMMITTED'
+        # Force all eight real HTTP clients to start from the same barrier
+        # instead of merely submitting eight tasks that might run serially.
+        launch_barrier = threading.Barrier(8, timeout=5)
+        def same_id_client(_):
+            launch_barrier.wait()
+            return http('transfer', op)
         with concurrent.futures.ThreadPoolExecutor(max_workers=8) as pool:
-            burst = list(pool.map(lambda _: http('transfer', op), range(8)))
+            burst = list(pool.map(same_id_client, range(8)))
         assert len(burst) == 8
         assert all(r['state'] == 'COMMITTED' and r['duplicate'] for r in burst)
         conflict = http('transfer', dict(op, amountCents=5000))
@@ -356,6 +363,8 @@ try:
         current['held_recovery'] = {
             'status_state': decision['state'],
             'replay_count': len(burst),
+            'barrier_parties': launch_barrier.parties,
+            'barrier_broken': launch_barrier.broken,
             'replay_results': burst,
             'conflict_result': conflict,
             'sql_before_old_ack': before_old_ack,
