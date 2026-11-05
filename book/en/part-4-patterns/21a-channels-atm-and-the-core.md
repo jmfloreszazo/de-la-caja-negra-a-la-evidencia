@@ -197,7 +197,7 @@ The [EN research contract](../../../docs/research/channel-held-ack.en.md) ([ES](
 | Changed-amount attempt | `ID_CONFLICT` | Identity is bound to business intent |
 | Late old ACK release | Monotonic timestamp after recovery | Old reply cannot open a new financial transition |
 
-The [independent verifier](../../../scripts/check_channel_transport.py) checks original HTTP observations and intent, the order of real events **before the old response is released**, the read-only SQL snapshots and final ledger. The negative tests forge the timestamp sequence, replay identity or a duplicate posting and must be rejected. The fixture now contains **14 native scenarios**, **18 proxy guards and 26 original-evidence checks**.
+The [independent verifier](../../../scripts/check_channel_transport.py) checks original HTTP observations and intent, the order of real events **before the old response is released**, the read-only SQL snapshots and final ledger. The negative tests forge the timestamp sequence, replay identity or a duplicate posting and must be rejected. The fixture now contains **14 native scenarios**, **18 proxy guards and 27 original-evidence checks**.
 
 **Architecture conclusion:** channel-visible response status must not be confused with the durable financial decision of the source owner. An old reply can arrive after recovery; **it is not a new authorization** and does not justify an automatic reversal. Idempotency must bind identity **and** intent and rely on the authoritative durable operation record.
 
