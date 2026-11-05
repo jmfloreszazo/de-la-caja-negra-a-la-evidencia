@@ -112,6 +112,10 @@ Los capítulos 1 y 13 incorporan ahora una [comparación de contratos de IBM Z, 
 
 El método [ES](docs/research/source-capture-handoff.es.md) / [EN](docs/research/source-capture-handoff.en.md) añade un **oráculo offline de continuidad de snapshot y eventos**, con 26 controles positivos y negativos. Reutiliza el catálogo de fabricantes como clasificación, pero **no ejecuta CDC nativo** ni autoriza el corte bancario.
 
+## Particiones y respuestas perdidas por salto de canal (#30)
+
+El [análisis ES de fallos de ATM↔switch↔core](docs/research/channel-hop-failures.es.md) ([EN](docs/research/channel-hop-failures.en.md)) añade siete trazas ficticias con cuarenta controles adversariales de autoridad, expiración de respuesta, consulta del COMMIT y mensajes tardíos tras cambio de escritor. Son simulaciones lógicas; **no se han cortado enlaces TCP reales**, ni se concede autoridad de dispensación o contabilización.
+
 ## Incertidumbre de red en canales ATM (#30)
 
 La investigación [ES](docs/research/channel-late-advice.es.md) / [EN](docs/research/channel-late-advice.en.md) añade un control forense *sintético* para advices tardíos y duplicados, efectivo parcial, reversos y rechazo stand-in sin delegación del emisor. El [laboratorio en inglés](lab/channels/README.md) complementa la campaña .NET 10/PostgreSQL anterior; **no** demuestra protocolos homologados ni autoridad bancaria.
