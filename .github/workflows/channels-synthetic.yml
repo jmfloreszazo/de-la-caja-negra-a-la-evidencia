@@ -46,7 +46,7 @@ jobs:
           set -o pipefail
           python3 scripts/check_channel_transport.py lab/results/channels/original.json \
             | tee lab/results/channels/transport-original-gate.json
-      - name: Reject 25 forged native evidence claims including duplicate recovery
+      - name: Reject 26 forged native evidence claims including duplicate recovery
         env:
           SOURCE_HEAD_SHA: ${{ github.event.pull_request.head.sha || github.sha }}
           CHANNELS_ORIGINAL_REPORT: lab/results/channels/original.json
@@ -54,7 +54,7 @@ jobs:
           set -o pipefail
           python3 -m unittest discover -s scripts -p test_channel_transport_evidence.py -v 2>&1 \
             | tee lab/results/channels/transport-evidence-mutants-original.log
-          grep -q 'Ran 26 tests' lab/results/channels/transport-evidence-mutants-original.log
+          grep -q 'Ran 27 tests' lab/results/channels/transport-evidence-mutants-original.log
       - name: Preserve original observations on every outcome
         if: always()
         uses: actions/upload-artifact@v6
