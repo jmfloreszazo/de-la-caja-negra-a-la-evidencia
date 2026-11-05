@@ -16,7 +16,7 @@ import threading
 import time
 
 
-MODES = {"drop_before_forward", "drop_after_upstream_reply", "delay_after_upstream_reply"}
+MODES = {"drop_before_forward", "drop_after_upstream_reply", "delay_after_upstream_reply", "hold_until_recovery"}
 
 
 def _rst(conn):
@@ -41,6 +41,8 @@ class OneShotTransportFault:
         self.mode = mode
         self.upstream_port = upstream_port
         self.delay_seconds = delay_seconds
+        self.reply_ready = threading.Event()
+        self._release_reply = threading.Event()
         self.listen = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         self.listen.bind(("127.0.0.1", 0))
         self.listen.listen(1)
@@ -76,9 +78,26 @@ class OneShotTransportFault:
 
     def __exit__(self, exc_type, exc, traceback):
         try:
+            if self.mode == "hold_until_recovery":
+                self._release_reply.set()  # Cancel an unfinished controlled barrier safely.
             self.wait()
         finally:
             self.listen.close()
+
+    def wait_for_upstream_reply(self, timeout=5):
+        if self.mode != "hold_until_recovery":
+            raise RuntimeError("Only held-reply mode exposes a recovery barrier")
+        if not self.reply_ready.wait(timeout=timeout):
+            raise TimeoutError("Upstream did not confirm original response within bound")
+        return dict(self.result)
+
+    def release_held_reply(self):
+        if self.mode != "hold_until_recovery":
+            raise RuntimeError("Not a held reply")
+        if not self.reply_ready.is_set():
+            raise RuntimeError("Cannot release a reply before upstream response")
+        self.result["release_signalled_monotonic_ns"] = time.monotonic_ns()
+        self._release_reply.set()
 
     def wait(self):
         if not self.started:
@@ -172,6 +191,12 @@ class OneShotTransportFault:
                 self.result["upstream_response_headers_seen"] = True
                 self.result["upstream_response_status"] = 200
                 self.result["upstream_response_initial_bytes"] = len(first)
+                self.result["upstream_reply_seen_monotonic_ns"] = time.monotonic_ns()
+                if self.mode == "hold_until_recovery":
+                    self.reply_ready.set()
+                    if not self._release_reply.wait(timeout=7):
+                        raise TimeoutError("Held reply not released within safety budget")
+                    self.result["response_release_monotonic_ns"] = time.monotonic_ns()
                 # In Program.cs this response is produced AFTER the DB COMMIT,
                 # which the independent SQL snapshot must verify separately.
                 if self.mode == "drop_after_upstream_reply":
