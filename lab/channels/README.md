@@ -10,6 +10,8 @@ The original report and raw logs are written under `lab/results/channels/`, incl
 
 ## Offline advice/reversal forensic oracle (separate from native SQL fixture)
 
+**Original bounded synthetic gate: 33/33 PASS** in [Actions #42024266243](https://github.com/jmfloreszazo/de-la-caja-negra-a-la-evidencia/actions/runs/42024266243), [EN original-run audit](../../evidence/runs/CHANNEL-ADVICE.md) / [ES](../../evidence/runs/CHANNEL-ADVICE.es.md). The GitHub-reported artifact checksum is preserved in the audit; its ZIP has **not been independently downloaded and rehashed**. These are pure-Python fictional scenarios, not a bank protocol test.
+
 The [paired EN](../../docs/research/channel-late-advice.en.md) / [ES](../../docs/research/channel-late-advice.es.md) research adds an **offline fictional** network-advice correlation experiment. It does not emulate ISO 8583, NDC/DDC, a real ATM, physical hardware journal or a bank-approved stand-in service. The original .NET 10/two-PostgreSQL native campaign and archived observations are unchanged.
 
 ```bash
