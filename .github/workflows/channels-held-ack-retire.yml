@@ -1,0 +1,47 @@
+name: Retire merged held-ACK concurrent channel branch
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/channels-held-ack-retire.yml'
+permissions:
+  contents: write
+  pull-requests: read
+jobs:
+  retire-exact-merged-ref:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          fetch-depth: 0
+      - name: Exact reviewed branch and PR head retirement
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          python3 - <<'PY'
+          import json,os,subprocess
+          repository='jmfloreszazo/de-la-caja-negra-a-la-evidencia'
+          branch='feature/channels-held-reply-concurrent-recovery-30'
+          head='0ef64d38f723c6c76b497ad41f0a4c0aea94a8a0'
+          merge='8388c96a06f111def52b2b9a29b8021c882b3e77'
+          assert os.environ['GITHUB_REPOSITORY']==repository
+          assert os.environ['GITHUB_REF']=='refs/heads/main'
+          pr=json.loads(subprocess.check_output(
+              ['gh','api','repos/'+repository+'/pulls/101'],text=True))
+          assert pr['state']=='closed' and pr['merged_at'] is not None
+          assert pr['base']['ref']=='main'
+          assert pr['head']['ref']==branch and pr['head']['sha']==head
+          assert pr['merge_commit_sha']==merge
+          for sha in (head,merge):
+              subprocess.run(['git','merge-base','--is-ancestor',sha,'HEAD'],check=True)
+          ref='refs/heads/'+branch
+          before=subprocess.check_output(['git','ls-remote','origin',ref],text=True).strip()
+          if before:
+              assert before.split()[0]==head, 'Branch advanced; refusing deletion'
+              subprocess.run(['git','push','--force-with-lease='+ref+':'+head,
+                              'origin',':'+ref],check=True)
+          assert not subprocess.check_output(['git','ls-remote','origin',ref],
+                                             text=True).strip()
+          print('Exact unchanged PR #101 branch safely retired',head)
+          PY
