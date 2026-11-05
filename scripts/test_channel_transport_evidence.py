@@ -150,6 +150,10 @@ class NativeEvidenceRefusal(unittest.TestCase):
         self.altered(lambda d: self.case(d,"tcp-held-reply-concurrent-recovery")
                      ["transport_witness"].update(release_signalled_monotonic_ns=-1))
 
+    def test_27_eight_clients_must_share_a_valid_launch_barrier(self):
+        self.altered(lambda d: self.case(d,"tcp-held-reply-concurrent-recovery")
+                     ["held_recovery"].update(barrier_broken=True))
+
 
 if __name__ == "__main__":
     unittest.main()
