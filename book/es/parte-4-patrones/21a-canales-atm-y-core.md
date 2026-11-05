@@ -197,7 +197,7 @@ El [protocolo de investigación ES](../../../docs/research/channel-held-ack.es.m
 | Petición con importe distinto | `ID_CONFLICT` | Identidad ligada a intención, no solo a un identificador textual |
 | Liberación del ACK anterior | Marca monotónica posterior a la recuperación | Una respuesta antigua no abre una segunda transición |
 
-El [verificador independiente](../../../scripts/check_channel_transport.py) contrasta las observaciones HTTP originales, la identidad ofrecida, el orden temporal **antes de liberar** el ACK, los snapshots SQL y el ledger final. Las pruebas negativas falsifican ese orden, duplican asientos o cambian la identidad de una petición; deben ser rechazadas. La ejecución amplía el laboratorio a **14 escenarios nativos**, con **18 controles del proxy y 26 pruebas de evidencia**.
+El [verificador independiente](../../../scripts/check_channel_transport.py) contrasta las observaciones HTTP originales, la identidad ofrecida, el orden temporal **antes de liberar** el ACK, los snapshots SQL y el ledger final. Las pruebas negativas falsifican ese orden, duplican asientos o cambian la identidad de una petición; deben ser rechazadas. La ejecución amplía el laboratorio a **14 escenarios nativos**, con **18 controles del proxy y 27 pruebas de evidencia**.
 
 **Conclusión arquitectónica:** debemos desacoplar el estado observable por cada canal de la decisión financiera del propietario. Una respuesta tardía puede llegar después de la recuperación, pero **no es una nueva autorización**, ni justifica una compensación automática. La idempotencia debe abarcar identidad e intención y estar respaldada por el registro durable del propietario.
 
