@@ -106,6 +106,10 @@ The paired research [EN](docs/research/source-native-capture-assessment.en.md) /
 
 [ES research](docs/research/vendor-runtime-contracts.es.md) / [EN](docs/research/vendor-runtime-contracts.en.md) and Chapters 1/13 distinguish IBM Z/z/OS, Db2 for z/OS, IBM i, ClearPath MCP, OS 2200 and historically documented Fujitsu GS21. The [11-row contract/discovery catalog](research/vendor-runtime-contracts/catalog.json) cites ten primary vendor references and specifies replacement gaps and negative oracles. NEC ACOS and Bull GCOS stay **unknown**, never assumed equivalent. Its 25 automated cases validate **metadata only**, not native vendor execution or bank approval.
 
+## Per-hop channel failures and late writer replies (#30)
+
+The [EN hop-failure contract](docs/research/channel-hop-failures.en.md) ([ES](docs/research/channel-hop-failures.es.md)) adds seven fictional ATM↔switch↔core scenarios and forty prepared adversarial controls for source decision, lost replies, UNKNOWN cash and quarantine after writer-epoch change. This is logical trace evaluation **not real network injection**, issuer or device attestation, or authorization to post money.
+
 ## Channel advice/reversal uncertainty (#30)
 
 The [EN](docs/research/channel-late-advice.en.md) / [ES](docs/research/channel-late-advice.es.md) chapter follow-up provides an independent offline *fictional* checker for duplicated/late ATM advice, partial cash versus reversal, missing physical journal and denied stand-in without issuer delegation. The additive [English lab](lab/channels/README.md) is **not** ISO 8583 certified or bank-authoritative; existing .NET 10 and PostgreSQL experimental evidence is preserved.
