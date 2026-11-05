@@ -112,6 +112,10 @@ Los capítulos 1 y 13 incorporan ahora una [comparación de contratos de IBM Z, 
 
 El método [ES](docs/research/source-capture-handoff.es.md) / [EN](docs/research/source-capture-handoff.en.md) añade un **oráculo offline de continuidad de snapshot y eventos**, con 26 controles positivos y negativos. Reutiliza el catálogo de fabricantes como clasificación, pero **no ejecuta CDC nativo** ni autoriza el corte bancario.
 
+## Caídas TCP reales en loopback y recuperación del COMMIT (#30)
+
+La [investigación ES](docs/research/channel-loopback-transport.es.md) ([EN](docs/research/channel-loopback-transport.en.md)) incorpora tres pruebas **reales de reset/timeout TCP en localhost**, ejecutadas alrededor de .NET 10 y dos bases PostgreSQL desechables. Un oráculo SQL independiente contrasta el COMMIT, dos asientos, el outbox y la idempotencia del ID original. **No son particiones WAN físicas ni equipos bancarios.**
+
 ## Particiones y respuestas perdidas por salto de canal (#30)
 
 El [análisis ES de fallos de ATM↔switch↔core](docs/research/channel-hop-failures.es.md) ([EN](docs/research/channel-hop-failures.en.md)) añade siete trazas ficticias con cuarenta controles adversariales de autoridad, expiración de respuesta, consulta del COMMIT y mensajes tardíos tras cambio de escritor. Son simulaciones lógicas; **no se han cortado enlaces TCP reales**, ni se concede autoridad de dispensación o contabilización.
