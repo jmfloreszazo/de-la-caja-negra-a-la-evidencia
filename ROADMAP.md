@@ -48,6 +48,9 @@ All of these are **synthetic engineering results**; no real bank behavior was ob
 
 ## Next execution order (not dates or percentage-complete estimates)
 
+**New bounded #30 block:** [ATM↔switch↔core hop failures](docs/research/channel-hop-failures.en.md) ([ES](docs/research/channel-hop-failures.es.md)): seven fictional event traces and **40 prepared Python controls** for undelivered instructions, COMMIT with lost ACK, UNKNOWN device cash, stale old-owner replies and denied stand-in. **No actual TCP partitions or bank approval**; it supplements the earlier native SQL and 33-case advice experiments. #30 stays open for real transport fault injection and wider channel coverage.
+
+
 **Channels #30 verified bounded increment:** the [late-advice forensic oracle](docs/research/channel-late-advice.en.md) ([ES](docs/research/channel-late-advice.es.md)) passed **33/33 offline synthetic controls** ([original audit](evidence/runs/CHANNEL-ADVICE.md)). It does not reclassify the ten earlier native SQL cases or establish certified ISO 8583, real cash, financial reversals or delegated stand-in approval. #30 remains open for its larger scope.
 
 1. Strengthen platform contracts and manufacturer-aware patterns in #17/#18/#28. **New bounded increment:** [EN 11-contract/discovery matrix](docs/research/vendor-runtime-contracts.en.md) ([ES](docs/research/vendor-runtime-contracts.es.md)), ten IBM/Unisys/Fujitsu references, and 25 catalog-integrity controls; Chapters 1/13 expanded in both languages. Full vendor coverage, architecture figures and native source tests remain open. Metadata checks do not grant bank acceptance.
