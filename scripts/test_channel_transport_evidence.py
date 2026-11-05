@@ -112,5 +112,44 @@ class NativeEvidenceRefusal(unittest.TestCase):
                 os.environ["SOURCE_HEAD_SHA"] = original
 
 
+    def test_19_missing_held_reply_race_rejected(self):
+        self.altered(lambda d: self.case(d,"tcp-held-reply-concurrent-recovery")
+                     .pop("held_recovery"))
+
+    def test_20_old_reply_released_before_recovery_rejected(self):
+        def edit(d):
+            c=self.case(d,"tcp-held-reply-concurrent-recovery")
+            c["transport_witness"]["response_release_monotonic_ns"] = (
+                c["transport_witness"]["upstream_reply_seen_monotonic_ns"]+1)
+        self.altered(edit)
+
+    def test_21_fewer_than_eight_concurrent_replays_rejected(self):
+        self.altered(lambda d: self.case(d,"tcp-held-reply-concurrent-recovery")
+                     ["held_recovery"].update(replay_count=7))
+
+    def test_22_one_duplicate_false_under_concurrency_rejected(self):
+        self.altered(lambda d: self.case(d,"tcp-held-reply-concurrent-recovery")
+                     ["held_recovery"]["replay_results"][4].update(duplicate=False))
+
+    def test_23_forged_new_operation_id_during_replay_rejected(self):
+        self.altered(lambda d: self.case(d,"tcp-held-reply-concurrent-recovery")
+                     ["http"][3]["request"].update(operationId="new-fake-id"))
+
+    def test_24_duplicate_posting_before_old_reply_released_rejected(self):
+        def edit(d):
+            c=self.case(d,"tcp-held-reply-concurrent-recovery")
+            p=c["held_recovery"]["sql_before_old_ack"]["core"]["postings"]
+            p.append(copy.deepcopy(p[0]))
+        self.altered(edit)
+
+    def test_25_conflicting_amount_attempt_must_be_rejected(self):
+        self.altered(lambda d: self.case(d,"tcp-held-reply-concurrent-recovery")
+                     ["http"][10]["response"].update(status="COMMITTED"))
+
+    def test_26_forged_old_reply_timestamp_rejected(self):
+        self.altered(lambda d: self.case(d,"tcp-held-reply-concurrent-recovery")
+                     ["transport_witness"].update(release_signalled_monotonic_ns=-1))
+
+
 if __name__ == "__main__":
     unittest.main()
