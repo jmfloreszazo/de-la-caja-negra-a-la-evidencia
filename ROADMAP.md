@@ -1,4 +1,6 @@
-# Open roadmap — evidence-based checkpoint (5 November 2026)
+# Archived roadmap — final research closeout (5 November 2026)
+
+**CLOSED FOR THIS EDITION.** The historical step-by-step plan below is retained for provenance and does not constitute an active task list. The author has accepted a bounded book/lab publication without E3/E4 completion or global scientific PASS for E1/E2. See [final dispositions](docs/FINAL_CLOSEOUT.md) and [publication notes](docs/releases/v2026.11.05.md). Frozen #16/#53 remain on hold rather than activated. All remaining unexecuted checkboxes below are excluded from the edition rather than completed.
 
 **English** · [Español](ROADMAP.es.md)
 
