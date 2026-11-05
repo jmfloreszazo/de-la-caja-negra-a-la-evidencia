@@ -47,7 +47,7 @@ The one-shot disposable TCP proxy now implements `hold_until_recovery` in additi
 
 A bounded event barrier (not a sleep heuristic) supplies an exact same-host ordering witness: upstream HTTP 200 precedes completed recovery, which precedes release of that old reply. It is a *real loopback socket* observation, not a multi-host synchronized trace, production network fault, throughput test or bank-owner fencing proof. `operationId` is a durable identifier only **inside this disposable fixture**; the real issuer and scheme must approve their own retention, message correlation and conflicts.
 
-After this extension there are **14 native driver cases**, **18 proxy refusal tests** and **26 original-evidence tests**. Source evidence must not claim ISO 8583, actual ATM cash, CICS/Db2, cross-machine WAN/HA, approved stand-in or cutover; TODM G2 INCONCLUSIVE / G6 BLOCK. Existing original 10-case, 13-case, 33-case advice and 40-case fictitious hop artifacts remain immutable.
+After this extension there are **14 native driver cases**, **18 proxy refusal tests** and **27 original-evidence tests**. Source evidence must not claim ISO 8583, actual ATM cash, CICS/Db2, cross-machine WAN/HA, approved stand-in or cutover; TODM G2 INCONCLUSIVE / G6 BLOCK. Existing original 10-case, 13-case, 33-case advice and 40-case fictitious hop artifacts remain immutable.
 
 ## Initial native acceptance matrix
 
