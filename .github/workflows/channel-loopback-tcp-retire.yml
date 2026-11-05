@@ -1,0 +1,49 @@
+name: Retire merged native channel TCP transport feature branch
+on:
+  push:
+    branches: [main]
+    paths: ['.github/workflows/channel-loopback-tcp-retire.yml']
+permissions:
+  contents: write
+  pull-requests: read
+jobs:
+  retire-exact-integrated-ref:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          fetch-depth: 0
+      - name: Refuse branch changes and delete only exact reviewed PR #100 head
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          python3 - <<'PY'
+          import json, os, subprocess
+          repo = os.environ['GITHUB_REPOSITORY']
+          branch = 'feature/channels-loopback-tcp-faults-30'
+          tip = '9010f076e84218bce1732ce67bce5ac0b7362829'
+          merge = 'cf0747bb693f2ab79057132f66a502f3a4b368f9'
+          assert repo == 'jmfloreszazo/de-la-caja-negra-a-la-evidencia'
+          assert os.environ['GITHUB_REF'] == 'refs/heads/main'
+          pr = json.loads(subprocess.check_output(
+              ['gh','api','repos/'+repo+'/pulls/100'], text=True))
+          assert pr['state']=='closed' and pr['merged_at'] is not None
+          assert pr['base']['ref']=='main'
+          assert pr['head']['ref']==branch and pr['head']['sha']==tip
+          assert pr['merge_commit_sha']==merge
+          for ancestor in (tip,merge):
+              subprocess.run(['git','merge-base','--is-ancestor',ancestor,'HEAD'],
+                             check=True)
+          ref='refs/heads/'+branch
+          existing=subprocess.check_output(
+              ['git','ls-remote','origin',ref],text=True).strip()
+          if existing:
+              assert existing.split()[0]==tip, 'Branch advanced after merge; no delete'
+              subprocess.run(['git','push',
+                              '--force-with-lease='+ref+':'+tip,
+                              'origin',':'+ref],check=True)
+          assert not subprocess.check_output(
+              ['git','ls-remote','origin',ref],text=True).strip()
+          print('Retired unchanged merged #100 branch',tip)
+          PY
