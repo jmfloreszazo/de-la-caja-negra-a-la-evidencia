@@ -10,7 +10,6 @@ Editions use calendar versioning: `vYYYY.MM.DD`.
 - No mainframe/production parity, real source-side bank fence, HA, ISO 8583/device certification or G2/G6 release authority inferred.
 - Publication is gated on the release workflow producing two complete PDF books and two Markdown books; original evidence and historical releases remain immutable.
 
-
 ## v2026.10.31-rc1 · Functional-first research preview (pre-release)
 
 - Bilingual companion chapter on mainframe decomposition and evidence-aware Oracle Gates (#50).
