@@ -1,0 +1,93 @@
+name: Channel late advice and cash uncertainty forensic gate
+on:
+  pull_request:
+    paths:
+      - "lab/channels/advice_gate.py"
+      - "lab/channels/advice_fixture.json"
+      - "lab/channels/test_advice_gate.py"
+      - "docs/research/channel-late-advice.*"
+      - ".github/workflows/channels-advice.yml"
+  push:
+    branches: [main]
+    paths:
+      - "lab/channels/advice_gate.py"
+      - "lab/channels/advice_fixture.json"
+      - "lab/channels/test_advice_gate.py"
+      - "docs/research/channel-late-advice.*"
+      - ".github/workflows/channels-advice.yml"
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  offline-forensic-gate:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+      - uses: actions/setup-python@v6
+        with:
+          python-version: '3.12'
+      - name: Preserve source identities before test
+        env:
+          SOURCE_HEAD_SHA: ${{ github.event.pull_request.head.sha || github.sha }}
+        run: |
+          mkdir -p lab/results/channels/advice
+          test "$SOURCE_HEAD_SHA" = "$(git rev-parse HEAD)"
+          {
+            echo "source_head_sha=$SOURCE_HEAD_SHA"
+            echo "checkout_sha=$(git rev-parse HEAD)"
+            python3 --version
+            uname -a
+            sha256sum lab/channels/{advice_gate.py,advice_fixture.json,test_advice_gate.py}
+          } > lab/results/channels/advice/provenance.txt
+      - name: Execute baseline and all 33 positive/adversarial checks
+        env:
+          SOURCE_HEAD_SHA: ${{ github.event.pull_request.head.sha || github.sha }}
+        run: |
+          set -o pipefail
+          python3 lab/channels/advice_gate.py lab/channels/advice_fixture.json \
+            | tee lab/results/channels/advice/baseline-original.json
+          python3 -m unittest discover -s lab/channels -p test_advice_gate.py -v \
+            2>&1 | tee lab/results/channels/advice/test-original.log
+          python3 - <<'PY'
+          import json, os, re
+          from pathlib import Path
+          base=Path('lab/results/channels/advice')
+          data=json.loads((base/'baseline-original.json').read_text())
+          log=(base/'test-original.log').read_text()
+          assert data['status']=='PASS_SYNTHETIC_CORRELATION_ONLY'
+          assert data['outcomes']=={
+            'CASH-001':'MATCHED_PARTIAL_CASH',
+            'CASH-002':'UNKNOWN_REQUIRES_DEVICE_EVIDENCE',
+            'CASH-003':'FINAL_ZERO_CASH',
+            'CASH-004':'STAND_IN_DENIED'
+          }
+          assert len(re.findall(r'^test_\d+_.* \.\.\. ok$',log,re.M))==33
+          assert 'Ran 33 tests' in log and re.search(r'^OK$',log,re.M)
+          for k in ('realCardNetworkTested','physicalDeviceJournalAuthenticated',
+                    'originalIssuerDataVerified','standInDelegationApproved',
+                    'safeToAutoDispense','safeToAutoPost','safeToAutoReverse',
+                    'productionApproved'):
+              assert data[k] is False
+          assert data['todmG2']=='INCONCLUSIVE' and data['todmG6']=='BLOCK'
+          source=os.environ['SOURCE_HEAD_SHA']
+          result={
+            'classification':'SYNTHETIC_CHANNEL_ADVICE_METADATA_ONLY',
+            'status':'PASS_33_SYNTHETIC_ADVICE_CHECKS',
+            'sourceHeadSha':source,'checkoutSha':source,
+            'testsRun':33,'testsPlanned':33,'unexpectedFailures':0,
+            'nativeCardNetworkTested':False,'realCashDeviceTested':False,
+            'bankApproval':False,'automaticPostingAllowed':False,
+            'todmG2':'INCONCLUSIVE','todmG6':'BLOCK'}
+          (base/'original-result.json').write_text(json.dumps(result,sort_keys=True,indent=2)+'\n')
+          print(json.dumps(result,sort_keys=True))
+          PY
+      - name: Keep original evidence even when tests fail
+        if: always()
+        uses: actions/upload-artifact@v6
+        with:
+          name: channels-advice-synthetic-original-not-iso8583-or-cash
+          path: lab/results/channels/advice/
+          if-no-files-found: warn
