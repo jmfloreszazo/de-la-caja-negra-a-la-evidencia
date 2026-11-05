@@ -183,6 +183,26 @@ All three new cases are **fictional digital transfers**, not actual cash withdra
 
 This increment exercises **real local TCP interruption against durable SQL**, not `tc netem`, cross-host WAN failures, certified ISO 8583, CICS or authentic dispenser journals; it is not a MIPS/capacity benchmark. One financial writer must remain authoritative across all channels. Customer acceptance still requires native source signatures, owner policy, network evidence, source fencing and independent physical failure domains. **G2 INCONCLUSIVE, G6 BLOCK**, no banking cutover approval.
 
+## 10. Held original reply versus eight concurrent recoveries
+
+The preceding experiment lost or delayed an ACK and then queried the core. It left a more difficult channel boundary untested: **the original response is still in flight while multiple clients concurrently try to recover the same operation**. One sequential retry does not establish safety under this race.
+
+The [EN research contract](../../../docs/research/channel-held-ack.en.md) ([ES](../../../docs/research/channel-held-ack.es.md)) uses a deterministic barrier over **actual local TCP sockets**. A proxy forwards the original `POST /transfer` to the existing .NET 10 API, observes its HTTP 200 after PostgreSQL COMMIT, then holds the response. The first client experiences a real timeout. Before the old reply is released, the driver queries the fictional owner's authoritative status and launches **eight concurrent clients using the same `operationId` and intent fingerprint**. A ninth request with the original ID but a different amount must be rejected.
+
+| Boundary | Original observation | Required independent oracle |
+| --- | --- | --- |
+| Fictional issuer | COMMIT confirmed while HTTP 200 is held | One operation, two postings and one outbox before retries |
+| First client | Timeout and `UNKNOWN` | No new financial identity invented |
+| Eight concurrent clients | Eight `COMMITTED` responses with `duplicate=true` | Still one durable decision and no second posting |
+| Changed-amount attempt | `ID_CONFLICT` | Identity is bound to business intent |
+| Late old ACK release | Monotonic timestamp after recovery | Old reply cannot open a new financial transition |
+
+The [independent verifier](../../../scripts/check_channel_transport.py) checks original HTTP observations and intent, the order of real events **before the old response is released**, the read-only SQL snapshots and final ledger. The negative tests forge the timestamp sequence, replay identity or a duplicate posting and must be rejected. The fixture now contains **14 native scenarios**, **18 proxy guards and 27 original-evidence checks**.
+
+**Architecture conclusion:** channel-visible response status must not be confused with the durable financial decision of the source owner. An old reply can arrive after recovery; **it is not a new authorization** and does not justify an automatic reversal. Idempotency must bind identity **and** intent and rely on the authoritative durable operation record.
+
+The experiment uses `localhost` TCP and disposable PostgreSQL, **not** a certified ATM switch, ISO 8583, CICS, a cash device or a cross-host WAN partition. **Eight local clients do not establish MIPS equivalence or capacity.** Monotonic timestamps are only comparable within this host. Real issuer attestations, physical effects, incumbent writer fencing and owner-approved rules remain open. TODM G2 `INCONCLUSIVE` / G6 `BLOCK`.
+
 ---
 
 [← Chapter 21 · Event sourcing, CQRS and sagas](21-event-sourcing-cqrs-and-sagas-when-they-help-and-when-they.md) · [Contents](../README.md) · [Part V · Capacity →](../part-5-capacity/README.md)

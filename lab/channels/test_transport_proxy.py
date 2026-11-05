@@ -144,5 +144,41 @@ class OneShotTransportGuards(unittest.TestCase):
             proxy.wait()
 
 
+    def test_15_held_reply_cannot_be_released_before_owner_response(self):
+        p = OneShotTransportFault(55444, "hold_until_recovery")
+        try:
+            self.assertFalse(p.reply_ready.is_set())
+            with self.assertRaises(RuntimeError):
+                p.release_held_reply()
+            self.assertFalse(p._release_reply.is_set())
+        finally:
+            p.listen.close()
+
+    def test_16_nonheld_mode_cannot_claim_original_reply_barrier(self):
+        p = OneShotTransportFault(55444, "drop_before_forward")
+        try:
+            with self.assertRaises(RuntimeError):
+                p.wait_for_upstream_reply()
+            with self.assertRaises(RuntimeError):
+                p.release_held_reply()
+        finally:
+            p.listen.close()
+
+    def test_17_held_mode_refuses_preconfigured_delay(self):
+        with self.assertRaises(ValueError):
+            OneShotTransportFault(55444, "hold_until_recovery", delay_seconds=0.8)
+
+    def test_18_held_reply_starts_unreleased_and_local_only(self):
+        p = OneShotTransportFault(55444, "hold_until_recovery")
+        try:
+            self.assertEqual(p.listen.getsockname()[0], "127.0.0.1")
+            self.assertEqual(p.result["source"],
+                             "ACTUAL_LOOPBACK_TCP_SOCKET_NOT_KERNEL_OR_NETWORK_PARTITION")
+            self.assertFalse(p._release_reply.is_set())
+            self.assertFalse(p.result["physical_link_partition_tested"])
+        finally:
+            p.listen.close()
+
+
 if __name__ == "__main__":
     unittest.main()

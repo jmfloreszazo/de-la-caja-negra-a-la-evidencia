@@ -59,6 +59,24 @@ Three new original cases appear as `tcp-drop-before-forward` (socket reset befor
 
 **Claim boundary:** real **loopback TCP reset/delay** and actual .NET/PostgreSQL commit/replay were executed when CI reports PASS. These are **not real inter-host TCP partitions**, network switch/WAN failure, ATM cash movement, card network standard certification, CICS/Db2 semantics, physical independent failure domains, production throughput or bank approval. All customer acceptance remains TODM G2 INCONCLUSIVE / G6 BLOCK; no automatic bank posting/reversal/dispense or migration cutover is authorized.
 
+## Real TCP held-reply race against eight concurrent recoveries
+
+**Original source CI verified:** [run #42052288542](https://github.com/jmfloreszazo/de-la-caja-negra-a-la-evidencia/actions/runs/42052288542): **18/18** TCP proxy guards, **14/14** native .NET/PostgreSQL cases, **27/27** original-report checks and the SQL transport oracle passed. [EN original report](../../evidence/runs/CHANNEL-HELD-ACK.md) / [ES](../../evidence/runs/CHANNEL-HELD-ACK.es.md) retains the source and limits. The GitHub-published artifact ZIP checksum was **not independently rehashed**.
+
+
+The [paired EN research](../../docs/research/channel-held-ack.en.md) / [ES](../../docs/research/channel-held-ack.es.md) extends the existing **actual single-host TCP** fixture with a response-hold barrier. The .NET 10 core commits the original fictional digital transfer, but the ephemeral loopback proxy retains HTTP 200. The first client times out. **Before releasing the original response**, the driver performs an authoritative fixture status read, eight concurrent real HTTP retries with exactly the same operation ID/intent, and a conflicting different-amount attempt that must return `ID_CONFLICT`.
+
+The integrated driver now runs **14 native cases** (original ten plus four localhost TCP interventions). Its original report contains source/checkout IDs, witness timestamps from the same host, the 8 replay replies, SQL snapshots before retry and before releasing the old ACK, a conflict response, and the independent financial oracle. The separate report checker rejects early release, missing replies, duplicate financial postings and forged identity. The dedicated [evidence-refusal tests](../../scripts/test_channel_transport_evidence.py) now contain **27 cases**, including 25 deliberate corruptions; [proxy guard tests](test_transport_proxy.py) now contain **18 cases**. To reproduce on a disposable Linux+Podman+.NET 10 host:
+
+```bash
+python3 lab/channels/run.py
+python3 scripts/check_channel_transport.py lab/results/channels/original.json
+python3 -m unittest discover -s lab/channels -p 'test_transport_proxy.py' -v
+CHANNELS_ORIGINAL_REPORT=lab/results/channels/original.json python3 -m unittest discover -s scripts -p 'test_channel_transport_evidence.py' -v
+```
+
+This **does not** simulate a certified network switch or a real ATM, or prove any physical/external exactly-once financial effects. The owner and device are fictional, and every component is on one host. No automatic authorization, cash, reversal or bank cutover follows from any PASS. TODM G2 INCONCLUSIVE/G6 BLOCK.
+
 ## Scope
 
 Amounts are integer cents and policies are invented for this example. The device atomically records simulated stock and journal in its own SQL transaction: **this is an emulator assumption, not proof of atomic physical cash delivery**. A partial dispense posts its actual amount; absent evidence retains UNKNOWN and the hold. Idempotent reconciliation uses the original command ID. No approved offline authorization exists; a caller must not invoke the device without core authorization and preparation.

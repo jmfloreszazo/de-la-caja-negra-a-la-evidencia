@@ -1,0 +1,60 @@
+{
+  "classification": "REAL_SINGLE_HOST_LOOPBACK_TCP_WITH_SYNTHETIC_DOTNET_POSTGRESQL_OWNER_NOT_BANK",
+  "original": {
+    "repository": "jmfloreszazo/de-la-caja-negra-a-la-evidencia",
+    "pr": 101,
+    "issue": 30,
+    "runId": 42052288542,
+    "jobId": 127331264991,
+    "sourceAndCheckoutSha": "67981c24d9164f8952e1e24ce8ecd1ec4bb582ff",
+    "runUrl": "https://github.com/jmfloreszazo/de-la-caja-negra-a-la-evidencia/actions/runs/42052288542"
+  },
+  "originalChecks": {
+    "nativeDotNet10PostgresqlCasesRun": 14,
+    "previousNativeCasesRetained": 13,
+    "newCases": 1,
+    "originalFinancialOracle": "PASS",
+    "proxySafetyGuardsPassed": 18,
+    "originalEvidenceControlsPassed": 27,
+    "expectedAdversarialEvidenceMutationsRejected": 26,
+    "transportAndSqlGate": "PASS_BOUNDED_LIVE_LOOPBACK_TRANSPORT",
+    "synchronisedRecoveryClients": 8,
+    "firstClientObserved": "UNKNOWN",
+    "originalUpstreamResponse": 200,
+    "originalOwnerDecision": "COMMITTED",
+    "conflictingSameOperationChangedAmount": "ID_CONFLICT",
+    "expectedSqlOperations": 1,
+    "expectedSqlPostings": 2,
+    "expectedSqlOutboxEvents": 1,
+    "statusBeforeOldReplyRelease": "COMMITTED",
+    "historicalOriginalArtifactPreserved": true
+  },
+  "artifact": {
+    "id": 13426084608,
+    "name": "channels-synthetic-original",
+    "sizeBytes": 23371,
+    "githubReportedSha256": "d012bf14f8e6e58a724df819d413dc0b765ecad4cb0ec4788078f400c281fa6b",
+    "independentlyRehashedFromZip": false,
+    "zipMembersIndependentlyInspected": false,
+    "originallyExpires": "2027-02-03T15:10:39Z"
+  },
+  "originalLogExcerpt": "evidence/runs/CHANNEL-HELD-ACK-PR101-ORIGINAL-CI-EXCERPT.log",
+  "importantLimitations": {
+    "actualLoopbackTcp": true,
+    "actualDotNetAndDisposablePostgresql": true,
+    "actualEightClientLocalConcurrency": true,
+    "multiHostWanPartitionTested": false,
+    "realCardSwitchOrAtmTested": false,
+    "physicalCashOrRetractTested": false,
+    "mainframeCicsDb2IssuerTested": false,
+    "realSourceFencingTested": false,
+    "bankRulesAndApproval": false,
+    "productionTransferAuthorized": false,
+    "externalExactlyOnceCertified": false,
+    "capacityBenchmark": false,
+    "originalArtifactZipIndependentIntegrityVerified": false,
+    "todmG2": "INCONCLUSIVE",
+    "todmG6": "BLOCK",
+    "e2": "PARTIALLY_VERIFIED"
+  }
+}

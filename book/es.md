@@ -1772,6 +1772,26 @@ Los tres casos son **transferencias digitales ficticias**, no retiradas físicas
 
 El nuevo incremento permite medir **interrupciones reales de TCP locales** frente al commit SQL duradero. **No** implementa `tc netem`, pérdidas WAN entre máquinas, ISO 8583, CICS ni journal físico de dispensación; tampoco mide MIPS o capacidad. El libro mantiene el patrón de **un propietario financiero y varios canales**, y la aceptación del cliente exige todavía firmas, políticas, trazas reales, writer fencing y pruebas con dominios físicos independientes. **G2 INCONCLUSIVE, G6 BLOCK**, sin permiso de cortar el sistema del banco.
 
+#### 10. Respuesta retenida frente a ocho recuperaciones concurrentes
+
+En el laboratorio anterior perdíamos o retrasábamos un ACK y, después, consultábamos al core. Quedaba sin probar una situación frecuente en arquitecturas de canales: **la respuesta original todavía está en tránsito cuando otros clientes intentan recuperar simultáneamente la operación**. No basta con probar un único reintento secuencial.
+
+El [protocolo de investigación ES](../docs/research/channel-held-ack.es.md) ([EN](../docs/research/channel-held-ack.en.md)) introduce una barrera determinista **sobre sockets TCP locales reales**. El proxy entrega el `POST /transfer` original al API .NET 10 y lee su HTTP 200 posterior al COMMIT en PostgreSQL, pero retiene la respuesta. El cliente recibe un timeout real. Antes de liberar el ACK antiguo, el driver consulta el estado autoritativo de la maqueta y dispara **ocho clientes concurrentes con el mismo `operationId` y fingerprint**. Una novena petición con el mismo ID y otro importe debe rechazarse.
+
+| Frontera | Evidencia observable | Oráculo exigido |
+| --- | --- | --- |
+| Emisor ficticio | Un COMMIT confirmado; se mantiene retenido el HTTP 200 | Una operación, dos apuntes y un outbox antes de cualquier reintento |
+| Cliente inicial | Timeout y estado `UNKNOWN` | No crear otra identidad financiera |
+| Ocho clientes concurrentes | Ocho respuestas `COMMITTED` con `duplicate=true` | Una sola decisión persistente; ningún nuevo cargo |
+| Petición con importe distinto | `ID_CONFLICT` | Identidad ligada a intención, no solo a un identificador textual |
+| Liberación del ACK anterior | Marca monotónica posterior a la recuperación | Una respuesta antigua no abre una segunda transición |
+
+El [verificador independiente](../scripts/check_channel_transport.py) contrasta las observaciones HTTP originales, la identidad ofrecida, el orden temporal **antes de liberar** el ACK, los snapshots SQL y el ledger final. Las pruebas negativas falsifican ese orden, duplican asientos o cambian la identidad de una petición; deben ser rechazadas. La ejecución amplía el laboratorio a **14 escenarios nativos**, con **18 controles del proxy y 27 pruebas de evidencia**.
+
+**Conclusión arquitectónica:** debemos desacoplar el estado observable por cada canal de la decisión financiera del propietario. Una respuesta tardía puede llegar después de la recuperación, pero **no es una nueva autorización**, ni justifica una compensación automática. La idempotencia debe abarcar identidad e intención y estar respaldada por el registro durable del propietario.
+
+El ensayo usa conexiones de `localhost` y PostgreSQL desechable, no una red ATM, protocolo ISO 8583, CICS, hardware de dispensación o partición WAN; **ocho clientes locales tampoco demuestran capacidad o equivalencia en MIPS**. Los tiempos monotónicos solo se comparan en este host. Quedan fuera las firmas del emisor, efectos físicos, fencing del mainframe y reglas bancarias aprobadas. TODM G2 `INCONCLUSIVE` / G6 `BLOCK`.
+
 ## Parte V · Capacidad: MIPS, concurrencia y plataforma
 
 La pregunta que más preocupa al sacar una carga de un mainframe no es si el programa compila. Es si aguantará el cierre, el pico y un fallo a la vez. Esta parte trata de cómo acercarse a lo que da un mainframe —en Azure o en una máquina enorme en casa del cliente— sin hacerse trampas al medir.

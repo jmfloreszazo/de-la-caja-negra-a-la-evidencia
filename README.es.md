@@ -112,6 +112,10 @@ Los capítulos 1 y 13 incorporan ahora una [comparación de contratos de IBM Z, 
 
 El método [ES](docs/research/source-capture-handoff.es.md) / [EN](docs/research/source-capture-handoff.en.md) añade un **oráculo offline de continuidad de snapshot y eventos**, con 26 controles positivos y negativos. Reutiliza el catálogo de fabricantes como clasificación, pero **no ejecuta CDC nativo** ni autoriza el corte bancario.
 
+## Recuperación concurrente con una respuesta TCP antigua retenida (#30)
+
+El [dossier ES](docs/research/channel-held-ack.es.md) ([EN](docs/research/channel-held-ack.en.md)) prueba **ocho reintentos HTTP concurrentes** del mismo ID mientras el proxy TCP retiene la respuesta anterior, ya confirmada en PostgreSQL. Una petición con importe distinto debe generar `ID_CONFLICT`. El oráculo SQL exige un único efecto antes de liberar el ACK viejo. Es una prueba **local y ficticia**, no una red bancaria ni una aceptación de producción.
+
 ## Caídas TCP reales en loopback y recuperación del COMMIT (#30)
 
 La [investigación ES](docs/research/channel-loopback-transport.es.md) ([EN](docs/research/channel-loopback-transport.en.md)) incorpora tres pruebas **reales de reset/timeout TCP en localhost**, ejecutadas alrededor de .NET 10 y dos bases PostgreSQL desechables. Un oráculo SQL independiente contrasta el COMMIT, dos asientos, el outbox y la idempotencia del ID original. **No son particiones WAN físicas ni equipos bancarios.**

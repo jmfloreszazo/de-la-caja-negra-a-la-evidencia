@@ -1,0 +1,56 @@
+# Verbatim timestamped excerpt from ORIGINAL GitHub Actions job (not complete ZIP)
+# PR #101, exact source / checkout SHA 67981c24d9164f8952e1e24ce8ecd1ec4bb582ff
+# Original Actions: https://github.com/jmfloreszazo/de-la-caja-negra-a-la-evidencia/actions/runs/42052288542
+# Original job ID 127331264991; 18 proxy guards + 27 report checks + 14 native .NET/SQL cases
+# Original raw SQL/HTTP/sockets report is an Actions artifact; ZIP bytes not independently rehashed.
+2026-11-05T15:10:47.7193207Z test_01_disposable_guard_enforced (test_transport_proxy.OneShotTransportGuards.test_01_disposable_guard_enforced) ... ok
+2026-11-05T15:10:47.7194243Z test_02_nonlocal_or_external_port_refused (test_transport_proxy.OneShotTransportGuards.test_02_nonlocal_or_external_port_refused) ... ok
+2026-11-05T15:10:47.7197657Z test_03_unknown_mode_refused (test_transport_proxy.OneShotTransportGuards.test_03_unknown_mode_refused) ... ok
+2026-11-05T15:10:47.7198325Z test_04_unbounded_or_wrong_delay_refused (test_transport_proxy.OneShotTransportGuards.test_04_unbounded_or_wrong_delay_refused) ... ok
+2026-11-05T15:10:47.7199120Z test_05_accepted_http_transfer_is_exact (test_transport_proxy.OneShotTransportGuards.test_05_accepted_http_transfer_is_exact) ... ok
+2026-11-05T15:10:47.7199635Z test_06_get_request_cannot_be_forwarded (test_transport_proxy.OneShotTransportGuards.test_06_get_request_cannot_be_forwarded) ... ok
+2026-11-05T15:10:47.7200430Z test_07_other_financial_route_cannot_be_forwarded (test_transport_proxy.OneShotTransportGuards.test_07_other_financial_route_cannot_be_forwarded) ... ok
+2026-11-05T15:10:47.7201097Z test_08_duplicate_content_length_refused (test_transport_proxy.OneShotTransportGuards.test_08_duplicate_content_length_refused) ... ok
+2026-11-05T15:10:47.7201591Z test_09_streaming_request_refused (test_transport_proxy.OneShotTransportGuards.test_09_streaming_request_refused) ... ok
+2026-11-05T15:10:47.7202048Z test_10_oversized_body_refused (test_transport_proxy.OneShotTransportGuards.test_10_oversized_body_refused) ... ok
+2026-11-05T15:10:47.7202517Z test_11_truncated_body_refused (test_transport_proxy.OneShotTransportGuards.test_11_truncated_body_refused) ... ok
+2026-11-05T15:10:47.7203013Z test_12_wrong_upstream_reply_status_refused (test_transport_proxy.OneShotTransportGuards.test_12_wrong_upstream_reply_status_refused) ... ok
+2026-11-05T15:10:47.7332321Z test_13_real_local_tcp_drop_never_opens_upstream (test_transport_proxy.OneShotTransportGuards.test_13_real_local_tcp_drop_never_opens_upstream) ... ok
+2026-11-05T15:10:47.7337135Z test_14_downstream_proxy_binds_loopback_only (test_transport_proxy.OneShotTransportGuards.test_14_downstream_proxy_binds_loopback_only) ... ok
+2026-11-05T15:10:47.7338196Z test_15_held_reply_cannot_be_released_before_owner_response (test_transport_proxy.OneShotTransportGuards.test_15_held_reply_cannot_be_released_before_owner_response) ... ok
+2026-11-05T15:10:47.7339287Z test_16_nonheld_mode_cannot_claim_original_reply_barrier (test_transport_proxy.OneShotTransportGuards.test_16_nonheld_mode_cannot_claim_original_reply_barrier) ... ok
+2026-11-05T15:10:47.7340464Z test_17_held_mode_refuses_preconfigured_delay (test_transport_proxy.OneShotTransportGuards.test_17_held_mode_refuses_preconfigured_delay) ... ok
+2026-11-05T15:10:47.7341446Z test_18_held_reply_starts_unreleased_and_local_only (test_transport_proxy.OneShotTransportGuards.test_18_held_reply_starts_unreleased_and_local_only) ... ok
+2026-11-05T15:10:47.7342291Z Ran 18 tests in 0.015s
+2026-11-05T15:10:47.7342422Z OK
+2026-11-05T15:11:21.2917150Z {"status": "PASS", "cases": 14, "report": "/home/runner/work/de-la-caja-negra-a-la-evidencia/de-la-caja-negra-a-la-evidencia/lab/results/channels/original.json"}
+2026-11-05T15:11:21.3617155Z   "status": "PASS_BOUNDED_LIVE_LOOPBACK_TRANSPORT",
+2026-11-05T15:11:21.4233776Z test_01_original_14_case_live_evidence_is_valid (test_channel_transport_evidence.NativeEvidenceRefusal.test_01_original_14_case_live_evidence_is_valid) ... ok
+2026-11-05T15:11:21.4247849Z test_02_forged_global_success_rejected (test_channel_transport_evidence.NativeEvidenceRefusal.test_02_forged_global_success_rejected) ... ok
+2026-11-05T15:11:21.4261622Z test_03_missing_native_case_rejected (test_channel_transport_evidence.NativeEvidenceRefusal.test_03_missing_native_case_rejected) ... ok
+2026-11-05T15:11:21.4275409Z test_04_false_physical_wan_pass_rejected (test_channel_transport_evidence.NativeEvidenceRefusal.test_04_false_physical_wan_pass_rejected) ... ok
+2026-11-05T15:11:21.4289453Z test_05_false_production_bank_authorization_rejected (test_channel_transport_evidence.NativeEvidenceRefusal.test_05_false_production_bank_authorization_rejected) ... ok
+2026-11-05T15:11:21.4302986Z test_06_pre_forward_drop_cannot_contact_core (test_channel_transport_evidence.NativeEvidenceRefusal.test_06_pre_forward_drop_cannot_contact_core) ... ok
+2026-11-05T15:11:21.4316424Z test_07_pre_forward_drop_cannot_have_postings (test_channel_transport_evidence.NativeEvidenceRefusal.test_07_pre_forward_drop_cannot_have_postings) ... ok
+2026-11-05T15:11:21.4329921Z test_08_client_must_observe_response_loss (test_channel_transport_evidence.NativeEvidenceRefusal.test_08_client_must_observe_response_loss) ... ok
+2026-11-05T15:11:21.4343490Z test_09_core_commit_must_precede_response_replay (test_channel_transport_evidence.NativeEvidenceRefusal.test_09_core_commit_must_precede_response_replay) ... ok
+2026-11-05T15:11:21.4356831Z test_10_exactly_one_outbox_row_before_retry (test_channel_transport_evidence.NativeEvidenceRefusal.test_10_exactly_one_outbox_row_before_retry) ... ok
+2026-11-05T15:11:21.4370100Z test_11_separately_read_sql_oracle_cannot_be_forged_failed (test_channel_transport_evidence.NativeEvidenceRefusal.test_11_separately_read_sql_oracle_cannot_be_forged_failed) ... ok
+2026-11-05T15:11:21.4383754Z test_12_idempotent_original_identity_is_required (test_channel_transport_evidence.NativeEvidenceRefusal.test_12_idempotent_original_identity_is_required) ... ok
+2026-11-05T15:11:21.4397404Z test_13_balance_mutation_is_detected_even_if_conserved (test_channel_transport_evidence.NativeEvidenceRefusal.test_13_balance_mutation_is_detected_even_if_conserved) ... ok
+2026-11-05T15:11:21.4411019Z test_14_duplicate_final_posting_is_rejected (test_channel_transport_evidence.NativeEvidenceRefusal.test_14_duplicate_final_posting_is_rejected) ... ok
+2026-11-05T15:11:21.4424621Z test_15_false_proxy_physical_network_claim_rejected (test_channel_transport_evidence.NativeEvidenceRefusal.test_15_false_proxy_physical_network_claim_rejected) ... ok
+2026-11-05T15:11:21.4437842Z test_16_proxy_must_have_processed_a_real_socket (test_channel_transport_evidence.NativeEvidenceRefusal.test_16_proxy_must_have_processed_a_real_socket) ... ok
+2026-11-05T15:11:21.4451235Z test_17_client_timeout_must_precede_delayed_response (test_channel_transport_evidence.NativeEvidenceRefusal.test_17_client_timeout_must_precede_delayed_response) ... ok
+2026-11-05T15:11:21.4452196Z test_18_fail_closed_when_checkout_source_is_unrelated (test_channel_transport_evidence.NativeEvidenceRefusal.test_18_fail_closed_when_checkout_source_is_unrelated) ... ok
+2026-11-05T15:11:21.4465051Z test_19_missing_held_reply_race_rejected (test_channel_transport_evidence.NativeEvidenceRefusal.test_19_missing_held_reply_race_rejected) ... ok
+2026-11-05T15:11:21.4478772Z test_20_old_reply_released_before_recovery_rejected (test_channel_transport_evidence.NativeEvidenceRefusal.test_20_old_reply_released_before_recovery_rejected) ... ok
+2026-11-05T15:11:21.4492333Z test_21_fewer_than_eight_concurrent_replays_rejected (test_channel_transport_evidence.NativeEvidenceRefusal.test_21_fewer_than_eight_concurrent_replays_rejected) ... ok
+2026-11-05T15:11:21.4506109Z test_22_one_duplicate_false_under_concurrency_rejected (test_channel_transport_evidence.NativeEvidenceRefusal.test_22_one_duplicate_false_under_concurrency_rejected) ... ok
+2026-11-05T15:11:21.4519864Z test_23_forged_new_operation_id_during_replay_rejected (test_channel_transport_evidence.NativeEvidenceRefusal.test_23_forged_new_operation_id_during_replay_rejected) ... ok
+2026-11-05T15:11:21.4533436Z test_24_duplicate_posting_before_old_reply_released_rejected (test_channel_transport_evidence.NativeEvidenceRefusal.test_24_duplicate_posting_before_old_reply_released_rejected) ... ok
+2026-11-05T15:11:21.4547307Z test_25_conflicting_amount_attempt_must_be_rejected (test_channel_transport_evidence.NativeEvidenceRefusal.test_25_conflicting_amount_attempt_must_be_rejected) ... ok
+2026-11-05T15:11:21.4560848Z test_26_forged_old_reply_timestamp_rejected (test_channel_transport_evidence.NativeEvidenceRefusal.test_26_forged_old_reply_timestamp_rejected) ... ok
+2026-11-05T15:11:21.4574828Z test_27_eight_clients_must_share_a_valid_launch_barrier (test_channel_transport_evidence.NativeEvidenceRefusal.test_27_eight_clients_must_share_a_valid_launch_barrier) ... ok
+2026-11-05T15:11:21.4575537Z Ran 27 tests in 0.035s
+2026-11-05T15:11:21.4575753Z OK
