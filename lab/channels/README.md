@@ -25,6 +25,9 @@ CLI exit 0 = `PASS_SYNTHETIC_CORRELATION_ONLY` (consistency of fictional observa
 
 ## Offline per-hop transport failure trace oracle (not physical network injection)
 
+**Original CI: 40/40 PASS** over seven fictional scenarios in [Actions #42028436325](https://github.com/jmfloreszazo/de-la-caja-negra-a-la-evidencia/actions/runs/42028436325). [Original EN audit](../../evidence/runs/CHANNEL-HOP-FAULTS.md) · [ES audit](../../evidence/runs/CHANNEL-HOP-FAULTS.es.md). The archived SHA-256 is GitHub-reported metadata, **not independently checked ZIP bytes**; the result is logical-trace consistency only, not an actual TCP partition or a bank approval.
+
+
 The separate [EN study](../../docs/research/channel-hop-failures.en.md) / [ES](../../docs/research/channel-hop-failures.es.md) maps **seven fictional ATM/switch/core/writer-epoch cases** and **40 positive/adversarial Python tests**. The fixture contains declared events for logical `ATM_SWITCH`, `SWITCH_CORE`, `ISSUER`, `DEVICE` and `CONTROL`; it compares them with a separately declared *fictional* issuer decision, device journal state, posted amount and active writer epoch.
 
 ```bash
