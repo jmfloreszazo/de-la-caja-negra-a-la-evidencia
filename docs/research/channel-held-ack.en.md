@@ -24,7 +24,7 @@ Only after collecting the status, concurrent responses and read-only SQL evidenc
 
 The independently written [native report validator](../../scripts/check_channel_transport.py) crosschecks actual proxy stage and timestamps, original offered operation ID, the 8 HTTP responses (not just a caller's summary flag), the conflicting HTTP payload and `ID_CONFLICT`, SQL snapshots both before retries and **before release**, and the final ledger. The [adversarial mutation tests](../../scripts/test_channel_transport_evidence.py) reject fabricated response ordering, missing replays, false duplicate flags, altered IDs, extra postings, false conflict approval and impossible timestamps.
 
-The new case is `tcp-held-reply-concurrent-recovery`; the native driver now has **14 total cases** (original 10 plus four local TCP interventions), with **18** standalone proxy guards and **26** report-evidence checks. The workflow archives original observations even on failure and checks exact source SHA. The numbers are a planned test contract until a specific original GitHub Actions result is linked and verified.
+The new case is `tcp-held-reply-concurrent-recovery`; the native driver now has **14 total cases** (original 10 plus four local TCP interventions), with **18** standalone proxy guards and **27** report-evidence checks. The workflow archives original observations even on failure and checks exact source SHA. The numbers are a planned test contract until a specific original GitHub Actions result is linked and verified.
 
 ## Interpretation and migration decision
 
