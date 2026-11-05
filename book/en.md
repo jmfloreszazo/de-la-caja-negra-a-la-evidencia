@@ -1717,6 +1717,23 @@ A cutover needs a cohort manifest, a write-owner epoch enforced at the old sourc
 
 Outstanding UNKNOWN cash, inconsistent journal/ledger amounts, unprocessed late messages, an unfenced second writer or missing required certification are reasons to withhold a real cutover. External equipment and issuer approval are not merge blockers for this clearly scoped example: they are explicit follow-up validation. To make that validation realistic, replace the emulator's atomic stock assumption with instrumented device outcomes, approved rules, real transport failures and reconciliation procedures; preserve failures and raw evidence before drawing a conclusion.
 
+#### 7. Late advice, reversal and cash: correlation is not authorization
+
+Consider a withdrawal authorized for 100.00 monetary units: the device attests that **60.00** was dispensed, but a switch may still carry an advice referring to the original requested 100.00. The ledger posts 60.00, and a full reversal request then arrives. It is wrong to infer either "post 100" or "credit 100" automatically. We need to establish what cash was physically available, which financial posting was committed, whether a message is merely a request, and who can adjudicate the discrepancy. A reversal request is not an executed ledger reversal.
+
+The paired [EN research dossier](../docs/research/channel-late-advice.en.md) ([ES](../docs/research/channel-late-advice.es.md)) puts this against public ATM dispute guidance and conditional stand-in policies. The [channel forensic oracle](../lab/channels/advice_gate.py) adds a **fully synthetic, offline** four-instruction test with no database mutations:
+
+| Synthetic observation | Correct oracle result | Never allowed |
+| --- | --- | --- |
+| Device dispenses 60 of 100 approved; identical late advice repeated | `MATCHED_PARTIAL_CASH` | Create a second posting or dispense |
+| Device remains UNKNOWN; network advice says 80 | `UNKNOWN_REQUIRES_DEVICE_EVIDENCE` | Treat advice as physical confirmation or posting authority |
+| Final device journal says zero; late reversal requested | `FINAL_ZERO_CASH` | Claim the requested reversal is booked |
+| Core is unreachable with no issuer-delegated authority | `STAND_IN_DENIED` | Invent an offline issuer or cash authorization |
+
+Neither STAN nor RRN alone is a durable financial identity. Retain the original **operation ID**, authorization, terminal, network context and source incarnation. STAN can be reused; a network message ID replayed with a different payload is a conflict, not idempotency. A request to reverse the whole amount after partial physical cash delivery must trigger review and a negative oracle for a false credit.
+
+This is **not** a certified ISO 8583 implementation or a real ATM simulator. The new check has invented data: it **does not authenticate device journal entries, issuer policies, network settlement or actual bank operations**. It complements the prior ten native .NET 10/PostgreSQL experiments without treating their results as card-network certification. Even if the Python checks pass, no automatic dispense, posting or reversal is permitted; **TODM G2 INCONCLUSIVE / G6 BLOCK**.
+
 ## Part V · Capacity: MIPS, concurrency and platform
 
 The question that worries me most when taking a workload off a mainframe is not whether the program compiles. It is whether it will hold up when month-end close, the peak and a failure arrive at once. This part is about approaching what a mainframe delivers —in Azure or on a huge machine at the customer's site— without cheating when we measure.
