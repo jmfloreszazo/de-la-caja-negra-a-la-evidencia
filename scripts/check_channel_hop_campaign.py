@@ -12,6 +12,8 @@ import re
 import sys
 
 SHA = re.compile(r"^[a-f0-9]{64}$")
+GIT_SHA = re.compile(r"^(?:[a-f0-9]{40}|[a-f0-9]{64})$")
+MAX_ARTIFACT_BYTES = 32 * 1024 * 1024
 REQUIRED_ROLES = ("client", "gateway", "core", "database", "oracle")
 REQUIRED_FILES = ("fault_log", "client_log", "gateway_log", "core_log", "sql_snapshot", "oracle_log")
 ALLOWED_CASES = ("H01", "H02")
@@ -28,7 +30,7 @@ def audit(path: pathlib.Path) -> dict:
         return {"verdict": "INCONCLUSIVE", "errors": ["manifest must be an object"]}
     if manifest.get("schemaVersion") != 1:
         errors.append("unsupported schemaVersion")
-    if not SHA.fullmatch(str(manifest.get("sourceSha", ""))):
+    if not GIT_SHA.fullmatch(str(manifest.get("sourceSha", ""))):
         errors.append("missing exact sourceSha")
     if manifest.get("syntheticDisposable") is not True:
         errors.append("disposable synthetic fixture not established")
@@ -49,9 +51,12 @@ def audit(path: pathlib.Path) -> dict:
         if isinstance(a, dict) and isinstance(b, dict) and a.get("hostId") and a.get("hostId") == b.get("hostId"):
             errors.append(f"same declared host: {left}/{right}")
     cases = manifest.get("cases", [])
-    if not isinstance(cases, list) or sorted(c.get("id") for c in cases if isinstance(c, dict)) != list(ALLOWED_CASES):
+    if (not isinstance(cases, list) or len(cases) != len(ALLOWED_CASES)
+            or any(not isinstance(c, dict) or not isinstance(c.get("id"), str) for c in cases)
+            or sorted(c["id"] for c in cases) != list(ALLOWED_CASES)):
         errors.append("exactly one H01 and H02 case required")
         cases = []
+    used_artifacts = set()
     for case in cases:
         if not isinstance(case, dict):
             errors.append("case must be object")
@@ -78,14 +83,31 @@ def audit(path: pathlib.Path) -> dict:
                 continue
             raw_path = path.parent / rel
             try:
+                if pathlib.Path(rel).is_absolute() or not rel or "\\x00" in rel:
+                    raise ValueError("invalid relative path")
+                resolved_root = path.parent.resolve(strict=True)
                 resolved = raw_path.resolve(strict=True)
-                resolved.relative_to(path.parent.resolve())
-                if not resolved.is_file() or resolved.is_symlink():
-                    raise ValueError("not a regular in-bundle file")
-                actual = hashlib.sha256(resolved.read_bytes()).hexdigest()
-                if actual != digest:
+                resolved.relative_to(resolved_root)
+                # Reject symlinks in every path component, not only the final resolved target.
+                current = resolved_root
+                for part in pathlib.Path(rel).parts:
+                    if part in (".", ".."):
+                        raise ValueError("noncanonical path")
+                    current = current / part
+                    if current.is_symlink():
+                        raise ValueError("symlink path")
+                if not resolved.is_file() or resolved.stat().st_size > MAX_ARTIFACT_BYTES:
+                    raise ValueError("missing, nonregular or oversized artifact")
+                if resolved in used_artifacts:
+                    errors.append(f"{ident}: reused original artifact {kind}")
+                used_artifacts.add(resolved)
+                h = hashlib.sha256()
+                with resolved.open("rb") as handle:
+                    for chunk in iter(lambda: handle.read(1024 * 1024), b""):
+                        h.update(chunk)
+                if h.hexdigest() != digest:
                     errors.append(f"{ident}: sha256 mismatch {kind}")
-            except (OSError, ValueError):
+            except (OSError, ValueError, RuntimeError):
                 errors.append(f"{ident}: unsafe or missing artifact {kind}")
     # Intake never upgrades observations into independent physical or bank sign-off.
     return {
