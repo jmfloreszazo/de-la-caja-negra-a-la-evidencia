@@ -9,6 +9,8 @@
 
 [English](README.md) · **Español**
 
+> **Edición del libro e investigación cerrada el 5 de noviembre de 2026.** [Acta final y veredictos experimentales](docs/FINAL_CLOSEOUT.es.md) · [Notas de la release de archivo](docs/releases/v2026.11.05.md). La nueva etiqueta identifica el snapshot final; las cubiertas conservan el identificador histórico de primera edición. E1/E2 quedan parcialmente verificados; E3/E4 no se ejecutaron como estudios de aceptación completos.
+
 **Modernizar COBOL más allá de la traducción: agentes de IA, patrones de arquitectura, transacciones y oráculos verificables.**
 
 José María Flores Zazo · [jmfloreszazo.com](https://jmfloreszazo.com) · Edición v2026.10.29
