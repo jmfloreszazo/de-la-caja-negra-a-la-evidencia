@@ -1,0 +1,41 @@
+name: Channels independent-hop evidence intake
+
+on:
+  pull_request:
+    paths:
+      - 'scripts/check_channel_hop_campaign.py'
+      - 'scripts/test_channel_hop_campaign.py'
+      - 'docs/research/channel-independent-hop-campaign.*.md'
+      - '.github/workflows/channels-independent-hop-intake.yml'
+  push:
+    branches: [main]
+    paths:
+      - 'scripts/check_channel_hop_campaign.py'
+      - 'scripts/test_channel_hop_campaign.py'
+      - 'docs/research/channel-independent-hop-campaign.*.md'
+      - '.github/workflows/channels-independent-hop-intake.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  independent-hop-intake-tests:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Adversarial evidence intake tests (not external network execution)
+        run: python3 -m unittest discover -s scripts -p 'test_channel_hop_campaign.py' -v
+      - name: Verify no external campaign was claimed
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          text = Path('scripts/check_channel_hop_campaign.py').read_text()
+          assert 'READY_FOR_MANUAL_EVIDENCE_REVIEW' in text
+          assert '"physicalIndependenceVerified": False' in text
+          assert '"bankApproved": False' in text
+          PY
