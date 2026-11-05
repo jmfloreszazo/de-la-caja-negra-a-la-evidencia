@@ -25,6 +25,14 @@ The separate [`advice_gate.py`](advice_gate.py) and [`advice_fixture.json`](advi
 
 When the device journal is UNKNOWN, no arrived advice can infer cash. A full reversal requested after partial cash is delivered must be adjudicated against a trusted device journal and issuer policy, not automatically executed. Stand-in without approved owner delegation is DENIED. The new gate always retains G2 INCONCLUSIVE and G6 BLOCK.
 
+## Additional independent logical-hop fault contract (synthetic only)
+
+The [per-hop trace oracle](network_fault_gate.py) and its [seven synthetic traces](network_fault_fixture.json) ask which hop is unavailable: ATM→switch, switch→core, or a reply after issuer COMMIT. Other cases test an UNKNOWN dispense journal, a stale response after writer-epoch change, a partial cash amount and an undelegated stand-in attempt. **Forty adversarial tests** reject impossible delivery during a failed link, false issuer COMMIT/status, duplicate dispense/posting, fabricated owner epochs, stale replies crossing authority, and invented bank approvals.
+
+The experiment **only replays fictional JSON**, rather than cutting a real Ethernet/TCP path. The original owner controls financial authority and recovery. A timeout is never a bank decline or success by itself; core approval is not physical dispense; a missing physical journal remains UNKNOWN; old-owner responses after a route change are quarantined without allowing new authority. All outputs are marked `physicalLinkCutTested=false` and `cohortWriterCutoverAuthorized=false`, G2 INCONCLUSIVE/G6 BLOCK.
+
+The original .NET/Podman/two-PostgreSQL channel experiment and archived evidence are unchanged. Extend #30 with actual isolated per-hop transport tests, issuer-approved negative controls and signed device/ledger witnesses; no synthetic event proves production fencing.
+
 ## Initial native acceptance matrix
 
 | Case | Required observation |
