@@ -32,7 +32,7 @@ class NativeEvidenceRefusal(unittest.TestCase):
     def case(self, data, key):
         return next(row for row in data["cases"] if row["name"] == key)
 
-    def test_01_original_13_case_live_evidence_is_valid(self):
+    def test_01_original_14_case_live_evidence_is_valid(self):
         self.assertEqual(validate(self.source), [])
 
     def test_02_forged_global_success_rejected(self):
