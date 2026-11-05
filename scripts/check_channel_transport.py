@@ -17,6 +17,7 @@ REQUIRED = {
     "tcp-drop-before-forward": "drop_before_forward",
     "tcp-drop-after-owner-response": "drop_after_upstream_reply",
     "tcp-delay-owner-response": "delay_after_upstream_reply",
+    "tcp-held-reply-concurrent-recovery": "hold_until_recovery",
 }
 
 
@@ -34,8 +35,8 @@ def validate(report: dict) -> list[str]:
             problems.append("Unsafe original scope flag: " + key)
     if scope.get("synthetic") is not True:
         problems.append("Original money fixture is not declared synthetic")
-    if extra.get("real_loopback_tcp") is not True or extra.get("controlled_proxy_faults") != 3:
-        problems.append("Three real local socket faults not recorded")
+    if extra.get("real_loopback_tcp") is not True or extra.get("controlled_proxy_faults") != 4:
+        problems.append("Four real local socket faults not recorded")
     for key in ("real_eth_wan_partition", "real_atm_switch", "real_cash",
                 "bank_policy_approved", "production_approved"):
         if extra.get(key) is not False:
@@ -49,8 +50,8 @@ def validate(report: dict) -> list[str]:
     if not isinstance(cases, list):
         return problems + ["Missing original per-case observations"]
     by_name = {case.get("name"): case for case in cases if isinstance(case, dict)}
-    if len(by_name) != len(cases) or len(cases) != 13:
-        problems.append("Expected 13 distinct native cases: original 10 plus 3 TCP cases")
+    if len(by_name) != len(cases) or len(cases) != 14:
+        problems.append("Expected 14 distinct native cases: original 10 plus 4 TCP cases")
     for name, mode in REQUIRED.items():
         case = by_name.get(name)
         if not case or case.get("status") != "PASS":
@@ -107,10 +108,63 @@ def validate(report: dict) -> list[str]:
                     and observations[1].get("response", {}).get("state") == "COMMITTED"
                     and observations[2].get("response", {}).get("duplicate") is True):
                 problems.append(name + ": original idempotent status/replay chain is missing")
-        if mode != "delay_after_upstream_reply" and witness.get("downstream_response_bytes") != 0:
+        if mode not in ("delay_after_upstream_reply", "hold_until_recovery") and witness.get("downstream_response_bytes") != 0:
             problems.append(name + ": proxy may have delivered an HTTP response")
         if mode == "delay_after_upstream_reply" and witness.get("delay_seconds") != 0.8:
             problems.append(name + ": bounded delay witness absent")
+        if name == "tcp-held-reply-concurrent-recovery":
+            held = case.get("held_recovery")
+            if not isinstance(held, dict):
+                problems.append(name + ": held-reply recovery witness missing")
+            else:
+                times = (
+                    witness.get("upstream_reply_seen_monotonic_ns"),
+                    held.get("recovery_completed_monotonic_ns"),
+                    witness.get("release_signalled_monotonic_ns"),
+                    witness.get("response_release_monotonic_ns"),
+                )
+                if (not all(type(t) is int and t > 0 for t in times)
+                        or not (times[0] < times[1] <= times[2] <= times[3])):
+                    problems.append(name + ": old response was not held beyond status/retries")
+                burst = held.get("replay_results")
+                if (held.get("status_state") != "COMMITTED" or
+                        held.get("replay_count") != 8 or
+                        not isinstance(burst, list) or len(burst) != 8 or
+                        not all(isinstance(b, dict) and
+                                b.get("state") == "COMMITTED" and
+                                b.get("duplicate") is True and
+                                b.get("postedCents") == 6000 for b in burst)):
+                    problems.append(name + ": eight concurrent original-ID replays not witnessed")
+                if held.get("conflict_result", {}).get("status") != "ID_CONFLICT":
+                    problems.append(name + ": changed-amount financial replay not refused")
+                early = held.get("sql_before_old_ack")
+                if not isinstance(early, dict) or not isinstance(early.get("core"), dict):
+                    problems.append(name + ": SQL state before old response release missing")
+                else:
+                    source = early["core"]
+                    if (len(source.get("operations", [])) != 1 or
+                            len(source.get("postings", [])) != 2 or
+                            len(source.get("outbox", [])) != 1 or
+                            source["operations"][0].get("state") != "COMMITTED"):
+                        problems.append(name + ": multiple financial effects before old reply release")
+                if not isinstance(observations, list) or len(observations) != 11:
+                    problems.append(name + ": missing concurrent HTTP and conflict observations")
+                else:
+                    originals = case.get("offered", {})
+                    if not isinstance(originals, dict) or len(originals) != 1:
+                        problems.append(name + ": original operation intent absent")
+                    else:
+                        original_id = next(iter(originals))
+                        if (observations[1].get("route") != "operations/" + original_id
+                                or observations[1].get("response", {}).get("state") != "COMMITTED"
+                                or any(o.get("route") != "transfer" or
+                                       o.get("request", {}).get("operationId") != original_id or
+                                       o.get("response", {}).get("duplicate") is not True
+                                       for o in observations[2:10])
+                                or observations[10].get("request", {}).get("operationId") != original_id
+                                or observations[10].get("request", {}).get("amountCents") != 5000
+                                or observations[10].get("response", {}).get("status") != "ID_CONFLICT"):
+                            problems.append(name + ": ambiguous original-ID, burst or conflict chain")
         if case.get("oracle", {}).get("status") != "PASS":
             problems.append(name + ": independent SQL financial oracle not PASS after replay")
         if (len(core_after.get("operations", [])) != 1
