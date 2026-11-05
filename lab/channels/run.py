@@ -18,6 +18,7 @@ import urllib.request
 import uuid
 from fixture import connect, snapshot
 from oracle import audit
+from transport_proxy import OneShotTransportFault
 
 ROOT = Path(__file__).resolve().parents[2]
 OUT = ROOT / 'lab/results/channels'
@@ -68,13 +69,16 @@ def wait_until(predicate, seconds=20):
     raise TimeoutError('Expected observation did not arrive')
 
 
-def http(route, payload=None, expect_loss=False):
-    request = urllib.request.Request(f'http://127.0.0.1:{PORT}/' + route,
+def http(route, payload=None, expect_loss=False, via_port=None, timeout=15):
+    target_port = PORT if via_port is None else via_port
+    request = urllib.request.Request(f'http://127.0.0.1:{target_port}/' + route,
                                     data=json.dumps(payload).encode() if payload else None,
                                     headers={'Content-Type': 'application/json'})
     observation = {'route': route, 'request': payload}
+    if via_port is not None:
+        observation['transport_proxy_port'] = via_port
     try:
-        with urllib.request.urlopen(request, timeout=15) as response:
+        with urllib.request.urlopen(request, timeout=timeout) as response:
             observation.update(code=response.status, response=json.load(response))
     except urllib.error.HTTPError as error:
         observation.update(code=error.code, response=json.load(error))
@@ -264,6 +268,60 @@ try:
     verdict = audit(mutant, offered)
     assert verdict['status'] == 'FAIL' and verdict['checks']['postings'] and verdict['checks']['outbox'] and verdict['checks']['device']
     report['negative_controls'].append({'name': 'false-final-without-atomic-effects', 'snapshot': mutant, 'oracle': verdict})
+    # A genuinely opened loopback TCP connection, mediated by a one-shot
+    # raw socket proxy. This differs from the JSON-only per-hop trace gate,
+    # but is NOT a kernel partition or a physical external ATM switch.
+    for label, mode, delay in [
+        ('tcp-drop-before-forward', 'drop_before_forward', 0),
+        ('tcp-drop-after-owner-response', 'drop_after_upstream_reply', 0),
+        ('tcp-delay-owner-response', 'delay_after_upstream_reply', 0.8),
+    ]:
+        reset(label)
+        op = intent(channel='web')
+        with OneShotTransportFault(PORT, mode, delay_seconds=delay) as proxy:
+            http('transfer', op, True, via_port=proxy.port,
+                 timeout=(0.15 if delay else 5))
+            witness = proxy.wait()
+        current['transport_witness'] = witness
+        assert witness['real_loopback_socket_used']
+        assert witness['request_sha256'] and witness['request_bytes'] > 0
+        assert witness['downstream_response_bytes'] == 0 if not delay else True
+        before_retry = snapshot()
+        current['before_retry_snapshot'] = before_retry
+        if mode == 'drop_before_forward':
+            assert not witness['upstream_connected']
+            assert not witness['request_forwarded']
+            assert before_retry['core']['operations'] == []
+            assert before_retry['core']['postings'] == []
+            assert before_retry['core']['outbox'] == []
+            # Under this fixture ONLY, the independent proxy witness proves
+            # the original core never received the request.
+            fresh = http('transfer', op)
+            assert fresh['state'] == 'COMMITTED' and not fresh['duplicate']
+        else:
+            assert witness['upstream_connected'] and witness['request_forwarded']
+            assert witness['upstream_response_headers_seen']
+            assert witness['upstream_response_status'] == 200
+            assert len(before_retry['core']['operations']) == 1
+            assert before_retry['core']['operations'][0]['state'] == 'COMMITTED'
+            assert len(before_retry['core']['postings']) == 2
+            assert len(before_retry['core']['outbox']) == 1
+            original_oracle = audit(before_retry, offered)
+            assert original_oracle['status'] == 'PASS', original_oracle
+            current['oracle_before_retry'] = original_oracle
+            outcome = http('operations/' + op['operationId'])
+            assert outcome['state'] == 'COMMITTED'
+            replay = http('transfer', op)
+            assert replay['state'] == 'COMMITTED' and replay['duplicate']
+        # The independent financial oracle is run again after recovery.
+        finish()
+    report['transport_scope'] = {
+        'real_loopback_tcp': True, 'controlled_proxy_faults': 3,
+        'real_eth_wan_partition': False, 'real_atm_switch': False,
+        'real_cash': False, 'bank_policy_approved': False,
+        'production_approved': False, 'todmG2': 'INCONCLUSIVE',
+        'todmG6': 'BLOCK'
+    }
     report['status'] = 'PASS'
 except BaseException:
     report['error'] = traceback.format_exc()
