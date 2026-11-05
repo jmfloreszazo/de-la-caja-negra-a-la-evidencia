@@ -20,7 +20,7 @@ ROOT = {
 }
 AUTH = {
     "operationId", "authorizationId", "terminalId", "networkTrace",
-    "retrievalReference", "requestedMinor", "route", "decision",
+    "retrievalReference", "sourceEpoch", "requestedMinor", "route", "decision",
 }
 DEVICE = {
     "operationId", "commandId", "terminalId", "deviceJournalId",
@@ -29,7 +29,7 @@ DEVICE = {
 POSTING = {"operationId", "postingId", "amountMinor"}
 MESSAGE = {
     "messageId", "operationId", "authorizationId", "terminalId",
-    "networkTrace", "retrievalReference", "messageType", "amountMinor",
+    "networkTrace", "retrievalReference", "sourceEpoch", "messageType", "amountMinor",
 }
 
 
@@ -99,13 +99,15 @@ def assess(data):
     for i, row in enumerate(auths):
         if (not all(identity(row[k]) for k in (
                 "operationId", "authorizationId", "terminalId",
-                "networkTrace", "retrievalReference")) or
+                "networkTrace", "retrievalReference", "sourceEpoch")) or
                 not amount(row["requestedMinor"]) or
                 row["route"] not in ("CORE", "STAND_IN") or
                 row["decision"] not in ("APPROVED", "DENIED")):
             errors.append(f"authorizations[{i}]: invalid identity, amount or decision")
             continue
         op = row["operationId"]
+        if row["sourceEpoch"] != data["sourceEpoch"]:
+            blockers.append("AUTHORIZATION_SOURCE_EPOCH_CHANGED")
         if op in by_op or row["authorizationId"] in auth_ids:
             blockers.append("DUPLICATE_OPERATION_OR_AUTHORIZATION_ID")
         by_op[op] = row
@@ -156,7 +158,7 @@ def assess(data):
     for i, row in enumerate(messages):
         if (not all(identity(row[k]) for k in (
                 "messageId", "operationId", "authorizationId",
-                "terminalId", "networkTrace", "retrievalReference"))
+                "terminalId", "networkTrace", "retrievalReference", "sourceEpoch"))
                 or row["messageType"] not in message_types
                 or not amount(row["amountMinor"])):
             errors.append(f"networkMessages[{i}]: malformed network observation")
@@ -168,6 +170,8 @@ def assess(data):
             continue  # byte-identical duplicate delivery is a no-op.
         seen_messages[mid] = row
         op = row["operationId"]
+        if row["sourceEpoch"] != data["sourceEpoch"]:
+            blockers.append("NETWORK_SOURCE_EPOCH_CHANGED")
         base = by_op.get(op)
         if base is None:
             blockers.append("UNKNOWN_NETWORK_OPERATION")
@@ -176,7 +180,7 @@ def assess(data):
         # Do not enforce global STAN uniqueness; match the whole context.
         if any(row[k] != base[k] for k in (
                 "authorizationId", "terminalId", "networkTrace",
-                "retrievalReference")):
+                "retrievalReference", "sourceEpoch")):
             blockers.append("NETWORK_CONTEXT_DOES_NOT_MATCH_OPERATION")
         if row["amountMinor"] > base["requestedMinor"]:
             blockers.append("NETWORK_AMOUNT_EXCEEDS_ORIGINAL_INTENT")
