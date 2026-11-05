@@ -1,4 +1,4 @@
-# Open roadmap — evidence-based checkpoint (4 November 2026)
+# Open roadmap — evidence-based checkpoint (5 November 2026)
 
 **English** · [Español](ROADMAP.es.md)
 
