@@ -1,4 +1,4 @@
-# Hoja de ruta abierta — estado basado en evidencias (4 de noviembre de 2026)
+# Hoja de ruta abierta — estado basado en evidencias (5 de noviembre de 2026)
 
 [English](ROADMAP.md) · **Español**
 
