@@ -3,6 +3,7 @@
 **Status:** design and reproducibility checklist. The real experiment is NOT_EXECUTED. Tracks #30 and builds upon the existing single-host native 14-case fixture.
 
 ## Preconditions
+
 - Use three isolated hosts or clearly declared, separately operated VMs: synthetic caller, gateway/fault injector, .NET 10 core. The PostgreSQL service and read-only evidence observer must have explicitly named separate roles. Distinct VMs sharing a physical server do not establish independent physical fault domains.
 - Use disposable synthetic accounts and a reserved lab-only network. No production endpoints, real ATM device, issuer approval, HSM/PIN data or financial instruments.
 - Require operator-controlled allowlists and mutual transport authentication at the host/network boundary. **Do not repurpose the loopback-only `OneShotTransportFault` as a remotely exposed unauthenticated listener.** Its strict loopback-only restriction is an intentional safety property.
@@ -21,4 +22,5 @@
 8. Run `python3 scripts/check_channel_hop_campaign.py <bundle>/manifest.json` only after collection. Structural readiness is **not a distributed PASS**. An independent operator must validate packet paths, source logs, timestamps, topology, database authority and original bytes.
 
 ## Interpretation
+
 Single-host Actions validates only the checker and its negative controls. No production approval, true multi-host run, original mainframe UOW, ISO 8583, real issuer/device, physical HA, bank business policy or capacity parity is asserted. TODM G2 INCONCLUSIVE and G6 BLOCK are mandatory. Never promote a release because this intake gate passes.
