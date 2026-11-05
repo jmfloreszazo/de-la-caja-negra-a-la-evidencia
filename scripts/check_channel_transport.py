@@ -129,6 +129,8 @@ def validate(report: dict) -> list[str]:
                 burst = held.get("replay_results")
                 if (held.get("status_state") != "COMMITTED" or
                         held.get("replay_count") != 8 or
+                        held.get("barrier_parties") != 8 or
+                        held.get("barrier_broken") is not False or
                         not isinstance(burst, list) or len(burst) != 8 or
                         not all(isinstance(b, dict) and
                                 b.get("state") == "COMMITTED" and
