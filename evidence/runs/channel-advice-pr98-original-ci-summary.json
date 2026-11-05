@@ -1,0 +1,42 @@
+{
+  "classification": "GITHUB_ACTIONS_ORIGINAL_JOB_LOG_AND_ARTIFACT_METADATA_NOT_INDEPENDENT_ZIP_AUDIT",
+  "reference": {
+    "repository": "jmfloreszazo/de-la-caja-negra-a-la-evidencia",
+    "issue": 30,
+    "pr": 98,
+    "prHeadSha": "291829f8cda34604f692a03dff6794f6cec0f51c",
+    "originalRunId": 42024266243,
+    "originalJobId": 127234409728,
+    "runUrl": "https://github.com/jmfloreszazo/de-la-caja-negra-a-la-evidencia/actions/runs/42024266243"
+  },
+  "originalResult": {
+    "status": "PASS_33_SYNTHETIC_ADVICE_CHECKS",
+    "testsRun": 33,
+    "testsPlanned": 33,
+    "unexpectedFailures": 0,
+    "baselineStatus": "PASS_SYNTHETIC_CORRELATION_ONLY",
+    "baselineOutcomes": {
+      "CASH-001": "MATCHED_PARTIAL_CASH",
+      "CASH-002": "UNKNOWN_REQUIRES_DEVICE_EVIDENCE",
+      "CASH-003": "FINAL_ZERO_CASH",
+      "CASH-004": "STAND_IN_DENIED"
+    },
+    "nativeCardNetworkTested": false,
+    "realCashDeviceTested": false,
+    "bankApproval": false,
+    "automaticPostingAllowed": false,
+    "todmG2": "INCONCLUSIVE",
+    "todmG6": "BLOCK"
+  },
+  "artifactMetadata": {
+    "artifactId": 13412439030,
+    "name": "channels-advice-synthetic-original-not-iso8583-or-cash",
+    "sizeBytes": 2371,
+    "githubReportedSha256": "4cc2ea7009d514e462cab8a173bc6fae2c5c36804ef7af49c79e9441151d0950",
+    "originalZIPIndependentlyRehashed": false,
+    "originalZipContentsNotIndependentlyInspected": true,
+    "initialExpiry": "2027-02-03T12:05:54Z"
+  },
+  "originalJobLogExcerpt": "evidence/runs/CHANNEL-ADVICE-PR98-ORIGINAL-CI-EXCERPT.log",
+  "limits": "Pure Python fictional correlation, not .NET 10 native protocol, ISO 8583, PIN, HSM, real ATM device or trusted original cash journal. Existing separate channels-synthetic run is the original native SQL/Podman laboratory, not a bank scheme certification. No approved stand-in and no automatic posting/reversal/dispense."
+}

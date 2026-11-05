@@ -1,0 +1,144 @@
+{
+  "schemaVersion": 1,
+  "classification": "SYNTHETIC_CHANNEL_OBSERVATIONS_NO_NETWORK_OR_DEVICE_AUTHENTICITY",
+  "sourceEpoch": "synthetic-issuer-epoch-1",
+  "customerApproval": false,
+  "nativeNetworkTested": false,
+  "standInDelegationApproved": false,
+  "authorizations": [
+    {
+      "operationId": "CASH-001",
+      "authorizationId": "AUTH-101",
+      "terminalId": "ATM-01",
+      "networkTrace": "004201",
+      "retrievalReference": "RRN-00001",
+      "requestedMinor": 10000,
+      "route": "CORE",
+      "decision": "APPROVED",
+      "sourceEpoch": "synthetic-issuer-epoch-1"
+    },
+    {
+      "operationId": "CASH-002",
+      "authorizationId": "AUTH-102",
+      "terminalId": "ATM-02",
+      "networkTrace": "004201",
+      "retrievalReference": "RRN-00002",
+      "requestedMinor": 8000,
+      "route": "CORE",
+      "decision": "APPROVED",
+      "sourceEpoch": "synthetic-issuer-epoch-1"
+    },
+    {
+      "operationId": "CASH-003",
+      "authorizationId": "AUTH-103",
+      "terminalId": "ATM-03",
+      "networkTrace": "004203",
+      "retrievalReference": "RRN-00003",
+      "requestedMinor": 5000,
+      "route": "CORE",
+      "decision": "APPROVED",
+      "sourceEpoch": "synthetic-issuer-epoch-1"
+    },
+    {
+      "operationId": "CASH-004",
+      "authorizationId": "AUTH-104",
+      "terminalId": "ATM-04",
+      "networkTrace": "004204",
+      "retrievalReference": "RRN-00004",
+      "requestedMinor": 3000,
+      "route": "STAND_IN",
+      "decision": "DENIED",
+      "sourceEpoch": "synthetic-issuer-epoch-1"
+    }
+  ],
+  "deviceOutcomes": [
+    {
+      "operationId": "CASH-001",
+      "commandId": "cash/CASH-001",
+      "terminalId": "ATM-01",
+      "deviceJournalId": "J-001",
+      "state": "FINAL",
+      "dispensedMinor": 6000
+    },
+    {
+      "operationId": "CASH-002",
+      "commandId": "cash/CASH-002",
+      "terminalId": "ATM-02",
+      "deviceJournalId": null,
+      "state": "UNKNOWN",
+      "dispensedMinor": null
+    },
+    {
+      "operationId": "CASH-003",
+      "commandId": "cash/CASH-003",
+      "terminalId": "ATM-03",
+      "deviceJournalId": "J-003",
+      "state": "FINAL",
+      "dispensedMinor": 0
+    }
+  ],
+  "corePostings": [
+    {
+      "operationId": "CASH-001",
+      "postingId": "POST-001",
+      "amountMinor": 6000
+    }
+  ],
+  "networkMessages": [
+    {
+      "messageId": "NET-001",
+      "operationId": "CASH-001",
+      "authorizationId": "AUTH-101",
+      "terminalId": "ATM-01",
+      "networkTrace": "004201",
+      "retrievalReference": "RRN-00001",
+      "messageType": "ADVICE",
+      "amountMinor": 6000,
+      "sourceEpoch": "synthetic-issuer-epoch-1"
+    },
+    {
+      "messageId": "NET-001",
+      "operationId": "CASH-001",
+      "authorizationId": "AUTH-101",
+      "terminalId": "ATM-01",
+      "networkTrace": "004201",
+      "retrievalReference": "RRN-00001",
+      "messageType": "ADVICE",
+      "amountMinor": 6000,
+      "sourceEpoch": "synthetic-issuer-epoch-1"
+    },
+    {
+      "messageId": "NET-002",
+      "operationId": "CASH-002",
+      "authorizationId": "AUTH-102",
+      "terminalId": "ATM-02",
+      "networkTrace": "004201",
+      "retrievalReference": "RRN-00002",
+      "messageType": "ADVICE",
+      "amountMinor": 8000,
+      "sourceEpoch": "synthetic-issuer-epoch-1"
+    },
+    {
+      "messageId": "NET-003",
+      "operationId": "CASH-003",
+      "authorizationId": "AUTH-103",
+      "terminalId": "ATM-03",
+      "networkTrace": "004203",
+      "retrievalReference": "RRN-00003",
+      "messageType": "REVERSAL_REQUEST",
+      "amountMinor": 5000,
+      "sourceEpoch": "synthetic-issuer-epoch-1"
+    },
+    {
+      "messageId": "NET-004",
+      "operationId": "CASH-004",
+      "authorizationId": "AUTH-104",
+      "terminalId": "ATM-04",
+      "networkTrace": "004204",
+      "retrievalReference": "RRN-00004",
+      "messageType": "STAND_IN_REQUEST",
+      "amountMinor": 3000,
+      "sourceEpoch": "synthetic-issuer-epoch-1"
+    }
+  ]
+}
