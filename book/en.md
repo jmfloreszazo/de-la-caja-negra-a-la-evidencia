@@ -1756,6 +1756,22 @@ Nor does CICS UOW equal an HTTP transaction: a CICS task can have multiple syncp
 
 The [lab Python trace oracle](../lab/channels/network_fault_gate.py) **only checks declared JSON events**. It does not disconnect TCP sockets, execute a certified card protocol, contact an issuer or post to a financial ledger. A PASS shows consistency of this model, not a network guarantee. Real acceptance requires independent per-hop loss/reconnection injection, native issuer COMMIT logs, original retry identity, authenticated device journals, reconciliation and business-owner approval. **No fixture outcome authorizes automatic cash, reversal, posting, writer cutover or stand-in.** TODM G2 `INCONCLUSIVE`, G6 `BLOCK`.
 
+#### 9. First real transport test: local TCP and the core COMMIT
+
+The preceding H01–H07 tests represented disconnected hops with JSON events. The next experimental step uses **actual loopback TCP sockets**. An ephemeral one-shot proxy accepts the HTTP client's request, drops or forwards it to the existing **.NET 10** API, and observes the upstream response. The core commits in PostgreSQL while an independent Python oracle reads its tables and the separate synthetic device store. These are **real processes and sockets** but still run on **one host**: not a physical partition between branches, switch and mainframe.
+
+| Transport test | Actual intervention | Independent assertion |
+| --- | --- | --- |
+| Request dropped before forwarding | Proxy accepts a real socket and resets it **without contacting the core** | Original SQL remains empty before recovery; same operation ID can commit once |
+| Reply dropped after COMMIT | Proxy forwards request, observes HTTP 200 produced **after `CommitAsync`**, then resets the client socket without forwarding any response | Client sees `UNKNOWN` while SQL already has one committed operation, two paired postings and one outbox; original-status query and same-ID replay create no second effect |
+| Reply delayed beyond client timeout | Proxy waits 0.8 s after upstream response versus a real client timeout of 0.15 s | Client sees timeout but the owner's original decision remains queryable and cannot be posted twice |
+
+All three new cases are **fictional digital transfers**, not actual cash withdrawals. The existing ten native cases remain, including partial simulated cash, post-COMMIT failures, external `SIGKILL` and ATM/mobile competition. The [EN research protocol](../docs/research/channel-loopback-transport.en.md) ([ES](../docs/research/channel-loopback-transport.es.md)) documents scope, test replay, the proxy's fourteen safety checks and eighteen baseline/adversarial original-evidence controls.
+
+**A client timeout alone does not prove absence of COMMIT.** The pre-forward drop has stronger evidence only because **our controlled proxy never opened an upstream socket and SQL was observed empty**. That independent proof may be unavailable in a real bank network. Retain the same durable `operationId` when querying status and, subject to the source owner's policy, retrying an ambiguous command.
+
+This increment exercises **real local TCP interruption against durable SQL**, not `tc netem`, cross-host WAN failures, certified ISO 8583, CICS or authentic dispenser journals; it is not a MIPS/capacity benchmark. One financial writer must remain authoritative across all channels. Customer acceptance still requires native source signatures, owner policy, network evidence, source fencing and independent physical failure domains. **G2 INCONCLUSIVE, G6 BLOCK**, no banking cutover approval.
+
 ## Part V · Capacity: MIPS, concurrency and platform
 
 The question that worries me most when taking a workload off a mainframe is not whether the program compiles. It is whether it will hold up when month-end close, the peak and a failure arrive at once. This part is about approaching what a mainframe delivers —in Azure or on a huge machine at the customer's site— without cheating when we measure.
