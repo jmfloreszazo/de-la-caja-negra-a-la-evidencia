@@ -1,0 +1,50 @@
+name: Retire merged channel hop fault feature ref
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/channel-hop-retire.yml'
+permissions:
+  contents: write
+  pull-requests: read
+jobs:
+  only-the-exact-merged-ref:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          fetch-depth: 0
+      - name: Check merged PR #99 and atomically delete its unchanged feature ref
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          python3 - <<'PY'
+          import json, os, subprocess
+          repo = os.environ['GITHUB_REPOSITORY']
+          feature = 'feature/channel-hop-faults-30'
+          tip = '49067d81d33de592b5fbea70e4ab06c0c299d1b1'
+          merged = '218179db6cce14842f824701fdd5ad5d765acc8c'
+          assert repo == 'jmfloreszazo/de-la-caja-negra-a-la-evidencia'
+          assert os.environ['GITHUB_REF'] == 'refs/heads/main'
+          pr = json.loads(subprocess.check_output(
+              ['gh', 'api', 'repos/'+repo+'/pulls/99'], text=True))
+          assert pr['state'] == 'closed' and pr['merged_at']
+          assert pr['base']['ref'] == 'main'
+          assert pr['head']['ref'] == feature and pr['head']['sha'] == tip
+          assert pr['merge_commit_sha'] == merged
+          for ancestor in (tip, merged):
+              subprocess.run(['git', 'merge-base', '--is-ancestor', ancestor,
+                              'HEAD'], check=True)
+          ref = 'refs/heads/' + feature
+          old = subprocess.check_output(
+              ['git', 'ls-remote', 'origin', ref], text=True).strip()
+          if old:
+              assert old.split()[0] == tip, 'Ref has new commits; refusing cleanup'
+              subprocess.run(['git', 'push',
+                              '--force-with-lease='+ref+':'+tip,
+                              'origin', ':'+ref], check=True)
+          assert not subprocess.check_output(
+              ['git', 'ls-remote', 'origin', ref], text=True).strip()
+          print('Merged branch retired safely:', feature, tip)
+          PY
