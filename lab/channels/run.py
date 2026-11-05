@@ -316,8 +316,62 @@ try:
             assert replay['state'] == 'COMMITTED' and replay['duplicate']
         # The independent financial oracle is run again after recovery.
         finish()
+    # Real TCP late-response race: withhold the OLD HTTP 200 even after
+    # its issuer-side SQL COMMIT. The first client times out; eight distinct
+    # TCP clients concurrently replay the *same* original operation ID and
+    # an adversarial changed-amount request conflicts. Release old response
+    # ONLY AFTER the authoritative status/replay/SQL proof is captured.
+    reset('tcp-held-reply-concurrent-recovery')
+    op = intent(channel='web')
+    with OneShotTransportFault(PORT, 'hold_until_recovery') as proxy:
+        http('transfer', op, True, via_port=proxy.port, timeout=0.15)
+        confirmed = proxy.wait_for_upstream_reply()
+        assert confirmed['upstream_response_status'] == 200
+        assert confirmed['request_forwarded'] and confirmed['upstream_connected']
+        original_sql = snapshot()
+        current['before_retry_snapshot'] = original_sql
+        original_oracle = audit(original_sql, offered)
+        assert original_oracle['status'] == 'PASS', original_oracle
+        current['oracle_before_retry'] = original_oracle
+        assert len(original_sql['core']['operations']) == 1
+        assert original_sql['core']['operations'][0]['state'] == 'COMMITTED'
+        assert len(original_sql['core']['postings']) == 2
+        assert len(original_sql['core']['outbox']) == 1
+        decision = http('operations/' + op['operationId'])
+        assert decision['state'] == 'COMMITTED'
+        with concurrent.futures.ThreadPoolExecutor(max_workers=8) as pool:
+            burst = list(pool.map(lambda _: http('transfer', op), range(8)))
+        assert len(burst) == 8
+        assert all(r['state'] == 'COMMITTED' and r['duplicate'] for r in burst)
+        conflict = http('transfer', dict(op, amountCents=5000))
+        assert conflict['status'] == 'ID_CONFLICT'
+        before_old_ack = snapshot()
+        assert audit(before_old_ack, offered)['status'] == 'PASS'
+        assert len(before_old_ack['core']['operations']) == 1
+        assert len(before_old_ack['core']['postings']) == 2
+        assert len(before_old_ack['core']['outbox']) == 1
+        # Both the owner response and the client retry completion are
+        # timestamped in the SAME monotonic-clock domain on this host.
+        recovery_completed_ns = time.monotonic_ns()
+        current['held_recovery'] = {
+            'status_state': decision['state'],
+            'replay_count': len(burst),
+            'replay_results': burst,
+            'conflict_result': conflict,
+            'sql_before_old_ack': before_old_ack,
+            'recovery_completed_monotonic_ns': recovery_completed_ns,
+        }
+        proxy.release_held_reply()
+        witness = proxy.wait()
+    current['transport_witness'] = witness
+    assert witness['real_loopback_socket_used'] and witness['request_forwarded']
+    assert witness['upstream_reply_seen_monotonic_ns'] < recovery_completed_ns
+    assert recovery_completed_ns < witness['response_release_monotonic_ns']
+    assert current['http'][0]['client_status'] == 'UNKNOWN'
+    assert len(current['http']) == 11  # lost request, status, 8 replays, conflict
+    finish()
     report['transport_scope'] = {
-        'real_loopback_tcp': True, 'controlled_proxy_faults': 3,
+        'real_loopback_tcp': True, 'controlled_proxy_faults': 4,
         'real_eth_wan_partition': False, 'real_atm_switch': False,
         'real_cash': False, 'bank_policy_approved': False,
         'production_approved': False, 'todmG2': 'INCONCLUSIVE',
