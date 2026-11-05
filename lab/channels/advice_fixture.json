@@ -14,7 +14,8 @@
       "retrievalReference": "RRN-00001",
       "requestedMinor": 10000,
       "route": "CORE",
-      "decision": "APPROVED"
+      "decision": "APPROVED",
+      "sourceEpoch": "synthetic-issuer-epoch-1"
     },
     {
       "operationId": "CASH-002",
@@ -24,7 +25,8 @@
       "retrievalReference": "RRN-00002",
       "requestedMinor": 8000,
       "route": "CORE",
-      "decision": "APPROVED"
+      "decision": "APPROVED",
+      "sourceEpoch": "synthetic-issuer-epoch-1"
     },
     {
       "operationId": "CASH-003",
@@ -34,7 +36,8 @@
       "retrievalReference": "RRN-00003",
       "requestedMinor": 5000,
       "route": "CORE",
-      "decision": "APPROVED"
+      "decision": "APPROVED",
+      "sourceEpoch": "synthetic-issuer-epoch-1"
     },
     {
       "operationId": "CASH-004",
@@ -44,7 +47,8 @@
       "retrievalReference": "RRN-00004",
       "requestedMinor": 3000,
       "route": "STAND_IN",
-      "decision": "DENIED"
+      "decision": "DENIED",
+      "sourceEpoch": "synthetic-issuer-epoch-1"
     }
   ],
   "deviceOutcomes": [
@@ -89,7 +93,8 @@
       "networkTrace": "004201",
       "retrievalReference": "RRN-00001",
       "messageType": "ADVICE",
-      "amountMinor": 6000
+      "amountMinor": 6000,
+      "sourceEpoch": "synthetic-issuer-epoch-1"
     },
     {
       "messageId": "NET-001",
@@ -99,7 +104,8 @@
       "networkTrace": "004201",
       "retrievalReference": "RRN-00001",
       "messageType": "ADVICE",
-      "amountMinor": 6000
+      "amountMinor": 6000,
+      "sourceEpoch": "synthetic-issuer-epoch-1"
     },
     {
       "messageId": "NET-002",
@@ -109,7 +115,8 @@
       "networkTrace": "004201",
       "retrievalReference": "RRN-00002",
       "messageType": "ADVICE",
-      "amountMinor": 8000
+      "amountMinor": 8000,
+      "sourceEpoch": "synthetic-issuer-epoch-1"
     },
     {
       "messageId": "NET-003",
@@ -119,7 +126,8 @@
       "networkTrace": "004203",
       "retrievalReference": "RRN-00003",
       "messageType": "REVERSAL_REQUEST",
-      "amountMinor": 5000
+      "amountMinor": 5000,
+      "sourceEpoch": "synthetic-issuer-epoch-1"
     },
     {
       "messageId": "NET-004",
@@ -129,7 +137,8 @@
       "networkTrace": "004204",
       "retrievalReference": "RRN-00004",
       "messageType": "STAND_IN_REQUEST",
-      "amountMinor": 3000
+      "amountMinor": 3000,
+      "sourceEpoch": "synthetic-issuer-epoch-1"
     }
   ]
 }
