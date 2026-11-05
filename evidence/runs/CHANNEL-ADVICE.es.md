@@ -9,6 +9,7 @@
 El job `127234409728` de GitHub Actions ejecutó **33 de 33 pruebas Python positivas y adversariales sin errores inesperados**, sobre SHA de código y checkout `291829f8cda34604f692a03dff6794f6cec0f51c`. Se han comprobado mensajes idénticos repetidos, STAN-like reutilizado entre terminales, mensajes con el mismo ID y contenido distinto, discrepancia de autorización/terminal/RRN-like/época de origen/importe, efectivo desconocido-cero-parcial, asientos duplicados o sin prueba, reverso tardío sobre dispensación parcial y falsa autoaprobación stand-in.
 
 Los resultados del fixture original fueron:
+
 - `CASH-001: MATCHED_PARTIAL_CASH` (10.000 solicitados; 6.000 acreditados de manera ficticia por dispositivo y ledger).
 - `CASH-002: UNKNOWN_REQUIRES_DEVICE_EVIDENCE` (8.000 solicitados; sin resultado físico definitivo ni cargo, aunque llega advice).
 - `CASH-003: FINAL_ZERO_CASH` (5.000 solicitados; dispositivo informa cero y aparece una **solicitud** de reverso, no un reverso contabilizado).
