@@ -9,6 +9,7 @@
 The original GitHub Actions job `127234409728` ran **33 of 33 Python positive and adversarial tests with zero unexpected errors** on source and checkout SHA `291829f8cda34604f692a03dff6794f6cec0f51c`. The checks cover repeated identical messages; reused STAN-like numbers across terminals; conflicting retransmission under one message ID; mismatched authorization, terminal, RRN-like reference, source epoch, and authorized amount; absent, zero and partial physical results; duplicated/posting-for-unknown financial effects; stale reversal after partial dispense; and false stand-in delegation claims.
 
 Original fixture decisions were:
+
 - `CASH-001: MATCHED_PARTIAL_CASH` (10,000 requested, 6,000 fictional device proof and posting).
 - `CASH-002: UNKNOWN_REQUIRES_DEVICE_EVIDENCE` (8,000 requested, no final physical result and no posting, despite an advice).
 - `CASH-003: FINAL_ZERO_CASH` (5,000 requested, device final zero, a reversal **request**, not an executed reversal).
