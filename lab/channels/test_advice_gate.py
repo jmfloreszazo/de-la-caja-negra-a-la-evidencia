@@ -162,8 +162,12 @@ class AdviceGateTests(unittest.TestCase):
         self.check(lambda d: d.update(
             bankApproved=True), "INVALID")
 
-    def test_28_invalid_source_epoch_rejected(self):
+    def test_28_invalid_or_cross_epoch_messages_refused(self):
         self.check(lambda d: d.update(sourceEpoch=""), "INVALID")
+        self.check(lambda d: d["networkMessages"][0].update(
+            sourceEpoch="previous-core-epoch"), "REJECT")
+        self.check(lambda d: d["authorizations"][0].update(
+            sourceEpoch="previous-core-epoch"), "REJECT")
 
     def test_29_device_cash_more_than_authorized_rejected(self):
         self.check(lambda d: d["deviceOutcomes"][0].update(
