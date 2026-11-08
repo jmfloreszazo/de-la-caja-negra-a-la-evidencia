@@ -74,11 +74,16 @@ jobs:
             TAG="$GITHUB_REF_NAME"
             NOTE=CHANGELOG.md
             if [ -f "docs/releases/$TAG.md" ]; then NOTE="docs/releases/$TAG.md"; fi
+            TITLE="$TAG"
+            if [ "$NOTE" != CHANGELOG.md ]; then
+              HEADING=$(sed -n '1s/^# //p' "$NOTE")
+              if [ -n "$HEADING" ]; then TITLE="$HEADING ($TAG)"; fi
+            fi
             CHANNEL=()
             case "$TAG" in *-rc*|*-alpha*|*-beta*) CHANNEL=(--prerelease) ;; esac
             gh release create "$TAG" \
               book/es.md book/en.md \
               dist/de-la-caja-negra-a-la-evidencia-es.pdf \
               dist/from-black-box-to-evidence-en.pdf \
-              --verify-tag --title "$TAG" --notes-file "$NOTE" "${CHANNEL[@]}"
+              --verify-tag --title "$TITLE" --notes-file "$NOTE" "${CHANNEL[@]}"
           fi

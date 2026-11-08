@@ -4,7 +4,7 @@ This project uses the approved **dimensional black box → evidence trace → ve
 
 The primary mark, compact icons and horizontal lockups retain the [Version 5.0 design principles](https://jmfloreszazo.com/version-5-0-architecting-whats-next/): paper white (`#F7F7F5`), charcoal (`#121315`), neutral grey and a red accent (`#D9232E`).
 
-The book covers and interior diagrams use a lighter editorial treatment: warm paper (`#FBF8F3`), navy text (`#20354B`), teal (`#287F7A`), pale blue/green surfaces and coral (`#C35B46`) for the evidence trace. The dimensional box/gate motif, author and edition identifier are preserved. This cover treatment does not replace the author's primary mark or the README's compact icons.
+The November 2026 book covers reuse the existing minimal variant B: a black silhouette and split gate with the red evidence exit, on paper white (`#F7F7F5`). The title is charcoal/red; there is no dimensional network illustration or coloured panel. Both languages retain José María Flores Zazo's authorship and show a November 2026 edition label. Interior diagrams retain their warm-paper, navy, teal and coral palette. The primary symbol, README icons and historical released covers are unchanged.
 
 | Asset | Usage |
 | --- | --- |

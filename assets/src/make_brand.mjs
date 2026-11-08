@@ -49,21 +49,19 @@ function lockup(lang,dark){
 function cover(lang){
  let es=lang==="es",t1=es?"De la caja negra":"From Black Box",t2=es?"a la evidencia":"to Evidence";
  let s1=es?"Modernizar COBOL más allá":"Modernizing COBOL beyond",s2=es?"de la traducción":"translation";
- let ed=es?"EDICIÓN v2026.10.29":"EDITION v2026.10.29";
- const palette={top:"#E4F2EF",left:"#C5DED7",right:"#AED0C8",border:"#547B7B",ridge:"#F8FCFA",links:"#527576",dots:"#345866",trace:"#C35B46",gate:"#20354B"};
- let b=tx(136,144,"JMFLORESZAZO",37,"#20354B",800,5)+
- `<path d="M1365 126 H1460" stroke="#C35B46" stroke-width="9"/>`+
- tx(1280,140,"ARCHITECTING WHAT'S NEXT",23,"#20354B",700,2.5,"end")+
- `<path d="M132 185 H1468" stroke="#CAD7DF" stroke-width="2"/>`+
- tx(134,392,t1,126,"#20354B",800,-4.5)+tx(134,538,t2,126,"#287F7A",800,-4.5)+
- tx(137,641,s1,53,"#526577",400,-.6)+tx(137,708,s2,53,"#526577",400,-.6)+
- `<rect x="100" y="790" width="1400" height="1000" rx="48" fill="#EEF3F4"/>`+
- `<g transform="translate(0 720) scale(1.6)">${primary(palette)}</g>`+
- `<path d="M132 2135 H1468" stroke="#CAD7DF" stroke-width="2"/>`+
- tx(134,2210,"JOSÉ MARÍA FLORES ZAZO",34,"#20354B",700,2.2)+
- tx(1465,2210,ed,27,"#607286",600,2,"end")+
- tx(134,2295,"jmfloreszazo.com · LEGACY / ARCHITECTURE / EVIDENCE",22,"#526577",600,2);
- return doc(1600,2400,b,"#FBF8F3");
+ let ed=es?"EDICIÓN · NOVIEMBRE 2026":"EDITION · NOVEMBER 2026";
+ let b=tx(136,144,"JMFLORESZAZO",37,COLORS.ink,800,5)+
+ `<path d="M1365 126 H1460" stroke="${COLORS.red}" stroke-width="9"/>`+
+ tx(1280,140,"ARCHITECTING WHAT'S NEXT",23,COLORS.ink,700,2.5,"end")+
+ `<path d="M132 185 H1468" stroke="${COLORS.stroke}" stroke-width="2"/>`+
+ tx(134,392,t1,126,COLORS.ink,800,-4.5)+tx(134,538,t2,126,COLORS.red,800,-4.5)+
+ tx(137,641,s1,53,COLORS.muted,400,-.6)+tx(137,708,s2,53,COLORS.muted,400,-.6)+
+ `<g id="cover-variant-b" transform="translate(160 800) scale(2.4)">${iconB()}</g>`+
+ `<path d="M132 2135 H1468" stroke="${COLORS.stroke}" stroke-width="2"/>`+
+ tx(134,2210,"JOSÉ MARÍA FLORES ZAZO",34,COLORS.ink,700,2.2)+
+ tx(1465,2210,ed,27,COLORS.muted,600,2,"end")+
+ tx(134,2295,"jmfloreszazo.com · LEGACY / ARCHITECTURE / EVIDENCE",22,COLORS.muted,600,2);
+ return doc(1600,2400,b,COLORS.paper);
 }
 
 function social(){
