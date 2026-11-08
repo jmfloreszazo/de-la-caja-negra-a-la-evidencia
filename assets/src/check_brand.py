@@ -76,6 +76,15 @@ for variant in ("mark.svg", "icon-b-dark.svg"):
             f"Missing the two separate LEFT door jambs: {variant}")
     require('M294 150' not in source, f"Unexpected closing frame: {variant}")
 
+for lang in ("es", "en"):
+    cover = read(ASSETS / f"cover-{lang}.svg")
+    require('id="cover-variant-b"' in cover, f"Missing minimal cover icon: {lang}")
+    require('M56 128 L183 72 L183 314 L56 260 Z' in cover, f"Cover must reuse variant B: {lang}")
+    require('M126 172 L366 64' not in cover, f"Old dimensional illustration remains: {lang}")
+    require('#D9232E' in cover and '#181A1C' in cover, f"Cover must retain black/red icon: {lang}")
+    require('JOSÉ MARÍA FLORES ZAZO' in cover, f"Missing author: {lang}")
+    require('v2026.10.29' not in cover, f"Stale cover edition: {lang}")
+
 # 16+ SVG units of clear separation between the painted red stroke and each
 # black frame endpoint; both cuts must remain symmetrical and visible.
 upper_end, lower_start, red_y, red_stroke = 176, 218, 197, 8
