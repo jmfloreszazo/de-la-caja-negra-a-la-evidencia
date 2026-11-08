@@ -32,6 +32,7 @@ try {
     try { Invoke-Capture $bad } catch { $rejected = $_.Exception.Message -like '*capture failed*' }
     $record = Get-Content (Join-Path $bad 'capture.json') -Raw | ConvertFrom-Json
     if (-not $rejected -or $record.status -ne 'FAIL' -or $record.commands[0].exitCode -ne 17) { throw 'Failure evidence lost' }
+    $global:LASTEXITCODE = 0
     Write-Output 'BOOK CLI CAPTURE TESTS: PASS (read-only, explicit subscription, no overwrite, retained failure)'
 } finally {
     Remove-Item -LiteralPath $root -Recurse -Force

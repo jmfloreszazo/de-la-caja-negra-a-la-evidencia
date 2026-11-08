@@ -120,6 +120,8 @@ A [local E4 prerequisite qualification](../../../evidence/runs/local-e4-qualific
 
 The repository also provides a [local campaign collector](../../../lab/tools/reproduce_campaign.py), with [setup instructions](../../../lab/README.md#reproduce-the-local-multi-experiment-campaign). A [complete recorded invocation](../../../evidence/runs/local-public-campaign-2026-11-07.json) passed core, PostgreSQL E1, extended E2, M2 and the E4 prerequisite, retaining 331 source-file hashes and verifying 226 captured artifacts. This makes the sequence reproducible without the author's session-specific helpers:
 
+**Listing 25a.2 · Collect and verify a local campaign** — *Illustrative reproduction commands · example output path*
+
 ```bash
 python3 lab/tools/reproduce_campaign.py \
   --engine docker --output lab/results/campaign-001
@@ -238,6 +240,8 @@ readers repeat this against their own deployment without starting any VM.
 The [deployment response](../../../evidence/runs/azure-cli-2026-11-08/deployment.json)
 reports infrastructure success, **not application or experiment correctness**:
 
+**Listing 25a.3 · Recorded deployment response** — *Executed · Azure CLI capture, 8 November 2026*
+
 ```json
 {
   "name": "book-experiments",
@@ -248,6 +252,8 @@ reports infrastructure success, **not application or experiment correctness**:
 
 The [runner response](../../../evidence/runs/azure-cli-2026-11-08/runner.json)
 shows the resource and its state after collecting the experiments:
+
+**Listing 25a.4 · Recorded runner response** — *Executed · Azure CLI capture, 8 November 2026*
 
 ```json
 {

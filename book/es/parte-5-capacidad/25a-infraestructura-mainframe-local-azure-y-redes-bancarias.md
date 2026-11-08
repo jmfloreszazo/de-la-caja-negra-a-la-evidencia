@@ -118,6 +118,8 @@ Una [cualificación local del prerrequisito de E4](../../../evidence/runs/local-
 
 El repositorio también incluye un [recolector de campañas locales](../../../lab/tools/reproduce_campaign.py), con [instrucciones de preparación](../../../lab/README.md#reproduce-the-local-multi-experiment-campaign). Una [invocación completa registrada](../../../evidence/runs/local-public-campaign-2026-11-07.json) superó el ensayo básico, E1 sobre PostgreSQL, E2 ampliado, M2 y el prerrequisito de E4, conservando los hashes de 331 archivos fuente y verificando 226 artefactos capturados. Así se puede reproducir la secuencia sin los ayudantes particulares de la sesión del autor:
 
+**Listado 25a.2 · Recopilar y verificar una campaña local** — *Comandos ilustrativos de reproducción · ruta de salida de ejemplo*
+
 ```bash
 python3 lab/tools/reproduce_campaign.py \
   --engine docker --output lab/results/campaign-001
@@ -238,6 +240,8 @@ permite repetirlo contra un despliegue propio sin arrancar ninguna VM.
 La [respuesta del despliegue](../../../evidence/runs/azure-cli-2026-11-08/deployment.json)
 indica éxito de infraestructura, **no corrección de la aplicación o del experimento**:
 
+**Listado 25a.3 · Respuesta registrada del despliegue** — *Ejecutado · captura de Azure CLI, 8 de noviembre de 2026*
+
 ```json
 {
   "name": "book-experiments",
@@ -248,6 +252,8 @@ indica éxito de infraestructura, **no corrección de la aplicación o del exper
 
 La [respuesta de la VM](../../../evidence/runs/azure-cli-2026-11-08/runner.json)
 muestra el recurso y su estado tras recoger los experimentos:
+
+**Listado 25a.4 · Respuesta registrada del runner** — *Ejecutado · captura de Azure CLI, 8 de noviembre de 2026*
 
 ```json
 {

@@ -55,6 +55,8 @@ A DMN table might decide whether a request needs review. BPMN might explain wher
 
 From the repository root, validate the example and evaluate its midpoint case:
 
+**Listing 10a.1 · Validate and evaluate the decision example** — *Reproduction commands · local synthetic demonstration*
+
 ```bash
 python3 lab/decision_models/toolkit.py validate lab/decision_models/examples/fee-decision.json
 python3 lab/decision_models/toolkit.py evaluate lab/decision_models/examples/fee-decision.json --input lab/decision_models/examples/fee-input.json
@@ -68,6 +70,8 @@ These are limited JSON profiles inspired by DMN, not DMN XML or a FEEL engine.
 
 Check the sequential process trace, then deliberately submit its invalid variant:
 
+**Listing 10a.2 · Check valid and invalid process traces** — *Reproduction commands · expected negative control*
+
 ```bash
 python3 lab/decision_models/toolkit.py check-trace lab/decision_models/examples/fee-process.json --input lab/decision_models/examples/fee-trace.json
 python3 lab/decision_models/toolkit.py check-trace lab/decision_models/examples/fee-process.json --input lab/decision_models/examples/fee-trace-invalid.json
@@ -80,6 +84,8 @@ XML interchange. Its limited transitions make only the declared trace testable.
 
 Finally verify the baseline's model and ADR hashes, or export the decision
 profile as deterministic JSON:
+
+**Listing 10a.3 · Verify the baseline and export the decision profile** — *Reproduction commands · no approval authority*
 
 ```bash
 python3 lab/decision_models/toolkit.py check-baseline lab/decision_models/examples/baseline.json --root lab/decision_models
@@ -108,6 +114,8 @@ Changing one item does not silently approve the next. If an ADR changes from syn
 ## Run the evidence process without granting yourself approval
 
 For a captured portable bundle, enter its root and use a fresh output path:
+
+**Listing 10a.4 · Revalidate a captured portable bundle** — *Illustrative commands · requires a bundle and fresh output paths*
 
 ```bash
 python3 adapter/lab/todm_validation/validate.py --manifest manifest.json --root . --output validation-new.json

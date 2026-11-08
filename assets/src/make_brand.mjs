@@ -6,7 +6,7 @@ import { fileURLToPath } from "node:url";
 const COLORS={"ink":"#121315","dark":"#0E1012","paper":"#F7F7F5","white":"#FFFFFF","red":"#D9232E","grey":"#797E83","muted":"#565C62","stroke":"#D5D8DA"};
 function doc(w,h,body,bg){return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${w} ${h}" width="${w}" height="${h}" role="img">${bg?`<rect width="${w}" height="${h}" fill="${bg}"/>`:""}${body}</svg>\n`;}
 
-function tx(x,y,t,size,c=COLORS.ink,weight=400,spacing=0,anchor="start"){let e=t.replaceAll("&","&amp;").replaceAll("<","&lt;").replaceAll(">","&gt;");return `<text x="${x}" y="${y}" font-family="Arial,Helvetica,sans-serif" font-size="${size}" font-weight="${weight}" fill="${c}" letter-spacing="${spacing}" text-anchor="${anchor}">${e}</text>`;}
+function tx(x,y,t,size,c=COLORS.ink,weight=400,spacing=0,anchor="start"){let e=t.replaceAll("&","&amp;").replaceAll("<","&lt;").replaceAll(">","&gt;");return `<text x="${x}" y="${y}" font-family="DejaVu Sans" font-size="${size}" font-weight="${weight}" fill="${c}" letter-spacing="${spacing}" text-anchor="${anchor}">${e}</text>`;}
 
 function primary(p={top:"#222427",left:"#111214",right:"#1A1C1F",border:"#878B8E",ridge:"#C0C3C4",links:"#60666B",dots:"#888E92",trace:COLORS.red,gate:"#151719"}){
  const edges=[[368,302,417,278],[417,278,474,324],[474,324,533,272],[368,302,351,365],[351,365,415,393],[415,393,474,324],[415,393,474,445],[474,445,537,392],[537,392,533,272],[351,365,376,448],[376,448,474,445],[417,278,461,232],[461,232,533,272],[415,393,537,392],[474,324,537,392]];

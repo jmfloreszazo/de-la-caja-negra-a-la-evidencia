@@ -937,6 +937,8 @@ Una tabla DMN puede decidir si una solicitud necesita revisión. BPMN puede expl
 
 Desde la raíz del repositorio se valida el ejemplo y se evalúa su caso de punto medio:
 
+**Listado 10a.1 · Validar y evaluar el ejemplo de decisión** — *Comandos de reproducción · demostración sintética local*
+
 ```bash
 python3 lab/decision_models/toolkit.py validate lab/decision_models/examples/fee-decision.json
 python3 lab/decision_models/toolkit.py evaluate lab/decision_models/examples/fee-decision.json --input lab/decision_models/examples/fee-input.json
@@ -950,6 +952,8 @@ varias reglas. Son perfiles JSON limitados inspirados en DMN, no DMN XML ni un m
 
 Se comprueba la traza secuencial y después se presenta deliberadamente su variante inválida:
 
+**Listado 10a.2 · Comprobar trazas válidas e inválidas del proceso** — *Comandos de reproducción · control negativo esperado*
+
 ```bash
 python3 lab/decision_models/toolkit.py check-trace lab/decision_models/examples/fee-process.json --input lab/decision_models/examples/fee-trace.json
 python3 lab/decision_models/toolkit.py check-trace lab/decision_models/examples/fee-process.json --input lab/decision_models/examples/fee-trace-invalid.json
@@ -962,6 +966,8 @@ Sus transiciones limitadas hacen comprobable solo la traza declarada.
 
 Por último se verifican los hashes de modelos y ADR de la baseline, o se exporta
 el perfil de decisión como JSON determinista:
+
+**Listado 10a.3 · Verificar la baseline y exportar el perfil de decisión** — *Comandos de reproducción · sin autoridad de aprobación*
 
 ```bash
 python3 lab/decision_models/toolkit.py check-baseline lab/decision_models/examples/baseline.json --root lab/decision_models
@@ -990,6 +996,8 @@ Cambiar un elemento no aprueba silenciosamente el siguiente. Si un ADR pasa de c
 #### Ejecutar la evidencia sin concederse aprobación
 
 Desde la raíz de un paquete portable capturado se utiliza una ruta de salida nueva:
+
+**Listado 10a.4 · Revalidar un paquete portable capturado** — *Comandos ilustrativos · requieren paquete y rutas de salida nuevas*
 
 ```bash
 python3 adapter/lab/todm_validation/validate.py --manifest manifest.json --root . --output validation-new.json
@@ -2352,6 +2360,8 @@ Una [cualificación local del prerrequisito de E4](../evidence/runs/local-e4-qua
 
 El repositorio también incluye un [recolector de campañas locales](../lab/tools/reproduce_campaign.py), con [instrucciones de preparación](../lab/README.md#reproduce-the-local-multi-experiment-campaign). Una [invocación completa registrada](../evidence/runs/local-public-campaign-2026-11-07.json) superó el ensayo básico, E1 sobre PostgreSQL, E2 ampliado, M2 y el prerrequisito de E4, conservando los hashes de 331 archivos fuente y verificando 226 artefactos capturados. Así se puede reproducir la secuencia sin los ayudantes particulares de la sesión del autor:
 
+**Listado 25a.2 · Recopilar y verificar una campaña local** — *Comandos ilustrativos de reproducción · ruta de salida de ejemplo*
+
 ```bash
 python3 lab/tools/reproduce_campaign.py \
   --engine docker --output lab/results/campaign-001
@@ -2472,6 +2482,8 @@ permite repetirlo contra un despliegue propio sin arrancar ninguna VM.
 La [respuesta del despliegue](../evidence/runs/azure-cli-2026-11-08/deployment.json)
 indica éxito de infraestructura, **no corrección de la aplicación o del experimento**:
 
+**Listado 25a.3 · Respuesta registrada del despliegue** — *Ejecutado · captura de Azure CLI, 8 de noviembre de 2026*
+
 ```json
 {
   "name": "book-experiments",
@@ -2482,6 +2494,8 @@ indica éxito de infraestructura, **no corrección de la aplicación o del exper
 
 La [respuesta de la VM](../evidence/runs/azure-cli-2026-11-08/runner.json)
 muestra el recurso y su estado tras recoger los experimentos:
+
+**Listado 25a.4 · Respuesta registrada del runner** — *Ejecutado · captura de Azure CLI, 8 de noviembre de 2026*
 
 ```json
 {

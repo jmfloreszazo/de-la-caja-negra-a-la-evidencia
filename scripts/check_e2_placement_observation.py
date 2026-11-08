@@ -5,6 +5,7 @@ import json
 from pathlib import Path
 import re
 import zipfile
+from historical_source import verify_historical_source
 
 ROOT = Path(__file__).resolve().parents[1]
 SOURCE = 'c547c3f34badda0cb57ab0b496917dadb1485b04'
@@ -92,9 +93,14 @@ def main():
             assert len(hashes) == 69
             for p, h in failure['sourceSha256'].items():
                 assert hashes['lab/' + p] == h
-                assert hashlib.sha256((ROOT / 'lab' / p).read_bytes()).hexdigest() == h, p
+                # Archive provenance and disposable-container support evolved
+                # later; these negative controls only evidence the pinned commit.
+                if p in ('e2_orleans/test_multiprocess.py', 'e2_orleans/setup_adonet_membership.py'):
+                    verify_historical_source(ROOT, SOURCE, 'lab/' + p, h)
+                else:
+                    assert hashlib.sha256((ROOT / 'lab' / p).read_bytes()).hexdigest() == h, p
     assert len(execution_ids) == 2
-    print('E2 LOOPBACK OBSERVATION AUDIT: PASS (2 real induced FAIL controls; zero effects; root cause unproven)')
+    print('E2 LOOPBACK OBSERVATION AUDIT: PASS (historical source bytes; 2 real induced FAIL controls; zero effects; root cause unproven)')
 
 
 if __name__ == '__main__':

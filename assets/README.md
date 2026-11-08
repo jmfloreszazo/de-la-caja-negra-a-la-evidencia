@@ -30,6 +30,6 @@ For a cover-only change, use `python3 assets/src/render.py --only cover-es cover
 
 The SVG artwork is generated from a single deterministic file, `assets/src/make_brand.mjs`. PNG exports are derived and should never be edited separately. A browser is not necessary. Use SVG for GitHub previews so dark/light rendering remains crisp and a PNG export cannot inadvertently show an older design.
 
-Typography uses the browser's Arial/Helvetica fallback, rather than a machine-specific font path. The source contains no proprietary font files.
+Typography explicitly uses DejaVu Sans. Install `fonts-dejavu-core` on Ubuntu before rendering, as the artwork workflow does; this avoids host-dependent Arial/Helvetica fallback. The source contains no proprietary font files. Byte-level PNG comparison requires the same CairoSVG, Cairo and font environment; a different renderer environment is not evidence of a design change.
 
 The read-only CI check runs for all pull requests and for pushes affecting brand assets. It never writes a commit or modifies the target branch.

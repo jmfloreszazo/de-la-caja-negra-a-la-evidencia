@@ -2,15 +2,15 @@
 
 **English** · [Español](BOOK_LISTINGS.es.md)
 
-The [machine inventory](../evidence/editorial/book-listings.json) records all 32 fenced examples in each edition, their exact lines, SHA256, labels and missing dependencies. Twenty-seven executable/configuration blocks must have identical English bytes in ES and EN. The five text/Markdown blocks are narrative topology, recorded output or an evidence-sheet template; their prose may be translated.
+The [machine inventory](../evidence/editorial/book-listings.json) records all 39 fenced examples in each edition, their exact lines, SHA256, labels and missing dependencies. Thirty-four executable/configuration blocks must have identical English bytes in ES and EN. The five text/Markdown blocks are narrative topology, recorded output or an evidence-sheet template; their prose may be translated.
 
 The editorial correction aligns 17 formerly divergent executable/configuration blocks. It changes comments and example descriptions, not financial lab source or protected oracles. This is a source-language correction, not a new result of the historical experiment.
 
 ## Checks and their boundaries
 
-- JSON: parse four documents across three fences, including the two separate example records in listing 27.3. Parsing does not establish that their sample approvals or observations are genuine.
+- JSON: parse six documents across five fences, including the two separate example records in listing 27.3 and the dated Azure CLI responses in 25a.3–25a.4. Parsing does not establish that their sample approvals or observations are genuine.
 - YAML: parse two mappings. This does not validate a mandate schema, authorize a user or execute a GitHub workflow.
-- Bash: `bash -n` for both command blocks; no installation, PowerShell command or container is launched by this check.
+- Bash: `bash -n` for all seven command blocks; no installation, PowerShell command or container is launched by this check. Listings 10a.1–10a.3 reproduce local synthetic examples; 10a.4 and 25a.2 use illustrative output paths, not exact historical invocations.
 - SQLite/Python: execute the exact printed 28.1 schema and the four displayed 28.4 predicates against a disposable consistent state; deliberately corrupt balance and postings and require rejection. This is not the full seven-invariant financial acceptance suite.
 - Native selected listings: the dedicated CI compiles the complete printed 26.1 COBOL program, verifies exact identity with the protected reference source and checks all 58 pinned contract records. It also compiles/runs the four exact 12.2 rounding expressions and the complete 15.1 decoder with nine positive and six negative cases. The original native result and independent archive audit are recorded below.
 - Other COBOL/C#/T-SQL blocks remain application-context examples. CICS needs its transaction environment; Orleans needs actual grain/runtime types; database fragments need their schema/parameters. No fabricated interfaces or no-op stubs are used to claim these complete applications compile.
@@ -26,6 +26,10 @@ No listing label is promoted by static parsing or an isolated helper harness. Th
 | 3.3 | csharp | Executed | Context/harness required |
 | 6.1 | json | Illustrative | JSON_SYNTAX |
 | 9.1 | yaml | Illustrative | YAML_SYNTAX |
+| 10a.1 | bash | Reproduction commands · local synthetic demonstration | BASH_SYNTAX |
+| 10a.2 | bash | Reproduction commands · expected negative control | BASH_SYNTAX |
+| 10a.3 | bash | Reproduction commands · no approval authority | BASH_SYNTAX |
+| 10a.4 | bash | Illustrative commands · requires a bundle and fresh output paths | BASH_SYNTAX |
 | 12.1 | cobol | Executed | Context/harness required |
 | 12.2 | csharp | Illustrative | Context/harness required |
 | 14.1 | csharp | Illustrative | Context/harness required |
@@ -38,6 +42,9 @@ No listing label is promoted by static parsing or an isolated helper harness. Th
 | 23.1 | csharp | Illustrative | Context/harness required |
 | 24.1 | text | Executed · simulation | Context/harness required |
 | 25a.1 | text | Illustrative topology | Context/harness required |
+| 25a.2 | bash | Illustrative reproduction commands · example output path | BASH_SYNTAX |
+| 25a.3 | json | Executed · Azure CLI capture, 8 November 2026 | JSON_SYNTAX |
+| 25a.4 | json | Executed · Azure CLI capture, 8 November 2026 | JSON_SYNTAX |
 | 26.1 | cobol | Executed | EXACT_FULL_SOURCE_MATCH |
 | 26.2 | text | Executed | Context/harness required |
 | 26.3 | text | Executed | Context/harness required |
