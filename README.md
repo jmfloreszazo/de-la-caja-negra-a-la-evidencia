@@ -11,7 +11,7 @@
 
 **Modernizing COBOL beyond translation: AI agents, architecture patterns, transactions and verifiable oracles.**
 
-> **Research/book edition closed on 5 November 2026.** [Final bilingual closeout and experiment verdicts](docs/FINAL_CLOSEOUT.md) · [Archival release notes](docs/releases/v2026.11.05.md). The new release tag identifies the final research snapshot; the book still bears its historical first-edition cover identifier. E1/E2 are partially verified; E3/E4 were not executed as complete acceptance studies.
+> **Research/book edition closed on 5 November 2026.** [Final bilingual closeout and experiment verdicts](docs/FINAL_CLOSEOUT.md) · [Archival release notes](docs/releases/v2026.11.05.md). The new release tag identifies the final research snapshot; the book still bears its historical first-edition cover identifier. E1/E2 are partially verified. **Status after closeout (8 November 2026):** E3 and E4 were executed as *bounded single-VM demonstrations on Azure* — an exploratory open-loop ledger trial and an isolated replay of one real model response — recorded in [`evidence/runs/azure-e1-e4-2026-11-08.json`](evidence/runs/azure-e1-e4-2026-11-08.json) and validated by the [TODM adapter](evidence/runs/todm-azure-2026-11-08.json). They remain **not accepted** as E3/E4 acceptance studies: no approved capacity contract, no mainframe comparison, no comparative agent population, release `BLOCK`.
 
 José María Flores Zazo · [jmfloreszazo.com](https://jmfloreszazo.com) · Edition v2026.10.29
 
@@ -20,18 +20,29 @@ José María Flores Zazo · [jmfloreszazo.com](https://jmfloreszazo.com) · Edit
 
 An open book and a runnable lab on how to modernize COBOL systems without betting the business on an equivalence we cannot demonstrate: what to preserve, which pattern replaces each mainframe guarantee, how to use AI agents without handing them authority and how to approach mainframe capacity on Azure or on your own infrastructure. It is open because a book that argues for evidence cannot ask to be believed on faith.
 
-**Source checkpoint: 2 November 2026.** `main` includes brownfield work newer than the research pre-release. Published PDFs freeze their respective tags; they do not automatically represent the current manuscript.
+**Published research snapshot: 5 November 2026.** The archival release includes both PDFs and both single-page Markdown editions. Published assets freeze their tag; later source corrections do not change those assets.
+
+## Current local additions
+
+The [project map](docs/PROJECT_STRUCTURE.md) separates editable book sources,
+executable labs, observed evidence and generated deliverables. The current
+working edition adds [TODM tools, models and ADRs](book/en/part-3-oracles/10a-todm-toolbox-models-and-adrs.md),
+[actual Azure CLI captures](evidence/runs/azure-cli-2026-11-08/capture.json),
+[Azure E1–E4 demonstrations](evidence/runs/azure-e1-e4-2026-11-08.json), and a
+[final cross-language annex](book/en/annexes/annex-h-beyond-cobol.md).
+These additions do not change historical release assets or grant production
+acceptance. Model tools implement bounded JSON profiles, not complete BPMN/DMN engines.
 
 ## Read
 
-[Research preview v2026.10.31-rc1 — historical prototype + TODM, experimental](docs/releases/v2026.10.31-rc1.md) · [Download Spanish and English PDFs](https://github.com/jmfloreszazo/de-la-caja-negra-a-la-evidencia/releases/tag/v2026.10.29) · [Fast reading path: seven chapters](docs/READING_PATH.md) · [PDF editions and release process](docs/PDF.md).
+[Download Spanish and English PDFs — archival v2026.11.05](https://github.com/jmfloreszazo/de-la-caja-negra-a-la-evidencia/releases/tag/v2026.11.05) · [Historical research preview v2026.10.31-rc1](docs/releases/v2026.10.31-rc1.md) · [Fast reading path: seven chapters](docs/READING_PATH.md) · [PDF editions and release process](docs/PDF.md).
 
 | | Chapter by chapter | Whole book on one page |
 |---|---|---|
 | English | [book/en](book/en/README.md) | [book/en.md](book/en.md) |
 | Español (original) | [book/es](book/es/README.md) | [book/es.md](book/es.md) |
 
-37 numbered chapters plus chapter 25 bis and the decomposition companion chapter in seven parts, an epilogue, seven annexes and 41 diagrams per language (C4, UML sequence, state and class, ER, gitGraph), drawn in Mermaid and published as images in the book's visual style. Both editions have exactly the same structure, and CI fails if they drift apart.
+37 numbered chapters plus the companion chapters 7 bis, 10 bis, 21 bis and 25 bis in seven parts, an epilogue, eight annexes (A–H) and 48 diagrams per language (C4, UML sequence, state and class, ER, flowchart, gitGraph), drawn in Mermaid and published as images in the book's visual style. Both editions have exactly the same structure, and CI fails if they drift apart; the [diagram catalog](book/en/diagrams.md) is the inventory the PDF build checks against.
 
 ## Languages: book versus code
 
@@ -67,15 +78,33 @@ docs/LAUNCH.md                maintainer guide for the first publication
 .github/                      issue and PR templates, CODEOWNERS, workflows
 ```
 
-## Reproduce everything
+## Reproduce by scope
+
+Start from the repository root with Python 3.12 or later and Git. On Windows, use `python` if `python3` is not available. Preserve canonical checkout bytes with the [checkout-integrity instructions](CONTRIBUTING.md#checkout-integrity); a clean status alone does not detect CRLF conversion in older clones.
+
+**Book structure and preserved evidence (no compiler, container or cloud):**
 
 ```bash
-python3 scripts/build.py          # regenerate the single-page books
-python3 scripts/check.py          # links, es/en sync, generated files
-npx markdownlint-cli2 "**/*.md"   # Markdown style
-python3 scripts/render_figures.py # diagram images (npm i -g @mermaid-js/mermaid-cli)
+git rev-parse HEAD
+git status --short
+python3 --version
+python3 scripts/check_language_policy.py
+python3 scripts/check.py
+python3 scripts/check_evidence.py
 python3 lab/tools/verify_offline.py
 ```
+
+Expected results are `LANGUAGE POLICY: PASS`, `CHECK: PASS`, `EVIDENCE CHECK: PASS` and `VERIFY: PASS`. Record each command and exit code; stop on failure. These checks audit committed material and historical SQLite results. They do **not** execute COBOL/.NET or validate remote CI runs.
+
+| To reproduce | Procedure | Boundary |
+|---|---|---|
+| Single-page books | `python3 scripts/build.py`, then `python3 scripts/check.py` | Regenerates both languages from chapter sources |
+| Markdown and diagram rendering | Node.js 22; `npx --yes markdownlint-cli2@0.22.0 "**/*.md"`; Mermaid CLI 11.12.0 and `python3 scripts/render_figures.py --check` | Syntax/render checks; use [the contribution guide](CONTRIBUTING.md#diagram-rules) for intentional image updates |
+| PDF editions | [PDF build instructions](docs/PDF.md) | Linux dependencies and fonts required; no release or byte-identical build implied |
+| Fresh COBOL/.NET/SQLite walkthrough | [Host reproduction protocol](lab/docs/HOST_REPRODUCTION.md) | Records a named host, image, raw results and independent audit; Podman required |
+| Extended SQL, Orleans and channel labs | [Evidence matrix](docs/EVIDENCE.md) and linked project runbooks | Separate dependencies and acceptance scopes; not included in the walkthrough |
+
+Keep the commit, tool versions, raw logs, failures and independent oracle with every new run. E1/E2 are partially verified; E3/E4 are not completed acceptance studies. Neither a source check nor a local smoke test proves Azure or mainframe performance.
 
 ## Contribute
 
@@ -90,7 +119,7 @@ Start with [CONTRIBUTING.md](CONTRIBUTING.md): paths by profile, a first contrib
 
 [**Chapter 25 bis: on-premises, Azure and banking-branch WAN latency**](book/en/part-5-capacity/25a-mainframe-on-prem-azure-and-banking-network-infrastructure.md) · [E1a/E1b CI evidence JSON](evidence/runs/README.md) · [E3 WAN protocol](docs/NETWORK_PROTOCOL.md).
 
-[**Verifiable evidence matrix**](docs/EVIDENCE.md): real CI, partially verified E1/E2, executed brownfield slices and E3/E4 remaining unexecuted as complete experiments.
+[**Verifiable evidence matrix**](docs/EVIDENCE.md): real CI, partially verified E1/E2, executed brownfield slices, and E3/E4 executed only as bounded Azure demonstrations (not accepted experiments).
 
 **Brownfield source authority:** the [incumbent fencing/owner acceptance protocol](docs/BROWNFIELD_SOURCE_FENCE.md) ([ES](docs/BROWNFIELD_SOURCE_FENCE.es.md)) and [fail-closed structural intake](lab/brownfield/owner_readiness/README.md) identify which real source-side writer and external effects must be evidenced before any CAP-005/007 bank cutover. This is **not real incumbent fencing** or TODM G2/G6 approval.
 

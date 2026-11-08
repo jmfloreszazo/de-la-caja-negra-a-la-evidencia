@@ -1,0 +1,8 @@
+{
+  "httpsOnly": true,
+  "location": "northeurope",
+  "minimumTlsVersion": "TLS1_2",
+  "name": "lab2bdefcogy3zgk",
+  "publicBlobAccess": false,
+  "sharedKeyAccess": false
+}

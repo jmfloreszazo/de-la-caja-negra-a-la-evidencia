@@ -17,7 +17,7 @@ import tempfile
 ROOT = pathlib.Path(__file__).resolve().parents[1]
 FIGURES = ("agent_chain", "c4_containers")
 LANGUAGES = ("es", "en")
-VERSION = b"1"
+VERSION = b"2"
 PNG_MAGIC = b"\x89PNG\r\n\x1a\n"
 
 

@@ -101,7 +101,7 @@ def main():
         "environment": {
             "postgresVersion": version,
             "pythonVersion": platform.python_version(),
-            "runtime": "GitHub Actions disposable Linux runner / Podman"
+            "runtime": platform.platform()
         },
         "limitations": (
             "Synthetic one-database negative control, not full transaction "

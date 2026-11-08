@@ -26,5 +26,7 @@ jobs:
           python3 scripts/check.py
       - name: Validate evidence statuses without claiming online runs
         run: python3 scripts/check_evidence.py
+      - name: Every indexed book unit is reachable and in order
+        run: python3 -m unittest discover -s scripts -p test_book_structure.py -v
       - name: Independently validate protected lab baseline and negative controls
         run: python3 lab/tools/verify_offline.py

@@ -51,7 +51,7 @@ This is the rule that keeps the project simple: **the book exists in Spanish (`b
 - `book/es.md` and `book/en.md` are generated. Never edit them by hand: run `python3 scripts/build.py` and commit them with your change.
 - `python3 scripts/check.py` compares every page with its counterpart: sections, tables, listings, code blocks and their languages, diagram types, cited references and linked chapters. CI runs it on every pull request and blocks the merge if anything drifts.
 - Diagrams are sources in `book/figures/src/es/` and `book/figures/src/en/` with the same identifier; `check.py` verifies that every page uses the same figures in both languages.
-- Executed code is quoted exactly as it ran. Comments in illustrative code are translated.
+- Executed code is quoted exactly as it ran. Code comments, including illustrative examples, stay in English in both editions; translate only the surrounding prose.
 - Spanish text uses Spain's conventions: angular quotes «así» and a dot as the thousands separator. English text uses British spelling.
 
 ## What happens after you open the pull request
@@ -88,11 +88,11 @@ The book is written in the first person by its author, and corrections are integ
 
 ## Diagram rules
 
-Every diagram is a Mermaid source in `book/figures/src/es/<id>.mmd` and `book/figures/src/en/<id>.mmd`, rendered as a PNG with the book's visual identity (ink background, graphite nodes, red only for what matters) by `scripts/render_figures.py`. Chapters show the image with an italic caption underneath. One diagram, one idea.
+Every diagram is a Mermaid source in `book/figures/src/es/<id>.mmd` and `book/figures/src/en/<id>.mmd`, rendered as a PNG with the book's editorial palette (warm light background, navy text, teal/blue nodes and coral for authority or decisive evidence) by `scripts/render_figures.py`. Chapters show the image with an italic caption underneath. One diagram, one idea.
 
 - Edit the source in both languages; keep the same identifier and structure, change only the labels.
 - Do not add colours or `%%{init}%%` directives to a source: the theme lives in `book/figures/theme.json` and `theme.css`.
-- Run `python3 scripts/render_figures.py` and commit the new PNG files with the source. Install `fonts-noto-cjk` so your images match the rest.
+- Run `python3 scripts/render_figures.py` and commit the new PNG files with the source and fingerprints. Use DejaVu Sans (`fonts-dejavu-core` on Ubuntu), Node.js 22 and Mermaid CLI 11.12.0 so typography and layout match the documented toolchain.
 
 | What you want to show | Diagram type |
 |---|---|
@@ -105,7 +105,15 @@ Every diagram is a Mermaid source in `book/figures/src/es/<id>.mmd` and `book/fi
 | Decisions and flows | `flowchart` |
 | Measured or simulated data | `xychart-beta`, always with the table of values |
 
-Rendering needs `npm i -g @mermaid-js/mermaid-cli`; CI checks every source with `python3 scripts/render_figures.py --check`.
+Rendering needs `npm i -g @mermaid-js/mermaid-cli@11.12.0`; CI checks every source with `python3 scripts/render_figures.py --check`.
+
+## Checkout integrity
+
+Use the repository's `.gitattributes`: source text uses LF on every host, while historical evidence and binary artifacts retain their original bytes. This is necessary because the lab anchors and diagram fingerprints hash bytes, not normalized text. Never change an expected hash or regenerate a historical result to make a host-specific failure disappear.
+
+An existing clone made before this policy may still contain CRLF files even when `git status` is clean. Diagnose with `git ls-files --eol`; `i/lf w/crlf` means the checkout differs from the committed bytes. Preserve local changes and use a separate fresh clone rather than resetting or renormalizing protected files. For an older tag without attributes, clone with `git -c core.autocrlf=false clone --branch <tag> <repository-url> <new-directory>`. This command-scoped setting does not alter global Git configuration.
+
+On Windows, the examples using `python3` may need `python` instead; verify the interpreter with `python --version`. Run the byte-integrity regression with `python -m unittest discover -s scripts -p test_checkout_integrity.py -v`. It exercises `core.autocrlf=true`, `input` and `false`, including preserved CRLF evidence and binary fixtures. It does not execute the full lab on those platforms.
 
 ## Lab rules
 

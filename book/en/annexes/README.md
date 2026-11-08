@@ -4,7 +4,7 @@
 
 # Annexes
 
-Reference material: how to run the lab, which contract it implements, what the reference run produced, which decisions I would document, the full risk catalog, the glossary and the sources.
+Reference material: how to run the lab, which contract it implements, what the reference run produced, which decisions I would document, the full risk catalog, the glossary, the sources and what transfers beyond COBOL.
 
 ## Contents
 
@@ -15,6 +15,7 @@ Reference material: how to run the lab, which contract it implements, what the r
 - [Annex E · Catalog of one hundred risks](annex-e-catalog-of-one-hundred-risks.md)
 - [Annex F · Operational glossary](annex-f-operational-glossary.md)
 - [Annex G · Sources and scope of the research](annex-g-sources-and-scope-of-the-research.md)
+- [Annex H · Beyond COBOL](annex-h-beyond-cobol.md)
 
 ---
 

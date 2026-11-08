@@ -1,0 +1,11 @@
+{
+  "modelId": "FEE-PROCESS",
+  "modelVersion": "v1",
+  "states": [
+    "Start",
+    "Validate",
+    "Decide",
+    "Record",
+    "End"
+  ]
+}

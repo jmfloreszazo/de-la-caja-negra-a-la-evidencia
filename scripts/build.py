@@ -86,7 +86,7 @@ def render(lang):
     toc = [f'{"" if unit_level(f, lang) == 2 else "  "}- [{titles[f]}](@@ANCHOR:{f}@@)' for f in files]
     cover = f'<p align="center"><img src="../assets/cover-{lang}.png" alt="{cfg["title"]}" width="360"></p>'
     doc = '\n'.join([cover, '', f'# {cfg["title"]}', '', f'**{cfg["subtitle"]}**', '',
-                     f'José María Flores Zazo · v2026.10.29 · **{cfg["name"]}** · [{cfg["other"]}]({other}.md)', '',
+                     f'José María Flores Zazo · [jmfloreszazo.com](https://jmfloreszazo.com) · v2026.10.29 · **{cfg["name"]}** · [{cfg["other"]}]({other}.md)', '',
                      '> [!NOTE]', '> ' + cfg['note'], '', f'## {cfg["index"]}', '', *toc, '']) + '\n' + '\n\n'.join(body) + '\n'
     by_title, seen, anchors, code = {t: f for f, t in titles.items()}, {}, {}, False
     for line in doc.splitlines():
@@ -106,5 +106,5 @@ def render(lang):
 if __name__ == '__main__':
     for lang in EDITIONS:
         path, text = render(lang)
-        path.write_text(text, encoding='utf-8')
+        path.write_text(text, encoding='utf-8', newline='\n')
         print(f'{path.relative_to(ROOT)}: {len(text.split())} words')

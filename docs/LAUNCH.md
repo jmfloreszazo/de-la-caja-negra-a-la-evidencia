@@ -2,6 +2,8 @@
 
 Historical maintainer guide for the first publication, not the current execution roadmap. It can be deleted after edition v2026.10.29. The guide is in English; each communication piece is in the language of its audience.
 
+> **Note (8 November 2026):** the chapter, annex and diagram counts quoted in the draft communications below describe the first edition as launched. The working edition now has companion chapters 7 bis, 10 bis, 21 bis and 25 bis, eight annexes and 48 diagrams per language; see the root README for current figures. The drafts are kept as written.
+
 ## 1. Decisions only the author can make
 
 - [ ] **Licenses.** The proposal is CC BY-SA 4.0 for the text and MIT for the code. If that changes, update `LICENSE.md`, `CITATION.cff` and the last section of `CONTRIBUTING.md`.

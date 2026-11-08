@@ -6,7 +6,7 @@
 
 > **Thesis.** You do not replace a mainframe with a box that has more cores. You replace an entire operational service: transactional computing, I/O, isolation, durable commit, continuity and the response seen by a branch that may be thousands of kilometres away. Equivalence is an end-to-end test, not a marketing-specification comparison.
 
-This chapter supplements [chapter 25](25-azure-or-a-huge-machine-at-the-customer-s-site.md) with named market references and a falsifiable architecture protocol. **Manufacturer data checked in October 2026; our measured performance against those machines: none.**
+This chapter supplements [chapter 25](25-azure-or-a-huge-machine-at-the-customer-s-site.md) with named market references and a falsifiable architecture protocol. **Manufacturer data checked in October 2026; our measured performance against those machines: none.** What we *have* measured—on one Azure VM, with synthetic load—is described in its own sections after the comparison protocol, so that the reader does not mistake it for that comparison.
 
 ## Real systems, real published specifications, and a comparison we cannot yet make
 
@@ -104,6 +104,30 @@ The [executed M1 study](../../../evidence/runs/M1.md) compared gRPC/Protobuf wit
 
 The [executed M2 evidence](../../../evidence/runs/M2.md) connects **REST and gRPC to the same durable PostgreSQL ledger**. On one hosted runner, the 20-scenario matrix (1/2/4/8/16 processes, two protocols, uniform and hot-account traffic) achieved **20 accounting PASS results**: 256 commits, 512 postings and 256 outbox entries per scenario. Adding processes **did not improve throughput** on this constrained machine and shared database. The results and chart are versioned. **This is not an Azure scale-out benchmark**: independent nodes, TLS, open-loop traffic and failover still need testing.
 
+### Reproduce first, then deploy, then measure distributed capacity
+
+The [experiment infrastructure and runbook](../../../infra/experiments/README.md) separate these three steps. The same core, PostgreSQL E1, functional Orleans E2 and M2 harnesses can run locally or on an Azure runner, retaining logs, independent oracle results and runtime provenance. **The Bicep infrastructure has only been compiled and checked locally; it has not been deployed or measured in Azure.**
+
+The template prepares private networking, evidence storage and a VM Scale Set with 0/1/2/4/8/16 instances. Provisioning instances does **not** install distributed application replicas. The optional managed PostgreSQL server is not the disposable database destroyed by the functional tests. Real E3 acceptance still needs an approved capacity contract, equivalent TLS, separate service and load-generator nodes, open-loop traffic, N-1 recovery and measured costs. A reproducible local PASS proves only the controls it actually exercised.
+
+On **7 November 2026**, a [new local reproduction](../../../evidence/runs/local-reproduction-2026-11-07.json) on WSL/Docker passed 11 PostgreSQL/Python controls, 10 .NET controls, 16 sequential parity cases and the eight-case/960-transfer functional worker matrix. The co-located Orleans harness passed seven functional controls; M2 passed all 20 scenarios with 256 commits each. Independent oracles rejected deliberate ledger corruption. Three failed launcher attempts are retained alongside the successful reruns, rather than erased. This campaign ran neither GitHub Actions nor Azure, and does not complete E1–E4 acceptance; its full logs, dumps and source patches are retained in a local evidence archive.
+
+A [subsequent local E2 campaign](../../../evidence/runs/local-e2-cluster-2026-11-07.json) also passed the real deadlock fixture, six matched workload runs with 600 durable transfers, and actual process termination controls. Two separate silo processes and an external client recovered after killing the secondary, with both development and PostgreSQL ADO.NET membership. Two additional cases exercised termination before and immediately after SQL COMMIT. The independent SQL oracle passed after recovery. **These are real process-failure observations on one physical host, not physical-node HA, a production recovery SLA or final E2 acceptance.**
+
+A [local E4 prerequisite qualification](../../../evidence/runs/local-e4-qualification-2026-11-07.json) then exercised 58 frozen cases per candidate in separate, non-root, network-disabled containers. The independent gate accepted the reference candidate and rejected the three known mutants: rounding, threshold and inactive-account approval. Three actual write attempts against the original contract, verifier and container root filesystem were denied; writing to the disposable candidate directory succeeded. Protected source hashes remained unchanged. The [reproduction harness](../../../lab/e4_agents/README.md) retains the exact supervisor source, container inspections and the real COBOL observations reused from the earlier core run; it does not invent a new COBOL execution. Thirteen separate synthetic regression controls also passed.
+
+**This is prerequisite evidence, not E4 acceptance.** No live agent or model was invoked, and no accepted-defect rate, false-block rate, human review duration or model cost was measured. The gate retains `DEMO_ONLY / SIMULATED_ALLOW` authority for the good candidate and blocks the mutants; it does not authorize a production release. The containers share the host kernel, and this campaign only executed the known reference sources and mutants, not arbitrary model-generated code.
+
+The repository also provides a [local campaign collector](../../../lab/tools/reproduce_campaign.py), with [setup instructions](../../../lab/README.md#reproduce-the-local-multi-experiment-campaign). A [complete recorded invocation](../../../evidence/runs/local-public-campaign-2026-11-07.json) passed core, PostgreSQL E1, extended E2, M2 and the E4 prerequisite, retaining 331 source-file hashes and verifying 226 captured artifacts. This makes the sequence reproducible without the author's session-specific helpers:
+
+```bash
+python3 lab/tools/reproduce_campaign.py \
+  --engine docker --output lab/results/campaign-001
+python3 lab/tools/reproduce_campaign.py --verify lab/results/campaign-001
+```
+
+The normal command requires clean lab sources. For unpublished local changes, explicitly add `--include-working-tree`: the collector saves the executed source snapshot separately from the base commit. Each stage runs in a fresh Linux temporary checkout; failed attempts are retained rather than overwritten. Artifact integrity does not turn a failed run into a successful one or local controls into Azure acceptance. SQL Server remains opt-in and requires its separate license consent.
+
 ## Dated prices, not a deceptive vCPU-to-mainframe TCO
 
 The official Azure API retrieval on **29 October 2026 at 18:26 UTC** (West Europe, Linux, pay-as-you-go, indicative EUR) returned **D4as_v5 €0.1830/h**, **D4s_v5 €0.2024/h** and **D8as_v5 €0.3661/h**. Three always-on D4as_v5 workers for 730 hours represent **€400.77/month of compute alone**; six represent **€801.54/month**, excluding database, disks, networking and redundancy. Exact meters, `effectiveStartDate` and CI source are in the linked registry.
@@ -130,9 +154,127 @@ Run with **online + batch**, hot keys, replication and peaks; repeat with **inje
 
 Accept only when **business results, durable completion, recovery and perceived latency** meet the approved contract—not when isolated TPS looks impressive. A fast network with a wrong ledger is useless; a correct ledger with unacceptable branch response also fails.
 
+## Executed Azure demonstration: evidence, not a capacity claim
+
+The [first real Azure campaign](../../../evidence/runs/azure-single-vm-2026-11-07.json) deployed the Bicep into a dedicated resource group in the author's authorized subscription. West Europe rejected new resources for this subscription despite available vCPU quota. That failed validation was retained; North Europe passed ARM validation and What-If, with 17 creations and no modifications or deletions of existing resources. The actual runner was one private `Standard_D4s_v5` VM, using Podman, PostgreSQL 16.13, .NET SDK 10.0.100 and GnuCOBOL 3.1.2. The VMSS had zero workers.
+
+The following are **executed observations**, not planned tests or mocked infrastructure:
+
+- **Core:** 58 COBOL/.NET cases and ten gate controls. After downloading the original SQLite databases, the host-side independent audit accepted nine correct databases and rejected the deliberately corrupted one. The rounding mutant was blocked on `C003`.
+- **E1 PostgreSQL:** 11 Python controls, ten .NET controls, 16 sequential parity cases and the eight-case/960-transfer worker matrix passed. The independent ledger oracle rejected deliberate posting corruption.
+- **E2:** six matched workload runs committed 600 transfers. Two silo processes and a separate client recovered after an actual secondary-process `SIGKILL`, with both development and PostgreSQL ADO.NET membership. Seven independent SQL invariants passed after recovery. Two additional cases exercised termination before and immediately after COMMIT.
+- **M2:** all 20 REST/gRPC, uniform/hot and 1/2/4/8/16-process cases passed. Every case had 256 durable commits, 512 postings and 256 outbox entries; the independent negative control detected corruption and verified restoration.
+
+The original source archives, file hashes, Azure instance metadata, runtime logs, SQL dumps and downloaded evidence are retained. The first M2 attempt passed its numerical controls but still emitted inherited labels claiming a GitHub runner and denying Azure execution. Those raw files were not corrected retroactively: the report producer was fixed and a separate full repeat passed with explicit Azure host and source-archive provenance. No GitHub Actions were launched.
+
+**Cloud hosting does not turn a single-host test into E3 acceptance.** M2's replicas were processes on the same VM; there was no cross-machine failover, WAN/TLS equivalence, approved bank capacity contract or mainframe comparison. E4 still had no live-agent campaign. After downloading the evidence, the runner was verified **deallocated**, with zero worker instances. Its disk, NAT gateway, public IP and storage remained billable. A monthly budget alert is not a spending cap, and actual billed cost was not invented from public price meters.
+
+## An additional Azure transport run and an explicit E3 refusal
+
+The [8 November Azure M1 run](../../../evidence/runs/azure-m1-2026-11-08.json)
+compared REST/JSON and gRPC/Protobuf at concurrency 8 and 32: eight alternating
+rounds of 2,500 requests, **20,000 measured replies, zero response errors**.
+Both negative controls passed. Sources and per-round latencies were retained;
+the North Europe runner was deallocated after download.
+
+The traffic remained **HTTP/2 without TLS over loopback**, with no durable
+ledger. Azure identifies the host, not a WAN path. These short closed-loop
+observations neither establish banking TPS nor a universal transport winner.
+
+The [reproducible E3 preflight](../../../evidence/runs/e3-readiness-2026-11-08.json)
+returned `INCONCLUSIVE / BLOCK`, exit 3: all 14 required capacity fields
+were empty, status `UNCONFIGURED`. The
+[command](../../../lab/docs/EXPERIMENT_PROTOCOL.md) retains the contract hash
+and missing prerequisites, without inventing targets. This is not a load
+experiment: even a populated contract requires external review and comparable
+Azure, on-premises and mainframe measurements.
+
+## E1–E4 on the Azure runner: four different demonstrations
+
+The [8 November follow-up](../../../evidence/runs/azure-e1-e4-2026-11-08.json)
+repeated PostgreSQL E1 and extended Orleans E2 after hardening evidence
+collection. E1 again passed its 960-transfer matrix; E2 passed both membership
+providers, 600 matched-workload transfers and controlled process failures.
+Logs, database dumps and cleanup now have separate exit codes: losing evidence
+cannot silently turn a run green.
+
+E3 then executed an **exploratory open-loop** ledger trial, not just the earlier
+readiness check. Three fixed phases offered 20, 40 and 60 requests/s for six
+seconds each. Of **720 scheduled offers, 668 committed**, 48 failed to connect
+and four missed their schedule. A service process was killed at eight seconds
+and restarted at ten; the replacement subsequently committed work. All seven
+accounting checks passed, and deleting a posting triggered three violations
+before restoration. Every failed or missed offer remains in the denominator.
+The ACK-only p99 is not the p99 of all offered work, and the nominal-window
+commit rate is not a sustained capacity ceiling.
+
+All services and the disposable database shared one VM. The authoritative
+snapshot was captured before removing the trial's private schema; the later
+database dump does not restore that removed schema. Neither process recovery
+nor `synchronous_commit=on` proves physical-node HA, a bank RPO/RTO or a
+mainframe comparison. The original capacity contract remains unconfigured.
+
+E4 also moved **candidate execution** to Azure: rootless Podman, supervisor UID
+1000, no candidate network or credentials, and read-only protected inputs.
+It replayed the existing real model response from chapter 29, rather than
+counting another inference. The candidate passed 16 self-tests and 58 frozen
+cases; qualification rejected three mutants and denied three protected writes.
+The first attempt failed because the nonroot process inherited a root-private
+working directory. That original is retained beside the corrected run, not
+rewritten. Azure instance metadata, source archives and the separate replay
+input digest bind the observed execution to its inputs.
+
+## What Azure actually shows
+
+The following are **real projected Azure CLI outputs**, captured on
+**8 November 2026, 10:03 UTC**, not portal screenshots or recreated UI.
+The [capture manifest](../../../evidence/runs/azure-cli-2026-11-08/capture.json)
+retains all six exact commands, timestamps, exit codes and stdout hashes; the
+[resource inventory](../../../evidence/runs/azure-cli-2026-11-08/resources.json)
+identifies the deployed infrastructure. The
+[read-only collector](../../../scripts/azure/capture-book-evidence.ps1) lets
+readers repeat this against their own deployment without starting any VM.
+
+The [deployment response](../../../evidence/runs/azure-cli-2026-11-08/deployment.json)
+reports infrastructure success, **not application or experiment correctness**:
+
+```json
+{
+  "name": "book-experiments",
+  "state": "Succeeded",
+  "timestamp": "2026-11-07T23:17:25.358088+00:00"
+}
+```
+
+The [runner response](../../../evidence/runs/azure-cli-2026-11-08/runner.json)
+shows the resource and its state after collecting the experiments:
+
+```json
+{
+  "location": "northeurope",
+  "name": "bookev1107-runner",
+  "size": "Standard_D4s_v5",
+  "statuses": [
+    "ProvisioningState/succeeded",
+    "PowerState/deallocated"
+  ]
+}
+```
+
+The [scale-set response](../../../evidence/runs/azure-cli-2026-11-08/workers.json)
+records capacity zero, and its separate instance query returns an empty array.
+The [storage response](../../../evidence/runs/azure-cli-2026-11-08/storage.json)
+reports HTTPS-only access, minimum TLS 1.2, shared-key access disabled and
+anonymous blob access disabled. Those settings do not certify every permission
+or network path. A deallocated VM also does not mean a zero bill: managed disk,
+NAT, public IP and storage remain. This dated control-plane capture complements,
+but cannot replace, the original workload artifacts and independent oracles.
+
 ## Our evidence: what exists and what does not
 
-This branch does contain [versioned E1a/E1b observations](../../../evidence/runs/README.md): real `40P01` deadlock, `40001` serialization, a corruption-detecting independent oracle and partial .NET 10/Npgsql parity on PostgreSQL. **There is not yet any benchmark on IBM z17, LinuxONE, Dorado 8590, Azure Mdsv3 or EPYC**, nor measurements from a real distant branch. The evidence registry must not promote those comparisons without reproducible load, approved SLOs and on-site measurements.
+This branch does contain [versioned E1a/E1b observations](../../../evidence/runs/README.md): real `40P01` deadlock, `40001` serialization, a corruption-detecting independent oracle and partial .NET 10/Npgsql parity on PostgreSQL. It also contains the Azure records described above—one D4s_v5 VM, synthetic workloads, every run downloaded and hashed—registered as `demonstrated_not_accepted` in the [evidence matrix](../../../docs/EVIDENCE.md).
+
+**There is not yet any benchmark on IBM z17, LinuxONE, Dorado 8590, Azure Mdsv3 or EPYC**, no second site, no measurements from a real distant branch, and the capacity contract is still unconfigured. The evidence registry must not promote those comparisons without reproducible load, approved SLOs and on-site measurements. The Azure runs tell us the mechanisms work where we put them; they do not tell us how the bank's month-end behaves.
 
 > The winning architecture is not the one that runs fastest inside the data centre. It is the one that commits the correct operation and delivers the answer back to the branch even when the worst WAN day meets the month-end close.
 

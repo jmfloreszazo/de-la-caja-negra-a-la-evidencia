@@ -178,7 +178,10 @@ try
         schemaVersion = 1,
         classification = "EXECUTED_LOCALHOST_TRANSPORT_ONLY_NOT_LEDGER_OR_MAINFRAME",
         createdAtUtc = DateTimeOffset.UtcNow,
-        sourceCommit = Environment.GetEnvironmentVariable("GITHUB_SHA") ?? "local",
+        sourceCommit = Environment.GetEnvironmentVariable("SOURCE_HEAD_SHA")
+            ?? Environment.GetEnvironmentVariable("GITHUB_SHA") ?? "local",
+        sourceArchiveSha256 = Environment.GetEnvironmentVariable("SOURCE_ARCHIVE_SHA256"),
+        executionHost = Environment.GetEnvironmentVariable("EXPERIMENT_HOST") ?? "UNSPECIFIED",
         environment = new
         {
             dotnet = Environment.Version.ToString(),

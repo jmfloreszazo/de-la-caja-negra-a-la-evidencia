@@ -117,9 +117,9 @@ Conservar el total es necesario y no suficiente: un movimiento cargado a la cuen
 | caliente | 4 | 128 | 495,6 | 0,81 | 2,04 | 42,08 | 0 |
 | caliente | 8 | 256 | 624,4 | 0,85 | 28,40 | 109,78 | 5 |
 
-![Figura 28.3 · Ejecución de referencia con cuentas uniformes: las barras rojas muestran p99 y la línea gris p50, en milisegundos. La mediana baja mientras crece la cola.](../../figures/es/measures_chart.png)
+![Figura 28.3 · Ejecución de referencia con cuentas uniformes: las barras muestran p99 y la línea p50, en milisegundos. La mediana baja mientras crece la cola.](../../figures/es/measures_chart.png)
 
-*Figura 28.3 · Ejecución de referencia con cuentas uniformes: las barras rojas muestran p99 y la línea gris p50, en milisegundos. La mediana baja mientras crece la cola.*
+*Figura 28.3 · Ejecución de referencia con cuentas uniformes: las barras muestran p99 y la línea p50, en milisegundos. La mediana baja mientras crece la cola.*
 
 La tabla enseña una cosa verdadera y nada más: al añadir procesos que compiten por un recurso serializado, la mediana mejora y la cola se dispara. Es el mismo fenómeno que aparecerá con una cuenta caliente o con un log saturado. Pero son 32 operaciones por proceso, en circuito cerrado, incluyendo el arranque de cada proceso .NET, sobre un motor que serializa escrituras, en una sola máquina. No hay calentamiento ni duración suficiente, no hay baseline del mainframe y no hay Azure. Esta tabla no puede aprobar capacidad, y el código lo deja escrito en el propio resumen de resultados.
 

@@ -68,7 +68,7 @@ def shape(path):
         cites.update(re.findall(r'\d+', group))
     chapters = sorted(set(re.findall(r'\]\([^)]*?/(\d\d)-[^)]*\.md', plain) +
                           re.findall(r'\]\((\d\d)-[^)]*\.md', plain)))
-    annexes = sorted(set(re.findall(r'(?:anexo|annex)-([a-g])-', plain)))
+    annexes = sorted(set(re.findall(r'(?:anexo|annex)-([a-z])-', plain)))
     return {
         'sections': len(re.findall(r'^## ', plain, re.M)),
         'subsections': len(re.findall(r'^### ', plain, re.M)),
@@ -102,6 +102,18 @@ for en in en_pages:
     if en not in paired:
         problems.append(f'no Spanish counterpart: {en.relative_to(ROOT)}')
 print(f'[2] es/en sync .... {len(paired)} page pairs compared')
+
+# Every source unit must appear once in the language index used by the build.
+for lang in build.EDITIONS:
+    ordered = build.order(lang)
+    if len(ordered) != len(set(ordered)):
+        problems.append(f'duplicate reading-order entry: book/{lang}/README.md')
+    missing = set(pages(lang)) - set(ordered)
+    extra = set(ordered) - set(pages(lang))
+    for path in sorted(missing):
+        problems.append(f'source page missing from reading order: {path.relative_to(ROOT)}')
+    for path in sorted(extra):
+        problems.append(f'unexpected reading-order page: {path.relative_to(ROOT)}')
 
 # 3. Generated single-page books --------------------------------------------
 for lang in build.EDITIONS:

@@ -1,0 +1,86 @@
+{
+  "schemaVersion": 1,
+  "classification": "E3_READINESS_ONLY_NOT_A_CAPACITY_TRIAL",
+  "verdict": "INCONCLUSIVE",
+  "release": "BLOCK",
+  "readiness": "INCOMPLETE",
+  "findings": [
+    {
+      "field": "offeredRequestsPerSecond",
+      "reason": "Missing required contract value"
+    },
+    {
+      "field": "requiredCommittedTransfersPerSecond",
+      "reason": "Missing required contract value"
+    },
+    {
+      "field": "p99EndToEndMilliseconds",
+      "reason": "Missing required contract value"
+    },
+    {
+      "field": "batchDeadlineSeconds",
+      "reason": "Missing required contract value"
+    },
+    {
+      "field": "measurementDurationSeconds",
+      "reason": "Missing required contract value"
+    },
+    {
+      "field": "requiredLoadWithOneNodeLost",
+      "reason": "Missing required contract value"
+    },
+    {
+      "field": "requiredRpoSeconds",
+      "reason": "Missing required contract value"
+    },
+    {
+      "field": "requiredRtoSeconds",
+      "reason": "Missing required contract value"
+    },
+    {
+      "field": "maxInfrastructureErrorRate",
+      "reason": "Missing required contract value"
+    },
+    {
+      "field": "mainframeBaseline",
+      "reason": "Missing required contract value"
+    },
+    {
+      "field": "targetEnvironment",
+      "reason": "Missing required contract value"
+    },
+    {
+      "field": "allowedBusinessRejectionMix",
+      "reason": "Missing required contract value"
+    },
+    {
+      "field": "durabilityAndReplicationPolicy",
+      "reason": "Missing required contract value"
+    },
+    {
+      "field": "requiredDatasetAndHotKeyDistribution",
+      "reason": "Missing required contract value"
+    },
+    {
+      "field": "status",
+      "reason": "Contract is not configured"
+    }
+  ],
+  "measuredCapacity": null,
+  "requiredExternalEvidence": [
+    "Owner-approved workload contract and independent approval provenance",
+    "Authorized comparable Azure, on-premises and mainframe measurements",
+    "Open-loop offered and durably committed operations, including failures",
+    "One-node-loss recovery, durability, independent accounting oracle and full cost scope"
+  ],
+  "limitations": [
+    "This command does not invoke Azure, run load or verify approval authenticity.",
+    "Even a populated contract cannot produce PASS without independent execution evidence."
+  ],
+  "contractSha256": "225202209515dba7408d5515148b5c2578478a60604899338e87cfce7d5e3496",
+  "checkerSha256": "590222c72972f8ce1404a291769d3986cd3056b9d691093cee4564b98326e5e0",
+  "sourceCommit": "cc7ed4bea231a36103ea7f4987b5728091e27ee2",
+  "ciRunId": null,
+  "githubActions": "NOT_EXECUTED",
+  "checkedUtc": "2026-11-07T23:54:44.297334+00:00"
+}

@@ -1,0 +1,32 @@
+{
+  "schemaVersion": 1,
+  "classification": "EXPLORATORY_SYNTHETIC_NOT_E3_CAPACITY_ACCEPTANCE",
+  "topology": "SINGLE_HOST_PROCESS_FAILURE_NOT_PHYSICAL_HA",
+  "distribution": "deterministic uniform ring over 16 E1 accounts",
+  "amountCents": "1 + offerIndex % 4",
+  "replicas": 2,
+  "routing": "offerIndex % 2; no failover, retries or replay",
+  "maxInFlight": 32,
+  "maxDispatchLatenessSeconds": 0.1,
+  "requestTimeoutSeconds": 2.0,
+  "profiles": {
+    "default": {
+      "ratesPerSecond": [20, 40, 60],
+      "phaseSeconds": 6,
+      "killAtSeconds": 8,
+      "restartAtSeconds": 10
+    },
+    "smoke": {
+      "ratesPerSecond": [10, 20, 30],
+      "phaseSeconds": 2,
+      "killAtSeconds": 2.5,
+      "restartAtSeconds": 3.5
+    }
+  },
+  "limitations": [
+    "Synthetic rates are preregistered exploratory inputs, not production targets.",
+    "No TLS, external endpoint, authentication, distributed scaling or physical-node loss.",
+    "The database is a loopback disposable E1 fixture, not managed SQL or a synchronous replica.",
+    "No mainframe baseline, capacity verdict, production RPO/RTO or cost comparison."
+  ]
+}

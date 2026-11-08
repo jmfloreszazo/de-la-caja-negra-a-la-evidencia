@@ -1,0 +1,16 @@
+{
+  "baselineId": "BASELINE-FEE-DEMO",
+  "matchedRules": [
+    "approve"
+  ],
+  "modelId": "FEE-DECISION",
+  "modelVersion": "v1",
+  "outputs": {
+    "feeCents": 1,
+    "resultCode": "APPROVE"
+  },
+  "productionApproved": false,
+  "reason": "Bounded decision evaluated; not candidate equivalence",
+  "selectedRule": "approve",
+  "status": "PASS"
+}

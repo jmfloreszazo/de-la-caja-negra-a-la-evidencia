@@ -1,0 +1,17 @@
+{
+  "repository": "https://github.com/jmfloreszazo/TODM",
+  "commit": "61354abc03e73fbf258b6e8d66e35678da134ef8",
+  "version": "1.5.0",
+  "files": [
+    {
+      "path": "governance.py",
+      "upstreamPath": "demo/scripts/governance.py",
+      "sha256": "65e40847a2c4cedb325a03cda27ef4db8f847723a35735000348d73d28c040b9"
+    },
+    {
+      "path": "LICENSE",
+      "upstreamPath": "LICENSE",
+      "sha256": "c401cb5fe3204497befa57f4a7f9c6994c8dfcf09cb47f400354c0cd562f9043"
+    }
+  ]
+}

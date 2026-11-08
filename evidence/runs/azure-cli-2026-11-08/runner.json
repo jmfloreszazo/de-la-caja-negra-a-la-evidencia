@@ -1,0 +1,9 @@
+{
+  "location": "northeurope",
+  "name": "bookev1107-runner",
+  "size": "Standard_D4s_v5",
+  "statuses": [
+    "ProvisioningState/succeeded",
+    "PowerState/deallocated"
+  ]
+}

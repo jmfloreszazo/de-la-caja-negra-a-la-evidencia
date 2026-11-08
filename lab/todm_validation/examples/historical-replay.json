@@ -1,0 +1,743 @@
+{
+  "schemaVersion": 1,
+  "classification": "LOCAL_PINNED_TODM_METHODOLOGY_REPLAY_NOT_CERTIFIED_ENGINE",
+  "upstreamCommit": "61354abc03e73fbf258b6e8d66e35678da134ef8",
+  "evaluationVerdict": "PASS",
+  "methodologyVerdict": "INCONCLUSIVE",
+  "releaseOutcome": "BLOCK",
+  "experiments": [
+    {
+      "experiment": "E1",
+      "scope": "postgres-concurrency-slice",
+      "limitations": [
+        "Selected historical synthetic slice only; original report limitations retained."
+      ],
+      "oracleVerdict": "PASS",
+      "qualificationVerdict": "PASS",
+      "evaluationVerdict": "PASS",
+      "methodologyVerdict": "INCONCLUSIVE",
+      "authorityVerdict": "INCONCLUSIVE",
+      "releaseOutcome": "BLOCK",
+      "gates": [
+        {
+          "gate": "G0",
+          "verdict": "PASS",
+          "findings": [
+            "Explicit bounded scope and risk"
+          ],
+          "evidenceIds": []
+        },
+        {
+          "gate": "G1",
+          "verdict": "PASS",
+          "findings": [
+            "Exact supplied artifacts verified; hashes do not authenticate their producer"
+          ],
+          "evidenceIds": [
+            "e1-report",
+            "e1-vectors",
+            "e1-raw-build",
+            "e1-ledger.py",
+            "e1-oracle.py",
+            "e1-schema.sql",
+            "e1-test_e1.py",
+            "e1-test_oracle_vectors.py",
+            "e1-test_reference_parity.py"
+          ]
+        },
+        {
+          "gate": "G2",
+          "verdict": "INCONCLUSIVE",
+          "findings": [
+            "No external trusted baseline approval verifier configured; local approval fields are not authority"
+          ],
+          "evidenceIds": []
+        },
+        {
+          "gate": "G3",
+          "verdict": "PASS",
+          "findings": [
+            "Bound negative-control qualification, not universal oracle completeness"
+          ],
+          "evidenceIds": [
+            "e1-report",
+            "e1-vectors",
+            "e1-raw-build",
+            "e1-ledger.py",
+            "e1-oracle.py",
+            "e1-schema.sql",
+            "e1-test_e1.py",
+            "e1-test_oracle_vectors.py",
+            "e1-test_reference_parity.py"
+          ]
+        },
+        {
+          "gate": "G4",
+          "verdict": "PASS",
+          "findings": [
+            "Recorded construction/source bytes bound; no builder rerun or deployment performed"
+          ],
+          "evidenceIds": [
+            "e1-report",
+            "e1-vectors",
+            "e1-raw-build",
+            "e1-ledger.py",
+            "e1-oracle.py",
+            "e1-schema.sql",
+            "e1-test_e1.py",
+            "e1-test_oracle_vectors.py",
+            "e1-test_reference_parity.py"
+          ]
+        },
+        {
+          "gate": "G5",
+          "verdict": "PASS",
+          "findings": [
+            "Independent invariant evidence evaluated; report status alone is insufficient"
+          ],
+          "evidenceIds": [
+            "e1-report",
+            "e1-vectors",
+            "e1-raw-build",
+            "e1-ledger.py",
+            "e1-oracle.py",
+            "e1-schema.sql",
+            "e1-test_e1.py",
+            "e1-test_oracle_vectors.py",
+            "e1-test_reference_parity.py"
+          ]
+        },
+        {
+          "gate": "G6",
+          "verdict": "INCONCLUSIVE",
+          "findings": [
+            "No externally authenticated identity, mandate, validity time, or release-owner approval; BLOCK"
+          ],
+          "evidenceIds": []
+        },
+        {
+          "gate": "G7",
+          "verdict": "INCONCLUSIVE",
+          "findings": [
+            "Snapshot integrity checked at replay; continuous drift monitoring and evolution approval not connected"
+          ],
+          "evidenceIds": []
+        }
+      ],
+      "bindings": [
+        {
+          "id": "e1-report",
+          "path": "lab\\results\\azure-live-20261107\\runs\\e1-azure-20261107-01-evidence\\results\\e1\\summary.json",
+          "role": "report",
+          "document": "report",
+          "sha256": "fe98292c67871e0c8087bd0d448d2bdac1ab875cf50dcfc40856ccb2da8e3ab8",
+          "verifiedSha256": "fe98292c67871e0c8087bd0d448d2bdac1ab875cf50dcfc40856ccb2da8e3ab8",
+          "bytes": 3309
+        },
+        {
+          "id": "e1-vectors",
+          "path": "lab\\results\\azure-live-20261107\\runs\\e1-azure-20261107-01-evidence\\results\\e1\\oracle-vectors-summary.json",
+          "role": "qualification",
+          "document": "qualification",
+          "sha256": "bf23c1ce52345327ceb38261b1f544156410ecfe34991417f4cf515fd9251564",
+          "verifiedSha256": "bf23c1ce52345327ceb38261b1f544156410ecfe34991417f4cf515fd9251564",
+          "bytes": 1930
+        },
+        {
+          "id": "e1-raw-build",
+          "path": "lab\\results\\azure-live-20261107\\runs\\e1-azure-20261107-01-evidence\\results\\e1\\dotnet-build.txt",
+          "role": "raw",
+          "sha256": "2fd7b253ec28a89ce122803a326376e48289f5a38723e2988cc98886f4ca343b",
+          "verifiedSha256": "2fd7b253ec28a89ce122803a326376e48289f5a38723e2988cc98886f4ca343b",
+          "bytes": 334
+        },
+        {
+          "id": "e1-ledger.py",
+          "path": "lab\\e1_pg\\ledger.py",
+          "role": "source",
+          "sha256": "0a037b32a84d5dc0b202aee25aa1e46346ee1dba321a0b988d7efda774ab68da",
+          "verifiedSha256": "0a037b32a84d5dc0b202aee25aa1e46346ee1dba321a0b988d7efda774ab68da",
+          "bytes": 6510
+        },
+        {
+          "id": "e1-oracle.py",
+          "path": "lab\\e1_pg\\oracle.py",
+          "role": "source",
+          "sha256": "3f2874842e9febcc84584bf4a266920028840ccac9d404f75cb9f4363fb4fc09",
+          "verifiedSha256": "3f2874842e9febcc84584bf4a266920028840ccac9d404f75cb9f4363fb4fc09",
+          "bytes": 1949
+        },
+        {
+          "id": "e1-schema.sql",
+          "path": "lab\\e1_pg\\schema.sql",
+          "role": "contract",
+          "sha256": "76715aabaacc5d5486dc1ac186adc10c5143d8e0d5c73a4db71ed262ff66c3b9",
+          "verifiedSha256": "76715aabaacc5d5486dc1ac186adc10c5143d8e0d5c73a4db71ed262ff66c3b9",
+          "bytes": 1021
+        },
+        {
+          "id": "e1-test_e1.py",
+          "path": "lab\\e1_pg\\test_e1.py",
+          "role": "source",
+          "sha256": "62cfb772dd53a549ddeca990be42f5455eb98c3b7e497bdfea47effe76181eb5",
+          "verifiedSha256": "62cfb772dd53a549ddeca990be42f5455eb98c3b7e497bdfea47effe76181eb5",
+          "bytes": 9323
+        },
+        {
+          "id": "e1-test_oracle_vectors.py",
+          "path": "lab\\e1_pg\\test_oracle_vectors.py",
+          "role": "source",
+          "sha256": "d5e0197bf68eab49ea53eb3d9ceeda9c8efa71b02f1400a0b78d5bb1737be9ef",
+          "verifiedSha256": "d5e0197bf68eab49ea53eb3d9ceeda9c8efa71b02f1400a0b78d5bb1737be9ef",
+          "bytes": 4088
+        },
+        {
+          "id": "e1-test_reference_parity.py",
+          "path": "lab\\e1_pg\\test_reference_parity.py",
+          "role": "source",
+          "sha256": "1eb6504d81227710fae7c91b905dc4c2055864c41fe7712b2a5141f0f2d92c62",
+          "verifiedSha256": "1eb6504d81227710fae7c91b905dc4c2055864c41fe7712b2a5141f0f2d92c62",
+          "bytes": 10697
+        }
+      ],
+      "provenance": {
+        "campaign": "azure-live-20261107",
+        "ciRunId": null,
+        "ciRunIdReason": "Local replay of retained artifacts, not a GitHub Actions run."
+      },
+      "rawReportProvenance": {
+        "environment": "Linux-7.0.0-1017-azure-x86_64-with-glibc2.39",
+        "limitations": "Not E1 complete; not .NET 10 port; no mainframe SLA or capacity claim."
+      }
+    },
+    {
+      "experiment": "E2",
+      "scope": "single-cohost-process-kill",
+      "limitations": [
+        "Selected historical synthetic slice only; original report limitations retained."
+      ],
+      "oracleVerdict": "PASS",
+      "qualificationVerdict": "PASS",
+      "evaluationVerdict": "PASS",
+      "methodologyVerdict": "INCONCLUSIVE",
+      "authorityVerdict": "INCONCLUSIVE",
+      "releaseOutcome": "BLOCK",
+      "gates": [
+        {
+          "gate": "G0",
+          "verdict": "PASS",
+          "findings": [
+            "Explicit bounded scope and risk"
+          ],
+          "evidenceIds": []
+        },
+        {
+          "gate": "G1",
+          "verdict": "PASS",
+          "findings": [
+            "Exact supplied artifacts verified; hashes do not authenticate their producer"
+          ],
+          "evidenceIds": [
+            "e2-report",
+            "e2-raw-smoke",
+            "e2-contract",
+            "e2-3",
+            "e2-4",
+            "e2-5",
+            "e2-6",
+            "e2-7"
+          ]
+        },
+        {
+          "gate": "G2",
+          "verdict": "INCONCLUSIVE",
+          "findings": [
+            "No external trusted baseline approval verifier configured; local approval fields are not authority"
+          ],
+          "evidenceIds": []
+        },
+        {
+          "gate": "G3",
+          "verdict": "PASS",
+          "findings": [
+            "Bound negative-control qualification, not universal oracle completeness"
+          ],
+          "evidenceIds": [
+            "e2-report",
+            "e2-raw-smoke",
+            "e2-contract",
+            "e2-3",
+            "e2-4",
+            "e2-5",
+            "e2-6",
+            "e2-7"
+          ]
+        },
+        {
+          "gate": "G4",
+          "verdict": "PASS",
+          "findings": [
+            "Recorded construction/source bytes bound; no builder rerun or deployment performed"
+          ],
+          "evidenceIds": [
+            "e2-report",
+            "e2-raw-smoke",
+            "e2-contract",
+            "e2-3",
+            "e2-4",
+            "e2-5",
+            "e2-6",
+            "e2-7"
+          ]
+        },
+        {
+          "gate": "G5",
+          "verdict": "PASS",
+          "findings": [
+            "Independent invariant evidence evaluated; report status alone is insufficient"
+          ],
+          "evidenceIds": [
+            "e2-report",
+            "e2-raw-smoke",
+            "e2-contract",
+            "e2-3",
+            "e2-4",
+            "e2-5",
+            "e2-6",
+            "e2-7"
+          ]
+        },
+        {
+          "gate": "G6",
+          "verdict": "INCONCLUSIVE",
+          "findings": [
+            "No externally authenticated identity, mandate, validity time, or release-owner approval; BLOCK"
+          ],
+          "evidenceIds": []
+        },
+        {
+          "gate": "G7",
+          "verdict": "INCONCLUSIVE",
+          "findings": [
+            "Snapshot integrity checked at replay; continuous drift monitoring and evolution approval not connected"
+          ],
+          "evidenceIds": []
+        }
+      ],
+      "bindings": [
+        {
+          "id": "e2-report",
+          "path": "lab\\results\\azure-live-20261107\\runs\\e2-cluster-azure-20261107-01-evidence\\results\\e2\\e2-process-crash.json",
+          "role": "report",
+          "document": "report",
+          "sha256": "239a12a89b63428578bb0a2fdad2cbe18dbdb5600930cdab6a20badcc5692116",
+          "verifiedSha256": "239a12a89b63428578bb0a2fdad2cbe18dbdb5600930cdab6a20badcc5692116",
+          "bytes": 4322
+        },
+        {
+          "id": "e2-raw-smoke",
+          "path": "lab\\results\\azure-live-20261107\\runs\\e2-cluster-azure-20261107-01-evidence\\results\\e2\\e2-smoke.json",
+          "role": "raw",
+          "sha256": "027ef1ca4310177750bdee5cfc3c174b140fbb6c158a72115f879d0648eccf37",
+          "verifiedSha256": "027ef1ca4310177750bdee5cfc3c174b140fbb6c158a72115f879d0648eccf37",
+          "bytes": 7308
+        },
+        {
+          "id": "e2-contract",
+          "path": "lab\\e1_pg\\schema.sql",
+          "role": "contract",
+          "sha256": "76715aabaacc5d5486dc1ac186adc10c5143d8e0d5c73a4db71ed262ff66c3b9",
+          "verifiedSha256": "76715aabaacc5d5486dc1ac186adc10c5143d8e0d5c73a4db71ed262ff66c3b9",
+          "bytes": 1021
+        },
+        {
+          "id": "e2-3",
+          "path": "lab\\e2_orleans\\test_process_crash.py",
+          "role": "source",
+          "sha256": "69703e3f053e875f9502b65edab5d8afa889c852d2c12e41ec2a14349f187b73",
+          "verifiedSha256": "69703e3f053e875f9502b65edab5d8afa889c852d2c12e41ec2a14349f187b73",
+          "bytes": 6250
+        },
+        {
+          "id": "e2-4",
+          "path": "lab\\e2_orleans\\OrleansLab\\PgDurableLedger.cs",
+          "role": "source",
+          "sha256": "50f4a26e74ee28f754dd39854098bd4333f8cef2faf2d39d269e38a8db4581ff",
+          "verifiedSha256": "50f4a26e74ee28f754dd39854098bd4333f8cef2faf2d39d269e38a8db4581ff",
+          "bytes": 11205
+        },
+        {
+          "id": "e2-5",
+          "path": "lab\\e2_orleans\\OrleansLab\\Program.cs",
+          "role": "source",
+          "sha256": "d78d52c3cca03f401cbe40c5b96b7707003b53d0fd4c8bef94b1e3639c228dcc",
+          "verifiedSha256": "d78d52c3cca03f401cbe40c5b96b7707003b53d0fd4c8bef94b1e3639c228dcc",
+          "bytes": 6831
+        },
+        {
+          "id": "e2-6",
+          "path": "lab\\e2_orleans\\OrleansLab\\Contracts.cs",
+          "role": "source",
+          "sha256": "f3afb0096a594e8ec18a29f8775de21ab0df40ebc55c89ad3486ef2f4cc943e0",
+          "verifiedSha256": "f3afb0096a594e8ec18a29f8775de21ab0df40ebc55c89ad3486ef2f4cc943e0",
+          "bytes": 2233
+        },
+        {
+          "id": "e2-7",
+          "path": "lab\\e1_pg\\oracle.py",
+          "role": "source",
+          "sha256": "3f2874842e9febcc84584bf4a266920028840ccac9d404f75cb9f4363fb4fc09",
+          "verifiedSha256": "3f2874842e9febcc84584bf4a266920028840ccac9d404f75cb9f4363fb4fc09",
+          "bytes": 1949
+        }
+      ],
+      "provenance": {
+        "campaign": "azure-live-20261107",
+        "ciRunId": null,
+        "ciRunIdReason": "Local replay of retained artifacts, not a GitHub Actions run."
+      },
+      "rawReportProvenance": {
+        "classification": "SYNTHETIC_SINGLE_COHOST_SIGKILL_NOT_MULTISILO_FAILOVER",
+        "limitations": "Actual hard termination of the same local process hosting a single Orleans silo and .NET client. No real multi-silo reassignment, leader election, network partition, storage power loss, or banking mainframe equivalence. The deliberately unsafe split writes are a separate SQL fixture, not actor code."
+      }
+    },
+    {
+      "experiment": "E4",
+      "scope": "frozen-case-builder-pilot",
+      "limitations": [
+        "Selected historical synthetic slice only; original report limitations retained."
+      ],
+      "oracleVerdict": "PASS",
+      "qualificationVerdict": "PASS",
+      "evaluationVerdict": "PASS",
+      "methodologyVerdict": "INCONCLUSIVE",
+      "authorityVerdict": "INCONCLUSIVE",
+      "releaseOutcome": "BLOCK",
+      "gates": [
+        {
+          "gate": "G0",
+          "verdict": "PASS",
+          "findings": [
+            "Explicit bounded scope and risk"
+          ],
+          "evidenceIds": []
+        },
+        {
+          "gate": "G1",
+          "verdict": "PASS",
+          "findings": [
+            "Exact supplied artifacts verified; hashes do not authenticate their producer"
+          ],
+          "evidenceIds": [
+            "e4-report",
+            "e4-qualification",
+            "e4-observations",
+            "e4-cases",
+            "e4-candidate",
+            "e4-live-source",
+            "e4-qualify-source",
+            "e4-qualified-source",
+            "legacy-summary",
+            "legacy-observations",
+            "e4-protected-10",
+            "e4-protected-11",
+            "e4-protected-12",
+            "e4-protected-13",
+            "e4-protected-14",
+            "e4-mutant-none",
+            "e4-mutant-round-even",
+            "e4-mutant-wrong-threshold",
+            "e4-mutant-approve-inactive"
+          ]
+        },
+        {
+          "gate": "G2",
+          "verdict": "INCONCLUSIVE",
+          "findings": [
+            "No external trusted baseline approval verifier configured; local approval fields are not authority"
+          ],
+          "evidenceIds": []
+        },
+        {
+          "gate": "G3",
+          "verdict": "PASS",
+          "findings": [
+            "Bound negative-control qualification, not universal oracle completeness"
+          ],
+          "evidenceIds": [
+            "e4-report",
+            "e4-qualification",
+            "e4-observations",
+            "e4-cases",
+            "e4-candidate",
+            "e4-live-source",
+            "e4-qualify-source",
+            "e4-qualified-source",
+            "legacy-summary",
+            "legacy-observations",
+            "e4-protected-10",
+            "e4-protected-11",
+            "e4-protected-12",
+            "e4-protected-13",
+            "e4-protected-14",
+            "e4-mutant-none",
+            "e4-mutant-round-even",
+            "e4-mutant-wrong-threshold",
+            "e4-mutant-approve-inactive"
+          ]
+        },
+        {
+          "gate": "G4",
+          "verdict": "PASS",
+          "findings": [
+            "Recorded construction/source bytes bound; no builder rerun or deployment performed"
+          ],
+          "evidenceIds": [
+            "e4-report",
+            "e4-qualification",
+            "e4-observations",
+            "e4-cases",
+            "e4-candidate",
+            "e4-live-source",
+            "e4-qualify-source",
+            "e4-qualified-source",
+            "legacy-summary",
+            "legacy-observations",
+            "e4-protected-10",
+            "e4-protected-11",
+            "e4-protected-12",
+            "e4-protected-13",
+            "e4-protected-14",
+            "e4-mutant-none",
+            "e4-mutant-round-even",
+            "e4-mutant-wrong-threshold",
+            "e4-mutant-approve-inactive"
+          ]
+        },
+        {
+          "gate": "G5",
+          "verdict": "PASS",
+          "findings": [
+            "Recomputed candidate, legacy, and qualification-mutant agreement against every bound frozen case; DEMO_ONLY is not authority"
+          ],
+          "evidenceIds": [
+            "e4-report",
+            "e4-qualification",
+            "e4-observations",
+            "e4-cases",
+            "e4-candidate",
+            "e4-live-source",
+            "e4-qualify-source",
+            "e4-qualified-source",
+            "legacy-summary",
+            "legacy-observations",
+            "e4-protected-10",
+            "e4-protected-11",
+            "e4-protected-12",
+            "e4-protected-13",
+            "e4-protected-14",
+            "e4-mutant-none",
+            "e4-mutant-round-even",
+            "e4-mutant-wrong-threshold",
+            "e4-mutant-approve-inactive"
+          ]
+        },
+        {
+          "gate": "G6",
+          "verdict": "INCONCLUSIVE",
+          "findings": [
+            "No externally authenticated identity, mandate, validity time, or release-owner approval; BLOCK"
+          ],
+          "evidenceIds": []
+        },
+        {
+          "gate": "G7",
+          "verdict": "INCONCLUSIVE",
+          "findings": [
+            "Snapshot integrity checked at replay; continuous drift monitoring and evolution approval not connected"
+          ],
+          "evidenceIds": []
+        }
+      ],
+      "bindings": [
+        {
+          "id": "e4-report",
+          "path": "lab\\results\\e4-live-20261108\\evaluation-replay\\evaluation.json",
+          "role": "report",
+          "document": "report",
+          "sha256": "2984427d78759af0c920c60daabc5b30ce95cc4f053f26ffa58aeb2453c94170",
+          "verifiedSha256": "2984427d78759af0c920c60daabc5b30ce95cc4f053f26ffa58aeb2453c94170",
+          "bytes": 20762
+        },
+        {
+          "id": "e4-qualification",
+          "path": "lab\\results\\e4-live-20261108\\qualification\\qualification.json",
+          "role": "qualification",
+          "document": "qualification",
+          "sha256": "53e17f1180d3da7b1ed611de21a930eefe2dccc603b33f1281866d2438636a52",
+          "verifiedSha256": "53e17f1180d3da7b1ed611de21a930eefe2dccc603b33f1281866d2438636a52",
+          "bytes": 23166
+        },
+        {
+          "id": "e4-observations",
+          "path": "lab\\results\\e4-live-20261108\\evaluation-replay\\observations.json",
+          "role": "raw",
+          "document": "observations",
+          "sha256": "f20b3736e60c5a67d8e107dc0d5a4ef74a33d423e7688ae19d6441479e614c6d",
+          "verifiedSha256": "f20b3736e60c5a67d8e107dc0d5a4ef74a33d423e7688ae19d6441479e614c6d",
+          "bytes": 5539
+        },
+        {
+          "id": "e4-cases",
+          "path": "lab\\contracts\\cases.json",
+          "role": "contract",
+          "document": "cases",
+          "sha256": "976d7127d30206e77bbef03fd84bb41d719311be9ea8b63eafd6f83e9c0449a1",
+          "verifiedSha256": "976d7127d30206e77bbef03fd84bb41d719311be9ea8b63eafd6f83e9c0449a1",
+          "bytes": 5352
+        },
+        {
+          "id": "e4-candidate",
+          "path": "lab\\results\\e4-live-20261108\\attempt-01\\candidate.json",
+          "role": "source",
+          "sha256": "70ef08921aa429b2c100c7be90def999617d29754f3e8ed93da9d427df56350c",
+          "verifiedSha256": "70ef08921aa429b2c100c7be90def999617d29754f3e8ed93da9d427df56350c",
+          "bytes": 2927
+        },
+        {
+          "id": "e4-live-source",
+          "path": "lab\\results\\e4-live-20261108\\evaluation-replay\\live.py",
+          "role": "source",
+          "sha256": "fdd1f0df519b4eb76e62270950580f0fb6c593d3bc3f6125bb472a19e47b9441",
+          "verifiedSha256": "fdd1f0df519b4eb76e62270950580f0fb6c593d3bc3f6125bb472a19e47b9441",
+          "bytes": 16062
+        },
+        {
+          "id": "e4-qualify-source",
+          "path": "lab\\results\\e4-live-20261108\\evaluation-replay\\qualify.py",
+          "role": "source",
+          "sha256": "f8f8690cfd7807e8361d460c2a030097c4a996e86211f8515792a0a313b7f197",
+          "verifiedSha256": "f8f8690cfd7807e8361d460c2a030097c4a996e86211f8515792a0a313b7f197",
+          "bytes": 14866
+        },
+        {
+          "id": "e4-qualified-source",
+          "path": "lab\\results\\e4-live-20261108\\qualification\\qualifier.py",
+          "role": "source",
+          "sha256": "f8f8690cfd7807e8361d460c2a030097c4a996e86211f8515792a0a313b7f197",
+          "verifiedSha256": "f8f8690cfd7807e8361d460c2a030097c4a996e86211f8515792a0a313b7f197",
+          "bytes": 14866
+        },
+        {
+          "id": "legacy-summary",
+          "path": "lab\\results\\azure-live-20261107\\runs\\core-azure-20261107-01-evidence\\results\\summary.json",
+          "role": "raw",
+          "sha256": "04070267a5d6e32ebe0bfb985ddbc16e945a7fa08fe17e7dc01e209a2e62e732",
+          "verifiedSha256": "04070267a5d6e32ebe0bfb985ddbc16e945a7fa08fe17e7dc01e209a2e62e732",
+          "bytes": 26090
+        },
+        {
+          "id": "legacy-observations",
+          "path": "lab\\results\\azure-live-20261107\\runs\\core-azure-20261107-01-evidence\\results\\none-observations.json",
+          "role": "raw",
+          "sha256": "f20b3736e60c5a67d8e107dc0d5a4ef74a33d423e7688ae19d6441479e614c6d",
+          "verifiedSha256": "f20b3736e60c5a67d8e107dc0d5a4ef74a33d423e7688ae19d6441479e614c6d",
+          "bytes": 5539
+        },
+        {
+          "id": "e4-protected-10",
+          "path": "lab\\contracts\\cases.sha256",
+          "role": "contract",
+          "sha256": "53fed8d38ef15bb4b2b7977cca8a4573608b347cb063999de0768cf75239826d",
+          "verifiedSha256": "53fed8d38ef15bb4b2b7977cca8a4573608b347cb063999de0768cf75239826d",
+          "bytes": 65
+        },
+        {
+          "id": "e4-protected-11",
+          "path": "lab\\Gate\\Gate.csproj",
+          "role": "contract",
+          "sha256": "38e201f047792df530db8c7d157c2b6b19d1ed2e4134dba5da5c59e97d3b0da2",
+          "verifiedSha256": "38e201f047792df530db8c7d157c2b6b19d1ed2e4134dba5da5c59e97d3b0da2",
+          "bytes": 211
+        },
+        {
+          "id": "e4-protected-12",
+          "path": "lab\\Gate\\Program.cs",
+          "role": "contract",
+          "sha256": "0f9fb37c8a7ae181fd93de1ca0f07a709009c15d43354858e8d073d9b9688093",
+          "verifiedSha256": "0f9fb37c8a7ae181fd93de1ca0f07a709009c15d43354858e8d073d9b9688093",
+          "bytes": 2545
+        },
+        {
+          "id": "e4-protected-13",
+          "path": "lab\\Candidate\\Candidate.csproj",
+          "role": "contract",
+          "sha256": "38e201f047792df530db8c7d157c2b6b19d1ed2e4134dba5da5c59e97d3b0da2",
+          "verifiedSha256": "38e201f047792df530db8c7d157c2b6b19d1ed2e4134dba5da5c59e97d3b0da2",
+          "bytes": 211
+        },
+        {
+          "id": "e4-protected-14",
+          "path": "lab\\Candidate\\Program.cs",
+          "role": "contract",
+          "sha256": "078d2d498397afa89e13c42ade72df90f4409717c2797eff3656722271cf3e4b",
+          "verifiedSha256": "078d2d498397afa89e13c42ade72df90f4409717c2797eff3656722271cf3e4b",
+          "bytes": 1075
+        },
+        {
+          "id": "e4-mutant-none",
+          "path": "lab\\results\\e4-live-20261108\\qualification\\none-observations.json",
+          "role": "raw",
+          "document": "qualification.none",
+          "sha256": "f20b3736e60c5a67d8e107dc0d5a4ef74a33d423e7688ae19d6441479e614c6d",
+          "verifiedSha256": "f20b3736e60c5a67d8e107dc0d5a4ef74a33d423e7688ae19d6441479e614c6d",
+          "bytes": 5539
+        },
+        {
+          "id": "e4-mutant-round-even",
+          "path": "lab\\results\\e4-live-20261108\\qualification\\round-even-observations.json",
+          "role": "raw",
+          "document": "qualification.round-even",
+          "sha256": "eb4b0051cb7dcb43607a2395f4f4cd913cf49f7df4550291c664a1f32c1f5307",
+          "verifiedSha256": "eb4b0051cb7dcb43607a2395f4f4cd913cf49f7df4550291c664a1f32c1f5307",
+          "bytes": 5539
+        },
+        {
+          "id": "e4-mutant-wrong-threshold",
+          "path": "lab\\results\\e4-live-20261108\\qualification\\wrong-threshold-observations.json",
+          "role": "raw",
+          "document": "qualification.wrong-threshold",
+          "sha256": "e3826fddef7f3df74192cb93a7a000c0e19146eb89418bc7f8deb7251941df20",
+          "verifiedSha256": "e3826fddef7f3df74192cb93a7a000c0e19146eb89418bc7f8deb7251941df20",
+          "bytes": 5541
+        },
+        {
+          "id": "e4-mutant-approve-inactive",
+          "path": "lab\\results\\e4-live-20261108\\qualification\\approve-inactive-observations.json",
+          "role": "raw",
+          "document": "qualification.approve-inactive",
+          "sha256": "111a7e61e66979acfbfd07bb3959b4a8df402c433cb656b74e792c33041a723c",
+          "verifiedSha256": "111a7e61e66979acfbfd07bb3959b4a8df402c433cb656b74e792c33041a723c",
+          "bytes": 5540
+        }
+      ],
+      "provenance": {
+        "campaign": "e4-live-20261108",
+        "ciRunId": null,
+        "ciRunIdReason": "Local replay of retained artifacts, not a GitHub Actions run."
+      },
+      "rawReportProvenance": {
+        "sourceCommit": "cc7ed4bea231a36103ea7f4987b5728091e27ee2",
+        "classification": "LIVE_MODEL_BUILDER_PILOT_NOT_E4_ACCEPTANCE",
+        "limitations": [
+          "One synthetic task, not a population success rate.",
+          "Container execution is local Linux/WSL; model inference is Azure.",
+          "No human-review timing or invoiced model cost was measured.",
+          "Containers share the host kernel. No arbitrary-code security certification.",
+          "Frozen-case agreement is not universal correctness or production authorization."
+        ]
+      }
+    }
+  ],
+  "manifestSha256": "e98b87c22dec2ffe99b50d58a5bf5f6b1b54183a30bc2a38a6cd9311217e08e0"
+}

@@ -1,5 +1,21 @@
 # Evidencias ejecutadas · E1 PostgreSQL y .NET 10
 
+## Índice de registros del 7–8 de noviembre de 2026 (Azure y TODM)
+
+Todos son **demostraciones acotadas, no aceptación**. Cada JSON declara su clasificación y sus límites; `evidence/claims.json` los vincula por SHA-256 con estado `demonstrated_not_accepted`.
+
+| Registro | Qué es | Qué no es |
+|---|---|---|
+| [azure-single-vm-2026-11-07.json](azure-single-vm-2026-11-07.json) | Core/E1/E2 ampliado/M2 en una VM aislada de North Europe; archivos crudos descargados y con hash | Capacidad, HA, equivalencia mainframe |
+| [e4-live-builder-2026-11-08.json](e4-live-builder-2026-11-08.json) | Una llamada real a un modelo (2.548 tokens) → candidato + 16 pruebas propias; evaluación aislada local | Un estudio de población; tiempo de revisión humana o coste facturado |
+| [azure-m1-2026-11-08.json](azure-m1-2026-11-08.json) | Perfiles M1 REST/gRPC loopback en la VM: 20.000 respuestas, cero errores | TPS bancario, TLS/WAN, ganador de transporte |
+| [e3-readiness-2026-11-08.json](e3-readiness-2026-11-08.json) | Control de solo lectura del contrato de capacidad: `INCONCLUSIVE / BLOCK`, 14 campos vacíos | Un experimento E3 ejecutado |
+| [azure-e1-e4-2026-11-08.json](azure-e1-e4-2026-11-08.json) | Repetición de E1/E2, ensayo exploratorio E3 con carga abierta (720 ofertas / 668 commits), reproducción E4 con Podman sin privilegios | Aceptación E3/E4; HA física; nueva inferencia del modelo |
+| [todm-azure-2026-11-08.json](todm-azure-2026-11-08.json) | Adaptador TODM en Azure sobre el paquete: 134 archivos, 108 vinculaciones, 4× PASS técnico, entrega BLOCK | TODM certificado; aprobación de negocio o de entrega |
+| [azure-cli-2026-11-08/capture.json](azure-cli-2026-11-08/capture.json) | Seis salidas de `az` de solo lectura con fecha y hash (despliegue, VM, VMSS, almacenamiento) | Evidencia de carga o de corrección |
+
+Las campañas ejecutadas, logs crudos y recibos de los ZIP inmutables están en `evidence/archives/preserved-dist/` y `lab/results/` (ignorados); [`docs/DIST_MANIFEST.md`](../../docs/DIST_MANIFEST.md) lista nombres de archivo y SHA-256 para que un lector pueda verificar una copia.
+
 **Evidencia original C2:** [procedencia y límites en español](BROWNFIELD-JOURNAL.es.md) · [observaciones extraídas del log](brownfield-c2-pr66-ci-log-extracted.json). Ensayo sintético parcial; los negativos de UNKNOWN/bypass son intencionados, G6=BLOCK.
 
 **Edición experimental**, no resultados de benchmark ni equivalencia con un mainframe. Los JSON que acompañan esta página se extrajeron del bloque de resultados de las ejecuciones **reales** de GitHub Actions. No son capturas reconstruidas ni ejemplos sintéticos del informe.

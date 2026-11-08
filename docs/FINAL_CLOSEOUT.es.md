@@ -4,6 +4,8 @@
 
 > **Cerrar la edición no es obtener un PASS científico ni aprobar un despliegue.** Cerramos una edición acotada y reproducible del libro y laboratorio por decisión del autor. Toda validación incompleta o no ejecutada queda **excluida expresamente**, no se transforma en éxito.
 
+> **Estado posterior (8 de noviembre de 2026).** Este acta es un registro fechado y no se reescribe. Después de ella se ejecutaron demostraciones acotadas en una sola VM de Azure, registradas con procedencia: un ensayo exploratorio E3 de ledger con carga abierta, una reproducción aislada E4 de una respuesta real de un modelo, repetición de E1/E2, M1 y una reproducción del adaptador TODM sobre todo el paquete. Sus estados en [`evidence/claims.json`](../evidence/claims.json) son `demonstrated_not_accepted`; las filas E3/E4 de abajo siguen siendo exactas en cuanto a *aceptación*. Las filas vigentes están en la [matriz de evidencia](EVIDENCE.es.md).
+
 ## Qué entregamos
 
 - Manuscrito completo en español e inglés con capítulos, anexos, diagramas, alternativas arquitectónicas y ediciones Markdown/PDF.

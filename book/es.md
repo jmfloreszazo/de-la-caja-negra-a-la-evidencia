@@ -4,7 +4,7 @@
 
 **Modernizar COBOL más allá de la traducción: agentes de IA, patrones de arquitectura, transacciones y oráculos verificables**
 
-José María Flores Zazo · v2026.10.29 · **Español** · [English](en.md)
+José María Flores Zazo · [jmfloreszazo.com](https://jmfloreszazo.com) · v2026.10.29 · **Español** · [English](en.md)
 
 > [!NOTE]
 > Este fichero es el libro completo en una sola página. Se genera a partir de los capítulos de [`book/es/`](es/README.md) con `python3 scripts/build.py`: para proponer cambios, edita los capítulos, no este fichero.
@@ -28,6 +28,7 @@ José María Flores Zazo · v2026.10.29 · **Español** · [English](en.md)
   - [Capítulo 9 · De la autoridad del agente a la autoridad de la regla](#capítulo-9--de-la-autoridad-del-agente-a-la-autoridad-de-la-regla)
 - [Parte III · Oráculos: el derecho a aceptar](#parte-iii--oráculos-el-derecho-a-aceptar)
   - [Capítulo 10 · TODM y el problema de aceptar lo que construimos](#capítulo-10--todm-y-el-problema-de-aceptar-lo-que-construimos)
+  - [Capítulo 10 bis · Aplicar TODM: modelos, herramientas y ADR](#capítulo-10-bis--aplicar-todm-modelos-herramientas-y-adr)
   - [Capítulo 11 · La arquitectura de una modernización verificable](#capítulo-11--la-arquitectura-de-una-modernización-verificable)
   - [Capítulo 12 · COBOL y C# deben acordar el significado](#capítulo-12--cobol-y-c-deben-acordar-el-significado)
 - [Parte IV · Patrones que sustituyen responsabilidades, no sintaxis](#parte-iv--patrones-que-sustituyen-responsabilidades-no-sintaxis)
@@ -70,6 +71,7 @@ José María Flores Zazo · v2026.10.29 · **Español** · [English](en.md)
   - [Anexo E · Catálogo de cien riesgos](#anexo-e--catálogo-de-cien-riesgos)
   - [Anexo F · Glosario operativo](#anexo-f--glosario-operativo)
   - [Anexo G · Fuentes y alcance de la investigación](#anexo-g--fuentes-y-alcance-de-la-investigación)
+  - [Anexo H · Más allá de COBOL](#anexo-h--más-allá-de-cobol)
 
 ## Convenciones
 
@@ -123,7 +125,24 @@ Un responsable de tecnología encontrará criterios para delimitar una moderniza
 
 Se puede leer en orden o por partes. Si vienes con prisa por el rendimiento, la parte V es autocontenida. Si quieres ver primero el código, empieza por la parte VI y el anexo [A](#anexo-a--un-laboratorio-que-pueda-contradecirnos) y vuelve después a las razones. Si tienes que defender un presupuesto, los capítulos [33](#capítulo-33--plan-de-modernización-primero-una-prueba-de-capacidad-después-una-apuesta), [35](#capítulo-35--cuándo-no-migraría) y [37](#capítulo-37--el-nuevo-contrato-de-modernización) están escritos para eso.
 
-Las referencias numeradas entre corchetes remiten al anexo [G](#anexo-g--fuentes-y-alcance-de-la-investigación). El código completo, los comandos y los resultados de referencia están en el laboratorio adjunto. La fecha de revisión de esta edición es el 29 de octubre de 2026.
+Las referencias numeradas entre corchetes remiten al anexo [G](#anexo-g--fuentes-y-alcance-de-la-investigación). El código completo, los comandos y los resultados de referencia están en el laboratorio adjunto. El identificador de primera edición es del 29 de octubre de 2026; la [release de archivo de la investigación](../docs/releases/v2026.11.05.md) conserva el cierre posterior del 5 de noviembre sin convertir los experimentos parciales en resultados aceptados.
+
+### Autoría y responsabilidad
+
+Este libro está escrito por **José María Flores Zazo**, autor de [jmfloreszazo.com](https://jmfloreszazo.com). Los argumentos en primera persona y las decisiones editoriales pertenecen al autor. Las herramientas utilizadas para preparar, traducir o comprobar el material no adquieren autoría ni autoridad para aprobar sus conclusiones.
+
+### Leer no es lo mismo que reproducir
+
+Distingo cuatro cosas que el lector puede comprobar. Ninguna sustituye a la siguiente:
+
+| Alcance | Punto de entrada para reproducir | Qué acredita un resultado satisfactorio |
+|---|---|---|
+| Manuscrito y figuras | [Comprobaciones del repositorio](../README.es.md#reproducir-por-alcance) y [generación del PDF](../docs/PDF.md) | Estructura emparejada, texto generado al día y una edición que se puede construir; no una aprobación editorial completa ni PDF idénticos byte a byte |
+| Ejecución de referencia conservada | [Comprobaciones del laboratorio solo con Python](../lab/README.md#checks-you-can-run-with-python-only) | Hashes del contrato original, 58 expectativas recalculadas independientemente y comprobaciones contables sobre bases históricas; no una nueva ejecución COBOL/.NET |
+| Ejecución sintética nueva | [Protocolo de reproducción por host](../lab/docs/HOST_REPRODUCTION.md) | El recorrido indicado y su auditoría independiente en un host e imagen registrados; no todos los experimentos del repositorio |
+| Experimentos ampliados | [Matriz de evidencia](../docs/EVIDENCE.es.md) y el procedimiento de cada experimento | Solo la carga, el entorno, los controles y el veredicto observado que se registran; ninguna equivalencia con mainframe, Azure o producción por inferencia |
+
+Para obtener un resultado reproducible, conserva el commit exacto del código, los cambios locales si los hay, las versiones de las herramientas, el comando, el código de salida, la salida cruda y el oráculo independiente. Conserva también los intentos fallidos. Un runtime ausente o una plataforma no ejecutada son limitaciones que se deben comunicar, no una reproducción satisfactoria. E1/E2 siguen parcialmente verificados. E3 y E4 cuentan con demostraciones acotadas en una sola VM de Azure (capítulos 25 bis y 29) registradas como `demonstrated_not_accepted`: ejecuciones reales, no estudios de aceptación.
 
 ## Parte I · Antes de traducir
 
@@ -793,6 +812,58 @@ También necesitamos controles limpios. Un gate que bloquea todo detecta cada de
 
 La cualificación es siempre relativa a un conjunto de amenazas y casos. Superar esos controles aumenta la confianza en ese alcance. No demuestra que no exista una forma diferente de engañar o romper el evaluador.
 
+#### TODM dentro del proceso ejecutable de validación
+
+El [adaptador de validación del libro](../lab/todm_validation/README.md)
+fija sus referencias metodológicas al [commit `61354abc` de TODM](https://github.com/jmfloreszazo/TODM/tree/61354abc03e73fbf258b6e8d66e35678da134ef8).
+Vincula inventarios explícitos de contratos, fuentes y observaciones mediante
+huellas SHA-256, y comprueba después la evidencia registrada de E1–E4. No basta
+un nombre de archivo ni un informe que diga `PASS`: entradas ausentes o alteradas
+bloquean el resultado, y las operaciones ofrecidas en E3 deben reconciliarse
+con el ledger persistido.
+
+La salida separa G0–G7, verificación técnica, cualificación del oráculo y
+autorización de entrega. G2 no puede convertirse en aprobación humana porque
+un agente escriba `approved: true`; G6 sigue bloqueado sin autoridad independiente
+fiable. El adaptador reutiliza la semántica de mandatos de la demostración
+original fijada para controles sintéticos de principal, ámbito, acción, tiempo
+y revocación, con su atribución MIT. No es un motor TODM productivo, un proveedor
+de identidad ni una implementación certificada de los cinco perfiles inspirados
+en OMG.
+
+La integración encontró una carencia real: el primer paquete E3 declaraba
+hashes de binarios de ejecución sin incluir todos esos bytes originales. Su
+validación falló. Se recuperaron los artefactos ausentes del árbol de compilación
+conservado en Azure, comparando sus hashes registrados, **sin recompilarlos y
+sustituirlos**. Un paquete nuevo incorpora esa recuperación separada; el paquete
+incompleto y su veredicto fallido permanecen intactos. Para eso se introduce la
+metodología en el proceso: la evidencia incompleta sigue siendo incompleta hasta
+aportar realmente la prueba que falta.
+
+Los controles negativos ejercitan bytes alterados, evidencia ausente, invariantes
+contables falsas e intentos de aprobar mediante entradas no confiables. Superarlos
+cualifica este adaptador frente a esos casos; no demuestra independencia
+organizativa, eficacia industrial ni superioridad sobre otros métodos. La
+comparación Golden Master del libro sigue caracterizando el comportamiento
+observado del legado, separada de la verdad de negocio con autoridad responsable.
+
+##### Resultado observado en Azure
+
+La [reproducción TODM registrada](../evidence/runs/todm-azure-2026-11-08.json)
+verificó 134 archivos del snapshot y 108 vinculaciones de artefactos en la VM
+Azure. Pasaron las cuatro evaluaciones técnicas acotadas, junto con ocho controles
+negativos sobre entradas reales y doce casos sintéticos de mandatos originales.
+El veredicto metodológico global siguió en `INCONCLUSIVE` y la entrega en
+`BLOCK`. No es una contradicción: la evidencia técnica estaba completa para
+esas comprobaciones, pero no se había aportado aprobación responsable de negocio.
+
+El primer comando de cualificación en Azure utilizó un directorio de salida
+no admitido, fuera de la raíz del paquete; su fallo se conservó antes de una
+repetición separada con la estructura documentada. Ni reparar el inventario de
+evidencia ni superar la repetición reescribió observaciones anteriores. La VM
+quedó desasignada tras descargar las pruebas; no se lanzó ningún workflow de
+GitHub ni una entrega productiva.
+
 #### Un ejemplo de fallo que debe cerrar el gate
 
 El sistema COBOL calcula 0,5 % de comisión con una regla de redondeo específica. El agente traduce a C# usando la opción de redondeo habitual de su biblioteca. En 99 casos los resultados coinciden. En el centésimo, el punto medio resulta diferente. El compilador y los tests unitarios del candidato pasan. Un oráculo aprobado con un caso límite debe rechazarlo. Más adelante, el gate de concurrencia rechaza un método que produce el importe correcto aislado pero permite dos retiradas sobre el mismo saldo. Finalmente, el gate de rendimiento rechaza una arquitectura correcta que incumple la ventana batch.
@@ -812,6 +883,136 @@ Ese detalle final es el que me importa para COBOL. En el laboratorio, la baselin
 *Figura 10.2 · Cuando el constructor intenta editar el criterio que lo juzga, el ancla externa lo detecta.*
 
 > **Un oráculo vale más que un revisor. Y un oráculo que el constructor puede editar no vale nada.**
+
+### Capítulo 10 bis · Aplicar TODM: modelos, herramientas y ADR
+
+> [!IMPORTANT]
+> **Tesis del capítulo.** Documentar las decisiones para que otra persona pueda inspeccionarlas, ejecutarlas y cuestionarlas. Un diagrama explica una afirmación; un oráculo cualificado la comprueba; una aprobación responsable la autoriza. Ninguno sustituye a los otros dos.
+
+#### La fuente de verdad es una baseline gobernada, no un formato
+
+En una migración COBOL quiero que el equipo futuro sepa qué significa una capacidad, por qué existe una frontera arquitectónica y qué observaciones justifican cambiarla. El código por sí solo no responde a las tres preguntas. Tampoco una colección de diagramas se vuelve autoritativa por guardarse junto al código.
+
+Una baseline útil identifica capacidad, vocabulario, reglas, excepciones, obligaciones operacionales, evidencia de origen, responsable, versión y ámbito de aprobación. Una observación del legado demuestra qué ocurrió, no concede automáticamente permiso para conservar un defecto. El modelo propuesto por un agente sigue siendo una propuesta aunque su sintaxis valide. Si política y comportamiento observado discrepan, hay que registrar el conflicto y obtener la decisión de negocio antes de tratar cualquiera de ellos como verdad aceptada.
+
+La baseline debe identificar los bytes exactos del modelo y la versión del evaluador. Su hash detecta cambios frente a una referencia conservada independientemente; un manifiesto editable junto a modelos editables no autentica al responsable. Por eso el [adaptador TODM](../lab/todm_validation/README.md) distingue evaluación técnica, aprobación de baseline G2 y autorización de entrega G6. Los experimentos pueden superar sus controles técnicos mientras esas aprobaciones siguen sin estar disponibles.
+
+#### Dar a cada artefacto una función concreta
+
+| Artefacto | Pregunta que responde | Qué no demuestra por sí solo |
+|---|---|---|
+| Vocabulario y reglas de estilo SBVR | Qué significan «disponible», «contabilizado» y «aceptado» | Que un parser implemente toda la semántica SBVR |
+| Tabla de decisión DMN | Qué resultado corresponde a unas entradas y precedencia de reglas | Transacciones, finalización de procesos o aprobación de negocio |
+| Modelo de proceso BPMN | Qué actividades, decisiones y fronteras forman el proceso | Que un dibujo XML sea un workflow ejecutado o una transacción durable |
+| Modelo de casos CMMN | Qué trabajo discrecional y evidencia completan un caso prolongado | Una traza fija para cualquier caso posible |
+| Restricciones de estilo OCL o invariantes matemáticas | Qué estados o relaciones están prohibidos | Cobertura de toda excepción y fallo del entorno |
+| ADR | Por qué se eligió una opción arquitectónica y con qué compromisos | El contrato observable de negocio o permiso para desplegar |
+| Golden Master y trazas operacionales | Qué hizo realmente el sistema existente | Que ese comportamiento sea la regla que debemos conservar |
+
+Hay que usar el conjunto mínimo que haga revisable la capacidad. Una comisión puede necesitar vocabulario, tabla de decisión y ejemplos. Una reclamación de pagos quizá requiera además proceso, modelo de casos y reconciliación de efectos externos. Añadir los cinco estándares por defecto crea trabajo de mantenimiento sin aportar necesariamente más evidencia.
+
+#### Las herramientas del repositorio y sus límites
+
+El [kit de modelos de decisión](../lab/decision_models/README.md) proporciona perfiles ejecutables deliberadamente acotados para tablas de decisión y trazas de procesos, además de ejemplos de trazabilidad de baseline y ADR. Su README define esquema, operadores y comandos admitidos. No son motores completos DMN/FEEL o BPMN. En particular, un comprobador de trazas lineales no debe certificar tokens BPMN concurrentes, compensación, entrega de mensajes o recuperación transaccional.
+
+El [adaptador de evidencia TODM](../lab/todm_validation/README.md) hace otro trabajo. Vincula un inventario explícito de artefactos con sus bytes conservados, examina observaciones específicas de cada experimento, emite registros G0–G7 y separa la autoridad de entrega. Sus controles negativos cuestionan evidencia ausente, bytes alterados, invariantes falsas y campos de aprobación no confiables. No deduce la verdad del dominio de una etiqueta `PASS`.
+
+El [harness constructor aislado](../lab/e4_agents/README.md) limita la ejecución del candidato y compara sus pruebas con controles reservados y mutantes conocidos. El [operador Azure](../infra/experiments/README.md) gestiona exportación de fuentes, ejecución, recogida de evidencia y apagado consciente del coste. El [colector CLI de solo lectura](../scripts/azure/capture-book-evidence.ps1) registra el estado desplegado. Ninguna de estas herramientas concede a otra autoridad para aprobar reglas de negocio.
+
+#### De una capacidad COBOL a una obligación ejecutable
+
+Empezaría por una operación de negocio identificada, no por la frontera de un fichero fuente. En el cálculo de comisiones hay que definir unidades del importe y de la tasa, actividad, entradas inválidas, redondeo en el punto medio y umbral de revisión. En una transferencia también identidad de operación, reglas de débito concurrente, conservación del ledger, atomicidad del outbox y significado de un reconocimiento ambiguo.
+
+Separaría tres inventarios:
+
+1. **Propuestas normativas:** vocabulario, tablas, obligaciones de proceso y restricciones pendientes de revisión.
+2. **Caracterización:** ejemplos y trazas autorizados del sistema existente, con entorno e incertidumbre.
+3. **Decisiones:** reglas y opciones arquitectónicas aceptadas, con responsables y ámbito preciso.
+
+Antes de permitir cambios de implementación al constructor, hay que convertir una obligación aprobada en resultados esperados independientes. Se mantienen casos frontera: umbral exacto, justo por encima, punto medio de redondeo, representación inválida, cuenta inactiva y reintento tras respuesta incierta. En trazas de proceso se incluyen orden válido y pasos ausentes, duplicados o desordenados. En ledgers se inspecciona el estado persistido por separado: la respuesta exitosa del candidato no demuestra atomicidad.
+
+Una tabla DMN puede decidir si una solicitud necesita revisión. BPMN puede explicar dónde ocurre esa revisión. El diseño transaccional todavía debe decir si el dinero está reservado, contabilizado o intacto mientras espera. Esa frontera corresponde a un ADR y a pruebas ejecutables de fallos, no a una suposición sobre el diagrama.
+
+##### Una decisión y un proceso ejecutables pequeños
+
+Desde la raíz del repositorio se valida el ejemplo y se evalúa su caso de punto medio:
+
+```bash
+python3 lab/decision_models/toolkit.py validate lab/decision_models/examples/fee-decision.json
+python3 lab/decision_models/toolkit.py evaluate lab/decision_models/examples/fee-decision.json --input lab/decision_models/examples/fee-input.json
+```
+
+La salida registrada incluye `status: PASS`, `feeCents: 1`,
+`resultCode: APPROVE` y `productionApproved: false`. La aritmética exacta y una
+política explícita de redondeo importan más que una tabla visualmente convincente.
+`FIRST` usa el orden declarado; `UNIQUE` rechaza una entrada que coincide con
+varias reglas. Son perfiles JSON limitados inspirados en DMN, no DMN XML ni un motor FEEL.
+
+Se comprueba la traza secuencial y después se presenta deliberadamente su variante inválida:
+
+```bash
+python3 lab/decision_models/toolkit.py check-trace lab/decision_models/examples/fee-process.json --input lab/decision_models/examples/fee-trace.json
+python3 lab/decision_models/toolkit.py check-trace lab/decision_models/examples/fee-process.json --input lab/decision_models/examples/fee-trace-invalid.json
+```
+
+El primer comando termina con 0; el control negativo, con 1. Es un rechazo
+esperado, no una razón para quitar el control de la documentación. El comprobador
+no implementa pasarelas paralelas, semántica de tokens ni intercambio BPMN XML.
+Sus transiciones limitadas hacen comprobable solo la traza declarada.
+
+Por último se verifican los hashes de modelos y ADR de la baseline, o se exporta
+el perfil de decisión como JSON determinista:
+
+```bash
+python3 lab/decision_models/toolkit.py check-baseline lab/decision_models/examples/baseline.json --root lab/decision_models
+python3 lab/decision_models/toolkit.py export lab/decision_models/examples/fee-decision.json
+```
+
+La baseline vincula los bytes del ADR de ejemplo; no autentica aprobación. La
+exportación es JSON del perfil local, no canonicalización RFC 8785 ni intercambio
+certificado. El [registro de ejemplos ejecutados](../lab/decision_models/examples/demo-run.json)
+y 21 pruebas unitarias separan comportamiento admitido de ampliaciones futuras.
+
+#### Los ADR conservan razones que los modelos no expresan
+
+Un ADR es un registro breve y versionado de una decisión arquitectónica. Se conservan estado, contexto, alternativas, decisión, consecuencias, obligaciones de validación y enlaces a registros sustituidos. Debe identificarse quién responde de aceptar el compromiso; no hay que inventar fecha de aprobación o nombre para completar la plantilla.
+
+En una migración COBOL son útiles ADR sobre ledger autoritativo, representación decimal, frontera de codificación, clave de idempotencia, límite transaccional, cierre de escritores en origen, restricciones de corte y vuelta atrás, modelo de consistencia y topología de despliegue. Cada decisión se vincula a una capacidad y a evidencia. Un ADR que elige outbox está incompleto si no define las obligaciones ante duplicados y de reconciliación.
+
+Una cadena práctica de trazabilidad va de la capacidad de negocio a la revisión de deriva, con la aprobación como paso separado después del veredicto:
+
+![Figura 10 bis.1 · La cadena de trazabilidad: la aprobación es un paso separado tras el veredicto, y la deriva devuelve a la regla.](figures/es/traceability_chain.png)
+
+*Figura 10 bis.1 · La cadena de trazabilidad: la aprobación es un paso separado tras el veredicto, y la deriva devuelve a la regla.*
+
+Cambiar un elemento no aprueba silenciosamente el siguiente. Si un ADR pasa de contabilización síncrona a procesamiento diferido, se revisan modelo de proceso, contrato de consistencia, presupuesto de latencia, oráculo y plan de migración. La baseline anterior se conserva y se explica qué la sustituye. El [anexo de decisiones arquitectónicas](#anexo-d--decisiones-de-arquitectura) aporta el contexto del libro; las plantillas del kit convierten esa disciplina en artefactos reutilizables de proyecto.
+
+#### Ejecutar la evidencia sin concederse aprobación
+
+Desde la raíz de un paquete portable capturado se utiliza una ruta de salida nueva:
+
+```bash
+python3 adapter/lab/todm_validation/validate.py --manifest manifest.json --root . --output validation-new.json
+python3 adapter/lab/todm_validation/qualify_bundle.py --root . --output qualification-new
+```
+
+La salida de cualificación está dentro de la raíz porque sus mutaciones controladas se referencian respecto de ella. Esa salida nueva se conserva separada de las observaciones originales. Para los ejemplos de modelos se consulta el README del kit; hay que usar su CLI y esquema reales, no considerar los listados del capítulo una especificación sustitutiva.
+
+Se revisan cuatro cosas en orden: si las entradas están completas y vinculadas al fuente previsto, qué observó el oráculo independiente, si la cualificación detectó las amenazas declaradas y quién tiene autoridad para aprobar baseline y entrega. Un `PASS` técnico responde solo a lo implementado por ese evaluador. `INCONCLUSIVE` y `BLOCK` deben seguir visibles cuando el resultado llega a las personas.
+
+#### Qué aportó la demostración de Azure
+
+La [campaña TODM ejecutada](../evidence/runs/todm-azure-2026-11-08.json) comprobó en Azure 134 archivos del snapshot y 108 vinculaciones de artefactos. Sus controles técnicos E1–E4 pasaron con ocho controles negativos sobre entradas reales y doce casos sintéticos de mandatos; la metodología quedó inconclusa y la entrega bloqueada. Primero rechazó la ausencia de bytes originales de ejecución E3. Recuperar los binarios coincidentes del árbol de compilación conservado reparó el inventario sin reescribir el paquete fallido.
+
+Es una demostración útil del proceso, no una prueba de eficacia industrial. No autenticamos una aprobación real de negocio, implementamos todos los estándares de modelado ni comparamos resultados organizativos entre migraciones. Las [salidas CLI de Azure](../evidence/runs/azure-cli-2026-11-08/capture.json) muestran además estado de recursos, no rendimiento ni corrección semántica.
+
+#### Adaptar las herramientas sin debilitar la afirmación
+
+Para adaptar un perfil se declara primero la característica semántica que falta. Se añade su esquema y comportamiento del evaluador, y después casos independientes positivos, negativos e incompletos. Se conservan fixtures anteriores y compatibilidad, o se declara una nueva versión del perfil. No se interpreta silenciosamente un operador desconocido como falso, se omite una tarea extraña ni se eleva un modelo sintácticamente válido a baseline aprobada.
+
+Si el proyecto necesita ejecución DMN o BPMN completa, se selecciona un motor conforme para la versión y características requeridas, se registra la selección en un ADR y se cualifica su configuración exacta. Se siguen verificando resultados de negocio fuera de la implementación. Las referencias a SBVR, CMMN y OCL no afirman que este repositorio implemente esos motores.
+
+El [anexo final sobre otros lenguajes](#anexo-h--más-allá-de-cobol) separa método reutilizable de prueba específica de cada lenguaje. La inversión durable no es un formato de diagrama ni un lenguaje: es una cadena mantenida desde la regla con autoridad hasta el resultado observable.
 
 ### Capítulo 11 · La arquitectura de una modernización verificable
 
@@ -2039,7 +2240,7 @@ El criterio de elección no es cuál gana una prueba aislada. Es cuál satisface
 
 > **Tesis.** No se sustituye un mainframe con una máquina de más núcleos. Se sustituye un servicio operacional completo: procesamiento transaccional, I/O, aislamiento, commit duradero, continuidad y respuesta desde una oficina situada quizá a miles de kilómetros. La equivalencia es una prueba de extremo a extremo, no una comparación de fichas comerciales.
 
-Este capítulo complementa el [capítulo 25](#capítulo-25--azure-o-una-máquina-enorme-en-el-cliente) con referencias comerciales identificables y un protocolo para falsar el diseño. **Datos de producto consultados en octubre de 2026; resultados de rendimiento propios frente a esos equipos: ninguno.**
+Este capítulo complementa el [capítulo 25](#capítulo-25--azure-o-una-máquina-enorme-en-el-cliente) con referencias comerciales identificables y un protocolo para falsar el diseño. **Datos de producto consultados en octubre de 2026; resultados de rendimiento propios frente a esos equipos: ninguno.** Lo que *sí* hemos medido —en una VM de Azure, con carga sintética— se describe en sus propias secciones después del protocolo de comparación, para que el lector no lo confunda con esa comparación.
 
 #### Equipos reales, números reales y una comparación que todavía no podemos hacer
 
@@ -2135,6 +2336,30 @@ El [ensayo ejecutado M1](../evidence/runs/M1.es.md) comparó gRPC/Protobuf y RES
 
 La [evidencia M2 ejecutada](../evidence/runs/M2.es.md) conecta **REST y gRPC al mismo ledger PostgreSQL durable**. Sobre un runner compartido, la serie de 20 casos (1/2/4/8/16 procesos, dos protocolos, tráfico uniforme y cuenta caliente) produjo **20 PASS contables**: 256 commits, 512 asientos y 256 eventos outbox por caso. Los procesos adicionales **no aceleraron el sistema**; a 16 procesos la carga competía por una CPU pequeña y una única BD. El gráfico y todos los valores están conservados en el repositorio. **No lo confundamos con un benchmark Azure**: faltan nodos independientes, TLS, carga abierta y fallos de red.
 
+##### Primero reproducir, después desplegar y después medir capacidad distribuida
+
+La [infraestructura de experimentos y su guía de ejecución](../infra/experiments/README.md) separan esos tres pasos. Los mismos ensayos del laboratorio base, PostgreSQL E1, Orleans funcional E2 y M2 pueden ejecutarse localmente o en un runner Azure, conservando logs, resultados del oráculo independiente y procedencia del entorno. **La infraestructura Bicep solo se ha compilado y comprobado localmente; no se ha desplegado ni medido en Azure.**
+
+La plantilla prepara redes privadas, almacenamiento de evidencias y un VM Scale Set con 0/1/2/4/8/16 instancias. Aprovisionar instancias **no** instala réplicas distribuidas de la aplicación. El PostgreSQL administrado opcional no es la base desechable que destruyen las pruebas funcionales. La aceptación real de E3 sigue necesitando un contrato de capacidad aprobado, TLS equivalente, nodos separados para servicios y generador de carga, tráfico abierto, recuperación N-1 y costes medidos. Un PASS local reproducible solo demuestra los controles que realmente ha ejecutado.
+
+El **7 de noviembre de 2026**, una [nueva reproducción local](../evidence/runs/local-reproduction-2026-11-07.json) sobre WSL/Docker superó 11 controles PostgreSQL/Python, 10 controles .NET, 16 casos de paridad secuencial y la matriz funcional de ocho casos y 960 transferencias. El ensayo Orleans co-localizado superó siete controles funcionales; M2 superó los 20 escenarios con 256 commits cada uno. Los oráculos independientes rechazaron la corrupción deliberada del ledger. Se conservan tres intentos fallidos del lanzador junto con las repeticiones correctas, en lugar de borrarlos. Esta campaña no ejecutó GitHub Actions ni Azure y no completa la aceptación de E1–E4; sus logs, volcados y parches de código completos se conservan en un archivo local de evidencias.
+
+Una [campaña E2 local posterior](../evidence/runs/local-e2-cluster-2026-11-07.json) superó también el ensayo de deadlock real, seis ejecuciones comparables de carga con 600 transferencias durables y los controles de terminación real del proceso. Dos procesos de silo separados y un cliente externo recuperaron la operación tras matar el secundario, tanto con membresía de desarrollo como con ADO.NET sobre PostgreSQL. Otros dos casos ejercitaron la terminación antes e inmediatamente después del COMMIT SQL. El oráculo SQL independiente pasó tras la recuperación. **Son observaciones reales de fallo de procesos sobre un único host físico, no HA entre nodos físicos, un SLA de recuperación de producción ni la aceptación final de E2.**
+
+Una [cualificación local del prerrequisito de E4](../evidence/runs/local-e4-qualification-2026-11-07.json) ejercitó después 58 casos congelados por candidato en contenedores separados, sin usuario raíz ni red. El gate independiente aceptó el candidato de referencia y rechazó los tres mutantes conocidos: redondeo, umbral y aprobación de cuentas inactivas. Se denegaron tres intentos reales de escritura sobre el contrato original, el verificador y el sistema de archivos raíz del contenedor; la escritura en el directorio desechable del candidato sí funcionó. Los hashes de las fuentes protegidas no cambiaron. El [arnés de reproducción](../lab/e4_agents/README.md) conserva el código exacto del supervisor, las inspecciones de los contenedores y las observaciones COBOL reales reutilizadas del ensayo básico anterior; no inventa una nueva ejecución COBOL. También pasaron trece controles de regresión sintéticos separados.
+
+**Esto es evidencia de un prerrequisito, no la aceptación de E4.** No se invocó ningún agente ni modelo real, y no se midieron tasas de defectos aceptados, falsos bloqueos, tiempo de revisión humana ni coste de modelos. El gate mantiene la autoridad `DEMO_ONLY / SIMULATED_ALLOW` para el candidato correcto y bloquea los mutantes; no autoriza un despliegue de producción. Los contenedores comparten el kernel del host y esta campaña solo ejecutó las fuentes de referencia y los mutantes conocidos, no código arbitrario generado por modelos.
+
+El repositorio también incluye un [recolector de campañas locales](../lab/tools/reproduce_campaign.py), con [instrucciones de preparación](../lab/README.md#reproduce-the-local-multi-experiment-campaign). Una [invocación completa registrada](../evidence/runs/local-public-campaign-2026-11-07.json) superó el ensayo básico, E1 sobre PostgreSQL, E2 ampliado, M2 y el prerrequisito de E4, conservando los hashes de 331 archivos fuente y verificando 226 artefactos capturados. Así se puede reproducir la secuencia sin los ayudantes particulares de la sesión del autor:
+
+```bash
+python3 lab/tools/reproduce_campaign.py \
+  --engine docker --output lab/results/campaign-001
+python3 lab/tools/reproduce_campaign.py --verify lab/results/campaign-001
+```
+
+El comando normal requiere fuentes del laboratorio sin cambios pendientes. Para cambios locales no publicados, se añade expresamente `--include-working-tree`: el recolector guarda la instantánea del código ejecutado por separado del commit base. Cada etapa se ejecuta en una copia temporal nueva sobre el sistema de archivos de Linux; los intentos fallidos se conservan, no se sobrescriben. La integridad de los artefactos no convierte un ensayo fallido en correcto ni los controles locales en aceptación sobre Azure. SQL Server sigue siendo opcional y requiere aceptar su licencia por separado.
+
 #### Precios fechados y TCO: que no nos engañe el precio por vCPU
 
 La consulta oficial realizada **el 29-10-2026 a las 18:26 UTC**, en West Europe (Linux, consumo, EUR orientativo), devolvió **D4as_v5 0,1830 €/h**, **D4s_v5 0,2024 €/h** y **D8as_v5 0,3661 €/h**. Esto implica **400,77 €/mes** de cómputo para tres D4as_v5 durante 730 horas, frente a **801,54 €/mes** para seis, siempre sin BD, discos, redes o alta disponibilidad. Los medidores, `effectiveStartDate` y fuente CI están en el registro enlazado.
@@ -2161,9 +2386,130 @@ El ensayo se debe ejecutar con carga **online + batch**, claves calientes, repli
 
 La aceptación exige equivalencia de **resultados de negocio, finalización durable, recuperación y latencia percibida**, no solo TPS. Una red rápida sin un ledger correcto no sirve; un ledger correcto con pantallas inaceptables tampoco.
 
+#### Demostración ejecutada en Azure: evidencia, no una afirmación de capacidad
+
+La [primera campaña real en Azure](../evidence/runs/azure-single-vm-2026-11-07.json) desplegó los Bicep en un grupo de recursos exclusivo de la suscripción autorizada por el autor. West Europe rechazó nuevos recursos para esa suscripción aunque hubiera cuota de vCPU disponible. Se conservó la validación fallida; North Europe superó la validación ARM y el What-If, con 17 creaciones y ninguna modificación ni eliminación de recursos existentes. El ejecutor real fue una VM privada `Standard_D4s_v5`, con Podman, PostgreSQL 16.13, SDK .NET 10.0.100 y GnuCOBOL 3.1.2. El VMSS tenía cero trabajadores.
+
+Lo siguiente son **observaciones ejecutadas**, no pruebas previstas ni infraestructura simulada:
+
+- **Ensayo básico:** 58 casos COBOL/.NET y diez controles del gate. Tras descargar las bases SQLite originales, la auditoría independiente del host aceptó nueve bases correctas y rechazó la corrompida deliberadamente. El mutante de redondeo quedó bloqueado en `C003`.
+- **E1 PostgreSQL:** pasaron 11 controles Python, diez controles .NET, 16 casos de paridad secuencial y la matriz de ocho casos y 960 transferencias. El oráculo independiente del ledger rechazó la corrupción deliberada de apuntes.
+- **E2:** seis ejecuciones comparables de carga confirmaron 600 transferencias. Dos procesos de silo y un cliente separado recuperaron la operación tras un `SIGKILL` real del proceso secundario, tanto con membresía de desarrollo como con ADO.NET sobre PostgreSQL. Pasaron siete invariantes SQL independientes tras la recuperación. Otros dos casos ejercitaron la terminación antes e inmediatamente después del COMMIT.
+- **M2:** pasaron los 20 casos REST/gRPC, uniforme/caliente y 1/2/4/8/16 procesos. Cada caso tuvo 256 commits durables, 512 apuntes y 256 entradas de outbox; el control negativo independiente detectó la corrupción y verificó la restauración.
+
+Se conservan los archivos de código originales, hashes, metadatos de instancia Azure, logs de ejecución, volcados SQL y evidencias descargadas. El primer intento M2 superó los controles numéricos, pero todavía emitía etiquetas heredadas que afirmaban usar un ejecutor GitHub y negaban la ejecución en Azure. Esos archivos brutos no se corrigieron retroactivamente: se arregló el generador del informe y otra repetición completa pasó con procedencia explícita del host Azure y del archivo fuente. No se lanzó GitHub Actions.
+
+**Alojar una prueba en la nube no convierte un ensayo de un solo host en aceptación de E3.** Las réplicas de M2 eran procesos de la misma VM; no hubo conmutación entre máquinas, equivalencia WAN/TLS, contrato de capacidad bancaria aprobado ni comparación con mainframe. E4 seguía sin campaña de agentes reales. Tras descargar las evidencias, se verificó que el ejecutor estaba **desasignado**, con cero instancias de trabajadores. Su disco, NAT, IP pública y almacenamiento seguían siendo facturables. Una alerta mensual de presupuesto no limita el gasto y no se inventó un coste facturado a partir de tarifas públicas.
+
+#### Otra ejecución de transporte en Azure y un rechazo explícito de E3
+
+La [ejecución M1 en Azure del 8 de noviembre](../evidence/runs/azure-m1-2026-11-08.json)
+comparó REST/JSON y gRPC/Protobuf con concurrencias 8 y 32: ocho rondas
+alternadas de 2.500 solicitudes, **20.000 respuestas medidas, cero errores de
+respuesta**. Ambos controles negativos pasaron. Se conservaron fuentes y
+latencias por ronda; la VM de North Europe quedó desasignada tras la descarga.
+
+El tráfico siguió siendo **HTTP/2 sin TLS sobre loopback**, sin ledger durable.
+Azure identifica el anfitrión, no una ruta WAN. Estas observaciones breves de
+carga cerrada no establecen TPS bancarios ni un ganador universal de transporte.
+
+El [control reproducible de preparación de E3](../evidence/runs/e3-readiness-2026-11-08.json)
+devolvió `INCONCLUSIVE / BLOCK`, salida 3: los 14 campos obligatorios estaban
+vacíos, con estado `UNCONFIGURED`. El
+[comando](../lab/docs/EXPERIMENT_PROTOCOL.md) conserva el hash del contrato
+y los prerrequisitos ausentes, sin inventar objetivos. No es un experimento de
+carga: incluso un contrato completo necesita revisión externa y mediciones
+comparables de Azure, local y mainframe.
+
+#### E1–E4 en la VM de Azure: cuatro demostraciones distintas
+
+La [campaña adicional del 8 de noviembre](../evidence/runs/azure-e1-e4-2026-11-08.json)
+repitió E1 PostgreSQL y E2 Orleans ampliado tras reforzar la recogida de
+pruebas. E1 volvió a superar la matriz de 960 transferencias; E2 pasó ambos
+proveedores de membresía, 600 transferencias de cargas equivalentes y fallos
+controlados de procesos. Logs, volcados y limpieza tienen ahora códigos de
+salida separados: perder evidencia no puede convertir silenciosamente un
+ensayo en verde.
+
+E3 ejecutó después un ensayo de ledger con **carga abierta exploratoria**, no
+solo el control de preparación anterior. Tres fases fijas ofrecieron 20, 40 y
+60 solicitudes/s durante seis segundos cada una. De **720 ofertas programadas,
+668 hicieron commit**, 48 fallaron al conectar y cuatro perdieron su instante
+programado. Se terminó un proceso de servicio a los ocho segundos y se reinició
+a los diez; el sustituto volvió a confirmar operaciones. Pasaron las siete
+invariantes contables, y borrar un apunte provocó tres violaciones antes de
+restaurarlo. Cada oferta fallida u omitida sigue en el denominador. El p99 de
+los ACK no es el p99 de todo lo ofrecido, ni la tasa sobre la ventana nominal
+es un techo de capacidad sostenida.
+
+Servicios y base desechable compartían una VM. Se capturó el estado autoritativo
+antes de eliminar el esquema privado del ensayo; el volcado posterior no
+restaura ese esquema eliminado. Ni recuperar un proceso ni configurar
+`synchronous_commit=on` demuestra HA entre máquinas, RPO/RTO bancario o
+comparación con mainframe. El contrato original de capacidad sigue sin configurar.
+
+E4 trasladó también la **ejecución del candidato** a Azure: Podman sin
+privilegios, supervisor UID 1000, candidato sin red ni credenciales y entradas
+protegidas de solo lectura. Reprodujo la respuesta real del modelo del capítulo
+29, sin contabilizar otra inferencia. El candidato pasó 16 pruebas propias y
+58 casos congelados; la cualificación rechazó tres mutantes y denegó tres
+escrituras protegidas. El primer intento falló porque el proceso no privilegiado
+heredó un directorio privado de root. Ese original se conserva junto a la
+repetición corregida, sin reescribirlo. Metadatos de instancia Azure, archivos
+de fuentes y un hash separado de las entradas vinculan ejecución y evidencia.
+
+#### Lo que muestra Azure realmente
+
+Estas son **salidas reales proyectadas del CLI de Azure**, capturadas el
+**8 de noviembre de 2026, a las 10:03 UTC**, no pantallas del portal ni interfaces
+recreadas. El [manifiesto de captura](../evidence/runs/azure-cli-2026-11-08/capture.json)
+conserva los seis comandos exactos, fechas, códigos de salida y hashes de stdout;
+el [inventario](../evidence/runs/azure-cli-2026-11-08/resources.json)
+identifica la infraestructura desplegada. El
+[colector de solo lectura](../scripts/azure/capture-book-evidence.ps1)
+permite repetirlo contra un despliegue propio sin arrancar ninguna VM.
+
+La [respuesta del despliegue](../evidence/runs/azure-cli-2026-11-08/deployment.json)
+indica éxito de infraestructura, **no corrección de la aplicación o del experimento**:
+
+```json
+{
+  "name": "book-experiments",
+  "state": "Succeeded",
+  "timestamp": "2026-11-07T23:17:25.358088+00:00"
+}
+```
+
+La [respuesta de la VM](../evidence/runs/azure-cli-2026-11-08/runner.json)
+muestra el recurso y su estado tras recoger los experimentos:
+
+```json
+{
+  "location": "northeurope",
+  "name": "bookev1107-runner",
+  "size": "Standard_D4s_v5",
+  "statuses": [
+    "ProvisioningState/succeeded",
+    "PowerState/deallocated"
+  ]
+}
+```
+
+La [respuesta del conjunto escalable](../evidence/runs/azure-cli-2026-11-08/workers.json)
+registra capacidad cero y su consulta separada de instancias devuelve un array
+vacío. La [respuesta del almacenamiento](../evidence/runs/azure-cli-2026-11-08/storage.json)
+indica acceso solo HTTPS, TLS mínimo 1.2, claves compartidas deshabilitadas y
+acceso anónimo a blobs deshabilitado. Esos ajustes no certifican todos los
+permisos o rutas de red. Una VM desasignada tampoco equivale a factura cero:
+permanecen disco administrado, NAT, IP pública y almacenamiento. Esta captura
+fechada del plano de control complementa, pero no sustituye, los artefactos
+originales de las cargas y sus oráculos independientes.
+
 #### Evidencia propia: qué hay y qué no hay
 
-El laboratorio de esta rama sí dispone de [resultados E1a/E1b versionados](../evidence/runs/README.es.md): deadlock real `40P01`, serialización `40001`, oráculo que detecta corrupción, y paridad parcial .NET 10/Npgsql frente a PostgreSQL. **No existe todavía benchmark del IBM z17, LinuxONE, Dorado 8590, Azure Mdsv3 o EPYC**, ni medida desde una oficina a cientos de kilómetros. La matriz de evidencia no puede promover esas comparativas hasta disponer de carga reproducible, SLO aprobado y mediciones in situ.
+El laboratorio de esta rama sí dispone de [resultados E1a/E1b versionados](../evidence/runs/README.es.md): deadlock real `40P01`, serialización `40001`, oráculo que detecta corrupción, y paridad parcial .NET 10/Npgsql frente a PostgreSQL. Dispone también de los registros de Azure descritos arriba —una VM D4s_v5, cargas sintéticas, cada ejecución descargada y con hash— registrados como `demonstrated_not_accepted` en la [matriz de evidencia](../docs/EVIDENCE.es.md).
+
+**No existe todavía benchmark del IBM z17, LinuxONE, Dorado 8590, Azure Mdsv3 o EPYC**, ni segundo CPD, ni medida desde una oficina a cientos de kilómetros, y el contrato de capacidad sigue sin configurar. La matriz de evidencia no puede promover esas comparativas hasta disponer de carga reproducible, SLO aprobado y mediciones in situ. Las ejecuciones en Azure nos dicen que los mecanismos funcionan donde los pusimos; no nos dicen cómo se comporta el cierre de mes del banco.
 
 > La arquitectura que gana no es la que corre más deprisa dentro del CPD. Es la que confirma la operación correcta y se la devuelve a la oficina, incluso cuando el peor día de red coincide con el cierre contable.
 
@@ -2525,9 +2871,9 @@ Conservar el total es necesario y no suficiente: un movimiento cargado a la cuen
 | caliente | 4 | 128 | 495,6 | 0,81 | 2,04 | 42,08 | 0 |
 | caliente | 8 | 256 | 624,4 | 0,85 | 28,40 | 109,78 | 5 |
 
-![Figura 28.3 · Ejecución de referencia con cuentas uniformes: las barras rojas muestran p99 y la línea gris p50, en milisegundos. La mediana baja mientras crece la cola.](figures/es/measures_chart.png)
+![Figura 28.3 · Ejecución de referencia con cuentas uniformes: las barras muestran p99 y la línea p50, en milisegundos. La mediana baja mientras crece la cola.](figures/es/measures_chart.png)
 
-*Figura 28.3 · Ejecución de referencia con cuentas uniformes: las barras rojas muestran p99 y la línea gris p50, en milisegundos. La mediana baja mientras crece la cola.*
+*Figura 28.3 · Ejecución de referencia con cuentas uniformes: las barras muestran p99 y la línea p50, en milisegundos. La mediana baja mientras crece la cola.*
 
 La tabla enseña una cosa verdadera y nada más: al añadir procesos que compiten por un recurso serializado, la mediana mejora y la cola se dispara. Es el mismo fenómeno que aparecerá con una cuenta caliente o con un log saturado. Pero son 32 operaciones por proceso, en circuito cerrado, incluyendo el arranque de cada proceso .NET, sobre un motor que serializa escrituras, en una sola máquina. No hay calentamiento ni duración suficiente, no hay baseline del mainframe y no hay Azure. Esta tabla no puede aprobar capacidad, y el código lo deja escrito en el propio resumen de resultados.
 
@@ -2919,6 +3265,58 @@ Si cambiamos modelos, presupuestos, prompts o herramientas, lo registramos como 
 
 Un agente investigador puede proponer reglas desde políticas, entrevistas y observaciones autorizadas; el COBOL es una fuente auxiliar cuando sea necesario. El constructor puede **programar desde cero** la capacidad en C# sin copiar la estructura del legado. TODM compara el resultado con oráculos independientes y reglas aprobadas; Golden Master conserva por separado el comportamiento observado. La autoridad del negocio decide qué mantener, corregir o retirar.
 
+#### Un piloto constructor ejecutado, no una tasa de éxito poblacional
+
+El [piloto del 8 de noviembre de 2026](../evidence/runs/e4-live-builder-2026-11-08.json)
+hizo una solicitud real a un despliegue existente de Azure Foundry de
+`gpt-5.6-terra`, versión `2026-07-09`. La solicitud contenía solo el contrato
+público sintético de comisiones, no la implementación COBOL, los casos
+reservados ni el verificador. El modelo devolvió un programa C# completo y
+16 vectores de prueba escritos por él.
+
+El supervisor compiló y ejecutó ese fuente en WSL/Docker local, no en la VM
+experimental de Azure. El candidato no tenía red ni credenciales, se ejecutó
+como usuario no privilegiado con el sistema de archivos raíz de solo lectura
+y recursos limitados, y no podía montar el repositorio ni el evaluador. Los
+hashes originales protegidos permanecieron intactos.
+
+El programa generado pasó sus 16 pruebas y los 58 casos congelados del gate
+independiente. Sus pruebas también aceptaron la referencia correcta y
+rechazaron los tres mutantes conocidos: redondeo al par, umbral de revisión
+incorrecto y aprobación de cuentas inactivas. Una cualificación separada
+volvió a verificar el gate independiente y tres escrituras protegidas
+denegadas. Estos controles son variantes relacionadas de una tarea,
+**no cuatro proyectos independientes**.
+
+La respuesta registró **269 tokens de entrada y 2.279 de completado: 2.548 en
+total**. El límite declarado antes de ejecutar era de tres solicitudes y
+4.000 tokens de completado por solicitud; no hizo falta pedir una corrección.
+Una segunda evaluación local reprodujo la misma respuesta sin volver a llamar
+al modelo. Los [comandos de reproducción](../lab/e4_agents/README.md#live-azure-builder-pilot)
+conservan prompts, respuesta, consumo, fuente generado, vectores de prueba,
+identidad de imagen, configuración de contenedores y veredictos independientes.
+Reproducir una respuesta guardada verifica evidencia determinista; volver a
+preguntar al modelo no tiene por qué producir código idéntico.
+
+Es un **flujo dirigido por un modelo con supervisor fijo**, no una demostración
+de un agente autónomo que elige herramientas. El veredicto sigue siendo
+`DEMO_ONLY / SIMULATED_ALLOW`. No se midieron duración de revisión humana,
+factura ni coste por cambio aceptado. Una tarea sintética resuelta no completa
+E4 ni demuestra que una condición de pruebas sea superior a otra.
+
+##### El mismo candidato, evaluado después en Azure
+
+La [reproducción separada en Azure](../evidence/runs/azure-e1-e4-2026-11-08.json)
+ejecutó ese candidato sin cambios y el evaluador independiente con Podman sin
+privilegios en la VM privada del laboratorio. Volvió a superar 16 pruebas propias
+y 58 casos congelados; se rechazaron tres mutantes y se denegaron tres escrituras
+protegidas. El consumo original sigue siendo 2.548 tokens: la reproducción hizo
+**cero llamadas nuevas al modelo**. El fallo inicial de permisos de directorio y
+la repetición corregida, ambos archivados, muestran por qué la frontera debe
+probarse en el anfitrión de destino y no deducirse de la configuración local.
+Esto añade evidencia de ejecución, no aprobación humana ni otra tarea independiente
+para las estadísticas comparativas.
+
 #### REA entra cuando el problema lo necesita
 
 Para el fuente pequeño del laboratorio no necesitamos un decompilador. Incluir REA por obligación estética añadiría complejidad sin aclarar la prueba. Su integración tiene sentido cuando la capacidad investigada reside en un artefacto que sus herramientas ayudan a examinar.
@@ -3151,6 +3549,8 @@ El protocolo público de TODM distingue tres condiciones para estudiar la constr
 
 ¿Reduce el oráculo independiente los defectos aceptados? ¿Qué añade su cualificación? ¿Cuántos bloqueos incorrectos produce? ¿Cuánto esfuerzo exige aclarar y aprobar reglas? ¿Qué intentos de modificar el evaluador impiden los permisos reales? Esas preguntas necesitan datos y un diseño previo.
 
+Lo que añade esta edición es un único punto de datos, no una respuesta: una respuesta real de un modelo, evaluada de forma aislada en una VM de Azure, superó el gate independiente y los controles de mutación (capítulo 29). Una tarea no permite estimar una tasa de defectos, y no medimos ni tiempo de revisión ni coste. Demuestra que el harness puede alojar la comparación; no la ejecuta.
+
 El propio repositorio de TODM lo plantea como un reto abierto: invita a reproducir, falsear, comparar o transferir el método, y acepta los resultados negativos o inconclusos como contribución [2]. Un libro que defiende la evidencia necesita esa puerta abierta.
 
 #### La unidad de análisis importa
@@ -3275,7 +3675,7 @@ Ese es el tipo de progreso que me interesa. Cada paso deja algo que podemos revi
 
 ## Anexos
 
-Material de consulta: cómo ejecutar el laboratorio, qué contrato implementa, qué produjo la ejecución de referencia, qué decisiones documentaría, el catálogo completo de riesgos, el glosario y las fuentes.
+Material de consulta: cómo ejecutar el laboratorio, qué contrato implementa, qué produjo la ejecución de referencia, qué decisiones documentaría, el catálogo completo de riesgos, el glosario, las fuentes y qué se transfiere más allá de COBOL.
 
 ### Anexo A · Un laboratorio que pueda contradecirnos
 
@@ -3783,3 +4183,65 @@ La numeración identifica cada riesgo; no expresa frecuencia, gravedad ni priori
 [63] IBM. *CCSID Comparisons*, swg21197185. Modificado el 20 de junio de 2019; consultado el 4 de noviembre de 2026. Siete diferencias documentadas entre los CCSID 37 y 500; no es una prueba de conversión nativa. <https://www.ibm.com/support/pages/ccsid-comparisons>
 
 [64] Python Software Foundation. *Python 3.12: codecs — Codec registry and base classes*. Consultado el 4 de noviembre de 2026. Codecs cp037/cp500 seleccionados y manejo de errores strict/replace. <https://docs.python.org/3.12/library/codecs.html>
+
+### Anexo H · Más allá de COBOL
+
+#### Qué se transfiere con el método
+
+COBOL aporta problemas concretos a este libro, no un ámbito exclusivo. Un servicio Java, una aplicación VB6 o un proceso por lotes RPG también pueden ocultar reglas, depender de interfaces indocumentadas y discrepar de su sustituto. La pregunta transferible no es «¿puede traducirse este lenguaje?», sino «¿qué comportamiento observable debe sobrevivir, quién lo acepta y qué evidencia podría contradecir al candidato?».
+
+La [metodología de oráculos del capítulo 10](#capítulo-10--todm-y-el-problema-de-aceptar-lo-que-construimos) no exige un lenguaje determinado: recuperar evidencia, establecer una baseline aprobada independientemente, cualificar al evaluador, vincular observaciones al candidato y separar aceptación técnica de autorización de entrega. El golden master registra lo ocurrido; no decide automáticamente qué debería ocurrir. Una corrección aprobada debe quedar visible como diferencia intencional.
+
+La implementación del método no se transfiere automáticamente. Un parser COBOL no se convierte en parser PL/I; comparar JSON no captura una interfaz gráfica, un dispositivo mapeado en memoria ni un commit distribuido. Cada frontera nueva necesita un adaptador de observación, expectativas fiables y controles negativos. El método puede ser portable mientras cada adaptador sigue siendo específico.
+
+#### Matriz de aplicabilidad: contratos antes que sintaxis
+
+Las filas siguientes son **orientaciones de evaluación**, no un catálogo de migraciones ejecutadas ni de adaptadores certificados. Agrupar lenguajes ahorra espacio; no equipara sus semánticas.
+
+| Lenguaje o entorno | Qué puede reutilizarse | Qué debe especificarse y verificarse de nuevo |
+|---|---|---|
+| Java / C# | Contratos de capacidad, ejemplos independientes, invariantes de estado y contabilidad, escenarios de fallo | Representación decimal y redondeo; desbordamiento entero; excepciones y nulabilidad; versiones JVM/CLR, bibliotecas, JIT y recolección de memoria; propagación transaccional |
+| VB6 / VB.NET | Resultados visibles aprobados, trazas de eventos, comparación con referencia | Distinguir ambos entornos; `Variant`, `Empty` y `Null`, conversiones implícitas, configuración regional y fechas; vida de objetos COM, orden de eventos gráficos y proveedor de datos |
+| RPG / IBM i | Capacidades de negocio, conciliación por lotes, criterios de escritor único y transición | Campos decimales, CCSID, indicadores, acceso a registros, estado del trabajo, control de compromiso y fronteras del diario; dialecto y plataforma instalados |
+| PL/I | Reglas, casos límite, resultados esperados independientes, invariantes transaccionales | Precisión fija/binaria, manejo de condiciones, disposición de almacenamiento, opciones de compilación y enlace; servicios del host e integración con datos |
+| C / C++ | Contratos de protocolo, máquinas de estados, pruebas diferenciales y de propiedades | Anchura, signo, propiedad de memoria, ABI, alineación, orden de bytes, concurrencia y comportamiento indefinido; compilador, optimización y dependencias nativas |
+| Python / JavaScript | Separación del oráculo, casos explícitos, comprobación de esquemas y controles negativos | Conversiones dinámicas y valores ausentes; contexto decimal y extensiones nativas de Python; `Number`/`BigInt` de JavaScript; serialización, planificación asíncrona y versiones de dependencias |
+| Sistemas embebidos / tiempo real | Trazabilidad de requisitos, invariantes de estado, escenarios de fallo y aceptación independiente | Hardware, interrupciones, plazos, recursos, reinicio y pérdida de alimentación; evidencia con hardware real en el circuito y garantías de seguridad exigibles |
+
+Cada fila sirve tanto para actualizar dentro del mismo lenguaje como para reescribir. Cambiar compilador, controlador de datos o runtime puede alterar el comportamiento sin modificar el código fuente. Hay que registrar el entorno completo, no solo el lenguaje.
+
+#### Fronteras semánticas que necesitan su propio oráculo
+
+**Números.** Especificar precisión, escala, modo y momento del redondeo. La aritmética decimal no es intercambiable con la coma flotante binaria. Definir rangos intermedios y finales: el desbordamiento modular de enteros Java, la aritmética comprobada o no de C#, los enteros Python y las representaciones JavaScript no ofrecen el mismo contrato. Probar negativos, puntos medios, magnitudes máximas y serialización. Una visualización coincidente puede ocultar importes almacenados diferentes.
+
+**Texto y ausencia.** Codificación, normalización, ordenación, relleno y longitud en bytes son decisiones distintas. El [ejercicio EBCDIC](../lab/examples/ebcdic-boundaries/README.md) muestra que una ida y vuelta correcta puede conservar el significado equivocado; no valida todas las páginas de códigos del host. Hay que distinguir campos ausentes, null, cadenas vacías, cero y valores centinela cuando el dominio lo haga. Recortar o rellenar datos silenciosamente puede fabricar concordancia.
+
+**Fechas y tiempo.** Definir calendario, precisión, zona, desplazamiento horario, cambios estacionales, fecha de negocio y política de corte. Una fecha-hora local no identifica necesariamente un instante. Controlar el reloj cuando proceda e incluir horas locales ambiguas e inexistentes. Las referencias no deben depender accidentalmente de la configuración regional del evaluador ni de la fecha actual.
+
+**Concurrencia y transacciones.** Especificar historiales observables, idempotencia, orden y punto de durabilidad. Un mutex, bucle de eventos, actor o anotación transaccional no establece por sí solo la frontera del commit de negocio. Probar duplicados, cancelaciones, respuestas perdidas y caídas antes y después del commit; inspeccionar independientemente el estado persistido. Transferir el razonamiento de la [arquitectura verificable](#capítulo-11--la-arquitectura-de-una-modernización-verificable), no suponer que una API de hilos conocida lo conserva.
+
+**FFI y comportamiento indefinido.** En interfaces con funciones externas, verificar convención de llamada, disposición de campos, propiedad, propagación de errores y vida de objetos. El comportamiento indefinido de C/C++ no tiene un resultado estable que preservar según el lenguaje. Una observación repetible puede orientar un requisito de compatibilidad acotado, pero no convierte ese comportamiento en especificación portable. Aplicar diagnósticos adecuados y rediseñar la frontera; una ejecución diferencial satisfactoria no constituye una prueba general.
+
+#### Los modelos de decisión expresan reglas, no traducciones
+
+BPMN puede describir orden de proceso, eventos y responsabilidades; DMN expresa decisiones y tablas de reglas. Ninguno traduce código arbitrario en significado de negocio aprobado. Un diagrama extraído de un programa sigue siendo hipótesis hasta establecer su interpretación y autoridad.
+
+Un oráculo ejecutable exige documentar el subconjunto semántico soportado: tipos, ausencia, comparaciones, prioridad o política de coincidencia, valores predeterminados, errores y transiciones pertinentes. Vincular versiones del modelo y evaluador con la evidencia. Un constructo no soportado debe bloquear o quedar inconcluso, no ignorarse. El [laboratorio de modelos de decisión](../lab/decision_models/README.md) documenta su alcance y reproducción; un verificador limitado no es un motor BPMN/DMN completo ni certificado. La notación no establece conformidad ni aprobación.
+
+#### Los ADR conservan la baseline y su justificación
+
+Las [decisiones de arquitectura del anexo D](#anexo-d--decisiones-de-arquitectura) siguen siendo útiles fuera de COBOL. Para cada frontera nueva, registrar comportamiento existente, autoridad de negocio, contrato elegido, alternativas descartadas y justificación. Incluir incertidumbres, excepciones de compatibilidad, responsable, condición de revisión y criterios de salida. Un ADR explica por qué se eligió la baseline; no sustituye casos ejecutables ni otorga aprobación por estar versionado.
+
+Un paquete práctico de aceptación debe contener:
+
+1. Capacidad y contrato de interfaz acotados, incluidos fallos; utilizar el [contrato del laboratorio](#anexo-b--contrato-del-laboratorio) y la [comparación de significado](#capítulo-12--cobol-y-c-deben-acordar-el-significado) como ejemplos, no esquemas universales.
+2. Resultados esperados gobernados separadamente, observaciones autorizadas de referencia y diferencias intencionales explícitas.
+3. Adaptadores y evaluadores cualificados, con controles correctos, candidatos defectuosos y evidencia incompleta.
+4. Identidades de candidato, modelo, dependencias y runtime, observaciones brutas y procedencia original.
+5. Veredicto acotado, limitaciones pendientes, autoridad de entrega independiente y control de cambios de baseline.
+
+#### Qué demuestran realmente las herramientas disponibles
+
+El [adaptador práctico TODM](../lab/todm_validation/README.md) valida formatos concretos de evidencia y semántica de gobernanza fijada por versión. No es un ejecutor universal para estos lenguajes ni un servicio de autorización de producción. El [laboratorio de descomposición](../lab/decomposition/README.md) comprueba hipótesis sintéticas de fronteras; no descubre dependencias arbitrarias del código. El [ejercicio de comisión a tres bandas](../lab/examples/commission-three-way/README.md) demuestra una combinación concreta de referencia, candidato y expectativa, no certificación entre lenguajes.
+
+Este anexo no añade ejecuciones. Los artefactos COBOL, C#/.NET y Python conservan sus alcances documentados; citar otros lenguajes o plataformas no equivale a medirlos. Las pruebas locales mínimas no se convierten en mediciones Azure, ni los experimentos Azure establecen equivalencia mainframe. Cada lenguaje, runtime o carga nueva necesita evidencia propia conservada. La aportación portable es exigirla explícitamente, no prometer que esa prueba ya existe.

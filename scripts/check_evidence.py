@@ -11,7 +11,29 @@ import time
 ROOT=Path(__file__).resolve().parents[1]
 data=json.loads((ROOT/'evidence/claims.json').read_text(encoding='utf-8'))
 errors=[]
-allowed={'ci_verified','published','partially_verified','designed_not_executed','pending_reproduction'}
+allowed={'ci_verified','published','partially_verified','designed_not_executed','pending_reproduction','demonstrated_not_accepted'}
+import hashlib
+def repository_record_errors(label, evidence):
+    """A demonstrated-not-accepted claim must point at a tracked record whose bytes still match."""
+    found=[]
+    if not isinstance(evidence,dict) or evidence.get('kind')!='repository_record':
+        return [label+': demonstrated claims need a repository_record']
+    rel=evidence.get('path','')
+    target=(ROOT/rel)
+    if not rel or not target.is_file() or ROOT.resolve() not in target.resolve().parents:
+        return [label+': repository record missing']
+    if hashlib.sha256(target.read_bytes()).hexdigest()!=evidence.get('sha256'):
+        found.append(label+': repository record bytes changed since the claim was written')
+    try:
+        record=json.loads(target.read_text(encoding='utf-8'))
+    except ValueError:
+        return found+[label+': repository record is not JSON']
+    classification=str(record.get('classification',''))
+    if 'ACCEPT' in classification.upper() and 'NOT' not in classification.upper():
+        found.append(label+': record classification claims acceptance')
+    if 'NOT' not in classification.upper():
+        found.append(label+': record classification must state what it is not')
+    return found
 claims=data['claims']
 ids=[x['id'] for x in claims]
 if len(ids)!=len(set(ids)): errors.append('duplicate claim IDs')
@@ -22,15 +44,22 @@ for x in claims:
     if st not in allowed: errors.append(label+': unrecognized status')
     if not all(x.get(k) for k in ('es','en','scope_es','scope_en')): errors.append(label+': missing bilingual fields')
     if st in {'ci_verified','published'}:
-        if not evidence: errors.append(label+': verified without provenance')
-        elif evidence.get('kind')=='github_actions' and not isinstance(evidence.get('run_id'),int): errors.append(label+': invalid CI run')
-        elif evidence.get('kind')=='github_release' and len(evidence.get('assets',[]))!=4: errors.append(label+': invalid release assets')
+        expected_kind = {'ci_verified': 'github_actions', 'published': 'github_release'}[st]
+        if not isinstance(evidence, dict) or evidence.get('kind') != expected_kind:
+            errors.append(label + ': ' + st + ' requires evidence kind ' + expected_kind)
+        elif expected_kind == 'github_actions' and (type(evidence.get('run_id')) is not int or evidence['run_id'] <= 0):
+            errors.append(label+': invalid CI run')
+        elif expected_kind == 'github_release' and (not isinstance(evidence.get('assets'), list) or len(evidence['assets']) != 4):
+            errors.append(label+': invalid release assets')
+    elif st=='demonstrated_not_accepted':
+        errors.extend(repository_record_errors(label,evidence))
+        if not x.get('protocol') or not (ROOT/x.get('protocol','__missing__')).is_file(): errors.append(label+': no protocol')
     else:
         if evidence is not None: errors.append(label+': unexecuted status has purported proof')
         if not x.get('protocol') or not (ROOT/x.get('protocol','__missing__')).is_file(): errors.append(label+': no protocol')
     if label=='E1' and st!='partially_verified': errors.append('E1: expected partial verification status until full acceptance')
-    if label in {'E3','E4'} and st!='designed_not_executed':
-        errors.append(label+': promotion needs new executed evidence and revised gate')
+    if label in {'E3','E4'} and st not in {'designed_not_executed','demonstrated_not_accepted'}:
+        errors.append(label+': acceptance needs an approved contract, comparative arms and a revised gate')
     if label=='E2' and st not in {'designed_not_executed','partially_verified'}:
         errors.append('E2: full acceptance requires a separately validated evidence gate')
 e2_status=next((x['status'] for x in claims if x['id']=='E2'),None)

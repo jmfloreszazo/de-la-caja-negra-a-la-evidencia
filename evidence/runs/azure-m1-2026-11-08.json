@@ -1,0 +1,149 @@
+{
+  "schemaVersion": 1,
+  "classification": "EXECUTED_AZURE_LOOPBACK_M1_NOT_E3_CAPACITY",
+  "runId": "m1-azure-20261108-01",
+  "sourceCommit": "cc7ed4bea231a36103ea7f4987b5728091e27ee2",
+  "worktreeDirty": true,
+  "sourceArchiveSha256": "f5d451e474f6476a06187624c279b2df09613486bb034fff8edbcd37ffedbba8",
+  "rawArchiveSha256": "d5185a6abea31f5aae5ce9ffe603a1f9f45ef17462769dbd55d521feb48bf733",
+  "vmName": "bookev1107-runner",
+  "vmId": "f5ecd929-6823-4996-b9fb-49cff1f6e21c",
+  "location": "northeurope",
+  "vmSize": "Standard_D4s_v5",
+  "executionHost": "AZURE_VM",
+  "measuredRounds": 8,
+  "measuredReplies": 20000,
+  "responseErrors": 0,
+  "profiles": [
+    {
+      "concurrency": 8,
+      "trials": [
+        {
+          "Protocol": "grpc",
+          "Requests": 2500,
+          "Concurrency": 8,
+          "Errors": 0,
+          "ElapsedSeconds": 0.2281,
+          "RepliesPerSecond": 10959.6,
+          "P50Ms": 0.662,
+          "P95Ms": 1.184,
+          "P99Ms": 1.783
+        },
+        {
+          "Protocol": "rest",
+          "Requests": 2500,
+          "Concurrency": 8,
+          "Errors": 0,
+          "ElapsedSeconds": 0.2409,
+          "RepliesPerSecond": 10376.28,
+          "P50Ms": 0.703,
+          "P95Ms": 1.214,
+          "P99Ms": 1.708
+        },
+        {
+          "Protocol": "rest",
+          "Requests": 2500,
+          "Concurrency": 8,
+          "Errors": 0,
+          "ElapsedSeconds": 0.2171,
+          "RepliesPerSecond": 11514.56,
+          "P50Ms": 0.639,
+          "P95Ms": 1.061,
+          "P99Ms": 1.288
+        },
+        {
+          "Protocol": "grpc",
+          "Requests": 2500,
+          "Concurrency": 8,
+          "Errors": 0,
+          "ElapsedSeconds": 0.2261,
+          "RepliesPerSecond": 11056.28,
+          "P50Ms": 0.654,
+          "P95Ms": 1.155,
+          "P99Ms": 1.692
+        }
+      ]
+    },
+    {
+      "concurrency": 32,
+      "trials": [
+        {
+          "Protocol": "grpc",
+          "Requests": 2500,
+          "Concurrency": 32,
+          "Errors": 0,
+          "ElapsedSeconds": 0.1381,
+          "RepliesPerSecond": 18101.42,
+          "P50Ms": 1.637,
+          "P95Ms": 3.062,
+          "P99Ms": 4.495
+        },
+        {
+          "Protocol": "rest",
+          "Requests": 2500,
+          "Concurrency": 32,
+          "Errors": 0,
+          "ElapsedSeconds": 0.1367,
+          "RepliesPerSecond": 18290.8,
+          "P50Ms": 1.558,
+          "P95Ms": 3.079,
+          "P99Ms": 7.151
+        },
+        {
+          "Protocol": "rest",
+          "Requests": 2500,
+          "Concurrency": 32,
+          "Errors": 0,
+          "ElapsedSeconds": 0.1813,
+          "RepliesPerSecond": 13790.49,
+          "P50Ms": 2.173,
+          "P95Ms": 3.901,
+          "P99Ms": 5.416
+        },
+        {
+          "Protocol": "grpc",
+          "Requests": 2500,
+          "Concurrency": 32,
+          "Errors": 0,
+          "ElapsedSeconds": 0.1423,
+          "RepliesPerSecond": 17571.32,
+          "P50Ms": 1.742,
+          "P95Ms": 2.883,
+          "P99Ms": 3.955
+        }
+      ]
+    }
+  ],
+  "negativeControlsPassed": 2,
+  "localReproduction": {
+    "status": "LOCAL_CAMPAIGN_PASS_NOT_EXPERIMENT_ACCEPTANCE",
+    "priorFailedAttempt": "m1-local-20261108",
+    "failure": "Wrong local SDK 8.0.125 (NETSDK1045); fresh SDK 10.0.100 retry passed.",
+    "successfulAttempt": "m1-local-20261108-02",
+    "verifiedArtifacts": 11
+  },
+  "operatorRefusals": [
+    "First deallocation lacked -AllowScaleIn; guard refused interruption. Acknowledged retry succeeded.",
+    "First local collector invocation lacked --engine; argument parser refused execution."
+  ],
+  "e3Readiness": {
+    "verdict": "INCONCLUSIVE",
+    "release": "BLOCK",
+    "missingCapacityFields": 14,
+    "capacityTrialExecuted": false
+  },
+  "finalState": {
+    "runner": "DEALLOCATED",
+    "workerCapacity": 0,
+    "residualCosts": "Disk, NAT, public IP and storage remain billable."
+  },
+  "githubActions": "NOT_EXECUTED",
+  "ciRunId": null,
+  "localArchive": "dist/azure-m1-2026-11-08.zip",
+  "limitations": [
+    "HTTP/2 plaintext over loopback on one Azure VM; no TLS, WAN or distributed nodes.",
+    "Short closed-loop stateless responses, not durable committed transfers or capacity acceptance.",
+    "No universal transport winner, mainframe equivalence or bank sizing conclusion.",
+    "E3 readiness is an executed preflight refusal, not an E3 load experiment."
+  ]
+}

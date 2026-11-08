@@ -1,9 +1,9 @@
 {
   "schema_version": 1,
   "edition": "v2026.10.29",
-  "as_of": "2026-11-03",
+  "as_of": "2026-11-08",
   "repository": "jmfloreszazo/de-la-caja-negra-a-la-evidencia",
-  "principle": "A designed protocol is not execution evidence; CI does not establish production capacity.",
+  "principle": "A designed protocol is not execution evidence; a bounded demonstration is not acceptance; CI does not establish production capacity.",
   "claims": [
     {
       "id": "BOOK-CI",
@@ -508,22 +508,30 @@
     },
     {
       "id": "E3",
-      "status": "designed_not_executed",
+      "status": "demonstrated_not_accepted",
       "es": "Benchmark Azure frente a local e híbrido",
       "en": "Azure vs on-premises and hybrid benchmark",
-      "scope_es": "Sin ensayo de capacidad, coste y fallo con contrato real",
-      "scope_en": "No capacity, cost or failure experiment using a real contract",
-      "evidence": null,
+      "scope_es": "8-nov-2026: ensayo exploratorio de ledger con carga abierta en una sola VM de Azure (720 ofertas, 668 commits, 48 fallos de conexión, 4 omitidas, kill/restart de proceso, siete invariantes y control negativo). El contrato de capacidad sigue UNCONFIGURED. Sin carga aprobada, brazo local/mainframe, HA ni TCO: no es aceptación E3.",
+      "scope_en": "8 Nov 2026: exploratory open-loop ledger trial on one Azure VM (720 offers, 668 commits, 48 connection failures, 4 missed, process kill/restart, seven invariants and negative control). Capacity contract stays UNCONFIGURED. No approved workload, on-prem/mainframe arm, HA or TCO: not E3 acceptance.",
+      "evidence": {
+        "kind": "repository_record",
+        "path": "evidence/runs/azure-e1-e4-2026-11-08.json",
+        "sha256": "20b96d146be32b7ff9f126ab147b807cf159debb1afa89a87cabc7d5b20eb230"
+      },
       "protocol": "lab/docs/EXPERIMENT_PROTOCOL.md"
     },
     {
       "id": "E4",
-      "status": "designed_not_executed",
+      "status": "demonstrated_not_accepted",
       "es": "Comparativa de agentes bajo oráculo independiente",
       "en": "Comparison of agents behind an independent oracle",
-      "scope_es": "Sin evaluación E4 ejecutada de defectos y coste",
-      "scope_en": "No executed E4 evaluation of defects and cost",
-      "evidence": null,
+      "scope_es": "8-nov-2026: una respuesta real de modelo (2.548 tokens) produjo candidato y 16 pruebas propias; reproducida en Azure con Podman sin privilegios: 58 casos congelados, tres mutantes rechazados, tres escrituras protegidas denegadas. Una tarea, sin población comparativa, sin tiempo humano ni coste: no es aceptación E4.",
+      "scope_en": "8 Nov 2026: one real model response (2,548 tokens) produced a candidate and 16 self-tests; replayed on Azure under rootless Podman: 58 frozen cases, three mutants rejected, three protected writes denied. One task, no comparative population, no human time or cost: not E4 acceptance.",
+      "evidence": {
+        "kind": "repository_record",
+        "path": "evidence/runs/azure-e1-e4-2026-11-08.json",
+        "sha256": "20b96d146be32b7ff9f126ab147b807cf159debb1afa89a87cabc7d5b20eb230"
+      },
       "protocol": "lab/docs/EXPERIMENT_PROTOCOL.md"
     },
     {
@@ -545,6 +553,90 @@
       "scope_en": "No exhaustive verification of these listings exists",
       "evidence": null,
       "protocol": "ROADMAP.md"
+    },
+    {
+      "id": "AZURE-SINGLE-VM",
+      "status": "demonstrated_not_accepted",
+      "es": "Campaña core/E1/E2/M2 en una VM aislada de Azure (7-nov-2026)",
+      "en": "Core/E1/E2/M2 campaign on one isolated Azure VM (7 Nov 2026)",
+      "scope_es": "Misma suite sintética que local, ejecutada en North Europe con procedencia de fuente y evidencia descargada. No es capacidad, HA ni equivalencia.",
+      "scope_en": "Same synthetic suite as local, executed in North Europe with source provenance and downloaded evidence. Not capacity, HA or equivalence.",
+      "evidence": {
+        "kind": "repository_record",
+        "path": "evidence/runs/azure-single-vm-2026-11-07.json",
+        "sha256": "db294f0201d2a64646a3e4fa359d9dca675c0e38637cb53694ad33049e6e1eea"
+      },
+      "protocol": "infra/experiments/README.md"
+    },
+    {
+      "id": "AZURE-M1",
+      "status": "demonstrated_not_accepted",
+      "es": "M1 REST/gRPC en la VM de Azure (8-nov-2026)",
+      "en": "M1 REST/gRPC on the Azure VM (8 Nov 2026)",
+      "scope_es": "20.000 respuestas loopback HTTP/2 sin TLS, concurrencia 8 y 32, cero errores. No es TPS bancario ni ganador universal de transporte.",
+      "scope_en": "20,000 loopback HTTP/2 plaintext replies at concurrency 8 and 32, zero errors. Not banking TPS or a universal transport winner.",
+      "evidence": {
+        "kind": "repository_record",
+        "path": "evidence/runs/azure-m1-2026-11-08.json",
+        "sha256": "eb663b31498c8538d45268f5267d9bd337959f4679d99c60a33821c4e2036fe3"
+      },
+      "protocol": "lab/transport/README.md"
+    },
+    {
+      "id": "E4-LIVE-BUILDER",
+      "status": "demonstrated_not_accepted",
+      "es": "Piloto constructor con modelo real (8-nov-2026)",
+      "en": "Live model builder pilot (8 Nov 2026)",
+      "scope_es": "Una llamada real a un modelo desplegado; candidato evaluado localmente en contenedor aislado. Una tarea, no una población; sin coste ni revisión humana medidos.",
+      "scope_en": "One real call to a deployed model; candidate evaluated locally in an isolated container. One task, not a population; no measured cost or human review.",
+      "evidence": {
+        "kind": "repository_record",
+        "path": "evidence/runs/e4-live-builder-2026-11-08.json",
+        "sha256": "b3f094d4c10a428ed059e74fac44de7a85cb1008b92d51f078744eff5c082687"
+      },
+      "protocol": "lab/e4_agents/README.md"
+    },
+    {
+      "id": "E3-READINESS",
+      "status": "demonstrated_not_accepted",
+      "es": "Control de preparación E3: INCONCLUSIVE/BLOCK",
+      "en": "E3 readiness check: INCONCLUSIVE/BLOCK",
+      "scope_es": "14 campos obligatorios vacíos; el comprobador nunca produce PASS de capacidad. Es un rechazo registrado, no un experimento.",
+      "scope_en": "14 required fields empty; the checker never yields a capacity PASS. A recorded refusal, not an experiment.",
+      "evidence": {
+        "kind": "repository_record",
+        "path": "evidence/runs/e3-readiness-2026-11-08.json",
+        "sha256": "87097f57e8efe7bde56048b41743684c068817f7935cc7ba3c3b2d23276f8c51"
+      },
+      "protocol": "lab/docs/EXPERIMENT_PROTOCOL.md"
+    },
+    {
+      "id": "TODM-AZURE",
+      "status": "demonstrated_not_accepted",
+      "es": "Adaptador TODM sobre el paquete E1–E4 en Azure (8-nov-2026)",
+      "en": "TODM adapter over the E1–E4 bundle on Azure (8 Nov 2026)",
+      "scope_es": "134 archivos y 108 vinculaciones verificados; PASS técnico ×4, 8 controles negativos y 12 mandatos sintéticos. Metodología INCONCLUSIVE, entrega BLOCK. No es TODM certificado ni aprobación.",
+      "scope_en": "134 files and 108 bindings verified; technical PASS ×4, 8 negative controls and 12 synthetic mandates. Methodology INCONCLUSIVE, release BLOCK. Not certified TODM or approval.",
+      "evidence": {
+        "kind": "repository_record",
+        "path": "evidence/runs/todm-azure-2026-11-08.json",
+        "sha256": "33ee61da9c677a101caa340b04689a90e28a4cebc83090f1c03d265135707bf0"
+      },
+      "protocol": "lab/todm_validation/README.md"
+    },
+    {
+      "id": "AZURE-CLI-CAPTURE",
+      "status": "demonstrated_not_accepted",
+      "es": "Captura de solo lectura del plano de control (8-nov-2026)",
+      "en": "Read-only control-plane capture (8 Nov 2026)",
+      "scope_es": "Seis salidas proyectadas del CLI con fecha y hash. Describe recursos, no carga ni corrección.",
+      "scope_en": "Six projected CLI outputs with timestamp and hash. Describes resources, not load or correctness.",
+      "evidence": {
+        "kind": "repository_record",
+        "path": "evidence/runs/azure-cli-2026-11-08/capture.json",
+        "sha256": "f9c49eb6b50acb746f461ea69f52cae1282dc54970aed9a29e9b6e0704ec0e8d"
+      },
+      "protocol": "scripts/azure/capture-book-evidence.ps1"
     }
   ]
 }

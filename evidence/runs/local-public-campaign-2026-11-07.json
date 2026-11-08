@@ -1,0 +1,150 @@
+{
+  "schemaVersion": 1,
+  "classification": "LOCAL_SYNTHETIC_CAMPAIGN_NOT_E1_E4_ACCEPTANCE",
+  "status": "LOCAL_CAMPAIGN_PASS_NOT_EXPERIMENT_ACCEPTANCE",
+  "createdUtc": "2026-11-07T22:06:22.995728+00:00",
+  "runId": "20261107-public-1",
+  "sourceCommit": "cc7ed4bea231a36103ea7f4987b5728091e27ee2",
+  "collectorSha256": "2ce8971a68c9af7c009a089325a67f9c56bcb0bf948f94183f9262b67b08e6cf",
+  "sourceFiles": 331,
+  "sourceArchiveSha256": "5ae5dd135f043fcaa14d1a7f4afadc6202617007328c8b8ac3c128242e739102",
+  "campaignReportSha256": "b68bdf028f99bd71c02191cde187dce77d5669396b3f6396a16808986df5a9e7",
+  "verifiedArtifacts": 226,
+  "worktreeDirty": true,
+  "includeWorkingTree": true,
+  "startedUtc": "2026-11-07T21:51:29.073652+00:00",
+  "finishedUtc": "2026-11-07T22:04:02.555728+00:00",
+  "host": {
+    "platform": "Linux-6.6.87.2-microsoft-standard-WSL2-x86_64-with-glibc2.39",
+    "python": "3.12.3 (main, Mar  3 2026, 12:15:18) [GCC 13.3.0]",
+    "isWsl": true
+  },
+  "engine": "docker",
+  "ciRunId": null,
+  "azureDeployment": "NOT_EXECUTED",
+  "githubActions": "NOT_EXECUTED",
+  "liveAgentRuns": 0,
+  "sqlServer": "NOT_SELECTED_LICENSE_CONSENT_PENDING",
+  "stages": [
+    {
+      "experiment": "core",
+      "status": "PASS"
+    },
+    {
+      "experiment": "e1",
+      "status": "PASS"
+    },
+    {
+      "experiment": "e2-cluster",
+      "status": "PASS"
+    },
+    {
+      "experiment": "m2",
+      "status": "PASS"
+    },
+    {
+      "experiment": "e4-prerequisite",
+      "status": "PASS"
+    }
+  ],
+  "independentCoreAudit": {
+    "status": "PASS",
+    "feeCases": 58,
+    "gateControls": 10,
+    "positiveDatabases": 9,
+    "rejectedCorruptDatabases": 1,
+    "accountingPredicatesPerDatabase": 6,
+    "ledgerObservations": {
+      "acceptance.db": {
+        "nonnegative": true,
+        "conserved": true,
+        "balancedPostings": true,
+        "twoPostingsPerCommit": true,
+        "outboxAtomic": true,
+        "projectionAgrees": true
+      },
+      "load-hot-1.db": {
+        "nonnegative": true,
+        "conserved": true,
+        "balancedPostings": true,
+        "twoPostingsPerCommit": true,
+        "outboxAtomic": true,
+        "projectionAgrees": true
+      },
+      "load-hot-2.db": {
+        "nonnegative": true,
+        "conserved": true,
+        "balancedPostings": true,
+        "twoPostingsPerCommit": true,
+        "outboxAtomic": true,
+        "projectionAgrees": true
+      },
+      "load-hot-4.db": {
+        "nonnegative": true,
+        "conserved": true,
+        "balancedPostings": true,
+        "twoPostingsPerCommit": true,
+        "outboxAtomic": true,
+        "projectionAgrees": true
+      },
+      "load-hot-8.db": {
+        "nonnegative": true,
+        "conserved": true,
+        "balancedPostings": true,
+        "twoPostingsPerCommit": true,
+        "outboxAtomic": true,
+        "projectionAgrees": true
+      },
+      "load-uniform-1.db": {
+        "nonnegative": true,
+        "conserved": true,
+        "balancedPostings": true,
+        "twoPostingsPerCommit": true,
+        "outboxAtomic": true,
+        "projectionAgrees": true
+      },
+      "load-uniform-2.db": {
+        "nonnegative": true,
+        "conserved": true,
+        "balancedPostings": true,
+        "twoPostingsPerCommit": true,
+        "outboxAtomic": true,
+        "projectionAgrees": true
+      },
+      "load-uniform-4.db": {
+        "nonnegative": true,
+        "conserved": true,
+        "balancedPostings": true,
+        "twoPostingsPerCommit": true,
+        "outboxAtomic": true,
+        "projectionAgrees": true
+      },
+      "load-uniform-8.db": {
+        "nonnegative": true,
+        "conserved": true,
+        "balancedPostings": true,
+        "twoPostingsPerCommit": true,
+        "outboxAtomic": true,
+        "projectionAgrees": true
+      },
+      "negative-control.db": {
+        "nonnegative": true,
+        "conserved": true,
+        "balancedPostings": false,
+        "twoPostingsPerCommit": false,
+        "outboxAtomic": true,
+        "projectionAgrees": false
+      }
+    },
+    "connectionLifecycle": "EXPLICIT_CLOSE_AFTER_EACH_READ_ONLY_AUDIT",
+    "oracleSha256": "f8c6a68f2fb9a0abd110f0153208ac2f3d13c7f62c16244c72a5d570e828ae2c"
+  },
+  "localArchive": "dist/local-public-campaign-2026-11-07.zip",
+  "rawReport": "campaign/campaign.json",
+  "limitations": [
+    "Synthetic single-host controls, not bank capacity, distributed HA or E1-E4 acceptance.",
+    "E4 is known-candidate isolation and mutation qualification, not a live-agent comparison.",
+    "Mutable package feeds and image tags are not a bit-reproducible build or an SBOM.",
+    "Source snapshot plus hashes records working-tree bytes separately from the base commit."
+  ]
+}

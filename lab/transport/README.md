@@ -30,3 +30,33 @@ CI runs separate 2,500-request-per-round profiles at concurrency 8 and 32; each 
 The named packages are pinned: [Grpc.AspNetCore 2.84.0](https://www.nuget.org/packages/Grpc.AspNetCore/2.84.0), Grpc.Net.Client 2.84.0 and Grpc.Tools 2.84.0.
 
 Recorded runs, original p99/throughput observations and their provenance are preserved in [the M1 evidence report](../../evidence/runs/M1.md) and checked in CI. These are local transport-only observations, not a cloud or banking-core benchmark.
+
+## Reproduce through the common launcher
+
+The existing Azure operator accepts `-Experiment m1`. The guest launcher builds
+this project, runs both 2,500-request profiles at concurrency 8 and 32, then
+executes `check_report.py` for each. It does not start a database or require a
+container engine. A failed independent check stops the next profile.
+
+For a local fresh-checkout campaign, M1 is opt-in so existing default campaign
+sequences remain unchanged:
+
+```bash
+python3 lab/tools/reproduce_campaign.py --engine docker --experiments m1 \
+  --output lab/results/m1-campaign --include-working-tree
+```
+
+The collector requires an explicit engine selection for its campaign metadata;
+the M1 stage itself does not invoke that engine.
+
+The [8 November Azure execution](../../evidence/runs/azure-m1-2026-11-08.json)
+ran both profiles on the private North Europe D4s_v5 runner: eight measured
+rounds, 20,000 responses, zero invalid/missing replies, both negative controls
+passed. The report's `executionHost=AZURE_VM` identifies the machine;
+`LOCALHOST_TRANSPORT_ONLY` identifies the loopback path on that machine.
+These descriptions are compatible, not conflicting. Source commit and exact
+source-archive digest are retained. The VM was deallocated after download.
+
+Do not compare these short closed-loop response rates with durable transaction
+capacity or declare a universal transport winner. Historical raw reports are
+unchanged.

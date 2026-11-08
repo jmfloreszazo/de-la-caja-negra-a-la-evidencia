@@ -15,6 +15,8 @@ The public TODM protocol distinguishes three conditions for studying constructio
 
 Does the independent oracle reduce accepted defects? What does its qualification add? How many incorrect blocks does it produce? How much effort does clarifying and approving rules require? Which attempts to modify the evaluator do real permissions prevent? Those questions need data and a prior design.
 
+What this edition adds is a single data point, not an answer: one real model response, evaluated in isolation on an Azure VM, passed the independent gate and the mutation controls (chapter 29). One task cannot estimate a defect rate, and we measured neither review time nor cost. It demonstrates that the harness can host the comparison; it does not run it.
+
 The TODM repository itself frames this as an open challenge: it invites anyone to reproduce, falsify, compare or transfer the method, and accepts negative or inconclusive findings as contributions [2]. A book that argues for evidence needs that door open.
 
 ## The unit of analysis matters

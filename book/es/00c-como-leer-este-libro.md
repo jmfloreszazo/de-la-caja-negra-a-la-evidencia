@@ -20,7 +20,24 @@ Un responsable de tecnología encontrará criterios para delimitar una moderniza
 
 Se puede leer en orden o por partes. Si vienes con prisa por el rendimiento, la parte V es autocontenida. Si quieres ver primero el código, empieza por la parte VI y el anexo [A](anexos/anexo-a-un-laboratorio-que-pueda-contradecirnos.md) y vuelve después a las razones. Si tienes que defender un presupuesto, los capítulos [33](parte-7-organizacion/33-plan-de-modernizacion-primero-una-prueba-de-capacidad.md), [35](parte-7-organizacion/35-cuando-no-migraria.md) y [37](parte-7-organizacion/37-el-nuevo-contrato-de-modernizacion.md) están escritos para eso.
 
-Las referencias numeradas entre corchetes remiten al anexo [G](anexos/anexo-g-fuentes-y-alcance-de-la-investigacion.md). El código completo, los comandos y los resultados de referencia están en el laboratorio adjunto. La fecha de revisión de esta edición es el 29 de octubre de 2026.
+Las referencias numeradas entre corchetes remiten al anexo [G](anexos/anexo-g-fuentes-y-alcance-de-la-investigacion.md). El código completo, los comandos y los resultados de referencia están en el laboratorio adjunto. El identificador de primera edición es del 29 de octubre de 2026; la [release de archivo de la investigación](../../docs/releases/v2026.11.05.md) conserva el cierre posterior del 5 de noviembre sin convertir los experimentos parciales en resultados aceptados.
+
+## Autoría y responsabilidad
+
+Este libro está escrito por **José María Flores Zazo**, autor de [jmfloreszazo.com](https://jmfloreszazo.com). Los argumentos en primera persona y las decisiones editoriales pertenecen al autor. Las herramientas utilizadas para preparar, traducir o comprobar el material no adquieren autoría ni autoridad para aprobar sus conclusiones.
+
+## Leer no es lo mismo que reproducir
+
+Distingo cuatro cosas que el lector puede comprobar. Ninguna sustituye a la siguiente:
+
+| Alcance | Punto de entrada para reproducir | Qué acredita un resultado satisfactorio |
+|---|---|---|
+| Manuscrito y figuras | [Comprobaciones del repositorio](../../README.es.md#reproducir-por-alcance) y [generación del PDF](../../docs/PDF.md) | Estructura emparejada, texto generado al día y una edición que se puede construir; no una aprobación editorial completa ni PDF idénticos byte a byte |
+| Ejecución de referencia conservada | [Comprobaciones del laboratorio solo con Python](../../lab/README.md#checks-you-can-run-with-python-only) | Hashes del contrato original, 58 expectativas recalculadas independientemente y comprobaciones contables sobre bases históricas; no una nueva ejecución COBOL/.NET |
+| Ejecución sintética nueva | [Protocolo de reproducción por host](../../lab/docs/HOST_REPRODUCTION.md) | El recorrido indicado y su auditoría independiente en un host e imagen registrados; no todos los experimentos del repositorio |
+| Experimentos ampliados | [Matriz de evidencia](../../docs/EVIDENCE.es.md) y el procedimiento de cada experimento | Solo la carga, el entorno, los controles y el veredicto observado que se registran; ninguna equivalencia con mainframe, Azure o producción por inferencia |
+
+Para obtener un resultado reproducible, conserva el commit exacto del código, los cambios locales si los hay, las versiones de las herramientas, el comando, el código de salida, la salida cruda y el oráculo independiente. Conserva también los intentos fallidos. Un runtime ausente o una plataforma no ejecutada son limitaciones que se deben comunicar, no una reproducción satisfactoria. E1/E2 siguen parcialmente verificados. E3 y E4 cuentan con demostraciones acotadas en una sola VM de Azure (capítulos 25 bis y 29) registradas como `demonstrated_not_accepted`: ejecuciones reales, no estudios de aceptación.
 
 ---
 

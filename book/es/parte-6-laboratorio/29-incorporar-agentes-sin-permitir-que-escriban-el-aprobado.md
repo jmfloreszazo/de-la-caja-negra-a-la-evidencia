@@ -21,6 +21,58 @@ Si cambiamos modelos, presupuestos, prompts o herramientas, lo registramos como 
 
 Un agente investigador puede proponer reglas desde políticas, entrevistas y observaciones autorizadas; el COBOL es una fuente auxiliar cuando sea necesario. El constructor puede **programar desde cero** la capacidad en C# sin copiar la estructura del legado. TODM compara el resultado con oráculos independientes y reglas aprobadas; Golden Master conserva por separado el comportamiento observado. La autoridad del negocio decide qué mantener, corregir o retirar.
 
+## Un piloto constructor ejecutado, no una tasa de éxito poblacional
+
+El [piloto del 8 de noviembre de 2026](../../../evidence/runs/e4-live-builder-2026-11-08.json)
+hizo una solicitud real a un despliegue existente de Azure Foundry de
+`gpt-5.6-terra`, versión `2026-07-09`. La solicitud contenía solo el contrato
+público sintético de comisiones, no la implementación COBOL, los casos
+reservados ni el verificador. El modelo devolvió un programa C# completo y
+16 vectores de prueba escritos por él.
+
+El supervisor compiló y ejecutó ese fuente en WSL/Docker local, no en la VM
+experimental de Azure. El candidato no tenía red ni credenciales, se ejecutó
+como usuario no privilegiado con el sistema de archivos raíz de solo lectura
+y recursos limitados, y no podía montar el repositorio ni el evaluador. Los
+hashes originales protegidos permanecieron intactos.
+
+El programa generado pasó sus 16 pruebas y los 58 casos congelados del gate
+independiente. Sus pruebas también aceptaron la referencia correcta y
+rechazaron los tres mutantes conocidos: redondeo al par, umbral de revisión
+incorrecto y aprobación de cuentas inactivas. Una cualificación separada
+volvió a verificar el gate independiente y tres escrituras protegidas
+denegadas. Estos controles son variantes relacionadas de una tarea,
+**no cuatro proyectos independientes**.
+
+La respuesta registró **269 tokens de entrada y 2.279 de completado: 2.548 en
+total**. El límite declarado antes de ejecutar era de tres solicitudes y
+4.000 tokens de completado por solicitud; no hizo falta pedir una corrección.
+Una segunda evaluación local reprodujo la misma respuesta sin volver a llamar
+al modelo. Los [comandos de reproducción](../../../lab/e4_agents/README.md#live-azure-builder-pilot)
+conservan prompts, respuesta, consumo, fuente generado, vectores de prueba,
+identidad de imagen, configuración de contenedores y veredictos independientes.
+Reproducir una respuesta guardada verifica evidencia determinista; volver a
+preguntar al modelo no tiene por qué producir código idéntico.
+
+Es un **flujo dirigido por un modelo con supervisor fijo**, no una demostración
+de un agente autónomo que elige herramientas. El veredicto sigue siendo
+`DEMO_ONLY / SIMULATED_ALLOW`. No se midieron duración de revisión humana,
+factura ni coste por cambio aceptado. Una tarea sintética resuelta no completa
+E4 ni demuestra que una condición de pruebas sea superior a otra.
+
+### El mismo candidato, evaluado después en Azure
+
+La [reproducción separada en Azure](../../../evidence/runs/azure-e1-e4-2026-11-08.json)
+ejecutó ese candidato sin cambios y el evaluador independiente con Podman sin
+privilegios en la VM privada del laboratorio. Volvió a superar 16 pruebas propias
+y 58 casos congelados; se rechazaron tres mutantes y se denegaron tres escrituras
+protegidas. El consumo original sigue siendo 2.548 tokens: la reproducción hizo
+**cero llamadas nuevas al modelo**. El fallo inicial de permisos de directorio y
+la repetición corregida, ambos archivados, muestran por qué la frontera debe
+probarse en el anfitrión de destino y no deducirse de la configuración local.
+Esto añade evidencia de ejecución, no aprobación humana ni otra tarea independiente
+para las estadísticas comparativas.
+
 ## REA entra cuando el problema lo necesita
 
 Para el fuente pequeño del laboratorio no necesitamos un decompilador. Incluir REA por obligación estética añadiría complejidad sin aclarar la prueba. Su integración tiene sentido cuando la capacidad investigada reside en un artefacto que sus herramientas ayudan a examinar.

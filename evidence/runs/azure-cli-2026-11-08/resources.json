@@ -1,0 +1,57 @@
+[
+  {
+    "location": "northeurope",
+    "name": "bookev1107-compute-nsg",
+    "type": "Microsoft.Network/networkSecurityGroups"
+  },
+  {
+    "location": "northeurope",
+    "name": "bookev1107-egress",
+    "type": "Microsoft.Network/natGateways"
+  },
+  {
+    "location": "northeurope",
+    "name": "bookev1107-egress-ip",
+    "type": "Microsoft.Network/publicIPAddresses"
+  },
+  {
+    "location": "northeurope",
+    "name": "bookev1107-runner",
+    "type": "Microsoft.Compute/virtualMachines"
+  },
+  {
+    "location": "northeurope",
+    "name": "bookev1107-runner-id",
+    "type": "Microsoft.ManagedIdentity/userAssignedIdentities"
+  },
+  {
+    "location": "northeurope",
+    "name": "bookev1107-runner-nic",
+    "type": "Microsoft.Network/networkInterfaces"
+  },
+  {
+    "location": "northeurope",
+    "name": "bookev1107-runner_OsDisk_1_a015c8eaf8794fb4918f97266f245a76",
+    "type": "Microsoft.Compute/disks"
+  },
+  {
+    "location": "northeurope",
+    "name": "bookev1107-vnet",
+    "type": "Microsoft.Network/virtualNetworks"
+  },
+  {
+    "location": "northeurope",
+    "name": "bookev1107-worker-id",
+    "type": "Microsoft.ManagedIdentity/userAssignedIdentities"
+  },
+  {
+    "location": "northeurope",
+    "name": "bookev1107-workers",
+    "type": "Microsoft.Compute/virtualMachineScaleSets"
+  },
+  {
+    "location": "northeurope",
+    "name": "lab2bdefcogy3zgk",
+    "type": "Microsoft.Storage/storageAccounts"
+  }
+]

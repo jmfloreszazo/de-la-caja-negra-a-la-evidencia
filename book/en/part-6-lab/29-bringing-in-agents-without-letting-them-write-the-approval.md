@@ -21,6 +21,55 @@ If we change models, budgets, prompts or tools, we record it as a different expe
 
 A discovery agent may propose rules from policies, interviews and authorized observations; COBOL is supplementary evidence when needed. The builder can **implement the capability from scratch** in C# without copying legacy structure. TODM verifies outcomes against independent oracles and approved rules; Golden Master separately preserves observed incumbent behavior. Business authority decides what to preserve, correct or retire.
 
+## An executed builder pilot, not a population success rate
+
+The [8 November 2026 pilot](../../../evidence/runs/e4-live-builder-2026-11-08.json)
+made one real request to an existing Azure Foundry deployment of
+`gpt-5.6-terra`, version `2026-07-09`. The request contained only the public
+synthetic fee contract, not the COBOL implementation, reserved cases or verifier.
+The model returned a complete C# program and 16 self-authored test vectors.
+
+The supervisor compiled and executed that source in local WSL/Docker, not on
+the Azure experiment VM. The candidate had no network or credentials, ran
+as a non-root user with a read-only root filesystem and bounded resources,
+and could not mount the repository or evaluator. The original protected
+hashes remained unchanged.
+
+The generated program passed its 16 tests and the independent gate's 58 frozen
+cases. Its tests also accepted the known-good reference and rejected the three
+known mutants: even rounding, wrong review threshold and approval of inactive
+accounts. A separate qualification again verified the independent gate and
+three denied protected writes. These controls are related variants of one
+task, **not four independent projects**.
+
+The response reported **269 input tokens and 2,279 completion tokens: 2,548
+total**. The predeclared limit was three requests and 4,000 completion tokens
+per request; no repair request was needed. A second local evaluation replayed
+the same response without calling the model again. The
+[reproduction commands](../../../lab/e4_agents/README.md#live-azure-builder-pilot)
+retain prompts, response, usage, generated source, test vectors, image identity,
+container configurations and independent verdicts. Replaying a saved response
+is deterministic evidence verification; asking the model again need not produce
+identical code.
+
+This is a **model-driven workflow with a fixed supervisor**, not a demonstration
+of an autonomous agent selecting tools. The verdict remains
+`DEMO_ONLY / SIMULATED_ALLOW`. No human review duration, invoice or cost per
+accepted change was measured. One successful synthetic task does not complete
+E4 or establish that one testing condition is superior to another.
+
+### The same candidate, later evaluated in Azure
+
+The [separate Azure replay](../../../evidence/runs/azure-e1-e4-2026-11-08.json)
+ran that unchanged candidate and the independent evaluator with rootless Podman
+on the private experiment VM. It again passed 16 self-tests and 58 frozen cases;
+three known mutants were rejected and three protected writes denied. Original
+model consumption remains 2,548 tokens: replay made **zero new model calls**.
+The archived initial directory-permission failure and corrected retry demonstrate
+why a claimed boundary must be exercised on the target host, not inferred from
+its local configuration. This adds execution evidence, not human approval or a
+new independent task for comparative statistics.
+
 ## REA comes in when the problem needs it
 
 For the lab's small source we do not need a decompiler. Including REA for the sake of appearances would add complexity without clarifying the test. Its integration makes sense when the capability under investigation lives in an artifact its tools help examine.

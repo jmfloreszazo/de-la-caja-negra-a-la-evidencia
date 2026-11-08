@@ -7,7 +7,7 @@
 38e201f047792df530db8c7d157c2b6b19d1ed2e4134dba5da5c59e97d3b0da2  ./Gate/Gate.csproj
 0f9fb37c8a7ae181fd93de1ca0f07a709009c15d43354858e8d073d9b9688093  ./Gate/Program.cs
 c401cb5fe3204497befa57f4a7f9c6994c8dfcf09cb47f400354c0cd562f9043  ./LICENSE
-da51c4877ea952453e017dd60daba71b708e66e859efe5de00506c4cbd59f3d5  ./README.md
+5ab042cfa2dc7ad8fad2f78623d9e37fecc07f1302b3d0924ad593e15bde5486  ./README.md
 846930b4e2a9a56a4e63c680b45d8963708cbecaba1bf8f5573c681f84ec2d95  ./architecture/ledger_transaction.sql
 4e633c890889bf7a6db48f0dfc9b1f6d1cb16c75a5795c6d497eb1c7545f6ca5  ./bank_test.py
 33bb7babf1a46f84f5ca139035456e5976abcb7bdd2acc9ad72d1b5b4eb5e382  ./ci/github-actions.yml
@@ -15,6 +15,7 @@ da51c4877ea952453e017dd60daba71b708e66e859efe5de00506c4cbd59f3d5  ./README.md
 976d7127d30206e77bbef03fd84bb41d719311be9ea8b63eafd6f83e9c0449a1  ./contracts/cases.json
 53fed8d38ef15bb4b2b7977cca8a4573608b347cb063999de0768cf75239826d  ./contracts/cases.sha256
 99b9a6da6057fd90c76b58d1a02fae589df1346006ee81efdb75df830f0b0203  ./docs/EXPERIMENT_PROTOCOL.md
+4516355d536bdb4ad1183fecdb3fff407405b1106935a1a4f722251b99f6f46f  ./docs/HOST_REPRODUCTION.md
 c46bcf09ea02594cf820ad73693866505431f35c2d1fd7b8fe80f63e3fa3f18a  ./docs/WALKTHROUGH.md
 e2593a00ad7f243ada2503afafa81430d1f5dfdadfdb28061038707477848a2c  ./examples/commission-three-way/README.md
 d2e0a7094f92946159d0680a913568fb500d395acc39595b464749f722ba9bf4  ./examples/commission-three-way/cobol/commission.cbl

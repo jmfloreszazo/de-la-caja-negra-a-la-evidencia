@@ -1,6 +1,6 @@
 **English** · [Español](../../es/parte-3-oraculos/10-todm-y-el-problema-de-aceptar-lo-que-construimos.md)
 
-[← Part III · Oracles: the right to accept](README.md) · [Contents](../README.md) · [Chapter 11 · The architecture of a verifiable modernization →](11-the-architecture-of-a-verifiable-modernization.md)
+[← Part III · Oracles: the right to accept](README.md) · [Contents](../README.md) · [Chapter 10 bis · TODM tools and ADRs →](10a-todm-toolbox-models-and-adrs.md)
 
 # Chapter 10 · TODM and the problem of accepting what we build
 
@@ -58,6 +58,55 @@ We also need clean controls. A gate that blocks everything detects every defect,
 
 Qualification is always relative to a set of threats and cases. Passing those controls increases confidence within that scope. It does not prove there is no different way to fool or break the evaluator.
 
+## TODM in the executable validation process
+
+The [book's validation adapter](../../../lab/todm_validation/README.md) anchors
+its method references to [TODM commit `61354abc`](https://github.com/jmfloreszazo/TODM/tree/61354abc03e73fbf258b6e8d66e35678da134ef8).
+It binds explicit contract, source and observation inventories to SHA-256
+fingerprints, then checks the recorded E1–E4 evidence. A filename or a report
+containing `PASS` is not sufficient: missing or changed inputs block the result,
+and E3's offered operations must reconcile with the persisted ledger.
+
+The output separates G0–G7, technical verification, oracle qualification and
+release authorization. G2 cannot become human approval because an agent wrote
+`approved: true`; G6 remains blocked without independently trusted authority.
+The adapter reuses the pinned upstream demonstration's mandate semantics for
+synthetic controls of principal, scope, action, time and revocation, with the
+original MIT attribution. It is not a production TODM engine, identity provider
+or certified implementation of the five OMG-inspired semantic profiles.
+
+The integration exposed a real gap: the first E3 bundle named runtime binary
+hashes without including all of those original bytes. Its validation failed.
+The missing artifacts were retrieved from the retained Azure build tree by
+matching their recorded hashes, **not rebuilt and substituted**. A new bundle
+includes that separate recovery record; the incomplete bundle and its failed
+verdict remain intact. This is the point of putting the methodology into the
+process: incomplete evidence must stay incomplete until the missing proof is
+actually supplied.
+
+Negative controls exercise altered bytes, missing evidence, false accounting
+invariants and attempted approval through untrusted input. Passing those
+controls qualifies this adapter against those cases; it does not establish
+organizational independence, industrial effectiveness or superiority over
+other methods. The book's Golden Master comparison remains characterization
+of observed legacy behaviour, separate from accountable business truth.
+
+### Observed result on Azure
+
+The [recorded TODM replay](../../../evidence/runs/todm-azure-2026-11-08.json)
+verified 134 snapshot files and 108 artifact bindings on the Azure runner.
+All four bounded technical evaluations passed, together with eight
+actual-input negative controls and twelve upstream synthetic mandate cases.
+The aggregate methodology verdict stayed `INCONCLUSIVE` and release stayed
+`BLOCK`. This is not a contradiction: technical evidence was complete for the
+stated checks, but accountable business approval was not supplied.
+
+The first Azure qualification command used an unsupported output directory
+outside the bundle root; its failure was retained before a separate retry with
+the documented layout. Neither the repaired evidence inventory nor the successful
+retry rewrote prior observations. The runner was deallocated after download;
+no GitHub workflow or production release was triggered.
+
 ## An example of a failure that must close the gate
 
 The COBOL system calculates a 0.5% fee with a specific rounding rule. The agent translates it into C# using its library's usual rounding option. In 99 cases the results match. In the hundredth, the midpoint comes out differently. The compiler and the candidate's unit tests pass. An approved oracle with a boundary case must reject it. Later, the concurrency gate rejects a method that produces the correct amount in isolation but allows two withdrawals on the same balance. Finally, the performance gate rejects a correct architecture that misses the batch window.
@@ -80,4 +129,4 @@ That final detail is the one that matters to me for COBOL. In the lab, the basel
 
 ---
 
-[← Part III · Oracles: the right to accept](README.md) · [Contents](../README.md) · [Chapter 11 · The architecture of a verifiable modernization →](11-the-architecture-of-a-verifiable-modernization.md)
+[← Part III · Oracles: the right to accept](README.md) · [Contents](../README.md) · [Chapter 10 bis · TODM tools and ADRs →](10a-todm-toolbox-models-and-adrs.md)

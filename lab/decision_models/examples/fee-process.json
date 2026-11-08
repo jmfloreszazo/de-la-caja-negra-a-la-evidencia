@@ -1,0 +1,57 @@
+{
+  "profileVersion": 1,
+  "version": "v1",
+  "baselineId": "BASELINE-FEE-DEMO",
+  "sources": [
+    {
+      "id": "SRC-FEE-CONTRACT",
+      "path": "examples/fee-contract.md"
+    }
+  ],
+  "adrs": [
+    {
+      "id": "ADR-001",
+      "path": "adr/ADR-001-bounded-profiles.md"
+    }
+  ],
+  "kind": "processTrace",
+  "id": "FEE-PROCESS",
+  "states": [
+    "Start",
+    "Validate",
+    "Decide",
+    "Record",
+    "Rejected",
+    "End"
+  ],
+  "start": "Start",
+  "ends": [
+    "End"
+  ],
+  "transitions": [
+    [
+      "Start",
+      "Validate"
+    ],
+    [
+      "Validate",
+      "Decide"
+    ],
+    [
+      "Decide",
+      "Record"
+    ],
+    [
+      "Record",
+      "End"
+    ],
+    [
+      "Validate",
+      "Rejected"
+    ],
+    [
+      "Rejected",
+      "End"
+    ]
+  ]
+}

@@ -6,7 +6,7 @@
 
 **Modernizar COBOL más allá de la traducción: agentes de IA, patrones de arquitectura, transacciones y oráculos verificables.**
 
-José María Flores Zazo · Edición v2026.10.29 · [El libro entero en una página](../es.md) · [Catálogo de diagramas](diagramas.md) · [Volver al repositorio](../../README.es.md)
+José María Flores Zazo · [jmfloreszazo.com](https://jmfloreszazo.com) · Edición v2026.10.29 · [El libro entero en una página](../es.md) · [Catálogo de diagramas](diagramas.md) · [Volver al repositorio](../../README.es.md)
 
 ## Índice
 
@@ -27,6 +27,7 @@ José María Flores Zazo · Edición v2026.10.29 · [El libro entero en una pág
   - [Capítulo 9 · De la autoridad del agente a la autoridad de la regla](parte-2-arqueologia-y-autoridad/09-de-la-autoridad-del-agente-a-la-autoridad-de-la-regla.md)
 - **[Parte III · Oráculos: el derecho a aceptar](parte-3-oraculos/README.md)**
   - [Capítulo 10 · TODM y el problema de aceptar lo que construimos](parte-3-oraculos/10-todm-y-el-problema-de-aceptar-lo-que-construimos.md)
+  - [Capítulo 10 bis · Aplicar TODM: modelos, herramientas y ADR](parte-3-oraculos/10a-herramientas-todm-modelos-y-adrs.md)
   - [Capítulo 11 · La arquitectura de una modernización verificable](parte-3-oraculos/11-la-arquitectura-de-una-modernizacion-verificable.md)
   - [Capítulo 12 · COBOL y C# deben acordar el significado](parte-3-oraculos/12-cobol-y-c-deben-acordar-el-significado.md)
 - **[Parte IV · Patrones que sustituyen responsabilidades, no sintaxis](parte-4-patrones/README.md)**
@@ -69,3 +70,4 @@ José María Flores Zazo · Edición v2026.10.29 · [El libro entero en una pág
   - [Anexo E · Catálogo de cien riesgos](anexos/anexo-e-catalogo-de-cien-riesgos.md)
   - [Anexo F · Glosario operativo](anexos/anexo-f-glosario-operativo.md)
   - [Anexo G · Fuentes y alcance de la investigación](anexos/anexo-g-fuentes-y-alcance-de-la-investigacion.md)
+  - [Anexo H · Más allá de COBOL](anexos/anexo-h-mas-alla-de-cobol.md)

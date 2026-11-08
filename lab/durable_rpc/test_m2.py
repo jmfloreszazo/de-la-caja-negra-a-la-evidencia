@@ -78,11 +78,13 @@ with connect() as db:
 assert all(verify().values())
 summary={
   "schemaVersion":1,
-  "classification":"M2_LOCAL_SINGLE_HOST_POSTGRES_DURABLE_SMOKE_NOT_CLOUD_OR_MAINFRAME",
+  "classification":"M2_SINGLE_HOST_POSTGRES_DURABLE_SMOKE_NOT_CAPACITY_OR_MAINFRAME",
   "utc":__import__("datetime").datetime.now(__import__("datetime").timezone.utc).isoformat(),
-  "sourceCommit":os.environ.get("GITHUB_SHA","local"),
+  "sourceCommit":os.environ.get("SOURCE_HEAD_SHA",os.environ.get("GITHUB_SHA","local")),
+  "sourceArchiveSha256":os.environ.get("SOURCE_ARCHIVE_SHA256"),
+  "executionHost":os.environ.get("EXPERIMENT_HOST","UNSPECIFIED_SINGLE_HOST"),
   "postgresVersion":None,
-  "limitations":"One hosted runner, HTTP/2 h2c, closed loop, 256 requests each; no TLS/WAN/Azure/HA or mainframe parity.",
+  "limitations":"One host, HTTP/2 h2c, closed loop, 256 requests each; no TLS/WAN, distributed scaling, physical-node HA or mainframe parity.",
   "cases":records,
   "oracleNegativeControl":{"detected":sorted(k for k,v in bad.items() if not v),"restored":True}
 }

@@ -143,10 +143,21 @@ def main():
     negative_control = os.environ.get("E2_PLACEMENT_OBSERVATION_NEGATIVE") == "1"
     if negative_control:
         assert os.environ.get("E1_PG_DSN") == "host=127.0.0.1 port=55434 dbname=e2lab user=postgres password=e2local"
-    source_head = subprocess.check_output(["git", "rev-parse", "HEAD"], text=True).strip()
+    source_archive = os.environ.get("SOURCE_ARCHIVE_SHA256")
+    if source_archive:
+        source_head = os.environ["SOURCE_HEAD_SHA"]
+        dirty_value = os.environ["SOURCE_WORKTREE_DIRTY"]
+        if (len(source_archive) != 64 or len(source_head) != 40
+                or any(c not in "0123456789abcdef" for c in source_archive + source_head)
+                or dirty_value not in ("true", "false")):
+            raise ValueError("Invalid explicit source archive provenance")
+        source_dirty = dirty_value == "true"
+    else:
+        source_head = subprocess.check_output(["git", "rev-parse", "HEAD"], text=True).strip()
+        source_dirty = bool(subprocess.check_output(["git", "status", "--porcelain"], text=True))
     observer = PlacementJournal(OUT, PROVIDER, metadata={
         "sourceHeadSha": source_head, "negativeControlRequested": negative_control,
-        "worktreeDirty": bool(subprocess.check_output(["git", "status", "--porcelain"], text=True)),
+        "worktreeDirty": source_dirty, "sourceArchiveSha256": source_archive,
         "sqlMembershipApplicable": PROVIDER == "adonet",
         "preexistingSuccessFiles": {name: hashlib.sha256((OUT / name).read_bytes()).hexdigest()
                                     for name in ("e2-multiprocess.json", "e2-adonet-recovery.json")

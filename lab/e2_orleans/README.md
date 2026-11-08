@@ -19,6 +19,13 @@ The ledger has **7,200 durably COMMITTED operations, 14,400 postings, 7,200 outb
 
 ## Why this experiment exists
 
+The [experiment launcher](../../infra/experiments/README.md) provides an opt-in
+`e2-cluster` sequence for reproducing the functional, deadlock, fixed-workload,
+process-crash, development/ADO.NET two-silo and in-flight transaction controls.
+It supports Podman or explicitly selected Docker, with a unique labelled
+loopback-only disposable `e2lab` database. This local sequence does not replace
+physical-host fault domains, sustained capacity tests or final E2 acceptance.
+
 E1 has established synthetic functional equivalence for the protected
 SQLite reference and the PostgreSQL/SQL Server candidates, with original
 CI evidence and independent accounting oracles. E2 asks a narrower and
@@ -487,3 +494,11 @@ include earlier secondary exit, then explicit recreation of both silos and
 This is assisted, sampled recovery on one host per case, not continuous
 availability, exclusive activation, automatic recovery, capacity or physical HA.
 Run `python3 scripts/check_e2_long_partition_observations.py` from the repository root.
+## Archived-source provenance
+
+The Azure guest runs an exported source tree without Git metadata.
+For the two-silo test, the trusted launcher supplies `SOURCE_HEAD_SHA`,
+`SOURCE_ARCHIVE_SHA256` and `SOURCE_WORKTREE_DIRTY` after checking the downloaded
+archive digest. The placement journal records the base commit and archive
+identity separately; unpublished changes are never represented as a clean
+committed release. Native checkouts continue to read their actual Git state.

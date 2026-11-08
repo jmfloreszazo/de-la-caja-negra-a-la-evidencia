@@ -1,0 +1,51 @@
+{
+  "classification": "ACTUAL_E3_OFFLINE_ADAPTER_REPLAY_NOT_FULL_BUNDLE_VALIDATION",
+  "oracleVerdict": "PASS",
+  "qualificationVerdict": "PASS",
+  "releaseOutcome": "BLOCK",
+  "findings": [
+    "Raw E3 check nonnegative: PASS",
+    "Raw E3 check conserved: PASS",
+    "Raw E3 check balancedPostings: PASS",
+    "Raw E3 check twoPostingsPerCommit: PASS",
+    "Raw E3 check noPostingsForRejection: PASS",
+    "Raw E3 check outboxAtomic: PASS",
+    "Raw E3 check projectionAgrees: PASS",
+    "Raw E3 check fixtureStructure: PASS",
+    "Raw E3 check postingMatchesRequest: PASS",
+    "Raw E3 check plannedCoverage: PASS",
+    "Raw E3 check plannedRequestsUnchanged: PASS",
+    "Raw E3 check noUnplannedPersistedOperations: PASS",
+    "Raw E3 check reconciledOffers: PASS",
+    "Raw E3 check reconciliationCounters: PASS",
+    "Raw E3 check measurementCounters: PASS",
+    "Raw E3 check recoveryTimeline: PASS",
+    "Raw E3 check rawRecoveryAcknowledgment: PASS",
+    "Exploratory recovery only; no capacity threshold or physical HA acceptance"
+  ],
+  "limitations": [
+    "Only the raw adapter was executed here; full source/runtime bundle binding must be supplied by the campaign."
+  ],
+  "artifacts": [
+    {
+      "document": "report",
+      "path": "lab\\results\\azure-e1-e4-20261108\\runs\\e3-azure-20261108-01-evidence\\results\\e3\\summary.json",
+      "sha256": "63ee6069104cc62eee821733ec82c31dc9743efd8505f4a6f20448cdc351eb23"
+    },
+    {
+      "document": "ledger",
+      "path": "lab\\results\\azure-e1-e4-20261108\\runs\\e3-azure-20261108-01-evidence\\results\\e3\\ledger-snapshot.json",
+      "sha256": "77d009a79ae282419bdd98ced99b89aeb4ff0b88d1f7e52fdfcbec14afd18d0a"
+    },
+    {
+      "document": "offers",
+      "path": "lab\\results\\azure-e1-e4-20261108\\runs\\e3-azure-20261108-01-evidence\\results\\e3\\offers.json",
+      "sha256": "b7c40af86c2e261c317e8df1a461f6d4f6a01ed0dc2158abf8c4233d32bcd502"
+    },
+    {
+      "document": "planned",
+      "path": "lab\\results\\azure-e1-e4-20261108\\runs\\e3-azure-20261108-01-evidence\\results\\e3\\offers-planned.json",
+      "sha256": "ade69a9da72c7183b68f47cd026b1c2bdd965b6755c0c29b8ff91c29d361736d"
+    }
+  ]
+}

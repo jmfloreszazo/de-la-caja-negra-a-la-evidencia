@@ -1,6 +1,6 @@
 **Español** · [English](../../en/annexes/annex-g-sources-and-scope-of-the-research.md)
 
-[← Anexo F · Glosario operativo](anexo-f-glosario-operativo.md) · [Índice](../README.md)
+[← Anexo F · Glosario operativo](anexo-f-glosario-operativo.md) · [Índice](../README.md) · [Anexo H · Más allá de COBOL →](anexo-h-mas-alla-de-cobol.md)
 
 # Anexo G · Fuentes y alcance de la investigación
 
@@ -134,4 +134,4 @@
 
 ---
 
-[← Anexo F · Glosario operativo](anexo-f-glosario-operativo.md) · [Índice](../README.md)
+[← Anexo F · Glosario operativo](anexo-f-glosario-operativo.md) · [Índice](../README.md) · [Anexo H · Más allá de COBOL →](anexo-h-mas-alla-de-cobol.md)

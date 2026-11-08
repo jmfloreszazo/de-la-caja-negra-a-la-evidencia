@@ -1,0 +1,102 @@
+{
+  "schemaVersion": 1,
+  "classification": "EXECUTED_AZURE_E1_E4_DEMONSTRATIONS_NOT_GLOBAL_ACCEPTANCE",
+  "sourceCommit": "b064d3d5efe77642e2277967f78c6c1d52e8bec1",
+  "runs": [
+    {
+      "runId": "e1-azure-20261108-01",
+      "sourceCommit": "b064d3d5efe77642e2277967f78c6c1d52e8bec1",
+      "sourceArchiveSha256": "558c34f017017213f62acf4112ae8e2d74eaa590780cbbaefccb197ddbdc9d08",
+      "worktreeDirty": true,
+      "rawArchiveSha256": "ac4a73d7fc312dde08e2ef1d38c27034ba1e618d30f41c25dc7d08d29f52155f",
+      "workloadExitCode": 0,
+      "vmId": "f5ecd929-6823-4996-b9fb-49cff1f6e21c"
+    },
+    {
+      "runId": "e2-cluster-azure-20261108-01",
+      "sourceCommit": "b064d3d5efe77642e2277967f78c6c1d52e8bec1",
+      "sourceArchiveSha256": "5742522d05649e9fb7efc023eea60f9c76bc703b2acca380bf22b37376702131",
+      "worktreeDirty": true,
+      "rawArchiveSha256": "ddffcb52953d8cf727bcde4fbc249005f3875179dc22bcbbe318d2c3ea538c66",
+      "workloadExitCode": 0,
+      "vmId": "f5ecd929-6823-4996-b9fb-49cff1f6e21c"
+    },
+    {
+      "runId": "e3-azure-20261108-01",
+      "sourceCommit": "b064d3d5efe77642e2277967f78c6c1d52e8bec1",
+      "sourceArchiveSha256": "bc00ef15bec392e187c2db67d200019ebeb00693ef774b18d298390f381eada8",
+      "worktreeDirty": true,
+      "rawArchiveSha256": "af0ba809dd688218ee4a0e3f5cfaca3f962b2cde6b940c1d741f7824a2d2ea24",
+      "workloadExitCode": 0,
+      "vmId": "f5ecd929-6823-4996-b9fb-49cff1f6e21c"
+    },
+    {
+      "runId": "e4-replay-azure-20261108-01",
+      "sourceCommit": "b064d3d5efe77642e2277967f78c6c1d52e8bec1",
+      "sourceArchiveSha256": "89e5ec300b4c64c9aae7e8278fc02eea02c79b474b617a40ef4bb76afa656df7",
+      "worktreeDirty": true,
+      "rawArchiveSha256": "64d47ecc2157b0677821a13f2b8c44ea8366a981c5e5fe377d946857455339e7",
+      "workloadExitCode": 125,
+      "vmId": "f5ecd929-6823-4996-b9fb-49cff1f6e21c"
+    },
+    {
+      "runId": "e4-replay-azure-20261108-02",
+      "sourceCommit": "b064d3d5efe77642e2277967f78c6c1d52e8bec1",
+      "sourceArchiveSha256": "6b0be2cc921345eb4d95f085711a712c0b3183ddadde6c57b7d272ada4b9c6c8",
+      "worktreeDirty": true,
+      "rawArchiveSha256": "7e16f8ccd380d599807fe0d3a16fcd6fc989b29c2e300037ab33ee66c45b6a9f",
+      "workloadExitCode": 0,
+      "vmId": "f5ecd929-6823-4996-b9fb-49cff1f6e21c"
+    }
+  ],
+  "resourceGroup": "rg-book-evidence-20261107",
+  "region": "northeurope",
+  "vmSize": "Standard_D4s_v5",
+  "e1": {
+    "controls": "PASS",
+    "workerTransfers": 960
+  },
+  "e2": {
+    "controls": "PASS",
+    "matchedWorkloadTransfers": 600,
+    "membershipProviders": 2,
+    "fault": "PROCESS_SIGKILL_NOT_PHYSICAL_NODE_LOSS"
+  },
+  "e3": {
+    "status": "EXPLORATORY_COMPLETED",
+    "offers": 720,
+    "persistedCommits": 668,
+    "connectionFailures": 48,
+    "missedSchedule": 4,
+    "independentOracle": "PASS",
+    "recoveryCommitted": true,
+    "capacityAcceptance": false
+  },
+  "e4": {
+    "status": "AZURE_REPLAY_VERIFIED",
+    "candidateSha256": "70ef08921aa429b2c100c7be90def999617d29754f3e8ed93da9d427df56350c",
+    "modelCallsInThisCampaign": 0,
+    "originalModelCalls": 1,
+    "selfTests": 16,
+    "frozenCases": 58,
+    "knownMutantsRejected": 3,
+    "protectedWritesDenied": 3,
+    "supervisorUid": 1000,
+    "engine": "podman",
+    "protectedUnchanged": true
+  },
+  "retainedFailures": [
+    {
+      "runId": "e4-replay-azure-20261108-01",
+      "reason": "Nonroot Podman inherited root-private working directory; fixed by entering accessible copy before user commands."
+    }
+  ],
+  "githubActions": "NOT_EXECUTED",
+  "ciRunId": null,
+  "limitations": [
+    "One Azure VM; no physical-node HA, TLS/WAN or mainframe comparison.",
+    "E3 synthetic exploratory rates are not approved bank capacity targets.",
+    "E4 replays an existing real model response; no new inference or human-review measurement.",
+    "TODM technical checks cannot substitute for accountable business/release authorization."
+  ]
+}

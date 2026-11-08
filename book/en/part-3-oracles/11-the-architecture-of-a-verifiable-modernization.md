@@ -1,6 +1,6 @@
 **English** · [Español](../../es/parte-3-oraculos/11-la-arquitectura-de-una-modernizacion-verificable.md)
 
-[← Chapter 10 · TODM and the problem of accepting what we build](10-todm-and-the-problem-of-accepting-what-we-build.md) · [Contents](../README.md) · [Chapter 12 · COBOL and C# must agree on meaning →](12-cobol-and-c-must-agree-on-meaning.md)
+[← Chapter 10 bis · TODM tools and ADRs](10a-todm-toolbox-models-and-adrs.md) · [Contents](../README.md) · [Chapter 12 · COBOL and C# must agree on meaning →](12-cobol-and-c-must-agree-on-meaning.md)
 
 # Chapter 11 · The architecture of a verifiable modernization
 
@@ -55,4 +55,4 @@ We do not need to deploy five services at the start. A controlled pipeline and a
 
 ---
 
-[← Chapter 10 · TODM and the problem of accepting what we build](10-todm-and-the-problem-of-accepting-what-we-build.md) · [Contents](../README.md) · [Chapter 12 · COBOL and C# must agree on meaning →](12-cobol-and-c-must-agree-on-meaning.md)
+[← Chapter 10 bis · TODM tools and ADRs](10a-todm-toolbox-models-and-adrs.md) · [Contents](../README.md) · [Chapter 12 · COBOL and C# must agree on meaning →](12-cobol-and-c-must-agree-on-meaning.md)

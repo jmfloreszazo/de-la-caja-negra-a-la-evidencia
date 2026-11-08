@@ -1,0 +1,163 @@
+{
+  "classification": "READ_ONLY_AZURE_CONTROL_PLANE_CAPTURE_NOT_WORKLOAD_EVIDENCE",
+  "status": "PASS",
+  "subscriptionId": "7a84bc78-1d1e-4294-a7c4-760dc607b5de",
+  "resourceGroup": "rg-book-evidence-20261107",
+  "commands": [
+    {
+      "name": "resources",
+      "argv": [
+        "az",
+        "resource",
+        "list",
+        "--resource-group",
+        "rg-book-evidence-20261107",
+        "--query",
+        "sort_by(@, &name)[].{name:name,type:type,location:location}",
+        "--subscription",
+        "7a84bc78-1d1e-4294-a7c4-760dc607b5de",
+        "--only-show-errors",
+        "--output",
+        "json"
+      ],
+      "startedUtc": "2026-11-08T10:03:26.8984579Z",
+      "finishedUtc": "2026-11-08T10:03:29.5487124Z",
+      "exitCode": 0,
+      "stdout": "resources.json",
+      "stderr": "resources.stderr.txt",
+      "sha256": "a36b2fe51ebbb0a93a8b9680dd1ee210b249812aef052ecf456051a6c2e8ecd8"
+    },
+    {
+      "name": "deployment",
+      "argv": [
+        "az",
+        "deployment",
+        "group",
+        "show",
+        "--resource-group",
+        "rg-book-evidence-20261107",
+        "--name",
+        "book-experiments",
+        "--query",
+        "{name:name,state:properties.provisioningState,timestamp:properties.timestamp}",
+        "--subscription",
+        "7a84bc78-1d1e-4294-a7c4-760dc607b5de",
+        "--only-show-errors",
+        "--output",
+        "json"
+      ],
+      "startedUtc": "2026-11-08T10:03:29.5834785Z",
+      "finishedUtc": "2026-11-08T10:03:31.6777907Z",
+      "exitCode": 0,
+      "stdout": "deployment.json",
+      "stderr": "deployment.stderr.txt",
+      "sha256": "878ab5e7b42806127aee7e7612c82efaf7ab6eba7a8a9c09e7e04efa9c410e4a"
+    },
+    {
+      "name": "runner",
+      "argv": [
+        "az",
+        "vm",
+        "get-instance-view",
+        "--resource-group",
+        "rg-book-evidence-20261107",
+        "--name",
+        "bookev1107-runner",
+        "--query",
+        "{name:name,location:location,size:hardwareProfile.vmSize,statuses:instanceView.statuses[].code}",
+        "--subscription",
+        "7a84bc78-1d1e-4294-a7c4-760dc607b5de",
+        "--only-show-errors",
+        "--output",
+        "json"
+      ],
+      "startedUtc": "2026-11-08T10:03:31.6893849Z",
+      "finishedUtc": "2026-11-08T10:03:33.8239780Z",
+      "exitCode": 0,
+      "stdout": "runner.json",
+      "stderr": "runner.stderr.txt",
+      "sha256": "31f9f3212aff5ed96b5f45abd1ee740bc1a4b857fc38fbd253dd0cc44c8888b1"
+    },
+    {
+      "name": "workers",
+      "argv": [
+        "az",
+        "vmss",
+        "show",
+        "--resource-group",
+        "rg-book-evidence-20261107",
+        "--name",
+        "bookev1107-workers",
+        "--query",
+        "{name:name,location:location,capacity:sku.capacity,size:sku.name}",
+        "--subscription",
+        "7a84bc78-1d1e-4294-a7c4-760dc607b5de",
+        "--only-show-errors",
+        "--output",
+        "json"
+      ],
+      "startedUtc": "2026-11-08T10:03:33.8353354Z",
+      "finishedUtc": "2026-11-08T10:03:36.1402223Z",
+      "exitCode": 0,
+      "stdout": "workers.json",
+      "stderr": "workers.stderr.txt",
+      "sha256": "3105a78ee29554a495a7076fff149876594f8281113573d36b902a7495b958be"
+    },
+    {
+      "name": "worker-instances",
+      "argv": [
+        "az",
+        "vmss",
+        "list-instances",
+        "--resource-group",
+        "rg-book-evidence-20261107",
+        "--name",
+        "bookev1107-workers",
+        "--query",
+        "[].{instanceId:instanceId,state:provisioningState}",
+        "--subscription",
+        "7a84bc78-1d1e-4294-a7c4-760dc607b5de",
+        "--only-show-errors",
+        "--output",
+        "json"
+      ],
+      "startedUtc": "2026-11-08T10:03:36.1535881Z",
+      "finishedUtc": "2026-11-08T10:03:38.2900195Z",
+      "exitCode": 0,
+      "stdout": "worker-instances.json",
+      "stderr": "worker-instances.stderr.txt",
+      "sha256": "a5338d955b09046ec0b16f3a9625b7955c763aae07dc722e474e6078745f932f"
+    },
+    {
+      "name": "storage",
+      "argv": [
+        "az",
+        "storage",
+        "account",
+        "show",
+        "--resource-group",
+        "rg-book-evidence-20261107",
+        "--name",
+        "lab2bdefcogy3zgk",
+        "--query",
+        "{name:name,location:location,httpsOnly:enableHttpsTrafficOnly,minimumTlsVersion:minimumTlsVersion,sharedKeyAccess:allowSharedKeyAccess,publicBlobAccess:allowBlobPublicAccess}",
+        "--subscription",
+        "7a84bc78-1d1e-4294-a7c4-760dc607b5de",
+        "--only-show-errors",
+        "--output",
+        "json"
+      ],
+      "startedUtc": "2026-11-08T10:03:38.2921774Z",
+      "finishedUtc": "2026-11-08T10:03:40.6063568Z",
+      "exitCode": 0,
+      "stdout": "storage.json",
+      "stderr": "storage.stderr.txt",
+      "sha256": "a3f5350338246320976131392bf71ffdc36a99fb0bb8d07130ef204e079e1050"
+    }
+  ],
+  "limitations": [
+    "Projected live CLI output, not a portal screenshot or performance result.",
+    "Resource state is time-specific. Deallocated compute can still incur disk/network/storage costs.",
+    "No secrets, keys or user identity fields were requested. Standard CLI formatting is retained."
+  ]
+}

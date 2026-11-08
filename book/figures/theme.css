@@ -1,3 +1,3 @@
-image { filter: grayscale(100%) brightness(1.7); }
-[fill="#444444"] { fill: #C9CCD1 !important; }
-[stroke="#444444"] { stroke: #3A4048 !important; }
+svg { font-family: "DejaVu Sans", Helvetica, Arial, sans-serif; }
+[fill="#444444"] { fill: #20354B !important; }
+[stroke="#444444"] { stroke: #607286 !important; }

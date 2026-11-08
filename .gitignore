@@ -6,3 +6,5 @@ __pycache__/
 node_modules/
 .DS_Store
 dist/
+# Local immutable evidence payloads; inventory and relocation receipts remain tracked.
+evidence/archives/preserved-dist/

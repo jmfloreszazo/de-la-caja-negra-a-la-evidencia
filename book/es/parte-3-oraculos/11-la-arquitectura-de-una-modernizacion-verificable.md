@@ -1,6 +1,6 @@
 **Español** · [English](../../en/part-3-oracles/11-the-architecture-of-a-verifiable-modernization.md)
 
-[← Capítulo 10 · TODM y el problema de aceptar lo que construimos](10-todm-y-el-problema-de-aceptar-lo-que-construimos.md) · [Índice](../README.md) · [Capítulo 12 · COBOL y C# deben acordar el significado →](12-cobol-y-c-deben-acordar-el-significado.md)
+[← Capítulo 10 bis · Herramientas TODM y ADR](10a-herramientas-todm-modelos-y-adrs.md) · [Índice](../README.md) · [Capítulo 12 · COBOL y C# deben acordar el significado →](12-cobol-y-c-deben-acordar-el-significado.md)
 
 # Capítulo 11 · La arquitectura de una modernización verificable
 
@@ -55,4 +55,4 @@ Al principio no necesitamos desplegar cinco servicios. Un pipeline controlado y 
 
 ---
 
-[← Capítulo 10 · TODM y el problema de aceptar lo que construimos](10-todm-y-el-problema-de-aceptar-lo-que-construimos.md) · [Índice](../README.md) · [Capítulo 12 · COBOL y C# deben acordar el significado →](12-cobol-y-c-deben-acordar-el-significado.md)
+[← Capítulo 10 bis · Herramientas TODM y ADR](10a-herramientas-todm-modelos-y-adrs.md) · [Índice](../README.md) · [Capítulo 12 · COBOL y C# deben acordar el significado →](12-cobol-y-c-deben-acordar-el-significado.md)

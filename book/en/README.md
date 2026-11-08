@@ -6,7 +6,7 @@
 
 **Modernizing COBOL beyond translation: AI agents, architecture patterns, transactions and verifiable oracles.**
 
-José María Flores Zazo · Edition v2026.10.29 · [The whole book on one page](../en.md) · [Diagram catalog](diagrams.md) · [Back to the repository](../../README.md)
+José María Flores Zazo · [jmfloreszazo.com](https://jmfloreszazo.com) · Edition v2026.10.29 · [The whole book on one page](../en.md) · [Diagram catalog](diagrams.md) · [Back to the repository](../../README.md)
 
 ## Contents
 
@@ -27,6 +27,7 @@ José María Flores Zazo · Edition v2026.10.29 · [The whole book on one page](
   - [Chapter 9 · From the agent's authority to the rule's authority](part-2-archaeology-and-authority/09-from-the-agent-s-authority-to-the-rule-s-authority.md)
 - **[Part III · Oracles: the right to accept](part-3-oracles/README.md)**
   - [Chapter 10 · TODM and the problem of accepting what we build](part-3-oracles/10-todm-and-the-problem-of-accepting-what-we-build.md)
+  - [Chapter 10 bis · Putting TODM to work: models, tools and ADRs](part-3-oracles/10a-todm-toolbox-models-and-adrs.md)
   - [Chapter 11 · The architecture of a verifiable modernization](part-3-oracles/11-the-architecture-of-a-verifiable-modernization.md)
   - [Chapter 12 · COBOL and C# must agree on meaning](part-3-oracles/12-cobol-and-c-must-agree-on-meaning.md)
 - **[Part IV · Patterns that replace responsibilities, not syntax](part-4-patterns/README.md)**
@@ -69,3 +70,4 @@ José María Flores Zazo · Edition v2026.10.29 · [The whole book on one page](
   - [Annex E · Catalog of one hundred risks](annexes/annex-e-catalog-of-one-hundred-risks.md)
   - [Annex F · Operational glossary](annexes/annex-f-operational-glossary.md)
   - [Annex G · Sources and scope of the research](annexes/annex-g-sources-and-scope-of-the-research.md)
+  - [Annex H · Beyond COBOL](annexes/annex-h-beyond-cobol.md)

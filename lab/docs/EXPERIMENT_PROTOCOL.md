@@ -1,6 +1,9 @@
 # Experiment protocol for the next tiers
 
-The current lab demonstrates mechanisms. The experiments below are designed, not executed. Each must produce its own evidence before anyone quotes a result.
+The current lab demonstrates mechanisms. The sections below define the acceptance
+protocol, not a blanket claim that every gate has been executed or passed.
+See the [execution roadmap](../../docs/EXPERIMENT_ROADMAP.md) for separately
+recorded runs and outstanding gates.
 
 ## E1 · Row-locking SQL engine
 
@@ -20,8 +23,55 @@ Fill `performance-contract.json` from a real workload footprint (RMF/SMF, CICS m
 
 Acceptance: a configuration passes only if it meets the contract *with one unit lost*, drains the backlog within the agreed time, and keeps every functional and accounting invariant. Report cost per million committed transfers.
 
+Run the read-only readiness check before planning a capacity trial:
+
+```bash
+python3 lab/tools/check_capacity_readiness.py --output /path/to/new/readiness.json
+```
+
+Exit code **3** means `INCONCLUSIVE / BLOCK`, not a crashed measurement.
+The [recorded preflight](../../evidence/runs/e3-readiness-2026-11-08.json)
+found all 14 required capacity fields empty and status `UNCONFIGURED`.
+The original contract is untouched. Even fully populated values produce only
+`EXTERNAL_REVIEW_REQUIRED`, never capacity acceptance: this checker does not
+authenticate approval, run load or replace external measurements.
+
+The separately recorded [exploratory E3 harness](../e3_capacity/README.md)
+executes open-loop offers and process failure on one Azure VM. It records
+misses, failures, recovery and independent ledger reconciliation, but explicitly
+does not satisfy the comparative acceptance contract above. Runtime binaries
+must accompany their hashes, not merely appear in an inventory.
+
 ## E4 · Agents under the gate
 
 Give an agent the public contract and write access only to `Candidate/`. Keep `contracts/` and `Gate/` outside its write scope (separate repository or protected path, verified by trying). Record model, prompt, tools, budget and every attempt. Compare: tests written by the agent, independent oracle, independent oracle + mutation qualification.
 
 Acceptance: report accepted defects, false blocks, human review time and cost per accepted change, at task level, including failed and inconclusive runs.
+
+The [live builder pilot](../e4_agents/README.md#live-azure-builder-pilot) exercises
+one task using actual Azure inference and local isolated candidate execution.
+Its self-tests and independent gate results are recorded separately. It does
+not estimate population defect rates or replace the human-review and cost
+measurements required by this acceptance protocol. A later Azure replay moves
+the same candidate/evaluator into rootless Podman on the runner; replay is not
+another model call or an independent task.
+
+## TODM evidence validation across experiments
+
+Use the [digest-bound TODM adapter](../todm_validation/README.md) to evaluate
+explicit evidence inventories. Keep technical verdict, qualification, authority,
+and release separate. The [recorded Azure validation](../../evidence/runs/todm-azure-2026-11-08.json)
+passes the bounded E1–E4 checks and negative controls while keeping release
+`BLOCK` and methodological acceptance `INCONCLUSIVE`. No local manifest field
+can authenticate an accountable business owner or authorize production.
+
+For a portable captured bundle, run from its root:
+
+```bash
+python3 adapter/lab/todm_validation/validate.py --manifest manifest.json --root . --output validation-new.json
+python3 adapter/lab/todm_validation/qualify_bundle.py --root . --output qualification-new
+```
+
+The qualification output must be a fresh path inside that root. Preserve the
+original bundle, failed attempts and separate recovery supplements; do not
+rewrite old evidence or replace missing runtime bytes with a new build.

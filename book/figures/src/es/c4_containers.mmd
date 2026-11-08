@@ -1,35 +1,33 @@
-C4Container
-  title Plataforma de modernización funcional verificable
-  Person(owner, "Autoridad de negocio")
-  System_Ext(policy, "Políticas y contratos", "Reglas de negocio autorizadas")
-  System_Ext(legacy, "Sistema legado", "Observaciones de caja negra")
-  System_Boundary(b, "Modernización brownfield con TODM") {
-    Container(disc, "Descubrimiento funcional", "Entrevistas y contratos", "Capacidades, excepciones e incógnitas")
-    Container(golden, "Golden Master", "Observación controlada", "Comportamiento del legado, no aprobación")
-    Container(research, "Investigación opcional", "COBOL, JCL, Db2", "Dudas técnicas con procedencia")
-    ContainerDb(exp, "Expediente", "Git y manifiestos", "Fuentes, límites y contradicciones")
-    Container(gov, "Baseline aprobada", "Reglas y decisiones", "Autoridad independiente de agentes")
-    Container(build, "Implementación nueva", ".NET 10 y dominios", "Candidato desde especificaciones")
-    Container(transition, "Coexistencia y corte", "Strangler, ACL y reversión", "Legado y reemplazo bajo control")
-    Container(verify, "Oráculos TODM", "G3 y G5", "PASS, FAIL o INCONCLUSIVE")
-    Container(release, "Autorización G6", "Humano y mandato", "Entrega del artefacto exacto")
-  }
-  Rel(owner, disc, "Define capacidades")
-  Rel(policy, disc, "Aporta requisitos")
-  Rel(legacy, golden, "Observa sin copiar")
-  Rel(legacy, research, "Solo si hay una incógnita")
-  Rel(disc, exp, "Registra hipótesis")
-  Rel(golden, exp, "Evidencia separada")
-  Rel(research, exp, "Hallazgos opcionales")
-  Rel(exp, gov, "Solicita evaluación")
-  Rel(owner, gov, "Aprueba reglas")
-  Rel(gov, build, "Contratos y mandato")
-  Rel(build, transition, "Aporta capacidad nueva")
-  Rel(legacy, transition, "Capacidades existentes")
-  Rel(transition, verify, "Observaciones comparables")
-  Rel(build, verify, "Entrega candidato fijado")
-  Rel(gov, verify, "Baseline independiente")
-  Rel(golden, verify, "Caracterización separada")
-  Rel(verify, release, "Veredicto verificable")
-  Rel(owner, release, "Autoriza o bloquea")
-  UpdateLayoutConfig($c4ShapeInRow="3", $c4BoundaryInRow="1")
+flowchart TB
+  owner(["Autoridad de negocio<br/>Persona"])
+  policy["Políticas y contratos<br/>Reglas de negocio autorizadas"]
+  legacy["Sistema legado<br/>Observaciones de caja negra"]
+  subgraph b["Modernización brownfield con TODM"]
+    disc["Descubrimiento funcional<br/>Entrevistas y contratos<br/>Capacidades, excepciones e incógnitas"]
+    golden["Golden Master<br/>Observación controlada<br/>Comportamiento del legado, no aprobación"]
+    research["Investigación opcional<br/>COBOL, JCL, Db2<br/>Dudas técnicas con procedencia"]
+    exp[("Expediente<br/>Git y manifiestos<br/>Fuentes, límites y contradicciones")]
+    gov["Baseline aprobada<br/>Reglas y decisiones<br/>Autoridad independiente de agentes"]
+    build["Implementación nueva<br/>.NET 10 y dominios<br/>Candidato desde especificaciones"]
+    transition["Coexistencia y corte<br/>Strangler, ACL y reversión<br/>Legado y reemplazo bajo control"]
+    verify["Oráculos TODM<br/>G3 y G5<br/>PASS, FAIL o INCONCLUSIVE"]
+    release["Autorización G6<br/>Humano y mandato<br/>Entrega del artefacto exacto"]
+  end
+  owner -->|"Define capacidades"| disc
+  policy -->|"Aporta requisitos"| disc
+  legacy -->|"Observa sin copiar"| golden
+  legacy -->|"Solo si hay una incógnita"| research
+  disc -->|"Registra hipótesis"| exp
+  golden -->|"Evidencia separada"| exp
+  research -->|"Hallazgos opcionales"| exp
+  exp -->|"Solicita evaluación"| gov
+  owner -->|"Aprueba reglas"| gov
+  gov -->|"Contratos y mandato"| build
+  build -->|"Aporta capacidad nueva"| transition
+  legacy -->|"Capacidades existentes"| transition
+  transition -->|"Observaciones comparables"| verify
+  build -->|"Entrega candidato fijado"| verify
+  gov -->|"Baseline independiente"| verify
+  golden -->|"Caracterización separada"| verify
+  verify -->|"Veredicto verificable"| release
+  owner -->|"Autoriza o bloquea"| release

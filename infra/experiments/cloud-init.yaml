@@ -1,0 +1,38 @@
+#cloud-config
+package_update: true
+packages:
+  - ca-certificates
+  - curl
+  - gnupg
+  - git
+  - jq
+  - podman
+  - python3
+  - python3-venv
+  - gnucobol3
+  - build-essential
+  - libsqlite3-0
+write_files:
+  - path: /opt/azure-lab/bootstrap.sh
+    permissions: '0700'
+    content: |
+      #!/usr/bin/env bash
+      set -euo pipefail
+      mkdir -p /var/lib/azure-lab /etc/apt/keyrings /opt/dotnet
+      curl --fail --location --retry 3 https://packages.microsoft.com/keys/microsoft.asc \
+        -o /var/lib/azure-lab/microsoft.asc
+      gpg --dearmor --yes --output /etc/apt/keyrings/microsoft.gpg /var/lib/azure-lab/microsoft.asc
+      echo 'deb [arch=amd64 signed-by=/etc/apt/keyrings/microsoft.gpg] https://packages.microsoft.com/repos/azure-cli/ noble main' \
+        > /etc/apt/sources.list.d/azure-cli.list
+      apt-get update
+      apt-get install -y --no-install-recommends azure-cli
+      curl --fail --location --retry 3 https://dot.net/v1/dotnet-install.sh \
+        -o /var/lib/azure-lab/dotnet-install.sh
+      bash /var/lib/azure-lab/dotnet-install.sh --version 10.0.100 --install-dir /opt/dotnet
+      ln -s /opt/dotnet/dotnet /usr/local/bin/dotnet
+      dotnet --info > /var/lib/azure-lab/dotnet-info.txt
+      dpkg-query -W > /var/lib/azure-lab/packages.txt
+      sha256sum /var/lib/azure-lab/dotnet-install.sh > /var/lib/azure-lab/bootstrap.sha256
+      touch /var/lib/azure-lab/bootstrap-complete
+runcmd:
+  - [bash, /opt/azure-lab/bootstrap.sh]
