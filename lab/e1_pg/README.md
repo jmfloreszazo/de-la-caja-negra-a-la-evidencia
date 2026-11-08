@@ -29,6 +29,12 @@ python3 lab/e1_pg/capture_runtime.py
 
 The [raw 960-transfer evidence](../../evidence/runs/e1b-multiprocess-parity.json), [full oracle vectors](../../evidence/runs/e1b-oracle-vectors.json) and [runtime manifest](../../evidence/runs/e1b-runtime-manifest.json) are independently archived, versioned and validated by CI.
 
+New oracle-vector reports record the observed host platform, not an assumed CI
+provider or container engine. The [experiment launcher](../../infra/experiments/README.md)
+also retains the actual engine version and PostgreSQL image digest. Its explicit
+`CONTAINER_ENGINE=docker` option supports local Linux/WSL reproduction; Podman
+remains the default. Local runs do not become Azure or CI evidence.
+
 The protected reference ledger under `lab/Bank/`, `lab/bank_test.py` and `lab/reference-results/` remains untouched.
 
 ## Run

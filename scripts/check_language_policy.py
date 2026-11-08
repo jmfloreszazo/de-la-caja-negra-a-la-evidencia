@@ -56,7 +56,10 @@ def errors(root: pathlib.Path) -> list[str]:
     if not lab.is_dir():
         return ["lab/ is missing"]
 
-    docs = sorted(lab.rglob("*.md"))
+    # Only policy-check what the repository tracks or would track: ignored caches
+    # (lab/results, node_modules, virtualenvs) carry third-party READMEs in any language.
+    docs = sorted(p for p in lab.rglob("*.md")
+                  if "node_modules" not in p.parts and not p.is_relative_to(lab / "results"))
     for path in docs:
         rel = path.relative_to(root)
         if path.name.endswith(".es.md") or path.name.endswith(".español.md"):

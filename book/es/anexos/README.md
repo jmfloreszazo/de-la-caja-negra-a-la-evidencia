@@ -4,7 +4,7 @@
 
 # Anexos
 
-Material de consulta: cómo ejecutar el laboratorio, qué contrato implementa, qué produjo la ejecución de referencia, qué decisiones documentaría, el catálogo completo de riesgos, el glosario y las fuentes.
+Material de consulta: cómo ejecutar el laboratorio, qué contrato implementa, qué produjo la ejecución de referencia, qué decisiones documentaría, el catálogo completo de riesgos, el glosario, las fuentes y qué se transfiere más allá de COBOL.
 
 ## Contenido
 
@@ -15,6 +15,7 @@ Material de consulta: cómo ejecutar el laboratorio, qué contrato implementa, q
 - [Anexo E · Catálogo de cien riesgos](anexo-e-catalogo-de-cien-riesgos.md)
 - [Anexo F · Glosario operativo](anexo-f-glosario-operativo.md)
 - [Anexo G · Fuentes y alcance de la investigación](anexo-g-fuentes-y-alcance-de-la-investigacion.md)
+- [Anexo H · Más allá de COBOL](anexo-h-mas-alla-de-cobol.md)
 
 ---
 

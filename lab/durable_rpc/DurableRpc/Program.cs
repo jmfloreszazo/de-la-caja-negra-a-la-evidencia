@@ -158,9 +158,12 @@ try
     var report = new
     {
         schemaVersion = 1,
-        classification = "M2_LOCAL_SINGLE_HOST_POSTGRES_DURABLE_SMOKE_NOT_CLOUD_OR_MAINFRAME",
+        classification = "M2_SINGLE_HOST_POSTGRES_DURABLE_SMOKE_NOT_CAPACITY_OR_MAINFRAME",
         timestampUtc = DateTimeOffset.UtcNow,
-        sourceCommit = Environment.GetEnvironmentVariable("GITHUB_SHA") ?? "local",
+        sourceCommit = Environment.GetEnvironmentVariable("SOURCE_HEAD_SHA")
+            ?? Environment.GetEnvironmentVariable("GITHUB_SHA") ?? "local",
+        sourceArchiveSha256 = Environment.GetEnvironmentVariable("SOURCE_ARCHIVE_SHA256"),
+        executionHost = Environment.GetEnvironmentVariable("EXPERIMENT_HOST") ?? "UNSPECIFIED_SINGLE_HOST",
         experiment = new
         {
             protocol, distribution, replicas, requests, concurrency,
@@ -172,15 +175,16 @@ try
             p50Ms = p(.50), p95Ms = p(.95), p99Ms = p(.99),
             closedLoop = true,
             noTls = true,
-            onlyOneGitHubRunner = true
+            onlyOneGitHubRunner = Environment.GetEnvironmentVariable("GITHUB_ACTIONS") == "true",
+            singleHost = true
         },
         environment = new
         {
             runtime = Environment.Version.ToString(), processors = Environment.ProcessorCount,
             os = Environment.OSVersion.ToString(),
-            database = "PostgreSQL 16.13 on Podman loopback, one instance shared by all service processes",
+            database = "PostgreSQL shared by all service processes; actual versions in independent summary and runtime manifest",
             transport = "HTTP/2 plaintext (h2c) for REST and gRPC",
-            caveat = "No Azure VMs, cluster autoscaler, WAN or failover were tested"
+            caveat = "Single-host protocol workload; no distributed scale-out, WAN or failover were tested"
         }
     };
     var path = Path.GetFullPath(filename);

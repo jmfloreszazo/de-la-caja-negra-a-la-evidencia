@@ -1,0 +1,11 @@
+# Source fingerprints must not depend on the host's core.autocrlf setting.
+* text=auto eol=lf
+
+# Historical observations and binary artifacts retain their original bytes.
+evidence/** -text
+lab/reference-results/** -text
+*.png -text
+*.pdf -text
+*.db -text
+*.zip -text
+*.bundle -text

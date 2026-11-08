@@ -2,18 +2,18 @@
 
 [Español](../es/diagramas.md) · **English**
 
-Every diagram in the book is written in Mermaid, in `book/figures/src/en/`, and published as an image with the book's visual identity: ink background, graphite nodes and red kept for what matters. `scripts/render_figures.py` regenerates them and continuous integration checks that every source renders without errors.
+Every diagram in the book is written in Mermaid, in `book/figures/src/en/`, and published with a light editorial palette: warm paper, navy text, teal and pale blue, with coral accents for key decisions. `scripts/render_figures.py` regenerates them and continuous integration checks that every source renders without errors.
 
-Architecture is described with the C4 model (context, containers and deployment); interactions with UML sequence diagrams; life cycles with UML state diagrams; models with UML class and entity-relationship diagrams; and the branching strategy with gitGraph.
+Architecture is described with the C4 model (context, containers and deployment); interactions with UML sequence diagrams; life cycles with UML state diagrams; models with UML class and entity-relationship diagrams; and the branching strategy with gitGraph. Figure 11.2 uses flowchart routing to avoid the overlapping labels of the fixed C4 layout, preserving its twelve elements and eighteen relationships.
 
 | Type | Diagrams |
 |---|---|
-| C4 Container | 2 |
+| C4 Container | 1 |
 | C4 Context | 1 |
 | C4 Deployment | 2 |
 | Chart (xychart) | 2 |
 | ER | 1 |
-| Flowchart | 16 |
+| Flowchart | 17 |
 | UML class | 1 |
 | UML sequence | 16 |
 | UML state | 5 |
@@ -29,8 +29,9 @@ Architecture is described with the C4 model (context, containers and deployment)
 | Figure 9.1 | UML sequence | The mandate is enforced at the enforcement point, not in the prompt. | [Chapter 9 · From the agent's authority to the rule's authority](part-2-archaeology-and-authority/09-from-the-agent-s-authority-to-the-rule-s-authority.md) | [image](../figures/en/mandate_seq.png) · [source](../figures/src/en/mandate_seq.mmd) |
 | Figure 10.1 | UML state | Three verdicts, a separate authorization and the exit codes of the lab gate. | [Chapter 10 · TODM and the problem of accepting what we build](part-3-oracles/10-todm-and-the-problem-of-accepting-what-we-build.md) | [image](../figures/en/verdict_states.png) · [source](../figures/src/en/verdict_states.mmd) |
 | Figure 10.2 | UML sequence | When the builder tries to edit the criterion that judges it, the external anchor catches it. | [Chapter 10 · TODM and the problem of accepting what we build](part-3-oracles/10-todm-and-the-problem-of-accepting-what-we-build.md) | [image](../figures/en/heumann.png) · [source](../figures/src/en/heumann.mmd) |
+| Figure 10 bis.1 | Flowchart | The traceability chain: approval is a separate step after the verdict, and drift sends you back to the rule. | [Chapter 10 bis · Putting TODM to work: models, tools and ADRs](part-3-oracles/10a-todm-toolbox-models-and-adrs.md) | [image](../figures/en/traceability_chain.png) · [source](../figures/src/en/traceability_chain.mmd) |
 | Figure 11.1 | C4 Context | Context of a verifiable modernization: people, systems and responsibilities. | [Chapter 11 · The architecture of a verifiable modernization](part-3-oracles/11-the-architecture-of-a-verifiable-modernization.md) | [image](../figures/en/c4_context.png) · [source](../figures/src/en/c4_context.mmd) |
-| Figure 11.2 | C4 Container | Separate responsibilities and bound evidence. The builder reads the public contract; it does not write the baseline. Separating folders in the demo does not impose production permissions. | [Chapter 11 · The architecture of a verifiable modernization](part-3-oracles/11-the-architecture-of-a-verifiable-modernization.md) | [image](../figures/en/c4_containers.png) · [source](../figures/src/en/c4_containers.mmd) |
+| Figure 11.2 | Flowchart (C4 model) | Separate responsibilities and bound evidence. The builder reads the public contract; it does not write the baseline. Separating folders in the demo does not impose production permissions. | [Chapter 11 · The architecture of a verifiable modernization](part-3-oracles/11-the-architecture-of-a-verifiable-modernization.md) | [image](../figures/en/c4_containers.png) · [source](../figures/src/en/c4_containers.mmd) |
 | Figure 11.3 | Flowchart | From legacy to delivery: which gate produces each piece of evidence and where work loops back. | [Chapter 11 · The architecture of a verifiable modernization](part-3-oracles/11-the-architecture-of-a-verifiable-modernization.md) | [image](../figures/en/gates.png) · [source](../figures/src/en/gates.mmd) |
 | Figure 12.1 | Flowchart | REDEFINES: the same fourteen bytes read as three fields. A translation that creates three independent variables loses that relationship. | [Chapter 12 · COBOL and C# must agree on meaning](part-3-oracles/12-cobol-and-c-must-agree-on-meaning.md) | [image](../figures/en/fee_record.png) · [source](../figures/src/en/fee_record.mmd) |
 | Figure 14.1 | UML state | Life cycle of a Strangler Fig seam: every transition requires evidence, and the way back is rehearsed. | [Chapter 14 · Strangler Fig: change the edge before the heart](part-4-patterns/14-strangler-fig-change-the-edge-before-the-heart.md) | [image](../figures/en/strangler_states.png) · [source](../figures/src/en/strangler_states.mmd) |
@@ -61,7 +62,7 @@ Architecture is described with the C4 model (context, containers and deployment)
 | Figure 27.1 | Flowchart | The decision logic of Gate/Program.cs: contradiction weighs more than absence, and authorization is evaluated separately. | [Chapter 27 · Making the error visible](part-6-lab/27-making-the-error-visible.md) | [image](../figures/en/gate_flow.png) · [source](../figures/src/en/gate_flow.mmd) |
 | Figure 28.1 | ER | The banking module schema: the constraints are the first line of the oracle. | [Chapter 28 · Transfers, locks and failures, locally](part-6-lab/28-transfers-locks-and-failures-locally.md) | [image](../figures/en/bank_er.png) · [source](../figures/src/en/bank_er.mmd) |
 | Figure 28.2 | UML sequence | Two failures seeded in the lab: a crash before the commit and a lost response after the commit. | [Chapter 28 · Transfers, locks and failures, locally](part-6-lab/28-transfers-locks-and-failures-locally.md) | [image](../figures/en/bank_faults.png) · [source](../figures/src/en/bank_faults.mmd) |
-| Figure 28.3 | Chart (xychart) | Reference run with uniform accounts: red bars show p99 and the gray line shows p50, in milliseconds. The median falls while the tail rises. | [Chapter 28 · Transfers, locks and failures, locally](part-6-lab/28-transfers-locks-and-failures-locally.md) | [image](../figures/en/measures_chart.png) · [source](../figures/src/en/measures_chart.mmd) |
+| Figure 28.3 | Chart (xychart) | Reference run with uniform accounts: bars show p99 and the line shows p50, in milliseconds. The median falls while the tail rises. | [Chapter 28 · Transfers, locks and failures, locally](part-6-lab/28-transfers-locks-and-failures-locally.md) | [image](../figures/en/measures_chart.png) · [source](../figures/src/en/measures_chart.mmd) |
 | Figure 29.1 | UML sequence | A builder agent inside a governed harness: it fixes its work against an external verifier it does not control. | [Chapter 29 · Bringing in agents without letting them write the approval](part-6-lab/29-bringing-in-agents-without-letting-them-write-the-approval.md) | [image](../figures/en/agent_loop.png) · [source](../figures/src/en/agent_loop.mmd) |
 | Figure 30.1 | UML state | Coexistence phases: in each one there is a single write owner, and going back may require transforming data. | [Chapter 30 · From the lab to a system that keeps running](part-7-organization/30-from-the-lab-to-a-system-that-keeps-running.md) | [image](../figures/en/coexistence.png) · [source](../figures/src/en/coexistence.mmd) |
 | Figure 31.1 | gitGraph | The baseline lives on its own protected branch: the candidate is merged when it passes G5 and G6, and a rule change opens a G7 revision. | [Chapter 31 · The SDLC as part of the migration engine](part-7-organization/31-the-sdlc-as-part-of-the-migration-engine.md) | [image](../figures/en/gitgraph.png) · [source](../figures/src/en/gitgraph.mmd) |

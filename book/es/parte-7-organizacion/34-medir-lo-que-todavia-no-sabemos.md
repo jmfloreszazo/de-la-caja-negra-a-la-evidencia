@@ -15,6 +15,8 @@ El protocolo público de TODM distingue tres condiciones para estudiar la constr
 
 ¿Reduce el oráculo independiente los defectos aceptados? ¿Qué añade su cualificación? ¿Cuántos bloqueos incorrectos produce? ¿Cuánto esfuerzo exige aclarar y aprobar reglas? ¿Qué intentos de modificar el evaluador impiden los permisos reales? Esas preguntas necesitan datos y un diseño previo.
 
+Lo que añade esta edición es un único punto de datos, no una respuesta: una respuesta real de un modelo, evaluada de forma aislada en una VM de Azure, superó el gate independiente y los controles de mutación (capítulo 29). Una tarea no permite estimar una tasa de defectos, y no medimos ni tiempo de revisión ni coste. Demuestra que el harness puede alojar la comparación; no la ejecuta.
+
 El propio repositorio de TODM lo plantea como un reto abierto: invita a reproducir, falsear, comparar o transferir el método, y acepta los resultados negativos o inconclusos como contribución [2]. Un libro que defiende la evidencia necesita esa puerta abierta.
 
 ## La unidad de análisis importa

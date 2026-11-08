@@ -1,0 +1,66 @@
+{
+  "schemaVersion": 1,
+  "classification": "EXECUTED_LIVE_MODEL_BUILDER_PILOT_NOT_E4_ACCEPTANCE",
+  "sourceCommit": "cc7ed4bea231a36103ea7f4987b5728091e27ee2",
+  "worktreeDirty": true,
+  "requestStartedUtc": "2026-11-07T23:44:26.293185+00:00",
+  "model": "gpt-5.6-terra-2026-07-09",
+  "deploymentResourceId": "/subscriptions/7a84bc78-1d1e-4294-a7c4-760dc607b5de/resourceGroups/azfoundryxuntatest/providers/Microsoft.CognitiveServices/accounts/jmfztestxunta/deployments/gpt-5.6-terra",
+  "modelCalls": 1,
+  "syntheticTasks": 1,
+  "evaluationExecutions": 2,
+  "replayInvokedModel": false,
+  "inferenceHost": "AZURE_FOUNDRY",
+  "candidateExecutionHost": "LOCAL_WSL_DOCKER",
+  "budget": {
+    "maximumRequests": 3,
+    "maximumCompletionTokensPerRequest": 4000,
+    "maximumCompletionTokensTotal": 12000
+  },
+  "actualUsage": {
+    "inputTokens": 269,
+    "completionTokens": 2279,
+    "totalTokens": 2548
+  },
+  "requestElapsedSeconds": 17.876496999990195,
+  "selfAuthoredTests": 16,
+  "frozenCases": 58,
+  "independentGate": {
+    "verdict": "PASS",
+    "authority": "DEMO_ONLY",
+    "release": "SIMULATED_ALLOW",
+    "findings": []
+  },
+  "controlledMutantMissesBySelfTests": {
+    "numerator": 0,
+    "denominator": 3
+  },
+  "referenceFalseBlocksBySelfTests": {
+    "numerator": 0,
+    "denominator": 1
+  },
+  "independentQualification": {
+    "knownMutantsRejected": 3,
+    "protectedWritesDenied": 3,
+    "protectedUnchanged": true
+  },
+  "candidateSha256": "70ef08921aa429b2c100c7be90def999617d29754f3e8ed93da9d427df56350c",
+  "responseSha256": "c09652554d6789c30d341e143ee951c0b4c37881a6f1e9fa88f66096fc4f6351",
+  "humanReviewSeconds": null,
+  "actualBilledCost": null,
+  "costPerAcceptedChange": null,
+  "githubActions": "NOT_EXECUTED",
+  "ciRunId": null,
+  "localArchive": "dist/e4-live-builder-2026-11-08.zip",
+  "limitations": [
+    "One synthetic task, not a population success rate.",
+    "Container execution is local Linux/WSL; model inference is Azure.",
+    "No human-review timing or invoiced model cost was measured.",
+    "Containers share the host kernel. No arbitrary-code security certification.",
+    "Frozen-case agreement is not universal correctness or production authorization.",
+    "A model-driven fixed workflow, not an autonomous tool-selecting agent.",
+    "Three related deterministic mutants are not three independent tasks.",
+    "No population accepted-defect rate or method-superiority comparison is inferred.",
+    "Original earlier qualification reports retain zero model calls for those distinct campaigns."
+  ]
+}

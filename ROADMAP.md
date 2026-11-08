@@ -2,6 +2,8 @@
 
 **CLOSED FOR THIS EDITION.** The historical step-by-step plan below is retained for provenance and does not constitute an active task list. The author has accepted a bounded book/lab publication without E3/E4 completion or global scientific PASS for E1/E2. See [final dispositions](docs/FINAL_CLOSEOUT.md) and [publication notes](docs/releases/v2026.11.05.md). Frozen #16/#53 remain on hold rather than activated. All remaining unexecuted checkboxes below are excluded from the edition rather than completed.
 
+> **Later status (8 November 2026):** E3 and E4 now have bounded single-VM Azure demonstrations recorded as `demonstrated_not_accepted` (see [evidence matrix](docs/EVIDENCE.md) and [experiment roadmap](docs/EXPERIMENT_ROADMAP.md)). The historical rows below are kept as written; acceptance remains open.
+
 **English** · [Español](ROADMAP.es.md)
 
 This is the **repository development roadmap**, not a declaration of production bank readiness. The canonical claim statuses live in [evidence/claims.json](evidence/claims.json), and the engineering acceptance protocol is in [docs/EXPERIMENT_ROADMAP.md](docs/EXPERIMENT_ROADMAP.md). Observed, simulated, proposed and business-approved results must remain distinguishable. All code, source and lab READMEs are English-only; the book is maintained in ES/EN.

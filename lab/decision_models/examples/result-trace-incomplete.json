@@ -1,0 +1,8 @@
+{
+  "baselineId": "BASELINE-FEE-DEMO",
+  "modelId": "FEE-PROCESS",
+  "modelVersion": "v1",
+  "productionApproved": false,
+  "reason": "Missing terminal end observation",
+  "status": "INCONCLUSIVE"
+}

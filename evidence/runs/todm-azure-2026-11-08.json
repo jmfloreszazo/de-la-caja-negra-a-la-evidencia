@@ -1,0 +1,73 @@
+{
+  "schemaVersion": 1,
+  "classification": "EXECUTED_AZURE_TODM_ADAPTER_NOT_PRODUCTION_APPROVAL",
+  "methodRepository": "https://github.com/jmfloreszazo/TODM",
+  "methodCommit": "61354abc03e73fbf258b6e8d66e35678da134ef8",
+  "sourceCommit": "b064d3d5efe77642e2277967f78c6c1d52e8bec1",
+  "inputArchiveSha256": "6bcd1c3edb90d50eb90ea4c3916709bddfaafb844a696d0fb268a8582917fdeb",
+  "rawArchiveSha256": "06b62c2d47b02a6ce2fae35385be0f4c2a520e043fcd953bb70ac5d3d422cf67",
+  "validationSha256": "62a9b7b9c0023570e5a74316c802bd2625f67404f8ccc50a8313b763d8f5ac7a",
+  "qualificationSha256": "95578417b4e4a8d181925ecdf2787e2cae721df940d5a915de614f43a78c8db8",
+  "evaluationVerdict": "PASS",
+  "methodologyVerdict": "INCONCLUSIVE",
+  "releaseOutcome": "BLOCK",
+  "experiments": [
+    {
+      "experiment": "E1",
+      "oracleVerdict": "PASS",
+      "qualificationVerdict": "PASS",
+      "evaluationVerdict": "PASS",
+      "releaseOutcome": "BLOCK"
+    },
+    {
+      "experiment": "E2",
+      "oracleVerdict": "PASS",
+      "qualificationVerdict": "PASS",
+      "evaluationVerdict": "PASS",
+      "releaseOutcome": "BLOCK"
+    },
+    {
+      "experiment": "E3",
+      "oracleVerdict": "PASS",
+      "qualificationVerdict": "PASS",
+      "evaluationVerdict": "PASS",
+      "releaseOutcome": "BLOCK"
+    },
+    {
+      "experiment": "E4",
+      "oracleVerdict": "PASS",
+      "qualificationVerdict": "PASS",
+      "evaluationVerdict": "PASS",
+      "releaseOutcome": "BLOCK"
+    }
+  ],
+  "actualInputNegativeControls": 8,
+  "upstreamSyntheticMandateCases": 12,
+  "verifiedSnapshotFiles": 134,
+  "artifactBindings": 108,
+  "azure": {
+    "vmId": "f5ecd929-6823-4996-b9fb-49cff1f6e21c",
+    "name": "bookev1107-runner",
+    "location": "northeurope",
+    "runId": "todm-azure-20261108-02"
+  },
+  "recoveredOriginalRuntimeFiles": 16,
+  "retainedFailures": [
+    "Incomplete original E3 artifact bundle rejected; exact original runtime bytes retrieved by hash, not rebuilt.",
+    "First Azure qualification output path was outside its supported bundle root; validation passed but qualification failed. Separate supported-path retry passed."
+  ],
+  "finalState": {
+    "runner": "DEALLOCATED",
+    "workerCapacity": 0,
+    "residualCosts": "Disk, NAT, public IP and storage remain billable."
+  },
+  "githubActions": "NOT_EXECUTED",
+  "ciRunId": null,
+  "limitations": [
+    "Local adapter of pinned TODM demonstration semantics, not certified TODM or full OMG engines.",
+    "SHA256 manifests are not trusted signatures or accountable human approval.",
+    "G2/G6 lack independent trusted business/release authority; production release stays BLOCK.",
+    "Negative cases qualify these checks, not organizational independence or comparative superiority.",
+    "E1-E4 are bounded single-VM demonstrations with the original experiment limitations."
+  ]
+}

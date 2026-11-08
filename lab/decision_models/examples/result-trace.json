@@ -1,0 +1,8 @@
+{
+  "baselineId": "BASELINE-FEE-DEMO",
+  "modelId": "FEE-PROCESS",
+  "modelVersion": "v1",
+  "productionApproved": false,
+  "reason": "Single-token trace conforms; decision outcomes and runtime provenance are not checked",
+  "status": "PASS"
+}

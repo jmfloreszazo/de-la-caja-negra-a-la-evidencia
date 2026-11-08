@@ -1,0 +1,6 @@
+{
+  "capacity": 0,
+  "location": "northeurope",
+  "name": "bookev1107-workers",
+  "size": "Standard_D4s_v5"
+}

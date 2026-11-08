@@ -1,6 +1,6 @@
 **Español** · [English](../../en/part-3-oracles/10-todm-and-the-problem-of-accepting-what-we-build.md)
 
-[← Parte III · Oráculos: el derecho a aceptar](README.md) · [Índice](../README.md) · [Capítulo 11 · La arquitectura de una modernización verificable →](11-la-arquitectura-de-una-modernizacion-verificable.md)
+[← Parte III · Oráculos: el derecho a aceptar](README.md) · [Índice](../README.md) · [Capítulo 10 bis · Herramientas TODM y ADR →](10a-herramientas-todm-modelos-y-adrs.md)
 
 # Capítulo 10 · TODM y el problema de aceptar lo que construimos
 
@@ -58,6 +58,58 @@ También necesitamos controles limpios. Un gate que bloquea todo detecta cada de
 
 La cualificación es siempre relativa a un conjunto de amenazas y casos. Superar esos controles aumenta la confianza en ese alcance. No demuestra que no exista una forma diferente de engañar o romper el evaluador.
 
+## TODM dentro del proceso ejecutable de validación
+
+El [adaptador de validación del libro](../../../lab/todm_validation/README.md)
+fija sus referencias metodológicas al [commit `61354abc` de TODM](https://github.com/jmfloreszazo/TODM/tree/61354abc03e73fbf258b6e8d66e35678da134ef8).
+Vincula inventarios explícitos de contratos, fuentes y observaciones mediante
+huellas SHA-256, y comprueba después la evidencia registrada de E1–E4. No basta
+un nombre de archivo ni un informe que diga `PASS`: entradas ausentes o alteradas
+bloquean el resultado, y las operaciones ofrecidas en E3 deben reconciliarse
+con el ledger persistido.
+
+La salida separa G0–G7, verificación técnica, cualificación del oráculo y
+autorización de entrega. G2 no puede convertirse en aprobación humana porque
+un agente escriba `approved: true`; G6 sigue bloqueado sin autoridad independiente
+fiable. El adaptador reutiliza la semántica de mandatos de la demostración
+original fijada para controles sintéticos de principal, ámbito, acción, tiempo
+y revocación, con su atribución MIT. No es un motor TODM productivo, un proveedor
+de identidad ni una implementación certificada de los cinco perfiles inspirados
+en OMG.
+
+La integración encontró una carencia real: el primer paquete E3 declaraba
+hashes de binarios de ejecución sin incluir todos esos bytes originales. Su
+validación falló. Se recuperaron los artefactos ausentes del árbol de compilación
+conservado en Azure, comparando sus hashes registrados, **sin recompilarlos y
+sustituirlos**. Un paquete nuevo incorpora esa recuperación separada; el paquete
+incompleto y su veredicto fallido permanecen intactos. Para eso se introduce la
+metodología en el proceso: la evidencia incompleta sigue siendo incompleta hasta
+aportar realmente la prueba que falta.
+
+Los controles negativos ejercitan bytes alterados, evidencia ausente, invariantes
+contables falsas e intentos de aprobar mediante entradas no confiables. Superarlos
+cualifica este adaptador frente a esos casos; no demuestra independencia
+organizativa, eficacia industrial ni superioridad sobre otros métodos. La
+comparación Golden Master del libro sigue caracterizando el comportamiento
+observado del legado, separada de la verdad de negocio con autoridad responsable.
+
+### Resultado observado en Azure
+
+La [reproducción TODM registrada](../../../evidence/runs/todm-azure-2026-11-08.json)
+verificó 134 archivos del snapshot y 108 vinculaciones de artefactos en la VM
+Azure. Pasaron las cuatro evaluaciones técnicas acotadas, junto con ocho controles
+negativos sobre entradas reales y doce casos sintéticos de mandatos originales.
+El veredicto metodológico global siguió en `INCONCLUSIVE` y la entrega en
+`BLOCK`. No es una contradicción: la evidencia técnica estaba completa para
+esas comprobaciones, pero no se había aportado aprobación responsable de negocio.
+
+El primer comando de cualificación en Azure utilizó un directorio de salida
+no admitido, fuera de la raíz del paquete; su fallo se conservó antes de una
+repetición separada con la estructura documentada. Ni reparar el inventario de
+evidencia ni superar la repetición reescribió observaciones anteriores. La VM
+quedó desasignada tras descargar las pruebas; no se lanzó ningún workflow de
+GitHub ni una entrega productiva.
+
 ## Un ejemplo de fallo que debe cerrar el gate
 
 El sistema COBOL calcula 0,5 % de comisión con una regla de redondeo específica. El agente traduce a C# usando la opción de redondeo habitual de su biblioteca. En 99 casos los resultados coinciden. En el centésimo, el punto medio resulta diferente. El compilador y los tests unitarios del candidato pasan. Un oráculo aprobado con un caso límite debe rechazarlo. Más adelante, el gate de concurrencia rechaza un método que produce el importe correcto aislado pero permite dos retiradas sobre el mismo saldo. Finalmente, el gate de rendimiento rechaza una arquitectura correcta que incumple la ventana batch.
@@ -80,4 +132,4 @@ Ese detalle final es el que me importa para COBOL. En el laboratorio, la baselin
 
 ---
 
-[← Parte III · Oráculos: el derecho a aceptar](README.md) · [Índice](../README.md) · [Capítulo 11 · La arquitectura de una modernización verificable →](11-la-arquitectura-de-una-modernizacion-verificable.md)
+[← Parte III · Oráculos: el derecho a aceptar](README.md) · [Índice](../README.md) · [Capítulo 10 bis · Herramientas TODM y ADR →](10a-herramientas-todm-modelos-y-adrs.md)

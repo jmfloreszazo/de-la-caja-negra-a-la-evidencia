@@ -1,5 +1,5 @@
 {
-  "_what": "Nodes that carry the red accent. Red marks what no agent can change on its own (authority, approved baseline, gate, delivery authorization, authoritative ledger) and the evidence that decides. Same node ids in both languages.",
+  "_what": "Nodes that carry the coral accent. Coral marks what no agent can change on its own (authority, approved baseline, gate, delivery authorization, authoritative ledger) and the evidence that decides. Same node ids in both languages.",
   "actors": [
     "L"
   ],
@@ -61,5 +61,10 @@
   ],
   "channels_to_be": [
     "ledger"
+  ],
+  "traceability_chain": [
+    "ORACLE",
+    "VERDICT",
+    "APPROVAL"
   ]
 }

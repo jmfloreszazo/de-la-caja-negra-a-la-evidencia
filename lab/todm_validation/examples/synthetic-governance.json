@@ -1,0 +1,233 @@
+{
+  "classification": "SYNTHETIC_UPSTREAM_GOVERNANCE_NOT_PRODUCTION_AUTHORITY",
+  "upstreamCommit": "61354abc03e73fbf258b6e8d66e35678da134ef8",
+  "cases": [
+    {
+      "case": "synthetic-allow",
+      "request": {
+        "principal": "fixture-reviewer",
+        "action": "release",
+        "scope": "synthetic:E1",
+        "at": "2026-11-08T00:00:00Z"
+      },
+      "oracleVerdict": "PASS",
+      "authority": {
+        "verdict": "PASS",
+        "reason": "Synthetic mandate permits this action at fixture time"
+      },
+      "release": {
+        "outcome": "SIMULATED_ALLOW",
+        "reason": "Both controls PASS; G6 approval simulated; no deployment performed"
+      },
+      "expectationMatched": true
+    },
+    {
+      "case": "missing-principal",
+      "request": {
+        "action": "release",
+        "scope": "synthetic:E1",
+        "at": "2026-11-08T00:00:00Z"
+      },
+      "oracleVerdict": "PASS",
+      "authority": {
+        "verdict": "INCONCLUSIVE",
+        "reason": "Authorization request is incomplete"
+      },
+      "release": {
+        "outcome": "BLOCK",
+        "reason": "Oracle and mandate must both PASS"
+      },
+      "expectationMatched": true
+    },
+    {
+      "case": "unknown-principal",
+      "request": {
+        "principal": "builder",
+        "action": "release",
+        "scope": "synthetic:E1",
+        "at": "2026-11-08T00:00:00Z"
+      },
+      "oracleVerdict": "PASS",
+      "authority": {
+        "verdict": "FAIL",
+        "reason": "Unknown principal"
+      },
+      "release": {
+        "outcome": "BLOCK",
+        "reason": "Oracle and mandate must both PASS"
+      },
+      "expectationMatched": true
+    },
+    {
+      "case": "missing-time",
+      "request": {
+        "principal": "fixture-reviewer",
+        "action": "release",
+        "scope": "synthetic:E1"
+      },
+      "oracleVerdict": "PASS",
+      "authority": {
+        "verdict": "INCONCLUSIVE",
+        "reason": "Authorization request is incomplete"
+      },
+      "release": {
+        "outcome": "BLOCK",
+        "reason": "Oracle and mandate must both PASS"
+      },
+      "expectationMatched": true
+    },
+    {
+      "case": "expired",
+      "request": {
+        "principal": "fixture-reviewer",
+        "action": "release",
+        "scope": "synthetic:E1",
+        "at": "2026-12-01T00:00:00Z"
+      },
+      "oracleVerdict": "PASS",
+      "authority": {
+        "verdict": "FAIL",
+        "reason": "Outside mandate validity window"
+      },
+      "release": {
+        "outcome": "BLOCK",
+        "reason": "Oracle and mandate must both PASS"
+      },
+      "expectationMatched": true
+    },
+    {
+      "case": "wrong-scope",
+      "request": {
+        "principal": "fixture-reviewer",
+        "action": "release",
+        "scope": "production",
+        "at": "2026-11-08T00:00:00Z"
+      },
+      "oracleVerdict": "PASS",
+      "authority": {
+        "verdict": "FAIL",
+        "reason": "Scope not delegated"
+      },
+      "release": {
+        "outcome": "BLOCK",
+        "reason": "Oracle and mandate must both PASS"
+      },
+      "expectationMatched": true
+    },
+    {
+      "case": "wrong-action",
+      "request": {
+        "principal": "fixture-reviewer",
+        "action": "deploy",
+        "scope": "synthetic:E1",
+        "at": "2026-11-08T00:00:00Z"
+      },
+      "oracleVerdict": "PASS",
+      "authority": {
+        "verdict": "FAIL",
+        "reason": "Action not delegated"
+      },
+      "release": {
+        "outcome": "BLOCK",
+        "reason": "Oracle and mandate must both PASS"
+      },
+      "expectationMatched": true
+    },
+    {
+      "case": "missing-mandate",
+      "request": {
+        "principal": "fixture-reviewer",
+        "action": "release",
+        "scope": "synthetic:E1",
+        "at": "2026-11-08T00:00:00Z"
+      },
+      "oracleVerdict": "PASS",
+      "authority": {
+        "verdict": "FAIL",
+        "reason": "Unknown principal"
+      },
+      "release": {
+        "outcome": "BLOCK",
+        "reason": "Oracle and mandate must both PASS"
+      },
+      "expectationMatched": true
+    },
+    {
+      "case": "missing-approval",
+      "request": {
+        "principal": "fixture-reviewer",
+        "action": "release",
+        "scope": "synthetic:E1",
+        "at": "2026-11-08T00:00:00Z"
+      },
+      "oracleVerdict": "PASS",
+      "authority": {
+        "verdict": "PASS",
+        "reason": "Synthetic mandate permits this action at fixture time"
+      },
+      "release": {
+        "outcome": "BLOCK",
+        "reason": "G6 release approval absent or denied"
+      },
+      "expectationMatched": true
+    },
+    {
+      "case": "oracle-failed",
+      "request": {
+        "principal": "fixture-reviewer",
+        "action": "release",
+        "scope": "synthetic:E1",
+        "at": "2026-11-08T00:00:00Z"
+      },
+      "oracleVerdict": "FAIL",
+      "authority": {
+        "verdict": "PASS",
+        "reason": "Synthetic mandate permits this action at fixture time"
+      },
+      "release": {
+        "outcome": "BLOCK",
+        "reason": "Oracle and mandate must both PASS"
+      },
+      "expectationMatched": true
+    },
+    {
+      "case": "oracle-inconclusive",
+      "request": {
+        "principal": "fixture-reviewer",
+        "action": "release",
+        "scope": "synthetic:E1",
+        "at": "2026-11-08T00:00:00Z"
+      },
+      "oracleVerdict": "INCONCLUSIVE",
+      "authority": {
+        "verdict": "PASS",
+        "reason": "Synthetic mandate permits this action at fixture time"
+      },
+      "release": {
+        "outcome": "BLOCK",
+        "reason": "Oracle and mandate must both PASS"
+      },
+      "expectationMatched": true
+    },
+    {
+      "case": "revoked",
+      "request": {
+        "principal": "fixture-reviewer",
+        "action": "release",
+        "scope": "synthetic:E1",
+        "at": "2026-11-08T00:00:00Z"
+      },
+      "oracleVerdict": "PASS",
+      "authority": {
+        "verdict": "FAIL",
+        "reason": "Mandate revoked"
+      },
+      "release": {
+        "outcome": "BLOCK",
+        "reason": "Oracle and mandate must both PASS"
+      },
+      "expectationMatched": true
+    }
+  ],
+  "passed": true
+}

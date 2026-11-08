@@ -9,6 +9,7 @@ A candidate is not accepted because it compiles, because an excellent model wrot
 ## In this part
 
 - [Chapter 10 · TODM and the problem of accepting what we build](10-todm-and-the-problem-of-accepting-what-we-build.md)
+- [Chapter 10 bis · Putting TODM to work: models, tools and ADRs](10a-todm-toolbox-models-and-adrs.md)
 - [Chapter 11 · The architecture of a verifiable modernization](11-the-architecture-of-a-verifiable-modernization.md)
 - [Chapter 12 · COBOL and C# must agree on meaning](12-cobol-and-c-must-agree-on-meaning.md)
 

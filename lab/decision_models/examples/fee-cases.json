@@ -1,0 +1,186 @@
+{
+  "classification": "SYNTHETIC_MANUALLY_CURATED_EXPECTATIONS_NOT_APPROVED",
+  "derivation": "Arithmetic and domain boundaries from fee-contract.md, independently written without running the legacy program or deriving expected values from model output.",
+  "cases": [
+    {
+      "id": "zero",
+      "inputs": {
+        "amountCents": 0,
+        "rateBps": 500,
+        "customerActive": "Y"
+      },
+      "expected": {
+        "resultCode": "APPROVE",
+        "feeCents": 0
+      }
+    },
+    {
+      "id": "half-cent",
+      "inputs": {
+        "amountCents": 250,
+        "rateBps": 20,
+        "customerActive": "Y"
+      },
+      "expected": {
+        "resultCode": "APPROVE",
+        "feeCents": 1
+      }
+    },
+    {
+      "id": "one-and-half-cents",
+      "inputs": {
+        "amountCents": 750,
+        "rateBps": 20,
+        "customerActive": "Y"
+      },
+      "expected": {
+        "resultCode": "APPROVE",
+        "feeCents": 2
+      }
+    },
+    {
+      "id": "below-half",
+      "inputs": {
+        "amountCents": 249,
+        "rateBps": 20,
+        "customerActive": "Y"
+      },
+      "expected": {
+        "resultCode": "APPROVE",
+        "feeCents": 0
+      }
+    },
+    {
+      "id": "above-half",
+      "inputs": {
+        "amountCents": 251,
+        "rateBps": 20,
+        "customerActive": "Y"
+      },
+      "expected": {
+        "resultCode": "APPROVE",
+        "feeCents": 1
+      }
+    },
+    {
+      "id": "threshold",
+      "inputs": {
+        "amountCents": 1000000,
+        "rateBps": 75,
+        "customerActive": "Y"
+      },
+      "expected": {
+        "resultCode": "APPROVE",
+        "feeCents": 7500
+      }
+    },
+    {
+      "id": "over-threshold",
+      "inputs": {
+        "amountCents": 1000001,
+        "rateBps": 75,
+        "customerActive": "Y"
+      },
+      "expected": {
+        "resultCode": "REVIEW",
+        "feeCents": 7500
+      }
+    },
+    {
+      "id": "full-rate",
+      "inputs": {
+        "amountCents": 1234567,
+        "rateBps": 10000,
+        "customerActive": "Y"
+      },
+      "expected": {
+        "resultCode": "REVIEW",
+        "feeCents": 1234567
+      }
+    },
+    {
+      "id": "maximum",
+      "inputs": {
+        "amountCents": 99999999,
+        "rateBps": 10000,
+        "customerActive": "Y"
+      },
+      "expected": {
+        "resultCode": "REVIEW",
+        "feeCents": 99999999
+      }
+    },
+    {
+      "id": "inactive",
+      "inputs": {
+        "amountCents": 98765,
+        "rateBps": 135,
+        "customerActive": "N"
+      },
+      "expected": {
+        "resultCode": "REJECT",
+        "feeCents": 0
+      }
+    },
+    {
+      "id": "invalid-rate-first",
+      "inputs": {
+        "amountCents": 450,
+        "rateBps": 10001,
+        "customerActive": "N"
+      },
+      "expected": {
+        "resultCode": "INVALID",
+        "feeCents": 0
+      }
+    },
+    {
+      "id": "invalid-flag",
+      "inputs": {
+        "amountCents": 450,
+        "rateBps": 30,
+        "customerActive": "X"
+      },
+      "expected": {
+        "resultCode": "INVALID",
+        "feeCents": 0
+      }
+    },
+    {
+      "id": "negative-amount",
+      "inputs": {
+        "amountCents": -1,
+        "rateBps": 30,
+        "customerActive": "Y"
+      },
+      "expected": {
+        "resultCode": "INVALID",
+        "feeCents": 0
+      }
+    },
+    {
+      "id": "oversized-amount",
+      "inputs": {
+        "amountCents": 100000000,
+        "rateBps": 30,
+        "customerActive": "Y"
+      },
+      "expected": {
+        "resultCode": "INVALID",
+        "feeCents": 0
+      }
+    },
+    {
+      "id": "negative-rate",
+      "inputs": {
+        "amountCents": 450,
+        "rateBps": -1,
+        "customerActive": "Y"
+      },
+      "expected": {
+        "resultCode": "INVALID",
+        "feeCents": 0
+      }
+    }
+  ]
+}

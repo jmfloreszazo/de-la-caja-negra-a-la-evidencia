@@ -3,15 +3,15 @@
 
 Sources:  book/figures/src/es/<id>.mmd and book/figures/src/en/<id>.mmd (Mermaid, the source of truth)
 Images:   book/figures/es/<id>.png and book/figures/en/<id>.png (committed, shown in the chapters)
-Theme:    book/figures/theme.json and theme.css; red accent per node in book/figures/accents.json (ink background, graphite nodes, light text, red as the only accent)
+Theme:    book/figures/theme.json and theme.css; warm paper, navy text, teal/blue nodes and coral accents
 
     python3 scripts/render_figures.py           render new or changed diagrams
     python3 scripts/render_figures.py --all     render everything again
     python3 scripts/render_figures.py --check   only check that every source renders (used by CI)
     python3 scripts/render_figures.py es        only one language
 
-Requires mermaid-cli (npm i -g @mermaid-js/mermaid-cli) and, for identical images, the Noto Sans CJK fonts
-(sudo apt install fonts-noto-cjk). Optional env MERMAID_PUPPETEER_CONFIG=<json> for a custom Chromium.
+Requires Node.js 22, mermaid-cli 11.12.0 and DejaVu Sans fonts.
+Optional env MERMAID_PUPPETEER_CONFIG=<json> for a custom Chromium.
 """
 import hashlib, json, os, pathlib, re, subprocess, sys, tempfile
 
@@ -20,22 +20,25 @@ FIG = ROOT / 'book' / 'figures'
 THEME = FIG / 'theme.json'
 CSS = FIG / 'theme.css'
 ACCENTS = FIG / 'accents.json'
-RED, RED_BG, PAPER = '#E0262B', '#2A1113', '#F4F2EE'
 HASHES = FIG / 'hashes.json'
-BG, TEXT, LINE = '#0B0D10', '#C9CCD1', '#9AA0A6'
-VERSION = '1'
+PALETTE = json.loads(THEME.read_text(encoding='utf-8'))['themeVariables']
+ACCENT, ACCENT_BG = PALETTE['noteBorderColor'], PALETTE['noteBkgColor']
+BG, TEXT, LINE = PALETTE['background'], PALETTE['textColor'], PALETTE['lineColor']
+VERSION = '2'
 
 
 def prepare(code, ident=''):
     """Central theme only: drop per-diagram init directives, give C4 relations readable colours and
-    paint the red accent on the nodes listed in accents.json."""
+    paint the coral accent on the nodes listed in accents.json."""
     code = '\n'.join(l for l in code.splitlines() if not l.strip().startswith('%%{'))
     accent = json.loads(ACCENTS.read_text(encoding='utf-8')).get(ident, []) if ACCENTS.is_file() else []
     if accent and code.lstrip().startswith(('flowchart', 'graph')):
-        code += f'\n  classDef accent fill:{RED_BG},stroke:{RED},stroke-width:2px,color:{PAPER}\n  class {",".join(accent)} accent'
-    if accent and code.lstrip().startswith('C4'):
-        code += ''.join(f'\n  UpdateElementStyle({a}, $bgColor="{RED_BG}", $borderColor="{RED}", $fontColor="{PAPER}")' for a in accent)
+        code += f'\n  classDef accent fill:{ACCENT_BG},stroke:{ACCENT},stroke-width:2px,color:{TEXT}\n  class {",".join(accent)} accent'
     if code.lstrip().startswith('C4'):
+        nodes = re.findall(r'^\s*(?:Person|System|Container|Component)(?:Db|Queue)?(?:_Ext)?\(\s*(\w+)', code, re.M)
+        for node in nodes:
+            colours = f'$bgColor="{ACCENT_BG}", $borderColor="{ACCENT}", ' if node in accent else ''
+            code += f'\n  UpdateElementStyle({node}, {colours}$fontColor="{TEXT}")'
         rels = re.findall(r'^\s*(?:Bi)?Rel(?:_[A-Za-z]+)?\(\s*(\w+)\s*,\s*(\w+)', code, re.M)
         code += ''.join(f'\n  UpdateRelStyle({a}, {b}, $textColor="{TEXT}", $lineColor="{LINE}")' for a, b in rels)
     return code + '\n'
@@ -44,12 +47,12 @@ def prepare(code, ident=''):
 def render(src, out):
     with tempfile.TemporaryDirectory() as tmp:
         mmd = pathlib.Path(tmp) / 'd.mmd'
-        mmd.write_text(prepare(src.read_text(encoding='utf-8'), src.stem), encoding='utf-8')
+        mmd.write_text(prepare(src.read_text(encoding='utf-8'), src.stem), encoding='utf-8', newline='\n')
         cmd = ['mmdc', '-q', '-i', str(mmd), '-o', str(out), '-c', str(THEME), '-C', str(CSS), '-b', BG, '-w', '1100', '-s', '2']
         if os.environ.get('MERMAID_PUPPETEER_CONFIG'):
             cmd[1:1] = ['-p', os.environ['MERMAID_PUPPETEER_CONFIG']]
         r = subprocess.run(cmd, capture_output=True, text=True, timeout=180)
-        return r.returncode == 0 and out.is_file(), (r.stderr or r.stdout).strip().splitlines()[-1:] 
+        return r.returncode == 0 and out.is_file(), (r.stderr or r.stdout).strip().splitlines()
 
 
 def main():
@@ -84,7 +87,7 @@ def main():
             failed += 1
             print(f'  FAIL  {key}: {" ".join(err)}')
     if mode != '--check':
-        HASHES.write_text(json.dumps(dict(sorted(hashes.items())), indent=1) + '\n')
+        HASHES.write_text(json.dumps(dict(sorted(hashes.items())), indent=1) + '\n', encoding='utf-8', newline='\n')
     print(f'\n{done} rendered · {skipped} unchanged · {failed} failed · {len(sources)} sources')
     sys.exit(1 if failed else 0)
 

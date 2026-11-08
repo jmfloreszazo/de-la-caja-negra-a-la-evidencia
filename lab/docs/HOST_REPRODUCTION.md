@@ -17,6 +17,8 @@ A successful unit test or the Python codec exercise from #88 is not a full conta
 
 Use a clean clone at an explicitly recorded commit. Untracked files in the repository also block execution; generated ignored results are allowed. Keep the clone/output in a host directory shared with the selected Podman engine. The collector does not install Podman, create/start a VM, select a connection, change rootless/rootful settings or reset an existing machine.
 
+Preserve canonical source bytes as well as a clean Git status. Follow the [checkout-integrity instructions](../../CONTRIBUTING.md#checkout-integrity): older Windows clones may have CRLF-translated files and fail the baseline anchor despite a clean status. Use a separate LF checkout; do not normalize the oracle inputs inside a verifier, replace expected hashes or rewrite historical evidence.
+
 | Host | Preparation and topology to record |
 | --- | --- |
 | Linux | Install Podman and verify `podman info`. Record native versus VM/remote execution; rootless versus rootful is in the engine-host log. |

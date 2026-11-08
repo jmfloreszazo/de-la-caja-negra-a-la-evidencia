@@ -1,0 +1,92 @@
+{
+  "classification": "EXECUTED_LOCAL_SYNTHETIC_DEMONSTRATION_NOT_APPROVED_EXPERIMENT",
+  "timestampUtc": "2026-11-08T10:08:50.999823+00:00",
+  "pythonVersion": "3.13.2",
+  "platform": "Windows",
+  "baseCommit": "6a4b7f5620c3813c9563b34749b6cc3817dc887b",
+  "sourceState": "New uncommitted toolkit files; baseCommit does not contain this implementation",
+  "ciRunId": null,
+  "productionApproved": false,
+  "independentExpectations": "examples/fee-cases.json; manually written from fee-contract.md, not model-generated or legacy outputs",
+  "limitations": [
+    "Not a live COBOL, Azure, mainframe or E1-E4 experiment",
+    "No authority or signature verification",
+    "Raw local outputs are not authenticated provenance"
+  ],
+  "sourceSha256": {
+    "toolkit.py": "9a97021b4a04172ff6fe201477abce9bd0f00881aabf48a4c0d093664f584eb4",
+    "test_toolkit.py": "25dc07efae89bfdedfb82c8e2f1a39181dd8f320dacfc542d8b2ce6ce1aad397",
+    "examples/baseline.json": "3636be0c1f0d7d7c26542c6eb478f23b49dc8841e6e52bd65990b1e2c2e9e856"
+  },
+  "commands": [
+    {
+      "command": "python -m unittest lab.decision_models.test_toolkit -v",
+      "exitCode": 0,
+      "status": "PASS",
+      "summary": "21 tests passed"
+    },
+    {
+      "command": "python lab\\decision_models\\toolkit.py validate lab\\decision_models\\examples\\fee-decision.json",
+      "exitCode": 0,
+      "expectedExitCode": 0,
+      "resultFile": null,
+      "status": "PASS"
+    },
+    {
+      "command": "python lab\\decision_models\\toolkit.py validate lab\\decision_models\\examples\\fee-process.json",
+      "exitCode": 0,
+      "expectedExitCode": 0,
+      "resultFile": null,
+      "status": "PASS"
+    },
+    {
+      "command": "python lab\\decision_models\\toolkit.py evaluate lab\\decision_models\\examples\\fee-decision.json --input lab\\decision_models\\examples\\fee-input.json",
+      "exitCode": 0,
+      "expectedExitCode": 0,
+      "resultFile": "examples/result-decision.json",
+      "status": "PASS"
+    },
+    {
+      "command": "python lab\\decision_models\\toolkit.py check-trace lab\\decision_models\\examples\\fee-process.json --input lab\\decision_models\\examples\\fee-trace.json",
+      "exitCode": 0,
+      "expectedExitCode": 0,
+      "resultFile": "examples/result-trace.json",
+      "status": "PASS"
+    },
+    {
+      "command": "python lab\\decision_models\\toolkit.py check-baseline lab\\decision_models\\examples\\baseline.json --root lab\\decision_models",
+      "exitCode": 0,
+      "expectedExitCode": 0,
+      "resultFile": "examples/result-baseline.json",
+      "status": "PASS"
+    },
+    {
+      "command": "python lab\\decision_models\\toolkit.py export lab\\decision_models\\examples\\fee-decision.json",
+      "exitCode": 0,
+      "expectedExitCode": 0,
+      "resultFile": null,
+      "status": "EXPORTED_LOCAL_JSON_PROFILE"
+    },
+    {
+      "command": "python lab\\decision_models\\toolkit.py evaluate lab\\decision_models\\examples\\fee-decision.json --input lab\\decision_models\\examples\\fee-input-incomplete.json",
+      "exitCode": 2,
+      "expectedExitCode": 2,
+      "resultFile": "examples/result-decision-incomplete.json",
+      "status": "INCONCLUSIVE"
+    },
+    {
+      "command": "python lab\\decision_models\\toolkit.py check-trace lab\\decision_models\\examples\\fee-process.json --input lab\\decision_models\\examples\\fee-trace-incomplete.json",
+      "exitCode": 2,
+      "expectedExitCode": 2,
+      "resultFile": "examples/result-trace-incomplete.json",
+      "status": "INCONCLUSIVE"
+    },
+    {
+      "command": "python lab\\decision_models\\toolkit.py check-trace lab\\decision_models\\examples\\fee-process.json --input lab\\decision_models\\examples\\fee-trace-invalid.json",
+      "exitCode": 1,
+      "expectedExitCode": 1,
+      "resultFile": "examples/result-trace-invalid.json",
+      "status": "FAIL"
+    }
+  ]
+}

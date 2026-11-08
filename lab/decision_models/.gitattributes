@@ -1,0 +1,5 @@
+* text eol=lf
+
+# The immutable baseline hashes these two documents with CRLF line endings.
+examples/fee-contract.md text eol=crlf
+adr/ADR-001-bounded-profiles.md text eol=crlf

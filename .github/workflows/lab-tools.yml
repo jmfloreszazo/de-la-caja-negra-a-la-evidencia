@@ -1,0 +1,91 @@
+name: Lab tools
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'lab/e3_capacity/**'
+      - 'lab/e4_agents/**'
+      - 'lab/todm_validation/**'
+      - 'lab/decision_models/**'
+      - 'lab/tools/**'
+      - 'scripts/azure/**'
+      - 'scripts/evidence/**'
+      - 'scripts/test_book_structure.py'
+      - 'scripts/test_pdf_markdown.py'
+      - 'scripts/build_pdf.py'
+      - 'scripts/pdf_markdown.py'
+      - 'docs/DIST_MANIFEST.md'
+      - '.github/workflows/lab-tools.yml'
+  pull_request:
+    paths:
+      - 'lab/e3_capacity/**'
+      - 'lab/e4_agents/**'
+      - 'lab/todm_validation/**'
+      - 'lab/decision_models/**'
+      - 'lab/tools/**'
+      - 'scripts/azure/**'
+      - 'scripts/evidence/**'
+      - 'scripts/test_book_structure.py'
+      - 'scripts/test_pdf_markdown.py'
+      - 'scripts/build_pdf.py'
+      - 'scripts/pdf_markdown.py'
+      - 'docs/DIST_MANIFEST.md'
+      - '.github/workflows/lab-tools.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency:
+  group: lab-tools-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+jobs:
+  python-suites:
+    name: Offline Python suites (no containers, no cloud)
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-python@v6
+        with:
+          python-version: '3.12'
+      - name: Install the only third-party import used by the E3 harness tests
+        run: python3 -m pip install --quiet 'psycopg[binary]>=3.2,<4'
+      - name: Decision-model toolkit
+        run: python3 -m unittest lab.decision_models.test_toolkit -v
+      - name: TODM evidence adapter
+        run: python3 -m unittest discover -s lab/todm_validation -p 'test_*.py' -v
+      - name: E3 exploratory harness (pure-Python controls)
+        run: python3 -m unittest discover -s lab/e3_capacity -p test_harness.py -v
+      - name: E4 isolation and replay controls (mocked engine)
+        run: python3 -m unittest discover -s lab/e4_agents -p 'test_*.py' -v
+      - name: Local campaign collector
+        run: python3 -m unittest discover -s lab/tools -p 'test_*.py' -v
+      - name: Azure guest launcher, replay transport and supervisor (fake tools)
+        run: python3 -m unittest discover -s scripts/azure -p 'test_*.py' -v
+      - name: Book structure and PDF helper regressions
+        run: |
+          python3 -m unittest discover -s scripts -p test_book_structure.py -v
+          python3 -m unittest discover -s scripts -p test_pdf_markdown.py -v
+      - name: Evidence verifier negative controls, including optimized Python
+        run: |
+          python3 -m unittest scripts.test_evidence_verifiers -v
+          python3 -O -m unittest scripts.test_evidence_verifiers -v
+      - name: Tracked evidence derivation scripts compile
+        run: python3 -m py_compile scripts/evidence/*.py
+  operator-checks:
+    name: Azure operator offline checks (PowerShell, no Azure calls)
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v5
+      - name: Compile the ARM template the operator tests inspect (az bicep, offline)
+        shell: pwsh
+        run: |
+          az bicep install --only-show-errors
+          ./scripts/azure/lab.ps1 -Action Build -OutputDirectory lab/results/azure
+          Test-Path lab/results/azure/main.json
+      - name: Operator guard tests
+        shell: pwsh
+        run: ./scripts/azure/test-lab.ps1
+      - name: Read-only CLI capture tests
+        shell: pwsh
+        run: ./scripts/azure/test-capture-book-evidence.ps1

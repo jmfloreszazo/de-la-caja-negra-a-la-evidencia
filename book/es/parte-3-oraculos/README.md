@@ -9,6 +9,7 @@ Un candidato no se acepta porque compile, ni porque lo haya escrito un modelo ex
 ## En esta parte
 
 - [Capítulo 10 · TODM y el problema de aceptar lo que construimos](10-todm-y-el-problema-de-aceptar-lo-que-construimos.md)
+- [Capítulo 10 bis · Aplicar TODM: modelos, herramientas y ADR](10a-herramientas-todm-modelos-y-adrs.md)
 - [Capítulo 11 · La arquitectura de una modernización verificable](11-la-arquitectura-de-una-modernizacion-verificable.md)
 - [Capítulo 12 · COBOL y C# deben acordar el significado](12-cobol-y-c-deben-acordar-el-significado.md)
 

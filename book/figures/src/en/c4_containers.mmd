@@ -1,35 +1,33 @@
-C4Container
-  title Verifiable functional modernization platform
-  Person(owner, "Business authority")
-  System_Ext(policy, "Policies and contracts", "Authorized business rules")
-  System_Ext(legacy, "Legacy system", "Black-box observations")
-  System_Boundary(b, "Brownfield modernization with TODM") {
-    Container(disc, "Functional discovery", "Interviews and contracts", "Capabilities, exceptions and uncertainties")
-    Container(golden, "Golden Master", "Controlled observation", "Incumbent behavior, not approval")
-    Container(research, "Optional investigation", "COBOL, JCL, Db2", "Provenance-linked technical unknowns")
-    ContainerDb(exp, "Evidence record", "Git and manifests", "Sources, limitations and contradictions")
-    Container(gov, "Approved baseline", "Rules and decisions", "Authority independent from agents")
-    Container(build, "Replacement implementation", ".NET 10 and domains", "Candidate from specifications")
-    Container(transition, "Coexistence and cutover", "Strangler, ACL and rollback", "Legacy and replacement remain controlled")
-    Container(verify, "TODM oracles", "G3 and G5", "PASS, FAIL or INCONCLUSIVE")
-    Container(release, "G6 release authority", "Human and mandate", "Exact verified artifact")
-  }
-  Rel(owner, disc, "Defines capabilities")
-  Rel(policy, disc, "Provides requirements")
-  Rel(legacy, golden, "Observed, not translated")
-  Rel(legacy, research, "Only for an open question")
-  Rel(disc, exp, "Records hypotheses")
-  Rel(golden, exp, "Separate evidence")
-  Rel(research, exp, "Optional findings")
-  Rel(exp, gov, "Requests evaluation")
-  Rel(owner, gov, "Approves rules")
-  Rel(gov, build, "Contracts and mandate")
-  Rel(build, transition, "Provides replacement capability")
-  Rel(legacy, transition, "Legacy functions")
-  Rel(transition, verify, "Produces comparable observations")
-  Rel(build, verify, "Pins candidate")
-  Rel(gov, verify, "Independent baseline")
-  Rel(golden, verify, "Separate characterization")
-  Rel(verify, release, "Verifiable verdict")
-  Rel(owner, release, "Approves or blocks")
-  UpdateLayoutConfig($c4ShapeInRow="3", $c4BoundaryInRow="1")
+flowchart TB
+  owner(["Business authority<br/>Person"])
+  policy["Policies and contracts<br/>Authorized business rules"]
+  legacy["Legacy system<br/>Black-box observations"]
+  subgraph b["Brownfield modernization with TODM"]
+    disc["Functional discovery<br/>Interviews and contracts<br/>Capabilities, exceptions and uncertainties"]
+    golden["Golden Master<br/>Controlled observation<br/>Incumbent behavior, not approval"]
+    research["Optional investigation<br/>COBOL, JCL, Db2<br/>Provenance-linked technical unknowns"]
+    exp[("Evidence record<br/>Git and manifests<br/>Sources, limitations and contradictions")]
+    gov["Approved baseline<br/>Rules and decisions<br/>Authority independent from agents"]
+    build["Replacement implementation<br/>.NET 10 and domains<br/>Candidate from specifications"]
+    transition["Coexistence and cutover<br/>Strangler, ACL and rollback<br/>Legacy and replacement remain controlled"]
+    verify["TODM oracles<br/>G3 and G5<br/>PASS, FAIL or INCONCLUSIVE"]
+    release["G6 release authority<br/>Human and mandate<br/>Exact verified artifact"]
+  end
+  owner -->|"Defines capabilities"| disc
+  policy -->|"Provides requirements"| disc
+  legacy -->|"Observed, not translated"| golden
+  legacy -->|"Only for an open question"| research
+  disc -->|"Records hypotheses"| exp
+  golden -->|"Separate evidence"| exp
+  research -->|"Optional findings"| exp
+  exp -->|"Requests evaluation"| gov
+  owner -->|"Approves rules"| gov
+  gov -->|"Contracts and mandate"| build
+  build -->|"Provides replacement capability"| transition
+  legacy -->|"Legacy functions"| transition
+  transition -->|"Produces comparable observations"| verify
+  build -->|"Pins candidate"| verify
+  gov -->|"Independent baseline"| verify
+  golden -->|"Separate characterization"| verify
+  verify -->|"Verifiable verdict"| release
+  owner -->|"Approves or blocks"| release

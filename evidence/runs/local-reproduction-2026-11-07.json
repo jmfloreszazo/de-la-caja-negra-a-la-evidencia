@@ -1,0 +1,566 @@
+{
+  "schemaVersion": 1,
+  "createdUtc": "2026-11-07T20:56:37.472006+00:00",
+  "classification": "LOCAL_SYNTHETIC_REPRODUCTION_NOT_E1_E4_FINAL_ACCEPTANCE",
+  "author": "Jos\u00e9 Mar\u00eda Flores Zazo",
+  "authorWebsite": "https://jmfloreszazo.com",
+  "environment": "Ubuntu 24.04 WSL2 / Docker Desktop Linux containers",
+  "ciRunId": null,
+  "azureDeployment": "NOT_EXECUTED",
+  "githubPushAndActions": "NOT_EXECUTED",
+  "selectedRuns": {
+    "core": "native-core-20261107-205413",
+    "e1": "native-e1-20261107-203631",
+    "e2": "native-e2-20261107-204850",
+    "m2": "native-m2-20261107-205104"
+  },
+  "observations": {
+    "coreIndependentAudit": {
+      "status": "PASS",
+      "feeCases": 58,
+      "gateControls": 10,
+      "positiveDatabases": 9,
+      "rejectedCorruptDatabases": 1,
+      "accountingPredicatesPerDatabase": 6,
+      "ledgerObservations": {
+        "acceptance.db": {
+          "nonnegative": true,
+          "conserved": true,
+          "balancedPostings": true,
+          "twoPostingsPerCommit": true,
+          "outboxAtomic": true,
+          "projectionAgrees": true
+        },
+        "load-hot-1.db": {
+          "nonnegative": true,
+          "conserved": true,
+          "balancedPostings": true,
+          "twoPostingsPerCommit": true,
+          "outboxAtomic": true,
+          "projectionAgrees": true
+        },
+        "load-hot-2.db": {
+          "nonnegative": true,
+          "conserved": true,
+          "balancedPostings": true,
+          "twoPostingsPerCommit": true,
+          "outboxAtomic": true,
+          "projectionAgrees": true
+        },
+        "load-hot-4.db": {
+          "nonnegative": true,
+          "conserved": true,
+          "balancedPostings": true,
+          "twoPostingsPerCommit": true,
+          "outboxAtomic": true,
+          "projectionAgrees": true
+        },
+        "load-hot-8.db": {
+          "nonnegative": true,
+          "conserved": true,
+          "balancedPostings": true,
+          "twoPostingsPerCommit": true,
+          "outboxAtomic": true,
+          "projectionAgrees": true
+        },
+        "load-uniform-1.db": {
+          "nonnegative": true,
+          "conserved": true,
+          "balancedPostings": true,
+          "twoPostingsPerCommit": true,
+          "outboxAtomic": true,
+          "projectionAgrees": true
+        },
+        "load-uniform-2.db": {
+          "nonnegative": true,
+          "conserved": true,
+          "balancedPostings": true,
+          "twoPostingsPerCommit": true,
+          "outboxAtomic": true,
+          "projectionAgrees": true
+        },
+        "load-uniform-4.db": {
+          "nonnegative": true,
+          "conserved": true,
+          "balancedPostings": true,
+          "twoPostingsPerCommit": true,
+          "outboxAtomic": true,
+          "projectionAgrees": true
+        },
+        "load-uniform-8.db": {
+          "nonnegative": true,
+          "conserved": true,
+          "balancedPostings": true,
+          "twoPostingsPerCommit": true,
+          "outboxAtomic": true,
+          "projectionAgrees": true
+        },
+        "negative-control.db": {
+          "nonnegative": true,
+          "conserved": true,
+          "balancedPostings": false,
+          "twoPostingsPerCommit": false,
+          "outboxAtomic": true,
+          "projectionAgrees": false
+        }
+      },
+      "connectionLifecycle": "EXPLICIT_CLOSE_AFTER_EACH_READ_ONLY_AUDIT",
+      "oracleSha256": "f8c6a68f2fb9a0abd110f0153208ac2f3d13c7f62c16244c72a5d570e828ae2c"
+    },
+    "e1PythonControls": 11,
+    "e1DotnetControls": 10,
+    "e1SequentialParityCases": 16,
+    "e1WorkerMatrixCases": 8,
+    "e1LogicalTransfers": 960,
+    "e1NegativeOracleRejectedCorruption": true,
+    "e2FunctionalControls": 7,
+    "e2NegativeOracleRejectedCorruption": true,
+    "m2Cases": 20,
+    "m2CommitsPerCase": 256,
+    "m2NegativeOracle": {
+      "detected": [
+        "balancedPostings",
+        "projectionAgrees",
+        "twoPostingsPerCommit"
+      ],
+      "restored": true
+    },
+    "postgresVersion": "16.13 (Debian 16.13-1.pgdg13+1)"
+  },
+  "limitations": [
+    "Local synthetic controls, not Azure, production capacity, HA or mainframe evidence.",
+    "E2 is the co-located functional harness, not a new distributed recovery campaign.",
+    "M2 uses HTTP/2 plaintext, closed-loop load and one shared database.",
+    "All failed attempts and original raw observations are retained.",
+    "Early runs did not archive launcher bytes; availability is explicit per run.",
+    "No E3 approved capacity contract or E4 real-agent acceptance has been supplied.",
+    "Infrastructure compilation and offline mocks are not live ARM/deployment validation."
+  ],
+  "runs": [
+    {
+      "runId": "native-core-20261107-202547",
+      "status": "PASS",
+      "sourceCommit": "cc7ed4bea231a36103ea7f4987b5728091e27ee2",
+      "sourcePatchSha256": null,
+      "launcherSha256": "20ce96bbba9147ca45d4d3ac5b34a7b1fbdc6aad50c857ef9b761c854890d4fc",
+      "report": "runs/native-core-20261107-202547/report.json",
+      "launcherSnapshotAvailable": false
+    },
+    {
+      "runId": "native-core-20261107-205413",
+      "status": "PASS",
+      "sourceCommit": "cc7ed4bea231a36103ea7f4987b5728091e27ee2",
+      "sourcePatchSha256": "ec23210fe2b4bb2ea93e7ea15db9ee39a2266dda630da7ad0c677093e4451bac",
+      "launcherSha256": "c4bfa5a1c88e68053f8fcfae227f59057f3170a7f613c0e8f68fdc0e8bb5079c",
+      "report": "runs/native-core-20261107-205413/report.json",
+      "launcherSnapshotAvailable": true
+    },
+    {
+      "runId": "native-e1-20261107-203017",
+      "status": "PASS",
+      "sourceCommit": "cc7ed4bea231a36103ea7f4987b5728091e27ee2",
+      "sourcePatchSha256": null,
+      "launcherSha256": "3510b82e15b83481f787c26031667c26d580c182871243f6b8a9049f19fa2165",
+      "report": "runs/native-e1-20261107-203017/report.json",
+      "launcherSnapshotAvailable": false,
+      "provenanceWarning": "Legacy harness hardcoded GitHub Actions / Podman; actual execution was local WSL / Docker Desktop. Raw bytes retained. Later run fixes the report producer."
+    },
+    {
+      "runId": "native-e1-20261107-203631",
+      "status": "PASS",
+      "sourceCommit": "cc7ed4bea231a36103ea7f4987b5728091e27ee2",
+      "sourcePatchSha256": "aa977d1da453b8158507f8fd2247c94bdfcc37a16cb07530fd4303b139ae4e55",
+      "launcherSha256": "3510b82e15b83481f787c26031667c26d580c182871243f6b8a9049f19fa2165",
+      "report": "runs/native-e1-20261107-203631/report.json",
+      "launcherSnapshotAvailable": true
+    },
+    {
+      "runId": "native-e2-20261107-204147",
+      "status": "FAIL",
+      "sourceCommit": "cc7ed4bea231a36103ea7f4987b5728091e27ee2",
+      "sourcePatchSha256": "aa977d1da453b8158507f8fd2247c94bdfcc37a16cb07530fd4303b139ae4e55",
+      "launcherSha256": "3510b82e15b83481f787c26031667c26d580c182871243f6b8a9049f19fa2165",
+      "report": "runs/native-e2-20261107-204147/report.json",
+      "launcherSnapshotAvailable": true
+    },
+    {
+      "runId": "native-e2-20261107-204337",
+      "status": "FAIL",
+      "sourceCommit": "cc7ed4bea231a36103ea7f4987b5728091e27ee2",
+      "sourcePatchSha256": "aa977d1da453b8158507f8fd2247c94bdfcc37a16cb07530fd4303b139ae4e55",
+      "launcherSha256": "f8bf3211995ba853097e109ba417dadfe7635a60d3636e99d13a419221da69f6",
+      "report": "runs/native-e2-20261107-204337/report.json",
+      "launcherSnapshotAvailable": true
+    },
+    {
+      "runId": "native-e2-20261107-204623",
+      "status": "FAIL",
+      "sourceCommit": "cc7ed4bea231a36103ea7f4987b5728091e27ee2",
+      "sourcePatchSha256": "aa977d1da453b8158507f8fd2247c94bdfcc37a16cb07530fd4303b139ae4e55",
+      "launcherSha256": "0307dcf19a9826c07b32ea44b0bf4fa437801d7015ca80ae67aa583daeffd9ca",
+      "report": "runs/native-e2-20261107-204623/report.json",
+      "launcherSnapshotAvailable": true
+    },
+    {
+      "runId": "native-e2-20261107-204850",
+      "status": "PASS",
+      "sourceCommit": "cc7ed4bea231a36103ea7f4987b5728091e27ee2",
+      "sourcePatchSha256": "bd3c364728f03d67a3b222dee93fa8db7062715db588bf8a2136c25b531d9eb2",
+      "launcherSha256": "c4bfa5a1c88e68053f8fcfae227f59057f3170a7f613c0e8f68fdc0e8bb5079c",
+      "report": "runs/native-e2-20261107-204850/report.json",
+      "launcherSnapshotAvailable": true
+    },
+    {
+      "runId": "native-m2-20261107-205104",
+      "status": "PASS",
+      "sourceCommit": "cc7ed4bea231a36103ea7f4987b5728091e27ee2",
+      "sourcePatchSha256": "bd3c364728f03d67a3b222dee93fa8db7062715db588bf8a2136c25b531d9eb2",
+      "launcherSha256": "c4bfa5a1c88e68053f8fcfae227f59057f3170a7f613c0e8f68fdc0e8bb5079c",
+      "report": "runs/native-m2-20261107-205104/report.json",
+      "launcherSnapshotAvailable": true
+    }
+  ],
+  "localArchive": "dist/local-experiments-2026-11-07.zip",
+  "rawReports": {
+    "runs/native-core-20261107-202547/report.json": {
+      "sha256": "165b00ff0dd760d04d0b06b9e12ca9ade56bde237839f0312ac0d498aac6ca8a",
+      "bytes": 2949
+    },
+    "runs/native-core-20261107-202547/results/approve-inactive-gate.json": {
+      "sha256": "1689cc4b4959f245686eaaea42f2b3448aea11352dcf3b9963a1042bd1a47690",
+      "bytes": 1013
+    },
+    "runs/native-core-20261107-202547/results/approve-inactive-observations.json": {
+      "sha256": "111a7e61e66979acfbfd07bb3959b4a8df402c433cb656b74e792c33041a723c",
+      "bytes": 5540
+    },
+    "runs/native-core-20261107-202547/results/bank/summary.json": {
+      "sha256": "fa7dc6087ff548bcaaab4da0edc7ae0ffb5f5f641fb96433edff1f9d498df44a",
+      "bytes": 3777
+    },
+    "runs/native-core-20261107-202547/results/duplicate-case-gate.json": {
+      "sha256": "14c1e161c9dbb15da53e29713a5915c589d3fd4b88f0fa3b51a2a8099d8511b0",
+      "bytes": 168
+    },
+    "runs/native-core-20261107-202547/results/duplicate-case-observations.json": {
+      "sha256": "96d3aaa103c1d35112f4bed2e4f6f038cf11813893b6ed6d94b564a1682e0476",
+      "bytes": 5636
+    },
+    "runs/native-core-20261107-202547/results/equal-but-wrong-gate.json": {
+      "sha256": "ae5d8715c8695d36da78b853fec44c944ac4e3e1be85eb01fff32818c1ecfb70",
+      "bytes": 190
+    },
+    "runs/native-core-20261107-202547/results/equal-but-wrong-observations.json": {
+      "sha256": "852f5b0dfaf2201576c62d31983a190f45e587eb6d02914d791c31683be4f0e8",
+      "bytes": 5539
+    },
+    "runs/native-core-20261107-202547/results/invalid-anchor-gate.json": {
+      "sha256": "ca52bd07af6a2594a3d78f1c87f56083f884c714c88eb29bb9e16b8a6772daf4",
+      "bytes": 151
+    },
+    "runs/native-core-20261107-202547/results/invalid-anchor-observations.json": {
+      "sha256": "f20b3736e60c5a67d8e107dc0d5a4ef74a33d423e7688ae19d6441479e614c6d",
+      "bytes": 5539
+    },
+    "runs/native-core-20261107-202547/results/missing-case-gate.json": {
+      "sha256": "4d025421974d4e83e0387a8ff5bae49d6b264a59d0e0ebd955f639006cba3054",
+      "bytes": 145
+    },
+    "runs/native-core-20261107-202547/results/missing-case-observations.json": {
+      "sha256": "85a735e39b73e3b5ef1a53ffd3b16eddaad30f9fdc458fa264d9beaf785d3647",
+      "bytes": 5442
+    },
+    "runs/native-core-20261107-202547/results/missing-evidence-gate.json": {
+      "sha256": "8c022f8c1b3975d180c4f7c0a2eedb1aac1d25d6f5a2ec6f1eda147164fddbc5",
+      "bytes": 150
+    },
+    "runs/native-core-20261107-202547/results/missing-evidence-observations.json": {
+      "sha256": "f7bd8987efe44c56d9458bed5377ec2c2bda389191065e51f82b180d809bd2d0",
+      "bytes": 5502
+    },
+    "runs/native-core-20261107-202547/results/no-mandate-gate.json": {
+      "sha256": "47c66d2297b9bcb6a70962acade5fa91f2da0b916454db11e90f086136f9c910",
+      "bytes": 104
+    },
+    "runs/native-core-20261107-202547/results/no-mandate-observations.json": {
+      "sha256": "f20b3736e60c5a67d8e107dc0d5a4ef74a33d423e7688ae19d6441479e614c6d",
+      "bytes": 5539
+    },
+    "runs/native-core-20261107-202547/results/none-gate.json": {
+      "sha256": "c2112048c2528f418bf4284362bd0a7f7b7c556bc86c1fa973bd0b5b103a351b",
+      "bytes": 119
+    },
+    "runs/native-core-20261107-202547/results/none-observations.json": {
+      "sha256": "f20b3736e60c5a67d8e107dc0d5a4ef74a33d423e7688ae19d6441479e614c6d",
+      "bytes": 5539
+    },
+    "runs/native-core-20261107-202547/results/round-even-gate.json": {
+      "sha256": "73fa99418586a74a508893f745215b25d0ac5dc5902f0ae91a1924c03d7353bc",
+      "bytes": 152
+    },
+    "runs/native-core-20261107-202547/results/round-even-observations.json": {
+      "sha256": "eb4b0051cb7dcb43607a2395f4f4cd913cf49f7df4550291c664a1f32c1f5307",
+      "bytes": 5539
+    },
+    "runs/native-core-20261107-202547/results/summary.json": {
+      "sha256": "f07435b84f85fda8406150366bb829e7786424bdeb0a38fb76092c66eb3be114",
+      "bytes": 25587
+    },
+    "runs/native-core-20261107-202547/results/wrong-threshold-gate.json": {
+      "sha256": "adb718e57ac10ea378ce7a5b9b083da372674409cf65ebb2c810b16921abd129",
+      "bytes": 193
+    },
+    "runs/native-core-20261107-202547/results/wrong-threshold-observations.json": {
+      "sha256": "e3826fddef7f3df74192cb93a7a000c0e19146eb89418bc7f8deb7251941df20",
+      "bytes": 5541
+    },
+    "runs/native-core-20261107-205413/report.json": {
+      "sha256": "36b1c66bbd7203f31609b25d3db59c3dde8550201659248993e33578b3bd4464",
+      "bytes": 9760
+    },
+    "runs/native-core-20261107-205413/results/approve-inactive-gate.json": {
+      "sha256": "1689cc4b4959f245686eaaea42f2b3448aea11352dcf3b9963a1042bd1a47690",
+      "bytes": 1013
+    },
+    "runs/native-core-20261107-205413/results/approve-inactive-observations.json": {
+      "sha256": "111a7e61e66979acfbfd07bb3959b4a8df402c433cb656b74e792c33041a723c",
+      "bytes": 5540
+    },
+    "runs/native-core-20261107-205413/results/bank/summary.json": {
+      "sha256": "f1feab493c51f311f339cb70f2f9932ede06bf88715e9abc713174eea55ed3b6",
+      "bytes": 3780
+    },
+    "runs/native-core-20261107-205413/results/duplicate-case-gate.json": {
+      "sha256": "14c1e161c9dbb15da53e29713a5915c589d3fd4b88f0fa3b51a2a8099d8511b0",
+      "bytes": 168
+    },
+    "runs/native-core-20261107-205413/results/duplicate-case-observations.json": {
+      "sha256": "96d3aaa103c1d35112f4bed2e4f6f038cf11813893b6ed6d94b564a1682e0476",
+      "bytes": 5636
+    },
+    "runs/native-core-20261107-205413/results/equal-but-wrong-gate.json": {
+      "sha256": "ae5d8715c8695d36da78b853fec44c944ac4e3e1be85eb01fff32818c1ecfb70",
+      "bytes": 190
+    },
+    "runs/native-core-20261107-205413/results/equal-but-wrong-observations.json": {
+      "sha256": "852f5b0dfaf2201576c62d31983a190f45e587eb6d02914d791c31683be4f0e8",
+      "bytes": 5539
+    },
+    "runs/native-core-20261107-205413/results/invalid-anchor-gate.json": {
+      "sha256": "ca52bd07af6a2594a3d78f1c87f56083f884c714c88eb29bb9e16b8a6772daf4",
+      "bytes": 151
+    },
+    "runs/native-core-20261107-205413/results/invalid-anchor-observations.json": {
+      "sha256": "f20b3736e60c5a67d8e107dc0d5a4ef74a33d423e7688ae19d6441479e614c6d",
+      "bytes": 5539
+    },
+    "runs/native-core-20261107-205413/results/missing-case-gate.json": {
+      "sha256": "4d025421974d4e83e0387a8ff5bae49d6b264a59d0e0ebd955f639006cba3054",
+      "bytes": 145
+    },
+    "runs/native-core-20261107-205413/results/missing-case-observations.json": {
+      "sha256": "85a735e39b73e3b5ef1a53ffd3b16eddaad30f9fdc458fa264d9beaf785d3647",
+      "bytes": 5442
+    },
+    "runs/native-core-20261107-205413/results/missing-evidence-gate.json": {
+      "sha256": "8c022f8c1b3975d180c4f7c0a2eedb1aac1d25d6f5a2ec6f1eda147164fddbc5",
+      "bytes": 150
+    },
+    "runs/native-core-20261107-205413/results/missing-evidence-observations.json": {
+      "sha256": "f7bd8987efe44c56d9458bed5377ec2c2bda389191065e51f82b180d809bd2d0",
+      "bytes": 5502
+    },
+    "runs/native-core-20261107-205413/results/no-mandate-gate.json": {
+      "sha256": "47c66d2297b9bcb6a70962acade5fa91f2da0b916454db11e90f086136f9c910",
+      "bytes": 104
+    },
+    "runs/native-core-20261107-205413/results/no-mandate-observations.json": {
+      "sha256": "f20b3736e60c5a67d8e107dc0d5a4ef74a33d423e7688ae19d6441479e614c6d",
+      "bytes": 5539
+    },
+    "runs/native-core-20261107-205413/results/none-gate.json": {
+      "sha256": "c2112048c2528f418bf4284362bd0a7f7b7c556bc86c1fa973bd0b5b103a351b",
+      "bytes": 119
+    },
+    "runs/native-core-20261107-205413/results/none-observations.json": {
+      "sha256": "f20b3736e60c5a67d8e107dc0d5a4ef74a33d423e7688ae19d6441479e614c6d",
+      "bytes": 5539
+    },
+    "runs/native-core-20261107-205413/results/round-even-gate.json": {
+      "sha256": "73fa99418586a74a508893f745215b25d0ac5dc5902f0ae91a1924c03d7353bc",
+      "bytes": 152
+    },
+    "runs/native-core-20261107-205413/results/round-even-observations.json": {
+      "sha256": "eb4b0051cb7dcb43607a2395f4f4cd913cf49f7df4550291c664a1f32c1f5307",
+      "bytes": 5539
+    },
+    "runs/native-core-20261107-205413/results/summary.json": {
+      "sha256": "61488d24346313aa441816b751aec190773dfd7db06f4a628a83a66618782c02",
+      "bytes": 25587
+    },
+    "runs/native-core-20261107-205413/results/wrong-threshold-gate.json": {
+      "sha256": "adb718e57ac10ea378ce7a5b9b083da372674409cf65ebb2c810b16921abd129",
+      "bytes": 193
+    },
+    "runs/native-core-20261107-205413/results/wrong-threshold-observations.json": {
+      "sha256": "e3826fddef7f3df74192cb93a7a000c0e19146eb89418bc7f8deb7251941df20",
+      "bytes": 5541
+    },
+    "runs/native-e1-20261107-203017/report.json": {
+      "sha256": "a977c718f9759a15978805f9060e0eab6450782c6e58fa38d12da2d0056b44b7",
+      "bytes": 2501
+    },
+    "runs/native-e1-20261107-203017/results/e1/multiprocess-parity-summary.json": {
+      "sha256": "db7eeb45aaf3d9b88964f1d1fe8557f94dec16714ff2e85bbfe568ec16058c03",
+      "bytes": 6730
+    },
+    "runs/native-e1-20261107-203017/results/e1/oracle-vectors-summary.json": {
+      "sha256": "b525956bb6f58ba3144f6559dde641ae3e10f9a499b81fb53c23595e7334023b",
+      "bytes": 1933
+    },
+    "runs/native-e1-20261107-203017/results/e1/reference-parity-summary.json": {
+      "sha256": "e758da1563ecc607d2f8b49cb19b6f0060d956e606fb564929a6c6c8a54e1787",
+      "bytes": 5481
+    },
+    "runs/native-e1-20261107-203017/results/e1/summary-dotnet.json": {
+      "sha256": "13f670127057759d4f47be81e418a5932e9fb7ac5ebcfc3e2a0c15cda19c635c",
+      "bytes": 1527
+    },
+    "runs/native-e1-20261107-203017/results/e1/summary.json": {
+      "sha256": "6cb6772f2606fdafdd89fedc9280c38aec117183364802854f63133d3223cd15",
+      "bytes": 3325
+    },
+    "runs/native-e1-20261107-203631/report.json": {
+      "sha256": "afa26b6b6f5b6c405a60b1e01e3678ca5b9846c500b7c0a1a77ca333811fffc9",
+      "bytes": 2767
+    },
+    "runs/native-e1-20261107-203631/results/e1/multiprocess-parity-summary.json": {
+      "sha256": "acf8ab605bc0605315d3698d7d06d9f5cf6f42605a946ed812e42ca48fe217f4",
+      "bytes": 6731
+    },
+    "runs/native-e1-20261107-203631/results/e1/oracle-vectors-summary.json": {
+      "sha256": "c5b4bf18dd555651bfbd3b8467c521f3f579dfd7158e356286d7a74988ee45a0",
+      "bytes": 1946
+    },
+    "runs/native-e1-20261107-203631/results/e1/reference-parity-summary.json": {
+      "sha256": "3c571e9ccd2d0c5fb9107b7aab87763f1eacb2ac07a5b935bfa4ec25fe069054",
+      "bytes": 5481
+    },
+    "runs/native-e1-20261107-203631/results/e1/summary-dotnet.json": {
+      "sha256": "95c7d6774b03d82b00affa40419168aba7984954814d0d89aff94c5625e70849",
+      "bytes": 1527
+    },
+    "runs/native-e1-20261107-203631/results/e1/summary.json": {
+      "sha256": "b1a1cab83b20aaad19fcf36103b88210a039ff0e826abe8ea52de583ae8b4317",
+      "bytes": 3327
+    },
+    "runs/native-e2-20261107-204147/report.json": {
+      "sha256": "49fe2e0f98eb7c96937a43512595f0a5e15c06824a6698714320a5efb0bcb24c",
+      "bytes": 1788
+    },
+    "runs/native-e2-20261107-204337/report.json": {
+      "sha256": "458dc528cb5adae6069a4da0581d49d05d9f0068850bc411c77c570e98d5c6cc",
+      "bytes": 2200
+    },
+    "runs/native-e2-20261107-204623/report.json": {
+      "sha256": "aa1a27cf99c6b949bbef8c54170637b7b07a2cab576e8b43cf29efc4dd35912f",
+      "bytes": 2200
+    },
+    "runs/native-e2-20261107-204850/report.json": {
+      "sha256": "ad3b93cbf50945eb7dcaa3acb662c5b500b165673d2800ed21c699eecb359204",
+      "bytes": 2403
+    },
+    "runs/native-e2-20261107-204850/results/e2/e2-smoke.json": {
+      "sha256": "027ef1ca4310177750bdee5cfc3c174b140fbb6c158a72115f879d0648eccf37",
+      "bytes": 7308
+    },
+    "runs/native-m2-20261107-205104/report.json": {
+      "sha256": "4f65af048d82a4db399528fedaf860819b0f7f06ecdb72b4e63788f8e8e2ae8f",
+      "bytes": 6374
+    },
+    "runs/native-m2-20261107-205104/results/m2/hot-1-grpc.json": {
+      "sha256": "1cd429857e8f3dc9dd1e4d2c05598ade241f1cd54076db955fa52784024a2bab",
+      "bytes": 1037
+    },
+    "runs/native-m2-20261107-205104/results/m2/hot-1-rest.json": {
+      "sha256": "e9920e71eb54aa1a97f15420b71b1d8ff662685c73de40b419eb36940225c723",
+      "bytes": 1037
+    },
+    "runs/native-m2-20261107-205104/results/m2/hot-16-grpc.json": {
+      "sha256": "d5bb59dacd54e4e1c4ed259e2fbf73aa4e337c79bc599fcdb4269e88d1e9974d",
+      "bytes": 1187
+    },
+    "runs/native-m2-20261107-205104/results/m2/hot-16-rest.json": {
+      "sha256": "a0e92495bff0735527f3b29660d89f0625926ef95b91cf7f418ec88f4fd432fd",
+      "bytes": 1188
+    },
+    "runs/native-m2-20261107-205104/results/m2/hot-2-grpc.json": {
+      "sha256": "c6ac6a1d95fc1326ca359a7fad82a9dbd7ae4542510a4503db11dfcd830bc0bf",
+      "bytes": 1049
+    },
+    "runs/native-m2-20261107-205104/results/m2/hot-2-rest.json": {
+      "sha256": "0fbd28d7bfaed3e8b91a48d4bcfe76beb787badf0d9faa6ce7965b51ca1605ae",
+      "bytes": 1047
+    },
+    "runs/native-m2-20261107-205104/results/m2/hot-4-grpc.json": {
+      "sha256": "69eda47ca4047e8c9324d17f72748faabb6f141a6b16647a39de37a06286e117",
+      "bytes": 1066
+    },
+    "runs/native-m2-20261107-205104/results/m2/hot-4-rest.json": {
+      "sha256": "ce76b9698ed2980b57131a82265a9aa303d242450cd6d593f32689d337deaf02",
+      "bytes": 1066
+    },
+    "runs/native-m2-20261107-205104/results/m2/hot-8-grpc.json": {
+      "sha256": "aed40861f3016ab922ede9a1f25fd766201942b3078c40ca6a7d4c1c740bc586",
+      "bytes": 1106
+    },
+    "runs/native-m2-20261107-205104/results/m2/hot-8-rest.json": {
+      "sha256": "fadf4096a0ffbcf4153aeb8e0d2c4e635e6ff6e1c5b87552de8a13e9b2e8b716",
+      "bytes": 1105
+    },
+    "runs/native-m2-20261107-205104/results/m2/summary.json": {
+      "sha256": "77a00849c904ad9ff583d84e6d146958830bc1b8d2fc5645ab53e55d7ccd3b67",
+      "bytes": 25069
+    },
+    "runs/native-m2-20261107-205104/results/m2/uniform-1-grpc.json": {
+      "sha256": "35275d6aafeba7989f270632de4ac6b3a2b61e5e6aaf48f55b5ba6ae3eb032e9",
+      "bytes": 1042
+    },
+    "runs/native-m2-20261107-205104/results/m2/uniform-1-rest.json": {
+      "sha256": "111a5cd4124805c5f4c2b2dd0870060dd0751a8adaefc30bd943781ffde93508",
+      "bytes": 1040
+    },
+    "runs/native-m2-20261107-205104/results/m2/uniform-16-grpc.json": {
+      "sha256": "aac2c696a0e46e5dd2ffac6e23ce1275fb1d118c705d2acb8077fec4d7a00b9c",
+      "bytes": 1192
+    },
+    "runs/native-m2-20261107-205104/results/m2/uniform-16-rest.json": {
+      "sha256": "077fa2b7101cfed5b4ff1fd001ecd9033d5cc177467d00b6815148f68f7b9ad8",
+      "bytes": 1190
+    },
+    "runs/native-m2-20261107-205104/results/m2/uniform-2-grpc.json": {
+      "sha256": "e744b12d5e44419cd14eed36dcc9027f1dfb53eb9149c05dbf958ca43a724d44",
+      "bytes": 1053
+    },
+    "runs/native-m2-20261107-205104/results/m2/uniform-2-rest.json": {
+      "sha256": "fe26f8c3a9606e9a98808659ab7707d07c15066925bd5119c606ffc04d02f9a2",
+      "bytes": 1053
+    },
+    "runs/native-m2-20261107-205104/results/m2/uniform-4-grpc.json": {
+      "sha256": "7c48d630d552eb4a8aa2fa3b7c50e70438e57d48326f5157322c4a4100867600",
+      "bytes": 1071
+    },
+    "runs/native-m2-20261107-205104/results/m2/uniform-4-rest.json": {
+      "sha256": "cc7a0893e2b082a7eec2e653b6976b456ba3949b8b64d9f2e878c4a6d78093cd",
+      "bytes": 1071
+    },
+    "runs/native-m2-20261107-205104/results/m2/uniform-8-grpc.json": {
+      "sha256": "d23552491e36e3c5f0ac6dd078b0cfefccaee7fc796182f3081ef5fab301c6de",
+      "bytes": 1111
+    },
+    "runs/native-m2-20261107-205104/results/m2/uniform-8-rest.json": {
+      "sha256": "d752201eda9f9d3cce78c9c13602eafd424b3f23982721b2d31294f952e3c583",
+      "bytes": 1110
+    }
+  }
+}

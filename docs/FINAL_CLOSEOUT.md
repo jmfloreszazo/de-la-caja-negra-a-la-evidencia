@@ -4,6 +4,8 @@
 
 > **Publication closure is not scientific PASS or production approval.** This repository is closing a bounded, reproducible research/book edition at the author's direction. Unexecuted or incomplete acceptance campaigns are explicitly *excluded*, never silently marked successful.
 
+> **Later status (8 November 2026).** This closeout is a dated record and is not rewritten. After it, bounded demonstrations were executed on one Azure VM and recorded with provenance: an exploratory E3 open-loop ledger trial, an isolated E4 replay of one real model response, repeated E1/E2, M1, and a TODM adapter replay over the whole bundle. Their statuses in [`evidence/claims.json`](../evidence/claims.json) are `demonstrated_not_accepted`; the E3/E4 rows below remain accurate as to *acceptance*. See the [evidence matrix](EVIDENCE.md) for the current rows.
+
 ## What is delivered
 
 - A full bilingual manuscript (Spanish and English) with chapters, annexes, diagrams, architectural alternatives and paired Markdown/PDF editions.

@@ -1,4 +1,6 @@
-flowchart LR
+flowchart TB
+  subgraph row1[" "]
+    direction LR
   subgraph F["Functional equivalence"]
     direction TB
     F1["Same decision and result<br/>under the same rules"] --> F2(["Evidence: approved cases"])
@@ -7,6 +9,10 @@ flowchart LR
     direction TB
     D1["Same meanings, amounts,<br/>encodings and effects"] --> D2(["Evidence: codecs and reconciliation"])
   end
+    F ~~~ D
+  end
+  subgraph row2[" "]
+    direction LR
   subgraph O["Operational equivalence"]
     direction TB
     O1["Recovery, security, windows,<br/>observability and failures"] --> O2(["Evidence: injected failures, RTO and RPO"])
@@ -15,3 +21,6 @@ flowchart LR
     direction TB
     C1["Latency, throughput,<br/>cost and resilience"] --> C2(["Evidence: trial at a controlled rate"])
   end
+    O ~~~ C
+  end
+  row1 ~~~ row2

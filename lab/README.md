@@ -59,6 +59,69 @@ python3 walkthrough.py --auto --bank   # everything
 
 Use the `DOTNET` and `COBC` environment variables to point to other executables. The bank module loads `libsqlite3.so.0` through P/Invoke, so it needs Linux (natively, in WSL2 or in the container).
 
+On WSL2, keep the native lab checkout and its SQLite databases in the distribution's Linux filesystem, for example under `~/src`, not a Windows-mounted directory such as `/mnt/c`. Record the filesystem with the host and tool versions. If a run fails with `database is locked`, preserve that attempt before retrying from a fresh Linux-filesystem checkout; do not alter the oracle, increase acceptance thresholds or label an incomplete bank run as PASS. The [host reproduction protocol](docs/HOST_REPRODUCTION.md) has the corresponding container and provenance requirements.
+
+## Reproduce the local multi-experiment campaign
+
+From the repository root on Linux/WSL, install the native prerequisites above,
+Python's `venv` support, Git and a working container engine. SQL Server is
+excluded by default. Pull the pinned E4 SDK image documented in the
+[qualification README](e4_agents/README.md), then run:
+
+```bash
+python3 lab/tools/reproduce_campaign.py \
+  --engine docker --output lab/results/campaign-001
+python3 lab/tools/reproduce_campaign.py --verify lab/results/campaign-001
+```
+
+The default campaign executes core, PostgreSQL E1, extended E2, M2 and the
+E4 **prerequisite**, in that order. Core is independently audited using the
+existing read-only accounting oracle. E4 reuses that campaign's actual COBOL
+observations; it does not call a model. Each stage gets a fresh Linux temporary
+checkout, preventing SQLite workloads from accidentally using `/mnt/c`.
+Keep `TMPDIR` on a Linux filesystem.
+
+Lab/launcher changes and untracked lab sources block a normal run. To test
+local unpublished changes, explicitly add `--include-working-tree`. The
+collector saves the exact source snapshot, file hashes and base commit
+separately; it does not commit, push or trigger GitHub Actions. Review what
+that option captures before sharing an archive. Unrelated book edits are not
+part of the experimental snapshot.
+
+Outputs must be new paths outside the repository or under ignored
+`lab/results`. A failed stage stops the campaign; its logs and results remain
+and later stages say `NOT_RUN`. Use a new path for a retry. The artifact verifier
+checks integrity, not scientific acceptance: a hash-valid failed run stays
+failed. Generated virtual environments and temporary checkouts are removed;
+raw observations, databases, runtime logs and the collector source remain.
+
+Select a subset with `--experiments core e1`. SQL Server additionally requires
+`--experiments e1-sqlserver --accept-sqlserver-license` after reviewing the
+[Developer license conditions](e1_sqlserver/README.md). The exploratory E3 slice
+is opt-in with `--experiments e3` (see [`e3_capacity`](e3_capacity/README.md)).
+Podman can be selected, but the E4 prerequisite is runtime-qualified only with
+Docker so far. The E4 **replay** of a recorded model response is not a local
+collector stage: it needs explicit input folders and runs through
+`scripts/azure/run-experiment.sh e4-replay` (see [`e4_agents`](e4_agents/README.md)).
+
+### Newer bounded labs
+
+| Folder | What it executes | What it is not |
+|---|---|---|
+| [`e3_capacity`](e3_capacity/README.md) | Open-loop offers at preregistered synthetic rates against the real PostgreSQL ledger, one service process killed and restarted, independent SQL reconciliation and accounting oracle | A capacity ceiling, HA, an approved bank workload or the E3 comparison |
+| [`e4_agents`](e4_agents/README.md) | Isolated candidate evaluation (no network, non-root, read-only inputs), mutation qualification, and a supervisor that can request **one** real model response and replay it later | A comparative agent study, a measure of human review time or cost |
+| [`todm_validation`](todm_validation/README.md) | Digest-bound evidence adapter: G0–G7 records per experiment, actual-input negative controls, synthetic mandate cases; technical verdict kept apart from G2/G6 authority | Certified TODM, an OMG-standards engine, business or release approval |
+| [`decision_models`](decision_models/README.md) | Bounded JSON decision-table and sequential process-trace profiles with exact arithmetic, baseline/ADR hash binding, examples and tests | DMN/FEEL or BPMN XML engines, standards conformance, approved baselines |
+
+Tracked re-derivation of the Azure records lives in [`scripts/evidence/`](../scripts/evidence/README.md).
+
+These are local synthetic controls, **not completed E1-E4 acceptance**, Azure
+execution, physical-node HA or a live-agent evaluation. The source archive
+contains lab/runtime inputs, not a complete book checkout or Git metadata.
+For replay, start from the recorded base commit in a new clone and overlay
+that archive, then use `--include-working-tree`. Inspect the original
+`campaign.json` and source hashes before comparing attempts.
+
 ## Checks you can run with Python only
 
 ```bash

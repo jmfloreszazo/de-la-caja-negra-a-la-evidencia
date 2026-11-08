@@ -1,0 +1,118 @@
+{
+  "schemaVersion": 1,
+  "createdUtc": "2026-11-07T21:30:24.297624+00:00",
+  "classification": "E4_PREREQUISITE_QUALIFICATION_NOT_LIVE_AGENT_EVIDENCE",
+  "status": "QUALIFICATION_PASS_NOT_AGENT_ACCEPTANCE",
+  "runId": "e4-qualification-20261107-2",
+  "sourceCommit": "cc7ed4bea231a36103ea7f4987b5728091e27ee2",
+  "qualifierSha256": "f8f8690cfd7807e8361d460c2a030097c4a996e86211f8515792a0a313b7f197",
+  "environment": "Ubuntu 24.04 WSL2 / Docker Desktop; one physical host",
+  "ciRunId": null,
+  "azureDeployment": "NOT_EXECUTED",
+  "githubActions": "NOT_EXECUTED",
+  "liveAgentRuns": 0,
+  "model": null,
+  "modelTokens": null,
+  "humanReviewSeconds": null,
+  "costPerAcceptedChange": null,
+  "legacyEvidence": {
+    "runId": "native-core-20261107-205413",
+    "sourceArchive": "dist/local-experiments-2026-11-07.zip",
+    "sha256": {
+      "summary.json": "61488d24346313aa441816b751aec190773dfd7db06f4a628a83a66618782c02",
+      "none-observations.json": "f20b3736e60c5a67d8e107dc0d5a4ef74a33d423e7688ae19d6441479e614c6d"
+    },
+    "reexecutedDuringQualification": false
+  },
+  "observations": {
+    "casesPerCandidate": 58,
+    "knownMutantsKilled": 3,
+    "writeScope": {
+      "protectedWritesAttempted": 3,
+      "protectedWritesDenied": 3,
+      "candidateWriteSucceeded": true
+    },
+    "protectedUnchanged": true,
+    "candidateGateReports": {
+      "none": {
+        "verdict": "PASS",
+        "authority": "DEMO_ONLY",
+        "release": "SIMULATED_ALLOW",
+        "findings": []
+      },
+      "round-even": {
+        "verdict": "FAIL",
+        "authority": "DEMO_ONLY",
+        "release": "BLOCK",
+        "findings": [
+          "C003: candidate violates contract"
+        ]
+      },
+      "wrong-threshold": {
+        "verdict": "FAIL",
+        "authority": "DEMO_ONLY",
+        "release": "BLOCK",
+        "findings": [
+          "C009: candidate violates contract",
+          "C010: candidate violates contract"
+        ]
+      },
+      "approve-inactive": {
+        "verdict": "FAIL",
+        "authority": "DEMO_ONLY",
+        "release": "BLOCK",
+        "findings": [
+          "C012: candidate violates contract",
+          "C013: candidate violates contract",
+          "C016: candidate violates contract",
+          "C024: candidate violates contract",
+          "C025: candidate violates contract",
+          "C026: candidate violates contract",
+          "C027: candidate violates contract",
+          "C028: candidate violates contract",
+          "C029: candidate violates contract",
+          "C031: candidate violates contract",
+          "C032: candidate violates contract",
+          "C034: candidate violates contract",
+          "C035: candidate violates contract",
+          "C037: candidate violates contract",
+          "C043: candidate violates contract",
+          "C045: candidate violates contract",
+          "C046: candidate violates contract",
+          "C047: candidate violates contract",
+          "C048: candidate violates contract",
+          "C049: candidate violates contract",
+          "C050: candidate violates contract",
+          "C054: candidate violates contract"
+        ]
+      }
+    }
+  },
+  "protectedSha256": {
+    "contracts/cases.json": "976d7127d30206e77bbef03fd84bb41d719311be9ea8b63eafd6f83e9c0449a1",
+    "contracts/cases.sha256": "53fed8d38ef15bb4b2b7977cca8a4573608b347cb063999de0768cf75239826d",
+    "Gate/Program.cs": "0f9fb37c8a7ae181fd93de1ca0f07a709009c15d43354858e8d073d9b9688093",
+    "Gate/Gate.csproj": "38e201f047792df530db8c7d157c2b6b19d1ed2e4134dba5da5c59e97d3b0da2",
+    "Candidate/Program.cs": "078d2d498397afa89e13c42ade72df90f4409717c2797eff3656722271cf3e4b",
+    "Candidate/Candidate.csproj": "38e201f047792df530db8c7d157c2b6b19d1ed2e4134dba5da5c59e97d3b0da2"
+  },
+  "rawReport": "run/qualification.json",
+  "rawReportSha256": "e5f2e42ee74ed08e1c05ff3a1d5ec8e2e884c4daa188f81d012a977ef949ca56",
+  "localArchive": "dist/local-e4-qualification-2026-11-07.zip",
+  "preliminaryRun": {
+    "runId": "e4-qualification-20261107-1",
+    "status": "QUALIFICATION_PASS_NOT_AGENT_ACCEPTANCE",
+    "qualifierSourceArchived": false,
+    "limitation": "The preliminary run did not capture qualifier bytes; the final repeat does."
+  },
+  "limitations": [
+    "No model or agent is invoked; no E4 task-level defect or false-block rate is estimated.",
+    "Known reference candidate and three deterministic mutants, not universal mutation coverage.",
+    "Containers share a host kernel; this is not protection against kernel exploits.",
+    "The existing gate grants DEMO_ONLY / SIMULATED_ALLOW, never production authority.",
+    "Legacy observations are reused from the explicitly supplied real COBOL run, not fabricated.",
+    "Docker executed; the optional Podman selector was not runtime-qualified.",
+    "Only known reference sources and mutants were executed, not arbitrary model-generated code.",
+    "Actual Foundry credential-chain discovery failed; interactive reauthentication is required."
+  ]
+}

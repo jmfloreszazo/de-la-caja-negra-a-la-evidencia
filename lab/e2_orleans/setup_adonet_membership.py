@@ -1,13 +1,14 @@
 #!/usr/bin/env python3
 """Install EXACT vendor PostgreSQL 10.4.0 Orleans ADO.NET clustering scripts.
 
-Only in disposable Podman e2lab: verify upstream Git blob hashes before
+Only in disposable container e2lab: verify upstream Git blob hashes before
 executing and record immutable provenance. No self-invented membership SQL.
 """
 import hashlib
 import json
 import os
 from pathlib import Path
+import re
 import subprocess
 from urllib.request import Request, urlopen
 
@@ -23,18 +24,38 @@ RESULT = HERE.parent / "results" / "e2"
 RESULT.mkdir(parents=True, exist_ok=True)
 
 
+def verified_target(engine, target):
+    if engine not in ("podman", "docker"):
+        raise ValueError("Membership installation requires Podman or Docker")
+    if target == "e2f10-pg":
+        if os.environ.get("E2_NETWORK_TEST") != "1":
+            raise ValueError("E2-F10 requires explicit network-fixture opt-in")
+        return target
+    if target == "e2-postgres":
+        return target
+    if not re.fullmatch(r"book-lab-\d+-\d+", target):
+        raise ValueError("Membership schema requires an allowlisted disposable container")
+    inspection = json.loads(subprocess.check_output([engine, "inspect", target], timeout=15))
+    if len(inspection) != 1:
+        raise ValueError("Expected exactly one owned experiment container")
+    container = inspection[0]
+    if (container["Config"].get("Labels", {}).get("org.jmfloreszazo.experiment") != "e2-cluster"
+            or "POSTGRES_DB=e2lab" not in container["Config"].get("Env", [])
+            or not container["State"]["Running"]):
+        raise ValueError("Container is not a running, labelled disposable e2-cluster database")
+    bindings = container["NetworkSettings"]["Ports"].get("5432/tcp", [])
+    if not bindings or any(binding["HostIp"] != "127.0.0.1" for binding in bindings):
+        raise ValueError("Disposable database must publish PostgreSQL only on loopback")
+    identifier = container["Id"]
+    if not re.fullmatch(r"[0-9a-f]{64}", identifier):
+        raise ValueError("Container inspection did not return a full immutable ID")
+    return identifier
+
+
 def main():
     assert os.environ.get("E1_PG_DSN"), "Disposable E1_PG_DSN is required"
-    # The container and database are named constants to prevent accidental
-    # provisioning of membership into external or production databases.
-    target = os.environ.get("E2_POSTGRES_CONTAINER", "e2-postgres")
-    assert target in ("e2-postgres", "e2f10-pg"), (
-        "Membership schema may be installed only in an allowlisted disposable container"
-    )
-    if target == "e2f10-pg":
-        assert os.environ.get("E2_NETWORK_TEST") == "1", (
-            "E2-F10 requires explicit network-fixture opt-in"
-        )
+    engine = os.environ.get("CONTAINER_ENGINE", "podman")
+    target = verified_target(engine, os.environ.get("E2_POSTGRES_CONTAINER", "e2-postgres"))
     manifest = []
     for path, expected in SCRIPTS:
         url = "https://raw.githubusercontent.com/dotnet/orleans/" + COMMIT + "/" + path
@@ -46,7 +67,7 @@ def main():
         ).hexdigest()
         assert git_sha == expected, ("Official source changed", path, git_sha)
         result = subprocess.run(
-            ["podman", "exec", "-i", target,
+            [engine, "exec", "-i", target,
              "psql", "-X", "-v", "ON_ERROR_STOP=1", "-U", "postgres",
              "-d", "e2lab", "-q"],
             input=data, stdout=subprocess.PIPE, stderr=subprocess.PIPE,
@@ -64,11 +85,13 @@ def main():
             "sha256": hashlib.sha256(data).hexdigest(),
             "bytes": len(data),
             "database": "e2lab",
-            "target": "disposable Podman PostgreSQL",
+            "target": f"disposable {engine} PostgreSQL",
+            "container": target,
         })
 
     import psycopg
     with psycopg.connect(os.environ["E1_PG_DSN"], autocommit=True) as db:
+        database_version = db.execute("SHOW server_version").fetchone()[0]
         installed = db.execute(
             "SELECT QueryKey FROM OrleansQuery ORDER BY QueryKey"
         ).fetchall()
@@ -88,7 +111,7 @@ def main():
         "schemaVersion": 1,
         "status": "INSTALLED_NOT_YET_RECOVERY_PROVEN",
         "orleansVersion": "10.4.0",
-        "databaseVersion": "PostgreSQL 16.13",
+        "databaseVersion": database_version,
         "membershipQueryCount": len(installed),
         "scripts": manifest,
         "limit": "Schema installation does not prove healthy silos, failover or physical-node recovery."

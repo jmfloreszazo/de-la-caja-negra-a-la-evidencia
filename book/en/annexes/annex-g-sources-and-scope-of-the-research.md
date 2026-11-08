@@ -1,6 +1,6 @@
 **English** · [Español](../../es/anexos/anexo-g-fuentes-y-alcance-de-la-investigacion.md)
 
-[← Annex F · Operational glossary](annex-f-operational-glossary.md) · [Contents](../README.md)
+[← Annex F · Operational glossary](annex-f-operational-glossary.md) · [Contents](../README.md) · [Annex H · Beyond COBOL →](annex-h-beyond-cobol.md)
 
 # Annex G · Sources and scope of the research
 
@@ -136,4 +136,4 @@ The author's articles are cited by their original Spanish titles, with an Englis
 
 ---
 
-[← Annex F · Operational glossary](annex-f-operational-glossary.md) · [Contents](../README.md)
+[← Annex F · Operational glossary](annex-f-operational-glossary.md) · [Contents](../README.md) · [Annex H · Beyond COBOL →](annex-h-beyond-cobol.md)

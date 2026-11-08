@@ -4,7 +4,7 @@
 
 **Modernizing COBOL beyond translation: AI agents, architecture patterns, transactions and verifiable oracles**
 
-José María Flores Zazo · v2026.10.29 · **English** · [Español](es.md)
+José María Flores Zazo · [jmfloreszazo.com](https://jmfloreszazo.com) · v2026.10.29 · **English** · [Español](es.md)
 
 > [!NOTE]
 > This file is the whole book on a single page. It is generated from the chapters in [`book/en/`](en/README.md) with `python3 scripts/build.py`: to propose changes, edit the chapters, not this file.
@@ -28,6 +28,7 @@ José María Flores Zazo · v2026.10.29 · **English** · [Español](es.md)
   - [Chapter 9 · From the agent's authority to the rule's authority](#chapter-9--from-the-agents-authority-to-the-rules-authority)
 - [Part III · Oracles: the right to accept](#part-iii--oracles-the-right-to-accept)
   - [Chapter 10 · TODM and the problem of accepting what we build](#chapter-10--todm-and-the-problem-of-accepting-what-we-build)
+  - [Chapter 10 bis · Putting TODM to work: models, tools and ADRs](#chapter-10-bis--putting-todm-to-work-models-tools-and-adrs)
   - [Chapter 11 · The architecture of a verifiable modernization](#chapter-11--the-architecture-of-a-verifiable-modernization)
   - [Chapter 12 · COBOL and C# must agree on meaning](#chapter-12--cobol-and-c-must-agree-on-meaning)
 - [Part IV · Patterns that replace responsibilities, not syntax](#part-iv--patterns-that-replace-responsibilities-not-syntax)
@@ -70,6 +71,7 @@ José María Flores Zazo · v2026.10.29 · **English** · [Español](es.md)
   - [Annex E · Catalog of one hundred risks](#annex-e--catalog-of-one-hundred-risks)
   - [Annex F · Operational glossary](#annex-f--operational-glossary)
   - [Annex G · Sources and scope of the research](#annex-g--sources-and-scope-of-the-research)
+  - [Annex H · Beyond COBOL](#annex-h--beyond-cobol)
 
 ## Conventions
 
@@ -123,7 +125,24 @@ A technology leader will find criteria to scope a modernization, ask for useful 
 
 You can read it in order or by parts. If you are in a hurry about performance, Part V stands on its own. If you want to see the code first, start with Part VI and Annex [A](#annex-a--a-lab-that-can-prove-us-wrong) and come back to the reasons later. If you have a budget to defend, chapters [33](#chapter-33--modernization-plan-first-a-capability-test-then-a-bet), [35](#chapter-35--when-i-would-not-migrate) and [37](#chapter-37--the-new-modernization-contract) were written for that.
 
-Numbered references in square brackets point to Annex [G](#annex-g--sources-and-scope-of-the-research). The complete code, the commands and the reference results are in the accompanying lab. This edition was reviewed on 29 October 2026.
+Numbered references in square brackets point to Annex [G](#annex-g--sources-and-scope-of-the-research). The complete code, the commands and the reference results are in the accompanying lab. The first-edition identifier is 29 October 2026; the [archival research release](../docs/releases/v2026.11.05.md) preserves the later closeout of 5 November without turning partial experiments into accepted results.
+
+### Authorship and responsibility
+
+This book is written by **José María Flores Zazo**, author of [jmfloreszazo.com](https://jmfloreszazo.com). The first-person arguments and editorial decisions belong to the author. Tools used to prepare, translate or check the material do not acquire authorship or authority to approve its conclusions.
+
+### Reading is not the same as reproducing
+
+I distinguish four things a reader can verify. None substitutes for the next:
+
+| Scope | Reproduction entry point | What success establishes |
+|---|---|---|
+| Manuscript and figures | [Repository checks](../README.md#reproduce-by-scope) and [PDF build](../docs/PDF.md) | Paired structure, current generated text and a buildable edition; not full editorial approval or byte-identical PDFs |
+| Preserved reference run | [Python-only lab checks](../lab/README.md#checks-you-can-run-with-python-only) | Original contract hashes, 58 independently recomputed expectations and accounting checks on historical databases; not a new COBOL/.NET execution |
+| Fresh synthetic execution | [Host reproduction protocol](../lab/docs/HOST_REPRODUCTION.md) | The named walkthrough and independent audit on a recorded host and image; not all repository experiments |
+| Extended experiments | [Evidence matrix](../docs/EVIDENCE.md) and each experiment's runbook | Only the recorded workload, environment, controls and observed verdict; no mainframe, Azure or production equivalence by inference |
+
+For a reproducible result, preserve the exact source commit, local changes if any, tool versions, command, exit code, raw output and independent oracle. Preserve failed attempts too. A missing runtime or unexecuted platform is a limitation to report, not a successful reproduction. E1/E2 remain partially verified. E3 and E4 have bounded single-VM demonstrations on Azure (chapters 25 bis and 29) that are recorded as `demonstrated_not_accepted`: real executions, not acceptance studies.
 
 ## Part I · Before translating
 
@@ -793,6 +812,55 @@ We also need clean controls. A gate that blocks everything detects every defect,
 
 Qualification is always relative to a set of threats and cases. Passing those controls increases confidence within that scope. It does not prove there is no different way to fool or break the evaluator.
 
+#### TODM in the executable validation process
+
+The [book's validation adapter](../lab/todm_validation/README.md) anchors
+its method references to [TODM commit `61354abc`](https://github.com/jmfloreszazo/TODM/tree/61354abc03e73fbf258b6e8d66e35678da134ef8).
+It binds explicit contract, source and observation inventories to SHA-256
+fingerprints, then checks the recorded E1–E4 evidence. A filename or a report
+containing `PASS` is not sufficient: missing or changed inputs block the result,
+and E3's offered operations must reconcile with the persisted ledger.
+
+The output separates G0–G7, technical verification, oracle qualification and
+release authorization. G2 cannot become human approval because an agent wrote
+`approved: true`; G6 remains blocked without independently trusted authority.
+The adapter reuses the pinned upstream demonstration's mandate semantics for
+synthetic controls of principal, scope, action, time and revocation, with the
+original MIT attribution. It is not a production TODM engine, identity provider
+or certified implementation of the five OMG-inspired semantic profiles.
+
+The integration exposed a real gap: the first E3 bundle named runtime binary
+hashes without including all of those original bytes. Its validation failed.
+The missing artifacts were retrieved from the retained Azure build tree by
+matching their recorded hashes, **not rebuilt and substituted**. A new bundle
+includes that separate recovery record; the incomplete bundle and its failed
+verdict remain intact. This is the point of putting the methodology into the
+process: incomplete evidence must stay incomplete until the missing proof is
+actually supplied.
+
+Negative controls exercise altered bytes, missing evidence, false accounting
+invariants and attempted approval through untrusted input. Passing those
+controls qualifies this adapter against those cases; it does not establish
+organizational independence, industrial effectiveness or superiority over
+other methods. The book's Golden Master comparison remains characterization
+of observed legacy behaviour, separate from accountable business truth.
+
+##### Observed result on Azure
+
+The [recorded TODM replay](../evidence/runs/todm-azure-2026-11-08.json)
+verified 134 snapshot files and 108 artifact bindings on the Azure runner.
+All four bounded technical evaluations passed, together with eight
+actual-input negative controls and twelve upstream synthetic mandate cases.
+The aggregate methodology verdict stayed `INCONCLUSIVE` and release stayed
+`BLOCK`. This is not a contradiction: technical evidence was complete for the
+stated checks, but accountable business approval was not supplied.
+
+The first Azure qualification command used an unsupported output directory
+outside the bundle root; its failure was retained before a separate retry with
+the documented layout. Neither the repaired evidence inventory nor the successful
+retry rewrote prior observations. The runner was deallocated after download;
+no GitHub workflow or production release was triggered.
+
 #### An example of a failure that must close the gate
 
 The COBOL system calculates a 0.5% fee with a specific rounding rule. The agent translates it into C# using its library's usual rounding option. In 99 cases the results match. In the hundredth, the midpoint comes out differently. The compiler and the candidate's unit tests pass. An approved oracle with a boundary case must reject it. Later, the concurrency gate rejects a method that produces the correct amount in isolation but allows two withdrawals on the same balance. Finally, the performance gate rejects a correct architecture that misses the batch window.
@@ -812,6 +880,144 @@ That final detail is the one that matters to me for COBOL. In the lab, the basel
 *Figure 10.2 · When the builder tries to edit the criterion that judges it, the external anchor catches it.*
 
 > **An oracle is worth more than a reviewer. And an oracle the builder can edit is worth nothing.**
+
+### Chapter 10 bis · Putting TODM to work: models, tools and ADRs
+
+> [!IMPORTANT]
+> **Chapter thesis.** Document decisions so that another person can inspect, execute and challenge them. A diagram explains a claim; a qualified oracle tests it; an accountable approval authorizes it. None replaces the other two.
+
+#### The source of truth is a governed baseline, not a file format
+
+In a COBOL migration I want the future team to know what a capability means, why an architectural boundary exists and which observations justify changing it. Code alone does not answer all three questions. Nor does a collection of diagrams become authoritative merely because it is stored beside the code.
+
+A useful baseline names the capability, vocabulary, rules, exceptions, operational obligations, source evidence, owner, version and approval scope. An observation from a legacy run is evidence of what happened, not automatic permission to preserve a defect. An agent's proposed model is a proposal, even if its syntax validates. When policy and observed behaviour disagree, record the conflict and obtain the business decision before treating either as accepted truth.
+
+The baseline must identify the exact model bytes and evaluator version. Its hash detects a change relative to an independently retained reference; an editable manifest beside editable models does not authenticate the owner. This is why the [TODM adapter](../lab/todm_validation/README.md) distinguishes technical evaluation from G2 baseline approval and G6 release authorization. Our experiments can pass their technical checks while those approvals remain unavailable.
+
+#### Give each artifact a specific job
+
+| Artifact | Question it answers | What it does not establish alone |
+|---|---|---|
+| SBVR-style vocabulary and rules | What do “available”, “booked” and “accepted” mean? | That a particular parser implements full SBVR semantics |
+| DMN decision table | Which result follows from these inputs and rule precedence? | Transactions, process completion or business approval |
+| BPMN process model | Which activities, decisions and boundaries make up the process? | That an XML drawing is an executed workflow or a durable transaction |
+| CMMN case model | Which discretionary work and evidence complete a long-lived case? | A fixed execution trace for every possible case |
+| OCL-style constraints or mathematical invariants | Which states or relationships are forbidden? | Coverage of every exception and environmental failure |
+| ADR | Why was one architectural option selected, and with which trade-offs? | The observable business contract or permission to deploy |
+| Golden Master and operational traces | What did the incumbent actually do? | That its behaviour is the business rule we should preserve |
+
+Use the smallest set that makes the capability reviewable. A fee rule may need a vocabulary, decision table and examples. A disputed-payment case may also need a process, case model and external-effect reconciliation. Adding all five standards by default creates maintenance work without necessarily adding evidence.
+
+#### The tools in this repository and their boundaries
+
+The [decision-model toolkit](../lab/decision_models/README.md) provides deliberately bounded executable profiles for decision tables and process traces, plus baseline and ADR traceability examples. Its README defines the accepted schema, operators and commands. Those profiles are not complete DMN/FEEL or BPMN engines. In particular, a linear trace checker must not be used to certify concurrent BPMN tokens, compensation, message delivery or transaction recovery.
+
+The [TODM evidence adapter](../lab/todm_validation/README.md) performs a different job. It binds an explicit artifact inventory to retained bytes, examines experiment-specific observations, emits G0–G7 records and keeps release authority separate. Its negative controls challenge missing evidence, changed bytes, false invariants and untrusted approval fields. It does not derive domain truth from a report's `PASS` label.
+
+The [isolated builder harness](../lab/e4_agents/README.md) constrains candidate execution and compares self-authored tests with reserved checks and known mutants. The [Azure operator](../infra/experiments/README.md) handles source export, execution, evidence collection and cost-aware shutdown. The [read-only CLI collector](../scripts/azure/capture-book-evidence.ps1) records deployed resource state. None of these tools gives another tool authority to approve business rules.
+
+#### From one COBOL capability to an executable obligation
+
+Start with a named business operation rather than a source-file boundary. For a commission calculation, define amount units, rate units, activity status, invalid input behaviour, midpoint rounding and review threshold. For a transfer, also define operation identity, concurrent debit rules, ledger conservation, outbox atomicity and what an ambiguous acknowledgement means.
+
+Separate three inventories:
+
+1. **Normative proposals:** vocabulary, tables, process obligations and constraints awaiting review.
+2. **Characterization:** authorized examples and traces from the incumbent, with environment and uncertainty.
+3. **Decisions:** accepted rules and architectural choices, with accountable owners and precise scope.
+
+Translate an approved obligation into independent expected results before allowing the builder to change the implementation. Maintain boundary cases: exact threshold, just above it, midpoint rounding, invalid representation, inactive account and retry after an uncertain response. For process traces, include both valid order and missing, duplicate or out-of-order steps. For ledgers, inspect persisted state independently; the candidate's own success response cannot prove atomicity.
+
+A DMN table might decide whether a request needs review. BPMN might explain where that review occurs. The transaction design must still say whether money has been reserved, posted or not touched while the review waits. That boundary belongs in an ADR and executable failure tests, not in an assumption about the diagram.
+
+##### A small executable decision and process
+
+From the repository root, validate the example and evaluate its midpoint case:
+
+**Listing 10a.1 · Validate and evaluate the decision example** — *Reproduction commands · local synthetic demonstration*
+
+```bash
+python3 lab/decision_models/toolkit.py validate lab/decision_models/examples/fee-decision.json
+python3 lab/decision_models/toolkit.py evaluate lab/decision_models/examples/fee-decision.json --input lab/decision_models/examples/fee-input.json
+```
+
+The recorded output includes `status: PASS`, `feeCents: 1`,
+`resultCode: APPROVE` and `productionApproved: false`. Exact arithmetic and an
+explicit rounding policy matter more than a visually convincing table.
+`FIRST` uses declared order; `UNIQUE` rejects an input matching several rules.
+These are limited JSON profiles inspired by DMN, not DMN XML or a FEEL engine.
+
+Check the sequential process trace, then deliberately submit its invalid variant:
+
+**Listing 10a.2 · Check valid and invalid process traces** — *Reproduction commands · expected negative control*
+
+```bash
+python3 lab/decision_models/toolkit.py check-trace lab/decision_models/examples/fee-process.json --input lab/decision_models/examples/fee-trace.json
+python3 lab/decision_models/toolkit.py check-trace lab/decision_models/examples/fee-process.json --input lab/decision_models/examples/fee-trace-invalid.json
+```
+
+The first command exits 0; the negative control exits 1. The latter is expected
+rejection, not a reason to remove the control from the documentation. The
+process checker does not implement parallel gateways, token semantics or BPMN
+XML interchange. Its limited transitions make only the declared trace testable.
+
+Finally verify the baseline's model and ADR hashes, or export the decision
+profile as deterministic JSON:
+
+**Listing 10a.3 · Verify the baseline and export the decision profile** — *Reproduction commands · no approval authority*
+
+```bash
+python3 lab/decision_models/toolkit.py check-baseline lab/decision_models/examples/baseline.json --root lab/decision_models
+python3 lab/decision_models/toolkit.py export lab/decision_models/examples/fee-decision.json
+```
+
+The baseline binds the actual sample ADR bytes; it does not authenticate approval.
+Export is local-profile JSON, not RFC 8785 canonicalization or standards-certified
+interchange. The [executed example record](../lab/decision_models/examples/demo-run.json)
+and 21 unit tests distinguish supported behaviour from future extensions.
+
+#### ADRs preserve the reasons that models do not
+
+An ADR is a short, versioned architectural decision record. Keep its status, context, options, decision, consequences, validation obligations and links to superseded records. Identify the owner responsible for accepting the trade-off; do not invent an approval date or name to complete a template.
+
+For a COBOL migration, useful ADR subjects include the authoritative ledger, decimal representation, encoding boundary, idempotency key, transaction boundary, source-side writer fence, cutover and rollback constraints, consistency model, and deployment topology. Link each decision to a capability and evidence. An ADR choosing an outbox is incomplete if it does not define the duplicate-delivery and reconciliation obligations.
+
+A practical traceability chain runs from the business capability to the drift review, with approval as a separate step after the verdict:
+
+![Figure 10 bis.1 · The traceability chain: approval is a separate step after the verdict, and drift sends you back to the rule.](figures/en/traceability_chain.png)
+
+*Figure 10 bis.1 · The traceability chain: approval is a separate step after the verdict, and drift sends you back to the rule.*
+
+Changing one item does not silently approve the next. If an ADR changes from synchronous posting to deferred processing, revisit the process model, consistency contract, latency budget, oracle and migration plan. Preserve the previous baseline and explain what supersedes it. The existing [architecture-decision annex](#annex-d--architecture-decisions) provides the book's decision context; the toolkit's templates turn that discipline into reusable project artifacts.
+
+#### Run the evidence process without granting yourself approval
+
+For a captured portable bundle, enter its root and use a fresh output path:
+
+**Listing 10a.4 · Revalidate a captured portable bundle** — *Illustrative commands · requires a bundle and fresh output paths*
+
+```bash
+python3 adapter/lab/todm_validation/validate.py --manifest manifest.json --root . --output validation-new.json
+python3 adapter/lab/todm_validation/qualify_bundle.py --root . --output qualification-new
+```
+
+The qualification output is inside the bundle root because its controlled mutations are referenced relative to that root. Keep this new output separate from the original observations. Consult the toolkit README for decision-model examples; use its actual CLI and schema rather than treating the listings here as a replacement specification.
+
+Review four things in order: whether inputs are complete and bound to the intended source, what the independent oracle observed, whether qualification detected the declared threats, and who has authority to approve the baseline and delivery. A technical `PASS` answers only the questions implemented by that evaluator. `INCONCLUSIVE` and `BLOCK` must remain visible in the handoff to people.
+
+#### What the Azure demonstration contributed
+
+The [executed TODM campaign](../evidence/runs/todm-azure-2026-11-08.json) checked 134 snapshot files and 108 artifact bindings on Azure. Its E1–E4 technical checks passed with eight actual-input negative controls and twelve synthetic mandate cases, while methodology remained inconclusive and release blocked. The adapter first rejected missing original E3 runtime bytes. Recovering matching binaries from the preserved build tree repaired the evidence inventory without rewriting the failed bundle.
+
+That is a useful demonstration of the process, not proof of industrial effectiveness. We did not authenticate a real business approval, implement every modelling standard, or compare organizational outcomes across migrations. The [Azure CLI records](../evidence/runs/azure-cli-2026-11-08/capture.json) additionally show deployed resource state, not performance or semantic correctness.
+
+#### Adapt the tools without weakening the claim
+
+To adapt a profile, state the missing semantic feature first. Add its schema and evaluator behaviour, then independent positive, negative and incomplete cases. Preserve old fixtures and compatibility or declare a new profile version. Do not quietly interpret an unsupported operator as false, skip an unfamiliar task or promote a syntactically valid model to an approved baseline.
+
+If the project needs full DMN or BPMN execution, select a conformant engine for the required version and features, record that selection in an ADR, and qualify its exact configuration. Continue verifying business outcomes outside the implementation. SBVR, CMMN and OCL references in this book do not claim that this repository implements those engines.
+
+The final [cross-language annex](#annex-h--beyond-cobol) separates reusable method from language-specific proof. The durable investment is not a diagram format or one programming language: it is a maintained chain from accountable rule to observable result.
 
 ### Chapter 11 · The architecture of a verifiable modernization
 
@@ -2039,7 +2245,7 @@ The selection criterion is not which one wins an isolated test. It is which one 
 
 > **Thesis.** You do not replace a mainframe with a box that has more cores. You replace an entire operational service: transactional computing, I/O, isolation, durable commit, continuity and the response seen by a branch that may be thousands of kilometres away. Equivalence is an end-to-end test, not a marketing-specification comparison.
 
-This chapter supplements [chapter 25](#chapter-25--azure-or-a-huge-machine-at-the-customers-site) with named market references and a falsifiable architecture protocol. **Manufacturer data checked in October 2026; our measured performance against those machines: none.**
+This chapter supplements [chapter 25](#chapter-25--azure-or-a-huge-machine-at-the-customers-site) with named market references and a falsifiable architecture protocol. **Manufacturer data checked in October 2026; our measured performance against those machines: none.** What we *have* measured—on one Azure VM, with synthetic load—is described in its own sections after the comparison protocol, so that the reader does not mistake it for that comparison.
 
 #### Real systems, real published specifications, and a comparison we cannot yet make
 
@@ -2137,6 +2343,32 @@ The [executed M1 study](../evidence/runs/M1.md) compared gRPC/Protobuf with REST
 
 The [executed M2 evidence](../evidence/runs/M2.md) connects **REST and gRPC to the same durable PostgreSQL ledger**. On one hosted runner, the 20-scenario matrix (1/2/4/8/16 processes, two protocols, uniform and hot-account traffic) achieved **20 accounting PASS results**: 256 commits, 512 postings and 256 outbox entries per scenario. Adding processes **did not improve throughput** on this constrained machine and shared database. The results and chart are versioned. **This is not an Azure scale-out benchmark**: independent nodes, TLS, open-loop traffic and failover still need testing.
 
+##### Reproduce first, then deploy, then measure distributed capacity
+
+The [experiment infrastructure and runbook](../infra/experiments/README.md) separate these three steps. The same core, PostgreSQL E1, functional Orleans E2 and M2 harnesses can run locally or on an Azure runner, retaining logs, independent oracle results and runtime provenance. **The Bicep infrastructure has only been compiled and checked locally; it has not been deployed or measured in Azure.**
+
+The template prepares private networking, evidence storage and a VM Scale Set with 0/1/2/4/8/16 instances. Provisioning instances does **not** install distributed application replicas. The optional managed PostgreSQL server is not the disposable database destroyed by the functional tests. Real E3 acceptance still needs an approved capacity contract, equivalent TLS, separate service and load-generator nodes, open-loop traffic, N-1 recovery and measured costs. A reproducible local PASS proves only the controls it actually exercised.
+
+On **7 November 2026**, a [new local reproduction](../evidence/runs/local-reproduction-2026-11-07.json) on WSL/Docker passed 11 PostgreSQL/Python controls, 10 .NET controls, 16 sequential parity cases and the eight-case/960-transfer functional worker matrix. The co-located Orleans harness passed seven functional controls; M2 passed all 20 scenarios with 256 commits each. Independent oracles rejected deliberate ledger corruption. Three failed launcher attempts are retained alongside the successful reruns, rather than erased. This campaign ran neither GitHub Actions nor Azure, and does not complete E1–E4 acceptance; its full logs, dumps and source patches are retained in a local evidence archive.
+
+A [subsequent local E2 campaign](../evidence/runs/local-e2-cluster-2026-11-07.json) also passed the real deadlock fixture, six matched workload runs with 600 durable transfers, and actual process termination controls. Two separate silo processes and an external client recovered after killing the secondary, with both development and PostgreSQL ADO.NET membership. Two additional cases exercised termination before and immediately after SQL COMMIT. The independent SQL oracle passed after recovery. **These are real process-failure observations on one physical host, not physical-node HA, a production recovery SLA or final E2 acceptance.**
+
+A [local E4 prerequisite qualification](../evidence/runs/local-e4-qualification-2026-11-07.json) then exercised 58 frozen cases per candidate in separate, non-root, network-disabled containers. The independent gate accepted the reference candidate and rejected the three known mutants: rounding, threshold and inactive-account approval. Three actual write attempts against the original contract, verifier and container root filesystem were denied; writing to the disposable candidate directory succeeded. Protected source hashes remained unchanged. The [reproduction harness](../lab/e4_agents/README.md) retains the exact supervisor source, container inspections and the real COBOL observations reused from the earlier core run; it does not invent a new COBOL execution. Thirteen separate synthetic regression controls also passed.
+
+**This is prerequisite evidence, not E4 acceptance.** No live agent or model was invoked, and no accepted-defect rate, false-block rate, human review duration or model cost was measured. The gate retains `DEMO_ONLY / SIMULATED_ALLOW` authority for the good candidate and blocks the mutants; it does not authorize a production release. The containers share the host kernel, and this campaign only executed the known reference sources and mutants, not arbitrary model-generated code.
+
+The repository also provides a [local campaign collector](../lab/tools/reproduce_campaign.py), with [setup instructions](../lab/README.md#reproduce-the-local-multi-experiment-campaign). A [complete recorded invocation](../evidence/runs/local-public-campaign-2026-11-07.json) passed core, PostgreSQL E1, extended E2, M2 and the E4 prerequisite, retaining 331 source-file hashes and verifying 226 captured artifacts. This makes the sequence reproducible without the author's session-specific helpers:
+
+**Listing 25a.2 · Collect and verify a local campaign** — *Illustrative reproduction commands · example output path*
+
+```bash
+python3 lab/tools/reproduce_campaign.py \
+  --engine docker --output lab/results/campaign-001
+python3 lab/tools/reproduce_campaign.py --verify lab/results/campaign-001
+```
+
+The normal command requires clean lab sources. For unpublished local changes, explicitly add `--include-working-tree`: the collector saves the executed source snapshot separately from the base commit. Each stage runs in a fresh Linux temporary checkout; failed attempts are retained rather than overwritten. Artifact integrity does not turn a failed run into a successful one or local controls into Azure acceptance. SQL Server remains opt-in and requires its separate license consent.
+
 #### Dated prices, not a deceptive vCPU-to-mainframe TCO
 
 The official Azure API retrieval on **29 October 2026 at 18:26 UTC** (West Europe, Linux, pay-as-you-go, indicative EUR) returned **D4as_v5 €0.1830/h**, **D4s_v5 €0.2024/h** and **D8as_v5 €0.3661/h**. Three always-on D4as_v5 workers for 730 hours represent **€400.77/month of compute alone**; six represent **€801.54/month**, excluding database, disks, networking and redundancy. Exact meters, `effectiveStartDate` and CI source are in the linked registry.
@@ -2163,9 +2395,131 @@ Run with **online + batch**, hot keys, replication and peaks; repeat with **inje
 
 Accept only when **business results, durable completion, recovery and perceived latency** meet the approved contract—not when isolated TPS looks impressive. A fast network with a wrong ledger is useless; a correct ledger with unacceptable branch response also fails.
 
+#### Executed Azure demonstration: evidence, not a capacity claim
+
+The [first real Azure campaign](../evidence/runs/azure-single-vm-2026-11-07.json) deployed the Bicep into a dedicated resource group in the author's authorized subscription. West Europe rejected new resources for this subscription despite available vCPU quota. That failed validation was retained; North Europe passed ARM validation and What-If, with 17 creations and no modifications or deletions of existing resources. The actual runner was one private `Standard_D4s_v5` VM, using Podman, PostgreSQL 16.13, .NET SDK 10.0.100 and GnuCOBOL 3.1.2. The VMSS had zero workers.
+
+The following are **executed observations**, not planned tests or mocked infrastructure:
+
+- **Core:** 58 COBOL/.NET cases and ten gate controls. After downloading the original SQLite databases, the host-side independent audit accepted nine correct databases and rejected the deliberately corrupted one. The rounding mutant was blocked on `C003`.
+- **E1 PostgreSQL:** 11 Python controls, ten .NET controls, 16 sequential parity cases and the eight-case/960-transfer worker matrix passed. The independent ledger oracle rejected deliberate posting corruption.
+- **E2:** six matched workload runs committed 600 transfers. Two silo processes and a separate client recovered after an actual secondary-process `SIGKILL`, with both development and PostgreSQL ADO.NET membership. Seven independent SQL invariants passed after recovery. Two additional cases exercised termination before and immediately after COMMIT.
+- **M2:** all 20 REST/gRPC, uniform/hot and 1/2/4/8/16-process cases passed. Every case had 256 durable commits, 512 postings and 256 outbox entries; the independent negative control detected corruption and verified restoration.
+
+The original source archives, file hashes, Azure instance metadata, runtime logs, SQL dumps and downloaded evidence are retained. The first M2 attempt passed its numerical controls but still emitted inherited labels claiming a GitHub runner and denying Azure execution. Those raw files were not corrected retroactively: the report producer was fixed and a separate full repeat passed with explicit Azure host and source-archive provenance. No GitHub Actions were launched.
+
+**Cloud hosting does not turn a single-host test into E3 acceptance.** M2's replicas were processes on the same VM; there was no cross-machine failover, WAN/TLS equivalence, approved bank capacity contract or mainframe comparison. E4 still had no live-agent campaign. After downloading the evidence, the runner was verified **deallocated**, with zero worker instances. Its disk, NAT gateway, public IP and storage remained billable. A monthly budget alert is not a spending cap, and actual billed cost was not invented from public price meters.
+
+#### An additional Azure transport run and an explicit E3 refusal
+
+The [8 November Azure M1 run](../evidence/runs/azure-m1-2026-11-08.json)
+compared REST/JSON and gRPC/Protobuf at concurrency 8 and 32: eight alternating
+rounds of 2,500 requests, **20,000 measured replies, zero response errors**.
+Both negative controls passed. Sources and per-round latencies were retained;
+the North Europe runner was deallocated after download.
+
+The traffic remained **HTTP/2 without TLS over loopback**, with no durable
+ledger. Azure identifies the host, not a WAN path. These short closed-loop
+observations neither establish banking TPS nor a universal transport winner.
+
+The [reproducible E3 preflight](../evidence/runs/e3-readiness-2026-11-08.json)
+returned `INCONCLUSIVE / BLOCK`, exit 3: all 14 required capacity fields
+were empty, status `UNCONFIGURED`. The
+[command](../lab/docs/EXPERIMENT_PROTOCOL.md) retains the contract hash
+and missing prerequisites, without inventing targets. This is not a load
+experiment: even a populated contract requires external review and comparable
+Azure, on-premises and mainframe measurements.
+
+#### E1–E4 on the Azure runner: four different demonstrations
+
+The [8 November follow-up](../evidence/runs/azure-e1-e4-2026-11-08.json)
+repeated PostgreSQL E1 and extended Orleans E2 after hardening evidence
+collection. E1 again passed its 960-transfer matrix; E2 passed both membership
+providers, 600 matched-workload transfers and controlled process failures.
+Logs, database dumps and cleanup now have separate exit codes: losing evidence
+cannot silently turn a run green.
+
+E3 then executed an **exploratory open-loop** ledger trial, not just the earlier
+readiness check. Three fixed phases offered 20, 40 and 60 requests/s for six
+seconds each. Of **720 scheduled offers, 668 committed**, 48 failed to connect
+and four missed their schedule. A service process was killed at eight seconds
+and restarted at ten; the replacement subsequently committed work. All seven
+accounting checks passed, and deleting a posting triggered three violations
+before restoration. Every failed or missed offer remains in the denominator.
+The ACK-only p99 is not the p99 of all offered work, and the nominal-window
+commit rate is not a sustained capacity ceiling.
+
+All services and the disposable database shared one VM. The authoritative
+snapshot was captured before removing the trial's private schema; the later
+database dump does not restore that removed schema. Neither process recovery
+nor `synchronous_commit=on` proves physical-node HA, a bank RPO/RTO or a
+mainframe comparison. The original capacity contract remains unconfigured.
+
+E4 also moved **candidate execution** to Azure: rootless Podman, supervisor UID
+1000, no candidate network or credentials, and read-only protected inputs.
+It replayed the existing real model response from chapter 29, rather than
+counting another inference. The candidate passed 16 self-tests and 58 frozen
+cases; qualification rejected three mutants and denied three protected writes.
+The first attempt failed because the nonroot process inherited a root-private
+working directory. That original is retained beside the corrected run, not
+rewritten. Azure instance metadata, source archives and the separate replay
+input digest bind the observed execution to its inputs.
+
+#### What Azure actually shows
+
+The following are **real projected Azure CLI outputs**, captured on
+**8 November 2026, 10:03 UTC**, not portal screenshots or recreated UI.
+The [capture manifest](../evidence/runs/azure-cli-2026-11-08/capture.json)
+retains all six exact commands, timestamps, exit codes and stdout hashes; the
+[resource inventory](../evidence/runs/azure-cli-2026-11-08/resources.json)
+identifies the deployed infrastructure. The
+[read-only collector](../scripts/azure/capture-book-evidence.ps1) lets
+readers repeat this against their own deployment without starting any VM.
+
+The [deployment response](../evidence/runs/azure-cli-2026-11-08/deployment.json)
+reports infrastructure success, **not application or experiment correctness**:
+
+**Listing 25a.3 · Recorded deployment response** — *Executed · Azure CLI capture, 8 November 2026*
+
+```json
+{
+  "name": "book-experiments",
+  "state": "Succeeded",
+  "timestamp": "2026-11-07T23:17:25.358088+00:00"
+}
+```
+
+The [runner response](../evidence/runs/azure-cli-2026-11-08/runner.json)
+shows the resource and its state after collecting the experiments:
+
+**Listing 25a.4 · Recorded runner response** — *Executed · Azure CLI capture, 8 November 2026*
+
+```json
+{
+  "location": "northeurope",
+  "name": "bookev1107-runner",
+  "size": "Standard_D4s_v5",
+  "statuses": [
+    "ProvisioningState/succeeded",
+    "PowerState/deallocated"
+  ]
+}
+```
+
+The [scale-set response](../evidence/runs/azure-cli-2026-11-08/workers.json)
+records capacity zero, and its separate instance query returns an empty array.
+The [storage response](../evidence/runs/azure-cli-2026-11-08/storage.json)
+reports HTTPS-only access, minimum TLS 1.2, shared-key access disabled and
+anonymous blob access disabled. Those settings do not certify every permission
+or network path. A deallocated VM also does not mean a zero bill: managed disk,
+NAT, public IP and storage remain. This dated control-plane capture complements,
+but cannot replace, the original workload artifacts and independent oracles.
+
 #### Our evidence: what exists and what does not
 
-This branch does contain [versioned E1a/E1b observations](../evidence/runs/README.md): real `40P01` deadlock, `40001` serialization, a corruption-detecting independent oracle and partial .NET 10/Npgsql parity on PostgreSQL. **There is not yet any benchmark on IBM z17, LinuxONE, Dorado 8590, Azure Mdsv3 or EPYC**, nor measurements from a real distant branch. The evidence registry must not promote those comparisons without reproducible load, approved SLOs and on-site measurements.
+This branch does contain [versioned E1a/E1b observations](../evidence/runs/README.md): real `40P01` deadlock, `40001` serialization, a corruption-detecting independent oracle and partial .NET 10/Npgsql parity on PostgreSQL. It also contains the Azure records described above—one D4s_v5 VM, synthetic workloads, every run downloaded and hashed—registered as `demonstrated_not_accepted` in the [evidence matrix](../docs/EVIDENCE.md).
+
+**There is not yet any benchmark on IBM z17, LinuxONE, Dorado 8590, Azure Mdsv3 or EPYC**, no second site, no measurements from a real distant branch, and the capacity contract is still unconfigured. The evidence registry must not promote those comparisons without reproducible load, approved SLOs and on-site measurements. The Azure runs tell us the mechanisms work where we put them; they do not tell us how the bank's month-end behaves.
 
 > The winning architecture is not the one that runs fastest inside the data centre. It is the one that commits the correct operation and delivers the answer back to the branch even when the worst WAN day meets the month-end close.
 
@@ -2527,9 +2881,9 @@ Preserving the total is necessary and not sufficient: a movement charged to the 
 | hot | 4 | 128 | 495.6 | 0.81 | 2.04 | 42.08 | 0 |
 | hot | 8 | 256 | 624.4 | 0.85 | 28.40 | 109.78 | 5 |
 
-![Figure 28.3 · Reference run with uniform accounts: red bars show p99 and the gray line shows p50, in milliseconds. The median falls while the tail rises.](figures/en/measures_chart.png)
+![Figure 28.3 · Reference run with uniform accounts: bars show p99 and the line shows p50, in milliseconds. The median falls while the tail rises.](figures/en/measures_chart.png)
 
-*Figure 28.3 · Reference run with uniform accounts: red bars show p99 and the gray line shows p50, in milliseconds. The median falls while the tail rises.*
+*Figure 28.3 · Reference run with uniform accounts: bars show p99 and the line shows p50, in milliseconds. The median falls while the tail rises.*
 
 The table teaches one true thing and nothing more: when we add processes that compete for a serialized resource, the median improves and the tail explodes. It is the same phenomenon that will appear with a hot account or a saturated log. But these are 32 operations per process, in a closed loop, including the start-up of each .NET process, on an engine that serializes writes, on a single machine. There is no warm-up or sufficient duration, no mainframe baseline and no Azure. This table cannot approve capacity, and the code writes that down in the results summary itself.
 
@@ -2914,6 +3268,55 @@ If we change models, budgets, prompts or tools, we record it as a different expe
 
 A discovery agent may propose rules from policies, interviews and authorized observations; COBOL is supplementary evidence when needed. The builder can **implement the capability from scratch** in C# without copying legacy structure. TODM verifies outcomes against independent oracles and approved rules; Golden Master separately preserves observed incumbent behavior. Business authority decides what to preserve, correct or retire.
 
+#### An executed builder pilot, not a population success rate
+
+The [8 November 2026 pilot](../evidence/runs/e4-live-builder-2026-11-08.json)
+made one real request to an existing Azure Foundry deployment of
+`gpt-5.6-terra`, version `2026-07-09`. The request contained only the public
+synthetic fee contract, not the COBOL implementation, reserved cases or verifier.
+The model returned a complete C# program and 16 self-authored test vectors.
+
+The supervisor compiled and executed that source in local WSL/Docker, not on
+the Azure experiment VM. The candidate had no network or credentials, ran
+as a non-root user with a read-only root filesystem and bounded resources,
+and could not mount the repository or evaluator. The original protected
+hashes remained unchanged.
+
+The generated program passed its 16 tests and the independent gate's 58 frozen
+cases. Its tests also accepted the known-good reference and rejected the three
+known mutants: even rounding, wrong review threshold and approval of inactive
+accounts. A separate qualification again verified the independent gate and
+three denied protected writes. These controls are related variants of one
+task, **not four independent projects**.
+
+The response reported **269 input tokens and 2,279 completion tokens: 2,548
+total**. The predeclared limit was three requests and 4,000 completion tokens
+per request; no repair request was needed. A second local evaluation replayed
+the same response without calling the model again. The
+[reproduction commands](../lab/e4_agents/README.md#live-azure-builder-pilot)
+retain prompts, response, usage, generated source, test vectors, image identity,
+container configurations and independent verdicts. Replaying a saved response
+is deterministic evidence verification; asking the model again need not produce
+identical code.
+
+This is a **model-driven workflow with a fixed supervisor**, not a demonstration
+of an autonomous agent selecting tools. The verdict remains
+`DEMO_ONLY / SIMULATED_ALLOW`. No human review duration, invoice or cost per
+accepted change was measured. One successful synthetic task does not complete
+E4 or establish that one testing condition is superior to another.
+
+##### The same candidate, later evaluated in Azure
+
+The [separate Azure replay](../evidence/runs/azure-e1-e4-2026-11-08.json)
+ran that unchanged candidate and the independent evaluator with rootless Podman
+on the private experiment VM. It again passed 16 self-tests and 58 frozen cases;
+three known mutants were rejected and three protected writes denied. Original
+model consumption remains 2,548 tokens: replay made **zero new model calls**.
+The archived initial directory-permission failure and corrected retry demonstrate
+why a claimed boundary must be exercised on the target host, not inferred from
+its local configuration. This adds execution evidence, not human approval or a
+new independent task for comparative statistics.
+
 #### REA comes in when the problem needs it
 
 For the lab's small source we do not need a decompiler. Including REA for the sake of appearances would add complexity without clarifying the test. Its integration makes sense when the capability under investigation lives in an artifact its tools help examine.
@@ -3146,6 +3549,8 @@ The public TODM protocol distinguishes three conditions for studying constructio
 
 Does the independent oracle reduce accepted defects? What does its qualification add? How many incorrect blocks does it produce? How much effort does clarifying and approving rules require? Which attempts to modify the evaluator do real permissions prevent? Those questions need data and a prior design.
 
+What this edition adds is a single data point, not an answer: one real model response, evaluated in isolation on an Azure VM, passed the independent gate and the mutation controls (chapter 29). One task cannot estimate a defect rate, and we measured neither review time nor cost. It demonstrates that the harness can host the comparison; it does not run it.
+
 The TODM repository itself frames this as an open challenge: it invites anyone to reproduce, falsify, compare or transfer the method, and accepts negative or inconclusive findings as contributions [2]. A book that argues for evidence needs that door open.
 
 #### The unit of analysis matters
@@ -3270,7 +3675,7 @@ That is the kind of progress that interests me. Each step leaves something we ca
 
 ## Annexes
 
-Reference material: how to run the lab, which contract it implements, what the reference run produced, which decisions I would document, the full risk catalog, the glossary and the sources.
+Reference material: how to run the lab, which contract it implements, what the reference run produced, which decisions I would document, the full risk catalog, the glossary, the sources and what transfers beyond COBOL.
 
 ### Annex A · A lab that can prove us wrong
 
@@ -3780,3 +4185,65 @@ The author's articles are cited by their original Spanish titles, with an Englis
 [63] IBM. *CCSID Comparisons*, swg21197185. Modified 20 June 2019; consulted 4 November 2026. Seven documented code-point differences between CCSIDs 37 and 500; not a native conversion test. <https://www.ibm.com/support/pages/ccsid-comparisons>
 
 [64] Python Software Foundation. *Python 3.12: codecs — Codec registry and base classes*. Consulted 4 November 2026. Selected cp037/cp500 codecs and strict/replace error handling. <https://docs.python.org/3.12/library/codecs.html>
+
+### Annex H · Beyond COBOL
+
+#### What travels with the method
+
+COBOL gives this book concrete problems, not an exclusive jurisdiction. A Java service, a VB6 application or an RPG batch can also conceal rules, depend on undocumented interfaces and disagree with its replacement. The transferable question is not “can this language be translated?” but “which observable behaviour must survive, who accepts it, and what evidence could contradict the candidate?”
+
+The [oracle methodology in Chapter 10](#chapter-10--todm-and-the-problem-of-accepting-what-we-build) applies without requiring a particular implementation language: recover evidence, establish an independently approved baseline, qualify the evaluator, bind observations to the candidate and separate technical acceptance from release authority. The golden master records what happened; it does not automatically decide what should happen. An approved correction must remain visible as an intentional difference.
+
+What does not travel automatically is the implementation of that method. A COBOL parser does not become a PL/I parser; a JSON comparison does not capture a GUI, a memory-mapped device or a distributed commit. Each new boundary needs an observation adapter, trusted expectations and negative controls. A method can be portable while every adapter remains specific.
+
+#### Applicability matrix: contracts before syntax
+
+The following rows are **assessment guidance**, not a catalog of executed migrations or certified adapters. Grouping languages saves space; it does not make their semantics equivalent.
+
+| Language or environment | What can be reused | What must be specified and verified anew |
+|---|---|---|
+| Java / C# | Capability contracts, independent examples, state and ledger invariants, failure scenarios | Decimal representation and rounding; integer overflow; exceptions and nullability; JVM/CLR versions, libraries, JIT and garbage collection; transaction propagation |
+| VB6 / VB.NET | Approved user-visible outcomes, event traces, reference comparisons | Distinguish the two runtimes; `Variant`, `Empty` and `Null`, coercions, locale and date conversion; COM lifetime, UI event order and database provider behaviour |
+| RPG / IBM i | Business capabilities, batch reconciliation, single-writer and cutover criteria | Decimal fields, CCSID, indicators, record access, job state, commitment control and journal boundaries; installed dialect and platform |
+| PL/I | Rules, boundary cases, independent expected results, transaction invariants | Fixed/binary precision, condition handling, storage layout, compiler options and linkage; host services and database integration |
+| C / C++ | Protocol contracts, state machines, differential and property tests | Width, signedness, ownership, ABI, alignment, endianness, concurrency and undefined behaviour; compiler, optimization and native dependencies |
+| Python / JavaScript | Oracle separation, explicit cases, schema checks and negative controls | Dynamic coercion and missing values; Python decimal context and native extensions; JavaScript `Number`/`BigInt`; serialization, asynchronous scheduling and dependency versions |
+| Embedded / real-time systems | Requirements traceability, state invariants, fault scenarios and independent acceptance | Hardware, interrupts, deadlines, resource budgets, reset and power-loss behaviour; hardware-in-the-loop evidence and any required safety assurance |
+
+A row can apply to an upgrade within the same language as well as a rewrite. Replacing a compiler, database driver or runtime may change observable behaviour without changing the source. Record the complete execution environment, not merely the language name.
+
+#### Semantic boundaries that need their own oracle
+
+**Numbers.** Specify precision, scale, rounding mode and the point at which rounding occurs. Decimal arithmetic is not interchangeable with binary floating point. Define intermediate as well as final ranges: Java integer wrapping, C# checked or unchecked arithmetic, Python integers and JavaScript numeric representations do not offer the same overflow contract. Test negative values, midpoints, maximum magnitudes and serialization. A matching display can hide a different stored amount.
+
+**Text and absence.** Encoding, normalization, collation, padding and byte length are separate decisions. The [EBCDIC exercise](../lab/examples/ebcdic-boundaries/README.md) illustrates why a successful round trip can still preserve the wrong meaning; it does not validate every host code page. Preserve the distinction between absent fields, null, empty strings, zero and sentinel values when the domain makes that distinction. An adapter that silently trims or defaults data can manufacture agreement.
+
+**Dates and time.** Define calendar, precision, time zone, offset, daylight-saving transitions, business date and cut-off policy. A local timestamp is not necessarily an instant. Freeze or control the clock where appropriate, and include ambiguous and nonexistent local times. Reference fixtures must not accidentally depend on the evaluator's locale or today's date.
+
+**Concurrency and transactions.** Specify observable histories, idempotency, ordering and the durability point. A mutex, event loop, actor or language transaction annotation does not by itself establish the business commit boundary. Test duplicates, cancellation, lost replies and crashes on either side of commit; inspect persisted state independently. Carry the reasoning from the [verifiable architecture](#chapter-11--the-architecture-of-a-verifiable-modernization), not an assumption that a familiar threading API preserves it.
+
+**FFI and undefined behaviour.** At a foreign-function interface, verify calling convention, field layout, ownership, error propagation and lifetime. For C/C++, undefined behaviour has no stable language-level result to preserve. A repeatable legacy observation can inform an explicitly scoped compatibility requirement, but cannot turn undefined behaviour into a portable specification. Use suitable diagnostics and redesign the boundary; do not label one successful differential run a proof.
+
+#### Decision models express rules, not translations
+
+BPMN can describe process order, events and responsibilities; DMN can express decisions and rule tables. Neither translates arbitrary source code into approved business meaning. A diagram extracted from a program remains a hypothesis until its interpretation and authority are established.
+
+For an executable oracle, document the supported semantic subset: input types, missing-value handling, comparisons, rule priority or hit policy, defaults, errors and relevant state transitions. Bind model versions and evaluator versions to the evidence. An unsupported construct must block or remain inconclusive, not be ignored. The [decision-model lab](../lab/decision_models/README.md) supplies its own scope and reproduction instructions; a limited verifier is not a complete or certified BPMN/DMN engine. Model notation alone establishes neither conformance nor approval.
+
+#### ADRs preserve the baseline and its rationale
+
+The [architecture decisions in Annex D](#annex-d--architecture-decisions) remain useful beyond COBOL. For each new language boundary, record the existing behaviour, business authority, chosen contract, rejected alternatives and rationale. Include uncertainties, compatibility exceptions, owner, review trigger and exit criteria. An ADR explains why the baseline was selected; it does not replace executable cases or grant approval by being committed.
+
+A practical acceptance package should contain:
+
+1. A bounded capability and interface contract, including failure outcomes; use the [lab contract](#annex-b--lab-contract) and [meaning-focused comparison](#chapter-12--cobol-and-c-must-agree-on-meaning) as examples, not universal schemas.
+2. Separately governed expected results, authorized reference observations and explicit intentional differences.
+3. Qualified adapters and evaluators, with clean controls, defective candidates and incomplete evidence.
+4. Candidate, model, dependency and runtime identities, raw observations and original execution provenance.
+5. A scoped verdict, unresolved limitations, independent release authority and a controlled baseline-change process.
+
+#### What the available tools actually establish
+
+The [practical TODM adapter](../lab/todm_validation/README.md) validates specified evidence shapes and pinned governance semantics. It is not a universal runner for these languages or a production authorization service. The [decomposition lab](../lab/decomposition/README.md) checks synthetic boundary hypotheses; it does not discover arbitrary source dependencies. The [three-way commission exercise](../lab/examples/commission-three-way/README.md) demonstrates a concrete reference/candidate/expectation arrangement, not cross-language certification.
+
+This annex adds no executions. Existing COBOL, C#/.NET and Python artifacts retain their documented scopes; citations to other languages or platforms are not measurements of them. Local smoke tests do not become Azure measurements, and Azure experiments do not establish mainframe equivalence. A new language, runtime or workload needs its own retained evidence. The portable contribution is the discipline of making that requirement explicit, not a promise that the necessary proof already exists.

@@ -1,5 +1,21 @@
 # Executed evidence · E1 PostgreSQL and .NET 10
 
+## Index of 7–8 November 2026 records (Azure and TODM)
+
+All of these are **bounded demonstrations, not acceptance**. Each JSON states its own classification and limitations; `evidence/claims.json` binds them by SHA-256 with status `demonstrated_not_accepted`.
+
+| Record | What it is | What it is not |
+|---|---|---|
+| [azure-single-vm-2026-11-07.json](azure-single-vm-2026-11-07.json) | Core/E1/extended E2/M2 on one isolated North Europe VM; raw archives downloaded and hashed | Capacity, HA, mainframe equivalence |
+| [e4-live-builder-2026-11-08.json](e4-live-builder-2026-11-08.json) | One real model call (2,548 tokens) → candidate + 16 self-tests; local isolated evaluation | A population study; human review time or billed cost |
+| [azure-m1-2026-11-08.json](azure-m1-2026-11-08.json) | M1 REST/gRPC loopback profiles on the VM: 20,000 replies, zero errors | Banking TPS, TLS/WAN, transport winner |
+| [e3-readiness-2026-11-08.json](e3-readiness-2026-11-08.json) | Read-only capacity-contract check: `INCONCLUSIVE / BLOCK`, 14 fields empty | An executed E3 experiment |
+| [azure-e1-e4-2026-11-08.json](azure-e1-e4-2026-11-08.json) | Repeated E1/E2, exploratory E3 open-loop trial (720 offers / 668 commits), E4 replay under rootless Podman | E3/E4 acceptance; physical HA; new model inference |
+| [todm-azure-2026-11-08.json](todm-azure-2026-11-08.json) | TODM adapter on Azure over the bundle: 134 files, 108 bindings, 4× technical PASS, release BLOCK | Certified TODM; business or release approval |
+| [azure-cli-2026-11-08/capture.json](azure-cli-2026-11-08/capture.json) | Six read-only `az` outputs with timestamps and hashes (deployment, VM, VMSS, storage) | Workload or correctness evidence |
+
+The executed campaigns, raw logs and immutable ZIP receipts live under `evidence/archives/preserved-dist/` and `lab/results/` (ignored); [`docs/DIST_MANIFEST.md`](../../docs/DIST_MANIFEST.md) lists the archive names and SHA-256 digests so a reader can verify a copy.
+
 **Brownfield C2 original journal evidence:** [EN CI provenance and limitations](BROWNFIELD-JOURNAL.md) · [log-extracted observations](brownfield-c2-pr66-ci-log-extracted.json). Technical synthetic slice only; unresolved and bypass negatives remain intentional, G6=BLOCK.
 
 This is **experimental evidence**, not a benchmark or a claim of mainframe equivalence. The accompanying JSON files were extracted from the result blocks emitted by **real GitHub Actions runs**. They are neither reconstructed screenshots nor fabricated example results.

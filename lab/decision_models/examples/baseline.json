@@ -1,0 +1,43 @@
+{
+  "profileVersion": 1,
+  "id": "BASELINE-FEE-DEMO",
+  "version": "v1",
+  "scope": "Synthetic parsed fee decisions and sequential process observations only",
+  "accountableOwner": "UNASSIGNED_SYNTHETIC_DEMONSTRATION",
+  "approvalClaim": {
+    "approved": false,
+    "record": "No approval; ADR-001 is proposed"
+  },
+  "artifacts": [
+    {
+      "id": "SRC-FEE-CONTRACT",
+      "role": "source",
+      "path": "examples/fee-contract.md",
+      "sha256": "a163e2c8b69f625a52a13b7e730f356a9c1ca9b94eeedd69a88f6b7bda069daa"
+    },
+    {
+      "id": "ADR-001",
+      "role": "adr",
+      "path": "adr/ADR-001-bounded-profiles.md",
+      "sha256": "95132380bdd5e5f38992f5551d59e807b1c469107cb60f6cb36f378b4732bba8"
+    },
+    {
+      "id": "FEE-DECISION",
+      "role": "decisionTable",
+      "path": "examples/fee-decision.json",
+      "sha256": "134d24e5085de5f8b1b60dc3331189c777d7bf39435fadeac8589c7171b2b35a"
+    },
+    {
+      "id": "FEE-PROCESS",
+      "role": "processTrace",
+      "path": "examples/fee-process.json",
+      "sha256": "cc448f6efe92f345d31a8c324ba88664aa8e4ecc96f672464d6f72f453c693d4"
+    },
+    {
+      "id": "FEE-CASES",
+      "role": "cases",
+      "path": "examples/fee-cases.json",
+      "sha256": "71ccdd4f4954e3ba3095eaf8647bb9b51553eb596b13cf5e677c21487844770f"
+    }
+  ]
+}

@@ -1,0 +1,10 @@
+{
+  "approvalClaimVerified": false,
+  "artifactCount": 5,
+  "authorityStatus": "INCONCLUSIVE",
+  "baselineId": "BASELINE-FEE-DEMO",
+  "baselineVersion": "v1",
+  "productionApproved": false,
+  "reason": "Bytes and model links match; source truth and authority are not verified",
+  "status": "PASS"
+}

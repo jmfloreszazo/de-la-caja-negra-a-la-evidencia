@@ -1,7 +1,7 @@
 {
   "schema": "BOOK_LISTINGS_V1",
-  "pairedFences": 32,
-  "canonicalExecutableFences": 27,
+  "pairedFences": 39,
+  "canonicalExecutableFences": 34,
   "language": "English executable/config code in both editions",
   "listings": [
     {
@@ -174,6 +174,114 @@
         {
           "kind": "YAML_SYNTAX",
           "workflowExecutionEstablished": false
+        }
+      ],
+      "completeIntegrationEstablished": false
+    },
+    {
+      "id": "10a.1",
+      "title": "Validate and evaluate the decision example",
+      "publishedLabel": "Reproduction commands \u00b7 local synthetic demonstration",
+      "language": "bash",
+      "fenceIndex": 1,
+      "english": {
+        "path": "book/en/part-3-oracles/10a-todm-toolbox-models-and-adrs.md",
+        "line": 60,
+        "sha256": "eae3fd2e140df0aeae1245b28f23526fbf451f057bf9ed37aec4b20613a7e3f6"
+      },
+      "spanish": {
+        "path": "book/es/parte-3-oraculos/10a-herramientas-todm-modelos-y-adrs.md",
+        "line": 60,
+        "sha256": "eae3fd2e140df0aeae1245b28f23526fbf451f057bf9ed37aec4b20613a7e3f6"
+      },
+      "canonicalExecutableCode": true,
+      "sameBytes": true,
+      "dependencies": "Bash syntax only here; real Podman/SDK/PowerShell and OS reproduction remain separate",
+      "staticChecks": [
+        {
+          "kind": "BASH_SYNTAX",
+          "commandsExecuted": false
+        }
+      ],
+      "completeIntegrationEstablished": false
+    },
+    {
+      "id": "10a.2",
+      "title": "Check valid and invalid process traces",
+      "publishedLabel": "Reproduction commands \u00b7 expected negative control",
+      "language": "bash",
+      "fenceIndex": 2,
+      "english": {
+        "path": "book/en/part-3-oracles/10a-todm-toolbox-models-and-adrs.md",
+        "line": 75,
+        "sha256": "1ae755d86f886e98a76769eaf8ec4caf87b03a51cf67ddcaa0ad2c7ff3a59815"
+      },
+      "spanish": {
+        "path": "book/es/parte-3-oraculos/10a-herramientas-todm-modelos-y-adrs.md",
+        "line": 75,
+        "sha256": "1ae755d86f886e98a76769eaf8ec4caf87b03a51cf67ddcaa0ad2c7ff3a59815"
+      },
+      "canonicalExecutableCode": true,
+      "sameBytes": true,
+      "dependencies": "Bash syntax only here; real Podman/SDK/PowerShell and OS reproduction remain separate",
+      "staticChecks": [
+        {
+          "kind": "BASH_SYNTAX",
+          "commandsExecuted": false
+        }
+      ],
+      "completeIntegrationEstablished": false
+    },
+    {
+      "id": "10a.3",
+      "title": "Verify the baseline and export the decision profile",
+      "publishedLabel": "Reproduction commands \u00b7 no approval authority",
+      "language": "bash",
+      "fenceIndex": 3,
+      "english": {
+        "path": "book/en/part-3-oracles/10a-todm-toolbox-models-and-adrs.md",
+        "line": 90,
+        "sha256": "330579f32dcba4159b3a1c82ac207a500f06445a90003f728b1dd2442f2f2610"
+      },
+      "spanish": {
+        "path": "book/es/parte-3-oraculos/10a-herramientas-todm-modelos-y-adrs.md",
+        "line": 90,
+        "sha256": "330579f32dcba4159b3a1c82ac207a500f06445a90003f728b1dd2442f2f2610"
+      },
+      "canonicalExecutableCode": true,
+      "sameBytes": true,
+      "dependencies": "Bash syntax only here; real Podman/SDK/PowerShell and OS reproduction remain separate",
+      "staticChecks": [
+        {
+          "kind": "BASH_SYNTAX",
+          "commandsExecuted": false
+        }
+      ],
+      "completeIntegrationEstablished": false
+    },
+    {
+      "id": "10a.4",
+      "title": "Revalidate a captured portable bundle",
+      "publishedLabel": "Illustrative commands \u00b7 requires a bundle and fresh output paths",
+      "language": "bash",
+      "fenceIndex": 4,
+      "english": {
+        "path": "book/en/part-3-oracles/10a-todm-toolbox-models-and-adrs.md",
+        "line": 120,
+        "sha256": "ab9f858001d01f886b650998418a81084f896725a5db567aba135a4cb40e8ca3"
+      },
+      "spanish": {
+        "path": "book/es/parte-3-oraculos/10a-herramientas-todm-modelos-y-adrs.md",
+        "line": 120,
+        "sha256": "ab9f858001d01f886b650998418a81084f896725a5db567aba135a4cb40e8ca3"
+      },
+      "canonicalExecutableCode": true,
+      "sameBytes": true,
+      "dependencies": "Bash syntax only here; real Podman/SDK/PowerShell and OS reproduction remain separate",
+      "staticChecks": [
+        {
+          "kind": "BASH_SYNTAX",
+          "commandsExecuted": false
         }
       ],
       "completeIntegrationEstablished": false
@@ -440,6 +548,87 @@
       "sameBytes": false,
       "dependencies": "Narrative topology, file tree or historical output; not executable source",
       "staticChecks": [],
+      "completeIntegrationEstablished": false
+    },
+    {
+      "id": "25a.2",
+      "title": "Collect and verify a local campaign",
+      "publishedLabel": "Illustrative reproduction commands \u00b7 example output path",
+      "language": "bash",
+      "fenceIndex": 2,
+      "english": {
+        "path": "book/en/part-5-capacity/25a-mainframe-on-prem-azure-and-banking-network-infrastructure.md",
+        "line": 125,
+        "sha256": "562699a4cd29e54b48297d87406e4b9611b89630110daa961e828db2efdb104f"
+      },
+      "spanish": {
+        "path": "book/es/parte-5-capacidad/25a-infraestructura-mainframe-local-azure-y-redes-bancarias.md",
+        "line": 123,
+        "sha256": "562699a4cd29e54b48297d87406e4b9611b89630110daa961e828db2efdb104f"
+      },
+      "canonicalExecutableCode": true,
+      "sameBytes": true,
+      "dependencies": "Bash syntax only here; real Podman/SDK/PowerShell and OS reproduction remain separate",
+      "staticChecks": [
+        {
+          "kind": "BASH_SYNTAX",
+          "commandsExecuted": false
+        }
+      ],
+      "completeIntegrationEstablished": false
+    },
+    {
+      "id": "25a.3",
+      "title": "Recorded deployment response",
+      "publishedLabel": "Executed \u00b7 Azure CLI capture, 8 November 2026",
+      "language": "json",
+      "fenceIndex": 3,
+      "english": {
+        "path": "book/en/part-5-capacity/25a-mainframe-on-prem-azure-and-banking-network-infrastructure.md",
+        "line": 245,
+        "sha256": "8165964df526a8a364c9dfcf8b58e49d37493f268a163c5c0a3953c3f015d70a"
+      },
+      "spanish": {
+        "path": "book/es/parte-5-capacidad/25a-infraestructura-mainframe-local-azure-y-redes-bancarias.md",
+        "line": 245,
+        "sha256": "8165964df526a8a364c9dfcf8b58e49d37493f268a163c5c0a3953c3f015d70a"
+      },
+      "canonicalExecutableCode": true,
+      "sameBytes": true,
+      "dependencies": "JSON documents only; examples do not establish approval, provenance or executable business semantics",
+      "staticChecks": [
+        {
+          "kind": "JSON_SYNTAX",
+          "documents": 1
+        }
+      ],
+      "completeIntegrationEstablished": false
+    },
+    {
+      "id": "25a.4",
+      "title": "Recorded runner response",
+      "publishedLabel": "Executed \u00b7 Azure CLI capture, 8 November 2026",
+      "language": "json",
+      "fenceIndex": 4,
+      "english": {
+        "path": "book/en/part-5-capacity/25a-mainframe-on-prem-azure-and-banking-network-infrastructure.md",
+        "line": 258,
+        "sha256": "1ecc696a573c4c4afef59a145072a9d48f0d86caa6a3d0f56d9506cc991fa990"
+      },
+      "spanish": {
+        "path": "book/es/parte-5-capacidad/25a-infraestructura-mainframe-local-azure-y-redes-bancarias.md",
+        "line": 258,
+        "sha256": "1ecc696a573c4c4afef59a145072a9d48f0d86caa6a3d0f56d9506cc991fa990"
+      },
+      "canonicalExecutableCode": true,
+      "sameBytes": true,
+      "dependencies": "JSON documents only; examples do not establish approval, provenance or executable business semantics",
+      "staticChecks": [
+        {
+          "kind": "JSON_SYNTAX",
+          "documents": 1
+        }
+      ],
       "completeIntegrationEstablished": false
     },
     {

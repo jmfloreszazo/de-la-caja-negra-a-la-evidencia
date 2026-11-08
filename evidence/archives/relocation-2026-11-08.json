@@ -1,0 +1,182 @@
+{
+  "schemaVersion": 1,
+  "classification": "LOCAL_BYTE_PRESERVING_RELOCATION_NOT_NEW_EXPERIMENT",
+  "createdUtc": "2026-11-08T13:30:36.1557193Z",
+  "status": "VERIFIED_AND_RELOCATED",
+  "files": [
+    {
+      "source": "dist/reproducibility-pass-2026-11-07/de-la-caja-negra-a-la-evidencia-es.pdf",
+      "destination": "evidence/archives/preserved-dist/reproducibility-pass-2026-11-07/de-la-caja-negra-a-la-evidencia-es.pdf",
+      "bytes": 7101346,
+      "sha256": "3ff9a07e30661054979ec58e28706898ade05b244e1126bf7e3676e224e4bb9c"
+    },
+    {
+      "source": "dist/reproducibility-pass-2026-11-07/from-black-box-to-evidence-en.pdf",
+      "destination": "evidence/archives/preserved-dist/reproducibility-pass-2026-11-07/from-black-box-to-evidence-en.pdf",
+      "bytes": 6893093,
+      "sha256": "8d01d9862f8dbad0d982fa4a66294bfbe07d934fd11bd27693a6fc1710ba8961"
+    },
+    {
+      "source": "dist/reproducibility-pass-2026-11-07/local-verification-2026-11-07.json",
+      "destination": "evidence/archives/preserved-dist/reproducibility-pass-2026-11-07/local-verification-2026-11-07.json",
+      "bytes": 10500,
+      "sha256": "e4a982fd0980d2101e33e0e15f5a34fc644fe7a571401650fa773b1a2b9e8dc7"
+    },
+    {
+      "source": "dist/reproducibility-pass-2026-11-07/local-verification-2026-11-07.zip",
+      "destination": "evidence/archives/preserved-dist/reproducibility-pass-2026-11-07/local-verification-2026-11-07.zip",
+      "bytes": 1205681,
+      "sha256": "7f7aa564397a96fc44e8925481767da9f4ae285ca01ed56917d15c3a674e4991"
+    },
+    {
+      "source": "dist/azure-e1-e4-todm-2026-11-08.receipt.json",
+      "destination": "evidence/archives/preserved-dist/azure-e1-e4-todm-2026-11-08.receipt.json",
+      "bytes": 197,
+      "sha256": "ac51a6da6d7bdec0f6c25fad1c5e1028e2b01801c7797f8605c5382ee2efa383"
+    },
+    {
+      "source": "dist/azure-e1-e4-todm-2026-11-08.zip",
+      "destination": "evidence/archives/preserved-dist/azure-e1-e4-todm-2026-11-08.zip",
+      "bytes": 40836261,
+      "sha256": "ec275eb492c31449bfcac04da2fd166b6655ca3a47030149ba8bd1c7115ddd9f"
+    },
+    {
+      "source": "dist/azure-m1-2026-11-08-layout2.receipt.json",
+      "destination": "evidence/archives/preserved-dist/azure-m1-2026-11-08-layout2.receipt.json",
+      "bytes": 196,
+      "sha256": "ec78310e8b590b9f7ea1ad9913cc3f98b29be6ed4b93d70c8579283194f3e95d"
+    },
+    {
+      "source": "dist/azure-m1-2026-11-08-layout2.zip",
+      "destination": "evidence/archives/preserved-dist/azure-m1-2026-11-08-layout2.zip",
+      "bytes": 16354340,
+      "sha256": "6f62766b27dc8f94d14681da32fc66b03744480f6e6c849a5107f2ca230b84ec"
+    },
+    {
+      "source": "dist/azure-m1-2026-11-08.receipt.json",
+      "destination": "evidence/archives/preserved-dist/azure-m1-2026-11-08.receipt.json",
+      "bytes": 188,
+      "sha256": "85fccbb6460ebeb95e23d3230b5e7a6716ed3ffae494f3d614a4af8b83eeeaca"
+    },
+    {
+      "source": "dist/azure-m1-2026-11-08.zip",
+      "destination": "evidence/archives/preserved-dist/azure-m1-2026-11-08.zip",
+      "bytes": 16366688,
+      "sha256": "b42b5b7e5431d4c000e3f645b91d43c02ae8724a61f33be4b5b66a506564d01f"
+    },
+    {
+      "source": "dist/azure-single-vm-2026-11-07.receipt.json",
+      "destination": "evidence/archives/preserved-dist/azure-single-vm-2026-11-07.receipt.json",
+      "bytes": 196,
+      "sha256": "16c9e0734aff073606f38c3f9e0d19f37e4f688924c3a5b6c174dc0e62d2dd61"
+    },
+    {
+      "source": "dist/azure-single-vm-2026-11-07.zip",
+      "destination": "evidence/archives/preserved-dist/azure-single-vm-2026-11-07.zip",
+      "bytes": 18617029,
+      "sha256": "3027ecf338243f78b77490d7d3115e3c9864d34b1da29b2c31b0d9e06069adca"
+    },
+    {
+      "source": "dist/e4-live-builder-2026-11-08.receipt.json",
+      "destination": "evidence/archives/preserved-dist/e4-live-builder-2026-11-08.receipt.json",
+      "bytes": 196,
+      "sha256": "5fae560dd4976f04104d083043bea6eb3b1355018566ac9bd8d25f05a7666b64"
+    },
+    {
+      "source": "dist/e4-live-builder-2026-11-08.zip",
+      "destination": "evidence/archives/preserved-dist/e4-live-builder-2026-11-08.zip",
+      "bytes": 13685290,
+      "sha256": "6e8b0c3913bebd6e85013db5fbe4dcb6b0a984c2c286b928c012805a6d6a23d0"
+    },
+    {
+      "source": "dist/editorial-design-2026-11-07.json",
+      "destination": "evidence/archives/preserved-dist/editorial-design-2026-11-07.json",
+      "bytes": 23238,
+      "sha256": "d5168e3fd57411b2a0d470fed1c08380b035406f1db118efb6a074019984102d"
+    },
+    {
+      "source": "dist/editorial-design-2026-11-07.zip",
+      "destination": "evidence/archives/preserved-dist/editorial-design-2026-11-07.zip",
+      "bytes": 38704283,
+      "sha256": "5873159a8d10676e5c44491c88dd5e6afbb60045aff3bd27464427d1cf44ffeb"
+    },
+    {
+      "source": "dist/local-e2-cluster-2026-11-07.receipt.json",
+      "destination": "evidence/archives/preserved-dist/local-e2-cluster-2026-11-07.receipt.json",
+      "bytes": 196,
+      "sha256": "60f0efee113b168d6fefbd9bc6513393ed1e1360db3411a41547bf929343f52c"
+    },
+    {
+      "source": "dist/local-e2-cluster-2026-11-07.zip",
+      "destination": "evidence/archives/preserved-dist/local-e2-cluster-2026-11-07.zip",
+      "bytes": 14232230,
+      "sha256": "672332f83d22a5149a6a0a9418dcd210b49c5a0201daf93d7329f04375d72acd"
+    },
+    {
+      "source": "dist/local-e4-qualification-2026-11-07.receipt.json",
+      "destination": "evidence/archives/preserved-dist/local-e4-qualification-2026-11-07.receipt.json",
+      "bytes": 203,
+      "sha256": "9e2fb52f58123d62b597efb6a28ca1492d60c55a76302a0fbd249b54a7c95480"
+    },
+    {
+      "source": "dist/local-e4-qualification-2026-11-07.zip",
+      "destination": "evidence/archives/preserved-dist/local-e4-qualification-2026-11-07.zip",
+      "bytes": 14404696,
+      "sha256": "8ada80bed93b0e9098019a8b4b17d1963ab520d02ccc895650b1dbe789a5f5dd"
+    },
+    {
+      "source": "dist/local-experiments-2026-11-07.json",
+      "destination": "evidence/archives/preserved-dist/local-experiments-2026-11-07.json",
+      "bytes": 70330,
+      "sha256": "a2bb8e8107b1f3ca132be67e8a092fbe66fd24809fcb55254dec3dbf6e67c80e"
+    },
+    {
+      "source": "dist/local-experiments-2026-11-07.receipt.json",
+      "destination": "evidence/archives/preserved-dist/local-experiments-2026-11-07.receipt.json",
+      "bytes": 287,
+      "sha256": "f89cd29aefa4e881b81a893cb940bec0bfe138d10ac6c61e13a0488d3598802c"
+    },
+    {
+      "source": "dist/local-experiments-2026-11-07.zip",
+      "destination": "evidence/archives/preserved-dist/local-experiments-2026-11-07.zip",
+      "bytes": 14522893,
+      "sha256": "8149cc8dbd7ada1a600b01ca34885824fb264b1137a9a0e544869fbc4318f0ba"
+    },
+    {
+      "source": "dist/local-public-campaign-2026-11-07.receipt.json",
+      "destination": "evidence/archives/preserved-dist/local-public-campaign-2026-11-07.receipt.json",
+      "bytes": 202,
+      "sha256": "da43a70dbe84a3da725b78819c276bb514282bb950eeedfb1ce8c3920040cee5"
+    },
+    {
+      "source": "dist/local-public-campaign-2026-11-07.zip",
+      "destination": "evidence/archives/preserved-dist/local-public-campaign-2026-11-07.zip",
+      "bytes": 15173692,
+      "sha256": "9a0af52df6eaa0441d50f362ce6381f5c709595befc2208dc094d5d7e8c5f022"
+    },
+    {
+      "source": "dist/local-verification-2026-11-07.json",
+      "destination": "evidence/archives/preserved-dist/local-verification-2026-11-07.json",
+      "bytes": 10500,
+      "sha256": "e4a982fd0980d2101e33e0e15f5a34fc644fe7a571401650fa773b1a2b9e8dc7"
+    },
+    {
+      "source": "dist/local-verification-2026-11-07.zip",
+      "destination": "evidence/archives/preserved-dist/local-verification-2026-11-07.zip",
+      "bytes": 1205681,
+      "sha256": "7f7aa564397a96fc44e8925481767da9f4ae285ca01ed56917d15c3a674e4991"
+    },
+    {
+      "source": "dist/todm-tools-book-2026-11-08.receipt.json",
+      "destination": "evidence/archives/preserved-dist/todm-tools-book-2026-11-08.receipt.json",
+      "bytes": 258,
+      "sha256": "997dc07ff7bd1f9f2ba36585b189b0ef300f3d6abb85bda00219f00b5eac39d3"
+    },
+    {
+      "source": "dist/todm-tools-book-2026-11-08.zip",
+      "destination": "evidence/archives/preserved-dist/todm-tools-book-2026-11-08.zip",
+      "bytes": 13074380,
+      "sha256": "fc4840f0c04f4e3c1c0de9d01fa5a29f7af540bdec10e83510af25fc3efe002d"
+    }
+  ]
+}

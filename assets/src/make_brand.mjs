@@ -6,23 +6,23 @@ import { fileURLToPath } from "node:url";
 const COLORS={"ink":"#121315","dark":"#0E1012","paper":"#F7F7F5","white":"#FFFFFF","red":"#D9232E","grey":"#797E83","muted":"#565C62","stroke":"#D5D8DA"};
 function doc(w,h,body,bg){return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${w} ${h}" width="${w}" height="${h}" role="img">${bg?`<rect width="${w}" height="${h}" fill="${bg}"/>`:""}${body}</svg>\n`;}
 
-function tx(x,y,t,size,c=COLORS.ink,weight=400,spacing=0,anchor="start"){let e=t.replaceAll("&","&amp;").replaceAll("<","&lt;").replaceAll(">","&gt;");return `<text x="${x}" y="${y}" font-family="Arial,Helvetica,sans-serif" font-size="${size}" font-weight="${weight}" fill="${c}" letter-spacing="${spacing}" text-anchor="${anchor}">${e}</text>`;}
+function tx(x,y,t,size,c=COLORS.ink,weight=400,spacing=0,anchor="start"){let e=t.replaceAll("&","&amp;").replaceAll("<","&lt;").replaceAll(">","&gt;");return `<text x="${x}" y="${y}" font-family="DejaVu Sans" font-size="${size}" font-weight="${weight}" fill="${c}" letter-spacing="${spacing}" text-anchor="${anchor}">${e}</text>`;}
 
-function primary(){
+function primary(p={top:"#222427",left:"#111214",right:"#1A1C1F",border:"#878B8E",ridge:"#C0C3C4",links:"#60666B",dots:"#888E92",trace:COLORS.red,gate:"#151719"}){
  const edges=[[368,302,417,278],[417,278,474,324],[474,324,533,272],[368,302,351,365],[351,365,415,393],[415,393,474,324],[415,393,474,445],[474,445,537,392],[537,392,533,272],[351,365,376,448],[376,448,474,445],[417,278,461,232],[461,232,533,272],[415,393,537,392],[474,324,537,392]];
  const nodes=[[368,302],[417,278],[474,324],[533,272],[351,365],[415,393],[474,445],[537,392],[376,448],[461,232]];
  return `<g stroke-linejoin="round">
- <path d="M126 172 L366 64 L594 150 L351 262 Z" fill="#222427"/>
- <path d="M126 172 L351 262 L351 548 L126 455 Z" fill="#111214"/>
- <path d="M351 262 L594 150 L594 432 L351 548 Z" fill="#1A1C1F"/>
- <path d="M126 172 L366 64 L594 150 L594 432 L351 548 L126 455 Z" fill="none" stroke="#878B8E" stroke-width="2"/>
- <path d="M126 172 L351 262 L594 150 M351 262 V548" fill="none" stroke="#C0C3C4" stroke-width="2"/>
- <g stroke="#60666B" stroke-width="2" fill="none" opacity=".96">${edges.map(([a,b,c,d])=>`<line x1="${a}" y1="${b}" x2="${c}" y2="${d}"/>`).join("")}</g>
- <g fill="#888E92">${nodes.map(([a,b])=>`<circle cx="${a}" cy="${b}" r="7.5"/>`).join("")}</g>
- <path d="M409 351 L481 414 L568 413 L693 351 L832 351" fill="none" stroke="${COLORS.red}" stroke-width="11" stroke-linecap="round" stroke-linejoin="round"/>
- <g fill="${COLORS.red}"><circle cx="409" cy="351" r="13"/><circle cx="481" cy="414" r="13"/><circle cx="693" cy="351" r="14"/></g>
- <path d="M661 199 L759 151 L759 301 M759 402 V485 L661 535 L661 401" fill="none" stroke="#151719" stroke-width="12" stroke-linecap="square"/>
- <path d="M832 327 L867 351 L832 375 Z" fill="${COLORS.red}"/></g>`;
+ <path d="M126 172 L366 64 L594 150 L351 262 Z" fill="${p.top}"/>
+ <path d="M126 172 L351 262 L351 548 L126 455 Z" fill="${p.left}"/>
+ <path d="M351 262 L594 150 L594 432 L351 548 Z" fill="${p.right}"/>
+ <path d="M126 172 L366 64 L594 150 L594 432 L351 548 L126 455 Z" fill="none" stroke="${p.border}" stroke-width="2"/>
+ <path d="M126 172 L351 262 L594 150 M351 262 V548" fill="none" stroke="${p.ridge}" stroke-width="2"/>
+ <g stroke="${p.links}" stroke-width="2" fill="none" opacity=".96">${edges.map(([a,b,c,d])=>`<line x1="${a}" y1="${b}" x2="${c}" y2="${d}"/>`).join("")}</g>
+ <g fill="${p.dots}">${nodes.map(([a,b])=>`<circle cx="${a}" cy="${b}" r="7.5"/>`).join("")}</g>
+ <path d="M409 351 L481 414 L568 413 L693 351 L832 351" fill="none" stroke="${p.trace}" stroke-width="11" stroke-linecap="round" stroke-linejoin="round"/>
+ <g fill="${p.trace}"><circle cx="409" cy="351" r="13"/><circle cx="481" cy="414" r="13"/><circle cx="693" cy="351" r="14"/></g>
+ <path d="M661 199 L759 151 L759 301 M759 402 V485 L661 535 L661 401" fill="none" stroke="${p.gate}" stroke-width="12" stroke-linecap="square"/>
+ <path d="M832 327 L867 351 L832 375 Z" fill="${p.trace}"/></g>`;
 }
 
 // Two door-frame sides, each split around the red trace; never close the central gap.
@@ -50,18 +50,20 @@ function cover(lang){
  let es=lang==="es",t1=es?"De la caja negra":"From Black Box",t2=es?"a la evidencia":"to Evidence";
  let s1=es?"Modernizar COBOL más allá":"Modernizing COBOL beyond",s2=es?"de la traducción":"translation";
  let ed=es?"EDICIÓN v2026.10.29":"EDITION v2026.10.29";
- let b=tx(136,144,"JMFLORESZAZO",37,COLORS.ink,800,5)+
- `<path d="M1365 126 H1460" stroke="${COLORS.red}" stroke-width="9"/>`+
- tx(1280,140,"ARCHITECTING WHAT'S NEXT",23,COLORS.ink,700,2.5,"end")+
- `<path d="M132 185 H1468" stroke="${COLORS.stroke}" stroke-width="2"/>`+
- tx(134,392,t1,126,COLORS.ink,800,-4.5)+tx(134,538,t2,126,COLORS.red,800,-4.5)+
- tx(137,641,s1,53,COLORS.muted,400,-.6)+tx(137,708,s2,53,COLORS.muted,400,-.6)+
- `<g transform="translate(0 620) scale(1.6)">${primary()}</g>`+
- `<path d="M132 2135 H1468" stroke="${COLORS.stroke}" stroke-width="2"/>`+
- tx(134,2210,"JOSÉ MARÍA FLORES ZAZO",34,COLORS.ink,700,2.2)+
- tx(1465,2210,ed,27,COLORS.grey,600,2,"end")+
- tx(134,2295,"LEGACY / ARCHITECTURE / EVIDENCE",22,COLORS.grey,600,3);
- return doc(1600,2400,b,COLORS.paper);
+ const palette={top:"#E4F2EF",left:"#C5DED7",right:"#AED0C8",border:"#547B7B",ridge:"#F8FCFA",links:"#527576",dots:"#345866",trace:"#C35B46",gate:"#20354B"};
+ let b=tx(136,144,"JMFLORESZAZO",37,"#20354B",800,5)+
+ `<path d="M1365 126 H1460" stroke="#C35B46" stroke-width="9"/>`+
+ tx(1280,140,"ARCHITECTING WHAT'S NEXT",23,"#20354B",700,2.5,"end")+
+ `<path d="M132 185 H1468" stroke="#CAD7DF" stroke-width="2"/>`+
+ tx(134,392,t1,126,"#20354B",800,-4.5)+tx(134,538,t2,126,"#287F7A",800,-4.5)+
+ tx(137,641,s1,53,"#526577",400,-.6)+tx(137,708,s2,53,"#526577",400,-.6)+
+ `<rect x="100" y="790" width="1400" height="1000" rx="48" fill="#EEF3F4"/>`+
+ `<g transform="translate(0 720) scale(1.6)">${primary(palette)}</g>`+
+ `<path d="M132 2135 H1468" stroke="#CAD7DF" stroke-width="2"/>`+
+ tx(134,2210,"JOSÉ MARÍA FLORES ZAZO",34,"#20354B",700,2.2)+
+ tx(1465,2210,ed,27,"#607286",600,2,"end")+
+ tx(134,2295,"jmfloreszazo.com · LEGACY / ARCHITECTURE / EVIDENCE",22,"#526577",600,2);
+ return doc(1600,2400,b,"#FBF8F3");
 }
 
 function social(){

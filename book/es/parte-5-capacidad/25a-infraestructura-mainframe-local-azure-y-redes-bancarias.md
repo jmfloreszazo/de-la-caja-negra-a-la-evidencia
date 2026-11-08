@@ -6,7 +6,7 @@
 
 > **Tesis.** No se sustituye un mainframe con una máquina de más núcleos. Se sustituye un servicio operacional completo: procesamiento transaccional, I/O, aislamiento, commit duradero, continuidad y respuesta desde una oficina situada quizá a miles de kilómetros. La equivalencia es una prueba de extremo a extremo, no una comparación de fichas comerciales.
 
-Este capítulo complementa el [capítulo 25](25-azure-o-una-maquina-enorme-en-el-cliente.md) con referencias comerciales identificables y un protocolo para falsar el diseño. **Datos de producto consultados en octubre de 2026; resultados de rendimiento propios frente a esos equipos: ninguno.**
+Este capítulo complementa el [capítulo 25](25-azure-o-una-maquina-enorme-en-el-cliente.md) con referencias comerciales identificables y un protocolo para falsar el diseño. **Datos de producto consultados en octubre de 2026; resultados de rendimiento propios frente a esos equipos: ninguno.** Lo que *sí* hemos medido —en una VM de Azure, con carga sintética— se describe en sus propias secciones después del protocolo de comparación, para que el lector no lo confunda con esa comparación.
 
 ## Equipos reales, números reales y una comparación que todavía no podemos hacer
 
@@ -102,6 +102,32 @@ El [ensayo ejecutado M1](../../../evidence/runs/M1.es.md) comparó gRPC/Protobuf
 
 La [evidencia M2 ejecutada](../../../evidence/runs/M2.es.md) conecta **REST y gRPC al mismo ledger PostgreSQL durable**. Sobre un runner compartido, la serie de 20 casos (1/2/4/8/16 procesos, dos protocolos, tráfico uniforme y cuenta caliente) produjo **20 PASS contables**: 256 commits, 512 asientos y 256 eventos outbox por caso. Los procesos adicionales **no aceleraron el sistema**; a 16 procesos la carga competía por una CPU pequeña y una única BD. El gráfico y todos los valores están conservados en el repositorio. **No lo confundamos con un benchmark Azure**: faltan nodos independientes, TLS, carga abierta y fallos de red.
 
+### Primero reproducir, después desplegar y después medir capacidad distribuida
+
+La [infraestructura de experimentos y su guía de ejecución](../../../infra/experiments/README.md) separan esos tres pasos. Los mismos ensayos del laboratorio base, PostgreSQL E1, Orleans funcional E2 y M2 pueden ejecutarse localmente o en un runner Azure, conservando logs, resultados del oráculo independiente y procedencia del entorno. **La infraestructura Bicep solo se ha compilado y comprobado localmente; no se ha desplegado ni medido en Azure.**
+
+La plantilla prepara redes privadas, almacenamiento de evidencias y un VM Scale Set con 0/1/2/4/8/16 instancias. Aprovisionar instancias **no** instala réplicas distribuidas de la aplicación. El PostgreSQL administrado opcional no es la base desechable que destruyen las pruebas funcionales. La aceptación real de E3 sigue necesitando un contrato de capacidad aprobado, TLS equivalente, nodos separados para servicios y generador de carga, tráfico abierto, recuperación N-1 y costes medidos. Un PASS local reproducible solo demuestra los controles que realmente ha ejecutado.
+
+El **7 de noviembre de 2026**, una [nueva reproducción local](../../../evidence/runs/local-reproduction-2026-11-07.json) sobre WSL/Docker superó 11 controles PostgreSQL/Python, 10 controles .NET, 16 casos de paridad secuencial y la matriz funcional de ocho casos y 960 transferencias. El ensayo Orleans co-localizado superó siete controles funcionales; M2 superó los 20 escenarios con 256 commits cada uno. Los oráculos independientes rechazaron la corrupción deliberada del ledger. Se conservan tres intentos fallidos del lanzador junto con las repeticiones correctas, en lugar de borrarlos. Esta campaña no ejecutó GitHub Actions ni Azure y no completa la aceptación de E1–E4; sus logs, volcados y parches de código completos se conservan en un archivo local de evidencias.
+
+Una [campaña E2 local posterior](../../../evidence/runs/local-e2-cluster-2026-11-07.json) superó también el ensayo de deadlock real, seis ejecuciones comparables de carga con 600 transferencias durables y los controles de terminación real del proceso. Dos procesos de silo separados y un cliente externo recuperaron la operación tras matar el secundario, tanto con membresía de desarrollo como con ADO.NET sobre PostgreSQL. Otros dos casos ejercitaron la terminación antes e inmediatamente después del COMMIT SQL. El oráculo SQL independiente pasó tras la recuperación. **Son observaciones reales de fallo de procesos sobre un único host físico, no HA entre nodos físicos, un SLA de recuperación de producción ni la aceptación final de E2.**
+
+Una [cualificación local del prerrequisito de E4](../../../evidence/runs/local-e4-qualification-2026-11-07.json) ejercitó después 58 casos congelados por candidato en contenedores separados, sin usuario raíz ni red. El gate independiente aceptó el candidato de referencia y rechazó los tres mutantes conocidos: redondeo, umbral y aprobación de cuentas inactivas. Se denegaron tres intentos reales de escritura sobre el contrato original, el verificador y el sistema de archivos raíz del contenedor; la escritura en el directorio desechable del candidato sí funcionó. Los hashes de las fuentes protegidas no cambiaron. El [arnés de reproducción](../../../lab/e4_agents/README.md) conserva el código exacto del supervisor, las inspecciones de los contenedores y las observaciones COBOL reales reutilizadas del ensayo básico anterior; no inventa una nueva ejecución COBOL. También pasaron trece controles de regresión sintéticos separados.
+
+**Esto es evidencia de un prerrequisito, no la aceptación de E4.** No se invocó ningún agente ni modelo real, y no se midieron tasas de defectos aceptados, falsos bloqueos, tiempo de revisión humana ni coste de modelos. El gate mantiene la autoridad `DEMO_ONLY / SIMULATED_ALLOW` para el candidato correcto y bloquea los mutantes; no autoriza un despliegue de producción. Los contenedores comparten el kernel del host y esta campaña solo ejecutó las fuentes de referencia y los mutantes conocidos, no código arbitrario generado por modelos.
+
+El repositorio también incluye un [recolector de campañas locales](../../../lab/tools/reproduce_campaign.py), con [instrucciones de preparación](../../../lab/README.md#reproduce-the-local-multi-experiment-campaign). Una [invocación completa registrada](../../../evidence/runs/local-public-campaign-2026-11-07.json) superó el ensayo básico, E1 sobre PostgreSQL, E2 ampliado, M2 y el prerrequisito de E4, conservando los hashes de 331 archivos fuente y verificando 226 artefactos capturados. Así se puede reproducir la secuencia sin los ayudantes particulares de la sesión del autor:
+
+**Listado 25a.2 · Recopilar y verificar una campaña local** — *Comandos ilustrativos de reproducción · ruta de salida de ejemplo*
+
+```bash
+python3 lab/tools/reproduce_campaign.py \
+  --engine docker --output lab/results/campaign-001
+python3 lab/tools/reproduce_campaign.py --verify lab/results/campaign-001
+```
+
+El comando normal requiere fuentes del laboratorio sin cambios pendientes. Para cambios locales no publicados, se añade expresamente `--include-working-tree`: el recolector guarda la instantánea del código ejecutado por separado del commit base. Cada etapa se ejecuta en una copia temporal nueva sobre el sistema de archivos de Linux; los intentos fallidos se conservan, no se sobrescriben. La integridad de los artefactos no convierte un ensayo fallido en correcto ni los controles locales en aceptación sobre Azure. SQL Server sigue siendo opcional y requiere aceptar su licencia por separado.
+
 ## Precios fechados y TCO: que no nos engañe el precio por vCPU
 
 La consulta oficial realizada **el 29-10-2026 a las 18:26 UTC**, en West Europe (Linux, consumo, EUR orientativo), devolvió **D4as_v5 0,1830 €/h**, **D4s_v5 0,2024 €/h** y **D8as_v5 0,3661 €/h**. Esto implica **400,77 €/mes** de cómputo para tres D4as_v5 durante 730 horas, frente a **801,54 €/mes** para seis, siempre sin BD, discos, redes o alta disponibilidad. Los medidores, `effectiveStartDate` y fuente CI están en el registro enlazado.
@@ -128,9 +154,134 @@ El ensayo se debe ejecutar con carga **online + batch**, claves calientes, repli
 
 La aceptación exige equivalencia de **resultados de negocio, finalización durable, recuperación y latencia percibida**, no solo TPS. Una red rápida sin un ledger correcto no sirve; un ledger correcto con pantallas inaceptables tampoco.
 
+## Demostración ejecutada en Azure: evidencia, no una afirmación de capacidad
+
+La [primera campaña real en Azure](../../../evidence/runs/azure-single-vm-2026-11-07.json) desplegó los Bicep en un grupo de recursos exclusivo de la suscripción autorizada por el autor. West Europe rechazó nuevos recursos para esa suscripción aunque hubiera cuota de vCPU disponible. Se conservó la validación fallida; North Europe superó la validación ARM y el What-If, con 17 creaciones y ninguna modificación ni eliminación de recursos existentes. El ejecutor real fue una VM privada `Standard_D4s_v5`, con Podman, PostgreSQL 16.13, SDK .NET 10.0.100 y GnuCOBOL 3.1.2. El VMSS tenía cero trabajadores.
+
+Lo siguiente son **observaciones ejecutadas**, no pruebas previstas ni infraestructura simulada:
+
+- **Ensayo básico:** 58 casos COBOL/.NET y diez controles del gate. Tras descargar las bases SQLite originales, la auditoría independiente del host aceptó nueve bases correctas y rechazó la corrompida deliberadamente. El mutante de redondeo quedó bloqueado en `C003`.
+- **E1 PostgreSQL:** pasaron 11 controles Python, diez controles .NET, 16 casos de paridad secuencial y la matriz de ocho casos y 960 transferencias. El oráculo independiente del ledger rechazó la corrupción deliberada de apuntes.
+- **E2:** seis ejecuciones comparables de carga confirmaron 600 transferencias. Dos procesos de silo y un cliente separado recuperaron la operación tras un `SIGKILL` real del proceso secundario, tanto con membresía de desarrollo como con ADO.NET sobre PostgreSQL. Pasaron siete invariantes SQL independientes tras la recuperación. Otros dos casos ejercitaron la terminación antes e inmediatamente después del COMMIT.
+- **M2:** pasaron los 20 casos REST/gRPC, uniforme/caliente y 1/2/4/8/16 procesos. Cada caso tuvo 256 commits durables, 512 apuntes y 256 entradas de outbox; el control negativo independiente detectó la corrupción y verificó la restauración.
+
+Se conservan los archivos de código originales, hashes, metadatos de instancia Azure, logs de ejecución, volcados SQL y evidencias descargadas. El primer intento M2 superó los controles numéricos, pero todavía emitía etiquetas heredadas que afirmaban usar un ejecutor GitHub y negaban la ejecución en Azure. Esos archivos brutos no se corrigieron retroactivamente: se arregló el generador del informe y otra repetición completa pasó con procedencia explícita del host Azure y del archivo fuente. No se lanzó GitHub Actions.
+
+**Alojar una prueba en la nube no convierte un ensayo de un solo host en aceptación de E3.** Las réplicas de M2 eran procesos de la misma VM; no hubo conmutación entre máquinas, equivalencia WAN/TLS, contrato de capacidad bancaria aprobado ni comparación con mainframe. E4 seguía sin campaña de agentes reales. Tras descargar las evidencias, se verificó que el ejecutor estaba **desasignado**, con cero instancias de trabajadores. Su disco, NAT, IP pública y almacenamiento seguían siendo facturables. Una alerta mensual de presupuesto no limita el gasto y no se inventó un coste facturado a partir de tarifas públicas.
+
+## Otra ejecución de transporte en Azure y un rechazo explícito de E3
+
+La [ejecución M1 en Azure del 8 de noviembre](../../../evidence/runs/azure-m1-2026-11-08.json)
+comparó REST/JSON y gRPC/Protobuf con concurrencias 8 y 32: ocho rondas
+alternadas de 2.500 solicitudes, **20.000 respuestas medidas, cero errores de
+respuesta**. Ambos controles negativos pasaron. Se conservaron fuentes y
+latencias por ronda; la VM de North Europe quedó desasignada tras la descarga.
+
+El tráfico siguió siendo **HTTP/2 sin TLS sobre loopback**, sin ledger durable.
+Azure identifica el anfitrión, no una ruta WAN. Estas observaciones breves de
+carga cerrada no establecen TPS bancarios ni un ganador universal de transporte.
+
+El [control reproducible de preparación de E3](../../../evidence/runs/e3-readiness-2026-11-08.json)
+devolvió `INCONCLUSIVE / BLOCK`, salida 3: los 14 campos obligatorios estaban
+vacíos, con estado `UNCONFIGURED`. El
+[comando](../../../lab/docs/EXPERIMENT_PROTOCOL.md) conserva el hash del contrato
+y los prerrequisitos ausentes, sin inventar objetivos. No es un experimento de
+carga: incluso un contrato completo necesita revisión externa y mediciones
+comparables de Azure, local y mainframe.
+
+## E1–E4 en la VM de Azure: cuatro demostraciones distintas
+
+La [campaña adicional del 8 de noviembre](../../../evidence/runs/azure-e1-e4-2026-11-08.json)
+repitió E1 PostgreSQL y E2 Orleans ampliado tras reforzar la recogida de
+pruebas. E1 volvió a superar la matriz de 960 transferencias; E2 pasó ambos
+proveedores de membresía, 600 transferencias de cargas equivalentes y fallos
+controlados de procesos. Logs, volcados y limpieza tienen ahora códigos de
+salida separados: perder evidencia no puede convertir silenciosamente un
+ensayo en verde.
+
+E3 ejecutó después un ensayo de ledger con **carga abierta exploratoria**, no
+solo el control de preparación anterior. Tres fases fijas ofrecieron 20, 40 y
+60 solicitudes/s durante seis segundos cada una. De **720 ofertas programadas,
+668 hicieron commit**, 48 fallaron al conectar y cuatro perdieron su instante
+programado. Se terminó un proceso de servicio a los ocho segundos y se reinició
+a los diez; el sustituto volvió a confirmar operaciones. Pasaron las siete
+invariantes contables, y borrar un apunte provocó tres violaciones antes de
+restaurarlo. Cada oferta fallida u omitida sigue en el denominador. El p99 de
+los ACK no es el p99 de todo lo ofrecido, ni la tasa sobre la ventana nominal
+es un techo de capacidad sostenida.
+
+Servicios y base desechable compartían una VM. Se capturó el estado autoritativo
+antes de eliminar el esquema privado del ensayo; el volcado posterior no
+restaura ese esquema eliminado. Ni recuperar un proceso ni configurar
+`synchronous_commit=on` demuestra HA entre máquinas, RPO/RTO bancario o
+comparación con mainframe. El contrato original de capacidad sigue sin configurar.
+
+E4 trasladó también la **ejecución del candidato** a Azure: Podman sin
+privilegios, supervisor UID 1000, candidato sin red ni credenciales y entradas
+protegidas de solo lectura. Reprodujo la respuesta real del modelo del capítulo
+29, sin contabilizar otra inferencia. El candidato pasó 16 pruebas propias y
+58 casos congelados; la cualificación rechazó tres mutantes y denegó tres
+escrituras protegidas. El primer intento falló porque el proceso no privilegiado
+heredó un directorio privado de root. Ese original se conserva junto a la
+repetición corregida, sin reescribirlo. Metadatos de instancia Azure, archivos
+de fuentes y un hash separado de las entradas vinculan ejecución y evidencia.
+
+## Lo que muestra Azure realmente
+
+Estas son **salidas reales proyectadas del CLI de Azure**, capturadas el
+**8 de noviembre de 2026, a las 10:03 UTC**, no pantallas del portal ni interfaces
+recreadas. El [manifiesto de captura](../../../evidence/runs/azure-cli-2026-11-08/capture.json)
+conserva los seis comandos exactos, fechas, códigos de salida y hashes de stdout;
+el [inventario](../../../evidence/runs/azure-cli-2026-11-08/resources.json)
+identifica la infraestructura desplegada. El
+[colector de solo lectura](../../../scripts/azure/capture-book-evidence.ps1)
+permite repetirlo contra un despliegue propio sin arrancar ninguna VM.
+
+La [respuesta del despliegue](../../../evidence/runs/azure-cli-2026-11-08/deployment.json)
+indica éxito de infraestructura, **no corrección de la aplicación o del experimento**:
+
+**Listado 25a.3 · Respuesta registrada del despliegue** — *Ejecutado · captura de Azure CLI, 8 de noviembre de 2026*
+
+```json
+{
+  "name": "book-experiments",
+  "state": "Succeeded",
+  "timestamp": "2026-11-07T23:17:25.358088+00:00"
+}
+```
+
+La [respuesta de la VM](../../../evidence/runs/azure-cli-2026-11-08/runner.json)
+muestra el recurso y su estado tras recoger los experimentos:
+
+**Listado 25a.4 · Respuesta registrada del runner** — *Ejecutado · captura de Azure CLI, 8 de noviembre de 2026*
+
+```json
+{
+  "location": "northeurope",
+  "name": "bookev1107-runner",
+  "size": "Standard_D4s_v5",
+  "statuses": [
+    "ProvisioningState/succeeded",
+    "PowerState/deallocated"
+  ]
+}
+```
+
+La [respuesta del conjunto escalable](../../../evidence/runs/azure-cli-2026-11-08/workers.json)
+registra capacidad cero y su consulta separada de instancias devuelve un array
+vacío. La [respuesta del almacenamiento](../../../evidence/runs/azure-cli-2026-11-08/storage.json)
+indica acceso solo HTTPS, TLS mínimo 1.2, claves compartidas deshabilitadas y
+acceso anónimo a blobs deshabilitado. Esos ajustes no certifican todos los
+permisos o rutas de red. Una VM desasignada tampoco equivale a factura cero:
+permanecen disco administrado, NAT, IP pública y almacenamiento. Esta captura
+fechada del plano de control complementa, pero no sustituye, los artefactos
+originales de las cargas y sus oráculos independientes.
+
 ## Evidencia propia: qué hay y qué no hay
 
-El laboratorio de esta rama sí dispone de [resultados E1a/E1b versionados](../../../evidence/runs/README.es.md): deadlock real `40P01`, serialización `40001`, oráculo que detecta corrupción, y paridad parcial .NET 10/Npgsql frente a PostgreSQL. **No existe todavía benchmark del IBM z17, LinuxONE, Dorado 8590, Azure Mdsv3 o EPYC**, ni medida desde una oficina a cientos de kilómetros. La matriz de evidencia no puede promover esas comparativas hasta disponer de carga reproducible, SLO aprobado y mediciones in situ.
+El laboratorio de esta rama sí dispone de [resultados E1a/E1b versionados](../../../evidence/runs/README.es.md): deadlock real `40P01`, serialización `40001`, oráculo que detecta corrupción, y paridad parcial .NET 10/Npgsql frente a PostgreSQL. Dispone también de los registros de Azure descritos arriba —una VM D4s_v5, cargas sintéticas, cada ejecución descargada y con hash— registrados como `demonstrated_not_accepted` en la [matriz de evidencia](../../../docs/EVIDENCE.es.md).
+
+**No existe todavía benchmark del IBM z17, LinuxONE, Dorado 8590, Azure Mdsv3 o EPYC**, ni segundo CPD, ni medida desde una oficina a cientos de kilómetros, y el contrato de capacidad sigue sin configurar. La matriz de evidencia no puede promover esas comparativas hasta disponer de carga reproducible, SLO aprobado y mediciones in situ. Las ejecuciones en Azure nos dicen que los mecanismos funcionan donde los pusimos; no nos dicen cómo se comporta el cierre de mes del banco.
 
 > La arquitectura que gana no es la que corre más deprisa dentro del CPD. Es la que confirma la operación correcta y se la devuelve a la oficina, incluso cuando el peor día de red coincide con el cierre contable.
 

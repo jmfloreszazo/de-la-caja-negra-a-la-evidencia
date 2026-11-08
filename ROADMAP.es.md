@@ -2,6 +2,8 @@
 
 **CERRADA PARA ESTA EDICIÓN.** Conservamos a continuación el plan histórico como evidencia, no como lista activa de tareas. El autor acepta publicar el libro y laboratorio con E3/E4 incompletos y sin PASS científico global de E1/E2. Véanse el [acta final](docs/FINAL_CLOSEOUT.es.md) y las [notas de publicación](docs/releases/v2026.11.05.md). #16/#53 siguen congelados. Las casillas históricas pendientes quedan expresamente excluidas de esta edición; no se declaran ejecutadas.
 
+> **Estado posterior (8 de noviembre de 2026):** E3 y E4 cuentan ahora con demostraciones acotadas en una sola VM de Azure, registradas como `demonstrated_not_accepted` (véanse la [matriz de evidencia](docs/EVIDENCE.es.md) y la [hoja de ruta de experimentos](docs/EXPERIMENT_ROADMAP.md)). Las filas históricas siguen tal como se escribieron; la aceptación sigue abierta.
+
 [English](ROADMAP.md) · **Español**
 
 Esta es la hoja de ruta **del repositorio**, no una declaración de que una migración bancaria esté lista para producción. Los estados oficiales de afirmaciones están en [evidence/claims.json](evidence/claims.json) y el protocolo de aceptación detallado en [docs/EXPERIMENT_ROADMAP.md](docs/EXPERIMENT_ROADMAP.md). Diferenciamos observado, simulado, propuesto y aprobado por negocio. El código, las pruebas y los README del laboratorio van exclusivamente en inglés; el libro se mantiene en ES/EN.

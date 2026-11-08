@@ -1,0 +1,11 @@
+{
+  "baselineId": "BASELINE-FEE-DEMO",
+  "missing": [
+    "rateBps"
+  ],
+  "modelId": "FEE-DECISION",
+  "modelVersion": "v1",
+  "productionApproved": false,
+  "reason": "Missing inputs",
+  "status": "INCONCLUSIVE"
+}

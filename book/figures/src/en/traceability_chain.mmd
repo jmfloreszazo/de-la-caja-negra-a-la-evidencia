@@ -1,0 +1,11 @@
+flowchart LR
+  CAP[Business capability] --> RULE[Rule, decision or process]
+  RULE --> ADR[ADR: why this option]
+  RULE --> ORACLE[Independent oracle case]
+  ADR --> ORACLE
+  ORACLE --> CAND[Candidate + source digest]
+  CAND --> OBS[Recorded observation]
+  OBS --> VERDICT{PASS · FAIL · INCONCLUSIVE}
+  VERDICT --> APPROVAL[Separate approval G2/G6]
+  APPROVAL --> DRIFT[Drift review G7]
+  DRIFT -. changes the baseline .-> RULE

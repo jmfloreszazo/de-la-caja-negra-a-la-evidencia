@@ -1,0 +1,247 @@
+{
+  "schemaVersion": 1,
+  "classification": "EXECUTED_AZURE_SINGLE_VM_SYNTHETIC_CAMPAIGN_NOT_E3_ACCEPTANCE",
+  "createdUtc": "2026-11-07T23:37:15.665429+00:00",
+  "subscriptionId": "7a84bc78-1d1e-4294-a7c4-760dc607b5de",
+  "resourceGroup": "rg-book-evidence-20261107",
+  "resourceRegion": "northeurope",
+  "resourceGroupMetadataRegion": "westeurope",
+  "runner": "bookev1107-runner",
+  "vmSize": "Standard_D4s_v5",
+  "deploymentStatus": "Succeeded",
+  "githubActions": "NOT_EXECUTED",
+  "ciRunId": null,
+  "runs": [
+    {
+      "runId": "core-azure-20261107-01",
+      "workloadExitCode": 0,
+      "sourceCommit": "cc7ed4bea231a36103ea7f4987b5728091e27ee2",
+      "sourceArchiveSha256": "e891292575a56fb63e25dffdb28874c662ecf88f19c3b2c288743075db284bcd",
+      "worktreeDirty": true,
+      "rawArchiveSha256": "24ac4f5f41b73dd52844a17a0444f99382a0ad0853da5f593963191bd08e7149",
+      "rawArchive": "raw/runs/core-azure-20261107-01-evidence.tar.gz",
+      "vmId": "f5ecd929-6823-4996-b9fb-49cff1f6e21c",
+      "location": "northeurope"
+    },
+    {
+      "runId": "e1-azure-20261107-01",
+      "workloadExitCode": 0,
+      "sourceCommit": "cc7ed4bea231a36103ea7f4987b5728091e27ee2",
+      "sourceArchiveSha256": "db2eb90537be5301822e842fe39cf2eaa174cac8ec890f5c2cf1600ed2b4cc94",
+      "worktreeDirty": true,
+      "rawArchiveSha256": "8ad2a0fb9e726091c8270098dec1284b1b1ee51b43de5c951159d62f46f78ff1",
+      "rawArchive": "raw/runs/e1-azure-20261107-01-evidence.tar.gz",
+      "vmId": "f5ecd929-6823-4996-b9fb-49cff1f6e21c",
+      "location": "northeurope"
+    },
+    {
+      "runId": "e2-cluster-azure-20261107-01",
+      "workloadExitCode": 0,
+      "sourceCommit": "cc7ed4bea231a36103ea7f4987b5728091e27ee2",
+      "sourceArchiveSha256": "5d5cffd622595117924a27ba8d37eaf6c40034d91643deede96e8e62d4ae293c",
+      "worktreeDirty": true,
+      "rawArchiveSha256": "d3de19065b5e6c687a8d9769ac8fb86a2ba3b3c7ac421bcb624f10ecc14f81d5",
+      "rawArchive": "raw/runs/e2-cluster-azure-20261107-01-evidence.tar.gz",
+      "vmId": "f5ecd929-6823-4996-b9fb-49cff1f6e21c",
+      "location": "northeurope"
+    },
+    {
+      "runId": "m2-azure-20261107-01",
+      "workloadExitCode": 0,
+      "sourceCommit": "cc7ed4bea231a36103ea7f4987b5728091e27ee2",
+      "sourceArchiveSha256": "e5e1dd7b6ee313549d4b2469ec0322ee73bae803511d950c21c49fa34df5fa3a",
+      "worktreeDirty": true,
+      "rawArchiveSha256": "ae3558793c09d63b8ec7458188d2675ae43fc18bb75c3d78872fac63ec971c6c",
+      "rawArchive": "raw/runs/m2-azure-20261107-01-evidence.tar.gz",
+      "vmId": "f5ecd929-6823-4996-b9fb-49cff1f6e21c",
+      "location": "northeurope"
+    },
+    {
+      "runId": "m2-azure-20261107-02",
+      "workloadExitCode": 0,
+      "sourceCommit": "cc7ed4bea231a36103ea7f4987b5728091e27ee2",
+      "sourceArchiveSha256": "d1d99577435c9c92d99993a801d4e520757336a80561d783dcab46e3fbf11827",
+      "worktreeDirty": true,
+      "rawArchiveSha256": "3fec65b8dfe83612eafff6baa3ebcef168961ec3b0035519eeffc9396d8a9230",
+      "rawArchive": "raw/runs/m2-azure-20261107-02-evidence.tar.gz",
+      "vmId": "f5ecd929-6823-4996-b9fb-49cff1f6e21c",
+      "location": "northeurope"
+    }
+  ],
+  "independentCoreAudit": {
+    "status": "PASS",
+    "feeCases": 58,
+    "gateControls": 10,
+    "positiveDatabases": 9,
+    "rejectedCorruptDatabases": 1,
+    "accountingPredicatesPerDatabase": 6,
+    "ledgerObservations": {
+      "acceptance.db": {
+        "nonnegative": true,
+        "conserved": true,
+        "balancedPostings": true,
+        "twoPostingsPerCommit": true,
+        "outboxAtomic": true,
+        "projectionAgrees": true
+      },
+      "load-hot-1.db": {
+        "nonnegative": true,
+        "conserved": true,
+        "balancedPostings": true,
+        "twoPostingsPerCommit": true,
+        "outboxAtomic": true,
+        "projectionAgrees": true
+      },
+      "load-hot-2.db": {
+        "nonnegative": true,
+        "conserved": true,
+        "balancedPostings": true,
+        "twoPostingsPerCommit": true,
+        "outboxAtomic": true,
+        "projectionAgrees": true
+      },
+      "load-hot-4.db": {
+        "nonnegative": true,
+        "conserved": true,
+        "balancedPostings": true,
+        "twoPostingsPerCommit": true,
+        "outboxAtomic": true,
+        "projectionAgrees": true
+      },
+      "load-hot-8.db": {
+        "nonnegative": true,
+        "conserved": true,
+        "balancedPostings": true,
+        "twoPostingsPerCommit": true,
+        "outboxAtomic": true,
+        "projectionAgrees": true
+      },
+      "load-uniform-1.db": {
+        "nonnegative": true,
+        "conserved": true,
+        "balancedPostings": true,
+        "twoPostingsPerCommit": true,
+        "outboxAtomic": true,
+        "projectionAgrees": true
+      },
+      "load-uniform-2.db": {
+        "nonnegative": true,
+        "conserved": true,
+        "balancedPostings": true,
+        "twoPostingsPerCommit": true,
+        "outboxAtomic": true,
+        "projectionAgrees": true
+      },
+      "load-uniform-4.db": {
+        "nonnegative": true,
+        "conserved": true,
+        "balancedPostings": true,
+        "twoPostingsPerCommit": true,
+        "outboxAtomic": true,
+        "projectionAgrees": true
+      },
+      "load-uniform-8.db": {
+        "nonnegative": true,
+        "conserved": true,
+        "balancedPostings": true,
+        "twoPostingsPerCommit": true,
+        "outboxAtomic": true,
+        "projectionAgrees": true
+      },
+      "negative-control.db": {
+        "nonnegative": true,
+        "conserved": true,
+        "balancedPostings": false,
+        "twoPostingsPerCommit": false,
+        "outboxAtomic": true,
+        "projectionAgrees": false
+      }
+    },
+    "connectionLifecycle": "EXPLICIT_CLOSE_AFTER_EACH_READ_ONLY_AUDIT",
+    "oracleSha256": "f8c6a68f2fb9a0abd110f0153208ac2f3d13c7f62c16244c72a5d570e828ae2c"
+  },
+  "e1": {
+    "pythonControls": 11,
+    "dotnetControls": 10,
+    "sequentialParityCases": 16,
+    "workerCases": 8,
+    "workerTransfers": 960
+  },
+  "e2": {
+    "matchedWorkloadRuns": 6,
+    "durableWorkloadTransfers": 600,
+    "inflightCases": 2,
+    "providers": {
+      "development": {
+        "primarySiloPid": 27974,
+        "secondarySiloPid": 27996,
+        "initialExternalClientPid": 28018,
+        "actualSecondaryExitSignal": "SIGKILL",
+        "independentSqlOracle": {
+          "nonnegative": true,
+          "conserved": true,
+          "balancedPostings": true,
+          "twoPostingsPerCommit": true,
+          "noPostingsForRejection": true,
+          "outboxAtomic": true,
+          "projectionAgrees": true
+        }
+      },
+      "adonet": {
+        "primarySiloPid": 28215,
+        "secondarySiloPid": 28237,
+        "initialExternalClientPid": 28260,
+        "actualSecondaryExitSignal": "SIGKILL",
+        "independentSqlOracle": {
+          "nonnegative": true,
+          "conserved": true,
+          "balancedPostings": true,
+          "twoPostingsPerCommit": true,
+          "noPostingsForRejection": true,
+          "outboxAtomic": true,
+          "projectionAgrees": true
+        }
+      }
+    }
+  },
+  "m2": {
+    "acceptedRunId": "m2-azure-20261107-02",
+    "cases": 20,
+    "commitsPerCase": 256,
+    "postingsPerCase": 512,
+    "outboxPerCase": 256,
+    "totalCommittedAcrossCases": 5120,
+    "negativeControl": {
+      "detected": [
+        "balancedPostings",
+        "projectionAgrees",
+        "twoPostingsPerCommit"
+      ],
+      "restored": true
+    }
+  },
+  "failedOrSupersededAttempts": [
+    "West Europe ARM validate/WhatIf: RequestDisallowedByAzure; region ineligible. No compute deployed there.",
+    "First operator Deploy: WhatIf human-readable output caused JSON parse error; fixed with --no-pretty-print.",
+    "First idle check: Windows CLI quoting failed locally; script-file retry verified idle runner.",
+    "m2-azure-20261107-01: numerical controls passed but inherited host labels were inaccurate. Raw evidence preserved; corrected repeat is separate."
+  ],
+  "finalState": {
+    "runner": "DEALLOCATED",
+    "workerCapacity": 0,
+    "workerInstances": 0,
+    "residualCosts": "Managed disk, NAT gateway, public IP and storage remain billable.",
+    "budget": "100 subscription-currency units/month alert, not a hard cap.",
+    "actualBilledCost": null
+  },
+  "liveAgentRuns": 0,
+  "localArchive": "dist/azure-single-vm-2026-11-07.zip",
+  "limitations": [
+    "One Azure VM, not distributed physical-node HA or an E3 capacity acceptance.",
+    "M2 replicas are processes on the same host; closed-loop 256 operations per case, no TLS/WAN.",
+    "A process SIGKILL and controlled SQL termination points are not a host power-loss or managed-database failover test.",
+    "No mainframe/on-premises comparison, approved banking capacity contract, or live-agent E4 campaign.",
+    "SQL Server was not executed in this Azure campaign.",
+    "Recorded public price meters are not actual billed costs; billing data was not used to invent a TCO."
+  ]
+}

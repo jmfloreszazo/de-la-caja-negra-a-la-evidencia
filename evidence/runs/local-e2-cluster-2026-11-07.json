@@ -1,0 +1,105 @@
+{
+  "schemaVersion": 1,
+  "createdUtc": "2026-11-07T21:11:00.920952+00:00",
+  "classification": "LOCAL_TWO_SILO_FAILURE_REPRODUCTION_NOT_E2_ACCEPTANCE",
+  "runId": "native-e2-cluster-20261107-210406",
+  "sourceCommit": "cc7ed4bea231a36103ea7f4987b5728091e27ee2",
+  "sourcePatchSha256": "0d9d98fdf70b81743af47fadc889ce98aa6077c9af0819bb85e12fb98382b0cd",
+  "launcherSha256": "71659cf883eedbd4c1c1e3d2f12c9044f831fdf89372ea9bef90eba7c0638ecc",
+  "environment": "Ubuntu 24.04 WSL2 / Docker Desktop; one physical host",
+  "ciRunId": null,
+  "azureDeployment": "NOT_EXECUTED",
+  "githubActions": "NOT_EXECUTED",
+  "reports": {
+    "e2-smoke": {
+      "status": "PASS",
+      "classification": "SYNTHETIC_SINGLE_SILO_FUNCTIONAL_NOT_CAPACITY",
+      "sha256": "027ef1ca4310177750bdee5cfc3c174b140fbb6c158a72115f879d0648eccf37",
+      "raw": "run/results/e2/e2-smoke.json"
+    },
+    "e2-deadlock": {
+      "status": "PASS",
+      "classification": "SYNTHETIC_OPT_IN_SQL_DEADLOCK_SINGLE_HOST_NOT_CAPACITY",
+      "sha256": "ca901b5a105b3ab2989748085959ffa6d2cfeea7a9f4d70db81a85f3e3f244a9",
+      "raw": "run/results/e2/e2-deadlock.json"
+    },
+    "e2-workloads": {
+      "status": "PASS",
+      "classification": "SYNTHETIC_SINGLE_SILO_FIXED_WORKLOAD_NOT_CAPACITY",
+      "sha256": "5280037c13998ef6e3e912ffb6f965b1ae3e6aaca640728be1b9e978df3eff08",
+      "raw": "run/results/e2/e2-workloads.json"
+    },
+    "e2-process-crash": {
+      "status": "PASS",
+      "classification": "SYNTHETIC_SINGLE_COHOST_SIGKILL_NOT_MULTISILO_FAILOVER",
+      "sha256": "239a12a89b63428578bb0a2fdad2cbe18dbdb5600930cdab6a20badcc5692116",
+      "raw": "run/results/e2/e2-process-crash.json"
+    },
+    "e2-multiprocess": {
+      "status": "PASS",
+      "classification": "SYNTHETIC_TWO_SILOS_ONE_HOST_DEVELOPMENT_CLUSTER_NOT_PHYSICAL",
+      "sha256": "13de9c808835b7cf480269cbdc832cd8583c4c9b1f07e9e844632f612f60bcc7",
+      "raw": "run/results/e2/e2-multiprocess.json"
+    },
+    "e2-adonet-recovery": {
+      "status": "PASS",
+      "classification": "SYNTHETIC_PERSISTENT_ADONET_MEMBERSHIP_ONE_HOST_NOT_PHYSICAL",
+      "sha256": "24f262feaa3a97bbd25fb8e6910d4fbb37a2fc00c1542ba459d3588faa2d2b67",
+      "raw": "run/results/e2/e2-adonet-recovery.json"
+    },
+    "e2-inflight-sql-commit": {
+      "status": "PASS",
+      "classification": "SYNTHETIC_ADONET_TWO_SILOS_SINGLE_HOST_NOT_PHYSICAL_FAILOVER",
+      "sha256": "facae0d72eea7acd61342b1f1065a11ca4097f06be29c26a44389881b18a1e3a",
+      "raw": "run/results/e2/e2-inflight-sql-commit.json"
+    }
+  },
+  "observations": {
+    "matchedWorkloadRuns": 6,
+    "durableWorkloadTransfers": 600,
+    "inflightCases": 2,
+    "providers": {
+      "development": {
+        "distinctSiloAndClientPids": 3,
+        "actualSecondaryExitSignal": "SIGKILL",
+        "grainReactivatedOnPrimary": true,
+        "independentSqlOracle": {
+          "nonnegative": true,
+          "conserved": true,
+          "balancedPostings": true,
+          "twoPostingsPerCommit": true,
+          "noPostingsForRejection": true,
+          "outboxAtomic": true,
+          "projectionAgrees": true
+        }
+      },
+      "adonet": {
+        "distinctSiloAndClientPids": 3,
+        "actualSecondaryExitSignal": "SIGKILL",
+        "grainReactivatedOnPrimary": true,
+        "independentSqlOracle": {
+          "nonnegative": true,
+          "conserved": true,
+          "balancedPostings": true,
+          "twoPostingsPerCommit": true,
+          "noPostingsForRejection": true,
+          "outboxAtomic": true,
+          "projectionAgrees": true
+        }
+      }
+    }
+  },
+  "localArchive": "dist/local-e2-cluster-2026-11-07.zip",
+  "limitations": [
+    "Local OS-process failures and recovery, not independently hosted physical-node HA.",
+    "Controlled injected SQL failure points, not production deadlock frequency or RTO.",
+    "No sustained saturation, Azure scale-out, mainframe parity or E2 final acceptance.",
+    "E3 capacity contract and E4 live-agent campaign remain outstanding."
+  ],
+  "azurePreflight": {
+    "quota": "UNVERIFIED",
+    "quotaRequestFailure": "AADSTS700082: Azure CLI refresh token expired; interactive authentication required",
+    "resourceMutations": "NONE",
+    "pricing": "Unauthenticated public retail VM meters retrieved separately; not a full budget or customer quote"
+  }
+}

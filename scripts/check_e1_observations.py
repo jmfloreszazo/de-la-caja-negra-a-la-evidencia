@@ -9,6 +9,7 @@ import hashlib
 import json
 from pathlib import Path
 import re
+from historical_source import verify_historical_source
 
 ROOT = Path(__file__).resolve().parents[1]
 BASE = ROOT / "evidence/runs"
@@ -166,8 +167,14 @@ assert len(oracle_data["sourceSha256"]) == 4
 for name, expected in oracle_data["sourceSha256"].items():
     source = ROOT / "lab" / "e1_pg" / name
     assert source.is_file(), source
-    assert hashlib.sha256(source.read_bytes()).hexdigest() == expected, name
-print("E1b-oracle-vectors: seven independent invariants, negative "
+    if name == "test_oracle_vectors.py":
+        # Runtime reporting later changed for non-CI reproduction; audit the
+        # preserved original snapshot, not a fallback that masks arbitrary drift.
+        verify_historical_source(ROOT, oracle_record["sourceCommit"],
+                                 "lab/e1_pg/" + name, expected)
+    else:
+        assert hashlib.sha256(source.read_bytes()).hexdigest() == expected, name
+print("E1b-oracle-vectors: historical harness hash; seven independent invariants, negative "
       "mutation and restoration verified; original run", oracle_record["runId"])
 
 # Preserve the exact observed execution environment, separating the
@@ -207,9 +214,12 @@ assert len(runtime["sourceSha256"]) == 6
 for name, digest in runtime["sourceSha256"].items():
     source = ROOT / "lab" / name
     assert source.is_file(), source
-    assert hashlib.sha256(source.read_bytes()).hexdigest() == digest, name
+    if name == "e1_pg/test_oracle_vectors.py":
+        verify_historical_source(ROOT, runtime_record["sourceCommit"], "lab/" + name, digest)
+    else:
+        assert hashlib.sha256(source.read_bytes()).hexdigest() == digest, name
 print("E1b-runtime-manifest: source HEAD and checkout distinct; "
-      "tool versions, image digest, six source hashes checked")
+      "tool versions, image digest, six source hashes checked (oracle harness historical)")
 
 # Full synthetic reference worker-matrix parity, with no throughput claim.
 matrix_record = json.loads((BASE / "e1b-multiprocess-parity.json").read_text(encoding="utf-8"))

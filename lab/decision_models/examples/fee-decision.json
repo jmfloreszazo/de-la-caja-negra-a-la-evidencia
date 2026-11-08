@@ -1,0 +1,204 @@
+{
+  "profileVersion": 1,
+  "version": "v1",
+  "baselineId": "BASELINE-FEE-DEMO",
+  "sources": [
+    {
+      "id": "SRC-FEE-CONTRACT",
+      "path": "examples/fee-contract.md"
+    }
+  ],
+  "adrs": [
+    {
+      "id": "ADR-001",
+      "path": "adr/ADR-001-bounded-profiles.md"
+    }
+  ],
+  "kind": "decisionTable",
+  "id": "FEE-DECISION",
+  "hitPolicy": "FIRST",
+  "inputs": {
+    "amountCents": {
+      "type": "integer"
+    },
+    "rateBps": {
+      "type": "integer"
+    },
+    "customerActive": {
+      "type": "string"
+    }
+  },
+  "outputs": {
+    "resultCode": {
+      "type": "string",
+      "enum": [
+        "INVALID",
+        "REJECT",
+        "REVIEW",
+        "APPROVE"
+      ]
+    },
+    "feeCents": {
+      "type": "integer"
+    }
+  },
+  "rules": [
+    {
+      "id": "invalid-amount-low",
+      "when": [
+        {
+          "variable": "amountCents",
+          "operator": "lt",
+          "value": 0
+        }
+      ],
+      "then": {
+        "resultCode": {
+          "constant": "INVALID"
+        },
+        "feeCents": {
+          "constant": 0
+        }
+      }
+    },
+    {
+      "id": "invalid-amount-high",
+      "when": [
+        {
+          "variable": "amountCents",
+          "operator": "gt",
+          "value": 99999999
+        }
+      ],
+      "then": {
+        "resultCode": {
+          "constant": "INVALID"
+        },
+        "feeCents": {
+          "constant": 0
+        }
+      }
+    },
+    {
+      "id": "invalid-rate-low",
+      "when": [
+        {
+          "variable": "rateBps",
+          "operator": "lt",
+          "value": 0
+        }
+      ],
+      "then": {
+        "resultCode": {
+          "constant": "INVALID"
+        },
+        "feeCents": {
+          "constant": 0
+        }
+      }
+    },
+    {
+      "id": "invalid-rate-high",
+      "when": [
+        {
+          "variable": "rateBps",
+          "operator": "gt",
+          "value": 10000
+        }
+      ],
+      "then": {
+        "resultCode": {
+          "constant": "INVALID"
+        },
+        "feeCents": {
+          "constant": 0
+        }
+      }
+    },
+    {
+      "id": "invalid-active",
+      "when": [
+        {
+          "variable": "customerActive",
+          "operator": "ne",
+          "value": "Y"
+        },
+        {
+          "variable": "customerActive",
+          "operator": "ne",
+          "value": "N"
+        }
+      ],
+      "then": {
+        "resultCode": {
+          "constant": "INVALID"
+        },
+        "feeCents": {
+          "constant": 0
+        }
+      }
+    },
+    {
+      "id": "inactive",
+      "when": [
+        {
+          "variable": "customerActive",
+          "operator": "eq",
+          "value": "N"
+        }
+      ],
+      "then": {
+        "resultCode": {
+          "constant": "REJECT"
+        },
+        "feeCents": {
+          "constant": 0
+        }
+      }
+    },
+    {
+      "id": "review",
+      "when": [
+        {
+          "variable": "amountCents",
+          "operator": "gt",
+          "value": 1000000
+        }
+      ],
+      "then": {
+        "resultCode": {
+          "constant": "REVIEW"
+        },
+        "feeCents": {
+          "operation": "multiplyDivide",
+          "variables": [
+            "amountCents",
+            "rateBps"
+          ],
+          "divisor": "10000",
+          "scale": 0,
+          "rounding": "HALF_UP"
+        }
+      }
+    },
+    {
+      "id": "approve",
+      "when": [],
+      "then": {
+        "resultCode": {
+          "constant": "APPROVE"
+        },
+        "feeCents": {
+          "operation": "multiplyDivide",
+          "variables": [
+            "amountCents",
+            "rateBps"
+          ],
+          "divisor": "10000",
+          "scale": 0,
+          "rounding": "HALF_UP"
+        }
+      }
+    }
+  ]
+}

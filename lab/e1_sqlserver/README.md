@@ -2,7 +2,8 @@
 
 This is a **disposable, synthetic SQL Server 2022 Developer experiment**,
 not a mainframe, Azure, production bank, or capacity benchmark. The
-repository uses **Podman**, not a Docker daemon. Engineering documentation,
+original CI uses **Podman**. The optional experiment launcher can select
+Podman or Docker explicitly. Engineering documentation,
 tests, scripts and code are **English only**.
 
 ## Components
@@ -30,6 +31,38 @@ The .NET projects pin `Microsoft.Data.SqlClient 7.1.1` and a patched
 Use .NET 10 SDK, Python 3.12+, Podman and a dedicated loopback SQL Server
 container. SQL Server Developer has licensing conditions for development
 and testing: review Microsoft's terms before accepting `ACCEPT_EULA=Y`.
+
+### Consent-gated experiment launcher
+
+The [experiment runbook](../../infra/experiments/README.md) provides an
+`e1-sqlserver` mode that builds all four projects, creates a uniquely named
+4-GiB disposable SQL Server 2022 container on a random loopback port, waits for
+readiness and runs both existing test scripts. It generates an independent
+throwaway password and does not use a supplied production connection string.
+The launcher retains the resolved image identity, server version, build logs,
+final table snapshot and a checksummed SQL backup before removing its owned
+container by immutable ID. Backup, copy or cleanup failure fails the run.
+Skipped backup steps are recorded as `null`, never successful exit codes.
+Producing a backup does not demonstrate a successful restore drill. Raw core
+and worker reports are written by the existing harnesses under
+`lab/results/e1c`; retain that directory as well as the launcher evidence.
+Use a fresh checkout for each campaign so earlier results are not overwritten.
+
+After personally reviewing and accepting the Developer license:
+
+```bash
+ACCEPT_EULA=Y CONTAINER_ENGINE=docker \
+  bash scripts/azure/run-experiment.sh e1-sqlserver /path/to/new/evidence
+```
+
+For Podman, use `CONTAINER_ENGINE=podman` or leave the engine unset. To reproduce
+an exact image, set `SQLSERVER_IMAGE` to the official repository digest recorded
+by an earlier run instead of relying on the moving `2022-latest` tag.
+
+**Validation boundary:** the launcher has offline orchestration regression
+controls; these mock the database and are not SQL Server execution evidence.
+No new local SQL Server campaign has been run through this launcher because
+license consent is pending. The historical CI evidence below is unchanged.
 
 These instructions are **destructive** to the purpose-created `E1SqlLab`
 database. Never run against shared or customer systems.
