@@ -7,7 +7,7 @@
 > [!IMPORTANT]
 > **Chapter thesis.** A banking channel initiates an instruction; an authoritative service decides what funds it may use; a device may produce an irreversible physical effect. Migration must preserve the contracts between those responsibilities. A successful SQL COMMIT does not prove that banknotes reached the customer.
 
-## 1. Locate the authority before drawing the replacement
+## Locate the authority before drawing the replacement
 
 A physical ATM reads customer input and controls devices. An ATM controller or switch connects terminals and routes messages. A card processor may supply issuer or acquirer services; the issuer authorizes use of its customer's account, while the acquirer serves the acceptance side. Those roles can belong to different organizations and machines. The account ledger, authorization holds, fraud decision, card lifecycle and network settlement need named owners; calling all of them “the core” hides the integration work.
 
@@ -30,7 +30,7 @@ The diagram deliberately omits certified device/network protocols. Do not infer 
 
 These are design alternatives. This repository has not surveyed installations or executed all six architectures.
 
-## 2. State the withdrawal contract before choosing a pattern
+## State the withdrawal contract before choosing a pattern
 
 The [synthetic lab contract](../../../lab/channels/CONTRACT.md) uses integer cents and invented policies. Its customer account starts at 10,000. Authorizing a 6,000 withdrawal reserves 6,000 without posting it; available funds become 4,000. Preparation durably binds one operation to one device command. Only a final device outcome permits the candidate to post the actual positive amount, or cancel a final zero. Posting debits the customer and credits a synthetic cash-control account; this closed-world teaching ledger is not a bank's general-ledger policy.
 
@@ -53,7 +53,7 @@ Both databases run on one CI host. Their separation proves only that a core tran
 
 A real issuer must approve partial delivery, hold lifetime, reversals, late advice, disputes and operator repair. The demonstration's POSTED state means its local accounting decision; it does not mean card-network clearing, presentment or interbank settlement. Those are additional contracts.
 
-## 3. Follow the effect through success and uncertainty
+## Follow the effect through success and uncertainty
 
 ![Figure C.3 · Happy path under the declared synthetic policy: authorize, prepare one command, record device outcome, then post actual cash.](../../figures/en/channels_cash_happy.png)
 
@@ -79,7 +79,7 @@ Stand-in is a delegated decision, not a successful retry to a dead core. As a co
 
 A web/mobile BFF may adapt presentation and aggregate informational reads. Business authorization still uses the authoritative account and active holds; an eventual balance projection cannot approve spending. An outbox records a financial event atomically with the decision, but a push notification, SMS or receipt alone is not proof of posting. Reopening the app should recover the original operation ID and decision rather than invent a second instruction.
 
-## 4. Choose patterns against the channel contract
+## Choose patterns against the channel contract
 
 | Problem | Candidate and benefit | Cost, failure boundary and control |
 |---|---|---|
@@ -94,7 +94,7 @@ A web/mobile BFF may adapt presentation and aggregate informational reads. Busin
 
 **Decision for this increment.** Use an explicit durable state machine, one SQL ledger and a separate device journal. Avoid adding actors, a broker or a fake protocol stack before this contract is falsifiable. The alternative of immediate debit on authorization is rejected for this example because it would need a separately approved reversal policy for zero/partial cash. The choice remains a teaching ADR, not a recommendation for an unidentified bank.
 
-## 5. Make the laboratory capable of disproving itself
+## Make the laboratory capable of disproving itself
 
 The [English reproduction guide](../../../lab/channels/README.md) specifies .NET 10, Podman, two PostgreSQL instances, fixed disposable identities and original evidence retention. Its initial matrix includes full/partial/zero cash, missing device evidence, lost replies, external process kills, duplicate/conflicting requests, expiry and concurrent mobile/ATM spending. A native API is required for an HTTP-loss claim; an exception printed to a console would not exercise that boundary.
 
@@ -112,7 +112,7 @@ Conservation alone is insufficient: an excessive debit with an equal credit stil
 
 Execution status and exact CI provenance belong in the lab's evidence checkpoint. This chapter describes the declared design; it does not turn an unexecuted scenario into a passed test. The remaining issue #30 matrix includes network partitions at each hop, real protocol correlation, delegated stand-in, route cutover and measured latency/capacity.
 
-## 6. Migrate the owner, then retire the route
+## Migrate the owner, then retire the route
 
 Channel-first migration can replace web/mobile presentation while leaving the account host authoritative. Capability-first migration can replace the account service while preserving the channel adapter. Product or branch cohorts narrow exposure but still need consistent ownership when a customer uses another channel. Issuer-processing-first and ATM-switch-first change certified external boundaries; façade-first preserves them temporarily. CDC-first can populate read models but does not transfer write authority. A big bang shortens coexistence at the cost of a wider cutover and recovery problem.
 
@@ -128,80 +128,12 @@ A cutover needs a cohort manifest, a write-owner epoch enforced at the old sourc
 
 Outstanding UNKNOWN cash, inconsistent journal/ledger amounts, unprocessed late messages, an unfenced second writer or missing required certification are reasons to withhold a real cutover. External equipment and issuer approval are not merge blockers for this clearly scoped example: they are explicit follow-up validation. To make that validation realistic, replace the emulator's atomic stock assumption with instrumented device outcomes, approved rules, real transport failures and reconciliation procedures; preserve failures and raw evidence before drawing a conclusion.
 
-## 7. Late advice, reversal and cash: correlation is not authorization
+## From channels to reproducible experiments
 
-Consider a withdrawal authorized for 100.00 monetary units: the device attests that **60.00** was dispensed, but a switch may still carry an advice referring to the original requested 100.00. The ledger posts 60.00, and a full reversal request then arrives. It is wrong to infer either "post 100" or "credit 100" automatically. We need to establish what cash was physically available, which financial posting was committed, whether a message is merely a request, and who can adjudicate the discrepancy. A reversal request is not an executed ledger reversal.
+I will not present an ATM simulation as certification of a switch or cash dispenser. The case covers partial dispensing, late advice, reversals, hop-by-hop faults, local TCP and a held ACK while eight clients recover the same operation. The lesson is specific: **a lost response does not undo a COMMIT, and a retry never authorizes another cash dispense on its own**.
 
-The paired [EN research dossier](../../../docs/research/channel-late-advice.en.md) ([ES](../../../docs/research/channel-late-advice.es.md)) puts this against public ATM dispute guidance and conditional stand-in policies. The [channel forensic oracle](../../../lab/channels/advice_gate.py) adds a **fully synthetic, offline** four-instruction test with no database mutations:
+[Annex I](../annexes/annex-i-evidence-campaigns-and-limits.md) retains the scenarios and independent oracles. These are fictional inputs or loopback connections, not certified hardware or a real banking WAN.
 
-| Synthetic observation | Correct oracle result | Never allowed |
-| --- | --- | --- |
-| Device dispenses 60 of 100 approved; identical late advice repeated | `MATCHED_PARTIAL_CASH` | Create a second posting or dispense |
-| Device remains UNKNOWN; network advice says 80 | `UNKNOWN_REQUIRES_DEVICE_EVIDENCE` | Treat advice as physical confirmation or posting authority |
-| Final device journal says zero; late reversal requested | `FINAL_ZERO_CASH` | Claim the requested reversal is booked |
-| Core is unreachable with no issuer-delegated authority | `STAND_IN_DENIED` | Invent an offline issuer or cash authorization |
-
-Neither STAN nor RRN alone is a durable financial identity. Retain the original **operation ID**, authorization, terminal, network context and source incarnation. STAN can be reused; a network message ID replayed with a different payload is a conflict, not idempotency. A request to reverse the whole amount after partial physical cash delivery must trigger review and a negative oracle for a false credit.
-
-This is **not** a certified ISO 8583 implementation or a real ATM simulator. The new check has invented data: it **does not authenticate device journal entries, issuer policies, network settlement or actual bank operations**. It complements the prior ten native .NET 10/PostgreSQL experiments without treating their results as card-network certification. Even if the Python checks pass, no automatic dispense, posting or reversal is permitted; **TODM G2 INCONCLUSIVE / G6 BLOCK**.
-
-## 8. There is no generic network failure: locate the hop and decision
-
-A channel “timeout” can conceal different financial states. If **ATM→switch** fails before delivery, no original authorization is demonstrated. If **switch→core** drops the request before the issuer receives it, the switch cannot invent account authority or dispense cash. If the core durably committed and **only its reply** was lost, starting a new operation ID risks a duplicate effect. Recovery queries the **actual decision owner under the original identity**; approval does not prove physical cash.
-
-The [EN per-hop failure dossier](../../../docs/research/channel-hop-failures.en.md) ([ES](../../../docs/research/channel-hop-failures.es.md)) adds seven fictional traces and forty negative controls. It extends the previous partial-cash and late-advice examples without duplicating the core simulator.
-
-| Scenario | Synthetic oracle outcome | Forbidden inference or action |
-| --- | --- | --- |
-| H01: ATM→switch request not delivered | `NO_CORE_AUTHORIZATION_EVIDENCE` | Treat timeout as a confirmed decline or success |
-| H02: switch→core request not delivered | `NO_CORE_AUTHORIZATION_EVIDENCE` | Invent stand-in authority |
-| H03: issuer COMMIT, lost ACK, status recovered on restored link | `AUTHORIZATION_RECOVERED_BY_STATUS` | Start another operation identity or infer cash delivery |
-| H04: approval and device command, ATM↔switch fails | `CASH_UNKNOWN_NO_REDISPENSE` | Re-send dispense while journal remains unknown |
-| H05: old owner replies after writer epoch changes | `QUARANTINED_OLD_OWNER_REPLY` | Allow old host to create another posting |
-| H06: partial cash and fictional ledger agree | `PARTIAL_CASH_RECONCILED_SYNTHETICALLY` | Present fictional agreement as hardware proof |
-| H07: core outage with undelegated stand-in request | `STAND_IN_DENIED` | Authorize offline credit or dispense |
-
-**Routing is not source fencing.** A real change of authoritative writer from a host capability to .NET/SQL requires proof that the previous owner **can no longer commit the same operation**, including batch, privileged and disconnected paths. The fixture's `sourceEpoch` field is only a correlation marker, not a cryptographic lock or independent proof of revocation.
-
-Nor does CICS UOW equal an HTTP transaction: a CICS task can have multiple syncpoints, with atomicity scoped to recoverable resources in each UOW. Network authorization and physical notes are external boundaries. See [IBM CICS syncpoints](https://www.ibm.com/docs/en/cics-ts/6.x?topic=work-synchronization-points) and [Azure transient fault guidance](https://learn.microsoft.com/en-us/azure/architecture/best-practices/transient-faults).
-
-The [lab Python trace oracle](../../../lab/channels/network_fault_gate.py) **only checks declared JSON events**. It does not disconnect TCP sockets, execute a certified card protocol, contact an issuer or post to a financial ledger. A PASS shows consistency of this model, not a network guarantee. Real acceptance requires independent per-hop loss/reconnection injection, native issuer COMMIT logs, original retry identity, authenticated device journals, reconciliation and business-owner approval. **No fixture outcome authorizes automatic cash, reversal, posting, writer cutover or stand-in.** TODM G2 `INCONCLUSIVE`, G6 `BLOCK`.
-
-## 9. First real transport test: local TCP and the core COMMIT
-
-The preceding H01–H07 tests represented disconnected hops with JSON events. The next experimental step uses **actual loopback TCP sockets**. An ephemeral one-shot proxy accepts the HTTP client's request, drops or forwards it to the existing **.NET 10** API, and observes the upstream response. The core commits in PostgreSQL while an independent Python oracle reads its tables and the separate synthetic device store. These are **real processes and sockets** but still run on **one host**: not a physical partition between branches, switch and mainframe.
-
-| Transport test | Actual intervention | Independent assertion |
-| --- | --- | --- |
-| Request dropped before forwarding | Proxy accepts a real socket and resets it **without contacting the core** | Original SQL remains empty before recovery; same operation ID can commit once |
-| Reply dropped after COMMIT | Proxy forwards request, observes HTTP 200 produced **after `CommitAsync`**, then resets the client socket without forwarding any response | Client sees `UNKNOWN` while SQL already has one committed operation, two paired postings and one outbox; original-status query and same-ID replay create no second effect |
-| Reply delayed beyond client timeout | Proxy waits 0.8 s after upstream response versus a real client timeout of 0.15 s | Client sees timeout but the owner's original decision remains queryable and cannot be posted twice |
-
-All three new cases are **fictional digital transfers**, not actual cash withdrawals. The existing ten native cases remain, including partial simulated cash, post-COMMIT failures, external `SIGKILL` and ATM/mobile competition. The [EN research protocol](../../../docs/research/channel-loopback-transport.en.md) ([ES](../../../docs/research/channel-loopback-transport.es.md)) documents scope, test replay, the proxy's fourteen safety checks and eighteen baseline/adversarial original-evidence controls.
-
-**A client timeout alone does not prove absence of COMMIT.** The pre-forward drop has stronger evidence only because **our controlled proxy never opened an upstream socket and SQL was observed empty**. That independent proof may be unavailable in a real bank network. Retain the same durable `operationId` when querying status and, subject to the source owner's policy, retrying an ambiguous command.
-
-This increment exercises **real local TCP interruption against durable SQL**, not `tc netem`, cross-host WAN failures, certified ISO 8583, CICS or authentic dispenser journals; it is not a MIPS/capacity benchmark. One financial writer must remain authoritative across all channels. Customer acceptance still requires native source signatures, owner policy, network evidence, source fencing and independent physical failure domains. **G2 INCONCLUSIVE, G6 BLOCK**, no banking cutover approval.
-
-## 10. Held original reply versus eight concurrent recoveries
-
-The preceding experiment lost or delayed an ACK and then queried the core. It left a more difficult channel boundary untested: **the original response is still in flight while multiple clients concurrently try to recover the same operation**. One sequential retry does not establish safety under this race.
-
-The [EN research contract](../../../docs/research/channel-held-ack.en.md) ([ES](../../../docs/research/channel-held-ack.es.md)) uses a deterministic barrier over **actual local TCP sockets**. A proxy forwards the original `POST /transfer` to the existing .NET 10 API, observes its HTTP 200 after PostgreSQL COMMIT, then holds the response. The first client experiences a real timeout. Before the old reply is released, the driver queries the fictional owner's authoritative status and launches **eight concurrent clients using the same `operationId` and intent fingerprint**. A ninth request with the original ID but a different amount must be rejected.
-
-| Boundary | Original observation | Required independent oracle |
-| --- | --- | --- |
-| Fictional issuer | COMMIT confirmed while HTTP 200 is held | One operation, two postings and one outbox before retries |
-| First client | Timeout and `UNKNOWN` | No new financial identity invented |
-| Eight concurrent clients | Eight `COMMITTED` responses with `duplicate=true` | Still one durable decision and no second posting |
-| Changed-amount attempt | `ID_CONFLICT` | Identity is bound to business intent |
-| Late old ACK release | Monotonic timestamp after recovery | Old reply cannot open a new financial transition |
-
-The [independent verifier](../../../scripts/check_channel_transport.py) checks original HTTP observations and intent, the order of real events **before the old response is released**, the read-only SQL snapshots and final ledger. The negative tests forge the timestamp sequence, replay identity or a duplicate posting and must be rejected. The fixture now contains **14 native scenarios**, **18 proxy guards and 27 original-evidence checks**.
-
-**Architecture conclusion:** channel-visible response status must not be confused with the durable financial decision of the source owner. An old reply can arrive after recovery; **it is not a new authorization** and does not justify an automatic reversal. Idempotency must bind identity **and** intent and rely on the authoritative durable operation record.
-
-The experiment uses `localhost` TCP and disposable PostgreSQL, **not** a certified ATM switch, ISO 8583, CICS, a cash device or a cross-host WAN partition. **Eight local clients do not establish MIPS equivalence or capacity.** Monotonic timestamps are only comparable within this host. Real issuer attestations, physical effects, incumbent writer fencing and owner-approved rules remain open. TODM G2 `INCONCLUSIVE` / G6 `BLOCK`.
 
 ---
 
