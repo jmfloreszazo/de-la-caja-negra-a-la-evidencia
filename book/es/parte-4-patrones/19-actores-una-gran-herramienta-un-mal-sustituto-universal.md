@@ -25,7 +25,7 @@ Separaría al menos tres responsabilidades: un **actor o coordinador por identid
 
 *Figura 19.1 · Actores por cuenta: paralelismo entre identidades, orden dentro de cada una. La durabilidad y la atomicidad las garantiza el ledger.*
 
-## Lo que aporta el runtime y lo que sigue pendiente
+## Lo que Orleans garantiza y lo que debo verificar
 
 Orleans organiza por defecto la ejecución de una activación de grain con solicitudes completas sin intercalarlas. Su documentación explica que habilitar reentrancia permite intercalar turnos y exige razonar sobre el estado a través de los `await` [24]. También muestra que las llamadas cíclicas pueden provocar esperas que terminan en timeout. Por tanto, el modelo de actores reduce una parte del problema concurrente; no elimina todos los bloqueos.
 

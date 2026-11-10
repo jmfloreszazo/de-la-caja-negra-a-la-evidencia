@@ -594,7 +594,7 @@ No todo el código heredado merece convertirse. El análisis debe identificar ru
 
 ### Capítulo complementario · Descomponer el mainframe con evidencia
 
-> **Borrador para revisión editorial.** No forma parte de la edición publicada v2026.10.29. Investigación vinculada al issue #32.
+> **Alcance.** Desarrollo un método para descubrir y separar capacidades usando un modelo sintético. No es una extracción certificada de un banco: cualquier corte real necesita trazas autorizadas y aprobación de quien responde por el negocio.
 
 #### La frontera no está en el programa
 
@@ -1375,13 +1375,19 @@ Las dos últimas filas son las importantes. Un codec que «tolera» bytes invál
 
 Una arquitectura de microservicios puede dibujar cajas independientes, pero si todas escriben las mismas tablas continúa existiendo un monolito de datos. En sistemas COBOL maduros es habitual que varios programas y jobs toquen el mismo conjunto de registros. Antes de mover la lógica debemos identificar escritores, lectores, bloqueos y reconciliaciones. El inventario dinámico importa tanto como las búsquedas estáticas: una tabla aparentemente de lectura puede tener un mantenimiento batch que solo se ejecuta el último día del trimestre.
 
+#### Identificar a quién pertenece cada cambio
+
 Propongo un **registro de ownership** para cada agregado. Una capacidad es dueña de aceptar comandos y determinar el nuevo estado; otros consumidores reciben consultas o eventos. Durante la transición quizá haya que sostener un espejo temporal o CDC, pero no aceptaría dos escritores maestros sin un protocolo explícito de resolución de conflictos. La doble escritura independiente de base antigua y nueva falla precisamente entre ambas escrituras; el éxito de un lado no garantiza el del otro.
 
 ![Figura 16.1 · Un único dueño de la escritura por agregado; los demás consultan o reciben eventos.](figures/es/ownership.png)
 
 *Figura 16.1 · Un único dueño de la escritura por agregado; los demás consultan o reciben eventos.*
 
-El patrón Transactional Outbox aporta una solución localizada: dentro de la misma transacción que guarda el cambio de negocio se escribe un evento pendiente de publicar. Un worker lo envía después. El consumidor utiliza Inbox o una clave de idempotencia para absorber duplicados. No garantiza entrega física exactamente una vez; permite diseñar un **efecto de negocio una sola vez** mediante deduplicación y confirmación. Y hay que comprobar que el outbox y los datos autoritativos comparten una frontera transaccional real.
+La publicación posterior al COMMIT es otra responsabilidad: su mecanismo de **Outbox e Inbox** se desarrolla en el [capítulo 18](#capítulo-18--distribuir-sin-romper-la-contabilidad). Aquí la decisión es anterior al patrón: quién posee la escritura, cómo se cercará al propietario anterior y qué consultas pueden tolerar retrasos.
+
+#### Una convivencia que se pueda deshacer
+
+Una cuenta recibe apuntes nocturnos desde COBOL y movimientos online desde una API nueva. Si los dos lados confirman dinero por separado, hemos creado dos autoridades. Antes del corte exigiría un inventario de escritores, una forma de impedir nuevas escrituras en el origen, conciliación y un procedimiento de retorno probado.
 
 CDC es útil para coexistencia y observación, no una prueba automática de que la nueva base es correcta. Se debe preservar orden por clave, detectar retraso, reconstruir estados a partir de snapshots consistentes y medir la diferencia entre origen y destino. Si la transición depende de lecturas de una réplica eventualmente consistente, los contratos deben reconocerlo.
 
@@ -1627,7 +1633,7 @@ Separaría al menos tres responsabilidades: un **actor o coordinador por identid
 
 *Figura 19.1 · Actores por cuenta: paralelismo entre identidades, orden dentro de cada una. La durabilidad y la atomicidad las garantiza el ledger.*
 
-#### Lo que aporta el runtime y lo que sigue pendiente
+#### Lo que Orleans garantiza y lo que debo verificar
 
 Orleans organiza por defecto la ejecución de una activación de grain con solicitudes completas sin intercalarlas. Su documentación explica que habilitar reentrancia permite intercalar turnos y exige razonar sobre el estado a través de los `await` [24]. También muestra que las llamadas cíclicas pueden provocar esperas que terminan en timeout. Por tanto, el modelo de actores reduce una parte del problema concurrente; no elimina todos los bloqueos.
 
@@ -1787,7 +1793,11 @@ Un batch financiero no termina cuando el proceso devuelve código cero. Debe dec
 > [!IMPORTANT]
 > **Tesis del capítulo.** Son patrones excelentes con condiciones de uso precisas. Un ledger de doble entrada no es un flujo de eventos arbitrario, una proyección eventual no debe aprobar retiradas y una compensación no borra lo que un tercero ya ha visto.
 
+#### Event sourcing no es contabilidad
+
 Event sourcing tiene un atractivo evidente para sistemas financieros: conservar una sucesión de cambios que permite reconstruir estado. Pero no es sinónimo de contabilidad. Un ledger de doble entrada impone invariantes que un conjunto de eventos arbitrarios no garantiza. Convertir cada operación en evento puede incrementar volumen, complejidad de versiones y necesidad de reprocesamiento. Lo consideraría cuando el dominio necesita historia completa como fuente de verdad, el equipo sabe gestionar esquemas y el coste de reconstrucción está resuelto. No lo impondría a una tabla COBOL por modernidad.
+
+#### CQRS no concede autoridad a una proyección
 
 CQRS separa escrituras de lecturas cuando sus necesidades divergen. Es útil para consultas intensivas, búsqueda y reporting. Pero sus proyecciones pueden ir retrasadas. Si una aplicación decide aprobar una retirada consultando una proyección eventual, puede violar reglas que exige evaluar sobre el estado autoritativo. Usaría CQRS para acelerar vistas, no para sustituir sin análisis la decisión de saldo disponible.
 
@@ -1795,7 +1805,9 @@ CQRS separa escrituras de lecturas cuando sus necesidades divergen. Es útil par
 
 *Figura 21.1 · CQRS sin trampas: la proyección sirve para mirar; la decisión sobre el saldo se toma en el núcleo de escritura.*
 
-Las sagas son adecuadas para procesos extensos que atraviesan sistemas con compensaciones legítimas: contratación, comunicaciones, documentación, validaciones y reservas. En cambio, una transferencia contable no se convierte automáticamente en una saga porque ahora tengamos dos microservicios. Una compensación posterior no borra el hecho de que un tercero haya observado un saldo intermedio, ni garantiza recuperar dinero enviado fuera de nuestra frontera.
+#### Sagas: solo si el negocio admite el estado intermedio
+
+Una saga puede coordinar contratación, documentación o reservas que admiten compensación. No la usaría para ocultar que hemos fragmentado una transferencia antes atómica. La mecánica de compensaciones y publicación fiable pertenece al [capítulo 18](#capítulo-18--distribuir-sin-romper-la-contabilidad). Aquí la decisión es si cada estado intermedio tiene significado y aceptación de negocio. Si no los tiene, ese patrón no es la solución.
 
 La regla es exigente y sencilla: **el patrón elegido debe preservar el nivel de consistencia que el negocio necesita, no el nivel que nos resulta más cómodo implementar**.
 
@@ -2453,7 +2465,7 @@ originales de las cargas y sus oráculos independientes.
 
 #### Evidencia propia: qué hay y qué no hay
 
-El laboratorio de esta rama sí dispone de [resultados E1a/E1b versionados](../evidence/runs/README.es.md): deadlock real `40P01`, serialización `40001`, oráculo que detecta corrupción, y paridad parcial .NET 10/Npgsql frente a PostgreSQL. Dispone también de los registros de Azure descritos arriba —una VM D4s_v5, cargas sintéticas, cada ejecución descargada y con hash— registrados como `demonstrated_not_accepted` en la [matriz de evidencia](../docs/EVIDENCE.es.md).
+El expediente de esta edición conserva [resultados E1a/E1b versionados](../evidence/runs/README.es.md): deadlock real `40P01`, serialización `40001`, oráculo que detecta corrupción, y paridad parcial .NET 10/Npgsql frente a PostgreSQL. Dispone también de los registros de Azure descritos arriba —una VM D4s_v5, cargas sintéticas, cada ejecución descargada y con hash— registrados como `demonstrated_not_accepted` en la [matriz de evidencia](../docs/EVIDENCE.es.md).
 
 **No existe todavía benchmark del IBM z17, LinuxONE, Dorado 8590, Azure Mdsv3 o EPYC**, ni segundo CPD, ni medida desde una oficina a cientos de kilómetros, y el contrato de capacidad sigue sin configurar. La matriz de evidencia no puede promover esas comparativas hasta disponer de carga reproducible, SLO aprobado y mediciones in situ. Las ejecuciones en Azure nos dicen que los mecanismos funcionan donde los pusimos; no nos dicen cómo se comporta el cierre de mes del banco.
 
@@ -3155,13 +3167,19 @@ Los agentes pueden preparar pruebas, resumir discrepancias y proponer optimizaci
 > [!IMPORTANT]
 > **Tesis del capítulo.** Un programa que compila en .NET 10 no es una cuenta migrada. Tres pruebas —dos retiradas simultáneas, una transferencia y un cierre nocturno— bastan para descubrir tres responsabilidades que no estaban en el mapa de programas.
 
+#### La demo que parecía una migración
+
 Imaginemos un banco ficticio con un programa `ACCTUPD` escrito en COBOL. Procesa cargos e ingresos, consulta una tabla de límites, registra movimientos y participa en un proceso de cierre nocturno. La primera demo muestra un fragmento pequeño: entrada, validación de saldo, nueva cantidad y escritura. Un LLM produce C# comprensible. La dirección celebra que el programa ya compila en .NET 10. El equipo técnico pide entonces tres pruebas más.
+
+#### Tres pruebas que cambian el diseño
 
 Primera prueba: dos retiradas simultáneas. El servicio sin control de concurrencia aprueba ambas. La solución no es añadir un `lock` en un controlador web: ese lock solo protege un proceso y el banco tendrá varios nodos. Introducimos una transacción y versionado o bloqueo a nivel de base, con clave idempotente. Los actores pueden reducir conflictos por identidad, pero el commit sigue siendo la frontera decisiva.
 
 Segunda prueba: una transferencia. Hay dos cuentas y dos escrituras. Un error entre ambas demuestra que la secuenciación en memoria no basta. Pasamos a un ledger con operación atómica dentro de una base, o definimos formalmente un protocolo de compensación cuando el movimiento cruza sistemas donde la atomicidad local no es posible. El negocio decide qué estados intermedios son observables y cuáles no.
 
 Tercera prueba: cierre nocturno. Una versión distribuida intenta calcular un millón de cuentas con un actor por cuenta y demasiadas escrituras pequeñas. El tiempo de commit domina el perfil. Reorganizamos el trabajo por particiones estables, batch de escrituras, controles idempotentes y checkpoint. El código final se parece menos al COBOL original. El comportamiento y los invariantes se parecen más al sistema que realmente necesitamos.
+
+#### Lo que acabamos modernizando
 
 En este punto ya no estamos traduciendo una rutina. Hemos identificado tres responsabilidades distintas: **aceptación online**, **integridad contable** y **procesamiento por lotes**. Separarlas permite desplegar y medir cada una con criterios propios. Esta descomposición no estaba necesariamente en el mapa de programas legado. Es una decisión de arquitectura basada en responsabilidades, no en nombres de ficheros.
 
@@ -3176,7 +3194,7 @@ En este punto ya no estamos traduciendo una rutina. Hemos identificado tres resp
 > [!IMPORTANT]
 > **Tesis del capítulo.** Una dirección no necesita promesas de que la IA lo convertirá todo. Necesita decisiones por etapas, inversión acotada y criterios explícitos para detenerse.
 
-Una dirección no necesita promesas de que «la IA convertirá todo». Necesita decisiones por etapas, inversión acotada y criterios para detenerse. Propondría un **Discovery** que mida inventario, criticidad, dependencias, semántica de datos y capacidad observable. Después un **Pilot** con una costura seleccionada por riesgo y relevancia, no por facilidad para quedar bien en una demo. Después un **Parallel Run** con oráculos funcionales, operacionales y de rendimiento. Solo entonces un despliegue gradual y un retiro controlado del componente anterior.
+Antes de decidir una plataforma, haría una pregunta poco comercial: **¿qué resultado nos obligaría a detener la migración?** Si no hay respuesta, el piloto será una demo sin criterio de salida. Propongo un **Discovery** con inventario, contratos y carga observada; un **Pilot** elegido por riesgo de negocio; un **Parallel Run** que confronte efectos y recuperación; y, solo después, un despliegue gradual. El destino tecnológico viene después del diagnóstico.
 
 Cada etapa cierra con tres preguntas. ¿Qué propiedad hemos demostrado? ¿Qué incertidumbre sigue abierta? ¿Qué riesgo asume la siguiente etapa? Un piloto puede concluir que mantener COBOL es mejor. También puede concluir que la migración es viable, pero necesita cambiar el modelo de datos. Un resultado negativo temprano es valioso: evita millones comprometidos sobre una hipótesis equivocada.
 
@@ -3247,7 +3265,7 @@ El valor del libro no depende de que todas las hipótesis salgan a favor de TODM
 > [!IMPORTANT]
 > **Tesis del capítulo.** Conservar el mainframe, mejorarlo o combinarlo con sistemas nuevos son decisiones legítimas si los datos lo justifican. Una arquitectura híbrida bien gobernada puede ser más moderna que una reescritura total imprudente.
 
-Hay sistemas que cumplen su función, tienen carga estable, coste asumible, soporte suficiente y garantías bien conocidas. Si la modernización no aporta valor funcional, reducción comprobable de riesgo o una economía razonable, la mejor decisión puede ser seguir en mainframe y mejorar observabilidad, automatización, documentación y exposición de capacidades. Una arquitectura híbrida bien gobernada puede ser más moderna que una reescritura total imprudente.
+Modernizar no significa que todo deba abandonar el mainframe. Hay sistemas con carga estable, soporte razonable y garantías bien entendidas que no justifican otra plataforma. En esos casos invertiría primero en observabilidad, automatización, documentación y exposición controlada de capacidades. El assessment debe poder terminar con un **«no migrar»**, y mostrar por qué ese resultado protege mejor al negocio.
 
 No migraría un ledger crítico sin acceso a perfiles operativos y sin un entorno donde ejecutar pruebas de equivalencia y recuperación. No haría un cutover irreversible mientras convivan escritores no inventariados. No aceptaría un SLA porque un benchmark sintético obtuvo un TPS llamativo. No separaría por microservicios un proceso cuya atomicidad no podemos recuperar. No utilizaría actores para simular una transacción entre dominios y llamarla segura. Y no confiaría la aceptación de una baseline a la misma IA que generó el candidato.
 
@@ -3264,7 +3282,7 @@ No se trata de conservadurismo tecnológico. Es una disciplina de decisiones rev
 | La atomicidad necesaria se conserva en el destino | Habría que fragmentar una transacción que el negocio necesita atómica |
 | El coste de verificar es asumible frente al beneficio | La verificación cuesta más que el problema que resuelve |
 
-> **No se trata de conservadurismo tecnológico. Es una disciplina de decisiones reversibles.**
+> **No migrar también debe ser una decisión documentada, medible y revisable.**
 
 ### Capítulo 36 · Cien riesgos para elegir patrones con criterio
 
