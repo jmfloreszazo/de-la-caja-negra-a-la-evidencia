@@ -16,6 +16,7 @@ Material de consulta: cómo ejecutar el laboratorio, qué contrato implementa, q
 - [Anexo F · Glosario operativo](anexo-f-glosario-operativo.md)
 - [Anexo G · Fuentes y alcance de la investigación](anexo-g-fuentes-y-alcance-de-la-investigacion.md)
 - [Anexo H · Más allá de COBOL](anexo-h-mas-alla-de-cobol.md)
+- [Anexo I · Campañas de evidencia y límites de validación](anexo-i-campanas-de-evidencia-y-limites.md)
 
 ---
 

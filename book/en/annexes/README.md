@@ -16,6 +16,7 @@ Reference material: how to run the lab, which contract it implements, what the r
 - [Annex F · Operational glossary](annex-f-operational-glossary.md)
 - [Annex G · Sources and scope of the research](annex-g-sources-and-scope-of-the-research.md)
 - [Annex H · Beyond COBOL](annex-h-beyond-cobol.md)
+- [Annex I · Evidence campaigns and validation limits](annex-i-evidence-campaigns-and-limits.md)
 
 ---
 

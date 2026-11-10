@@ -1,6 +1,6 @@
 **Español** · [English](../../en/annexes/annex-h-beyond-cobol.md)
 
-[← Anexo G · Fuentes y alcance de la investigación](anexo-g-fuentes-y-alcance-de-la-investigacion.md) · [Índice](../README.md)
+[← Anexo G · Fuentes y alcance de la investigación](anexo-g-fuentes-y-alcance-de-la-investigacion.md) · [Índice](../README.md) · [Anexo I · Campañas de evidencia →](anexo-i-campanas-de-evidencia-y-limites.md)
 
 # Anexo H · Más allá de COBOL
 
@@ -66,4 +66,4 @@ Este anexo no añade ejecuciones. Los artefactos COBOL, C#/.NET y Python conserv
 
 ---
 
-[← Anexo G · Fuentes y alcance de la investigación](anexo-g-fuentes-y-alcance-de-la-investigacion.md) · [Índice](../README.md)
+[← Anexo G · Fuentes y alcance de la investigación](anexo-g-fuentes-y-alcance-de-la-investigacion.md) · [Índice](../README.md) · [Anexo I · Campañas de evidencia →](anexo-i-campanas-de-evidencia-y-limites.md)

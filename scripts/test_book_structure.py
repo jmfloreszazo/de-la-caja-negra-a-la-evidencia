@@ -15,13 +15,14 @@ class BookStructureTests(unittest.TestCase):
                 self.assertEqual(len(ordered), len(set(ordered)))
                 self.assertEqual(set(ordered), source)
 
-    def test_tooling_chapter_follows_method_and_final_annex_is_last(self):
+    def test_tooling_chapter_follows_method_and_evidence_annex_is_last(self):
         for language in build.EDITIONS:
             names = [path.name for path in build.order(language)]
             method = next(i for i, name in enumerate(names) if name.startswith('10-'))
             self.assertTrue(names[method + 1].startswith('10a-'))
             self.assertTrue(names[method + 2].startswith('11-'))
-            self.assertTrue(names[-1].startswith('annex-h-' if language == 'en' else 'anexo-h-'))
+            self.assertTrue(names[-2].startswith('annex-h-' if language == 'en' else 'anexo-h-'))
+            self.assertTrue(names[-1].startswith('annex-i-' if language == 'en' else 'anexo-i-'))
 
 
 if __name__ == '__main__':
