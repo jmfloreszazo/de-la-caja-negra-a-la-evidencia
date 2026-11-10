@@ -4,7 +4,9 @@
 
 # Part VI · The lab: from demo to evidence
 
-Everything above, in code you can run, read in an afternoon and break on purpose. The lab is small so the mechanism can be understood, and its scope is explicit so nobody mistakes it for a finished migration.
+After decisions come experiments. This laboratory combines COBOL, .NET 10, Podman, SQL and independent verifiers to seed defects and see whether our controls detect them. A test that cannot fail proves little.
+
+I want readers to replay the case, break the implementation and challenge the evidence without depending on the agent that produced it. The chapters explain what we learn; Annex I retains the full campaigns and original FAIL/INCONCLUSIVE outcomes.
 
 ## In this part
 

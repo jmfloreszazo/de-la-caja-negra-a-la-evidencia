@@ -4,7 +4,9 @@
 
 # Part III · Oracles: the right to accept
 
-A candidate is not accepted because it compiles, because an excellent model wrote it or because its own tests are green. It is accepted because independent evidence checks it against approved behaviour.
+Discovering legacy behaviour is not enough to approve its replacement. The specification can be wrong, the builder and evaluator can share assumptions, and a passing test can answer the wrong question.
+
+TODM separates the mandate, approved baseline, independent oracles, negative controls and authority to deliver. I am not adding ceremonies for their own sake; I want AI's speed to leave intact our ability to say no.
 
 ## In this part
 

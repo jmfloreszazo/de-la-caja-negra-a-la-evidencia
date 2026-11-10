@@ -4,7 +4,9 @@
 
 # Part VII · From evidence to the organization
 
-A lab convinces a technical team. An organization needs coexistence, an SDLC that works in its favour, a plan with exit points, a way of measuring what it does not yet know and the courage to say "I would not migrate here".
+A working demo does not transform an organization by itself. People, COBOL expertise, the SDLC, investment, transfer of authority and the right to retain a platform that meets its obligations all remain.
+
+I close with a fictional account that looked easy, an exit-based plan, a way to measure TODM and cases where I would not migrate. The final contract demands evidence; it promises no automatic conversion.
 
 ## In this part
 

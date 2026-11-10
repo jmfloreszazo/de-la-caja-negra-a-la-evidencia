@@ -147,7 +147,9 @@ For a reproducible result, preserve the exact source commit, local changes if an
 
 ## Part I · Before translating
 
-What we are really preserving when we say "migrate COBOL", why changing languages is not changing architecture, and where I agree —and disagree— with those who call for caution.
+I would not begin modernization by picking a target language. I would begin with the system the business thinks it knows: workloads, closing windows, hardware, operations and guarantees nobody wrote down because the platform always supplied them.
+
+This part challenges the shortcut from a program that compiles to a capability ready to leave its environment. Before choosing .NET, Azure or a larger server, I want to know what must survive and what should be retired.
 
 ### Chapter 1 · The mainframe is not a fast box
 
@@ -460,7 +462,9 @@ A fair comparison includes the cost of building and maintaining the oracles. It 
 
 ## Part II · Archaeology, knowledge and authority
 
-How to recover what the system knows without mistaking a well-written hypothesis for a fact, and how to give agents the capacity to act without handing them authority.
+Once we understand the problem, we need to recover knowledge without promoting an AI hypothesis to a requirement. This is where REA, functional and technical archaeology and bounded agents belong. I do not need a pretty call graph; I need capabilities, owners and evidence we can challenge.
+
+An assessment should separate what we know, what we infer and what requires a conversation with operations or the business. That distinction leads to acceptance.
 
 ### Chapter 6 · REA and archaeology that leaves a trail
 
@@ -755,7 +759,9 @@ Keeping both dimensions visible prevents the green of a test from becoming an im
 
 ## Part III · Oracles: the right to accept
 
-A candidate is not accepted because it compiles, because an excellent model wrote it or because its own tests are green. It is accepted because independent evidence checks it against approved behaviour.
+Discovering legacy behaviour is not enough to approve its replacement. The specification can be wrong, the builder and evaluator can share assumptions, and a passing test can answer the wrong question.
+
+TODM separates the mandate, approved baseline, independent oracles, negative controls and authority to deliver. I am not adding ceremonies for their own sake; I want AI's speed to leave intact our ability to say no.
 
 ### Chapter 10 · TODM and the problem of accepting what we build
 
@@ -1153,7 +1159,9 @@ The equivalence we care about belongs to an observation contract. The poorer tha
 
 ## Part IV · Patterns that replace responsibilities, not syntax
 
-Every guarantee the mainframe provided without the application asking for it needs an explicit mechanism in the target. This part explains which pattern replaces each responsibility, why it is needed and when using it would be a mistake.
+Once we know which guarantees matter, we can decide what replaces them. A pattern is not a label on a microservices diagram: it has a boundary, a failure it prevents and an operational cost.
+
+I follow extraction seams, data ownership, locks, the ledger, actors, batch and banking channels. Each chapter keeps its architectural decision; full experiment campaigns live in Annex I. There is no reason to reteach outbox, sagas or ownership whenever another box appears.
 
 ### Chapter 13 · Before choosing a pattern, identify the contract
 
@@ -1944,7 +1952,9 @@ I will not present an ATM simulation as certification of a switch or cash dispen
 
 ## Part V · Capacity: MIPS, concurrency and platform
 
-The question that worries me most when taking a workload off a mainframe is not whether the program compiles. It is whether it will hold up when month-end close, the peak and a failure arrive at once. This part is about approaching what a mainframe delivers —in Azure or on a huge machine at the customer's site— without cheating when we measure.
+The capacity question comes before cloud pricing. What does it mean to replace a mainframe workload? There is no universal MIPS-to-vCPU conversion and no local benchmark that stands in for a bank's month-end close.
+
+I separate hardware, concurrency, transport, operations and total cost. Azure and on-premises options are compared without attributing synthetic runs to production. VM size should never settle a business decision on its own.
 
 ### Chapter 22 · MIPS do not fit in a vCPU conversion
 
@@ -2469,7 +2479,9 @@ This edition records [versioned E1a/E1b observations](../evidence/runs/README.md
 
 ## Part VI · The lab: from demo to evidence
 
-Everything above, in code you can run, read in an afternoon and break on purpose. The lab is small so the mechanism can be understood, and its scope is explicit so nobody mistakes it for a finished migration.
+After decisions come experiments. This laboratory combines COBOL, .NET 10, Podman, SQL and independent verifiers to seed defects and see whether our controls detect them. A test that cannot fail proves little.
+
+I want readers to replay the case, break the implementation and challenge the evidence without depending on the agent that produced it. The chapters explain what we learn; Annex I retains the full campaigns and original FAIL/INCONCLUSIVE outcomes.
 
 ### Chapter 26 · A local lab you can understand
 
@@ -3006,7 +3018,9 @@ I built a concrete form of that harness in "From the model that answers to the a
 
 ## Part VII · From evidence to the organization
 
-A lab convinces a technical team. An organization needs coexistence, an SDLC that works in its favour, a plan with exit points, a way of measuring what it does not yet know and the courage to say "I would not migrate here".
+A working demo does not transform an organization by itself. People, COBOL expertise, the SDLC, investment, transfer of authority and the right to retain a platform that meets its obligations all remain.
+
+I close with a fictional account that looked easy, an exit-based plan, a way to measure TODM and cases where I would not migrate. The final contract demands evidence; it promises no automatic conversion.
 
 ### Chapter 30 · From the lab to a system that keeps running
 
