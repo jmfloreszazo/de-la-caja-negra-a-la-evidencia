@@ -25,7 +25,7 @@ I would separate at least three responsibilities: an **actor or coordinator per 
 
 *Figure 19.1 · Actors per account: parallelism across identities, order within each one. Durability and atomicity are guaranteed by the ledger.*
 
-## What the runtime provides and what remains open
+## What Orleans guarantees and what I still need to verify
 
 By default, Orleans runs a grain activation with complete requests without interleaving them. Its documentation explains that enabling reentrancy allows turns to interleave and requires reasoning about state across `await` points [24]. It also shows that cyclic calls can cause waits that end in a timeout. So the actor model removes part of the concurrency problem; it does not remove every lock.
 

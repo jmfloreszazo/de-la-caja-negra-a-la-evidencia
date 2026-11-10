@@ -594,7 +594,7 @@ Not all legacy code deserves to be converted. The analysis must identify dead pa
 
 ### Companion chapter · Decomposing a mainframe with evidence
 
-> **Editorial review draft.** Not part of published v2026.10.29. Tracks issue #32.
+> **Scope.** I use a synthetic model to explain how to discover and separate mainframe capabilities. This is not a certified extraction from a live bank: a real cutover requires authorized traces and sign-off from the business owner.
 
 #### The boundary is not the program
 
@@ -1372,13 +1372,19 @@ The last two rows are the important ones. A codec that "tolerates" invalid bytes
 
 A microservices architecture can draw independent boxes, but if they all write the same tables a data monolith still exists. In mature COBOL systems it is common for several programs and jobs to touch the same set of records. Before moving the logic we must identify writers, readers, locks and reconciliations. The dynamic inventory matters as much as static searches: a table that looks read-only may have a batch maintenance job that only runs on the last day of the quarter.
 
+#### Identify who owns each change
+
 I propose an **ownership register** for each aggregate. One capability owns accepting commands and determining the new state; other consumers receive queries or events. During the transition we may need to sustain a temporary mirror or CDC, but I would not accept two master writers without an explicit conflict-resolution protocol. Independent dual writes to the old and new databases fail precisely between the two writes; success on one side does not guarantee success on the other.
 
 ![Figure 16.1 · A single write owner per aggregate; everyone else queries or receives events.](figures/en/ownership.png)
 
 *Figure 16.1 · A single write owner per aggregate; everyone else queries or receives events.*
 
-The Transactional Outbox pattern provides a localized solution: within the same transaction that stores the business change, a pending event is written. A worker sends it afterwards. The consumer uses an Inbox or an idempotency key to absorb duplicates. It does not guarantee physical exactly-once delivery; it lets us design a **business effect exactly once** through deduplication and confirmation. And we must check that the outbox and the authoritative data really share a transactional boundary.
+Reliable publication after COMMIT is a separate responsibility: the **Outbox and Inbox** mechanism belongs in [Chapter 18](#chapter-18--distributing-without-breaking-the-books). The decision here comes first: who owns writes, how we fence the former writer, and which reads may tolerate stale data.
+
+#### Coexistence that can be reversed
+
+Imagine an account still receiving nightly COBOL postings while a new API accepts online movements. If both sides confirm money independently, we have created two authorities. Before routing traffic I would require a writer inventory, an enforceable stop on old-source writes, reconciliation and a tested return path.
 
 CDC is useful for coexistence and observation, not an automatic proof that the new database is correct. We must preserve order per key, detect lag, rebuild states from consistent snapshots and measure the difference between source and target. If the transition depends on reads from an eventually consistent replica, the contracts must acknowledge it.
 
@@ -1624,7 +1630,7 @@ I would separate at least three responsibilities: an **actor or coordinator per 
 
 *Figure 19.1 · Actors per account: parallelism across identities, order within each one. Durability and atomicity are guaranteed by the ledger.*
 
-#### What the runtime provides and what remains open
+#### What Orleans guarantees and what I still need to verify
 
 By default, Orleans runs a grain activation with complete requests without interleaving them. Its documentation explains that enabling reentrancy allows turns to interleave and requires reasoning about state across `await` points [24]. It also shows that cyclic calls can cause waits that end in a timeout. So the actor model removes part of the concurrency problem; it does not remove every lock.
 
@@ -1784,7 +1790,11 @@ A financial batch does not finish when the process returns code zero. It must st
 > [!IMPORTANT]
 > **Chapter thesis.** They are excellent patterns with precise conditions of use. A double-entry ledger is not an arbitrary event stream, an eventual projection must not approve withdrawals and a compensation does not erase what a third party has already seen.
 
+#### Event sourcing is not accounting
+
 Event sourcing has an obvious appeal for financial systems: keeping a sequence of changes that allows state to be rebuilt. But it is not a synonym for accounting. A double-entry ledger imposes invariants that an arbitrary set of events does not guarantee. Turning every operation into an event can increase volume, versioning complexity and the need for reprocessing. I would consider it when the domain needs full history as the source of truth, the team knows how to manage schemas and the cost of rebuilding is solved. I would not impose it on a COBOL table for the sake of modernity.
+
+#### CQRS does not grant authority to a projection
 
 CQRS separates writes from reads when their needs diverge. It is useful for intensive queries, search and reporting. But its projections can lag. If an application decides to approve a withdrawal by querying an eventual projection, it can break rules that must be evaluated against the authoritative state. I would use CQRS to speed up views, not to replace, without analysis, the decision about the available balance.
 
@@ -1792,7 +1802,9 @@ CQRS separates writes from reads when their needs diverge. It is useful for inte
 
 *Figure 21.1 · CQRS without tricks: the projection is for looking; the decision about the balance is made in the write core.*
 
-Sagas are suitable for long processes that cross systems with legitimate compensations: onboarding, communications, documentation, validations and reservations. An accounting transfer, on the other hand, does not automatically become a saga because we now have two microservices. A later compensation does not erase the fact that a third party observed an intermediate balance, nor does it guarantee recovering money sent outside our boundary.
+#### Sagas: only when the business allows intermediate states
+
+A saga can coordinate onboarding, documents or reservations with legitimate compensations. I would not use one to disguise splitting a formerly atomic transfer in two. The mechanics of compensation and reliable publication belong to [Chapter 18](#chapter-18--distributing-without-breaking-the-books). The decision here is whether each intermediate state has meaning and business acceptance. If not, a saga is the wrong pattern.
 
 The rule is demanding and simple: **the chosen pattern must preserve the level of consistency the business needs, not the level that is most convenient for us to implement**.
 
@@ -2449,7 +2461,7 @@ but cannot replace, the original workload artifacts and independent oracles.
 
 #### Our evidence: what exists and what does not
 
-This branch does contain [versioned E1a/E1b observations](../evidence/runs/README.md): real `40P01` deadlock, `40001` serialization, a corruption-detecting independent oracle and partial .NET 10/Npgsql parity on PostgreSQL. It also contains the Azure records described above—one D4s_v5 VM, synthetic workloads, every run downloaded and hashed—registered as `demonstrated_not_accepted` in the [evidence matrix](../docs/EVIDENCE.md).
+This edition records [versioned E1a/E1b observations](../evidence/runs/README.md): real `40P01` deadlock, `40001` serialization, a corruption-detecting independent oracle and partial .NET 10/Npgsql parity on PostgreSQL. It also contains the Azure records described above—one D4s_v5 VM, synthetic workloads, every run downloaded and hashed—registered as `demonstrated_not_accepted` in the [evidence matrix](../docs/EVIDENCE.md).
 
 **There is not yet any benchmark on IBM z17, LinuxONE, Dorado 8590, Azure Mdsv3 or EPYC**, no second site, no measurements from a real distant branch, and the capacity contract is still unconfigured. The evidence registry must not promote those comparisons without reproducible load, approved SLOs and on-site measurements. The Azure runs tell us the mechanisms work where we put them; they do not tell us how the bank's month-end behaves.
 
@@ -3143,13 +3155,19 @@ Agents can prepare tests, summarize discrepancies and propose optimizations. The
 > [!IMPORTANT]
 > **Chapter thesis.** A program that compiles on .NET 10 is not a migrated account. Three tests —two simultaneous withdrawals, a transfer and a nightly close— are enough to discover three responsibilities that were not on the program map.
 
+#### The demo that looked like a migration
+
 Imagine a fictional bank with a COBOL program called `ACCTUPD`. It processes debits and credits, queries a limits table, records movements and takes part in a nightly closing process. The first demo shows a small fragment: input, balance validation, new amount and write. An LLM produces readable C#. Management celebrates that the program already compiles on .NET 10. The technical team then asks for three more tests.
+
+#### Three tests that change the design
 
 First test: two simultaneous withdrawals. The service without concurrency control approves both. The solution is not to add a `lock` in a web controller: that lock protects one process and the bank will have several nodes. We introduce a transaction and versioning or database-level locking, with an idempotent key. Actors can reduce conflicts by identity, but the commit is still the decisive boundary.
 
 Second test: a transfer. There are two accounts and two writes. A failure between them shows that in-memory sequencing is not enough. We move to a ledger with an atomic operation within a database, or we formally define a compensation protocol when the movement crosses systems where local atomicity is not possible. The business decides which intermediate states are observable and which are not.
 
 Third test: the nightly close. A distributed version tries to calculate a million accounts with one actor per account and too many small writes. Commit time dominates the profile. We reorganize the work into stable partitions, batched writes, idempotent controls and checkpoints. The final code looks less like the original COBOL. The behaviour and the invariants look more like the system we really need.
+
+#### What we have actually modernized
 
 At this point we are no longer translating a routine. We have identified three different responsibilities: **online acceptance**, **accounting integrity** and **batch processing**. Separating them lets us deploy and measure each with its own criteria. This decomposition was not necessarily on the legacy program map. It is an architectural decision based on responsibilities, not on file names.
 
@@ -3164,7 +3182,7 @@ At this point we are no longer translating a routine. We have identified three d
 > [!IMPORTANT]
 > **Chapter thesis.** Management does not need promises that AI will convert everything. It needs staged decisions, bounded investment and explicit criteria to stop.
 
-Management does not need promises that "AI will convert everything". It needs staged decisions, bounded investment and criteria to stop. I would propose a **Discovery** that measures inventory, criticality, dependencies, data semantics and observable capacity. Then a **Pilot** with a seam selected for risk and relevance, not for how good it looks in a demo. Then a **Parallel Run** with functional, operational and performance oracles. Only then a gradual rollout and a controlled retirement of the previous component.
+Before choosing a platform I would ask an uncomfortable question: **what result would force us to stop the migration?** Without that answer, a pilot is a demo with no exit criteria. I would start with **Discovery** of capabilities, contracts and observed workload; select a business-relevant **Pilot**; compare functional outcomes and recovery in **Parallel Run**; and only then roll out gradually. The destination technology comes after the diagnosis.
 
 Each stage closes with three questions. What property have we demonstrated? What uncertainty remains open? What risk does the next stage take on? A pilot may conclude that keeping COBOL is better. It may also conclude that the migration is viable but requires changing the data model. An early negative result is valuable: it avoids committing millions to a wrong hypothesis.
 
@@ -3235,7 +3253,7 @@ The value of the book does not depend on every hypothesis coming out in TODM's f
 > [!IMPORTANT]
 > **Chapter thesis.** Keeping the mainframe, improving it or combining it with new systems are legitimate decisions if the data justifies them. A well-governed hybrid architecture can be more modern than a reckless full rewrite.
 
-There are systems that do their job, have a stable load, an acceptable cost, sufficient support and well-known guarantees. If modernization brings no functional value, no demonstrable risk reduction or reasonable economics, the best decision may be to stay on the mainframe and improve observability, automation, documentation and the exposure of capabilities. A well-governed hybrid architecture can be more modern than a reckless full rewrite.
+Modernization does not mean everything must leave the mainframe. Some systems have stable workloads, reasonable support and well-understood guarantees that do not justify a move. In those cases I would invest first in observability, automation, documentation and governed exposure of capabilities. An assessment must be allowed to conclude **“do not migrate”** and explain why that better protects the business.
 
 I would not migrate a critical ledger without access to operational profiles and without an environment where equivalence and recovery tests can be run. I would not make an irreversible cutover while unidentified writers coexist. I would not accept an SLA because a synthetic benchmark achieved a striking TPS. I would not split into microservices a process whose atomicity we cannot recover. I would not use actors to simulate a cross-domain transaction and call it safe. And I would not entrust the acceptance of a baseline to the same AI that generated the candidate.
 
@@ -3252,7 +3270,7 @@ It is not technological conservatism. It is a discipline of reversible decisions
 | The required atomicity is preserved in the target | A transaction the business needs to be atomic would have to be split |
 | The cost of verifying is affordable compared with the benefit | Verification costs more than the problem it solves |
 
-> **It is not technological conservatism. It is a discipline of reversible decisions.**
+> **Not migrating must also be a documented, measurable and revisable decision.**
 
 ### Chapter 36 · A hundred risks for choosing patterns with judgement
 

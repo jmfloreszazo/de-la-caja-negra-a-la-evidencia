@@ -2,7 +2,7 @@
 
 # Companion chapter · Decomposing a mainframe with evidence
 
-> **Editorial review draft.** Not part of published v2026.10.29. Tracks issue #32.
+> **Scope.** I use a synthetic model to explain how to discover and separate mainframe capabilities. This is not a certified extraction from a live bank: a real cutover requires authorized traces and sign-off from the business owner.
 
 ## The boundary is not the program
 

@@ -278,7 +278,7 @@ but cannot replace, the original workload artifacts and independent oracles.
 
 ## Our evidence: what exists and what does not
 
-This branch does contain [versioned E1a/E1b observations](../../../evidence/runs/README.md): real `40P01` deadlock, `40001` serialization, a corruption-detecting independent oracle and partial .NET 10/Npgsql parity on PostgreSQL. It also contains the Azure records described above—one D4s_v5 VM, synthetic workloads, every run downloaded and hashed—registered as `demonstrated_not_accepted` in the [evidence matrix](../../../docs/EVIDENCE.md).
+This edition records [versioned E1a/E1b observations](../../../evidence/runs/README.md): real `40P01` deadlock, `40001` serialization, a corruption-detecting independent oracle and partial .NET 10/Npgsql parity on PostgreSQL. It also contains the Azure records described above—one D4s_v5 VM, synthetic workloads, every run downloaded and hashed—registered as `demonstrated_not_accepted` in the [evidence matrix](../../../docs/EVIDENCE.md).
 
 **There is not yet any benchmark on IBM z17, LinuxONE, Dorado 8590, Azure Mdsv3 or EPYC**, no second site, no measurements from a real distant branch, and the capacity contract is still unconfigured. The evidence registry must not promote those comparisons without reproducible load, approved SLOs and on-site measurements. The Azure runs tell us the mechanisms work where we put them; they do not tell us how the bank's month-end behaves.
 

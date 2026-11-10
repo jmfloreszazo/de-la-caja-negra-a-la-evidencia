@@ -7,7 +7,7 @@
 > [!IMPORTANT]
 > **Chapter thesis.** Management does not need promises that AI will convert everything. It needs staged decisions, bounded investment and explicit criteria to stop.
 
-Management does not need promises that "AI will convert everything". It needs staged decisions, bounded investment and criteria to stop. I would propose a **Discovery** that measures inventory, criticality, dependencies, data semantics and observable capacity. Then a **Pilot** with a seam selected for risk and relevance, not for how good it looks in a demo. Then a **Parallel Run** with functional, operational and performance oracles. Only then a gradual rollout and a controlled retirement of the previous component.
+Before choosing a platform I would ask an uncomfortable question: **what result would force us to stop the migration?** Without that answer, a pilot is a demo with no exit criteria. I would start with **Discovery** of capabilities, contracts and observed workload; select a business-relevant **Pilot**; compare functional outcomes and recovery in **Parallel Run**; and only then roll out gradually. The destination technology comes after the diagnosis.
 
 Each stage closes with three questions. What property have we demonstrated? What uncertainty remains open? What risk does the next stage take on? A pilot may conclude that keeping COBOL is better. It may also conclude that the migration is viable but requires changing the data model. An early negative result is valuable: it avoids committing millions to a wrong hypothesis.
 
