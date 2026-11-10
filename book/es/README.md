@@ -71,3 +71,4 @@ José María Flores Zazo · [jmfloreszazo.com](https://jmfloreszazo.com) · Edic
   - [Anexo F · Glosario operativo](anexos/anexo-f-glosario-operativo.md)
   - [Anexo G · Fuentes y alcance de la investigación](anexos/anexo-g-fuentes-y-alcance-de-la-investigacion.md)
   - [Anexo H · Más allá de COBOL](anexos/anexo-h-mas-alla-de-cobol.md)
+  - [Anexo I · Campañas de evidencia y límites de validación](anexos/anexo-i-campanas-de-evidencia-y-limites.md)
