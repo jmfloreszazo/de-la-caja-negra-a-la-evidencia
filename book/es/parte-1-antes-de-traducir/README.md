@@ -4,7 +4,9 @@
 
 # Parte I · Antes de traducir
 
-Qué estamos conservando de verdad cuando decimos «migrar COBOL», por qué cambiar de lenguaje no es cambiar de arquitectura y dónde coincido —y dónde no— con quienes piden prudencia.
+No empezaría una modernización preguntando a qué lenguaje vamos a traducir. Empezaría por el sistema que el negocio cree conocer: cargas, cierres, hardware, operaciones y garantías que nadie escribió porque la plataforma siempre estuvo ahí.
+
+Esta parte cuestiona una tentación: confundir que un programa compile con que una capacidad pueda abandonar su entorno. Antes de elegir .NET, Azure o una máquina mayor, quiero saber qué debemos conservar y qué conviene dejar atrás.
 
 ## En esta parte
 

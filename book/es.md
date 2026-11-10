@@ -147,7 +147,9 @@ Para obtener un resultado reproducible, conserva el commit exacto del código, l
 
 ## Parte I · Antes de traducir
 
-Qué estamos conservando de verdad cuando decimos «migrar COBOL», por qué cambiar de lenguaje no es cambiar de arquitectura y dónde coincido —y dónde no— con quienes piden prudencia.
+No empezaría una modernización preguntando a qué lenguaje vamos a traducir. Empezaría por el sistema que el negocio cree conocer: cargas, cierres, hardware, operaciones y garantías que nadie escribió porque la plataforma siempre estuvo ahí.
+
+Esta parte cuestiona una tentación: confundir que un programa compile con que una capacidad pueda abandonar su entorno. Antes de elegir .NET, Azure o una máquina mayor, quiero saber qué debemos conservar y qué conviene dejar atrás.
 
 ### Capítulo 1 · El mainframe no es una caja rápida
 
@@ -460,7 +462,9 @@ La comparación justa incluye el coste de construir y mantener los oráculos. Es
 
 ## Parte II · Arqueología, conocimiento y autoridad
 
-Cómo recuperar lo que el sistema sabe sin confundir una hipótesis bien redactada con un hecho, y cómo dar a los agentes capacidad de actuar sin regalarles autoridad.
+Una vez identificado el problema, necesitamos recuperar conocimiento sin convertir una hipótesis de la IA en un requisito. Aquí entra REA, la arqueología funcional y técnica y el trabajo de agentes con permisos acotados. No busco un mapa de llamadas bonito: busco capacidades, responsables y evidencia contrastable.
+
+Un buen assessment permite separar lo que sabemos, lo que suponemos y lo que necesita una conversación con negocio u operaciones. Esa distinción conduce a la aceptación.
 
 ### Capítulo 6 · REA y la arqueología que deja rastro
 
@@ -755,7 +759,9 @@ Mantener las dos dimensiones visibles evita que el color verde de una prueba se 
 
 ## Parte III · Oráculos: el derecho a aceptar
 
-Un candidato no se acepta porque compile, ni porque lo haya escrito un modelo excelente, ni porque sus propios tests estén en verde. Se acepta porque una evidencia independiente lo contrasta con un comportamiento aprobado.
+Descubrir lo que hace el legado no basta para aprobar lo que construimos después. La especificación puede equivocarse, el constructor y el evaluador pueden compartir sesgos y una prueba verde puede responder la pregunta equivocada.
+
+TODM separa mandato, baseline aprobada, oráculos independientes, controles negativos y autoridad de entrega. Mi interés no está en añadir ceremonias, sino en impedir que la velocidad de la IA borre nuestra capacidad de decir que no.
 
 ### Capítulo 10 · TODM y el problema de aceptar lo que construimos
 
@@ -1156,7 +1162,9 @@ La equivalencia que nos interesa pertenece a un contrato de observación. Cuanto
 
 ## Parte IV · Patrones que sustituyen responsabilidades, no sintaxis
 
-Cada garantía que el mainframe daba sin que la aplicación la pidiera necesita un mecanismo explícito en el destino. Esta parte explica qué patrón reemplaza cada responsabilidad, por qué hace falta y en qué situaciones sería un error usarlo.
+Cuando sabemos qué garantías importa conservar, podemos decidir qué las sustituye. Un patrón no es una etiqueta en un diagrama de microservicios: tiene una frontera, un fallo que evita y un coste operativo.
+
+Recorro la extracción, los datos, los locks, el ledger, los actores, el batch y los canales bancarios. Cada capítulo mantiene su decisión arquitectónica; las campañas extensas están en el anexo I. Así no repetimos outbox, sagas y ownership cada vez que aparece otra caja.
 
 ### Capítulo 13 · Antes de elegir un patrón, identifica el contrato
 
@@ -1947,7 +1955,9 @@ El [anexo I](#anexo-i--campañas-de-evidencia-y-límites-de-validación) conserv
 
 ## Parte V · Capacidad: MIPS, concurrencia y plataforma
 
-La pregunta que más preocupa al sacar una carga de un mainframe no es si el programa compila. Es si aguantará el cierre, el pico y un fallo a la vez. Esta parte trata de cómo acercarse a lo que da un mainframe —en Azure o en una máquina enorme en casa del cliente— sin hacerse trampas al medir.
+La pregunta de capacidad llega antes de poner precio a la nube. ¿Qué significa sustituir la carga de un mainframe? No existe una conversión universal de MIPS a vCPU ni un benchmark local que represente el cierre mensual de un banco.
+
+Separo máquina, concurrencia, transporte, operación y coste total. Comparo Azure y la infraestructura del cliente sin atribuir a producción resultados de cargas sintéticas. El tamaño de la VM nunca debería cerrar una decisión de negocio.
 
 ### Capítulo 22 · Los MIPS no caben en una conversión de vCPU
 
@@ -2473,7 +2483,9 @@ El expediente de esta edición conserva [resultados E1a/E1b versionados](../evid
 
 ## Parte VI · El laboratorio: de la demo a la evidencia
 
-Todo lo anterior, en código que puedes ejecutar, leer en una tarde y romper a propósito. El laboratorio es pequeño para que se entienda el mecanismo, y su alcance es explícito para que nadie lo confunda con una migración terminada.
+Después de decidir, hay que ejecutar. Este laboratorio combina COBOL, .NET 10, Podman, SQL y verificadores independientes para sembrar defectos y comprobar si los detectamos. Un test incapaz de fallar no demuestra gran cosa.
+
+Quiero que se pueda repetir el caso, romper la implementación y discutir la evidencia sin depender del agente que la generó. Aquí cuento qué aprendemos; el anexo I conserva las campañas y los FAIL/INCONCLUSIVE originales.
 
 ### Capítulo 26 · Un laboratorio local que se puede entender
 
@@ -3018,7 +3030,9 @@ La forma concreta de ese harness la construí en «Del modelo que responde al ag
 
 ## Parte VII · De la evidencia a la organización
 
-Un laboratorio convence a un equipo técnico. Una organización necesita convivencia, un SDLC que trabaje a favor, un plan con puntos de salida, una forma de medir lo que todavía no sabe y el valor de decir «aquí no migraría».
+Una demostración que funciona no transforma por sí sola una organización. Quedan los equipos, el conocimiento COBOL, el SDLC, la inversión, el traspaso de autoridad y el derecho a mantener una plataforma que cumple sus obligaciones.
+
+Cierro con una cuenta ficticia que parecía sencilla, un plan con condiciones de salida, una manera de medir TODM y los casos en los que no migraría. El contrato final exige evidencia; no promete conversión automática.
 
 ### Capítulo 30 · Del laboratorio a un sistema que sigue operando
 

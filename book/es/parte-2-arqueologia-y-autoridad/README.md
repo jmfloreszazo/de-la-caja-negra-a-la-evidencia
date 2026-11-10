@@ -4,7 +4,9 @@
 
 # Parte II · Arqueología, conocimiento y autoridad
 
-Cómo recuperar lo que el sistema sabe sin confundir una hipótesis bien redactada con un hecho, y cómo dar a los agentes capacidad de actuar sin regalarles autoridad.
+Una vez identificado el problema, necesitamos recuperar conocimiento sin convertir una hipótesis de la IA en un requisito. Aquí entra REA, la arqueología funcional y técnica y el trabajo de agentes con permisos acotados. No busco un mapa de llamadas bonito: busco capacidades, responsables y evidencia contrastable.
+
+Un buen assessment permite separar lo que sabemos, lo que suponemos y lo que necesita una conversación con negocio u operaciones. Esa distinción conduce a la aceptación.
 
 ## En esta parte
 

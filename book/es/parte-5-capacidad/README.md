@@ -4,7 +4,9 @@
 
 # Parte V · Capacidad: MIPS, concurrencia y plataforma
 
-La pregunta que más preocupa al sacar una carga de un mainframe no es si el programa compila. Es si aguantará el cierre, el pico y un fallo a la vez. Esta parte trata de cómo acercarse a lo que da un mainframe —en Azure o en una máquina enorme en casa del cliente— sin hacerse trampas al medir.
+La pregunta de capacidad llega antes de poner precio a la nube. ¿Qué significa sustituir la carga de un mainframe? No existe una conversión universal de MIPS a vCPU ni un benchmark local que represente el cierre mensual de un banco.
+
+Separo máquina, concurrencia, transporte, operación y coste total. Comparo Azure y la infraestructura del cliente sin atribuir a producción resultados de cargas sintéticas. El tamaño de la VM nunca debería cerrar una decisión de negocio.
 
 ## En esta parte
 

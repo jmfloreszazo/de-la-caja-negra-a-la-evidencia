@@ -4,7 +4,9 @@
 
 # Parte IV · Patrones que sustituyen responsabilidades, no sintaxis
 
-Cada garantía que el mainframe daba sin que la aplicación la pidiera necesita un mecanismo explícito en el destino. Esta parte explica qué patrón reemplaza cada responsabilidad, por qué hace falta y en qué situaciones sería un error usarlo.
+Cuando sabemos qué garantías importa conservar, podemos decidir qué las sustituye. Un patrón no es una etiqueta en un diagrama de microservicios: tiene una frontera, un fallo que evita y un coste operativo.
+
+Recorro la extracción, los datos, los locks, el ledger, los actores, el batch y los canales bancarios. Cada capítulo mantiene su decisión arquitectónica; las campañas extensas están en el anexo I. Así no repetimos outbox, sagas y ownership cada vez que aparece otra caja.
 
 ## En esta parte
 
