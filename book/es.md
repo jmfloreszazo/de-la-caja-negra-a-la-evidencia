@@ -3951,7 +3951,7 @@ Cada resultado pertenece a una versión, un host y un contrato experimental. Dos
 
 #### I. Canales: efectivo, fallos y transporte
 
-##### 7. Advice tardío, reversos y efectivo: una correlación no es una autorización
+##### Advice tardío, reversos y efectivo: una correlación no es una autorización
 
 Consideremos una retirada autorizada por 100,00 unidades monetarias: el dispositivo acredita que entregó **60,00**, pero el switch todavía conserva un advice con el importe solicitado de 100,00. El ledger registra 60,00 y aparece después una solicitud de reverso íntegro. Es incorrecto inferir automáticamente «cargo 100» o «abono 100»: hace falta identificar qué dinero fue físicamente accesible, qué cargo se confirmó, qué mensaje es una solicitud y quién puede resolver la discrepancia. Una petición de reverso no equivale a un reverso asentado.
 
@@ -3968,7 +3968,7 @@ Para correlacionar no basta con STAN o RRN: hay que conservar el **ID duradero d
 
 No se introduce una nueva implementación de ISO 8583 ni un emulador de cajero certificado. El nuevo control utiliza datos inventados; **no comprueba autenticidad de journal físico, políticas del emisor, reconciliación de esquemas ni operaciones bancarias reales**. Complementa las diez pruebas nativas anteriores de .NET 10/PostgreSQL, pero no reutiliza sus resultados como evidencia de protocolos de tarjeta. Incluso si sus casos Python pasan, no autoriza de forma automática dispensar, contabilizar o revertir y conserva **TODM G2 INCONCLUSIVE / G6 BLOCK**.
 
-##### 8. No existe un único «fallo de red»: localizar el salto y la decisión
+##### No existe un único «fallo de red»: localizar el salto y la decisión
 
 En una retirada, el mismo mensaje «timeout» puede esconder estados opuestos. Si se corta el **enlace ATM→switch** antes de la entrega, no tenemos una autorización demostrada. Si falla **switch→core** antes de llegar al emisor, el switch carece de permiso para inventar un saldo o dispensar. Si el core hizo COMMIT y solo perdió la **respuesta**, repetir la instrucción con un nuevo ID puede duplicar efectos. El camino de recuperación empieza consultando el estado **con el identificador original** en la autoridad que realmente tomó la decisión; una respuesta positiva no confirma la entrega física.
 
@@ -3990,7 +3990,7 @@ Tampoco debemos trasladar directamente la semántica de CICS a HTTP: una tarea C
 
 El [oráculo Python](../lab/channels/network_fault_gate.py) **solo analiza eventos declarados en JSON**: no corta sockets, no ejecuta ISO 8583, no consulta al emisor ni escribe un asiento. Un PASS valida coherencia de una maqueta, no garantías de la red. Una aceptación real exige pérdidas y reconexiones instrumentadas por separado, logs nativos de COMMIT, identidad de reintento, journal físico, conciliación y aprobación del negocio. **Ningún resultado del fixture autoriza automáticamente una retirada, reverso, asiento, corte de escritor o stand-in.** TODM G2 `INCONCLUSIVE`, G6 `BLOCK`.
 
-##### 9. Primera prueba de transporte real: TCP local y COMMIT del core
+##### Primera prueba de transporte real: TCP local y COMMIT del core
 
 Las pruebas anteriores de H01–H07 describían enlaces caídos mediante eventos JSON. El siguiente escalón experimental utiliza **sockets TCP reales en loopback**: un proxy efímero recibe la petición HTTP del cliente, la interrumpe o la reenvía al API **.NET 10** existente y observa la respuesta. El core escribe en PostgreSQL, mientras un oráculo Python independiente revisa sus tablas y el almacén de dispositivo. Son **procesos y sockets reales**, pero siguen ejecutándose en un único host; no es una partición física entre sucursales, switch y mainframe.
 
@@ -4006,7 +4006,7 @@ Los tres casos son **transferencias digitales ficticias**, no retiradas físicas
 
 El nuevo incremento permite medir **interrupciones reales de TCP locales** frente al commit SQL duradero. **No** implementa `tc netem`, pérdidas WAN entre máquinas, ISO 8583, CICS ni journal físico de dispensación; tampoco mide MIPS o capacidad. El libro mantiene el patrón de **un propietario financiero y varios canales**, y la aceptación del cliente exige todavía firmas, políticas, trazas reales, writer fencing y pruebas con dominios físicos independientes. **G2 INCONCLUSIVE, G6 BLOCK**, sin permiso de cortar el sistema del banco.
 
-##### 10. Respuesta retenida frente a ocho recuperaciones concurrentes
+##### Respuesta retenida frente a ocho recuperaciones concurrentes
 
 En el laboratorio anterior perdíamos o retrasábamos un ACK y, después, consultábamos al core. Quedaba sin probar una situación frecuente en arquitecturas de canales: **la respuesta original todavía está en tránsito cuando otros clientes intentan recuperar simultáneamente la operación**. No basta con probar un único reintento secuencial.
 
@@ -4192,7 +4192,7 @@ sostenida y dominios físicos continúan siendo puertas independientes.
 
 #### III. Brownfield: autoridad y recuperación
 
-###### C2 · Una respuesta desconocida necesita un journal duradero
+##### C2 · Una respuesta desconocida necesita un journal duradero
 
 La convivencia anterior resuelve cómo comparar dos almacenes, pero deja un
 problema abierto: **el COMMIT puede ser correcto aunque el ACK no llegue**.
@@ -4229,7 +4229,7 @@ fencing externo, reparación ante crash entre cambios de autoridad,
 conciliación de terceros, pruebas entre nodos físicos y política de
 negocio aprobada. TODM G2=INCONCLUSIVE y G6=BLOCK.
 
-###### Continuación de C2 · Persistir el control y congelar cambios interrumpidos
+##### Continuación de C2 · Persistir el control y congelar cambios interrumpidos
 
 La [continuación del journal](../lab/brownfield/journal/README.md)
 cambia dos supuestos técnicos sin modificar la autoridad del negocio. La
@@ -4263,7 +4263,7 @@ curso, la retirada de autoridad al incumbente real, los efectos de pago
 externos y la política aprobada siguen siendo puertas de aceptación separadas.
 G2=INCONCLUSIVE y G6=BLOCK.
 
-###### C2 · Perder el controlador con una operación ya iniciada
+##### C2 · Perder el controlador con una operación ya iniciada
 
 El [nuevo protocolo de corte TCP](../lab/brownfield/journal/README.md)
 parte de una ventana distinta de «controlador inaccesible antes de empezar».
@@ -4289,7 +4289,7 @@ Esta evidencia acotada no cierra #64 ni acredita fencing bancario, RTO/RPO o
 una migración productiva.
 G2=INCONCLUSIVE y G6=BLOCK.
 
-###### C2 · Una conexión viva no significa una decisión conocida
+##### C2 · Una conexión viva no significa una decisión conocida
 
 La siguiente [campaña original](../evidence/runs/BROWNFIELD-CONTROLLER-PARTITION.es.md) mantiene abiertos los sockets del controlador mientras descarta bytes opacos en una dirección. Cuatro casos cruzan escritores legado/candidato con cada dirección. Una consulta SQL marcada, observada fuera del relay, distingue petición que no llega al servidor de respuesta que no llega al cliente. Este relay confirma las lecturas TCP; no emula pérdida de paquetes del kernel.
 
@@ -4299,7 +4299,7 @@ La recuperación restablece explícitamente conexiones antes de conciliar; no es
 
 #### IV. Admisión y validación externa
 
-###### B05: distinguir límites de admisión y capacidad del servidor
+##### B05: distinguir límites de admisión y capacidad del servidor
 
 El [diagnóstico de admisión directa](../evidence/runs/B05-DISPATCH-DIAGNOSTIC.md) añade tres cohortes en runners a 320 ofertas/s, con fases de medición de 60 segundos. Cada pareja mantiene el pool PostgreSQL en 32 conexiones y cambia la admisión del cliente de 32 a 128 plazas; una cohorte invierte el orden. Los eventos exactos de admisión, finalización y liberación, junto con las marcas independientes de commit SQL, sustituyen las estimaciones retrospectivas de ocupación.
 
@@ -4307,7 +4307,7 @@ Las seis pruebas ofrecieron 119.040 operaciones: 118.887 commits durables y 153 
 
 Es evidencia de un efecto de la política de admisión en este cliente directo instrumentado; no establece un techo de capacidad ni explica los 12 rechazos antiguos. Falta medir la espera por conexión; el runner y la instrumentación afectan los tiempos. Siguen abiertos la ruta Orleans, el escalado sostenido y la atribución del cuello de botella de #25. Auditar el archivo congelado es distinto de ejecutar una campaña nueva; omitir la matriz viva no demuestra capacidad.
 
-###### Integrar evidencia acotada y aplazar explícitamente la validación externa
+##### Integrar evidencia acotada y aplazar explícitamente la validación externa
 
 El 3 de noviembre de 2026, el autor autorizó integrar las observaciones E2 y el diagnóstico B05 sin exigir que CI demuestre antes todas las afirmaciones de producción. El [protocolo de validación externa](../docs/EXTERNAL_VALIDATION.md) concreta el trabajo pendiente. La ausencia de mediciones externas deja de bloquear la integración del libro/laboratorio y el avance editorial. E2 sigue parcialmente verificado; esta decisión no convierte un resultado INCONCLUSIVE en PASS ni autoriza un despliegue bancario.
 

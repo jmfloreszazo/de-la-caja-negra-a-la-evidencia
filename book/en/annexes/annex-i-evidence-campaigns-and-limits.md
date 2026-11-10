@@ -10,7 +10,7 @@ Every result belongs to a code version, a host and a declared experimental contr
 
 ## I. Channels: cash, failures and transport
 
-### 7. Late advice, reversal and cash: correlation is not authorization
+### Late advice, reversal and cash: correlation is not authorization
 
 Consider a withdrawal authorized for 100.00 monetary units: the device attests that **60.00** was dispensed, but a switch may still carry an advice referring to the original requested 100.00. The ledger posts 60.00, and a full reversal request then arrives. It is wrong to infer either "post 100" or "credit 100" automatically. We need to establish what cash was physically available, which financial posting was committed, whether a message is merely a request, and who can adjudicate the discrepancy. A reversal request is not an executed ledger reversal.
 
@@ -27,7 +27,7 @@ Neither STAN nor RRN alone is a durable financial identity. Retain the original 
 
 This is **not** a certified ISO 8583 implementation or a real ATM simulator. The new check has invented data: it **does not authenticate device journal entries, issuer policies, network settlement or actual bank operations**. It complements the prior ten native .NET 10/PostgreSQL experiments without treating their results as card-network certification. Even if the Python checks pass, no automatic dispense, posting or reversal is permitted; **TODM G2 INCONCLUSIVE / G6 BLOCK**.
 
-### 8. There is no generic network failure: locate the hop and decision
+### There is no generic network failure: locate the hop and decision
 
 A channel “timeout” can conceal different financial states. If **ATM→switch** fails before delivery, no original authorization is demonstrated. If **switch→core** drops the request before the issuer receives it, the switch cannot invent account authority or dispense cash. If the core durably committed and **only its reply** was lost, starting a new operation ID risks a duplicate effect. Recovery queries the **actual decision owner under the original identity**; approval does not prove physical cash.
 
@@ -49,7 +49,7 @@ Nor does CICS UOW equal an HTTP transaction: a CICS task can have multiple syncp
 
 The [lab Python trace oracle](../../../lab/channels/network_fault_gate.py) **only checks declared JSON events**. It does not disconnect TCP sockets, execute a certified card protocol, contact an issuer or post to a financial ledger. A PASS shows consistency of this model, not a network guarantee. Real acceptance requires independent per-hop loss/reconnection injection, native issuer COMMIT logs, original retry identity, authenticated device journals, reconciliation and business-owner approval. **No fixture outcome authorizes automatic cash, reversal, posting, writer cutover or stand-in.** TODM G2 `INCONCLUSIVE`, G6 `BLOCK`.
 
-### 9. First real transport test: local TCP and the core COMMIT
+### First real transport test: local TCP and the core COMMIT
 
 The preceding H01–H07 tests represented disconnected hops with JSON events. The next experimental step uses **actual loopback TCP sockets**. An ephemeral one-shot proxy accepts the HTTP client's request, drops or forwards it to the existing **.NET 10** API, and observes the upstream response. The core commits in PostgreSQL while an independent Python oracle reads its tables and the separate synthetic device store. These are **real processes and sockets** but still run on **one host**: not a physical partition between branches, switch and mainframe.
 
@@ -65,7 +65,7 @@ All three new cases are **fictional digital transfers**, not actual cash withdra
 
 This increment exercises **real local TCP interruption against durable SQL**, not `tc netem`, cross-host WAN failures, certified ISO 8583, CICS or authentic dispenser journals; it is not a MIPS/capacity benchmark. One financial writer must remain authoritative across all channels. Customer acceptance still requires native source signatures, owner policy, network evidence, source fencing and independent physical failure domains. **G2 INCONCLUSIVE, G6 BLOCK**, no banking cutover approval.
 
-### 10. Held original reply versus eight concurrent recoveries
+### Held original reply versus eight concurrent recoveries
 
 The preceding experiment lost or delayed an ACK and then queried the core. It left a more difficult channel boundary untested: **the original response is still in flight while multiple clients concurrently try to recover the same operation**. One sequential retry does not establish safety under this race.
 
@@ -250,7 +250,7 @@ partial; sustained capacity and physical domains are independent gates.
 
 ## III. Brownfield: authority and recovery
 
-#### C2 · An unknown reply requires a durable admission journal
+### C2 · An unknown reply requires a durable admission journal
 
 The earlier coexistence experiment can compare two stores, but it leaves
 a separate failure mode: **COMMIT may be durable even when no ACK arrives**.
@@ -286,7 +286,7 @@ writer's authority. External fencing, split-authority crash repair,
 third-party side-effect reconciliation, cross-host tests and approved
 business policy remain missing. TODM G2=INCONCLUSIVE and G6=BLOCK.
 
-#### C2 follow-up · Persist the fence and freeze interrupted transitions
+### C2 follow-up · Persist the fence and freeze interrupted transitions
 
 The [journal follow-up](../../../lab/brownfield/journal/README.md) changes
 two engineering assumptions without changing business authority. Enrollment
@@ -320,7 +320,7 @@ In-flight network partitions, real incumbent revocation, external payment
 effects and approved business policy remain separate acceptance gates.
 G2=INCONCLUSIVE and G6=BLOCK.
 
-#### C2 · Losing the controller after a financial operation has started
+### C2 · Losing the controller after a financial operation has started
 
 The [new TCP-cut protocol](../../../lab/brownfield/journal/README.md) targets
 a different window from an unreachable controller before execution. A test
@@ -346,7 +346,7 @@ evidence does not close #64 or establish bank fencing, RTO/RPO or production
 migration.
 G2=INCONCLUSIVE and G6=BLOCK.
 
-#### C2 · A live connection does not mean a known decision
+### C2 · A live connection does not mean a known decision
 
 The next [original campaign](../../../evidence/runs/BROWNFIELD-CONTROLLER-PARTITION.md) keeps controller sockets open while discarding opaque stream bytes in one direction. Four cases cross the legacy/candidate writers with each direction. A tagged SQL probe, observed outside the relay, distinguishes a request that never reached the server from a response that never reached the client. This application relay acknowledges TCP reads; it is not a kernel packet-loss emulator.
 
@@ -356,7 +356,7 @@ Recovery explicitly resets connections before reconciliation; discarded protocol
 
 ## IV. Admission and external validation
 
-#### B05: distinguish admission limits from backend capacity
+### B05: distinguish admission limits from backend capacity
 
 The [direct admission diagnostic](../../../evidence/runs/B05-DISPATCH-DIAGNOSTIC.md) adds three runner cohorts at 320 offered/s with 60-second measurement phases. Each paired trial keeps the PostgreSQL connection pool at 32 and changes client admission from 32 to 128 slots, reversing the order in one cohort. Exact admission/completion/release events and independent SQL commit timestamps replace retrospective occupancy estimates.
 
@@ -364,7 +364,7 @@ Across six trials, 119,040 offers yielded 118,887 durable commits and 153 admiss
 
 This is evidence of an admission-policy effect in this instrumented direct-client setup, not a backend capacity ceiling or an explanation of the older 12 misses. Pool-acquisition waits remain unmeasured; runner noise and instrumentation affect timing. Orleans routing, sustained scaling and bottleneck attribution under #25 remain open. The frozen archive audit is distinct from a new live campaign; a skipped live matrix proves nothing about capacity.
 
-#### Integrate bounded evidence and defer external validation explicitly
+### Integrate bounded evidence and defer external validation explicitly
 
 On 3 November 2026, the author authorized integration of the E2 observations and B05 diagnostic without requiring hosted CI to establish every production claim first. The [external-validation protocol](../../../docs/EXTERNAL_VALIDATION.md) keeps the exact remaining work reviewable. Missing external measurements no longer block book/lab integration or editorial progress. E2 remains partially verified; this decision does not turn an INCONCLUSIVE result into PASS or authorize banking deployment.
 

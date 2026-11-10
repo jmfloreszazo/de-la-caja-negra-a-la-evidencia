@@ -134,7 +134,6 @@ No voy a presentar una simulación de ATM como si fuera una certificación del s
 
 El [anexo I](../anexos/anexo-i-campanas-de-evidencia-y-limites.md) conserva los escenarios y sus oráculos. Son datos ficticios o conexiones de loopback, no dispositivos homologados ni redes bancarias reales.
 
-
 ---
 
 [← Capítulo 21 · Event sourcing, CQRS y sagas](21-event-sourcing-cqrs-y-sagas-cuando-ayudan-y-cuando-estorban.md) · [Índice](../README.md) · [Parte V · Capacidad →](../parte-5-capacidad/README.md)

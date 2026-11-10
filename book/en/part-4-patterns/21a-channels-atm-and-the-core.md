@@ -134,7 +134,6 @@ I will not present an ATM simulation as certification of a switch or cash dispen
 
 [Annex I](../annexes/annex-i-evidence-campaigns-and-limits.md) retains the scenarios and independent oracles. These are fictional inputs or loopback connections, not certified hardware or a real banking WAN.
 
-
 ---
 
 [← Chapter 21 · Event sourcing, CQRS and sagas](21-event-sourcing-cqrs-and-sagas-when-they-help-and-when-they.md) · [Contents](../README.md) · [Part V · Capacity →](../part-5-capacity/README.md)
