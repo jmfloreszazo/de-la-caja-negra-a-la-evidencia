@@ -47,7 +47,7 @@ Original evidence links remain. **E1/E2 are not global PASS**; **E3/E4 remain bo
 
 This revision follows an architect presenting a concrete case, trying to disprove a claim and explaining a conditional decision. First-person judgement and runnable examples take precedence over formulaic summaries. It does not invent personal anecdotes, clients, metrics or production experiences for the author.
 
-Laboratory code, test scripts and original evidence were not changed. The book-order test was updated to assert the new Annex I position after H, not disabled.
+Laboratory code and original evidence were not changed. The only test modification is the reading-order assertion, updated to require Annex I after H; no validation has been disabled.
 
 ## Author review
 

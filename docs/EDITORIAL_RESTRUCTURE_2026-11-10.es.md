@@ -47,7 +47,7 @@ Los originales se conservan con sus enlaces de evidencia. **E1/E2 no reciben PAS
 
 Busco la voz del arquitecto que enseña un caso, comprueba una afirmación y explica por qué elegiría o rechazaría un patrón. Predominan primera persona, decisiones condicionales y ejemplos reproducibles, sin atribuir al autor recuerdos, clientes, métricas o anécdotas no sustentadas.
 
-No se han modificado el laboratorio, los scripts de pruebas ni las evidencias originales. Sí se ha actualizado el test de orden del libro para comprobar expresamente que el nuevo anexo I sigue al H; no se ha desactivado la validación.
+No se han modificado el laboratorio ni las evidencias originales. La única modificación de pruebas es el test de orden del libro: ahora comprueba expresamente que el nuevo anexo I sigue al H. No se ha desactivado ninguna validación.
 
 ## Revisión pendiente del autor
 
