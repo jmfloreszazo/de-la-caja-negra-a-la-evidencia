@@ -2,7 +2,7 @@
 
 # Capítulo complementario · Descomponer el mainframe con evidencia
 
-> **Borrador para revisión editorial.** No forma parte de la edición publicada v2026.10.29. Investigación vinculada al issue #32.
+> **Alcance.** Desarrollo un método para descubrir y separar capacidades usando un modelo sintético. No es una extracción certificada de un banco: cualquier corte real necesita trazas autorizadas y aprobación de quien responde por el negocio.
 
 ## La frontera no está en el programa
 

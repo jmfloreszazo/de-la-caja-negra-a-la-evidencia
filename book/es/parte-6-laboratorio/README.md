@@ -4,7 +4,9 @@
 
 # Parte VI · El laboratorio: de la demo a la evidencia
 
-Todo lo anterior, en código que puedes ejecutar, leer en una tarde y romper a propósito. El laboratorio es pequeño para que se entienda el mecanismo, y su alcance es explícito para que nadie lo confunda con una migración terminada.
+Después de decidir, hay que ejecutar. Este laboratorio combina COBOL, .NET 10, Podman, SQL y verificadores independientes para sembrar defectos y comprobar si los detectamos. Un test incapaz de fallar no demuestra gran cosa.
+
+Quiero que se pueda repetir el caso, romper la implementación y discutir la evidencia sin depender del agente que la generó. Aquí cuento qué aprendemos; el anexo I conserva las campañas y los FAIL/INCONCLUSIVE originales.
 
 ## En esta parte
 

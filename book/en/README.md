@@ -71,3 +71,4 @@ José María Flores Zazo · [jmfloreszazo.com](https://jmfloreszazo.com) · Edit
   - [Annex F · Operational glossary](annexes/annex-f-operational-glossary.md)
   - [Annex G · Sources and scope of the research](annexes/annex-g-sources-and-scope-of-the-research.md)
   - [Annex H · Beyond COBOL](annexes/annex-h-beyond-cobol.md)
+  - [Annex I · Evidence campaigns and validation limits](annexes/annex-i-evidence-campaigns-and-limits.md)

@@ -16,7 +16,7 @@ Outputs (ignored by Git):
 - `dist/de-la-caja-negra-a-la-evidencia-es.pdf`
 - `dist/from-black-box-to-evidence-en.pdf`
 
-Each edition has its own full-page cover, a clickable table of contents with page numbers, 37 numbered chapters plus the companion chapters 7 bis, 10 bis, 21 bis and 25 bis, eight annexes, every diagram listed in the catalog (48 per language), code listings, selected searchable text and A4 pages. Remote resource fetching is blocked while rendering: all figures must be present in the repository.
+Each edition has its own full-page cover, a clickable table of contents with page numbers, 37 numbered chapters plus the companion chapters 7 bis, 10 bis, 21 bis and 25 bis, nine annexes, every diagram listed in the catalog (48 per language), code listings, selected searchable text and A4 pages. Remote resource fetching is blocked while rendering: all figures must be present in the repository.
 
 Use the canonical LF checkout described in [Contributing](../CONTRIBUTING.md#checkout-integrity) before running hash checks. The documented PDF environment is Linux; on Windows, use an appropriately prepared WSL2 environment rather than assuming native rendering dependencies are present. Record the source commit, Python, Pandoc, WeasyPrint, pypdf and font versions with the output. Rebuilding the content is not a claim of byte-identical PDFs across platforms or tool versions. A successful build also does not replace full-page visual review.
 
@@ -58,7 +58,7 @@ Every structural unit starts on a new page: front matter, each part, every numbe
 
 All catalogued diagrams in each language are kept with their captions, not only the channel diagrams. Figures are bounded to the printable page height; code blocks that fit on a page stay together. Oversized code blocks and long tables may continue on subsequent pages rather than being clipped or reduced to unreadable text. This is not a request for a separate page for every paragraph, table or small example.
 
-The builder checks the actual rendered anchor positions: every structural unit in the reading order (61 as of this edition) must occupy a distinct page start, and each diagram must share a page with the end of its caption. It writes a `.layout.json` alongside each PDF, recording page numbers, opening positions and figure pages. A pagination failure stops the build. The warm-paper, navy, teal and coral artwork comes from the shared diagram theme and the deterministic bilingual cover generator; no technical diagram labels or evidence values are changed by the palette.
+The builder checks the actual rendered anchor positions: every structural unit in the reading order (62 in this editorial revision) must occupy a distinct page start, and each diagram must share a page with the end of its caption. It writes a `.layout.json` alongside each PDF, recording page numbers, opening positions and figure pages. A pagination failure stops the build. The warm-paper, navy, teal and coral artwork comes from the shared diagram theme and the deterministic bilingual cover generator; no technical diagram labels or evidence values are changed by the palette.
 
 ```bash
 python3 -m unittest discover -s scripts -p test_pdf_markdown.py -v

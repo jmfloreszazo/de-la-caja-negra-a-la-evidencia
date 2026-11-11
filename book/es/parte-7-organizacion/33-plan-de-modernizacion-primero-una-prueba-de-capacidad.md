@@ -7,7 +7,7 @@
 > [!IMPORTANT]
 > **Tesis del capítulo.** Una dirección no necesita promesas de que la IA lo convertirá todo. Necesita decisiones por etapas, inversión acotada y criterios explícitos para detenerse.
 
-Una dirección no necesita promesas de que «la IA convertirá todo». Necesita decisiones por etapas, inversión acotada y criterios para detenerse. Propondría un **Discovery** que mida inventario, criticidad, dependencias, semántica de datos y capacidad observable. Después un **Pilot** con una costura seleccionada por riesgo y relevancia, no por facilidad para quedar bien en una demo. Después un **Parallel Run** con oráculos funcionales, operacionales y de rendimiento. Solo entonces un despliegue gradual y un retiro controlado del componente anterior.
+Antes de decidir una plataforma, haría una pregunta poco comercial: **¿qué resultado nos obligaría a detener la migración?** Si no hay respuesta, el piloto será una demo sin criterio de salida. Propongo un **Discovery** con inventario, contratos y carga observada; un **Pilot** elegido por riesgo de negocio; un **Parallel Run** que confronte efectos y recuperación; y, solo después, un despliegue gradual. El destino tecnológico viene después del diagnóstico.
 
 Cada etapa cierra con tres preguntas. ¿Qué propiedad hemos demostrado? ¿Qué incertidumbre sigue abierta? ¿Qué riesgo asume la siguiente etapa? Un piloto puede concluir que mantener COBOL es mejor. También puede concluir que la migración es viable, pero necesita cambiar el modelo de datos. Un resultado negativo temprano es valioso: evita millones comprometidos sobre una hipótesis equivocada.
 

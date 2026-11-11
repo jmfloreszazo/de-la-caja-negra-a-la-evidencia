@@ -4,7 +4,9 @@
 
 # Parte VII · De la evidencia a la organización
 
-Un laboratorio convence a un equipo técnico. Una organización necesita convivencia, un SDLC que trabaje a favor, un plan con puntos de salida, una forma de medir lo que todavía no sabe y el valor de decir «aquí no migraría».
+Una demostración que funciona no transforma por sí sola una organización. Quedan los equipos, el conocimiento COBOL, el SDLC, la inversión, el traspaso de autoridad y el derecho a mantener una plataforma que cumple sus obligaciones.
+
+Cierro con una cuenta ficticia que parecía sencilla, un plan con condiciones de salida, una manera de medir TODM y los casos en los que no migraría. El contrato final exige evidencia; no promete conversión automática.
 
 ## En esta parte
 

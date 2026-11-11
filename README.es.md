@@ -29,7 +29,7 @@ libro, laboratorios, evidencia observada y entregables generados. La edición
 de trabajo añade [herramientas TODM, modelos y ADR](book/es/parte-3-oraculos/10a-herramientas-todm-modelos-y-adrs.md),
 [salidas reales del CLI Azure](evidence/runs/azure-cli-2026-11-08/capture.json),
 [demostraciones E1–E4 en Azure](evidence/runs/azure-e1-e4-2026-11-08.json) y un
-[anexo final sobre otros lenguajes](book/es/anexos/anexo-h-mas-alla-de-cobol.md).
+[anexo sobre otros lenguajes](book/es/anexos/anexo-h-mas-alla-de-cobol.md).
 No modifica archivos de releases históricas ni concede aceptación productiva.
 Las herramientas usan perfiles JSON acotados, no motores BPMN/DMN completos.
 
@@ -42,7 +42,7 @@ Las herramientas usan perfiles JSON acotados, no motores BPMN/DMN completos.
 | Español (original) | [book/es](book/es/README.md) | [book/es.md](book/es.md) |
 | English | [book/en](book/en/README.md) | [book/en.md](book/en.md) |
 
-37 capítulos numerados más los complementarios 7 bis, 10 bis, 21 bis y 25 bis en siete partes, epílogo, ocho anexos (A–H) y 48 diagramas por idioma (C4, UML de secuencia, estados y clases, ER, diagrama de flujo, gitGraph), escritos en Mermaid y publicados como imágenes con el estilo visual del libro. Las dos ediciones tienen exactamente la misma estructura y la CI falla si se separan; el [catálogo de diagramas](book/es/diagramas.md) es el inventario contra el que se comprueba el PDF.
+37 capítulos numerados más los complementarios 7 bis, 10 bis, 21 bis y 25 bis en siete partes, epílogo, nueve anexos (A–I) y 48 diagramas por idioma (C4, UML de secuencia, estados y clases, ER, diagrama de flujo, gitGraph), escritos en Mermaid y publicados como imágenes con el estilo visual del libro. Las dos ediciones tienen exactamente la misma estructura y la CI falla si se separan; el [catálogo de diagramas](book/es/diagramas.md) es el inventario contra el que se comprueba el PDF.
 
 ## Idiomas: libro frente a código
 

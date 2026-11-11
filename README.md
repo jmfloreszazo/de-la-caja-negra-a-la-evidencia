@@ -29,7 +29,7 @@ executable labs, observed evidence and generated deliverables. The current
 working edition adds [TODM tools, models and ADRs](book/en/part-3-oracles/10a-todm-toolbox-models-and-adrs.md),
 [actual Azure CLI captures](evidence/runs/azure-cli-2026-11-08/capture.json),
 [Azure E1–E4 demonstrations](evidence/runs/azure-e1-e4-2026-11-08.json), and a
-[final cross-language annex](book/en/annexes/annex-h-beyond-cobol.md).
+[cross-language method annex](book/en/annexes/annex-h-beyond-cobol.md).
 These additions do not change historical release assets or grant production
 acceptance. Model tools implement bounded JSON profiles, not complete BPMN/DMN engines.
 
@@ -42,7 +42,7 @@ acceptance. Model tools implement bounded JSON profiles, not complete BPMN/DMN e
 | English | [book/en](book/en/README.md) | [book/en.md](book/en.md) |
 | Español (original) | [book/es](book/es/README.md) | [book/es.md](book/es.md) |
 
-37 numbered chapters plus the companion chapters 7 bis, 10 bis, 21 bis and 25 bis in seven parts, an epilogue, eight annexes (A–H) and 48 diagrams per language (C4, UML sequence, state and class, ER, flowchart, gitGraph), drawn in Mermaid and published as images in the book's visual style. Both editions have exactly the same structure, and CI fails if they drift apart; the [diagram catalog](book/en/diagrams.md) is the inventory the PDF build checks against.
+37 numbered chapters plus the companion chapters 7 bis, 10 bis, 21 bis and 25 bis in seven parts, an epilogue, nine annexes (A–I) and 48 diagrams per language (C4, UML sequence, state and class, ER, flowchart, gitGraph), drawn in Mermaid and published as images in the book's visual style. Both editions have exactly the same structure, and CI fails if they drift apart; the [diagram catalog](book/en/diagrams.md) is the inventory the PDF build checks against.
 
 ## Languages: book versus code
 

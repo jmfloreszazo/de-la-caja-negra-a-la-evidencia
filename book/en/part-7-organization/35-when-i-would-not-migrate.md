@@ -7,7 +7,7 @@
 > [!IMPORTANT]
 > **Chapter thesis.** Keeping the mainframe, improving it or combining it with new systems are legitimate decisions if the data justifies them. A well-governed hybrid architecture can be more modern than a reckless full rewrite.
 
-There are systems that do their job, have a stable load, an acceptable cost, sufficient support and well-known guarantees. If modernization brings no functional value, no demonstrable risk reduction or reasonable economics, the best decision may be to stay on the mainframe and improve observability, automation, documentation and the exposure of capabilities. A well-governed hybrid architecture can be more modern than a reckless full rewrite.
+Modernization does not mean everything must leave the mainframe. Some systems have stable workloads, reasonable support and well-understood guarantees that do not justify a move. In those cases I would invest first in observability, automation, documentation and governed exposure of capabilities. An assessment must be allowed to conclude **“do not migrate”** and explain why that better protects the business.
 
 I would not migrate a critical ledger without access to operational profiles and without an environment where equivalence and recovery tests can be run. I would not make an irreversible cutover while unidentified writers coexist. I would not accept an SLA because a synthetic benchmark achieved a striking TPS. I would not split into microservices a process whose atomicity we cannot recover. I would not use actors to simulate a cross-domain transaction and call it safe. And I would not entrust the acceptance of a baseline to the same AI that generated the candidate.
 
@@ -24,7 +24,7 @@ It is not technological conservatism. It is a discipline of reversible decisions
 | The required atomicity is preserved in the target | A transaction the business needs to be atomic would have to be split |
 | The cost of verifying is affordable compared with the benefit | Verification costs more than the problem it solves |
 
-> **It is not technological conservatism. It is a discipline of reversible decisions.**
+> **Not migrating must also be a documented, measurable and revisable decision.**
 
 ---
 

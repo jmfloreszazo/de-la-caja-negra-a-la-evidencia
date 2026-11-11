@@ -4,7 +4,9 @@
 
 # Part I · Before translating
 
-What we are really preserving when we say "migrate COBOL", why changing languages is not changing architecture, and where I agree —and disagree— with those who call for caution.
+I would not begin modernization by picking a target language. I would begin with the system the business thinks it knows: workloads, closing windows, hardware, operations and guarantees nobody wrote down because the platform always supplied them.
+
+This part challenges the shortcut from a program that compiles to a capability ready to leave its environment. Before choosing .NET, Azure or a larger server, I want to know what must survive and what should be retired.
 
 ## In this part
 

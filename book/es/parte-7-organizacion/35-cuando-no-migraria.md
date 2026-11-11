@@ -7,7 +7,7 @@
 > [!IMPORTANT]
 > **Tesis del capítulo.** Conservar el mainframe, mejorarlo o combinarlo con sistemas nuevos son decisiones legítimas si los datos lo justifican. Una arquitectura híbrida bien gobernada puede ser más moderna que una reescritura total imprudente.
 
-Hay sistemas que cumplen su función, tienen carga estable, coste asumible, soporte suficiente y garantías bien conocidas. Si la modernización no aporta valor funcional, reducción comprobable de riesgo o una economía razonable, la mejor decisión puede ser seguir en mainframe y mejorar observabilidad, automatización, documentación y exposición de capacidades. Una arquitectura híbrida bien gobernada puede ser más moderna que una reescritura total imprudente.
+Modernizar no significa que todo deba abandonar el mainframe. Hay sistemas con carga estable, soporte razonable y garantías bien entendidas que no justifican otra plataforma. En esos casos invertiría primero en observabilidad, automatización, documentación y exposición controlada de capacidades. El assessment debe poder terminar con un **«no migrar»**, y mostrar por qué ese resultado protege mejor al negocio.
 
 No migraría un ledger crítico sin acceso a perfiles operativos y sin un entorno donde ejecutar pruebas de equivalencia y recuperación. No haría un cutover irreversible mientras convivan escritores no inventariados. No aceptaría un SLA porque un benchmark sintético obtuvo un TPS llamativo. No separaría por microservicios un proceso cuya atomicidad no podemos recuperar. No utilizaría actores para simular una transacción entre dominios y llamarla segura. Y no confiaría la aceptación de una baseline a la misma IA que generó el candidato.
 
@@ -24,7 +24,7 @@ No se trata de conservadurismo tecnológico. Es una disciplina de decisiones rev
 | La atomicidad necesaria se conserva en el destino | Habría que fragmentar una transacción que el negocio necesita atómica |
 | El coste de verificar es asumible frente al beneficio | La verificación cuesta más que el problema que resuelve |
 
-> **No se trata de conservadurismo tecnológico. Es una disciplina de decisiones reversibles.**
+> **No migrar también debe ser una decisión documentada, medible y revisable.**
 
 ---
 

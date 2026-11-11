@@ -4,7 +4,9 @@
 
 # Part IV · Patterns that replace responsibilities, not syntax
 
-Every guarantee the mainframe provided without the application asking for it needs an explicit mechanism in the target. This part explains which pattern replaces each responsibility, why it is needed and when using it would be a mistake.
+Once we know which guarantees matter, we can decide what replaces them. A pattern is not a label on a microservices diagram: it has a boundary, a failure it prevents and an operational cost.
+
+I follow extraction seams, data ownership, locks, the ledger, actors, batch and banking channels. Each chapter keeps its architectural decision; full experiment campaigns live in Annex I. There is no reason to reteach outbox, sagas or ownership whenever another box appears.
 
 ## In this part
 

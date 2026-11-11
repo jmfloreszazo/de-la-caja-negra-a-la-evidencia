@@ -4,7 +4,9 @@
 
 # Part II · Archaeology, knowledge and authority
 
-How to recover what the system knows without mistaking a well-written hypothesis for a fact, and how to give agents the capacity to act without handing them authority.
+Once we understand the problem, we need to recover knowledge without promoting an AI hypothesis to a requirement. This is where REA, functional and technical archaeology and bounded agents belong. I do not need a pretty call graph; I need capabilities, owners and evidence we can challenge.
+
+An assessment should separate what we know, what we infer and what requires a conversation with operations or the business. That distinction leads to acceptance.
 
 ## In this part
 

@@ -72,6 +72,7 @@ José María Flores Zazo · [jmfloreszazo.com](https://jmfloreszazo.com) · v202
   - [Annex F · Operational glossary](#annex-f--operational-glossary)
   - [Annex G · Sources and scope of the research](#annex-g--sources-and-scope-of-the-research)
   - [Annex H · Beyond COBOL](#annex-h--beyond-cobol)
+  - [Annex I · Evidence campaigns and validation limits](#annex-i--evidence-campaigns-and-validation-limits)
 
 ## Conventions
 
@@ -146,7 +147,9 @@ For a reproducible result, preserve the exact source commit, local changes if an
 
 ## Part I · Before translating
 
-What we are really preserving when we say "migrate COBOL", why changing languages is not changing architecture, and where I agree —and disagree— with those who call for caution.
+I would not begin modernization by picking a target language. I would begin with the system the business thinks it knows: workloads, closing windows, hardware, operations and guarantees nobody wrote down because the platform always supplied them.
+
+This part challenges the shortcut from a program that compiles to a capability ready to leave its environment. Before choosing .NET, Azure or a larger server, I want to know what must survive and what should be retired.
 
 ### Chapter 1 · The mainframe is not a fast box
 
@@ -459,7 +462,9 @@ A fair comparison includes the cost of building and maintaining the oracles. It 
 
 ## Part II · Archaeology, knowledge and authority
 
-How to recover what the system knows without mistaking a well-written hypothesis for a fact, and how to give agents the capacity to act without handing them authority.
+Once we understand the problem, we need to recover knowledge without promoting an AI hypothesis to a requirement. This is where REA, functional and technical archaeology and bounded agents belong. I do not need a pretty call graph; I need capabilities, owners and evidence we can challenge.
+
+An assessment should separate what we know, what we infer and what requires a conversation with operations or the business. That distinction leads to acceptance.
 
 ### Chapter 6 · REA and archaeology that leaves a trail
 
@@ -593,7 +598,7 @@ Not all legacy code deserves to be converted. The analysis must identify dead pa
 
 ### Companion chapter · Decomposing a mainframe with evidence
 
-> **Editorial review draft.** Not part of published v2026.10.29. Tracks issue #32.
+> **Scope.** I use a synthetic model to explain how to discover and separate mainframe capabilities. This is not a certified extraction from a live bank: a real cutover requires authorized traces and sign-off from the business owner.
 
 #### The boundary is not the program
 
@@ -754,7 +759,9 @@ Keeping both dimensions visible prevents the green of a test from becoming an im
 
 ## Part III · Oracles: the right to accept
 
-A candidate is not accepted because it compiles, because an excellent model wrote it or because its own tests are green. It is accepted because independent evidence checks it against approved behaviour.
+Discovering legacy behaviour is not enough to approve its replacement. The specification can be wrong, the builder and evaluator can share assumptions, and a passing test can answer the wrong question.
+
+TODM separates the mandate, approved baseline, independent oracles, negative controls and authority to deliver. I am not adding ceremonies for their own sake; I want AI's speed to leave intact our ability to say no.
 
 ### Chapter 10 · TODM and the problem of accepting what we build
 
@@ -1152,7 +1159,9 @@ The equivalence we care about belongs to an observation contract. The poorer tha
 
 ## Part IV · Patterns that replace responsibilities, not syntax
 
-Every guarantee the mainframe provided without the application asking for it needs an explicit mechanism in the target. This part explains which pattern replaces each responsibility, why it is needed and when using it would be a mistake.
+Once we know which guarantees matter, we can decide what replaces them. A pattern is not a label on a microservices diagram: it has a boundary, a failure it prevents and an operational cost.
+
+I follow extraction seams, data ownership, locks, the ledger, actors, batch and banking channels. Each chapter keeps its architectural decision; full experiment campaigns live in Annex I. There is no reason to reteach outbox, sagas or ownership whenever another box appears.
 
 ### Chapter 13 · Before choosing a pattern, identify the contract
 
@@ -1371,13 +1380,19 @@ The last two rows are the important ones. A codec that "tolerates" invalid bytes
 
 A microservices architecture can draw independent boxes, but if they all write the same tables a data monolith still exists. In mature COBOL systems it is common for several programs and jobs to touch the same set of records. Before moving the logic we must identify writers, readers, locks and reconciliations. The dynamic inventory matters as much as static searches: a table that looks read-only may have a batch maintenance job that only runs on the last day of the quarter.
 
+#### Identify who owns each change
+
 I propose an **ownership register** for each aggregate. One capability owns accepting commands and determining the new state; other consumers receive queries or events. During the transition we may need to sustain a temporary mirror or CDC, but I would not accept two master writers without an explicit conflict-resolution protocol. Independent dual writes to the old and new databases fail precisely between the two writes; success on one side does not guarantee success on the other.
 
 ![Figure 16.1 · A single write owner per aggregate; everyone else queries or receives events.](figures/en/ownership.png)
 
 *Figure 16.1 · A single write owner per aggregate; everyone else queries or receives events.*
 
-The Transactional Outbox pattern provides a localized solution: within the same transaction that stores the business change, a pending event is written. A worker sends it afterwards. The consumer uses an Inbox or an idempotency key to absorb duplicates. It does not guarantee physical exactly-once delivery; it lets us design a **business effect exactly once** through deduplication and confirmation. And we must check that the outbox and the authoritative data really share a transactional boundary.
+Reliable publication after COMMIT is a separate responsibility: the **Outbox and Inbox** mechanism belongs in [Chapter 18](#chapter-18--distributing-without-breaking-the-books). The decision here comes first: who owns writes, how we fence the former writer, and which reads may tolerate stale data.
+
+#### Coexistence that can be reversed
+
+Imagine an account still receiving nightly COBOL postings while a new API accepts online movements. If both sides confirm money independently, we have created two authorities. Before routing traffic I would require a writer inventory, an enforceable stop on old-source writes, reconciliation and a tested return path.
 
 CDC is useful for coexistence and observation, not an automatic proof that the new database is correct. We must preserve order per key, detect lag, rebuild states from consistent snapshots and measure the difference between source and target. If the transition depends on reads from an eventually consistent replica, the contracts must acknowledge it.
 
@@ -1623,7 +1638,7 @@ I would separate at least three responsibilities: an **actor or coordinator per 
 
 *Figure 19.1 · Actors per account: parallelism across identities, order within each one. Durability and atomicity are guaranteed by the ledger.*
 
-#### What the runtime provides and what remains open
+#### What Orleans guarantees and what I still need to verify
 
 By default, Orleans runs a grain activation with complete requests without interleaving them. Its documentation explains that enabling reentrancy allows turns to interleave and requires reasoning about state across `await` points [24]. It also shows that cyclic calls can cause waits that end in a timeout. So the actor model removes part of the concurrency problem; it does not remove every lock.
 
@@ -1783,7 +1798,11 @@ A financial batch does not finish when the process returns code zero. It must st
 > [!IMPORTANT]
 > **Chapter thesis.** They are excellent patterns with precise conditions of use. A double-entry ledger is not an arbitrary event stream, an eventual projection must not approve withdrawals and a compensation does not erase what a third party has already seen.
 
+#### Event sourcing is not accounting
+
 Event sourcing has an obvious appeal for financial systems: keeping a sequence of changes that allows state to be rebuilt. But it is not a synonym for accounting. A double-entry ledger imposes invariants that an arbitrary set of events does not guarantee. Turning every operation into an event can increase volume, versioning complexity and the need for reprocessing. I would consider it when the domain needs full history as the source of truth, the team knows how to manage schemas and the cost of rebuilding is solved. I would not impose it on a COBOL table for the sake of modernity.
+
+#### CQRS does not grant authority to a projection
 
 CQRS separates writes from reads when their needs diverge. It is useful for intensive queries, search and reporting. But its projections can lag. If an application decides to approve a withdrawal by querying an eventual projection, it can break rules that must be evaluated against the authoritative state. I would use CQRS to speed up views, not to replace, without analysis, the decision about the available balance.
 
@@ -1791,7 +1810,9 @@ CQRS separates writes from reads when their needs diverge. It is useful for inte
 
 *Figure 21.1 · CQRS without tricks: the projection is for looking; the decision about the balance is made in the write core.*
 
-Sagas are suitable for long processes that cross systems with legitimate compensations: onboarding, communications, documentation, validations and reservations. An accounting transfer, on the other hand, does not automatically become a saga because we now have two microservices. A later compensation does not erase the fact that a third party observed an intermediate balance, nor does it guarantee recovering money sent outside our boundary.
+#### Sagas: only when the business allows intermediate states
+
+A saga can coordinate onboarding, documents or reservations with legitimate compensations. I would not use one to disguise splitting a formerly atomic transfer in two. The mechanics of compensation and reliable publication belong to [Chapter 18](#chapter-18--distributing-without-breaking-the-books). The decision here is whether each intermediate state has meaning and business acceptance. If not, a saga is the wrong pattern.
 
 The rule is demanding and simple: **the chosen pattern must preserve the level of consistency the business needs, not the level that is most convenient for us to implement**.
 
@@ -1802,7 +1823,7 @@ The rule is demanding and simple: **the chosen pattern must preserve the level o
 > [!IMPORTANT]
 > **Chapter thesis.** A banking channel initiates an instruction; an authoritative service decides what funds it may use; a device may produce an irreversible physical effect. Migration must preserve the contracts between those responsibilities. A successful SQL COMMIT does not prove that banknotes reached the customer.
 
-#### 1. Locate the authority before drawing the replacement
+#### Locate the authority before drawing the replacement
 
 A physical ATM reads customer input and controls devices. An ATM controller or switch connects terminals and routes messages. A card processor may supply issuer or acquirer services; the issuer authorizes use of its customer's account, while the acquirer serves the acceptance side. Those roles can belong to different organizations and machines. The account ledger, authorization holds, fraud decision, card lifecycle and network settlement need named owners; calling all of them “the core” hides the integration work.
 
@@ -1825,7 +1846,7 @@ The diagram deliberately omits certified device/network protocols. Do not infer 
 
 These are design alternatives. This repository has not surveyed installations or executed all six architectures.
 
-#### 2. State the withdrawal contract before choosing a pattern
+#### State the withdrawal contract before choosing a pattern
 
 The [synthetic lab contract](../lab/channels/CONTRACT.md) uses integer cents and invented policies. Its customer account starts at 10,000. Authorizing a 6,000 withdrawal reserves 6,000 without posting it; available funds become 4,000. Preparation durably binds one operation to one device command. Only a final device outcome permits the candidate to post the actual positive amount, or cancel a final zero. Posting debits the customer and credits a synthetic cash-control account; this closed-world teaching ledger is not a bank's general-ledger policy.
 
@@ -1848,7 +1869,7 @@ Both databases run on one CI host. Their separation proves only that a core tran
 
 A real issuer must approve partial delivery, hold lifetime, reversals, late advice, disputes and operator repair. The demonstration's POSTED state means its local accounting decision; it does not mean card-network clearing, presentment or interbank settlement. Those are additional contracts.
 
-#### 3. Follow the effect through success and uncertainty
+#### Follow the effect through success and uncertainty
 
 ![Figure C.3 · Happy path under the declared synthetic policy: authorize, prepare one command, record device outcome, then post actual cash.](figures/en/channels_cash_happy.png)
 
@@ -1874,7 +1895,7 @@ Stand-in is a delegated decision, not a successful retry to a dead core. As a co
 
 A web/mobile BFF may adapt presentation and aggregate informational reads. Business authorization still uses the authoritative account and active holds; an eventual balance projection cannot approve spending. An outbox records a financial event atomically with the decision, but a push notification, SMS or receipt alone is not proof of posting. Reopening the app should recover the original operation ID and decision rather than invent a second instruction.
 
-#### 4. Choose patterns against the channel contract
+#### Choose patterns against the channel contract
 
 | Problem | Candidate and benefit | Cost, failure boundary and control |
 |---|---|---|
@@ -1889,7 +1910,7 @@ A web/mobile BFF may adapt presentation and aggregate informational reads. Busin
 
 **Decision for this increment.** Use an explicit durable state machine, one SQL ledger and a separate device journal. Avoid adding actors, a broker or a fake protocol stack before this contract is falsifiable. The alternative of immediate debit on authorization is rejected for this example because it would need a separately approved reversal policy for zero/partial cash. The choice remains a teaching ADR, not a recommendation for an unidentified bank.
 
-#### 5. Make the laboratory capable of disproving itself
+#### Make the laboratory capable of disproving itself
 
 The [English reproduction guide](../lab/channels/README.md) specifies .NET 10, Podman, two PostgreSQL instances, fixed disposable identities and original evidence retention. Its initial matrix includes full/partial/zero cash, missing device evidence, lost replies, external process kills, duplicate/conflicting requests, expiry and concurrent mobile/ATM spending. A native API is required for an HTTP-loss claim; an exception printed to a console would not exercise that boundary.
 
@@ -1907,7 +1928,7 @@ Conservation alone is insufficient: an excessive debit with an equal credit stil
 
 Execution status and exact CI provenance belong in the lab's evidence checkpoint. This chapter describes the declared design; it does not turn an unexecuted scenario into a passed test. The remaining issue #30 matrix includes network partitions at each hop, real protocol correlation, delegated stand-in, route cutover and measured latency/capacity.
 
-#### 6. Migrate the owner, then retire the route
+#### Migrate the owner, then retire the route
 
 Channel-first migration can replace web/mobile presentation while leaving the account host authoritative. Capability-first migration can replace the account service while preserving the channel adapter. Product or branch cohorts narrow exposure but still need consistent ownership when a customer uses another channel. Issuer-processing-first and ATM-switch-first change certified external boundaries; façade-first preserves them temporarily. CDC-first can populate read models but does not transfer write authority. A big bang shortens coexistence at the cost of a wider cutover and recovery problem.
 
@@ -1923,84 +1944,17 @@ A cutover needs a cohort manifest, a write-owner epoch enforced at the old sourc
 
 Outstanding UNKNOWN cash, inconsistent journal/ledger amounts, unprocessed late messages, an unfenced second writer or missing required certification are reasons to withhold a real cutover. External equipment and issuer approval are not merge blockers for this clearly scoped example: they are explicit follow-up validation. To make that validation realistic, replace the emulator's atomic stock assumption with instrumented device outcomes, approved rules, real transport failures and reconciliation procedures; preserve failures and raw evidence before drawing a conclusion.
 
-#### 7. Late advice, reversal and cash: correlation is not authorization
+#### From channels to reproducible experiments
 
-Consider a withdrawal authorized for 100.00 monetary units: the device attests that **60.00** was dispensed, but a switch may still carry an advice referring to the original requested 100.00. The ledger posts 60.00, and a full reversal request then arrives. It is wrong to infer either "post 100" or "credit 100" automatically. We need to establish what cash was physically available, which financial posting was committed, whether a message is merely a request, and who can adjudicate the discrepancy. A reversal request is not an executed ledger reversal.
+I will not present an ATM simulation as certification of a switch or cash dispenser. The case covers partial dispensing, late advice, reversals, hop-by-hop faults, local TCP and a held ACK while eight clients recover the same operation. The lesson is specific: **a lost response does not undo a COMMIT, and a retry never authorizes another cash dispense on its own**.
 
-The paired [EN research dossier](../docs/research/channel-late-advice.en.md) ([ES](../docs/research/channel-late-advice.es.md)) puts this against public ATM dispute guidance and conditional stand-in policies. The [channel forensic oracle](../lab/channels/advice_gate.py) adds a **fully synthetic, offline** four-instruction test with no database mutations:
-
-| Synthetic observation | Correct oracle result | Never allowed |
-| --- | --- | --- |
-| Device dispenses 60 of 100 approved; identical late advice repeated | `MATCHED_PARTIAL_CASH` | Create a second posting or dispense |
-| Device remains UNKNOWN; network advice says 80 | `UNKNOWN_REQUIRES_DEVICE_EVIDENCE` | Treat advice as physical confirmation or posting authority |
-| Final device journal says zero; late reversal requested | `FINAL_ZERO_CASH` | Claim the requested reversal is booked |
-| Core is unreachable with no issuer-delegated authority | `STAND_IN_DENIED` | Invent an offline issuer or cash authorization |
-
-Neither STAN nor RRN alone is a durable financial identity. Retain the original **operation ID**, authorization, terminal, network context and source incarnation. STAN can be reused; a network message ID replayed with a different payload is a conflict, not idempotency. A request to reverse the whole amount after partial physical cash delivery must trigger review and a negative oracle for a false credit.
-
-This is **not** a certified ISO 8583 implementation or a real ATM simulator. The new check has invented data: it **does not authenticate device journal entries, issuer policies, network settlement or actual bank operations**. It complements the prior ten native .NET 10/PostgreSQL experiments without treating their results as card-network certification. Even if the Python checks pass, no automatic dispense, posting or reversal is permitted; **TODM G2 INCONCLUSIVE / G6 BLOCK**.
-
-#### 8. There is no generic network failure: locate the hop and decision
-
-A channel “timeout” can conceal different financial states. If **ATM→switch** fails before delivery, no original authorization is demonstrated. If **switch→core** drops the request before the issuer receives it, the switch cannot invent account authority or dispense cash. If the core durably committed and **only its reply** was lost, starting a new operation ID risks a duplicate effect. Recovery queries the **actual decision owner under the original identity**; approval does not prove physical cash.
-
-The [EN per-hop failure dossier](../docs/research/channel-hop-failures.en.md) ([ES](../docs/research/channel-hop-failures.es.md)) adds seven fictional traces and forty negative controls. It extends the previous partial-cash and late-advice examples without duplicating the core simulator.
-
-| Scenario | Synthetic oracle outcome | Forbidden inference or action |
-| --- | --- | --- |
-| H01: ATM→switch request not delivered | `NO_CORE_AUTHORIZATION_EVIDENCE` | Treat timeout as a confirmed decline or success |
-| H02: switch→core request not delivered | `NO_CORE_AUTHORIZATION_EVIDENCE` | Invent stand-in authority |
-| H03: issuer COMMIT, lost ACK, status recovered on restored link | `AUTHORIZATION_RECOVERED_BY_STATUS` | Start another operation identity or infer cash delivery |
-| H04: approval and device command, ATM↔switch fails | `CASH_UNKNOWN_NO_REDISPENSE` | Re-send dispense while journal remains unknown |
-| H05: old owner replies after writer epoch changes | `QUARANTINED_OLD_OWNER_REPLY` | Allow old host to create another posting |
-| H06: partial cash and fictional ledger agree | `PARTIAL_CASH_RECONCILED_SYNTHETICALLY` | Present fictional agreement as hardware proof |
-| H07: core outage with undelegated stand-in request | `STAND_IN_DENIED` | Authorize offline credit or dispense |
-
-**Routing is not source fencing.** A real change of authoritative writer from a host capability to .NET/SQL requires proof that the previous owner **can no longer commit the same operation**, including batch, privileged and disconnected paths. The fixture's `sourceEpoch` field is only a correlation marker, not a cryptographic lock or independent proof of revocation.
-
-Nor does CICS UOW equal an HTTP transaction: a CICS task can have multiple syncpoints, with atomicity scoped to recoverable resources in each UOW. Network authorization and physical notes are external boundaries. See [IBM CICS syncpoints](https://www.ibm.com/docs/en/cics-ts/6.x?topic=work-synchronization-points) and [Azure transient fault guidance](https://learn.microsoft.com/en-us/azure/architecture/best-practices/transient-faults).
-
-The [lab Python trace oracle](../lab/channels/network_fault_gate.py) **only checks declared JSON events**. It does not disconnect TCP sockets, execute a certified card protocol, contact an issuer or post to a financial ledger. A PASS shows consistency of this model, not a network guarantee. Real acceptance requires independent per-hop loss/reconnection injection, native issuer COMMIT logs, original retry identity, authenticated device journals, reconciliation and business-owner approval. **No fixture outcome authorizes automatic cash, reversal, posting, writer cutover or stand-in.** TODM G2 `INCONCLUSIVE`, G6 `BLOCK`.
-
-#### 9. First real transport test: local TCP and the core COMMIT
-
-The preceding H01–H07 tests represented disconnected hops with JSON events. The next experimental step uses **actual loopback TCP sockets**. An ephemeral one-shot proxy accepts the HTTP client's request, drops or forwards it to the existing **.NET 10** API, and observes the upstream response. The core commits in PostgreSQL while an independent Python oracle reads its tables and the separate synthetic device store. These are **real processes and sockets** but still run on **one host**: not a physical partition between branches, switch and mainframe.
-
-| Transport test | Actual intervention | Independent assertion |
-| --- | --- | --- |
-| Request dropped before forwarding | Proxy accepts a real socket and resets it **without contacting the core** | Original SQL remains empty before recovery; same operation ID can commit once |
-| Reply dropped after COMMIT | Proxy forwards request, observes HTTP 200 produced **after `CommitAsync`**, then resets the client socket without forwarding any response | Client sees `UNKNOWN` while SQL already has one committed operation, two paired postings and one outbox; original-status query and same-ID replay create no second effect |
-| Reply delayed beyond client timeout | Proxy waits 0.8 s after upstream response versus a real client timeout of 0.15 s | Client sees timeout but the owner's original decision remains queryable and cannot be posted twice |
-
-All three new cases are **fictional digital transfers**, not actual cash withdrawals. The existing ten native cases remain, including partial simulated cash, post-COMMIT failures, external `SIGKILL` and ATM/mobile competition. The [EN research protocol](../docs/research/channel-loopback-transport.en.md) ([ES](../docs/research/channel-loopback-transport.es.md)) documents scope, test replay, the proxy's fourteen safety checks and eighteen baseline/adversarial original-evidence controls.
-
-**A client timeout alone does not prove absence of COMMIT.** The pre-forward drop has stronger evidence only because **our controlled proxy never opened an upstream socket and SQL was observed empty**. That independent proof may be unavailable in a real bank network. Retain the same durable `operationId` when querying status and, subject to the source owner's policy, retrying an ambiguous command.
-
-This increment exercises **real local TCP interruption against durable SQL**, not `tc netem`, cross-host WAN failures, certified ISO 8583, CICS or authentic dispenser journals; it is not a MIPS/capacity benchmark. One financial writer must remain authoritative across all channels. Customer acceptance still requires native source signatures, owner policy, network evidence, source fencing and independent physical failure domains. **G2 INCONCLUSIVE, G6 BLOCK**, no banking cutover approval.
-
-#### 10. Held original reply versus eight concurrent recoveries
-
-The preceding experiment lost or delayed an ACK and then queried the core. It left a more difficult channel boundary untested: **the original response is still in flight while multiple clients concurrently try to recover the same operation**. One sequential retry does not establish safety under this race.
-
-The [EN research contract](../docs/research/channel-held-ack.en.md) ([ES](../docs/research/channel-held-ack.es.md)) uses a deterministic barrier over **actual local TCP sockets**. A proxy forwards the original `POST /transfer` to the existing .NET 10 API, observes its HTTP 200 after PostgreSQL COMMIT, then holds the response. The first client experiences a real timeout. Before the old reply is released, the driver queries the fictional owner's authoritative status and launches **eight concurrent clients using the same `operationId` and intent fingerprint**. A ninth request with the original ID but a different amount must be rejected.
-
-| Boundary | Original observation | Required independent oracle |
-| --- | --- | --- |
-| Fictional issuer | COMMIT confirmed while HTTP 200 is held | One operation, two postings and one outbox before retries |
-| First client | Timeout and `UNKNOWN` | No new financial identity invented |
-| Eight concurrent clients | Eight `COMMITTED` responses with `duplicate=true` | Still one durable decision and no second posting |
-| Changed-amount attempt | `ID_CONFLICT` | Identity is bound to business intent |
-| Late old ACK release | Monotonic timestamp after recovery | Old reply cannot open a new financial transition |
-
-The [independent verifier](../scripts/check_channel_transport.py) checks original HTTP observations and intent, the order of real events **before the old response is released**, the read-only SQL snapshots and final ledger. The negative tests forge the timestamp sequence, replay identity or a duplicate posting and must be rejected. The fixture now contains **14 native scenarios**, **18 proxy guards and 27 original-evidence checks**.
-
-**Architecture conclusion:** channel-visible response status must not be confused with the durable financial decision of the source owner. An old reply can arrive after recovery; **it is not a new authorization** and does not justify an automatic reversal. Idempotency must bind identity **and** intent and rely on the authoritative durable operation record.
-
-The experiment uses `localhost` TCP and disposable PostgreSQL, **not** a certified ATM switch, ISO 8583, CICS, a cash device or a cross-host WAN partition. **Eight local clients do not establish MIPS equivalence or capacity.** Monotonic timestamps are only comparable within this host. Real issuer attestations, physical effects, incumbent writer fencing and owner-approved rules remain open. TODM G2 `INCONCLUSIVE` / G6 `BLOCK`.
+[Annex I](#annex-i--evidence-campaigns-and-validation-limits) retains the scenarios and independent oracles. These are fictional inputs or loopback connections, not certified hardware or a real banking WAN.
 
 ## Part V · Capacity: MIPS, concurrency and platform
 
-The question that worries me most when taking a workload off a mainframe is not whether the program compiles. It is whether it will hold up when month-end close, the peak and a failure arrive at once. This part is about approaching what a mainframe delivers —in Azure or on a huge machine at the customer's site— without cheating when we measure.
+The capacity question comes before cloud pricing. What does it mean to replace a mainframe workload? There is no universal MIPS-to-vCPU conversion and no local benchmark that stands in for a bank's month-end close.
+
+I separate hardware, concurrency, transport, operations and total cost. Azure and on-premises options are compared without attributing synthetic runs to production. VM size should never settle a business decision on its own.
 
 ### Chapter 22 · MIPS do not fit in a vCPU conversion
 
@@ -2517,7 +2471,7 @@ but cannot replace, the original workload artifacts and independent oracles.
 
 #### Our evidence: what exists and what does not
 
-This branch does contain [versioned E1a/E1b observations](../evidence/runs/README.md): real `40P01` deadlock, `40001` serialization, a corruption-detecting independent oracle and partial .NET 10/Npgsql parity on PostgreSQL. It also contains the Azure records described above—one D4s_v5 VM, synthetic workloads, every run downloaded and hashed—registered as `demonstrated_not_accepted` in the [evidence matrix](../docs/EVIDENCE.md).
+This edition records [versioned E1a/E1b observations](../evidence/runs/README.md): real `40P01` deadlock, `40001` serialization, a corruption-detecting independent oracle and partial .NET 10/Npgsql parity on PostgreSQL. It also contains the Azure records described above—one D4s_v5 VM, synthetic workloads, every run downloaded and hashed—registered as `demonstrated_not_accepted` in the [evidence matrix](../docs/EVIDENCE.md).
 
 **There is not yet any benchmark on IBM z17, LinuxONE, Dorado 8590, Azure Mdsv3 or EPYC**, no second site, no measurements from a real distant branch, and the capacity contract is still unconfigured. The evidence registry must not promote those comparisons without reproducible load, approved SLOs and on-site measurements. The Azure runs tell us the mechanisms work where we put them; they do not tell us how the bank's month-end behaves.
 
@@ -2525,7 +2479,9 @@ This branch does contain [versioned E1a/E1b observations](../evidence/runs/READM
 
 ## Part VI · The lab: from demo to evidence
 
-Everything above, in code you can run, read in an afternoon and break on purpose. The lab is small so the mechanism can be understood, and its scope is explicit so nobody mistakes it for a finished migration.
+After decisions come experiments. This laboratory combines COBOL, .NET 10, Podman, SQL and independent verifiers to seed defects and see whether our controls detect them. A test that cannot fail proves little.
+
+I want readers to replay the case, break the implementation and challenge the evidence without depending on the agent that produced it. The chapters explain what we learn; Annex I retains the full campaigns and original FAIL/INCONCLUSIVE outcomes.
 
 ### Chapter 26 · A local lab you can understand
 
@@ -2889,166 +2845,11 @@ The table teaches one true thing and nothing more: when we add processes that co
 
 > **The service can answer OK and leave something else behind. The oracle looks at what remains.**
 
-#### C01 · Control placement to make recovery testable
+#### What Orleans actually established
 
-The [original failure and three controlled cohorts](../evidence/runs/E2-C01-CONTROLLED.md)
-separate an experimental precondition from an accounting defect. The historical
-case observed all 16 accounts on secondary and correctly rejected its dual-host
-requirement. Repeating the same queries was not a new placement sample:
-existing activations could remain where they were.
+I ran two paths—direct ledger access and Orleans grains—against the same PostgreSQL ledger. The consistency checks, process failures and directional partitions show **one durable effect and bounded assisted recovery**. They do not establish physical high availability or sustained capacity. The bounded E2 campaign is closed, but its scientific status remains **partially verified**. [Annex I](#annex-i--evidence-campaigns-and-validation-limits) retains C01, C04, C05/C06, prolonged partitions, activations, the original FAIL attempts and inconclusive outcomes.
 
-The test client uses placement hints only to activate and observe account keys
-1..16. In the negative control, all 16 were on secondary, the dual gate rejected
-them and no financial operations occurred. Alternating hints from another
-client did not redistribute them. A fresh fixture had observed 8/8 placement;
-subsequent financial clients used no hints and the same accepted AccountGrain
-and SQL ledger.
-
-All three cohorts verified actual secondary SIGKILL, reactivation on primary,
-idempotent replay, three operations/six postings/three outbox events and seven
-invariants. A fresh secondary container then rejoined with a new Active
-generation while the previous one remained Dead, without changing the ledger.
-Assigned runner IDs differed; hostnames repeat and each case still uses one
-machine. No physical HA is established.
-
-This is the controlled-fixture alternative preregistered for C01. **The
-historical concentration's cause remains unexplained**, the old test retains
-its rejection and the runtime default policy is unchanged. Placement hints
-also confer no financial authority: PostgreSQL still owns the effects. E2
-remains partially verified.
-
-##### Record failure without borrowing an earlier PASS
-
-A successful `development` file does not prove that the later ADO.NET attempt
-completed. The [observation follow-up](../evidence/runs/E2-PLACEMENT-OBSERVATION.md)
-creates a journal per provider and execution, retains each map, membership and
-logs before process cleanup, and records the exact failure phase. An
-unavailable query remains an error; it is not converted into an empty list.
-
-Two original controls deliberately aborted after the first real 1..16 identity
-probe. Primary/secondary maps were 7/9 and 10/6: **they did not reproduce the
-historical one-sided concentration**. Both children kept FAIL/exit 1, without
-financial commands or SIGKILL, with zero effects and seven SQL oracles. The
-parent verified failure preservation and kept the older PASS as control input.
-
-This verifies the recorder, not placement policy or recovery. Future natural
-failures will have their own evidence; the historical cause remains unproven
-and E2 remains partially verified.
-
-#### C04 · The client loses its gateways, the ledger retains authority
-
-The [original C04 test](../evidence/runs/E2-C04-GATEWAY.md) cuts only
-the external Orleans client's gateway egress: first primary, then both. With
-one gateway available, a fresh client committed through secondary to a grain
-hosted on primary. Under the dual cut, both silos and PostgreSQL remained
-reachable from one another.
-
-The first attempt failed because an outer 70-second timeout did not identify
-the application phase. Its negative ZIP is preserved. The corrected mode
-observes a startup deadline before financial dispatch: exit 74 after 20.8509
-seconds. No new effects appeared during the cut, including three additional
-SQL samples. After restoring the original network rules, the same ID committed
-and its replay was a duplicate; final state was three operations, six postings
-and three outbox events, with oracle 7/7.
-
-This is fresh-client startup unavailability, **not ACK loss after COMMIT**.
-Four namespaces share one runner; the result neither explains the historical
-C01 placement failure nor establishes physical domains, sustained capacity or
-a production RTO. E2 remains partially verified.
-
-#### C05/C06 · Packet direction does not decide what committed
-
-The [directional partition test](../evidence/runs/E2-C05-C06-DIRECTIONAL.md)
-starts from observed 8/8 placement and blocks inter-silo TCP egress in one
-direction at a time. SQL and gateways remain reachable. The 45-second captures
-confirm identical packets at both endpoints in the allowed direction and
-none received in the blocked direction. Failed TCP connections initiated from
-both sides do not make the cut symmetric: they also need return traffic.
-
-Two clients using different gateways send the same ID with amounts 31 and 37.
-In both orientations, the first times out after dispatch and the second gets
-COMMITTED; SQL identifies amount 37 as the winner. Management catalogs do not
-respond during the cut: **an unavailable view is not an empty list** and does
-not establish exclusive activation.
-
-| Egress blocked | Observed fault | First acknowledged attempts through both gateways after restoration |
-|---|---|---|
-| Primary to secondary | 46.0143 s | 1.6926 s |
-| Secondary to primary | 45.7963 s | 1.1831 s |
-
-After the original rules are restored, neither silo restarts and their
-containers, PIDs and generations remain unchanged. Identical replay returns
-DUPLICATE_COMMITTED, the different amount ID_CONFLICT and a new command
-COMMITTED. Each case ends with three operations, six postings and three outbox
-events, with seven passing SQL invariants. Four earlier failures remain
-preserved: two setup failures and two capture-shutdown failures; they are not
-retrospectively converted into successes.
-
-These are observed first acknowledged attempts, **not an RTO or sustained
-stable service**. One host per case, two short cuts and catalog samples do not
-establish absence of split brain, fencing or long-partition recovery. Those
-gates, sustained capacity and physical domains remain open. E2 remains
-partially verified.
-
-#### Long fault · Assisted recovery with bounded observations
-
-The [original evidence](../evidence/runs/E2-LONG-PARTITION.md) adds two
-120-second directional fault schedules. In both, the secondary silo exited
-before the deadline: retaining a rule in a pinned namespace does not mean both
-silos stayed alive. Two paired attempts did not restore the secondary gateway;
-the protocol chose explicit recreation of both silos, preserving the ledger
-and recording new generations. The first paired ACK arrived 58.484 and 59.211
-seconds after rule removal.
-
-Then 14 replay pairs across about 66 seconds retained the same containers/PIDs,
-two Active members, SQL 3/6/3 and seven invariants. Identical replay returned
-DUPLICATE_COMMITTED; changed payload returned ID_CONFLICT. This is sampled
-stability after assisted recovery, not continuous availability, restart
-necessity, production RTO, exclusive activation or physical HA. Both initial
-instrumentation failures remain archived as FAIL; the correction separated
-diagnostic lifetimes without weakening financial acceptance criteria.
-
-#### Activations · Observe calls without confusing them with exclusivity
-
-The [separate observer](../evidence/runs/E2-ACTIVATION-OBSERVATION.md)
-added an incoming-call filter to the test host, retaining the unchanged
-financial grain and ledger. Two original cases recorded 38 and 39 complete
-Transfer envelopes with activation IDs, process sessions and monotonic clocks.
-Logs were retained before silo recreation. Every acknowledged result reconciled
-with SQL: three operations, six postings, three outbox events and seven
-invariants in each case.
-
-No incomplete envelopes or overlaps across distinct activations of the same
-grain were observed. This does not establish global exclusivity: the filter
-measures request envelopes, not entire activation lifetimes or simultaneous
-SQL transactions. A targeted positive concurrent-activation scenario with
-independent SQL acceptance remains pending. Each case used one physical host
-and assisted recovery; E2 remains partially verified.
-
-#### Directed delay · One positive witness does not establish repeatability
-
-The [directed ordinary-grain trial](../evidence/runs/E2-ACCOUNT-DIRECTED.md)
-held an old request in a separate filter before invoking the financial method.
-It changed neither AccountGrain, ledger nor default placement. One case showed
-two complete request envelopes on distinct activation IDs for the same key,
-overlapping 5.06ms with the fault rule present: the new request committed amount
-31 and the old request returned DUPLICATE_COMMITTED after release. SQL retained
-one durable effect and rejected incompatible payloads.
-
-The opposite direction was inconclusive. The first collector omitted stderr;
-after correction, both repeated cases were also inconclusive. One positive
-witness across those four observations. A third campaign observed another
-4.68ms overlap with full stderr: two directed positives and four inconclusive
-outcomes in total, partially reproduced only in the secondary-outbound case. In the
-repeats, stderr and SQL identify a fatal membership path: the primary discovers
-itself Dead, enters KillMyselfLocally and exits with code 139. Victim selection
-across directional partitions remains incompletely explained.
-
-Every case ended with assisted recovery, three operations, six postings,
-three outbox events and seven invariants. The delay is artificial and measures
-incoming requests, not simultaneous Active lifecycles or simultaneous SQL
-transactions. Inconclusive originals retain their classification. E2 remains
-partial; sustained capacity and physical domains are independent gates.
+The architecture decision is simpler: **the grain coordinates, the ledger commits, and recovery must be judged by durable state rather than the response the client happened to see**.
 
 #### From atomic debit to authority transfer across two stores
 
@@ -3099,109 +2900,9 @@ on each store were true, but the stores no longer agreed: rollback was
 new writer posts new decisions, the old balances cannot simply be
 reactivated.
 
-##### C2 · An unknown reply requires a durable admission journal
+##### A brownfield cutover is not a feature flag
 
-The earlier coexistence experiment can compare two stores, but it leaves
-a separate failure mode: **COMMIT may be durable even when no ACK arrives**.
-Treating a timeout as rejection and retrying on a second writer can duplicate
-the financial effect. C2 therefore adds a third disposable PostgreSQL
-database, `bf_control`, with an admission journal independent of both
-ledgers. Each CAP-007 request records its stable ID, request hash, writer,
-epoch and state before remote execution.
-
-A request moves from `ADMITTED` to `DISPATCHING` and, when its reply
-disappears, to `UNKNOWN`. Only an independent SQL inspection of the
-persisted operation, paired postings and outbox may finalize
-`COMMITTED` or `REJECTED`. Missing SQL rows in both stores **do not
-prove rejection**: the journal remains UNKNOWN and cutover is blocked.
-
-The three-container experiment kills real processes after admission,
-before remote dispatch and after COMMIT but before the gateway receives
-the result. It also forges a terminal journal state and verifies that the
-independent oracle rejects promotion. The cooperating Python legacy
-adapter and .NET 10 candidate can require the C2 controller and hold a
-shared authority row lock through financial COMMIT. The
-[original C2 CI run](https://github.com/jmfloreszazo/de-la-caja-negra-a-la-evidencia/actions/runs/41341644829)
-is tied to one exact source SHA. It is not bank acceptance.
-
-**At that original C2 source SHA:** strict C2 mode
-requires a matching `DISPATCHING` journal admission at both adapters and
-rejects direct unadmitted commands. Deliberately disabling this opt-in
-allows direct unjournaled posts: the oracle detects that configuration
-bypass but cannot prevent it. Nor do the
-controller and candidate authority epochs change atomically across two
-PostgreSQL servers. A cooperative lock cannot revoke a real CICS/Db2
-writer's authority. External fencing, split-authority crash repair,
-third-party side-effect reconciliation, cross-host tests and approved
-business policy remain missing. TODM G2=INCONCLUSIVE and G6=BLOCK.
-
-##### C2 follow-up · Persist the fence and freeze interrupted transitions
-
-The [journal follow-up](../lab/brownfield/journal/README.md) changes
-two engineering assumptions without changing business authority. Enrollment
-is stored in SQL: removing a process variable can no longer disable admission
-checks in either cooperating adapter. Fresh historical fixtures remain
-unenrolled, and privileged direct SQL remains outside that enforcement.
-
-Before changing either writer epoch, the coordinator commits a durable
-`PREPARED` intent and `mode=SWITCHING`. Both adapters and the gateway refuse
-new financial commands until independent ledger and journal reconciliation
-allows the controller to complete that exact transition.
-
-| Durable boundary | Controller | Candidate authority | New admission |
-|---|---|---|---|
-| Intent prepared | legacy / e / SWITCHING | legacy / e | Blocked |
-| Candidate authority committed | legacy / e / SWITCHING | candidate / e+1 | Blocked |
-| Reconciliation completed | candidate / e+1 / ACTIVE | candidate / e+1 | Allowed with matching admission |
-
-The protocol independently sends `SIGKILL` after each of the first two
-boundaries and restarts recovery. An unexpected epoch or missing outbox must
-leave traffic frozen; a missing response cannot choose the next writer.
-Candidate-origin decisions still veto rollback. This closes specific
-cooperative crash windows through durable intent and forward recovery,
-**not atomic COMMIT across databases**. The [original follow-up CI](../evidence/runs/BROWNFIELD-C2-RECOVERY.md)
-passed 19 controls, preserving its raw ZIP and the initial failed concurrency
-run. The later [run #41353221630](https://github.com/jmfloreszazo/de-la-caja-negra-a-la-evidencia/actions/runs/41353221630),
-on main `279ca566`, passed 20 controls and both SQL oracles 10/10; this is a
-separate observation, not retrospective coverage attributed to that ZIP. Later code still requires its own exact-source CI evidence; historical
-observations cannot validate a different checkout.
-In-flight network partitions, real incumbent revocation, external payment
-effects and approved business policy remain separate acceptance gates.
-G2=INCONCLUSIVE and G6=BLOCK.
-
-##### C2 · Losing the controller after a financial operation has started
-
-The [new TCP-cut protocol](../lab/brownfield/journal/README.md) targets
-a different window from an unreachable controller before execution. A test
-trigger holds the financial operation before COMMIT; an independent SQL
-session must observe the real lock wait. A relay closes controller TCP
-connections and refuses reconnects; an external process then kills the gateway
-while leaving its adapter in flight. This is neither a silent nor asymmetric
-partition; all three PostgreSQL containers still share one runner.
-
-The contract requires UNKNOWN and a writer-switch veto until a durable
-decision is observed. After releasing the barrier, the cooperative model can
-commit its financial transaction even after losing the controller session.
-SQL reconciliation must precede replay: one decision, two postings and one
-outbox event. Losing a lock in another database does not atomically cancel
-financial COMMIT. CI must fail if observations contradict the contract.
-
-[Original run #41511782428](../evidence/runs/BROWNFIELD-CONTROLLER-LOSS.md)
-passed both cases: Python legacy and .NET candidate. SQL confirmed session
-loss; UNKNOWN vetoed the switch and later reconciliation found one decision,
-two postings and one outbox event per case, with both SQL oracles 10/10.
-The original ZIP preserves source/checkout and ten source hashes. This bounded
-evidence does not close #64 or establish bank fencing, RTO/RPO or production
-migration.
-G2=INCONCLUSIVE and G6=BLOCK.
-
-##### C2 · A live connection does not mean a known decision
-
-The next [original campaign](../evidence/runs/BROWNFIELD-CONTROLLER-PARTITION.md) keeps controller sockets open while discarding opaque stream bytes in one direction. Four cases cross the legacy/candidate writers with each direction. A tagged SQL probe, observed outside the relay, distinguishes a request that never reached the server from a response that never reached the client. This application relay acknowledges TCP reads; it is not a kernel packet-loss emulator.
-
-All four cases passed on their recorded source. Before releasing the financial barrier, controller holder sessions remained alive and financial decisions were absent. New admission and cutover attempts failed without changing authority. After the gateway was externally killed and the barrier released, each ledger still committed exactly one decision, two postings and one outbox. In these attempts, suppressing requests left the controller session in transaction; suppressing replies left it idle after the separate financial COMMIT. An open socket or missing response cannot decide what another database committed.
-
-Recovery explicitly resets connections before reconciliation; discarded protocol bytes cannot safely be resumed as a complete stream. Both SQL oracles pass ten checks each, replay adds no effect and two deliberately false observation claims are rejected. This demonstrates neither automatic recovery nor a real incumbent-side fence. Actual packet retransmission, timeout/lock budgets, symmetric faults and independent physical hosts remain external validation. G2=INCONCLUSIVE and G6=BLOCK.
+In the synthetic case I kept the legacy writer, candidate and controller in separate stores. A façade may switch routes; it must not restore the wrong writer's authority after an ambiguous response or failure. The C2 campaigns preserved SQL and transport observations, with **G2 inconclusive and G6 blocked**. The original sequences are in [Annex I](#annex-i--evidence-campaigns-and-validation-limits). Here the obligation is to establish fencing and reconcile operations whose outcome is uncertain.
 
 ##### What would be needed for a real cutover
 
@@ -3221,33 +2922,9 @@ falsifiable before they become migration promises.
 
 ---
 
-##### B05: distinguish admission limits from backend capacity
+##### Client admission is not a backend capacity ceiling
 
-The [direct admission diagnostic](../evidence/runs/B05-DISPATCH-DIAGNOSTIC.md) adds three runner cohorts at 320 offered/s with 60-second measurement phases. Each paired trial keeps the PostgreSQL connection pool at 32 and changes client admission from 32 to 128 slots, reversing the order in one cohort. Exact admission/completion/release events and independent SQL commit timestamps replace retrospective occupancy estimates.
-
-Across six trials, 119,040 offers yielded 118,887 durable commits and 153 admission misses: 129 during warmup and 24 during measurement. All misses occurred at exactly 32 active slots. The three 128-slot trials admitted every offer. All seven financial invariants held in each trial. One 32-slot trial recorded 319.6 certain SQL commits/s; the others recorded 320.0000–320.0167/s in the independent SQL window, whose boundaries differ from offer phases.
-
-This is evidence of an admission-policy effect in this instrumented direct-client setup, not a backend capacity ceiling or an explanation of the older 12 misses. Pool-acquisition waits remain unmeasured; runner noise and instrumentation affect timing. Orleans routing, sustained scaling and bottleneck attribution under #25 remain open. The frozen archive audit is distinct from a new live campaign; a skipped live matrix proves nothing about capacity.
-
-##### Integrate bounded evidence and defer external validation explicitly
-
-On 3 November 2026, the author authorized integration of the E2 observations and B05 diagnostic without requiring hosted CI to establish every production claim first. The [external-validation protocol](../docs/EXTERNAL_VALIDATION.md) keeps the exact remaining work reviewable. Missing external measurements no longer block book/lab integration or editorial progress. E2 remains partially verified; this decision does not turn an INCONCLUSIVE result into PASS or authorize banking deployment.
-
-A single hosted runner can test real SQL, distinct processes, logical partitions and independent reconciliation. It cannot make those containers physically independent. Capacity and natural activation observations are not intrinsically impossible in Actions; the present campaigns simply do not establish them. Actions can orchestrate dedicated infrastructure or self-hosted runners. The important distinction is the actual topology and evidence, not the orchestration product.
-
-| Pending claim | More realistic experiment | Required harness change |
-| --- | --- | --- |
-| Sustained capacity and bottleneck (#25) | Separate load, silo and SQL hosts; identical direct/Orleans vectors; 1/2/4/8/16 silos, fixed durability and repeated rate sweeps | New external-endpoint driver with fixture allowlist; measure scheduling, queues, connection acquisition, SQL waits/WAL/storage and per-host resources |
-| Natural activation and continuous recovery (#24) | Ordinary grains without injected pre-invoke delay; directional faults on actual interfaces; unassisted recovery | Replace local container assumptions with explicit remote process identities; retain lifecycle events, both log streams and PCAPs; bound clock uncertainty |
-| Physical HA and durability (#8/#9) | Recorded independent failure domains; separate host loss, network partition and database failover | Record replication/acknowledgement policy and reconcile ambiguous IDs; dedicated disposable hardware for storage power-loss tests |
-| WAN, transport and economics (#9/#12) | Actual branch/backend paths with equal TLS/authentication for gRPC and REST; dated total cost per correct durable transfer | Separate controlled impairment from field observations; capture DNS, gateways, reused channels, deadlines and operating/DR cost |
-| Banking cutover (#32/#58/#64) | Owner-approved contract, authorized traces and a real incumbent-side writer fence | Connect an approved adapter, reconcile external effects and repeat in-flight/UNKNOWN/rollback controls; retain TODM G2/G6 approval |
-
-The existing B05 probe deliberately checks an exact loopback DSN; changing an environment variable alone cannot make it a distributed benchmark. Keep the frozen fixture and add a separately identified driver. Remote monotonic timestamps cannot be directly compared: record host clock offset and uncertainty, require a positive overlap even after uncertainty bounds, and otherwise retain INCONCLUSIVE.
-
-The proposed external study starts by reproducing 320 offered/s, then uses at least three repetitions per configuration, fixed seeded uniform/hot/crossed profiles and preregistered load points around degradation. A suggested initial schedule separates 5 minutes of warmup, 15 minutes of steady measurement and bounded drain; these are proposed study durations, not results or production acceptance thresholds. Prove spare generator capacity first, include every missed/late/ambiguous offer in service outcomes, and preserve warmup rather than cropping it away. Keep pool, retries, timeouts and durability fixed while changing one factor. Measure queue growth and attributable resources before declaring a capacity knee.
-
-Archive every original attempt with exact source, host/domain map, clock uncertainty, environment, workload, raw logs and independent SQL oracles. Preserve all seven financial invariants and corruption controls. Source and archive regressions remain integration checks; original live campaigns retain their existing manual invocation and exit behavior. A skipped campaign proves nothing about capacity. Stronger claims remain conditional on their own acceptance record, while development proceeds. Publication retains its separate authorization.
+B05 found that a client limited to 32 admission slots rejected offers that were admitted with 128, while preserving seven financial invariants. That is evidence about **one admission policy**, not the maximum throughput of SQL, Orleans or the hardware. The cohort measurements and external distributed validation design are retained in [Annex I](#annex-i--evidence-campaigns-and-validation-limits).
 
 ### Chapter 29 · Bringing in agents without letting them write the approval
 
@@ -3341,7 +3018,9 @@ I built a concrete form of that harness in "From the model that answers to the a
 
 ## Part VII · From evidence to the organization
 
-A lab convinces a technical team. An organization needs coexistence, an SDLC that works in its favour, a plan with exit points, a way of measuring what it does not yet know and the courage to say "I would not migrate here".
+A working demo does not transform an organization by itself. People, COBOL expertise, the SDLC, investment, transfer of authority and the right to retain a platform that meets its obligations all remain.
+
+I close with a fictional account that looked easy, an exit-based plan, a way to measure TODM and cases where I would not migrate. The final contract demands evidence; it promises no automatic conversion.
 
 ### Chapter 30 · From the lab to a system that keeps running
 
@@ -3490,13 +3169,19 @@ Agents can prepare tests, summarize discrepancies and propose optimizations. The
 > [!IMPORTANT]
 > **Chapter thesis.** A program that compiles on .NET 10 is not a migrated account. Three tests —two simultaneous withdrawals, a transfer and a nightly close— are enough to discover three responsibilities that were not on the program map.
 
+#### The demo that looked like a migration
+
 Imagine a fictional bank with a COBOL program called `ACCTUPD`. It processes debits and credits, queries a limits table, records movements and takes part in a nightly closing process. The first demo shows a small fragment: input, balance validation, new amount and write. An LLM produces readable C#. Management celebrates that the program already compiles on .NET 10. The technical team then asks for three more tests.
+
+#### Three tests that change the design
 
 First test: two simultaneous withdrawals. The service without concurrency control approves both. The solution is not to add a `lock` in a web controller: that lock protects one process and the bank will have several nodes. We introduce a transaction and versioning or database-level locking, with an idempotent key. Actors can reduce conflicts by identity, but the commit is still the decisive boundary.
 
 Second test: a transfer. There are two accounts and two writes. A failure between them shows that in-memory sequencing is not enough. We move to a ledger with an atomic operation within a database, or we formally define a compensation protocol when the movement crosses systems where local atomicity is not possible. The business decides which intermediate states are observable and which are not.
 
 Third test: the nightly close. A distributed version tries to calculate a million accounts with one actor per account and too many small writes. Commit time dominates the profile. We reorganize the work into stable partitions, batched writes, idempotent controls and checkpoints. The final code looks less like the original COBOL. The behaviour and the invariants look more like the system we really need.
+
+#### What we have actually modernized
 
 At this point we are no longer translating a routine. We have identified three different responsibilities: **online acceptance**, **accounting integrity** and **batch processing**. Separating them lets us deploy and measure each with its own criteria. This decomposition was not necessarily on the legacy program map. It is an architectural decision based on responsibilities, not on file names.
 
@@ -3511,7 +3196,7 @@ At this point we are no longer translating a routine. We have identified three d
 > [!IMPORTANT]
 > **Chapter thesis.** Management does not need promises that AI will convert everything. It needs staged decisions, bounded investment and explicit criteria to stop.
 
-Management does not need promises that "AI will convert everything". It needs staged decisions, bounded investment and criteria to stop. I would propose a **Discovery** that measures inventory, criticality, dependencies, data semantics and observable capacity. Then a **Pilot** with a seam selected for risk and relevance, not for how good it looks in a demo. Then a **Parallel Run** with functional, operational and performance oracles. Only then a gradual rollout and a controlled retirement of the previous component.
+Before choosing a platform I would ask an uncomfortable question: **what result would force us to stop the migration?** Without that answer, a pilot is a demo with no exit criteria. I would start with **Discovery** of capabilities, contracts and observed workload; select a business-relevant **Pilot**; compare functional outcomes and recovery in **Parallel Run**; and only then roll out gradually. The destination technology comes after the diagnosis.
 
 Each stage closes with three questions. What property have we demonstrated? What uncertainty remains open? What risk does the next stage take on? A pilot may conclude that keeping COBOL is better. It may also conclude that the migration is viable but requires changing the data model. An early negative result is valuable: it avoids committing millions to a wrong hypothesis.
 
@@ -3582,7 +3267,7 @@ The value of the book does not depend on every hypothesis coming out in TODM's f
 > [!IMPORTANT]
 > **Chapter thesis.** Keeping the mainframe, improving it or combining it with new systems are legitimate decisions if the data justifies them. A well-governed hybrid architecture can be more modern than a reckless full rewrite.
 
-There are systems that do their job, have a stable load, an acceptable cost, sufficient support and well-known guarantees. If modernization brings no functional value, no demonstrable risk reduction or reasonable economics, the best decision may be to stay on the mainframe and improve observability, automation, documentation and the exposure of capabilities. A well-governed hybrid architecture can be more modern than a reckless full rewrite.
+Modernization does not mean everything must leave the mainframe. Some systems have stable workloads, reasonable support and well-understood guarantees that do not justify a move. In those cases I would invest first in observability, automation, documentation and governed exposure of capabilities. An assessment must be allowed to conclude **“do not migrate”** and explain why that better protects the business.
 
 I would not migrate a critical ledger without access to operational profiles and without an environment where equivalence and recovery tests can be run. I would not make an irreversible cutover while unidentified writers coexist. I would not accept an SLA because a synthetic benchmark achieved a striking TPS. I would not split into microservices a process whose atomicity we cannot recover. I would not use actors to simulate a cross-domain transaction and call it safe. And I would not entrust the acceptance of a baseline to the same AI that generated the candidate.
 
@@ -3599,7 +3284,7 @@ It is not technological conservatism. It is a discipline of reversible decisions
 | The required atomicity is preserved in the target | A transaction the business needs to be atomic would have to be split |
 | The cost of verifying is affordable compared with the benefit | Verification costs more than the problem it solves |
 
-> **It is not technological conservatism. It is a discipline of reversible decisions.**
+> **Not migrating must also be a documented, measurable and revisable decision.**
 
 ### Chapter 36 · A hundred risks for choosing patterns with judgement
 
@@ -4247,3 +3932,385 @@ A practical acceptance package should contain:
 The [practical TODM adapter](../lab/todm_validation/README.md) validates specified evidence shapes and pinned governance semantics. It is not a universal runner for these languages or a production authorization service. The [decomposition lab](../lab/decomposition/README.md) checks synthetic boundary hypotheses; it does not discover arbitrary source dependencies. The [three-way commission exercise](../lab/examples/commission-three-way/README.md) demonstrates a concrete reference/candidate/expectation arrangement, not cross-language certification.
 
 This annex adds no executions. Existing COBOL, C#/.NET and Python artifacts retain their documented scopes; citations to other languages or platforms are not measurements of them. Local smoke tests do not become Azure measurements, and Azure experiments do not establish mainframe equivalence. A new language, runtime or workload needs its own retained evidence. The portable contribution is the discipline of making that requirement explicit, not a promise that the necessary proof already exists.
+
+### Annex I · Evidence campaigns and validation limits
+
+I want the chapters to tell a readable story: what failed, what I decided and what might prove me wrong. This is the other half of that work—the experimental record. I will not turn inconclusive observations into PASS or hide the first failures to make the story more convincing.
+
+Every result belongs to a code version, a host and a declared experimental contract. Two containers are not two data centres, and durable SQL is not bank certification. The architecture argument belongs to [channels](#companion-chapter--channels-atm-cash-and-the-core) and [transfers](#chapter-28--transfers-locks-and-failures-locally); this annex keeps the evidence provenance.
+
+#### I. Channels: cash, failures and transport
+
+##### Late advice, reversal and cash: correlation is not authorization
+
+Consider a withdrawal authorized for 100.00 monetary units: the device attests that **60.00** was dispensed, but a switch may still carry an advice referring to the original requested 100.00. The ledger posts 60.00, and a full reversal request then arrives. It is wrong to infer either "post 100" or "credit 100" automatically. We need to establish what cash was physically available, which financial posting was committed, whether a message is merely a request, and who can adjudicate the discrepancy. A reversal request is not an executed ledger reversal.
+
+The paired [EN research dossier](../docs/research/channel-late-advice.en.md) ([ES](../docs/research/channel-late-advice.es.md)) puts this against public ATM dispute guidance and conditional stand-in policies. The [channel forensic oracle](../lab/channels/advice_gate.py) adds a **fully synthetic, offline** four-instruction test with no database mutations:
+
+| Synthetic observation | Correct oracle result | Never allowed |
+| --- | --- | --- |
+| Device dispenses 60 of 100 approved; identical late advice repeated | `MATCHED_PARTIAL_CASH` | Create a second posting or dispense |
+| Device remains UNKNOWN; network advice says 80 | `UNKNOWN_REQUIRES_DEVICE_EVIDENCE` | Treat advice as physical confirmation or posting authority |
+| Final device journal says zero; late reversal requested | `FINAL_ZERO_CASH` | Claim the requested reversal is booked |
+| Core is unreachable with no issuer-delegated authority | `STAND_IN_DENIED` | Invent an offline issuer or cash authorization |
+
+Neither STAN nor RRN alone is a durable financial identity. Retain the original **operation ID**, authorization, terminal, network context and source incarnation. STAN can be reused; a network message ID replayed with a different payload is a conflict, not idempotency. A request to reverse the whole amount after partial physical cash delivery must trigger review and a negative oracle for a false credit.
+
+This is **not** a certified ISO 8583 implementation or a real ATM simulator. The new check has invented data: it **does not authenticate device journal entries, issuer policies, network settlement or actual bank operations**. It complements the prior ten native .NET 10/PostgreSQL experiments without treating their results as card-network certification. Even if the Python checks pass, no automatic dispense, posting or reversal is permitted; **TODM G2 INCONCLUSIVE / G6 BLOCK**.
+
+##### There is no generic network failure: locate the hop and decision
+
+A channel “timeout” can conceal different financial states. If **ATM→switch** fails before delivery, no original authorization is demonstrated. If **switch→core** drops the request before the issuer receives it, the switch cannot invent account authority or dispense cash. If the core durably committed and **only its reply** was lost, starting a new operation ID risks a duplicate effect. Recovery queries the **actual decision owner under the original identity**; approval does not prove physical cash.
+
+The [EN per-hop failure dossier](../docs/research/channel-hop-failures.en.md) ([ES](../docs/research/channel-hop-failures.es.md)) adds seven fictional traces and forty negative controls. It extends the previous partial-cash and late-advice examples without duplicating the core simulator.
+
+| Scenario | Synthetic oracle outcome | Forbidden inference or action |
+| --- | --- | --- |
+| H01: ATM→switch request not delivered | `NO_CORE_AUTHORIZATION_EVIDENCE` | Treat timeout as a confirmed decline or success |
+| H02: switch→core request not delivered | `NO_CORE_AUTHORIZATION_EVIDENCE` | Invent stand-in authority |
+| H03: issuer COMMIT, lost ACK, status recovered on restored link | `AUTHORIZATION_RECOVERED_BY_STATUS` | Start another operation identity or infer cash delivery |
+| H04: approval and device command, ATM↔switch fails | `CASH_UNKNOWN_NO_REDISPENSE` | Re-send dispense while journal remains unknown |
+| H05: old owner replies after writer epoch changes | `QUARANTINED_OLD_OWNER_REPLY` | Allow old host to create another posting |
+| H06: partial cash and fictional ledger agree | `PARTIAL_CASH_RECONCILED_SYNTHETICALLY` | Present fictional agreement as hardware proof |
+| H07: core outage with undelegated stand-in request | `STAND_IN_DENIED` | Authorize offline credit or dispense |
+
+**Routing is not source fencing.** A real change of authoritative writer from a host capability to .NET/SQL requires proof that the previous owner **can no longer commit the same operation**, including batch, privileged and disconnected paths. The fixture's `sourceEpoch` field is only a correlation marker, not a cryptographic lock or independent proof of revocation.
+
+Nor does CICS UOW equal an HTTP transaction: a CICS task can have multiple syncpoints, with atomicity scoped to recoverable resources in each UOW. Network authorization and physical notes are external boundaries. See [IBM CICS syncpoints](https://www.ibm.com/docs/en/cics-ts/6.x?topic=work-synchronization-points) and [Azure transient fault guidance](https://learn.microsoft.com/en-us/azure/architecture/best-practices/transient-faults).
+
+The [lab Python trace oracle](../lab/channels/network_fault_gate.py) **only checks declared JSON events**. It does not disconnect TCP sockets, execute a certified card protocol, contact an issuer or post to a financial ledger. A PASS shows consistency of this model, not a network guarantee. Real acceptance requires independent per-hop loss/reconnection injection, native issuer COMMIT logs, original retry identity, authenticated device journals, reconciliation and business-owner approval. **No fixture outcome authorizes automatic cash, reversal, posting, writer cutover or stand-in.** TODM G2 `INCONCLUSIVE`, G6 `BLOCK`.
+
+##### First real transport test: local TCP and the core COMMIT
+
+The preceding H01–H07 tests represented disconnected hops with JSON events. The next experimental step uses **actual loopback TCP sockets**. An ephemeral one-shot proxy accepts the HTTP client's request, drops or forwards it to the existing **.NET 10** API, and observes the upstream response. The core commits in PostgreSQL while an independent Python oracle reads its tables and the separate synthetic device store. These are **real processes and sockets** but still run on **one host**: not a physical partition between branches, switch and mainframe.
+
+| Transport test | Actual intervention | Independent assertion |
+| --- | --- | --- |
+| Request dropped before forwarding | Proxy accepts a real socket and resets it **without contacting the core** | Original SQL remains empty before recovery; same operation ID can commit once |
+| Reply dropped after COMMIT | Proxy forwards request, observes HTTP 200 produced **after `CommitAsync`**, then resets the client socket without forwarding any response | Client sees `UNKNOWN` while SQL already has one committed operation, two paired postings and one outbox; original-status query and same-ID replay create no second effect |
+| Reply delayed beyond client timeout | Proxy waits 0.8 s after upstream response versus a real client timeout of 0.15 s | Client sees timeout but the owner's original decision remains queryable and cannot be posted twice |
+
+All three new cases are **fictional digital transfers**, not actual cash withdrawals. The existing ten native cases remain, including partial simulated cash, post-COMMIT failures, external `SIGKILL` and ATM/mobile competition. The [EN research protocol](../docs/research/channel-loopback-transport.en.md) ([ES](../docs/research/channel-loopback-transport.es.md)) documents scope, test replay, the proxy's fourteen safety checks and eighteen baseline/adversarial original-evidence controls.
+
+**A client timeout alone does not prove absence of COMMIT.** The pre-forward drop has stronger evidence only because **our controlled proxy never opened an upstream socket and SQL was observed empty**. That independent proof may be unavailable in a real bank network. Retain the same durable `operationId` when querying status and, subject to the source owner's policy, retrying an ambiguous command.
+
+This increment exercises **real local TCP interruption against durable SQL**, not `tc netem`, cross-host WAN failures, certified ISO 8583, CICS or authentic dispenser journals; it is not a MIPS/capacity benchmark. One financial writer must remain authoritative across all channels. Customer acceptance still requires native source signatures, owner policy, network evidence, source fencing and independent physical failure domains. **G2 INCONCLUSIVE, G6 BLOCK**, no banking cutover approval.
+
+##### Held original reply versus eight concurrent recoveries
+
+The preceding experiment lost or delayed an ACK and then queried the core. It left a more difficult channel boundary untested: **the original response is still in flight while multiple clients concurrently try to recover the same operation**. One sequential retry does not establish safety under this race.
+
+The [EN research contract](../docs/research/channel-held-ack.en.md) ([ES](../docs/research/channel-held-ack.es.md)) uses a deterministic barrier over **actual local TCP sockets**. A proxy forwards the original `POST /transfer` to the existing .NET 10 API, observes its HTTP 200 after PostgreSQL COMMIT, then holds the response. The first client experiences a real timeout. Before the old reply is released, the driver queries the fictional owner's authoritative status and launches **eight concurrent clients using the same `operationId` and intent fingerprint**. A ninth request with the original ID but a different amount must be rejected.
+
+| Boundary | Original observation | Required independent oracle |
+| --- | --- | --- |
+| Fictional issuer | COMMIT confirmed while HTTP 200 is held | One operation, two postings and one outbox before retries |
+| First client | Timeout and `UNKNOWN` | No new financial identity invented |
+| Eight concurrent clients | Eight `COMMITTED` responses with `duplicate=true` | Still one durable decision and no second posting |
+| Changed-amount attempt | `ID_CONFLICT` | Identity is bound to business intent |
+| Late old ACK release | Monotonic timestamp after recovery | Old reply cannot open a new financial transition |
+
+The [independent verifier](../scripts/check_channel_transport.py) checks original HTTP observations and intent, the order of real events **before the old response is released**, the read-only SQL snapshots and final ledger. The negative tests forge the timestamp sequence, replay identity or a duplicate posting and must be rejected. The fixture now contains **14 native scenarios**, **18 proxy guards and 27 original-evidence checks**.
+
+**Architecture conclusion:** channel-visible response status must not be confused with the durable financial decision of the source owner. An old reply can arrive after recovery; **it is not a new authorization** and does not justify an automatic reversal. Idempotency must bind identity **and** intent and rely on the authoritative durable operation record.
+
+The experiment uses `localhost` TCP and disposable PostgreSQL, **not** a certified ATM switch, ISO 8583, CICS, a cash device or a cross-host WAN partition. **Eight local clients do not establish MIPS equivalence or capacity.** Monotonic timestamps are only comparable within this host. Real issuer attestations, physical effects, incumbent writer fencing and owner-approved rules remain open. TODM G2 `INCONCLUSIVE` / G6 `BLOCK`.
+
+#### II. Orleans: partitions and activations
+
+##### C01 · Control placement to make recovery testable
+
+The [original failure and three controlled cohorts](../evidence/runs/E2-C01-CONTROLLED.md)
+separate an experimental precondition from an accounting defect. The historical
+case observed all 16 accounts on secondary and correctly rejected its dual-host
+requirement. Repeating the same queries was not a new placement sample:
+existing activations could remain where they were.
+
+The test client uses placement hints only to activate and observe account keys
+1..16. In the negative control, all 16 were on secondary, the dual gate rejected
+them and no financial operations occurred. Alternating hints from another
+client did not redistribute them. A fresh fixture had observed 8/8 placement;
+subsequent financial clients used no hints and the same accepted AccountGrain
+and SQL ledger.
+
+All three cohorts verified actual secondary SIGKILL, reactivation on primary,
+idempotent replay, three operations/six postings/three outbox events and seven
+invariants. A fresh secondary container then rejoined with a new Active
+generation while the previous one remained Dead, without changing the ledger.
+Assigned runner IDs differed; hostnames repeat and each case still uses one
+machine. No physical HA is established.
+
+This is the controlled-fixture alternative preregistered for C01. **The
+historical concentration's cause remains unexplained**, the old test retains
+its rejection and the runtime default policy is unchanged. Placement hints
+also confer no financial authority: PostgreSQL still owns the effects. E2
+remains partially verified.
+
+###### Record failure without borrowing an earlier PASS
+
+A successful `development` file does not prove that the later ADO.NET attempt
+completed. The [observation follow-up](../evidence/runs/E2-PLACEMENT-OBSERVATION.md)
+creates a journal per provider and execution, retains each map, membership and
+logs before process cleanup, and records the exact failure phase. An
+unavailable query remains an error; it is not converted into an empty list.
+
+Two original controls deliberately aborted after the first real 1..16 identity
+probe. Primary/secondary maps were 7/9 and 10/6: **they did not reproduce the
+historical one-sided concentration**. Both children kept FAIL/exit 1, without
+financial commands or SIGKILL, with zero effects and seven SQL oracles. The
+parent verified failure preservation and kept the older PASS as control input.
+
+This verifies the recorder, not placement policy or recovery. Future natural
+failures will have their own evidence; the historical cause remains unproven
+and E2 remains partially verified.
+
+##### C04 · The client loses its gateways, the ledger retains authority
+
+The [original C04 test](../evidence/runs/E2-C04-GATEWAY.md) cuts only
+the external Orleans client's gateway egress: first primary, then both. With
+one gateway available, a fresh client committed through secondary to a grain
+hosted on primary. Under the dual cut, both silos and PostgreSQL remained
+reachable from one another.
+
+The first attempt failed because an outer 70-second timeout did not identify
+the application phase. Its negative ZIP is preserved. The corrected mode
+observes a startup deadline before financial dispatch: exit 74 after 20.8509
+seconds. No new effects appeared during the cut, including three additional
+SQL samples. After restoring the original network rules, the same ID committed
+and its replay was a duplicate; final state was three operations, six postings
+and three outbox events, with oracle 7/7.
+
+This is fresh-client startup unavailability, **not ACK loss after COMMIT**.
+Four namespaces share one runner; the result neither explains the historical
+C01 placement failure nor establishes physical domains, sustained capacity or
+a production RTO. E2 remains partially verified.
+
+##### C05/C06 · Packet direction does not decide what committed
+
+The [directional partition test](../evidence/runs/E2-C05-C06-DIRECTIONAL.md)
+starts from observed 8/8 placement and blocks inter-silo TCP egress in one
+direction at a time. SQL and gateways remain reachable. The 45-second captures
+confirm identical packets at both endpoints in the allowed direction and
+none received in the blocked direction. Failed TCP connections initiated from
+both sides do not make the cut symmetric: they also need return traffic.
+
+Two clients using different gateways send the same ID with amounts 31 and 37.
+In both orientations, the first times out after dispatch and the second gets
+COMMITTED; SQL identifies amount 37 as the winner. Management catalogs do not
+respond during the cut: **an unavailable view is not an empty list** and does
+not establish exclusive activation.
+
+| Egress blocked | Observed fault | First acknowledged attempts through both gateways after restoration |
+|---|---|---|
+| Primary to secondary | 46.0143 s | 1.6926 s |
+| Secondary to primary | 45.7963 s | 1.1831 s |
+
+After the original rules are restored, neither silo restarts and their
+containers, PIDs and generations remain unchanged. Identical replay returns
+DUPLICATE_COMMITTED, the different amount ID_CONFLICT and a new command
+COMMITTED. Each case ends with three operations, six postings and three outbox
+events, with seven passing SQL invariants. Four earlier failures remain
+preserved: two setup failures and two capture-shutdown failures; they are not
+retrospectively converted into successes.
+
+These are observed first acknowledged attempts, **not an RTO or sustained
+stable service**. One host per case, two short cuts and catalog samples do not
+establish absence of split brain, fencing or long-partition recovery. Those
+gates, sustained capacity and physical domains remain open. E2 remains
+partially verified.
+
+##### Long fault · Assisted recovery with bounded observations
+
+The [original evidence](../evidence/runs/E2-LONG-PARTITION.md) adds two
+120-second directional fault schedules. In both, the secondary silo exited
+before the deadline: retaining a rule in a pinned namespace does not mean both
+silos stayed alive. Two paired attempts did not restore the secondary gateway;
+the protocol chose explicit recreation of both silos, preserving the ledger
+and recording new generations. The first paired ACK arrived 58.484 and 59.211
+seconds after rule removal.
+
+Then 14 replay pairs across about 66 seconds retained the same containers/PIDs,
+two Active members, SQL 3/6/3 and seven invariants. Identical replay returned
+DUPLICATE_COMMITTED; changed payload returned ID_CONFLICT. This is sampled
+stability after assisted recovery, not continuous availability, restart
+necessity, production RTO, exclusive activation or physical HA. Both initial
+instrumentation failures remain archived as FAIL; the correction separated
+diagnostic lifetimes without weakening financial acceptance criteria.
+
+##### Activations · Observe calls without confusing them with exclusivity
+
+The [separate observer](../evidence/runs/E2-ACTIVATION-OBSERVATION.md)
+added an incoming-call filter to the test host, retaining the unchanged
+financial grain and ledger. Two original cases recorded 38 and 39 complete
+Transfer envelopes with activation IDs, process sessions and monotonic clocks.
+Logs were retained before silo recreation. Every acknowledged result reconciled
+with SQL: three operations, six postings, three outbox events and seven
+invariants in each case.
+
+No incomplete envelopes or overlaps across distinct activations of the same
+grain were observed. This does not establish global exclusivity: the filter
+measures request envelopes, not entire activation lifetimes or simultaneous
+SQL transactions. A targeted positive concurrent-activation scenario with
+independent SQL acceptance remains pending. Each case used one physical host
+and assisted recovery; E2 remains partially verified.
+
+##### Directed delay · One positive witness does not establish repeatability
+
+The [directed ordinary-grain trial](../evidence/runs/E2-ACCOUNT-DIRECTED.md)
+held an old request in a separate filter before invoking the financial method.
+It changed neither AccountGrain, ledger nor default placement. One case showed
+two complete request envelopes on distinct activation IDs for the same key,
+overlapping 5.06ms with the fault rule present: the new request committed amount
+31 and the old request returned DUPLICATE_COMMITTED after release. SQL retained
+one durable effect and rejected incompatible payloads.
+
+The opposite direction was inconclusive. The first collector omitted stderr;
+after correction, both repeated cases were also inconclusive. One positive
+witness across those four observations. A third campaign observed another
+4.68ms overlap with full stderr: two directed positives and four inconclusive
+outcomes in total, partially reproduced only in the secondary-outbound case. In the
+repeats, stderr and SQL identify a fatal membership path: the primary discovers
+itself Dead, enters KillMyselfLocally and exits with code 139. Victim selection
+across directional partitions remains incompletely explained.
+
+Every case ended with assisted recovery, three operations, six postings,
+three outbox events and seven invariants. The delay is artificial and measures
+incoming requests, not simultaneous Active lifecycles or simultaneous SQL
+transactions. Inconclusive originals retain their classification. E2 remains
+partial; sustained capacity and physical domains are independent gates.
+
+#### III. Brownfield: authority and recovery
+
+##### C2 · An unknown reply requires a durable admission journal
+
+The earlier coexistence experiment can compare two stores, but it leaves
+a separate failure mode: **COMMIT may be durable even when no ACK arrives**.
+Treating a timeout as rejection and retrying on a second writer can duplicate
+the financial effect. C2 therefore adds a third disposable PostgreSQL
+database, `bf_control`, with an admission journal independent of both
+ledgers. Each CAP-007 request records its stable ID, request hash, writer,
+epoch and state before remote execution.
+
+A request moves from `ADMITTED` to `DISPATCHING` and, when its reply
+disappears, to `UNKNOWN`. Only an independent SQL inspection of the
+persisted operation, paired postings and outbox may finalize
+`COMMITTED` or `REJECTED`. Missing SQL rows in both stores **do not
+prove rejection**: the journal remains UNKNOWN and cutover is blocked.
+
+The three-container experiment kills real processes after admission,
+before remote dispatch and after COMMIT but before the gateway receives
+the result. It also forges a terminal journal state and verifies that the
+independent oracle rejects promotion. The cooperating Python legacy
+adapter and .NET 10 candidate can require the C2 controller and hold a
+shared authority row lock through financial COMMIT. The
+[original C2 CI run](https://github.com/jmfloreszazo/de-la-caja-negra-a-la-evidencia/actions/runs/41341644829)
+is tied to one exact source SHA. It is not bank acceptance.
+
+**At that original C2 source SHA:** strict C2 mode
+requires a matching `DISPATCHING` journal admission at both adapters and
+rejects direct unadmitted commands. Deliberately disabling this opt-in
+allows direct unjournaled posts: the oracle detects that configuration
+bypass but cannot prevent it. Nor do the
+controller and candidate authority epochs change atomically across two
+PostgreSQL servers. A cooperative lock cannot revoke a real CICS/Db2
+writer's authority. External fencing, split-authority crash repair,
+third-party side-effect reconciliation, cross-host tests and approved
+business policy remain missing. TODM G2=INCONCLUSIVE and G6=BLOCK.
+
+##### C2 follow-up · Persist the fence and freeze interrupted transitions
+
+The [journal follow-up](../lab/brownfield/journal/README.md) changes
+two engineering assumptions without changing business authority. Enrollment
+is stored in SQL: removing a process variable can no longer disable admission
+checks in either cooperating adapter. Fresh historical fixtures remain
+unenrolled, and privileged direct SQL remains outside that enforcement.
+
+Before changing either writer epoch, the coordinator commits a durable
+`PREPARED` intent and `mode=SWITCHING`. Both adapters and the gateway refuse
+new financial commands until independent ledger and journal reconciliation
+allows the controller to complete that exact transition.
+
+| Durable boundary | Controller | Candidate authority | New admission |
+|---|---|---|---|
+| Intent prepared | legacy / e / SWITCHING | legacy / e | Blocked |
+| Candidate authority committed | legacy / e / SWITCHING | candidate / e+1 | Blocked |
+| Reconciliation completed | candidate / e+1 / ACTIVE | candidate / e+1 | Allowed with matching admission |
+
+The protocol independently sends `SIGKILL` after each of the first two
+boundaries and restarts recovery. An unexpected epoch or missing outbox must
+leave traffic frozen; a missing response cannot choose the next writer.
+Candidate-origin decisions still veto rollback. This closes specific
+cooperative crash windows through durable intent and forward recovery,
+**not atomic COMMIT across databases**. The [original follow-up CI](../evidence/runs/BROWNFIELD-C2-RECOVERY.md)
+passed 19 controls, preserving its raw ZIP and the initial failed concurrency
+run. The later [run #41353221630](https://github.com/jmfloreszazo/de-la-caja-negra-a-la-evidencia/actions/runs/41353221630),
+on main `279ca566`, passed 20 controls and both SQL oracles 10/10; this is a
+separate observation, not retrospective coverage attributed to that ZIP. Later code still requires its own exact-source CI evidence; historical
+observations cannot validate a different checkout.
+In-flight network partitions, real incumbent revocation, external payment
+effects and approved business policy remain separate acceptance gates.
+G2=INCONCLUSIVE and G6=BLOCK.
+
+##### C2 · Losing the controller after a financial operation has started
+
+The [new TCP-cut protocol](../lab/brownfield/journal/README.md) targets
+a different window from an unreachable controller before execution. A test
+trigger holds the financial operation before COMMIT; an independent SQL
+session must observe the real lock wait. A relay closes controller TCP
+connections and refuses reconnects; an external process then kills the gateway
+while leaving its adapter in flight. This is neither a silent nor asymmetric
+partition; all three PostgreSQL containers still share one runner.
+
+The contract requires UNKNOWN and a writer-switch veto until a durable
+decision is observed. After releasing the barrier, the cooperative model can
+commit its financial transaction even after losing the controller session.
+SQL reconciliation must precede replay: one decision, two postings and one
+outbox event. Losing a lock in another database does not atomically cancel
+financial COMMIT. CI must fail if observations contradict the contract.
+
+[Original run #41511782428](../evidence/runs/BROWNFIELD-CONTROLLER-LOSS.md)
+passed both cases: Python legacy and .NET candidate. SQL confirmed session
+loss; UNKNOWN vetoed the switch and later reconciliation found one decision,
+two postings and one outbox event per case, with both SQL oracles 10/10.
+The original ZIP preserves source/checkout and ten source hashes. This bounded
+evidence does not close #64 or establish bank fencing, RTO/RPO or production
+migration.
+G2=INCONCLUSIVE and G6=BLOCK.
+
+##### C2 · A live connection does not mean a known decision
+
+The next [original campaign](../evidence/runs/BROWNFIELD-CONTROLLER-PARTITION.md) keeps controller sockets open while discarding opaque stream bytes in one direction. Four cases cross the legacy/candidate writers with each direction. A tagged SQL probe, observed outside the relay, distinguishes a request that never reached the server from a response that never reached the client. This application relay acknowledges TCP reads; it is not a kernel packet-loss emulator.
+
+All four cases passed on their recorded source. Before releasing the financial barrier, controller holder sessions remained alive and financial decisions were absent. New admission and cutover attempts failed without changing authority. After the gateway was externally killed and the barrier released, each ledger still committed exactly one decision, two postings and one outbox. In these attempts, suppressing requests left the controller session in transaction; suppressing replies left it idle after the separate financial COMMIT. An open socket or missing response cannot decide what another database committed.
+
+Recovery explicitly resets connections before reconciliation; discarded protocol bytes cannot safely be resumed as a complete stream. Both SQL oracles pass ten checks each, replay adds no effect and two deliberately false observation claims are rejected. This demonstrates neither automatic recovery nor a real incumbent-side fence. Actual packet retransmission, timeout/lock budgets, symmetric faults and independent physical hosts remain external validation. G2=INCONCLUSIVE and G6=BLOCK.
+
+#### IV. Admission and external validation
+
+##### B05: distinguish admission limits from backend capacity
+
+The [direct admission diagnostic](../evidence/runs/B05-DISPATCH-DIAGNOSTIC.md) adds three runner cohorts at 320 offered/s with 60-second measurement phases. Each paired trial keeps the PostgreSQL connection pool at 32 and changes client admission from 32 to 128 slots, reversing the order in one cohort. Exact admission/completion/release events and independent SQL commit timestamps replace retrospective occupancy estimates.
+
+Across six trials, 119,040 offers yielded 118,887 durable commits and 153 admission misses: 129 during warmup and 24 during measurement. All misses occurred at exactly 32 active slots. The three 128-slot trials admitted every offer. All seven financial invariants held in each trial. One 32-slot trial recorded 319.6 certain SQL commits/s; the others recorded 320.0000–320.0167/s in the independent SQL window, whose boundaries differ from offer phases.
+
+This is evidence of an admission-policy effect in this instrumented direct-client setup, not a backend capacity ceiling or an explanation of the older 12 misses. Pool-acquisition waits remain unmeasured; runner noise and instrumentation affect timing. Orleans routing, sustained scaling and bottleneck attribution under #25 remain open. The frozen archive audit is distinct from a new live campaign; a skipped live matrix proves nothing about capacity.
+
+##### Integrate bounded evidence and defer external validation explicitly
+
+On 3 November 2026, the author authorized integration of the E2 observations and B05 diagnostic without requiring hosted CI to establish every production claim first. The [external-validation protocol](../docs/EXTERNAL_VALIDATION.md) keeps the exact remaining work reviewable. Missing external measurements no longer block book/lab integration or editorial progress. E2 remains partially verified; this decision does not turn an INCONCLUSIVE result into PASS or authorize banking deployment.
+
+A single hosted runner can test real SQL, distinct processes, logical partitions and independent reconciliation. It cannot make those containers physically independent. Capacity and natural activation observations are not intrinsically impossible in Actions; the present campaigns simply do not establish them. Actions can orchestrate dedicated infrastructure or self-hosted runners. The important distinction is the actual topology and evidence, not the orchestration product.
+
+| Pending claim | More realistic experiment | Required harness change |
+| --- | --- | --- |
+| Sustained capacity and bottleneck (#25) | Separate load, silo and SQL hosts; identical direct/Orleans vectors; 1/2/4/8/16 silos, fixed durability and repeated rate sweeps | New external-endpoint driver with fixture allowlist; measure scheduling, queues, connection acquisition, SQL waits/WAL/storage and per-host resources |
+| Natural activation and continuous recovery (#24) | Ordinary grains without injected pre-invoke delay; directional faults on actual interfaces; unassisted recovery | Replace local container assumptions with explicit remote process identities; retain lifecycle events, both log streams and PCAPs; bound clock uncertainty |
+| Physical HA and durability (#8/#9) | Recorded independent failure domains; separate host loss, network partition and database failover | Record replication/acknowledgement policy and reconcile ambiguous IDs; dedicated disposable hardware for storage power-loss tests |
+| WAN, transport and economics (#9/#12) | Actual branch/backend paths with equal TLS/authentication for gRPC and REST; dated total cost per correct durable transfer | Separate controlled impairment from field observations; capture DNS, gateways, reused channels, deadlines and operating/DR cost |
+| Banking cutover (#32/#58/#64) | Owner-approved contract, authorized traces and a real incumbent-side writer fence | Connect an approved adapter, reconcile external effects and repeat in-flight/UNKNOWN/rollback controls; retain TODM G2/G6 approval |
+
+The existing B05 probe deliberately checks an exact loopback DSN; changing an environment variable alone cannot make it a distributed benchmark. Keep the frozen fixture and add a separately identified driver. Remote monotonic timestamps cannot be directly compared: record host clock offset and uncertainty, require a positive overlap even after uncertainty bounds, and otherwise retain INCONCLUSIVE.
+
+The proposed external study starts by reproducing 320 offered/s, then uses at least three repetitions per configuration, fixed seeded uniform/hot/crossed profiles and preregistered load points around degradation. A suggested initial schedule separates 5 minutes of warmup, 15 minutes of steady measurement and bounded drain; these are proposed study durations, not results or production acceptance thresholds. Prove spare generator capacity first, include every missed/late/ambiguous offer in service outcomes, and preserve warmup rather than cropping it away. Keep pool, retries, timeouts and durability fixed while changing one factor. Measure queue growth and attributable resources before declaring a capacity knee.
+
+Archive every original attempt with exact source, host/domain map, clock uncertainty, environment, workload, raw logs and independent SQL oracles. Preserve all seven financial invariants and corruption controls. Source and archive regressions remain integration checks; original live campaigns retain their existing manual invocation and exit behavior. A skipped campaign proves nothing about capacity. Stronger claims remain conditional on their own acceptance record, while development proceeds. Publication retains its separate authorization.

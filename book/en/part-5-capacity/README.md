@@ -4,7 +4,9 @@
 
 # Part V · Capacity: MIPS, concurrency and platform
 
-The question that worries me most when taking a workload off a mainframe is not whether the program compiles. It is whether it will hold up when month-end close, the peak and a failure arrive at once. This part is about approaching what a mainframe delivers —in Azure or on a huge machine at the customer's site— without cheating when we measure.
+The capacity question comes before cloud pricing. What does it mean to replace a mainframe workload? There is no universal MIPS-to-vCPU conversion and no local benchmark that stands in for a bank's month-end close.
+
+I separate hardware, concurrency, transport, operations and total cost. Azure and on-premises options are compared without attributing synthetic runs to production. VM size should never settle a business decision on its own.
 
 ## In this part
 

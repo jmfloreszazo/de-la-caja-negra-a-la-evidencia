@@ -4,7 +4,9 @@
 
 # Parte III · Oráculos: el derecho a aceptar
 
-Un candidato no se acepta porque compile, ni porque lo haya escrito un modelo excelente, ni porque sus propios tests estén en verde. Se acepta porque una evidencia independiente lo contrasta con un comportamiento aprobado.
+Descubrir lo que hace el legado no basta para aprobar lo que construimos después. La especificación puede equivocarse, el constructor y el evaluador pueden compartir sesgos y una prueba verde puede responder la pregunta equivocada.
+
+TODM separa mandato, baseline aprobada, oráculos independientes, controles negativos y autoridad de entrega. Mi interés no está en añadir ceremonias, sino en impedir que la velocidad de la IA borre nuestra capacidad de decir que no.
 
 ## En esta parte
 
