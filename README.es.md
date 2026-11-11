@@ -15,6 +15,8 @@
 
 José María Flores Zazo · [jmfloreszazo.com](https://jmfloreszazo.com) · Edición v2026.10.29
 
+**Última edición editorial (11 de noviembre de 2026):** [v2026.11.11 — PDF y Markdown en español e inglés](https://github.com/jmfloreszazo/de-la-caja-negra-a-la-evidencia/releases/tag/v2026.11.11). Las cubiertas conservan el identificador histórico de primera edición; las [notas de publicación](docs/releases/v2026.11.11.md) explican el contenido revisado.
+
 > [!IMPORTANT]
 > La IA puede investigar, proponer y construir. Aceptar el resultado exige contratos, oráculos independientes y una autoridad explícita. Una modernización 1:1 puede ser un puente, pero nunca deberíamos confundir el puente con la ciudad a la que queremos llegar.
 
