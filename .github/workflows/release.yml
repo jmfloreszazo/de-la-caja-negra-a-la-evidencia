@@ -14,7 +14,7 @@ jobs:
     # A second exact title publishes the bounded research preview; otherwise
     # subsequent editions require an explicit v* tag.
     if: >-
-      ${{ startsWith(github.ref, 'refs/tags/v') || (github.ref == 'refs/heads/main' && (startsWith(github.event.head_commit.message, 'release: publish first PDF edition after PR #2 merge') || startsWith(github.event.head_commit.message, 'release: publish research preview v2026.10.31-rc1') || startsWith(github.event.head_commit.message, 'release: publish final research closeout v2026.11.05'))) }}
+      ${{ startsWith(github.ref, 'refs/tags/v') || (github.ref == 'refs/heads/main' && (startsWith(github.event.head_commit.message, 'release: publish first PDF edition after PR #2 merge') || startsWith(github.event.head_commit.message, 'release: publish research preview v2026.10.31-rc1') || startsWith(github.event.head_commit.message, 'release: publish final research closeout v2026.11.05') || startsWith(github.event.head_commit.message, 'release: publish editorial book v2026.11.11'))) }}
     runs-on: ubuntu-24.04
     timeout-minutes: 40
     steps:
@@ -47,7 +47,11 @@ jobs:
         run: |
           set -euo pipefail
           if [ "$GITHUB_REF" = "refs/heads/main" ]; then
-            if [[ "$GITHUB_EVENT_HEAD_COMMIT_MESSAGE" == "release: publish final research closeout v2026.11.05"* ]]; then
+            if [[ "$GITHUB_EVENT_HEAD_COMMIT_MESSAGE" == "release: publish editorial book v2026.11.11"* ]]; then
+              TAG=v2026.11.11
+              NOTE=docs/releases/v2026.11.11.md
+              CHANNEL=
+            elif [[ "$GITHUB_EVENT_HEAD_COMMIT_MESSAGE" == "release: publish final research closeout v2026.11.05"* ]]; then
               TAG=v2026.11.05
               NOTE=docs/releases/v2026.11.05.md
               CHANNEL=

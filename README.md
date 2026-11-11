@@ -15,6 +15,8 @@
 
 José María Flores Zazo · [jmfloreszazo.com](https://jmfloreszazo.com) · Edition v2026.10.29
 
+**Latest editorial release (11 November 2026):** [v2026.11.11 — Spanish/English PDFs and Markdown](https://github.com/jmfloreszazo/de-la-caja-negra-a-la-evidencia/releases/tag/v2026.11.11). The covers retain the historic first-edition identifier; [release notes](docs/releases/v2026.11.11.md) describe the revised contents.
+
 > [!IMPORTANT]
 > AI can investigate, propose and build. Accepting the result requires contracts, independent oracles and explicit authority. A 1:1 modernization can be a bridge, but we should never mistake the bridge for the city we want to reach.
 
